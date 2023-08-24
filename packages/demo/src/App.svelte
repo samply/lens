@@ -75,8 +75,7 @@
 <main>
   <p class="container">
     <lens-catalogue treeData={JSON.stringify(mockCatalogueData)} />
+    <lens-query-display />
   </p>
 </main>
 
-<style>
-</style>
