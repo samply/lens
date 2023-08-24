@@ -5,7 +5,7 @@
 </script>
 
 <div>
-    <input type="text" list="autocomplete-list" id="autocomplete-input" name="autocomplete-input" placeholder="Search for a diagnosis">
+    <input type="text" list="autocomplete-list" placeholder="Search for a diagnosis">
     <datalist id="autocomplete-list">
         {#each criteria as criteriaItem}
             <option value={criteriaItem.key}>{criteriaItem.description}</option>
