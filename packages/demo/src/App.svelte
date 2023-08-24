@@ -1,31 +1,82 @@
 <script lang="ts">
-  import '../../lib';
+  import "../../lib";
+    import type { Category } from "../../lib/src/types/treeData";
+
+  const mockCatalogueData: Category[] = [
+    {
+      key: "donor",
+      name: "Donor/Clinical Information",
+      childCategories: [
+        {
+          key: "gender",
+          name: "Gender",
+          type: "checkbox",
+          criteria: [
+            {
+              key: "male",
+              name: "male",
+            },
+            {
+              key: "female",
+              name: "female",
+            },
+            {
+              key: "other",
+              name: "other",
+            },
+            {
+              key: "sex_uncharted",
+              name: "sex uncharted",
+            },
+          ],
+        },
+        {
+          key: "diagnosis",
+          name: "Diagnosis ICD-10",
+          type: "autocomplete",
+          criteria: [
+            {
+              key: "C31",
+              name: "C31",
+              description: "Malignant neoplasm of accessory sinuses",
+            },
+            {
+              key: "C31.0",
+              name: "C31.0",
+              description: "Malignant neoplasm: Maxillary sinus",
+            },
+            {
+              key: "C41",
+              name: "C41",
+              description:
+                "Malignant neoplasm of bone and articular cartilage of other and unspecified sites",
+            },
+            {
+              key: "C41.0",
+              name: "C41.0",
+              description: "Malignant neoplasm: Bones of skull and face",
+            },
+          ],
+        },
+        {
+          key: 'diagnosis_age_donor',
+          name: 'Diagnosis age',
+          type: 'number',
+        }
+      ],
+    },
+  ]
+
+  
+
+
 </script>
 
 <main>
   <p class="container">
-    <button-component label="Click me"></button-component>
-    <button-component label="Don't click me" reset="true"></button-component>
-    <display-component></display-component>
+    <lens-catalogue treeData={JSON.stringify(mockCatalogueData)} />
   </p>
 </main>
 
 <style>
-  main {
-    text-align: center;
-    padding: 1em;
-    max-width: 240px;
-    margin: 0 auto;
-  }
-
-  @media (min-width: 640px) {
-    main {
-      max-width: none;
-    }
-
-    .container {
-      display: inline-block;
-      max-width: 320px;
-    }
-  }
 </style>
