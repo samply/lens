@@ -1,0 +1,30 @@
+{
+  "name": "my-library",
+  "description": "A base template for building a shareable web components library with Vite + Svelte",
+  "version": "0.0.0",
+  "type": "module",
+  "module": "dist/lib/my-library.js",
+  "main": "dist/lib/my-library.umd.js",
+  "scripts": {
+    "start": "npm run dev -s",
+    "dev": "vite --config vite.demo.config.ts",
+    "build": "vite build",
+    "build:demo": "vite build --config vite.demo.config.ts",
+    "preview": "vite preview --config vite.demo.config.ts",
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "prepublishOnly": "npm run build -s"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^2.4.1",
+    "@tsconfig/svelte": "^3.0.0",
+    "svelte": "^4.0.0",
+    "svelte-check": "^3.4.3",
+    "svelte-preprocess": "^5.0.3",
+    "tslib": "^2.4.0",
+    "typescript": "^5.0.0",
+    "vite": "^4.4.9"
+  },
+  "files": [
+    "dist/lib"
+  ]
+}
