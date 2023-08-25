@@ -74,8 +74,13 @@
 
 <main>
   <p class="container">
-    <lens-catalogue treeData={JSON.stringify(mockCatalogueData)} />
-    <lens-query-display />
+    <lens-search-bar treeData={JSON.stringify(mockCatalogueData)}  noMatchesFoundMessage={"lol idiot"}/>
+    <br>
+    <br>
+    <br>
+    <br>
+    <lens-catalogue treeData={JSON.stringify(mockCatalogueData)}/>
+    <!-- <lens-query-display /> -->
   </p>
 </main>
 
