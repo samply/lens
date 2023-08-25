@@ -70,6 +70,10 @@ customElement={{
     const inputOptions = writable<AutoCompleteItem[]>()
     
     /**
+     * input element binds to this variable. Used to focus the input element
+    */
+    let searchBarInput
+    /**
      * watches the input value and updates the input options
     */
     let inputValue = '';
@@ -117,17 +121,34 @@ customElement={{
         }
     }
 
+
+    /**
+     * handles click events to make input options selectable
+     * @param inputOption
+     */
+    const selectItemByClick = (inputOption) => {
+        queryStore.update(query => [...query, inputOption])
+        inputValue = ''
+        focusedItemIndex = 0
+        searchBarInput.focus()
+    }
+
 </script>
+<div>{JSON.stringify($queryStore)}</div>
 <div part="lens-searchbar" class="lens-searchbar" >
-    <input part="lens-searchbar-input" class="lens-searchbar-input" type="text" bind:value={inputValue} on:keydown={handleKeyDown}/>
+    <input part="lens-searchbar-input" class="lens-searchbar-input" type="text" bind:this={searchBarInput} bind:value={inputValue} on:keydown={handleKeyDown}/>
     {#if inputValue.length > 0}
     <ul part="lens-searchbar-autocomplete-options" class="lens-searchbar-autocomplete-options">
             {#if $inputOptions?.length > 0}
                 {#each $inputOptions as inputOption, index}
+                    <!-- svelte-ignore a11y-click-events-have-key-events -->
+                    <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+                    <!-- this is handled with the handleKeyDown method -->
                     <li 
                         part="lens-searchbar-autocomplete-options-item"
                         class="lens-searchbar-autocomplete-options-item"
                         class:lens-searchbar-autocomplete-options-item-focused={index === focusedItemIndex}
+                        on:click={() => selectItemByClick(inputOption)}
                     >
                         {inputOption.name} : {inputOption.criterion.name}
                     </li>
@@ -144,6 +165,9 @@ customElement={{
 <style>
     .lens-searchbar {
         position: relative;
+    }
+    .lens-searchbar-autocomplete-options-item {
+        cursor: pointer;
     }
     .lens-searchbar-autocomplete-options-item-focused {
         color: coral;
