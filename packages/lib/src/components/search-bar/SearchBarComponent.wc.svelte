@@ -22,6 +22,7 @@
      */
     export let treeData: Category[] = [];
     export let noMatchesFoundMessage: string = "No matches found";
+    export let placeholderText: string = "Type to filter conditions";
 
     /**
      * Build a full list of autocomplete items and saves it to 'criteria'
@@ -216,10 +217,9 @@
     const selectItemByClick = (inputOption) => {
         addInputValueToStore(inputOption, extractTargetGroupFromInputValue());
     };
-    
+
 </script>
 
-<div>{JSON.stringify($queryStore)}</div>
 <div part="lens-searchbar" class="lens-searchbar">
     <input
         part="lens-searchbar-input"
@@ -228,6 +228,7 @@
         bind:this={searchBarInput}
         bind:value={inputValue}
         on:keydown={handleKeyDown}
+        placeholder={placeholderText}
     />
     {#if inputValue.length > 0}
         <ul

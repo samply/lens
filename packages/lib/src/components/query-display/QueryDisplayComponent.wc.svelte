@@ -42,8 +42,6 @@
 
 </script>
 
-<h2>Query</h2>
-
 <div class="wrapper">
     {#each $queryStore as queryGroup, index}
         <div class="group">
