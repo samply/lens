@@ -29,6 +29,7 @@
     "dist/lib"
   ],
   "dependencies": {
-    "svelte-dnd-action": "^0.9.26"
+    "svelte-dnd-action": "^0.9.26",
+    "uuid": "^9.0.0"
   }
 }

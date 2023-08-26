@@ -1,4 +1,5 @@
 export type QueryItem = {
+    id: string;
     key: string;
     name: string;
     values: QueryValue[];

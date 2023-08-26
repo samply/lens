@@ -5,6 +5,7 @@
     import { dndzone } from "svelte-dnd-action";
     import {flip} from "svelte/animate";
 
+
     function handleDndConsider(e, index) {
         let items = e.detail.items;
         queryStore.update((store) => {
@@ -18,10 +19,8 @@
         let storedItems = []
 
         newGroupItems.forEach(newGroupItem => {
-            console.log(storedItems.find(item => item.name === newGroupItem.name))
             if(storedItems.find(item => item.name === newGroupItem.name) === undefined){
                 storedItems.push(newGroupItem)
-                console.log(storedItems)
             } else {
                 storedItems = storedItems.map(item => {
                     if(item.name === newGroupItem.name){
@@ -60,7 +59,7 @@
                     <div class="item" animate:flip="{{duration: 150}}">
                         {item.name}:
                         {#each item.values as value}
-                            <span>{' '} {value}, </span>
+                            <span>{' '} {value.name}, </span>
                         {/each}
                     </div>
                 {/each}

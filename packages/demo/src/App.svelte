@@ -80,7 +80,7 @@
     <br>
     <br>
     <lens-catalogue treeData={JSON.stringify(mockCatalogueData)}/>
-    <!-- <lens-query-display /> -->
+    <lens-query-display />
   </p>
 </main>
 
