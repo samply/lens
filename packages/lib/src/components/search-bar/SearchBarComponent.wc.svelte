@@ -70,7 +70,6 @@
                     ];
             }
         });
-        console.log(autoCompleteItems);
         return autoCompleteItems;
     };
 
@@ -96,11 +95,15 @@
     /**
      * watches the input value and updates the input options
      */
-    $: $inputOptions = criteria.filter(
-        (item) =>
-            item.name.toLowerCase().includes(inputValue.toLowerCase()) ||
-            item.criterion.name.toLowerCase().includes(inputValue.toLowerCase())
-    );
+    $: $inputOptions = criteria.filter((item) => {
+        const clearedInputValue = inputValue
+            .replace(/^[0-9]*:/g, "")
+            .toLocaleLowerCase();
+        return (
+            item.name.toLowerCase().includes(clearedInputValue) ||
+            item.criterion.name.toLowerCase().includes(clearedInputValue)
+        );
+    });
 
     /**
      * keeps track of the focused item index
@@ -112,9 +115,12 @@
      * @param indexOfChosenStore
      */
     const addInputValueToStore = (
+        inputItem: AutoCompleteItem,
         indexOfChosenStore: number = $queryStore.length
     ): void => {
-        if (indexOfChosenStore >= $queryStore.length) {
+        if (indexOfChosenStore < 0) indexOfChosenStore = 0;
+
+        if (indexOfChosenStore > $queryStore.length) {
             indexOfChosenStore = $queryStore.length;
         }
 
@@ -123,7 +129,6 @@
         }
 
         const queryStoreGroup: QueryItem[] = $queryStore[indexOfChosenStore];
-        const inputItem: AutoCompleteItem = $inputOptions[focusedItemIndex];
         const existingItem: QueryItem = queryStoreGroup.find(
             (item) => item.name === inputItem.name
         );
@@ -161,9 +166,6 @@
                 return item;
             });
         }
-        
-        console.log('existingItem', existingItem);
-        console.log('queryStoreGroup', queryStoreGroup)
 
         queryStore.update((query) => {
             query[indexOfChosenStore] = queryStoreGroup;
@@ -172,7 +174,6 @@
         inputValue = "";
         focusedItemIndex = 0;
     };
-
 
     /**
      * handles keyboard events to make input options selectable
@@ -198,7 +199,19 @@
         }
         if (event.key === "Enter") {
             event.preventDefault();
-            addInputValueToStore(0);
+            let groupToAddItemTo: number;
+
+            const splitInputValue = inputValue.split(":");
+
+            if (splitInputValue.length > 1) {
+                groupToAddItemTo = +splitInputValue[0] - 1;
+                addInputValueToStore(
+                    $inputOptions[focusedItemIndex],
+                    groupToAddItemTo
+                );
+            } else {
+                addInputValueToStore($inputOptions[focusedItemIndex]);
+            }
         }
     };
 
@@ -207,7 +220,19 @@
      * @param inputOption
      */
     const selectItemByClick = (inputOption) => {
-        addInputValueToStore();
+        let groupToAddItemTo: number;
+
+            const splitInputValue = inputValue.split(":");
+
+            if (splitInputValue.length > 1) {
+                groupToAddItemTo = +splitInputValue[0] - 1;
+                addInputValueToStore(
+                    inputOption,
+                    groupToAddItemTo
+                );
+            } else {
+                addInputValueToStore(inputOption);
+            }
         searchBarInput.focus();
     };
 </script>

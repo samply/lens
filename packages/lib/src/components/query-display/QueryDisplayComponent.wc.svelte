@@ -47,7 +47,7 @@
 <div class="wrapper">
     {#each $queryStore as queryGroup, index}
         <div class="group">
-            <h3>Sample Group {index}</h3>
+            <h3>Sample Group {index+1}</h3>
             <section
                 use:dndzone={{ items: queryGroup, flipDurationMs: 150 }}
                 on:consider={(e) => handleDndConsider(e, index)}
