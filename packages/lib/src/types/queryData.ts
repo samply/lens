@@ -10,3 +10,13 @@ export type QueryValue = {
     key: string;
     name: string | number;
 }
+
+export type AutoCompleteItem = {
+    name: string;
+    key: string;
+    criterion: {
+        key: string;
+        name: string;
+        description?: string;
+    };
+};

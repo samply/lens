@@ -12,18 +12,8 @@
     import { writable } from "svelte/store";
     import type { Category } from "../../types/treeData";
     import { queryStore } from "../../stores/query";
-    import type { QueryItem, QueryValue } from "../../types/queryData";
+    import type { AutoCompleteItem, QueryItem } from "../../types/queryData";
     import { v4 as uuidv4 } from "uuid";
-
-    type AutoCompleteItem = {
-        name: string;
-        key: string;
-        criterion: {
-            key: string;
-            name: string;
-            description?: string;
-        };
-    };
 
     /**
      * props
@@ -135,7 +125,7 @@
 
         if (existingItem === undefined) {
             /**
-             * if the group does not contain an item with the same name create a new one
+             * if the group does not contain an item with the same name create a new item
              */
             const newGroupItem: QueryItem = {
                 id: uuidv4(),
@@ -176,6 +166,19 @@
     };
 
     /**
+     * extracts the group index from the input value
+     * the user may specify the group index by typing a number followed by a colon
+     */
+    const extractTargetGroupFromInputValue = () : number => {
+        const splitInputValue = inputValue.split(":");
+        if (splitInputValue.length > 1) {
+            const groupToAddItemTo = +splitInputValue[0] - 1;
+            return groupToAddItemTo;
+        }
+        return $queryStore.length;
+    }
+
+    /**
      * handles keyboard events to make input options selectable
      * @param event
      */
@@ -199,19 +202,10 @@
         }
         if (event.key === "Enter") {
             event.preventDefault();
-            let groupToAddItemTo: number;
-
-            const splitInputValue = inputValue.split(":");
-
-            if (splitInputValue.length > 1) {
-                groupToAddItemTo = +splitInputValue[0] - 1;
-                addInputValueToStore(
-                    $inputOptions[focusedItemIndex],
-                    groupToAddItemTo
-                );
-            } else {
-                addInputValueToStore($inputOptions[focusedItemIndex]);
-            }
+            addInputValueToStore(
+                $inputOptions[focusedItemIndex],
+                extractTargetGroupFromInputValue()
+            );
         }
     };
 
@@ -220,21 +214,9 @@
      * @param inputOption
      */
     const selectItemByClick = (inputOption) => {
-        let groupToAddItemTo: number;
-
-            const splitInputValue = inputValue.split(":");
-
-            if (splitInputValue.length > 1) {
-                groupToAddItemTo = +splitInputValue[0] - 1;
-                addInputValueToStore(
-                    inputOption,
-                    groupToAddItemTo
-                );
-            } else {
-                addInputValueToStore(inputOption);
-            }
-        searchBarInput.focus();
+        addInputValueToStore(inputOption, extractTargetGroupFromInputValue());
     };
+    
 </script>
 
 <div>{JSON.stringify($queryStore)}</div>
