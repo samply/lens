@@ -7,8 +7,8 @@ export type QueryItem = {
 }
 
 export type QueryValue = {
-    key: string;
-    name: string | number;
+    name: string;
+    value: string | {min: number, max: number};
 }
 
 export type AutoCompleteItem = {

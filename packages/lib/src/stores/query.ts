@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import type { QueryItem } from "../types/queryData";
 import { writable } from "svelte/store";
 
-export const queryStore = writable([]);
+export const queryStore = writable([[]]);
 
 /**
  * 
@@ -36,10 +36,7 @@ export const addItemToQuery = (queryObject: QueryItem, queryGroupIndex: number) 
             /**
              * if the group does not contain an item with the same name create a new item
              */
-            queryStoreGroup.push({
-                id: uuidv4(),
-                ...queryObject,
-            });
+            queryStoreGroup.push(queryObject);
         } else {
             /**
              * if the group does contain an item with the same name update the values
@@ -49,7 +46,7 @@ export const addItemToQuery = (queryObject: QueryItem, queryGroupIndex: number) 
                     item.values = [
                         ...item.values,
                         {
-                            key: queryObject.values[0].key,
+                            value: queryObject.values[0].value,
                             name: queryObject.values[0].name,
                         },
                     ];

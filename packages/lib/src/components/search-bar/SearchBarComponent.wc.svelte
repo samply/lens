@@ -120,7 +120,7 @@
             key: inputItem.key,
             values: [
                 {
-                    key: inputItem.criterion.key,
+                    value: inputItem.criterion.key,
                     name: inputItem.criterion.name,
                 },
             ],
