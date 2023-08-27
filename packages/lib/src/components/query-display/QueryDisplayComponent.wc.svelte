@@ -1,7 +1,7 @@
 <svelte:options customElement="lens-query-display" />
 
 <script>
-    import { queryStore } from "../../stores/query.ts";
+    import { queryStore } from "../../stores/query";
     import { dndzone } from "svelte-dnd-action";
     import {flip} from "svelte/animate";
 

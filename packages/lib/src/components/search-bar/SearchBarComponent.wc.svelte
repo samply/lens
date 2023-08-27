@@ -11,7 +11,7 @@
 <script lang="ts">
     import { writable } from "svelte/store";
     import type { Category } from "../../types/treeData";
-    import { queryStore } from "../../stores/query";
+    import { addItemToQuery, queryStore } from "../../stores/query";
     import type { AutoCompleteItem, QueryItem } from "../../types/queryData";
     import { v4 as uuidv4 } from "uuid";
 
@@ -102,66 +102,32 @@
     let focusedItemIndex: number = 0;
 
     /**
-     * transforms the inputvalue to a QueryItem and adds it to the query store
+     * transforms the inputvalue to a QueryItem, adds it to the query store
+     * and resets the input value and the focused item index
      * @param indexOfChosenStore
      */
     const addInputValueToStore = (
         inputItem: AutoCompleteItem,
         indexOfChosenStore: number = $queryStore.length
     ): void => {
-        if (indexOfChosenStore < 0) indexOfChosenStore = 0;
 
-        if (indexOfChosenStore > $queryStore.length) {
-            indexOfChosenStore = $queryStore.length;
-        }
+        /**
+         * transform inputItem to QueryItem
+        */
+        const queryItem: QueryItem = {
+            id: uuidv4(),
+            name: inputItem.name,
+            key: inputItem.key,
+            values: [
+                {
+                    key: inputItem.criterion.key,
+                    name: inputItem.criterion.name,
+                },
+            ],
+        };
 
-        if (indexOfChosenStore === $queryStore.length) {
-            queryStore.update((query) => [...query, []]);
-        }
-
-        const queryStoreGroup: QueryItem[] = $queryStore[indexOfChosenStore];
-        const existingItem: QueryItem = queryStoreGroup.find(
-            (item) => item.name === inputItem.name
-        );
-
-        if (existingItem === undefined) {
-            /**
-             * if the group does not contain an item with the same name create a new item
-             */
-            const newGroupItem: QueryItem = {
-                id: uuidv4(),
-                name: inputItem.name,
-                key: inputItem.key,
-                values: [
-                    {
-                        key: inputItem.criterion.key,
-                        name: inputItem.criterion.name,
-                    },
-                ],
-            };
-            queryStoreGroup.push(newGroupItem);
-        } else {
-            /**
-             * if the group does contain an item with the same name update the values
-             */
-            queryStoreGroup.map((item) => {
-                if (item.name === inputItem.name) {
-                    item.values = [
-                        ...item.values,
-                        {
-                            key: inputItem.criterion.key,
-                            name: inputItem.criterion.name,
-                        },
-                    ];
-                }
-                return item;
-            });
-        }
-
-        queryStore.update((query) => {
-            query[indexOfChosenStore] = queryStoreGroup;
-            return query;
-        });
+        addItemToQuery(queryItem, indexOfChosenStore);
+     
         inputValue = "";
         focusedItemIndex = 0;
     };
