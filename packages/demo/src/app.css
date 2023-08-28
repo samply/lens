@@ -7,10 +7,46 @@ body {
   background-color: #7e7e7e;
 }
 
+/**
+  * Lens Search Bar
+  */
 lens-search-bar::part(lens-searchbar-input) {
   box-sizing: border-box;
 }
 
+
+/**
+* Lens Cataloque
+*/
 lens-catalogue::part(data-tree-element) {
   padding-left: 20px;
+}
+
+lens-catalogue::part(lens-number-input-wrapper) {
+  display: grid;
+  flex-direction: row;
+  align-items: center;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+lens-catalogue::part(lens-number-input-section-values-input) {
+  width: 50px;
+  margin: 0 10px;
+}
+
+lens-catalogue::part(lens-number-input-section-groups) {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+lens-catalogue::part(lens-number-input-section-groups-checkboxes) {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+lens-catalogue::part(lens-catalogue-query-select-label), lens-catalogue::part(lens-number-input-section-values-label) {
+  display: inline-flex;
+  align-items: baseline;
 }

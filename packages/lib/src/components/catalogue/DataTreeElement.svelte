@@ -24,7 +24,7 @@
         {:else if element.type === 'autocomplete' && 'criteria' in element}
                 <AutocompleteComponent criteria={element.criteria} />
         {:else if element.type === 'number'}
-                <NumberInputComponent />
+                <NumberInputComponent {element} />
         {/if}
     {/if}
 </div>

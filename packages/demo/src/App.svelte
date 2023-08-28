@@ -1,5 +1,6 @@
 <script lang="ts">
   import "../../lib";
+    import type { CatalogueText } from "../../lib/src/types/texts";
   import type { Category } from "../../lib/src/types/treeData";
 
   const mockCatalogueData: Category[] = [
@@ -66,6 +67,15 @@
       ],
     },
   ];
+
+  const catalogueText: CatalogueText = {
+    group: "Group",
+    numberInput: {
+      labelFrom: "From",
+      labelTo: "to",
+      warning: `"from" can't be higher than "to"`,
+    },
+  }
 </script>
 
 <main>
@@ -74,12 +84,12 @@
     <div class="componentBox">
       <lens-search-bar
         treeData={JSON.stringify(mockCatalogueData)}
-        noMatchesFoundMessage={"lol idiot"}
+        noMatchesFoundMessage={"No matches found"}
       />
     </div>
     <h2>Catalogue</h2>
     <div class="componentBox">
-      <lens-catalogue treeData={JSON.stringify(mockCatalogueData)} />
+      <lens-catalogue treeData={JSON.stringify(mockCatalogueData)} texts={catalogueText} />
     </div>
     <h2>Query display</h2>
     <div class="componentBox">

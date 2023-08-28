@@ -39,7 +39,6 @@
         });
     }
 
-
 </script>
 
 <div class="wrapper">
