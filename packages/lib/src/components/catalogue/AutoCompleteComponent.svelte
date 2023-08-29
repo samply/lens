@@ -172,7 +172,7 @@
             >
             <span part="lens-catalogue-section-groups-checkboxes lens-catalogue-section-autocomplete-groups-checkboxes">
                 {#each $queryStore as _, index}
-                    <QuerySelectComponent {index} queryItem={chosenOption} />
+                    <QuerySelectComponent {index} isChecked={index === 0} queryItem={chosenOption} />
                 {/each}
             </span>
         </div>

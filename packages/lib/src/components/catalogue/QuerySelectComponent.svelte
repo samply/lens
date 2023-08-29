@@ -9,6 +9,7 @@
 
     export let index: number;
     export let queryItem: QueryItem;
+    export let isChecked: boolean = false;
     /**
      * watch changes in the queryItem
      */
@@ -19,8 +20,6 @@
     /**
      * adds and removes items from the query store within the group
      */
-    let isChecked = false;
-
     const toggleSelectedGroup = (checked): void => {
         if (checked) {
             addItemToQuery(queryItem, index);
@@ -30,15 +29,18 @@
         isChecked = !isChecked;
     };
 
-    onMount(() => {
-        if (index === 0) {
-            isChecked = true;
-        }
-    });
-
     /**
-     * TODO: change checked state when query store changes
-    */
+     * change isChecked when query store changes
+     */
+    $: {
+        isChecked =
+            $queryStore[index].find((item: QueryItem) =>
+                item.values.find(
+                    (value: QueryValue) =>
+                        value.name === queryItem.values[0].name
+                )
+            ) !== undefined;
+    }
 </script>
 
 <label part="lens-catalogue-query-select-label">
