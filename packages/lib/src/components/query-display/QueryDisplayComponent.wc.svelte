@@ -54,9 +54,9 @@
             >
                 {#each queryGroup as item (item.id)}
                     <div class="item" animate:flip="{{duration: 150}}">
-                        {item.name}:
-                        {#each item.values as value}
-                            <span>{' '} {value.name}, </span>
+                        <b>{item.name}:</b>
+                        {#each item.values as value, index}
+                            <span>{index === 0 ? '\b' : ' or '} {value.name} </span>
                         {/each}
                     </div>
                 {/each}
@@ -70,3 +70,20 @@
         <button on:click={() => queryStore.update(store => [...store, []])}>Add Group</button>
     </div>
 </div>
+
+<style>
+    .wrapper{
+        display: flex;
+        gap: 30px;
+    }
+    .group {
+        border: solid 1px black;
+        padding: 10px;
+    }
+    section {
+        padding: 20px;
+    }
+    h3 {
+        text-align: center;
+    }
+</style>
