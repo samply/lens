@@ -142,7 +142,7 @@
             const groupToAddItemTo = +splitInputValue[0] - 1;
             return groupToAddItemTo;
         }
-        return $queryStore.length;
+        return 0;
     }
 
     /**
@@ -207,7 +207,8 @@
                     <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
                     <!-- this is handled with the handleKeyDown method -->
                     <li
-                        part="lens-searchbar-autocomplete-options-item"
+                        part="lens-catalogue-autocomplete-options-item {index ===
+                        focusedItemIndex && 'focused'}}"
                         class="lens-searchbar-autocomplete-options-item"
                         class:lens-searchbar-autocomplete-options-item-focused={index ===
                             focusedItemIndex}
@@ -224,6 +225,9 @@
 </div>
 
 <style>
+    /**
+    * TODO: move outside
+    */
     .lens-searchbar {
         position: relative;
     }
