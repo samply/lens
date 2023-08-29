@@ -11,7 +11,7 @@
         {
           key: "gender",
           name: "Gender",
-          type: "checkbox",
+          type: "single-select",
           criteria: [
             {
               key: "male",

@@ -7,7 +7,7 @@ export type Criteria = {
 export type Category = {
     key: string;
     name: string;
-    type?: 'checkbox' | 'autocomplete' | 'number';
+    type?: 'single-select' | 'autocomplete' | 'number';
     childCategories?: Category[] 
     criteria?: | Criteria[];
 }

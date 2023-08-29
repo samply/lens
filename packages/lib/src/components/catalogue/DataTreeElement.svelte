@@ -1,9 +1,9 @@
 <script lang="ts">
     import type { Category } from "../../types/treeData";
     import DataTreeElement from "./DataTreeElement.svelte";
-    import CheckboxComponent from "./CheckboxComponent.svelte";
     import NumberInputComponent from "./NumberInputComponent.svelte";
     import AutocompleteComponent from "./AutoCompleteComponent.svelte";
+    import SingleSelectComponent from "./SingleSelectComponent.svelte";
 
     export let element: Category
 
@@ -18,9 +18,9 @@
             <DataTreeElement element={child} />
         {/each}
     {:else}
-        <!-- <div>{element.name}</div> -->
-        {#if element.type === 'checkbox' && 'criteria' in element}
-                <!-- <CheckboxComponent criteria={element.criteria} /> -->
+        <div>{element.name}</div>
+        {#if element.type === 'single-select' && 'criteria' in element}
+                <SingleSelectComponent {element} />
         {:else if element.type === 'autocomplete' && 'criteria' in element}
                 <AutocompleteComponent {element} />
         {:else if element.type === 'number'}
