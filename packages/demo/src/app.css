@@ -20,9 +20,10 @@ lens-search-bar::part(lens-searchbar-input) {
 */
 lens-catalogue::part(data-tree-element) {
   padding-left: 20px;
+  margin-bottom: 20px;
 }
 
-lens-catalogue::part(lens-number-input-wrapper) {
+lens-catalogue::part(lens-number-input-wrapper) , lens-catalogue::part(){
   display: grid;
   flex-direction: row;
   align-items: center;
@@ -40,13 +41,13 @@ lens-catalogue::part(lens-number-input-section-groups) {
   gap: 10px;
 }
 
-lens-catalogue::part(lens-number-input-section-groups-checkboxes) {
+lens-catalogue::part(lens-number-input-section-groups-checkboxes), lens-catalogue::part(lens-catalogue-section), lens-catalogue::part(lens-number-input-wrapper) {
   display: flex;
   align-items: baseline;
   gap: 10px;
 }
 
-lens-catalogue::part(lens-catalogue-query-select-label), lens-catalogue::part(lens-number-input-section-values-label) {
+lens-catalogue::part(lens-catalogue-query-select-label), lens-catalogue::part(lens-number-input-section-values-label), lens-catalogue::part(lens-number-input-section-groups) {
   display: inline-flex;
   align-items: baseline;
 }

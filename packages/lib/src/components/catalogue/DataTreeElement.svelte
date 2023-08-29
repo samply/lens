@@ -18,11 +18,11 @@
             <DataTreeElement element={child} />
         {/each}
     {:else}
-        <div>{element.name}</div>
+        <!-- <div>{element.name}</div> -->
         {#if element.type === 'checkbox' && 'criteria' in element}
-                <CheckboxComponent criteria={element.criteria} />
+                <!-- <CheckboxComponent criteria={element.criteria} /> -->
         {:else if element.type === 'autocomplete' && 'criteria' in element}
-                <AutocompleteComponent criteria={element.criteria} />
+                <AutocompleteComponent {element} />
         {:else if element.type === 'number'}
                 <NumberInputComponent {element} />
         {/if}

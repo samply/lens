@@ -10,6 +10,7 @@ export type QueryValue = {
     name: string;
     value: string | {min: number, max: number};
     queryBindId?: string;
+    description?: string;
 }
 
 export type AutoCompleteItem = {

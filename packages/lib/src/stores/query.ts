@@ -83,7 +83,7 @@ export const removeItemFromQuery = (queryObject: QueryItem, queryGroupIndex: num
 
         queryStoreGroup = queryStoreGroup.map((item) => {
             if (item.name === queryObject.name) {
-                item.values = item.values.filter((value) => value.queryBindId !== queryObject.values[0].queryBindId);
+                item.values = item.values.filter((value) => value.name !== queryObject.values[0].name);
             }
             return item;
         });
