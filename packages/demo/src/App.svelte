@@ -1,6 +1,6 @@
 <script lang="ts">
   import "../../lib";
-    import type { CatalogueText } from "../../lib/src/types/texts";
+  import type { CatalogueText } from "../../lib/src/types/texts";
   import type { Category } from "../../lib/src/types/treeData";
 
   const mockCatalogueData: Category[] = [
@@ -75,7 +75,7 @@
       labelTo: "to",
       warning: `"from" can't be higher than "to"`,
     },
-  }
+  };
 </script>
 
 <main>
@@ -89,15 +89,22 @@
     </div>
     <h2>Catalogue</h2>
     <div class="componentBox">
-      <lens-catalogue treeData={JSON.stringify(mockCatalogueData)} texts={catalogueText} />
+      <lens-catalogue
+        treeData={JSON.stringify(mockCatalogueData)}
+        texts={catalogueText}
+      />
     </div>
     <h2>Query display</h2>
     <div class="componentBox">
       <lens-query-display />
     </div>
+    <h2>Results</h2>
+    <div class="componentBox">
+      <lens-result-mockup />
+    </div>
     <h2>State display</h2>
     <div class="componentBox">
-    <lens-state-display />
+      <lens-state-display />
     </div>
   </div>
 </main>
