@@ -186,10 +186,9 @@
 
 </script>
 
-<div part="lens-searchbar" class="lens-searchbar">
+<div part="lens-searchbar">
     <input
-        part="lens-searchbar-input"
-        class="lens-searchbar-input"
+        part={`lens-searchbar-input ${inputValue?.length > 0 ? "lens-searchbar-input-options-open": ""}`}
         type="text"
         bind:this={searchBarInput}
         bind:value={inputValue}
@@ -198,8 +197,7 @@
     />
     {#if inputValue.length > 0}
         <ul
-            part="lens-searchbar-autocomplete-options"
-            class="lens-searchbar-autocomplete-options"
+            part='lens-searchbar-autocomplete-options'
         >
             {#if $inputOptions?.length > 0}
                 {#each $inputOptions as inputOption, index}
@@ -207,11 +205,8 @@
                     <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
                     <!-- this is handled with the handleKeyDown method -->
                     <li
-                        part="lens-catalogue-autocomplete-options-item {index ===
-                        focusedItemIndex && 'focused'}}"
-                        class="lens-searchbar-autocomplete-options-item"
-                        class:lens-searchbar-autocomplete-options-item-focused={index ===
-                            focusedItemIndex}
+                        part="lens-searchbar-autocomplete-options-item {index ===
+                        focusedItemIndex ? 'lens-searchbar-autocomplete-options-item-focused': ''}"
                         on:click={() => selectItemByClick(inputOption)}
                     >
                         {inputOption.name} : {inputOption.criterion.name}
@@ -223,35 +218,3 @@
         </ul>
     {/if}
 </div>
-
-<style>
-    /**
-    * TODO: move outside
-    */
-    .lens-searchbar {
-        position: relative;
-    }
-    .lens-searchbar-autocomplete-options-item {
-        cursor: pointer;
-    }
-    .lens-searchbar-autocomplete-options-item-focused {
-        color: coral;
-    }
-    .lens-searchbar-input {
-        width: 100%;
-        height: 100%;
-        padding: 10px;
-        border: solid 1px black;
-    }
-    .lens-searchbar-autocomplete-options {
-        list-style-type: none;
-        padding: 20px;
-        margin: 0;
-        border: solid 1px black;
-        width: 300px;
-        position: absolute;
-        z-index: 1;
-        background-color: white;
-        color: black;
-    }
-</style>
