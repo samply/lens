@@ -1,17 +1,79 @@
 :root {
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  --white: #ffffff;
+  --black: #000000;
+  --gray: #a7a7a7;
+  --light-gray: #dcdcdc;
+  --dark-gray: #323232;
+  --blue: #0047b9;
+  --light-blue: #4875c3;
+  --dark-blue: #002d80;
+  --green: #00882d;
+  --light-green: #00b33c;
+  --dark-green: #00591a;
+  --red: #b90000;
+  --light-red: #ff0000;
+  --dark-red: #800000;
+
+  --border-radius-small: 5px;
+
+  --gap-xxs: 5px;
+  --gap-xs: 10px;
+  --gap-s: 20px;
+  --gap-m: 30px;
+  --gap-l: 40px;
+  --gap-xl: 50px;
+  --gap-xxl: 60px;
+
+  --font-size-xxs: 10px;
+  --font-size-xs: 12px;
+  --font-size-s: 14px;
+  --font-size-m: 16px;
+  --font-size-l: 18px;
+  --font-size-xl: 24px;
+  --font-size-xxl: 32px;
+
+
+
 }
 
 body {
   margin: 100px;
-  background-color: #7e7e7e;
+  background-color: var(--gray);
 }
+
 
 /**
   * Lens Search Bar
   */
 lens-search-bar::part(lens-searchbar-input) {
   box-sizing: border-box;
+}
+
+
+/**
+* Lens search Button
+*/
+
+lens-search-button::part(lens-search-button) {
+  color: var(--white);
+  border: none;
+  border-radius: var(--border-radius-small);
+  padding: var(--gap-xs) var(--gap-s);
+  font-size: var(--font-size-m);
+  cursor: pointer;
+}
+
+lens-search-button::part(lens-search-button-active) {
+  background-color: var(--blue);
+}
+
+lens-search-button::part(lens-search-button-disabled) {
+  background-color: var(--gray);
+}
+
+lens-search-button::part(lens-search-button-active):hover {
+  background-color: var(--light-blue);
 }
 
 

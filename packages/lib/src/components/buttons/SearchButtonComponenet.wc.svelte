@@ -28,6 +28,6 @@
     };
 </script>
 
-<button part="lens-search-button" on:click={getResultsFromBiobanks} {disabled}>
+<button part={`lens-search-button lens-search-button-${disabled ? "disabled" : "active"}`} on:click={getResultsFromBiobanks} {disabled}>
     {title}
 </button>
