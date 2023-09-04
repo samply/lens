@@ -87,6 +87,10 @@
         noMatchesFoundMessage={"No matches found"}
       />
     </div>
+    <h2>Search button</h2>
+    <div class="componentBox">
+      <lens-search-button title="Search Biobanks" url='https://jsonplaceholder.typicode.com/todos/1'/>
+    </div>
     <h2>Catalogue</h2>
     <div class="componentBox">
       <lens-catalogue
