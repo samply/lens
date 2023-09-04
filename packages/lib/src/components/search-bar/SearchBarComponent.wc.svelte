@@ -25,6 +25,12 @@
     export let placeholderText: string = "Type to filter conditions";
 
     /**
+     * handles the focus state of the input element
+     * closes options when clicked outside
+     */
+    let autoCompleteOpen = false;
+
+    /**
      * Build a full list of autocomplete items and saves it to 'criteria'
      * @param category
      */
@@ -110,10 +116,9 @@
         inputItem: AutoCompleteItem,
         indexOfChosenStore: number = $queryStore.length
     ): void => {
-
         /**
          * transform inputItem to QueryItem
-        */
+         */
         const queryItem: QueryItem = {
             id: uuidv4(),
             name: inputItem.name,
@@ -127,7 +132,7 @@
         };
 
         addItemToQuery(queryItem, indexOfChosenStore);
-     
+
         inputValue = "";
         focusedItemIndex = 0;
     };
@@ -136,14 +141,14 @@
      * extracts the group index from the input value
      * the user may specify the group index by typing a number followed by a colon
      */
-    const extractTargetGroupFromInputValue = () : number => {
+    const extractTargetGroupFromInputValue = (): number => {
         const splitInputValue = inputValue.split(":");
         if (splitInputValue.length > 1) {
             const groupToAddItemTo = +splitInputValue[0] - 1;
             return groupToAddItemTo;
         }
         return 0;
-    }
+    };
 
     /**
      * handles keyboard events to make input options selectable
@@ -183,22 +188,27 @@
     const selectItemByClick = (inputOption) => {
         addInputValueToStore(inputOption, extractTargetGroupFromInputValue());
     };
-
 </script>
 
 <div part="lens-searchbar">
     <input
-        part={`lens-searchbar-input ${inputValue?.length > 0 ? "lens-searchbar-input-options-open": ""}`}
+        part={`lens-searchbar-input ${
+            inputValue?.length > 0 ? "lens-searchbar-input-options-open" : ""
+        }`}
         type="text"
         bind:this={searchBarInput}
         bind:value={inputValue}
         on:keydown={handleKeyDown}
         placeholder={placeholderText}
+        on:focusin={() => {
+            autoCompleteOpen = true;
+        }}
+        on:focusout={() => {
+            autoCompleteOpen = false;
+        }}
     />
-    {#if inputValue.length > 0}
-        <ul
-            part='lens-searchbar-autocomplete-options'
-        >
+    {#if autoCompleteOpen && inputValue.length > 0}
+        <ul part="lens-searchbar-autocomplete-options">
             {#if $inputOptions?.length > 0}
                 {#each $inputOptions as inputOption, index}
                     <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -206,8 +216,10 @@
                     <!-- this is handled with the handleKeyDown method -->
                     <li
                         part="lens-searchbar-autocomplete-options-item {index ===
-                        focusedItemIndex ? 'lens-searchbar-autocomplete-options-item-focused': ''}"
-                        on:click={() => selectItemByClick(inputOption)}
+                        focusedItemIndex
+                            ? 'lens-searchbar-autocomplete-options-item-focused'
+                            : ''}"
+                        on:mousedown={() => selectItemByClick(inputOption)}
                     >
                         {inputOption.name} : {inputOption.criterion.name}
                     </li>
