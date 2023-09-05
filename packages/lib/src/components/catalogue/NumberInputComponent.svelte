@@ -36,8 +36,7 @@
         return store;
     });
 
-
-    let queryItem: QueryItem
+    let queryItem: QueryItem;
     $: queryItem = {
         id: queryGroupInternalId,
         key: element.key,
@@ -50,51 +49,47 @@
             },
         ],
     };
-
 </script>
 
-<div part="lens-number-input-wrapper">
-    <div part="lens-number-input-section lens-number-input-section-values">
-        <label
-            part="lens-number-input-section-values-label lens-number-input-section-values-label-from"
-        >
-            {$catalogueTextStore.numberInput.labelFrom}
-            <input
-                part="lens-number-input-section-values-input lens-number-input-section-values-input-from"
-                type="number"
-                bind:value={from}
-                min="0"
-            />
-        </label>
-
-        <label
-            part="lens-number-input-section-values-label lens-number-input-section-values-label-to"
-        >
-            {$catalogueTextStore.numberInput.labelTo}
-            <input
-                part="lens-number-input-section-values-input lens-number-input-section-values-input-to"
-                type="number"
-                bind:value={to}
-                min="0"
-            />
-        </label>
-    </div>
-    <div part="lens-number-input-section lens-number-input-section-groups">
-        <span part="lens-number-input-section-groups-label"
-            >{$catalogueTextStore.group}</span
-        >
-        <span part="lens-number-input-section-groups-checkboxes">
-            {#each $queryStore as _, index}
-                <QuerySelectComponent
-                    {index}
-                    {queryItem}
+<div part="criterion-wrapper number-input-wrapper">
+    <div part="criterion-item criterion-item-single-select">
+        <div part="criterion-section criterion-section-values">
+            <label
+                part="number-input-label number-input-values-label lens-number-input-values-label-from"
+            >
+                {$catalogueTextStore.numberInput.labelFrom}
+                <input
+                    part="number-input-formfield number-input-formfield-from"
+                    type="number"
+                    bind:value={from}
+                    min="0"
                 />
-            {/each}
-        </span>
-    </div>
-    {#if from > to}
-        <div part="lens-number-input-warning">
-            {$catalogueTextStore.numberInput.warning}
+            </label>
+
+            <label
+                part="number-input-label number-input-values-label lens-number-input-values-label-to"
+            >
+                {$catalogueTextStore.numberInput.labelTo}
+                <input
+                    part="number-input-formfield number-input-formfield-from"
+                    type="number"
+                    bind:value={to}
+                    min="0"
+                />
+            </label>
         </div>
-    {/if}
+        <div part="criterion-section criterion-section-groups">
+            <span
+                part="criterion-group-label criterion-group-label-number-input"
+                >{$catalogueTextStore.group}</span
+            >
+            <span
+                part="criterion-group-wrapper criterion-group-wrapper-number-input"
+            >
+                {#each $queryStore as _, index}
+                    <QuerySelectComponent {index} {queryItem} />
+                {/each}
+            </span>
+        </div>
+    </div>
 </div>

@@ -43,8 +43,6 @@
         numberInput: {
             labelFrom: texts.numberInput.labelFrom || "From",
             labelTo: texts.numberInput.labelTo || "to",
-            warning:
-                texts.numberInput.warning || `"from" can't be higher than "to"`,
         },
     };
 

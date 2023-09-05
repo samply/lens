@@ -125,6 +125,9 @@ lens-search-button::part(lens-search-button-active):hover {
 * Lens Cataloque
 */
 
+/**
+* Cataloque Structure
+*/
 lens-catalogue::part(lens-catalogue) {
   background-color: var(--light-gray);
   padding: var(--gap-s);
@@ -153,43 +156,55 @@ lens-catalogue::part(data-tree-element-name) {
   cursor: pointer;
 }
 
-
-lens-catalogue::part(data-tree-element-child-category) {
-  padding-left: 20px;
-  margin-bottom: 20px;
-  border-left: solid 1px var(--dark-gray);
-}
+lens-catalogue::part(data-tree-element-child-category),
 lens-catalogue::part(data-tree-element-last-child-options) {
   padding-left: 20px;
   margin-bottom: 20px;
   border-left: solid 1px var(--dark-gray);
+} 
+
+/**
+* Group Checkboxes
+*/
+
+lens-catalogue::part(criterion-group-wrapper),
+lens-catalogue::part(query-selection-label) {
+  display: flex;
+  gap: 10px;
 }
 
-lens-catalogue::part(lens-number-input-wrapper) , lens-catalogue::part(){
+/**
+* Cataloque Inputs
+*/
+lens-catalogue::part(criterion-group-wrapper),
+lens-catalogue::part(criterion-section-groups) {
+  display: flex;
+  gap: 10px;
+}
+lens-catalogue::part(criterion-item) {
   display: grid;
-  flex-direction: row;
-  align-items: center;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
 }
 
-lens-catalogue::part(lens-number-input-section-values-input) {
+lens-catalogue::part(criterion-section-values) {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/**
+* Number Input
+*/
+lens-catalogue::part(number-input-wrapper) {
+  
+}
+
+lens-catalogue::part(number-input-label) {
+display: flex;
+}
+
+lens-catalogue::part(number-input-formfield) {
   width: 50px;
   margin: 0 10px;
-}
-
-lens-catalogue::part(lens-number-input-section-groups) {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-lens-catalogue::part(lens-number-input-section-groups-checkboxes), lens-catalogue::part(lens-catalogue-section), lens-catalogue::part(lens-number-input-wrapper) {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-}
-
-lens-catalogue::part(lens-catalogue-query-select-label), lens-catalogue::part(lens-number-input-section-values-label), lens-catalogue::part(lens-number-input-section-groups) {
-  display: inline-flex;
-  align-items: baseline;
 }

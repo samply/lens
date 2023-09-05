@@ -104,10 +104,6 @@
     <div class="componentBox">
       <lens-query-display />
     </div>
-    <h2>Results</h2>
-    <div class="componentBox">
-      <lens-result-mockup />
-    </div>
     <h2>State display</h2>
     <div class="componentBox">
       <lens-state-display />

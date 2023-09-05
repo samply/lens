@@ -43,10 +43,10 @@
     }
 </script>
 
-<label part="lens-catalogue-query-select-label">
+<label part="query-selection-label">
     {index + 1}
     <input
-        part="lens-catalogue-query-select-input"
+        part="query-selection-input"
         type="checkbox"
         on:change={(e) => toggleSelectedGroup(!isChecked)}
         checked={isChecked}

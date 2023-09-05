@@ -2,5 +2,4 @@ export { default as Catalogue } from './src/components/catalogue/Catalogue.wc.sv
 export { default as QueryDisplayComponent } from './src/components/query-display/QueryDisplayComponent.wc.svelte';
 export { default as SearchBarComponent } from './src/components/search-bar/SearchBarComponent.wc.svelte';
 export {default as StateDisplayComponent} from './src/components/testing-components/StateDisplayComponent.wc.svelte';
-export {default as ResultMockupComponent} from './src/components/testing-components/ResultMockupComponent.wc.svelte';
 export {default as SearchButtonComponent} from './src/components/buttons/SearchButtonComponenet.wc.svelte'
