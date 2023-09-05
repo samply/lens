@@ -98,7 +98,8 @@
             .toLocaleLowerCase();
         return (
             item.name.toLowerCase().includes(clearedInputValue) ||
-            item.criterion.name.toLowerCase().includes(clearedInputValue)
+            item.criterion.name.toLowerCase().includes(clearedInputValue) ||
+            item.criterion.description?.toLowerCase().includes(clearedInputValue)
         );
     });
 
@@ -127,6 +128,7 @@
                 {
                     value: inputItem.criterion.key,
                     name: inputItem.criterion.name,
+                    description: inputItem.criterion.description,
                 },
             ],
         };
@@ -221,7 +223,7 @@
                             : ''}"
                         on:mousedown={() => selectItemByClick(inputOption)}
                     >
-                        {inputOption.name} : {inputOption.criterion.name}
+                        {inputOption.name} : {inputOption.criterion.name} - {inputOption.criterion.description}
                     </li>
                 {/each}
             {:else}
