@@ -74,7 +74,6 @@
     numberInput: {
       labelFrom: "From",
       labelTo: "to",
-      warning: `"from" can't be higher than "to"`,
     },
   };
 </script>
