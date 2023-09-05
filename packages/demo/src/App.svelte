@@ -70,6 +70,7 @@
 
   const catalogueText: CatalogueText = {
     group: "Group",
+    collapseButtonTitle: "Collapse Tree",
     numberInput: {
       labelFrom: "From",
       labelTo: "to",

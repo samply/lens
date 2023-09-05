@@ -1,8 +1,9 @@
 export type CatalogueText = {
-    group: string,
-    numberInput: {
-      labelFrom: string,
-      labelTo: string,
-      warning: string,
-    }
+  group?: string,
+  collapseButtonTitle?: string,
+  numberInput?: {
+    labelFrom?: string,
+    labelTo?: string,
+    warning?: string,
+  }
 }
