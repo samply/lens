@@ -216,6 +216,8 @@
                     <!-- svelte-ignore a11y-click-events-have-key-events -->
                     <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
                     <!-- this is handled with the handleKeyDown method -->
+                    <!-- onmousedown is chosen because the input looses focus when clicked outside, 
+                             which will close the options before the click is finshed -->
                     <li
                         part="lens-searchbar-autocomplete-options-item {index ===
                         focusedItemIndex

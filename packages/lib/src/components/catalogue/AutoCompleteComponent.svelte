@@ -1,16 +1,10 @@
 <script lang="ts">
-/**
- * TODO: collapse options on click outside
-*/
-
     import type { Category, Criteria } from "../../types/treeData";
     import { writable } from "svelte/store";
     import { v4 as uuidv4 } from "uuid";
     import { addItemToQuery } from "../../stores/query";
-    import type { QueryItem, QueryValue } from "../../types/queryData";
-    import QuerySelectComponent from "./QuerySelectComponent.svelte";
-    import { catalogueTextStore } from "../../stores/texts";
-    import { queryStore } from "../../stores/query";
+    import type { QueryItem } from "../../types/queryData";
+    import AutoCompleteCriterionComponent from "./AutoCompleteCriterionComponent.svelte";
 
     /**
      * mockdata to get from texts store
@@ -38,6 +32,12 @@
      * watches the input value and updates the input options
      */
     let inputValue: string = "";
+
+    /**
+     * handles the focus state of the input element
+     * closes options when clicked outside
+     */
+    let autoCompleteOpen = false;
 
     /**
      * watches the input value and updates the input options
@@ -144,19 +144,27 @@
             bind:value={inputValue}
             on:keydown={handleKeyDown}
             placeholder={placeholderText}
+            on:focusin={() => {
+                autoCompleteOpen = true;
+            }}
+            on:focusout={() => {
+                autoCompleteOpen = false;
+            }}
         />
-        {#if inputValue.length > 0}
+        {#if autoCompleteOpen && inputValue.length > 0}
             <ul part="autocomplete-options">
                 {#if $inputOptions?.length > 0}
                     {#each $inputOptions as inputOption, index}
                         <!-- svelte-ignore a11y-click-events-have-key-events -->
                         <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
                         <!-- this is handled with the handleKeyDown method -->
+                        <!-- onmousedown is chosen because the input looses focus when clicked outside, 
+                             which will close the options before the click is finshed -->
                         <li
                             part="autocomplete-options-item {index ===
                                 focusedItemIndex &&
                                 'autocomplete-options-item-focused'}"
-                            on:click={() => selectItemByClick(inputOption)}
+                            on:mousedown={() => selectItemByClick(inputOption)}
                         >
                             <span part="autocomplete-options-item-name"
                                 >{inputOption.name}</span
@@ -177,28 +185,7 @@
     </div>
     <div part="criterion-wrapper autocomplete-wrapper">
         {#each chosenOptions as chosenOption}
-            <div part="criterion-item criterion-item-autocomplete">
-                <span part="criterion-autocomplete-name"
-                    >{chosenOption.values[0].name}</span
-                >
-                <div part="criterion-section criterion-section-groups">
-                    <span
-                        part="criterion-group-label criterion-group-label-autocomplete"
-                        >{$catalogueTextStore.group}</span
-                    >
-                    <span
-                        part="criterion-group-wrapper criterion-group-wrapper-autocomplete"
-                    >
-                        {#each $queryStore as _, index}
-                            <QuerySelectComponent
-                                {index}
-                                isChecked={index === 0}
-                                queryItem={chosenOption}
-                            />
-                        {/each}
-                    </span>
-                </div>
-            </div>
+          <AutoCompleteCriterionComponent {chosenOption} />
         {/each}
     </div>
 </div>
