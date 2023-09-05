@@ -7,10 +7,11 @@
 
     export let element: Category;
 
-    const isSuperCategory = "childCategories" in element;
+    const isSuperCategory: boolean = "childCategories" in element;
 
-    export let open = true;
-    let childOpen = open;
+    export let layer: number = 1;
+    export let open: boolean = true;
+    let childOpen: boolean = open;
     const toggleChildren = () => {
         childOpen = !childOpen;
     };
@@ -23,8 +24,10 @@
     {#if childOpen}
         {#if isSuperCategory}
             {#each element.childCategories as child}
-                <div part="data-tree-element-child-category">
-                    <DataTreeElement open={open} element={child} />
+                <div
+                    part={`data-tree-element-child-category data-tree-element-child-category-layer-${layer}`}
+                >
+                    <DataTreeElement layer={layer + 1} {open} element={child} />
                 </div>
             {/each}
         {:else}
