@@ -83,7 +83,6 @@ lens-search-bar::part(lens-searchbar-autocomplete-options) {
   color: black;
   border-bottom-left-radius: var(--border-radius-small);
   border-bottom-right-radius: var(--border-radius-small);
-
 }  
 
 lens-search-bar::part(lens-searchbar-autocomplete-options-item) {
@@ -125,9 +124,45 @@ lens-search-button::part(lens-search-button-active):hover {
 /**
 * Lens Cataloque
 */
-lens-catalogue::part(data-tree-element) {
+
+lens-catalogue::part(lens-catalogue) {
+  background-color: var(--light-gray);
+  padding: var(--gap-s);
+}
+
+lens-catalogue::part(lens-catalogue-toggle-button) {
+  background-color: var(--green);
+  color: var(--white);
+  border: none;
+  border-radius: var(--border-radius-small);
+  padding: var(--gap-xs) var(--gap-s);
+  margin-bottom: var(--gap-s);
+  font-size: var(--font-size-m);
+  cursor: pointer;
+}
+lens-catalogue::part(lens-catalogue-toggle-button):hover {
+  background-color: var(--light-green);
+}
+
+lens-catalogue::part(data-tree-element-name) {
+  font-size: var(--font-size-m);
+  color: var(--dark-gray);
+  margin-bottom: 10px;
+  border: none;
+  background-color: unset;
+  cursor: pointer;
+}
+
+
+lens-catalogue::part(data-tree-element-child-category) {
   padding-left: 20px;
   margin-bottom: 20px;
+  border-left: solid 1px var(--dark-gray);
+}
+lens-catalogue::part(data-tree-element-last-child-options) {
+  padding-left: 20px;
+  margin-bottom: 20px;
+  border-left: solid 1px var(--dark-gray);
 }
 
 lens-catalogue::part(lens-number-input-wrapper) , lens-catalogue::part(){

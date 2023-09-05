@@ -97,6 +97,7 @@
       <lens-catalogue
         treeData={JSON.stringify(mockCatalogueData)}
         texts={catalogueText}
+        open={true}
       />
     </div>
     <h2>Query display</h2>

@@ -5,26 +5,38 @@
     import AutocompleteComponent from "./AutoCompleteComponent.svelte";
     import SingleSelectComponent from "./SingleSelectComponent.svelte";
 
-    export let element: Category
+    export let element: Category;
 
-    const isSuperCategory = 'childCategories' in element
+    const isSuperCategory = "childCategories" in element;
 
+    export let open = true;
+    let childOpen = open;
+    const toggleChildren = () => {
+        childOpen = !childOpen;
+    };
 </script>
 
 <div part="data-tree-element">
-    {#if isSuperCategory }
-        <div>{element.name}</div>
-        {#each element.childCategories as child}
-            <DataTreeElement element={child} />
-        {/each}
-    {:else}
-        <div>{element.name}</div>
-        {#if element.type === 'single-select' && 'criteria' in element}
-                <SingleSelectComponent {element} />
-        {:else if element.type === 'autocomplete' && 'criteria' in element}
-                <AutocompleteComponent {element} />
-        {:else if element.type === 'number'}
-                <NumberInputComponent {element} />
+    <button part="data-tree-element-name" on:click={toggleChildren}
+        >{element.name}</button
+    >
+    {#if childOpen}
+        {#if isSuperCategory}
+            {#each element.childCategories as child}
+                <div part="data-tree-element-child-category">
+                    <DataTreeElement open={open} element={child} />
+                </div>
+            {/each}
+        {:else}
+            <div part="data-tree-element-last-child-options">
+                {#if element.type === "single-select" && "criteria" in element}
+                    <SingleSelectComponent {element} />
+                {:else if element.type === "autocomplete" && "criteria" in element}
+                    <AutocompleteComponent {element} />
+                {:else if element.type === "number"}
+                    <NumberInputComponent {element} />
+                {/if}
+            </div>
         {/if}
     {/if}
 </div>

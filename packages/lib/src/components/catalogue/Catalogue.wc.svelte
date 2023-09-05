@@ -5,6 +5,7 @@
             treeData: { type: "Object" },
             texts: { type: "Object" },
             toggle: { type: "Object" },
+            open: { type: "Boolean" },
         },
     }}
 />
@@ -31,6 +32,7 @@
 
     export let treeData: Category[] = [];
     export let texts: CatalogueText = {};
+    export let open = false;
 
     /**
      * Initialize the catalogue text store with the given texts
@@ -47,25 +49,31 @@
     };
 
     catalogueTextStore.set(initializedTexts);
+    
 </script>
 
-{#if toggle.collapsable}
-    <button part="lens-catalogue-collapse-button" on:click={handleToggle}
-        >{$catalogueTextStore.collapseButtonTitle}</button
-    >
-{/if}
-{#if toggle.open}
-    {#if toggle.animated}
-        <div part="lens-catalogue-wrapper" transition:slide={{ duration: 300 }}>
-            {#each treeData as Category}
-                <DataTreeElement element={Category} />
-            {/each}
-        </div>
-    {:else}
-        <div part="lens-catalogue-wrapper">
-            {#each treeData as Category}
-                <DataTreeElement element={Category} />
-            {/each}
-        </div>
+<div part="lens-catalogue">
+    {#if toggle.collapsable}
+        <button part="lens-catalogue-toggle-button" on:click={handleToggle}
+            >{$catalogueTextStore.collapseButtonTitle}</button
+        >
     {/if}
-{/if}
+    {#if toggle.open}
+        {#if toggle.animated}
+            <div
+                part="lens-catalogue-wrapper"
+                transition:slide={{ duration: 300 }}
+            >
+                {#each treeData as Category}
+                    <DataTreeElement open={open} element={Category} />
+                {/each}
+            </div>
+        {:else}
+            <div part="lens-catalogue-wrapper">
+                {#each treeData as Category}
+                    <DataTreeElement element={Category} />
+                {/each}
+            </div>
+        {/if}
+    {/if}
+</div>
