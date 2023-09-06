@@ -76,9 +76,11 @@
       labelTo: "to",
     },
   };
+
+  let catalogueopen = false;
 </script>
 
-<main>
+<!-- <main>
   <div class="container">
     <h2>Search bar</h2>
     <div class="componentBox">
@@ -108,13 +110,70 @@
       <lens-state-display />
     </div>
   </div>
+</main> -->
+
+<header>
+  <div class="logo">
+    <img src="../public/logo-dkfz.svg" alt="Biobank Sweden logo" />
+  </div>
+  <h1>Das neue super tolle Lens</h1>
+</header>
+<main>
+  <div class="search">
+    <lens-search-bar
+      treeData={JSON.stringify(mockCatalogueData)}
+      noMatchesFoundMessage={"No matches found"}
+    />
+    <lens-search-button
+      title="Search Biobanks"
+      url="https://jsonplaceholder.typicode.com/todos/1"
+    />
+  </div>
+  <div class="query-display">
+    <lens-query-display />
+  </div>
+
+  <div class="grid">
+    <div
+      class="catalogue"
+      style={`max-width: ${catalogueopen ? "1000px" : "250px"}`}
+    >
+      <lens-catalogue
+        treeData={JSON.stringify(mockCatalogueData)}
+        texts={catalogueText}
+        toggle='{{ collapsable: false, open: true }}'
+      />
+      {#if catalogueopen}
+        <button on:click={() => (catalogueopen = !catalogueopen)}>
+          &#8676;
+        </button>
+      {:else}
+        <button on:click={() => (catalogueopen = !catalogueopen)}>
+          &#8677;
+        </button>
+      {/if}
+    </div>
+    <div class="charts">
+      <h1>Ergebnisse</h1>
+    </div>
+  </div>
 </main>
 
+<footer>
+  <h3>made with &#10084; & samply-lens</h3>
+  <div class="img-container">
+    <img src="../public/logo_ce-en-rvb-lr.jpg" alt="" />
+  </div>
+  <div class="img-container">
+    <img src="../public/BMBF_logo.png" alt="" />
+  </div>
+</footer>
+
 <style>
-  .componentBox {
+  /* .componentBox {
     background-color: rgb(255, 255, 255);
     padding: 20px;
     margin: 50px 0;
     border-radius: 5px;
-  }
+  } */
 </style>

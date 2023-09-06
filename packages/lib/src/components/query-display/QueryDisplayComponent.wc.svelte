@@ -42,7 +42,7 @@
 
             /**
              * merges the values of the duplicate objects
-            */
+             */
             duplicateObjects.forEach((obj: QueryItem) => {
                 obj.values.forEach((value: QueryValue) => {
                     if (
@@ -88,17 +88,18 @@
 
         const duplicateObjects: QueryItem[] = Array.from(
             nameObjectMap.values()
-        ).filter((objects: QueryItem []) => objects.length > 1)[0];
+        ).filter((objects: QueryItem[]) => objects.length > 1)[0];
 
         return duplicateObjects;
     }
 </script>
 
-<div class="wrapper">
+<div part="query-display-wrapper">
     {#each $queryStore as queryGroup, index}
-        <div class="group">
-            <h3>Sample Group {index + 1}</h3>
+        <div part="query-display-group">
+            <h4 part="query-display-group-heading">Sample Group {index + 1}</h4>
             <section
+                part="query-display-group-section"
                 use:dndzone={{
                     items: queryGroup,
                     flipDurationMs: 150,
@@ -111,7 +112,10 @@
                 }}
             >
                 {#each queryGroup as item (item.id)}
-                    <div class="item" animate:flip={{ duration: 150 }}>
+                    <div
+                        part="query-display-group-item"
+                        animate:flip={{ duration: 150 }}
+                    >
                         <b>{item.name}:</b>
                         {#each item.values as value, index}
                             <span
@@ -121,36 +125,23 @@
                     </div>
                 {/each}
             </section>
-            <div class="removeCurrentGroup">
-                <button
-                    on:click={() =>
-                        queryStore.update((store) =>
-                            store.filter((item, i) => i !== index)
-                        )}>Remove Group</button
-                >
-            </div>
+            <button
+                part="query-display-remove-group-button"
+                on:click={() =>
+                    queryStore.update((store) =>
+                        store.filter((item, i) => i !== index)
+                    )}>Remove Group</button
+            >
         </div>
     {/each}
-    <div class="addGroup">
-        <button on:click={() => queryStore.update((store) => [...store, []])}
-            >Add Group</button
-        >
-    </div>
+    <!-- <div part="query-display-add-group-button"> -->
+    <button
+        part="query-display-add-group-button"
+        on:click={() => queryStore.update((store) => [...store, []])}
+        >&plus;</button
+    >
+    <!-- </div> -->
 </div>
 
 <style>
-    .wrapper {
-        display: flex;
-        gap: 30px;
-    }
-    .group {
-        border: solid 1px black;
-        padding: 10px;
-    }
-    section {
-        padding: 20px;
-    }
-    h3 {
-        text-align: center;
-    }
 </style>

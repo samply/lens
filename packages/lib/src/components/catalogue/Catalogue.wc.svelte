@@ -32,7 +32,6 @@
 
     export let treeData: Category[] = [];
     export let texts: CatalogueText = {};
-    export let open = false;
 
     /**
      * Initialize the catalogue text store with the given texts
@@ -63,7 +62,7 @@
                 transition:slide={{ duration: 300 }}
             >
                 {#each treeData as Category}
-                    <DataTreeElement open={open} element={Category} />
+                    <DataTreeElement open={toggle.open} element={Category} />
                 {/each}
             </div>
         {:else}
