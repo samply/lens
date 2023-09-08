@@ -77,8 +77,223 @@
     },
   };
 
+  const chart1Data = {
+            type: "bar",
+            data: {
+                labels: ["0-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60-69","70-79","80-89","90-99","100-109","110-119"],
+                datasets: [
+                    {
+                        label: "",
+                        data: [12, 19, 3, 5, 2, 3,12, 19, 3, 5, 2, 3],
+                        backgroundColor: [
+                            "#3e95cd",
+                            "#8e5ea2",
+                            "#3cba9f",
+                            "#e8c3b9",
+                            "#c45850",
+                            "#3e95cd",
+                        ],
+                    },
+                ],
+            },
+            options: {
+                scales: {
+                    y: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: 'Sample Count',
+                        },
+                    },
+                    x: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: 'Age',
+                        },
+                    },
+                },
+            },
+        }
+  const chart2Data = {
+            type: "pie",
+            data: {
+                labels: ['Dresden', 'Mannheim', 'Frankfurt', 'Berlin'],
+                datasets: [
+                    {
+                        label: "",
+                        data: [ 3, 5, 12, 19,],
+                        backgroundColor: [
+                            "#3e95cd",
+                            "#8e5ea2",
+                            "#3cba9f",
+                            "#e8c3b9",
+                            "#c45850",
+                            "#3e95cd",
+                        ],
+                    },
+                ],
+            },
+            options: {
+                scales: {
+                    y: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: 'Sample Count',
+                        },
+                    },
+                    x: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: 'Age',
+                        },
+                    },
+                },
+            },
+        }
+  const chart3Data = {
+            type: "pie",
+            data: {
+                labels: ['male', 'female', 'undefined', 'other'],
+                datasets: [
+                    {
+                        label: "",
+                        data: [12, 19, 3, 5,],
+                        backgroundColor: [
+                            "#3e95cd",
+                            "#8e5ea2",
+                            "#3cba9f",
+                            "#e8c3b9",
+                            "#c45850",
+                            "#3e95cd",
+                        ],
+                    },
+                ],
+            },
+            options: {
+                scales: {
+                    y: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: 'Sample Count',
+                        },
+                    },
+                    x: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: 'Age',
+                        },
+                    },
+                },
+            },
+        }
+  const chart4Data = {
+            type: "bar",
+            data: {
+                labels: ['C31', 'C31.0', 'C41', 'C41.0'],
+                datasets: [
+                    {
+                        label: "",
+                        data: [12, 100, 30, 5,],
+                        backgroundColor: [
+                            "#3e95cd",
+                            "#8e5ea2",
+                            "#3cba9f",
+                            "#e8c3b9",
+                            "#c45850",
+                            "#3e95cd",
+                        ],
+                    },
+                ],
+            },
+            options: {
+                scales: {
+                    y: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: 'Sample Count',
+                        },
+                    },
+                    x: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: 'Age',
+                        },
+                    },
+                },
+            },
+        }
+
   let catalogueopen = false;
 </script>
+
+<header>
+  <div class="logo">
+    <img src="../public/logo-dkfz.svg" alt="Biobank Sweden logo" />
+  </div>
+  <h1>Mockup 1 for and/or logic</h1>
+</header>
+<main>
+  <div class="search">
+    <lens-search-bar
+      treeData={JSON.stringify(mockCatalogueData)}
+      noMatchesFoundMessage={"No matches found"}
+    />
+    <lens-search-button
+      title="Search Biobanks"
+      />
+  </div>
+  <div class="query-display">
+    <lens-query-display />
+  </div>
+
+  <div class="grid">
+    <div
+      class="catalogue"
+      style={`max-width: ${catalogueopen ? "1000px" : "288px"}`}
+    >
+      <lens-catalogue
+        treeData={JSON.stringify(mockCatalogueData)}
+        texts={catalogueText}
+        toggle={{ collapsable: false, open: true }}
+      />
+      {#if catalogueopen}
+        <button on:click={() => (catalogueopen = !catalogueopen)}>
+          &#8676;
+        </button>
+      {:else}
+        <button on:click={() => (catalogueopen = !catalogueopen)}>
+          &#8677;
+        </button>
+      {/if}
+    </div>
+    <div class="charts">
+      <lens-chart class="chart1" title="Age at Diagnosis" hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit." chartData={JSON.stringify(chart1Data)} />
+      <lens-chart title="Patients Per Site" hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit."chartData={JSON.stringify(chart2Data)} />
+      <lens-chart title="Gender" chartData={JSON.stringify(chart3Data)}/>
+      <lens-chart title="Diagnosis" hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit." chartData={JSON.stringify(chart4Data)}/>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <h3>made with &#10084; & samply-lens</h3>
+  <div class="img-container">
+    <img src="../public/logo_ce-en-rvb-lr.jpg" alt="" />
+  </div>
+  <div class="img-container">
+    <img src="../public/BMBF_logo.png" alt="" />
+  </div>
+</footer>
+
+
+
 
 <!-- <main>
   <div class="container">
@@ -91,7 +306,7 @@
     </div>
     <h2>Search button</h2>
     <div class="componentBox">
-      <lens-search-button title="Search Biobanks" url='https://jsonplaceholder.typicode.com/todos/1'/>
+      <lens-search-button title="Search Biobanks" url='BACKEND_TARGET_URL'/>
     </div>
     <h2>Catalogue</h2>
     <div class="componentBox">
@@ -111,69 +326,3 @@
     </div>
   </div>
 </main> -->
-
-<header>
-  <div class="logo">
-    <img src="../public/logo-dkfz.svg" alt="Biobank Sweden logo" />
-  </div>
-  <h1>Das neue super tolle Lens</h1>
-</header>
-<main>
-  <div class="search">
-    <lens-search-bar
-      treeData={JSON.stringify(mockCatalogueData)}
-      noMatchesFoundMessage={"No matches found"}
-    />
-    <lens-search-button
-      title="Search Biobanks"
-      url="https://jsonplaceholder.typicode.com/todos/1"
-    />
-  </div>
-  <div class="query-display">
-    <lens-query-display />
-  </div>
-
-  <div class="grid">
-    <div
-      class="catalogue"
-      style={`max-width: ${catalogueopen ? "1000px" : "250px"}`}
-    >
-      <lens-catalogue
-        treeData={JSON.stringify(mockCatalogueData)}
-        texts={catalogueText}
-        toggle='{{ collapsable: false, open: true }}'
-      />
-      {#if catalogueopen}
-        <button on:click={() => (catalogueopen = !catalogueopen)}>
-          &#8676;
-        </button>
-      {:else}
-        <button on:click={() => (catalogueopen = !catalogueopen)}>
-          &#8677;
-        </button>
-      {/if}
-    </div>
-    <div class="charts">
-      <h1>Ergebnisse</h1>
-    </div>
-  </div>
-</main>
-
-<footer>
-  <h3>made with &#10084; & samply-lens</h3>
-  <div class="img-container">
-    <img src="../public/logo_ce-en-rvb-lr.jpg" alt="" />
-  </div>
-  <div class="img-container">
-    <img src="../public/BMBF_logo.png" alt="" />
-  </div>
-</footer>
-
-<style>
-  /* .componentBox {
-    background-color: rgb(255, 255, 255);
-    padding: 20px;
-    margin: 50px 0;
-    border-radius: 5px;
-  } */
-</style>
