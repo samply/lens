@@ -41,6 +41,11 @@
 /**
 * Demo
 */
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0px;
 }
@@ -70,9 +75,6 @@ main .search {
   grid-gap: var(--gap-s);
 }
 
-main .query-display {
-}
-
 main .grid {
   position: relative;
 }
@@ -82,7 +84,7 @@ main .catalogue {
   border-radius: var(--border-radius-small);
   border: solid 1px var(--blue);
   position: absolute;
-  height: 560px;
+  height: 100%;
   display: flex;
   overflow: hidden;
   background-color: var(--white);
@@ -104,18 +106,6 @@ main .catalogue button:hover {
   color: var(--light-blue);
 }
 
-
-
-main .charts {
-  display: grid;
-  justify-content: center;
-  align-items: center;
-  border: solid 1px var(--blue);
-  border-radius: var(--border-radius-small);
-  height: 600px;
-  margin-left: 320px;
-}
-
 footer {
   display: flex;
   align-items: center;
@@ -135,14 +125,6 @@ footer .img-container {
 footer img {
   height: 100px;
 }
-
-
-
-
-
-
-
-
 
 
 
@@ -464,6 +446,58 @@ lens-query-display::part(query-display-add-group-button):hover {
 }
 
 
+
+/**
+* Results
+*/
+
+main .charts {
+  min-height: 600px;
+  margin-left: 320px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-gap: var(--gap-m);
+}
+
+/**
+* Charts
+*/
+
+.chart1 {
+  grid-column: 1 / -2;
+}
+
+lens-chart::part(chart-wrapper) {
+  padding: var(--gap-l);
+  border: solid 1px var(--blue);
+  border-radius: var(--border-radius-small);
+  display: grid;
+  height: 300px;
+  grid-template-rows: auto 1fr auto;
+
+}
+
+lens-chart::part(chart-title) {
+  text-align: center;
+  margin: 0;
+  padding-bottom: var(--gap-m);
+}
+
+lens-chart::part(canvas-container) {
+  height: 100%;
+  width: 100%;
+}
+
+
+lens-chart::part(chart-canvas) {
+  height: 200px;
+  width: 100%;
+}
+
+lens-chart::part(chart-hint) {
+  font-size: var(--font-size-xs);
+  padding-top: var(--gap-m);
+}
 
 
 
