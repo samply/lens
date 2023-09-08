@@ -18,6 +18,11 @@
     import DataTreeElement from "./DataTreeElement.svelte";
     import { slide } from "svelte/transition";
 
+
+    export let treeData: Category[] = [];
+    export let texts: CatalogueText = {};
+
+
     /**
      * handle the toggle of the catalogue
      */
@@ -26,12 +31,11 @@
         open: true,
         animated: true,
     };
+
     const handleToggle = () => {
         toggle.open = !toggle.open;
     };
 
-    export let treeData: Category[] = [];
-    export let texts: CatalogueText = {};
 
     /**
      * Initialize the catalogue text store with the given texts
@@ -40,8 +44,8 @@
         group: texts.group || "Group",
         collapseButtonTitle: texts.collapseButtonTitle || "Collapse Tree",
         numberInput: {
-            labelFrom: texts.numberInput.labelFrom || "From",
-            labelTo: texts.numberInput.labelTo || "to",
+            labelFrom: texts.numberInput?.labelFrom || "From",
+            labelTo: texts.numberInput?.labelTo || "to",
         },
     };
 
