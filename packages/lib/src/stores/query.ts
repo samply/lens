@@ -2,7 +2,6 @@
  * Handles the state of the query
  * Consists of multiple arrays which will have an 'or' logic between them later when the query is sent to the server
  */
-import { v4 as uuidv4 } from "uuid";
 import type { QueryItem } from "../types/queryData";
 import { writable } from "svelte/store";
 

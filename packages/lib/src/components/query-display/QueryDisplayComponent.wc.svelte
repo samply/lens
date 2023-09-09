@@ -134,13 +134,11 @@
             >
         </div>
     {/each}
-    <!-- <div part="query-display-add-group-button"> -->
     <button
         part="query-display-add-group-button"
         on:click={() => queryStore.update((store) => [...store, []])}
         >&plus;</button
     >
-    <!-- </div> -->
 </div>
 
 <style>

@@ -237,7 +237,7 @@
   <div class="logo">
     <img src="../public/logo-dkfz.svg" alt="Biobank Sweden logo" />
   </div>
-  <h1>Mockup 1 for and/or logic</h1>
+  <h1>Web Components In Svelte Demo</h1>
 </header>
 <main>
   <div class="search">
