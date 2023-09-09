@@ -4,3 +4,4 @@ export { default as SearchBarComponent } from './src/components/search-bar/Searc
 export {default as StateDisplayComponent} from './src/components/testing-components/StateDisplayComponent.wc.svelte';
 export {default as SearchButtonComponent} from './src/components/buttons/SearchButtonComponenet.wc.svelte'
 export {default as ChartComponent} from './src/components/results/ChartComponent.wc.svelte'
+export {default as ResutSummaryComponent} from './src/components/results/ResultSummaryComponent.wc.svelte'

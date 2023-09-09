@@ -98,35 +98,8 @@
         {
           label: "",
           data: [12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3],
-          backgroundColor: [
-            "#3e95cd",
-            "#8e5ea2",
-            "#3cba9f",
-            "#e8c3b9",
-            "#c45850",
-            "#3e95cd",
-          ],
         },
       ],
-    },
-    options: {
-      maintainAspectRatio: false,
-      scales: {
-        y: {
-          display: true,
-          title: {
-            display: true,
-            text: "Sample Count",
-          },
-        },
-        x: {
-          display: true,
-          title: {
-            display: true,
-            text: "Age",
-          },
-        },
-      },
     },
   };
   const chart2Data = {
@@ -137,35 +110,8 @@
         {
           label: "",
           data: [3, 5, 12, 19],
-          backgroundColor: [
-            "#3e95cd",
-            "#8e5ea2",
-            "#3cba9f",
-            "#e8c3b9",
-            "#c45850",
-            "#3e95cd",
-          ],
         },
       ],
-    },
-    options: {
-      maintainAspectRatio: false,
-      scales: {
-        y: {
-          display: true,
-          title: {
-            display: true,
-            text: "Sample Count",
-          },
-        },
-        x: {
-          display: true,
-          title: {
-            display: true,
-            text: "Age",
-          },
-        },
-      },
     },
   };
   const chart3Data = {
@@ -176,35 +122,8 @@
         {
           label: "",
           data: [12, 19, 3, 5],
-          backgroundColor: [
-            "#3e95cd",
-            "#8e5ea2",
-            "#3cba9f",
-            "#e8c3b9",
-            "#c45850",
-            "#3e95cd",
-          ],
         },
       ],
-    },
-    options: {
-      maintainAspectRatio: false,
-      scales: {
-        y: {
-          display: true,
-          title: {
-            display: true,
-            text: "Sample Count",
-          },
-        },
-        x: {
-          display: true,
-          title: {
-            display: true,
-            text: "Age",
-          },
-        },
-      },
     },
   };
   const chart4Data = {
@@ -213,36 +132,14 @@
       labels: ["C31", "C31.0", "C41", "C41.0"],
       datasets: [
         {
-          label: "",
+          label: [],
           data: [12, 100, 30, 5],
-          backgroundColor: [
-            "#3e95cd",
-            "#8e5ea2",
-            "#3cba9f",
-            "#e8c3b9",
-            "#c45850",
-            "#3e95cd",
-          ],
         },
       ],
     },
     options: {
-      maintainAspectRatio: false,
-      scales: {
-        y: {
-          display: true,
-          title: {
-            display: true,
-            text: "Sample Count",
-          },
-        },
-        x: {
-          display: true,
-          title: {
-            display: true,
-            text: "Age",
-          },
-        },
+      legend: {
+        display: false,
       },
     },
   };
@@ -289,6 +186,12 @@
       {/if}
     </div>
     <div class="charts">
+      <lens-result-summary
+        title="Results"
+        resultSummaryDataTypes={JSON.stringify(["Patients", "Samples", "sites"])}
+        negotiateButton={true}
+        negotiateButtonText="Negotiate with biobanks"
+      />
       <lens-chart
         class="chart1"
         title="Age at Diagnosis"

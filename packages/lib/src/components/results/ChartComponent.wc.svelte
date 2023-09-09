@@ -1,12 +1,14 @@
-<svelte:options customElement={{
-    tag: "lens-chart",
-    props: {
-        chartData: { type: "Object" },
+<svelte:options
+    customElement={{
+        tag: "lens-chart",
+        props: {
+            chartData: { type: "Object" },
         },
-}} />
+    }}
+/>
 
 <script lang="ts">
-    import Chart from "chart.js/auto";
+    import Chart, { DatasetController } from "chart.js/auto";
     import { onMount } from "svelte";
 
     export let title: string = "";
@@ -23,14 +25,52 @@
 
     /**
      * initialize the chart on mount
-    */
+     */
     onMount(() => {
+        /**
+         * set or overwrite important options
+         */
+        if (!chartData.options) chartData.options = {};
+        if (!chartData.options.plugins) chartData.options.plugins = {};
+        if (!chartData.options.plugins.legend)
+            chartData.options.plugins.legend = {};
+
+        chartData.options.maintainAspectRatio = false;
+        if (chartData.type === "bar" && chartData.data.datasets.length <= 1)
+            chartData.options.plugins.legend.display = false;
+
+        chartData.data.datasets.forEach((dataset) => {
+            if (!dataset.backgroundColor)
+                dataset.backgroundColor = [
+                    "#4dc9f6",
+                    "#f67019",
+                    "#f53794",
+                    "#537bc4",
+                    "#acc236",
+                    "#166a8f",
+                    "#00a950",
+                    "#58595b",
+                    "#8549ba",
+                    "#ff8a33",
+                    "#ff5996",
+                    "#8ace7e",
+                    "#c789d6",
+                    "#ffcc00",
+                    "#7fc2f4",
+                    "#969696",
+                    "#cfd27e",
+                    "#db843d",
+                    "#89a54e",
+                    "#80699b",
+                ];
+        });
+
         new Chart(canvas, chartData);
     });
 </script>
 
 <div part="chart-wrapper">
     <h4 part="chart-title">{title}</h4>
-        <canvas part="chart-canvas" bind:this={canvas} id="chart" />
+    <canvas part="chart-canvas" bind:this={canvas} id="chart" />
     <div part="chart-hint">{hintText}</div>
 </div>
