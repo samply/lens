@@ -1,14 +1,13 @@
 :root {
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   --white: #ffffff;
-  --ghost-white: #f8f8ff;
   --black: #000000;
   --gray: #a7a7a7;
-  --light-gray: #dee2e6;
+  --light-gray: #dcdcdc;
   --lightest-gray: #efefef;
   --dark-gray: #323232;
   --blue: #0047b9;
-  --light-blue: #007bff;
+  --light-blue: #0062ff;
   --lightest-blue: #adc7f3;
   --dark-blue: #002d80;
   --green: #00882d;
@@ -17,7 +16,7 @@
   --red: #b90000;
   --light-red: #ff0000;
   --dark-red: #800000;
-  --orange: #e95713;
+  --orange: #ff8a3c;
   --light-orange: #ffa750;
 
   --border-radius-small: 5px;
@@ -49,17 +48,13 @@
 
 body {
   margin: 0px;
-  background-color: var(--ghost-white);
 }
 
 header {
-  background-color: var(--white);
+  background-color: var(--lightest-gray);
   padding: var(--gap-s);
   display: grid;
   grid-template-columns: 120px 1fr;
-  margin: var(--gap-xs);
-  border: solid 1px var(--lightest-gray);
-  border-radius: var(--border-radius-small);
 }
 
 .logo img{
@@ -71,7 +66,7 @@ header h1 {
 }
 
 main>div{
-  margin: var(--gap-xs);
+  margin: var(--gap-xl);
 }
 
 main .search {
