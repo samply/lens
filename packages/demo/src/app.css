@@ -21,6 +21,7 @@
   --light-orange: #ffa750;
 
   --border-radius-small: 5px;
+  --border-color: #efefef;
 
   --gap-xxs: 5px;
   --gap-xs: 10px;
@@ -57,9 +58,8 @@ header {
   padding: var(--gap-s);
   display: grid;
   grid-template-columns: 120px 1fr;
-  margin: var(--gap-xs);
-  border: solid 1px var(--lightest-gray);
   border-radius: var(--border-radius-small);
+  border: solid 1px var(--border-color);
 }
 
 .logo img{
@@ -70,7 +70,7 @@ header h1 {
   text-align: center;
 }
 
-main>div{
+main > div, header, footer {
   margin: var(--gap-xs);
 }
 
@@ -87,7 +87,7 @@ main .grid {
 main .catalogue {
   padding: var(--gap-s);
   border-radius: var(--border-radius-small);
-  border: solid 1px var(--blue);
+  border: solid 1px var(--lightest-gray);
   position: absolute;
   height: 100%;
   display: flex;
@@ -115,16 +115,16 @@ footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--gap-xxl) ;
-  background-color: var(--lightest-gray);
+  padding: var(--gap-s) ;
+  background-color: var(--white);
+  border-radius: var(--border-radius-small);
+  border: solid 1px var(--border-color);
 }
 
 footer .img-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--gap-s);
-  background-color: var(--white);
 }
 
 footer img {
@@ -145,7 +145,7 @@ lens-search-bar::part(lens-searchbar) {
 
 lens-search-bar::part(lens-searchbar-input) {
   box-sizing: border-box;
-  border: solid 1px var(--dark-gray);
+  border: solid 1px var(--lightest-gray);
   border-radius: var(--border-radius-small);
   padding: var(--gap-xs) var(--gap-s);
   width: 100%;
@@ -166,7 +166,7 @@ lens-search-bar::part(lens-searchbar-autocomplete-options) {
   list-style-type: none;
   padding: var(--gap-s);
   margin: 0;
-  border: solid 1px var(--blue);
+  border: solid 1px var(--border-color);
   border-top: none;
   width: calc(100% - 2*var(--gap-s) - 2px);
   /* padding of container plus borders */
@@ -264,7 +264,7 @@ lens-catalogue::part(data-tree-element-last-child-options) {
 lens-catalogue::part(criterion-group-wrapper),
 lens-catalogue::part(query-selection-label) {
   display: flex;
-  gap: 10px;
+  gap: var(--gap-xs);
 }
 
 lens-catalogue::part(query-selection-input) {
@@ -277,19 +277,19 @@ lens-catalogue::part(query-selection-input) {
 lens-catalogue::part(criterion-group-wrapper),
 lens-catalogue::part(criterion-section-groups) {
   display: flex;
-  gap: 10px;
+  gap: var(--gap-xs);
 }
 
 lens-catalogue::part(criterion-item) {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  grid-gap: var(--gap-xs);
 }
 
 lens-catalogue::part(criterion-section-values) {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--gap-xs);
 }
 
 /**
@@ -345,7 +345,7 @@ lens-catalogue::part(autocomplete-options) {
   list-style-type: none;
   padding: var(--gap-s);
   margin: 0;
-  border: solid 1px var(--blue);
+  border: solid 1px var(--border-color);
   border-top: none;
   width: calc(100% - 2*var(--gap-s) - 2px); /* padding of container plus borders */
   position: absolute;
@@ -395,7 +395,7 @@ lens-catalogue::part(criterion-autocomplete-tooltip) {
 
 lens-query-display::part(query-display-wrapper) {
   display: flex;
-  gap: 30px;
+  gap: var(--gap-xs);
   flex-wrap: wrap;
 }
 
@@ -404,11 +404,12 @@ lens-query-display::part(query-display-group-heading) {
 }
 
 lens-query-display::part(query-display-group) {
-  border: solid 1px var(--blue);
+  background-color: var(--white);
+  border: solid 1px var(--border-color);
   border-radius: var(--border-radius-small);
   padding: 10px;
   min-width: 385px;
-  width: calc(50% - 80px);
+  width: calc(50% - 58px);
   display: grid;
   grid-template-rows: auto 1fr auto;
 
@@ -461,23 +462,24 @@ main .charts {
   margin-left: 320px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  grid-gap: var(--gap-m);
+  grid-gap: var(--gap-xs);
 }
 
 /**
 * Charts
 */
 
-.chart1 {
-  grid-column: 1 / -2;
+lens-chart {
+  background-color: var(--white);
+  display: grid;
 }
 
 lens-chart::part(chart-wrapper) {
+  background-color: var(--white);
   padding: var(--gap-l);
-  border: solid 1px var(--blue);
+  border: solid 1px var(--border-color);
   border-radius: var(--border-radius-small);
   display: grid;
-  height: 300px;
   grid-template-rows: auto 1fr auto;
 
 }
@@ -489,14 +491,14 @@ lens-chart::part(chart-title) {
 }
 
 lens-chart::part(canvas-container) {
-  height: 100%;
-  width: 100%;
+  display: flex;
+  align-items: center;
 }
 
 
 lens-chart::part(chart-canvas) {
-  height: 200px;
   width: 100%;
+  flex-grow: 1;
 }
 
 lens-chart::part(chart-hint) {
@@ -510,7 +512,7 @@ lens-chart::part(chart-hint) {
   
   main  .grid {
    display: grid;
-   grid-gap: 30px;
+   grid-gap: var(--gap-m);
   }
 
   main .catalogue {
