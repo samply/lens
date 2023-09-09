@@ -221,10 +221,6 @@ lens-search-button::part(lens-search-button-active):hover {
 /**
 * Cataloque Structure
 */
-lens-catalogue::part(lens-catalogue) {
-  /* background-color: var(--light-gray); */
-  /* padding: var(--gap-s); */
-}
 
 lens-catalogue::part(lens-catalogue-toggle-button) {
   background-color: var(--green);
@@ -461,7 +457,7 @@ main .charts {
   min-height: 600px;
   margin-left: 320px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   grid-gap: var(--gap-xs);
 }
 
@@ -490,15 +486,10 @@ lens-chart::part(chart-title) {
   padding-bottom: var(--gap-m);
 }
 
-lens-chart::part(canvas-container) {
-  display: flex;
-  align-items: center;
-}
-
 
 lens-chart::part(chart-canvas) {
   width: 100%;
-  flex-grow: 1;
+  max-height: 400px;
 }
 
 lens-chart::part(chart-hint) {

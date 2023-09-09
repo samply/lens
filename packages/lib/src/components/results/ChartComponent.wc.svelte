@@ -31,8 +31,6 @@
 
 <div part="chart-wrapper">
     <h4 part="chart-title">{title}</h4>
-    <div part="canvas-container">
         <canvas part="chart-canvas" bind:this={canvas} id="chart" />
-    </div>
     <div part="chart-hint">{hintText}</div>
 </div>
