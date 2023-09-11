@@ -6,6 +6,5 @@ export const catalogueTextStore = writable<CatalogueText>({
     numberInput: {
         labelFrom: "From",
         labelTo: "to",
-        warning: `"from" cannot be higher than "to"`,
     }
 });

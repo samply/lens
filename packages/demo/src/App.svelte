@@ -192,6 +192,7 @@
         negotiateButton={true}
         negotiateButtonText="Negotiate with biobanks"
       />
+      <lens-result-table pageSize="3" title="Responding sites"/>
       <lens-chart
         class="chart1"
         title="Age at Diagnosis"

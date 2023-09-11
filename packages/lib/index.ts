@@ -5,3 +5,4 @@ export {default as StateDisplayComponent} from './src/components/testing-compone
 export {default as SearchButtonComponent} from './src/components/buttons/SearchButtonComponenet.wc.svelte'
 export {default as ChartComponent} from './src/components/results/ChartComponent.wc.svelte'
 export {default as ResutSummaryComponent} from './src/components/results/ResultSummaryComponent.wc.svelte'
+export {default as ResultTableComponent} from './src/components/results/ResultTableComponent.wc.svelte'
