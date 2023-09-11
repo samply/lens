@@ -94,7 +94,7 @@
     };
 </script>
 
-<h3 part="result-table-title">{title}</h3>
+<h4 part="result-table-title">{title}</h4>
 <table part="result-table">
     <thead part="table-header">
         <tr part="table-header-row">
