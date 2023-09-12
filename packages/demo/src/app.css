@@ -62,7 +62,7 @@ header {
   border: solid 1px var(--border-color);
 }
 
-.logo img{
+.logo img {
   height: 70px;
 }
 
@@ -70,7 +70,9 @@ header h1 {
   text-align: center;
 }
 
-main > div, header, footer {
+main>div,
+header,
+footer {
   margin: var(--gap-xs);
 }
 
@@ -107,6 +109,7 @@ main .catalogue button {
   color: var(--blue);
   cursor: pointer;
 }
+
 main .catalogue button:hover {
   color: var(--light-blue);
 }
@@ -115,7 +118,7 @@ footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--gap-s) ;
+  padding: var(--gap-s);
   background-color: var(--white);
   border-radius: var(--border-radius-small);
   border: solid 1px var(--border-color);
@@ -274,6 +277,7 @@ lens-catalogue::part(criterion-group-wrapper),
 lens-catalogue::part(criterion-section-groups) {
   display: flex;
   gap: var(--gap-xs);
+  align-items: center;
 }
 
 lens-catalogue::part(criterion-item) {
@@ -291,6 +295,11 @@ lens-catalogue::part(criterion-section-values) {
 /**
 * Number Input
 */
+
+lens-catalogue::part(number-input-wrapper) {
+  margin-top: var(--gap-xs);
+}
+
 
 lens-catalogue::part(number-input-label) {
   display: flex;
@@ -310,6 +319,47 @@ lens-catalogue::part(number-input-formfield):focus {
   border-color: var(--blue);
   outline: none;
 }
+
+lens-catalogue::part(number-input-add) {
+  margin-top: var(--gap-s);
+}
+
+lens-catalogue::part(number-input-add-button) {
+  background-color: var(--green);
+  color: var(--white);
+  border: none;
+  border-radius: var(--border-radius-small);
+  padding: 0;
+  font-size: var(--font-size-m);
+  cursor: pointer;
+  height: 20px;
+  line-height: 22px;
+  width: 100px;
+}
+
+lens-catalogue::part(number-input-add-button):hover {
+  background-color: var(--light-green);
+}
+
+lens-catalogue::part(number-input-delete-button) {
+  background-color: var(--orange);
+  color: var(--white);
+  border: none;
+  border-radius: var(--border-radius-small);
+  padding: 0;
+  font-size: var(--font-size-m);
+  cursor: pointer;
+  height: 20px;
+  line-height: 22px;
+  width: 20px;
+}
+
+lens-catalogue::part(number-input-delete-button):hover {
+  background-color: var(--light-orange);
+}
+
+
+
 
 /**
 * Autocomplete
@@ -343,7 +393,8 @@ lens-catalogue::part(autocomplete-options) {
   margin: 0;
   border: solid 1px var(--border-color);
   border-top: none;
-  width: calc(100% - 2*var(--gap-s) - 2px); /* padding of container plus borders */
+  width: calc(100% - 2*var(--gap-s) - 2px);
+  /* padding of container plus borders */
   position: absolute;
   background-color: white;
   color: black;
@@ -428,6 +479,7 @@ lens-query-display::part(query-display-remove-group-button) {
   width: 150px;
   justify-self: center;
 }
+
 lens-query-display::part(query-display-remove-group-button):hover {
   background-color: var(--light-orange);
 }
@@ -531,17 +583,17 @@ lens-result-table {
   border-radius: var(--border-radius-small);
   padding: var(--gap-l);
   display: grid;
-  grid-template-rows: auto auto 1fr ;
+  grid-template-rows: auto auto 1fr;
 }
 
-lens-result-table::part(result-table-title){
+lens-result-table::part(result-table-title) {
   text-align: center;
   margin: 0;
   padding-bottom: var(--gap-m);
 }
 
 lens-result-table::part(result-table) {
-  border-collapse: collapse; 
+  border-collapse: collapse;
   width: 100%;
   border-spacing: 0 15px;
   height: max-content;
@@ -614,21 +666,21 @@ lens-result-table::part(table-pagination-button) {
 
 
 @media screen and (max-width: 1023px) {
-  
-  main  .grid {
-   display: grid;
-   grid-gap: var(--gap-m);
+
+  main .grid {
+    display: grid;
+    grid-gap: var(--gap-m);
   }
 
   main .catalogue {
     position: static;
-    max-width: 100%!important;
+    max-width: 100% !important;
     flex-direction: column;
     height: auto;
   }
 
   main .catalogue button {
-   display: none;
+    display: none;
   }
 
   main .charts {
@@ -645,7 +697,7 @@ lens-result-table::part(table-pagination-button) {
     width: 100%;
   }
 
-  lens-query-display::part(query-display-add-group-button){
+  lens-query-display::part(query-display-add-group-button) {
     width: 150px;
     min-height: 50px;
     justify-self: center;

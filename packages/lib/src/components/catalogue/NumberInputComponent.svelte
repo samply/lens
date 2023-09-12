@@ -123,8 +123,8 @@
                 {#each $queryStore as _, index}
                     <QuerySelectComponent {index} {queryItem} />
                 {/each}
-                <button on:click={() => handleRemoveElement(queryItem)}> &minus; </button>
             </span>
+            <button part="number-input-delete-button" on:click={() => handleRemoveElement(queryItem)}> &minus; </button>
         </div>
     </div>
 </div>

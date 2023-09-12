@@ -98,12 +98,14 @@
                             {handleRemoveElement}
                         />
                     {/each}
-                    <button
-                        part="data-tree-element-add-button"
+                    <div part="number-input-add">
+                        <button
+                        part="number-input-add-button"
                         on:click={addNumberInputComponent}
-                    >
+                        >
                         &plus;
                     </button>
+                </div>
                 {/if}
             </div>
         {/if}
