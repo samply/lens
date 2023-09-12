@@ -144,7 +144,7 @@
     },
   };
 
-  let catalogueopen = false;
+  let catalogueopen = true;
 </script>
 
 <header>
