@@ -118,8 +118,8 @@
                     >
                         <b>{item.name}:</b>
                         {#each item.values as value, index}
-                            <span
-                                >{index === 0 ? "\b" : " or "} {value.name}
+                            <span>
+                                {index === 0 ? "\b" : " or "} {value.name}
                             </span>
                         {/each}
                     </div>

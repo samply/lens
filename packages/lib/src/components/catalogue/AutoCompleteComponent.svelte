@@ -91,6 +91,7 @@
                     value: inputItem.key,
                     name: inputItem.name,
                     description: inputItem.description,
+                    queryBindId: uuidv4(),
                 },
             ],
         };

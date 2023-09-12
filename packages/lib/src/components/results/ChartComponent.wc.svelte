@@ -8,7 +8,7 @@
 />
 
 <script lang="ts">
-    import Chart, { DatasetController } from "chart.js/auto";
+    import Chart from "chart.js/auto";
     import { onMount } from "svelte";
 
     export let title: string = "";

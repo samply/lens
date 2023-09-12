@@ -2,19 +2,22 @@
     import { queryStore } from "../../stores/query";
     import type { Category } from "../../types/treeData";
     import QuerySelectComponent from "./QuerySelectComponent.svelte";
-    import { v4 as uuidv4 } from "uuid";
     import type { QueryItem, QueryValue } from "../../types/queryData";
     import { catalogueTextStore } from "../../stores/texts";
 
     export let element: Category;
+    export let queryGroupInternalId: string;
+    export let handleRemoveElement: (queryItem: QueryItem) => void;
+    export let queryBindId: string;
 
+    /**
+     * defines and handles the number inputs
+     */
     let from: number = 0;
     let to: number = 0;
-    const queryGroupInternalId: string = uuidv4();
     /**
      * used to identify the value in the query store which has to update when 'from' or 'to' changes
      */
-    const queryBindId: string = uuidv4();
 
     /**
      * update all groups in the store when from or to changes
@@ -36,6 +39,10 @@
         return store;
     });
 
+    /**
+     * when some parts of the element change, the values are watched
+     * and the QuerySelectComponent is passed thoes new values
+     */
     let queryItem: QueryItem;
     $: queryItem = {
         id: queryGroupInternalId,
@@ -49,6 +56,33 @@
             },
         ],
     };
+
+    /**
+     * update all groups in the store when from or to changes
+     * @param from
+     * @param to
+     * @returns void
+    */
+    const changeQueryStoreWhenFromOrToChanges = (from: number, to: number): void => {
+        queryStore.update((store) => {
+            store.forEach((queryGroup: QueryItem[]) => {
+                queryGroup.forEach((item: QueryItem) => {
+                    if (item.id !== queryGroupInternalId) {
+                        return store;
+                    }
+                    item.values.forEach((queryValue: QueryValue) => {
+                        if (queryValue.queryBindId === queryBindId) {
+                            queryValue.name = `From ${from} to ${to}`;
+                            queryValue.value = { min: from, max: to };
+                        }
+                    });
+                });
+            });
+            return store;
+        });
+    }
+    $: changeQueryStoreWhenFromOrToChanges(from, to);
+
 </script>
 
 <div part="criterion-wrapper number-input-wrapper">
@@ -89,6 +123,7 @@
                 {#each $queryStore as _, index}
                     <QuerySelectComponent {index} {queryItem} />
                 {/each}
+                <button on:click={() => handleRemoveElement(queryItem)}> &minus; </button>
             </span>
         </div>
     </div>

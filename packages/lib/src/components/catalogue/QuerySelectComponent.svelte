@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { onMount } from "svelte";
     import {
         addItemToQuery,
         queryStore,
@@ -7,6 +6,9 @@
     } from "../../stores/query";
     import type { QueryItem, QueryValue } from "../../types/queryData";
 
+    /**
+     * index: index of the group in the query store
+     */
     export let index: number;
     export let queryItem: QueryItem;
     export let isChecked: boolean = false;
@@ -37,7 +39,7 @@
             $queryStore[index].find((item: QueryItem) =>
                 item.values.find(
                     (value: QueryValue) =>
-                        value.name === queryItem.values[0].name
+                        value.queryBindId === queryItem.values[0].queryBindId
                 )
             ) !== undefined;
     }
