@@ -70,7 +70,7 @@
 
   const catalogueText: CatalogueText = {
     group: "Group",
-    collapseButtonTitle: "Collapse Tree",
+    collapseButtonTitle: "Full Parameter Search",
     numberInput: {
       labelFrom: "From",
       labelTo: "to",
@@ -103,9 +103,9 @@
     },
   };
   const chart2Data = {
-    type: "pie",
+    type: "bar",
     data: {
-      labels: ["Dresden", "Mannheim", "Frankfurt", "Berlin"],
+      labels: ["Plasma", "White-Blood", "DNA", "RNA"],
       datasets: [
         {
           label: "",
@@ -144,16 +144,36 @@
     },
   };
 
+  const chartColors: string[] = [
+    "#003674",
+    "#1a4a82",
+    "#335e90",
+    "#4d729e",
+    "#6686ac",
+    "#809bba",
+    "#99afc7",
+  ];
+
+  const chartBackgroudnColors: string[] = ['#e95713'];
+
   let catalogueopen = true;
 </script>
 
 <header>
   <div class="logo">
-    <img src="../public/logo-dkfz.svg" alt="Biobank Sweden logo" />
+    <img src="../public/BBMRI-ERIC-gateway-for-health.svg" alt="Biobank Sweden logo" />
   </div>
-  <h1>Web Components In Svelte Demo</h1>
+  <div class="menu">
+    <a href="https://www.bbmri-eric.eu/about/">About Us</a>
+    <a href="mailto:locator@helpdesk.bbmri-eric.eu">Contact</a>
+    <a href="https://www.bbmri-eric.eu/bbmri-sample-and-data-portal/">Logout</a>
+  </div>
 </header>
 <main>
+  <div class="headings">
+    <h1>BBMRI-ERIC Locator</h1>
+    <h2>Search for human biospecimens across European biobanks</h2>
+  </div>
   <div class="search">
     <lens-search-bar
       treeData={JSON.stringify(mockCatalogueData)}
@@ -173,53 +193,64 @@
       <lens-catalogue
         treeData={JSON.stringify(mockCatalogueData)}
         texts={catalogueText}
-        toggle={{ collapsable: false, open: true }}
+        toggle={{ collapsable: true, open: false }}
       />
-      {#if catalogueopen}
-        <button on:click={() => (catalogueopen = !catalogueopen)}>
-          &#8676;
-        </button>
-      {:else}
-        <button on:click={() => (catalogueopen = !catalogueopen)}>
-          &#8677;
-        </button>
-      {/if}
     </div>
     <div class="charts">
       <lens-result-summary
         title="Results"
-        resultSummaryDataTypes={JSON.stringify(["Patients", "Samples", "sites"])}
-        negotiateButton={true}
-        negotiateButtonText="Negotiate with biobanks"
+        resultSummaryDataTypes={JSON.stringify([
+          "Sites",
+          "Patients",
+          "Specimens",
+        ])}
       />
-      <lens-result-table pageSize="3" title="Responding sites"/>
+      <lens-result-table pageSize="3" title="Responding sites" />
       <lens-chart
-        class="chart1"
-        title="Age at Diagnosis"
-        hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit."
+        class="chart-gender-distribution"
+        title="Gender Distribution"
+        chartData={JSON.stringify(chart3Data)}
+        backgroundColors={JSON.stringify(chartColors)}
+        backgroundHoverColors={JSON.stringify(chartBackgroudnColors)}
+      />
+      <lens-chart
+        class="chart-age-distribution"
+        title="Age Distribution"
         chartData={JSON.stringify(chart1Data)}
+        backgroundColors={JSON.stringify(chartColors)}
+        backgroundHoverColors={JSON.stringify(chartBackgroudnColors)}
       />
       <lens-chart
-        title="Patients Per Site"
-        hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit."
+        class="chart-specimens"
+        title="Specimens"
         chartData={JSON.stringify(chart2Data)}
+        backgroundColors={JSON.stringify(chartColors)}
+        backgroundHoverColors={JSON.stringify(chartBackgroudnColors)}
       />
-      <lens-chart title="Gender" chartData={JSON.stringify(chart3Data)} />
       <lens-chart
+        class="chart-diagnosis"
         title="Diagnosis"
-        hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit."
         chartData={JSON.stringify(chart4Data)}
+        backgroundColors={JSON.stringify(chartColors)}
+        backgroundHoverColors={JSON.stringify(chartBackgroudnColors)}
       />
     </div>
   </div>
 </main>
 
 <footer>
-  <h3>made with &#10084; & samply-lens</h3>
+  <a href="https://www.bbmri-eric.eu/privacy-notice/">Privacy Policy</a>
+  <a href="">made with &#10084; & samply-lens</a>
   <div class="img-container">
-    <img src="../public/logo_ce-en-rvb-lr.jpg" alt="" />
+    <img
+      src="../public/logo-dkfz.svg"
+      alt="german cancer research center logo"
+    />
   </div>
   <div class="img-container">
-    <img src="../public/BMBF_logo.png" alt="" />
+    <img src="../public/GBN_logo.svg" alt="german biobank node logo" />
+  </div>
+  <div class="img-container">
+    <img src="../public/logo_ce-en-rvb-lr.jpg" alt="european commission logo" />
   </div>
 </footer>

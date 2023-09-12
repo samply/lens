@@ -55,8 +55,10 @@
 
 <div part="lens-catalogue">
     {#if toggle.collapsable}
-        <button part="lens-catalogue-toggle-button" on:click={handleToggle}
-            >{$catalogueTextStore.collapseButtonTitle}</button
+        <button part="lens-catalogue-toggle-button {toggle.open ? 'lens-catalogue-button-open' : ''}" on:click={handleToggle}>
+            <div part="button-icon {toggle.open ? 'button-open-icon' : ''}">&#9660;</div>
+            <div part="button-text {toggle.open ? 'button-open-text' : ''}">{$catalogueTextStore.collapseButtonTitle}</div>
+            </button
         >
     {/if}
     {#if toggle.open}
