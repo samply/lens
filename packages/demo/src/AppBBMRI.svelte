@@ -121,7 +121,7 @@
       datasets: [
         {
           label: "",
-          data: [12, 19, 3, 5],
+          data: [12, 19, 3, 5,],
         },
       ],
     },
@@ -129,11 +129,41 @@
   const chart4Data = {
     type: "bar",
     data: {
-      labels: ["C31", "C31.0", "C41", "C41.0"],
+      labels: [
+        "C31", "C31.0", "C41", "C41.0",'C00',
+        `C01`,
+        `C02`,
+        `C04`,
+        `C05`,
+        `C06`,
+        `C07`,
+        `C08`,
+        `C09`,
+        `C10`,
+        `C11`,
+        `C12`,
+        `C13`,
+        `C14`,
+        "C31", "C31.0", "C41", "C41.0",'C00',
+        `C01`,
+        `C02`,
+        `C04`,
+        `C05`,
+        `C06`,
+        `C07`,
+        `C08`,
+        `C09`,
+        `C10`,
+        `C11`,
+        `C12`,
+        `C13`,
+        `C14`,
+
+],
       datasets: [
         {
           label: [],
-          data: [12, 100, 30, 5],
+          data: [12, 100, 30, 5,12, 19, 3, 12, 19, 3, 12, 19, 3, 12,12, 19, 3, 1,12, 100, 30, 5,12, 19, 3, 12, 19, 3, 12, 19, 3, 12,12, 19, 3, 1 ],
         },
       ],
     },
@@ -143,7 +173,6 @@
       },
     },
   };
-
   const chartColors: string[] = [
     "#003674",
     "#1a4a82",
@@ -161,7 +190,10 @@
 
 <header>
   <div class="logo">
-    <img src="../public/BBMRI-ERIC-gateway-for-health.svg" alt="Biobank Sweden logo" />
+    <img
+      src="../public/BBMRI-ERIC-gateway-for-health.svg"
+      alt="Biobank Sweden logo"
+    />
   </div>
   <div class="menu">
     <a href="https://www.bbmri-eric.eu/about/">About Us</a>

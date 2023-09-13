@@ -397,6 +397,10 @@ lens-catalogue::part(criterion-section-values) {
 * Number Input
 */
 
+lens-catalogue::part(number-input-wrapper) {
+  margin-top: var(--gap-xs);
+}
+
 lens-catalogue::part(number-input-label) {
   display: flex;
   align-items: center;
