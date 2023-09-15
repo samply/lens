@@ -1,0 +1,21 @@
+
+/**
+* result summary
+*/
+
+lens-result-summary {
+    background-color: var(--white);
+    border: solid 1px var(--border-color);
+    border-radius: var(--border-radius-small);
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-gap: var(--gap-xl);
+    grid-column: 1/-1;
+    align-items: center;
+  }
+  
+  lens-result-summary::part(result-summary-content) {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }

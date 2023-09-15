@@ -1,0 +1,56 @@
+
+lens-result-table {
+    background-color: var(--white);
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+  }
+  
+  lens-result-table::part(result-table-title) {
+    text-align: center;
+    margin: 0;
+    padding-bottom: var(--gap-m);
+  }
+  
+  lens-result-table::part(result-table) {
+    border-collapse: collapse;
+    width: 100%;
+    border-spacing: 0 15px;
+    height: max-content;
+    overflow: scroll;
+  }
+  
+  lens-result-table::part(table-header) {
+    border-bottom: solid 1px var(--gray);
+  }
+  
+  lens-result-table::part(table-header-row) {
+    text-align: left;
+  }
+  
+  lens-result-table::part(table-header-cell) {
+    padding-bottom: var(--gap-xs);
+  }
+  
+  lens-result-table::part(table-body-row) {
+    border-bottom: solid 1px var(--light-gray);
+  }
+  
+  lens-result-table::part(table-body-cell) {
+    padding-top: var(--gap-xs);
+  }
+  
+  lens-result-table::part(table-pagination) {
+    display: flex;
+    justify-content: center;
+    padding-top: var(--gap-m);
+    gap: var(--gap-s);
+    align-items: flex-end;
+  }
+  
+  lens-result-table::part(table-pagination-button) {
+    border: solid 1px var(--gray);
+    background: var(--white);
+    border-radius: var(--border-radius-small);
+    padding: var(--gap-xxs) var(--gap-s);
+  }
+  

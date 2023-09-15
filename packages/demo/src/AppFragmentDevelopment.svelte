@@ -147,111 +147,54 @@
   let catalogueopen = true;
 </script>
 
-<header>
-  <div class="logo">
-    <img src="../public/logo-dkfz.svg" alt="Biobank Sweden logo" />
-  </div>
-  <h1>Web Components In Svelte Demo</h1>
-</header>
 <main>
-  <div class="search">
-    <lens-search-bar
-      treeData={JSON.stringify(mockCatalogueData)}
-      noMatchesFoundMessage={"No matches found"}
-    />
-    <lens-search-button title="Search Biobanks" />
-  </div>
-  <div class="query-display">
-    <lens-query-display />
-  </div>
-
-  <div class="grid">
-    <div
-      class="catalogue"
-      style={`max-width: ${catalogueopen ? "1000px" : "288px"}`}
-    >
-      <lens-catalogue
-        treeData={JSON.stringify(mockCatalogueData)}
-        texts={catalogueText}
-        toggle={{ collapsable: false, open: true }}
-      />
-      {#if catalogueopen}
-        <button on:click={() => (catalogueopen = !catalogueopen)}>
-          &#8676;
-        </button>
-      {:else}
-        <button on:click={() => (catalogueopen = !catalogueopen)}>
-          &#8677;
-        </button>
-      {/if}
-    </div>
-    <div class="charts">
-      <lens-result-summary
-        title="Results"
-        resultSummaryDataTypes={JSON.stringify(["Patients", "Samples", "sites"])}
-        negotiateButton={true}
-        negotiateButtonText="Negotiate with biobanks"
-      />
-      <lens-result-table pageSize="3" title="Responding sites"/>
-      <lens-chart
-        class="chart1"
-        title="Age at Diagnosis"
-        hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit."
-        chartData={JSON.stringify(chart1Data)}
-      />
-      <lens-chart
-        title="Patients Per Site"
-        hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit."
-        chartData={JSON.stringify(chart2Data)}
-      />
-      <lens-chart title="Gender" chartData={JSON.stringify(chart3Data)} />
-      <lens-chart
-        title="Diagnosis"
-        hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit."
-        chartData={JSON.stringify(chart4Data)}
-      />
-    </div>
-  </div>
-</main>
-
-<footer>
-  <h3>made with &#10084; & samply-lens</h3>
-  <div class="img-container">
-    <img src="../public/logo_ce-en-rvb-lr.jpg" alt="" />
-  </div>
-  <div class="img-container">
-    <img src="../public/BMBF_logo.png" alt="" />
-  </div>
-</footer>
-
-<!-- <main>
-  <div class="container">
-    <h2>Search bar</h2>
+    <h2>Search bars</h2>
     <div class="componentBox">
-      <lens-search-bar
+      <lens-search-bar-multiple
         treeData={JSON.stringify(mockCatalogueData)}
         noMatchesFoundMessage={"No matches found"}
       />
     </div>
-    <h2>Search button</h2>
+    <h2>Search Button</h2>
     <div class="componentBox">
-      <lens-search-button title="Search Biobanks" url='BACKEND_TARGET_URL'/>
+      <lens-search-button
+      />
     </div>
     <h2>Catalogue</h2>
     <div class="componentBox">
       <lens-catalogue
-        treeData={JSON.stringify(mockCatalogueData)}
-        texts={catalogueText}
-        open={true}
+      treeData={JSON.stringify(mockCatalogueData)}
+      texts={catalogueText}
+      open={true}
       />
     </div>
-    <h2>Query display</h2>
+    <h2>Result Summary Bar</h2>
     <div class="componentBox">
-      <lens-query-display />
+    <lens-result-summary
+      title="Results"
+      resultSummaryDataTypes={JSON.stringify(["Patients", "Samples", "sites"])}
+      negotiateButton={true}
+      negotiateButtonText="Negotiate with biobanks"
+    />
+    </div>
+    <h2>Result Table</h2>
+    <div class="componentBox">
+      <lens-result-table pageSize="3" title="Responding sites"/>
+    </div>
+    <h2>Result Table</h2>
+    <div class="componentBox">
+      <div>
+
+        <lens-chart
+        class="chart1"
+        title="Age at Diagnosis"
+        hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit."
+        chartData={JSON.stringify(chart1Data)}
+        />
+      </div>
     </div>
     <h2>State display</h2>
     <div class="componentBox">
       <lens-state-display />
     </div>
-  </div>
-</main> -->
+</main>

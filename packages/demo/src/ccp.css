@@ -217,7 +217,6 @@ lens-search-bar-multiple::part(lens-searchbar-autocomplete-options) {
   margin: 0;
   border: solid 1px var(--blue);
   border-top: none;
-  /* width: calc(100% - 2*var(--gap-s) - 2px); padding of container plus borders */
   position: absolute;
   top: 30px;
   left: -1px;
@@ -250,43 +249,8 @@ lens-search-bar-multiple::part(lens-searchbar-add-button) {
   margin-left: var(--gap-xs);
 }
 
-
 /**
-* Lens search Button
-*/
-
-lens-search-button::part(lens-search-button) {
-  color: var(--white);
-  border: none;
-  border-radius: var(--border-radius-small);
-  padding: var(--gap-xs) var(--gap-s);
-  font-size: var(--font-size-m);
-  cursor: pointer;
-  display: flex;
-  gap: var(--gap-xs);
-  align-items: center;
-}
-
-lens-search-button::part(lens-search-button-active) {
-  background-color: var(--blue);
-}
-
-lens-search-button::part(lens-search-button-disabled) {
-  background-color: var(--gray);
-}
-
-lens-search-button::part(lens-search-button-active):hover {
-  background-color: var(--light-blue);
-}
-
-lens-search-button::part(lens-search-button-magnifying-glass) {
-  transform: rotate(-45deg);
-  font-size: var(--font-size-xl);
-  line-height: 0;
-}
-
-/**
-* Lens search Button in multiple searchbar mode
+* search Button in multiple searchbar
 */
 
 

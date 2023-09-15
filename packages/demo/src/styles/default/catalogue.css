@@ -1,0 +1,229 @@
+
+/**
+* Cataloque Structure
+*/
+
+lens-catalogue::part(lens-catalogue-toggle-button) {
+    background-color: var(--green);
+    color: var(--white);
+    border: none;
+    border-radius: var(--border-radius-small);
+    padding: var(--gap-xs) var(--gap-s);
+    margin-bottom: var(--gap-s);
+    font-size: var(--font-size-m);
+    cursor: pointer;
+    display: flex;
+    gap: var(--gap-xs);
+  }
+  
+  lens-catalogue::part(lens-catalogue-toggle-button):hover {
+      background-color: var(--light-green);
+    }
+    
+    lens-catalogue::part(toggle-button-open-icon) {
+        transform: rotate(180deg);
+    }
+
+  
+  lens-catalogue::part(data-tree-element-name) {
+    font-size: var(--font-size-m);
+    color: var(--dark-gray);
+    margin-bottom: 10px;
+    border: none;
+    background-color: unset;
+    cursor: pointer;
+  }
+  
+  lens-catalogue::part(data-tree-element-child-category),
+  lens-catalogue::part(data-tree-element-last-child-options) {
+    padding-left: 20px;
+    margin-bottom: 20px;
+    border-left: solid 1px var(--dark-gray);
+  }
+
+  
+  /**
+  * Cataloque shared
+  */
+  
+  lens-catalogue::part(criterion-wrapper) {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-gap: var(--gap-xs);
+  }
+  
+  lens-catalogue::part(criterion-item) {
+    margin-top: var(--gap-xxs);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: var(--gap-xs);
+    align-items: center;
+  }
+
+  lens-catalogue::part(criterion-group-wrapper),
+  lens-catalogue::part(criterion-section-groups) {
+    display: flex;
+    gap: var(--gap-xs);
+    align-items: center;
+  }
+
+  /**
+  *  Query Add Button
+  */
+  
+  lens-catalogue::part(query-add-button) {
+    background-color: var(--blue);
+    color: var(--white);
+    border: none;
+    border-radius: var(--border-radius-small);
+    font-size: var(--font-size-xs);
+    cursor: pointer;
+    width: 45px;
+    height: 20px;
+  }
+  
+  
+  lens-catalogue::part(criterion-section-values) {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-xs);
+  }
+  
+  /**
+  * Number Input
+  */
+  
+  
+  lens-catalogue::part(criterion-item-number-input) {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+  }
+  
+  lens-catalogue::part(number-input-label) {
+    display: flex;
+    align-items: center;
+  }
+  
+  lens-catalogue::part(number-input-formfield) {
+    width: 30px;
+    margin: 0 0 0 10px;
+    border: solid 1px var(--dark-gray);
+    border-top: none;
+    padding: var(--gap-xxs) 0 var(--gap-xxs) var(--gap-s);
+    border-radius: var(--border-radius-small);
+  }
+  
+  lens-catalogue::part(number-input-formfield):focus {
+    border-color: var(--blue);
+    outline: none;
+  }
+  
+  lens-catalogue::part(number-input-add) {
+    margin-top: var(--gap-s);
+  }
+  
+  lens-catalogue::part(number-input-add-button) {
+    background-color: var(--green);
+    color: var(--white);
+    border: none;
+    border-radius: var(--border-radius-small);
+    padding: 0;
+    font-size: var(--font-size-m);
+    cursor: pointer;
+    height: 20px;
+    line-height: 22px;
+    width: 100px;
+  }
+  
+  lens-catalogue::part(number-input-add-button):hover {
+    background-color: var(--light-green);
+  }
+  
+  lens-catalogue::part(number-input-delete-button) {
+    background-color: var(--orange);
+    color: var(--white);
+    border: none;
+    border-radius: var(--border-radius-small);
+    padding: 0;
+    font-size: var(--font-size-m);
+    cursor: pointer;
+    height: 20px;
+    line-height: 22px;
+    width: 20px;
+  }
+  
+  lens-catalogue::part(number-input-delete-button):hover {
+    background-color: var(--light-orange);
+  }
+  
+  
+  
+  
+  /**
+  * Autocomplete
+  */
+  lens-catalogue::part(autocomplete-formfield) {
+    margin-bottom: var(--gap-xs);
+    margin-top: var(--gap-xs);
+    position: relative;
+  }
+  
+  lens-catalogue::part(autocomplete-formfield-input) {
+    box-sizing: border-box;
+    border: solid 1px var(--dark-gray);
+    border-top: none;
+    padding: var(--gap-xxs) var(--gap-s);
+    padding: var(--gap-xxs) var(--gap-s);
+    outline: none;
+    border-top-left-radius: var(--border-radius-small);
+    border-top-right-radius: var(--border-radius-small);
+  }
+  
+  lens-catalogue::part(autocomplete-formfield-input):focus {
+    border-color: var(--blue);
+    width: 100%;
+  }
+  
+  lens-catalogue::part(autocomplete-options) {
+    z-index: 1;
+    list-style-type: none;
+    padding: var(--gap-s);
+    margin: 0;
+    border: solid 1px var(--border-color);
+    border-top: none;
+    width: calc(100% - 2*var(--gap-s) - 2px);
+    /* padding of container plus borders */
+    position: absolute;
+    background-color: white;
+    color: black;
+    border-bottom-left-radius: var(--border-radius-small);
+    border-bottom-right-radius: var(--border-radius-small);
+  }
+  
+  
+  lens-catalogue::part(autocomplete-options-item) {
+    display: grid;
+    grid-template-columns: 70px 1fr;
+    cursor: pointer;
+  }
+  
+  lens-catalogue::part(autocomplete-options-item-focused) {
+    color: coral;
+  }
+  
+  
+  lens-catalogue::part(criterion-autocomplete-name) {
+    position: relative;
+    cursor: help;
+  }
+  
+  lens-catalogue::part(criterion-autocomplete-tooltip) {
+    bottom: var(--font-size-m);
+    left: 45px;
+    padding: var(--gap-xs);
+    background-color: var(--lightest-gray);
+    border-radius: var(--border-radius-small);
+    border-bottom-left-radius: 0;
+    border: solid 1px var(--green);
+  }
+  
