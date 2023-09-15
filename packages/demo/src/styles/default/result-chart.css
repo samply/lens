@@ -6,7 +6,6 @@ lens-chart {
   
   lens-chart::part(chart-wrapper) {
     background-color: var(--white);
-    padding: var(--gap-l);
     border: solid 1px var(--border-color);
     border-radius: var(--border-radius-small);
     display: grid;

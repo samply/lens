@@ -160,30 +160,41 @@
       {/if}
     </div>
     <div class="charts">
-      <lens-result-summary
+      <div class="chart-wrapper result-summary">
+        <lens-result-summary
         title="Results"
         resultSummaryDataTypes={JSON.stringify(["Patients", "Samples", "sites"])}
         negotiateButton={true}
         negotiateButtonText="Negotiate with biobanks"
-      />
-      <lens-result-table pageSize="3" title="Responding sites"/>
-      <lens-chart
-        class="chart1"
+        />
+      </div>
+      <div class="chart-wrapper">
+        <lens-result-table pageSize="3" title="Responding sites"/>
+      </div>
+      <div class="chart-wrapper">
+        <lens-chart
         title="Age at Diagnosis"
         hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit."
         chartData={JSON.stringify(chart1Data)}
-      />
-      <lens-chart
+        />
+      </div>
+      <div class="chart-wrapper">
+        <lens-chart
         title="Patients Per Site"
         hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit."
         chartData={JSON.stringify(chart2Data)}
-      />
-      <lens-chart title="Gender" chartData={JSON.stringify(chart3Data)} />
+        />
+      </div>
+      <div class="chart-wrapper">
+        <lens-chart title="Gender" chartData={JSON.stringify(chart3Data)} />
+      </div>
+      <div class="chart-wrapper">
       <lens-chart
         title="Diagnosis"
         hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit."
         chartData={JSON.stringify(chart4Data)}
       />
+      </div>
     </div>
   </div>
 </main>
@@ -197,35 +208,3 @@
     <img src="../public/BMBF_logo.png" alt="" />
   </div>
 </footer>
-
-<!-- <main>
-  <div class="container">
-    <h2>Search bar</h2>
-    <div class="componentBox">
-      <lens-search-bar
-        treeData={JSON.stringify(mockCatalogueData)}
-        noMatchesFoundMessage={"No matches found"}
-      />
-    </div>
-    <h2>Search button</h2>
-    <div class="componentBox">
-      <lens-search-button title="Search Biobanks" url='BACKEND_TARGET_URL'/>
-    </div>
-    <h2>Catalogue</h2>
-    <div class="componentBox">
-      <lens-catalogue
-        treeData={JSON.stringify(mockCatalogueData)}
-        texts={catalogueText}
-        open={true}
-      />
-    </div>
-    <h2>Query display</h2>
-    <div class="componentBox">
-      <lens-query-display />
-    </div>
-    <h2>State display</h2>
-    <div class="componentBox">
-      <lens-state-display />
-    </div>
-  </div>
-</main> -->

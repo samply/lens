@@ -70,4 +70,5 @@ h2 {
   padding: var(--gap-xxl);
   background-color: var(--white);
   border-radius: var(--border-radius-small);
+  margin-bottom: var(--gap-xxl);
 }
