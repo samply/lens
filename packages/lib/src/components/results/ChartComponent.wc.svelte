@@ -52,7 +52,6 @@
      * initialize the chart on mount
      */
     onMount(() => {
-        console.log(backgroundColors);
         /**
          * set or overwrite important options
          */

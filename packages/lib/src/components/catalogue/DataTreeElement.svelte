@@ -4,9 +4,11 @@
     import NumberInputComponent from "./NumberInputComponent.svelte";
     import AutocompleteComponent from "./AutoCompleteComponent.svelte";
     import SingleSelectComponent from "./SingleSelectComponent.svelte";
-    import { queryStore } from "../../stores/query";
-    import { v4 as uuidv4 } from "uuid";
+    import { queryStore, removeItemFromQuery } from "../../stores/query";
     import type { QueryItem, QueryValue } from "../../types/queryData";
+    import {numberInputComponents, addNumberInputComponent} from '../../stores/catalogue-inputs'
+    import { onMount } from "svelte";
+    import { v4 as uuidv4 } from "uuid";
 
     export let element: Category;
 
@@ -30,44 +32,20 @@
         childOpen = !childOpen;
     };
 
-    /**
-     * defines and handles the number inputs
-     * numberInputComponents: array of uuids to identify the number input components
-     */
-    const numberGroupInternalId: string = uuidv4();
-
-    let numberInputComponents = [uuidv4()];
-
-    const addNumberInputComponent = (): void => {
-        numberInputComponents = [...numberInputComponents, uuidv4()];
-    };
 
     /**
-     * removes the number input component from the list and erases the values from the query store
-     * @param queryItem: the item which will be destroyed
-     * @returns void
-     */
-    const handleRemoveElement = (queryItem: QueryItem): void => {
-        queryStore.update((store) => {
-            store.forEach((queryGroup: QueryItem[]) => {
-                queryGroup.forEach((item: QueryItem) => {
-                    if (item.id !== queryItem.id) {
-                        return store;
-                    }
-                    item.values = item.values.filter(
-                        (value: QueryValue) =>
-                            value.queryBindId !==
-                            queryItem.values[0].queryBindId
-                    );
-                });
-            });
-            return store;
-        });
+     * initializes the frist number input component
+    */
+    onMount(() => {
+        if (element.type === "number") {
+            addNumberInputComponent(element.key, element.name)
+        }
+    })
 
-        numberInputComponents = numberInputComponents.filter(
-            (componentId) => componentId !== queryItem.values[0].queryBindId
-        );
-    };
+
+    $: $numberInputComponents
+
+
 </script>
 
 <div part="data-tree-element">
@@ -90,22 +68,29 @@
                 {:else if element.type === "autocomplete" && "criteria" in element}
                     <AutocompleteComponent {element} />
                 {:else if element.type === "number"}
-                    {#each numberInputComponents as numberInputComponent}
-                        <NumberInputComponent
-                            {element}
-                            queryGroupInternalId={numberGroupInternalId}
-                            queryBindId={numberInputComponent}
-                            {handleRemoveElement}
+                <div>
+                    
+                    {JSON.stringify($numberInputComponents.map((item) => item.queryBindId))}
+                </div>
+                    {#each $numberInputComponents as numberInputComponent}
+                    {JSON.stringify(numberInputComponent.queryBindId)}
+                    <NumberInputComponent
+                        queryItem={{
+                            id: uuidv4(),
+                            key: element.key,
+                            name: element.name,
+                            values: [numberInputComponent]
+                        }}
                         />
                     {/each}
                     <div part="number-input-add">
                         <button
-                        part="number-input-add-button"
-                        on:click={addNumberInputComponent}
+                            part="number-input-add-button"
+                            on:click={() => addNumberInputComponent(element.key, element.name)}
                         >
-                        &plus;
-                    </button>
-                </div>
+                            &plus;
+                        </button>
+                    </div>
                 {/if}
             </div>
         {/if}

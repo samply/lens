@@ -2,6 +2,7 @@
   import "../../lib";
   import type { CatalogueText } from "../../lib/src/types/texts";
   import type { Category } from "../../lib/src/types/treeData";
+  import { diagnoses } from '../catalogue-ccp'
 
   const mockCatalogueData: Category[] = [
     {
@@ -35,29 +36,7 @@
           key: "diagnosis",
           name: "Diagnosis ICD-10",
           type: "autocomplete",
-          criteria: [
-            {
-              key: "C31",
-              name: "C31",
-              description: "Malignant neoplasm of accessory sinuses",
-            },
-            {
-              key: "C31.0",
-              name: "C31.0",
-              description: "Malignant neoplasm: Maxillary sinus",
-            },
-            {
-              key: "C41",
-              name: "C41",
-              description:
-                "Malignant neoplasm of bone and articular cartilage of other and unspecified sites",
-            },
-            {
-              key: "C41.0",
-              name: "C41.0",
-              description: "Malignant neoplasm: Bones of skull and face",
-            },
-          ],
+          criteria: diagnoses,
         },
         {
           key: "diagnosis_age_donor",
@@ -149,27 +128,22 @@
 
 <header>
   <div class="logo">
-    <img src="../public/logo-dkfz.svg" alt="Biobank Sweden logo" />
+    <img src="../public/BBMRI-ERIC-gateway-for-health.svg" alt="Biobank Sweden logo" />
   </div>
-  <h1>Web Components In Svelte Demo</h1>
+  <h1>Sample Locator</h1>
 </header>
 <main>
   <div class="search">
-    <lens-search-bar
+    <lens-search-bar-multiple
       treeData={JSON.stringify(mockCatalogueData)}
       noMatchesFoundMessage={"No matches found"}
     />
-    <lens-search-button title="Search Biobanks" />
   </div>
-  <div class="query-display">
-    <lens-query-display />
-  </div>
-
   <div class="grid">
     <div
       class="catalogue"
-      style={`max-width: ${catalogueopen ? "1000px" : "288px"}`}
-    >
+      style={`max-width: ${catalogueopen ? "400px" : "288px"};`}
+      >
       <lens-catalogue
         treeData={JSON.stringify(mockCatalogueData)}
         texts={catalogueText}

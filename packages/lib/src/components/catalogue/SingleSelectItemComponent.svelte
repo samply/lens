@@ -5,29 +5,42 @@
     import { catalogueTextStore } from "../../stores/texts";
     import type { Category } from "../../types/treeData";
     import type { Criteria } from "../../types/treeData";
-    
+    import QueryAddButtonComponent from "./QueryAddButtonComponent.svelte";
+
     export let element: Category;
     export let criterion: Criteria;
 
     const queryBindId: string = uuidv4();
 </script>
 
-
-<div part="criterion-item criterion-item-single-select">
+<!-- <div part="criterion-item criterion-item-single-select"> -->
     <div part="criterion-section criterion-section-values">
         <span part="criterion-single-select-name">
             {criterion.name}
         </span>
     </div>
-    <div part="criterion-section criterion-section-groups">
-        <span
-            part="criterion-group-label criterion-group-label-single-select"
+    <QueryAddButtonComponent
+        queryItem={{
+            id: uuidv4(),
+            key: element.key,
+            name: element.name,
+            values: [
+                {
+                    name: criterion.name,
+                    value: criterion.key,
+                    queryBindId: queryBindId,
+                },
+            ],
+        }}
+    />
+    <!-- <div part="criterion-section criterion-section-groups"> -->
+        <!-- <span part="criterion-group-label criterion-group-label-single-select"
             >{$catalogueTextStore.group}</span
-        >
-        <span
+        > -->
+        <!-- <span
             part="criterion-group-wrapper criterion-group-wrapper-single-select"
-        >
-            {#each $queryStore as _, index}
+        > -->
+            <!-- {#each $queryStore as _, index}
                 <QuerySelectComponent
                     {index}
                     queryItem={{
@@ -43,7 +56,7 @@
                         ],
                     }}
                 />
-            {/each}
-        </span>
-    </div>
-</div>
+            {/each} -->
+        <!-- </span> -->
+    <!-- </div> -->
+<!-- </div> -->

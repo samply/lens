@@ -72,7 +72,7 @@
     group: "Group",
     collapseButtonTitle: "Full Parameter Search",
     numberInput: {
-      labelFrom: "From",
+      labelFrom: "from",
       labelTo: "to",
     },
   };

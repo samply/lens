@@ -2,10 +2,13 @@
  * Handles the state of the query
  * Consists of multiple arrays which will have an 'or' logic between them later when the query is sent to the server
  */
-import type { QueryItem } from "../types/queryData";
+import type { QueryItem, QueryValue } from "../types/queryData";
 import { writable } from "svelte/store";
+import { v4 as uuidv4 } from "uuid";
 
 export const queryStore = writable([[]]);
+
+export const activeQueryGroupIndex = writable(0);
 
 /**
  * Adds an item to the query
@@ -25,6 +28,9 @@ export const addItemToQuery = (queryObject: QueryItem, queryGroupIndex: number) 
     queryObject = Object.assign({}, queryObject)
     queryStore.update((query) => {
 
+        /**
+         * handles the case when the group index is negative or too high
+         */
         if (queryGroupIndex < 0) queryGroupIndex = 0;
 
         if (queryGroupIndex > query.length) {
@@ -35,30 +41,53 @@ export const addItemToQuery = (queryObject: QueryItem, queryGroupIndex: number) 
             query = [...query, []]
         }
 
-        const queryStoreGroup: QueryItem[] = query[queryGroupIndex];
-        const existingItem: QueryItem = queryStoreGroup.find(
-            (item) => item.name === queryObject.name
-        );
 
-        if (existingItem === undefined) {
-            queryStoreGroup.push(queryObject);
-        } else {
-            queryStoreGroup.map((item) => {
-                if (item.name === queryObject.name) {
-                    item.values = [
-                        ...item.values,
-                        {
-                            value: queryObject.values[0].value,
-                            name: queryObject.values[0].name,
-                        },
-                    ];
-                }
-                return item;
+        /**
+         * finds objects with the same name in the query
+         */
+
+        let queryStoreGroup: QueryItem[] = query[queryGroupIndex];
+
+        const duplicateObjects: QueryItem[] = 
+            findObjectsWithSameName(queryStoreGroup.concat(queryObject));
+
+        /**
+         * merges the values of the duplicate objects
+        */
+        if (duplicateObjects !== undefined) {
+            queryObject = {
+                id: uuidv4(),
+                key: duplicateObjects[0].key,
+                name: duplicateObjects[0].name,
+                values: [],
+            };
+            duplicateObjects.forEach((obj: QueryItem) => {
+                obj.values.forEach((value: QueryValue) => {
+                    /**
+                     * writes the first value of the first object to the values
+                     */
+                    if (
+                        !queryObject.values.some(
+                            (val: QueryValue) => val.name === value.name
+                        )
+                    ) {
+                        queryObject.values.push(value);
+                    }
+                });
             });
         }
 
+        /**
+         * removes all items with the same name from the group, 
+         * then adds the new item 
+         */ 
+        queryStoreGroup = queryStoreGroup.filter((item) => item.name !== queryObject.name);
+        queryStoreGroup.push(queryObject);
+    
+
         query[queryGroupIndex] = queryStoreGroup;
         return query;
+
     });
 };
 
@@ -82,7 +111,7 @@ export const removeItemFromQuery = (queryObject: QueryItem, queryGroupIndex: num
 
         queryStoreGroup = queryStoreGroup.map((item) => {
             if (item.name === queryObject.name) {
-                item.values = item.values.filter((value) => value.name !== queryObject.values[0].name);
+                item.values = item.values.filter((value: QueryValue) => value.queryBindId !== queryObject.values[0].queryBindId);
             }
             return item;
         });
@@ -93,3 +122,30 @@ export const removeItemFromQuery = (queryObject: QueryItem, queryGroupIndex: num
         return query;
     });
 }
+
+
+/**
+     * finds objects with the same name in an array
+     * @param objectsArray
+     * @returns QueryItem[]
+     */
+function findObjectsWithSameName(objectsArray: QueryItem[]) {
+    const nameObjectMap = new Map<string, QueryItem[]>();
+
+    objectsArray.forEach((obj: QueryItem) => {
+        const name = obj.name;
+        if (nameObjectMap.has(name)) {
+            nameObjectMap.get(name).push(obj);
+        } else {
+            nameObjectMap.set(name, [obj]);
+        }
+    });
+
+    const duplicateObjects: QueryItem[] = Array.from(
+        nameObjectMap.values()
+    ).filter((objects: QueryItem[]) => objects.length > 1)[0];
+
+    return duplicateObjects;
+}
+
+

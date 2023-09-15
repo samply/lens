@@ -4,6 +4,7 @@
         props: {
             treeData: { type: "Object" },
             noMatchesFoundMessage: { type: "String" },
+            chips: { type: "Boolean"}
         },
     }}
 />
@@ -11,7 +12,7 @@
 <script lang="ts">
     import { writable } from "svelte/store";
     import type { Category } from "../../types/treeData";
-    import { addItemToQuery, queryStore } from "../../stores/query";
+    import { addItemToQuery, queryStore, activeQueryGroupIndex } from "../../stores/query";
     import type { AutoCompleteItem, QueryItem } from "../../types/queryData";
     import { v4 as uuidv4 } from "uuid";
 
@@ -23,6 +24,9 @@
     export let treeData: Category[] = [];
     export let noMatchesFoundMessage: string = "No matches found";
     export let placeholderText: string = "Type to filter conditions";
+    export let chips: boolean = false;
+    export let queryGroup: QueryItem[] = [];
+    export let index: number = 0;
 
     /**
      * handles the focus state of the input element
@@ -129,6 +133,7 @@
                     value: inputItem.criterion.key,
                     name: inputItem.criterion.name,
                     description: inputItem.criterion.description,
+                    queryBindId: uuidv4(),
                 },
             ],
         };
@@ -149,7 +154,7 @@
             const groupToAddItemTo = +splitInputValue[0] - 1;
             return groupToAddItemTo;
         }
-        return 0;
+        return index;
     };
 
     /**
@@ -193,6 +198,19 @@
 </script>
 
 <div part="lens-searchbar">
+    {#if chips}
+        <div part="lens-searchbar-chips">
+                {#each queryGroup as queryItem}
+                    <div part="lens-searchbar-chip">
+                        {#each queryItem.values as value, index }
+                            <span part="lens-searchbar-chip-item">
+                                {value.name}  {index === queryItem.values.length -1 ? '' : ' or '}
+                            </span>
+                        {/each}
+                    </div>
+                {/each}
+        </div>
+    {/if}
     <input
         part={`lens-searchbar-input ${
             inputValue?.length > 0 ? "lens-searchbar-input-options-open" : ""
@@ -204,6 +222,7 @@
         placeholder={placeholderText}
         on:focusin={() => {
             autoCompleteOpen = true;
+            activeQueryGroupIndex.set(index);
         }}
         on:focusout={() => {
             autoCompleteOpen = false;
