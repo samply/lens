@@ -38,7 +38,7 @@ lens-catalogue::part(lens-catalogue-toggle-button) {
   lens-catalogue::part(data-tree-element-last-child-options) {
     padding-left: 20px;
     margin-bottom: 20px;
-    border-left: solid 1px var(--dark-gray);
+    border-left: solid 1px var(--gray);
   }
 
   

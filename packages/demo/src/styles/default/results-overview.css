@@ -4,9 +4,6 @@
 */
 
 lens-result-summary {
-    background-color: var(--white);
-    border: solid 1px var(--border-color);
-    border-radius: var(--border-radius-small);
     display: grid;
     grid-template-columns: auto 1fr auto;
     grid-gap: var(--gap-xl);

@@ -121,7 +121,7 @@
       datasets: [
         {
           label: "",
-          data: [12, 19, 3, 5,],
+          data: [12, 19, 3, 5],
         },
       ],
     },
@@ -130,7 +130,11 @@
     type: "bar",
     data: {
       labels: [
-        "C31", "C31.0", "C41", "C41.0",'C00',
+        "C31",
+        "C31.0",
+        "C41",
+        "C41.0",
+        "C00",
         `C01`,
         `C02`,
         `C04`,
@@ -144,7 +148,11 @@
         `C12`,
         `C13`,
         `C14`,
-        "C31", "C31.0", "C41", "C41.0",'C00',
+        "C31",
+        "C31.0",
+        "C41",
+        "C41.0",
+        "C00",
         `C01`,
         `C02`,
         `C04`,
@@ -158,12 +166,14 @@
         `C12`,
         `C13`,
         `C14`,
-
-],
+      ],
       datasets: [
         {
           label: [],
-          data: [12, 100, 30, 5,12, 19, 3, 12, 19, 3, 12, 19, 3, 12,12, 19, 3, 1,12, 100, 30, 5,12, 19, 3, 12, 19, 3, 12, 19, 3, 12,12, 19, 3, 1 ],
+          data: [
+            12, 100, 30, 5, 12, 19, 3, 12, 19, 3, 12, 19, 3, 12, 12, 19, 3, 1,
+            12, 100, 30, 5, 12, 19, 3, 12, 19, 3, 12, 19, 3, 12, 12, 19, 3, 1,
+          ],
         },
       ],
     },
@@ -183,7 +193,7 @@
     "#99afc7",
   ];
 
-  const chartBackgroudnColors: string[] = ['#e95713'];
+  const chartBackgroudnColors: string[] = ["#e95713"];
 
   let catalogueopen = true;
 </script>
@@ -207,16 +217,11 @@
     <h2>Search for human biospecimens across European biobanks</h2>
   </div>
   <div class="search">
-    <lens-search-bar
+    <lens-search-bar-multiple
       treeData={JSON.stringify(mockCatalogueData)}
       noMatchesFoundMessage={"No matches found"}
     />
-    <lens-search-button title="Search Biobanks" />
   </div>
-  <div class="query-display">
-    <lens-query-display />
-  </div>
-
   <div class="grid">
     <div
       class="catalogue"
@@ -229,43 +234,51 @@
       />
     </div>
     <div class="charts">
-      <lens-result-summary
-        title="Results"
-        resultSummaryDataTypes={JSON.stringify([
-          "Sites",
-          "Patients",
-          "Specimens",
-        ])}
-      />
-      <lens-result-table pageSize="3" title="Responding sites" />
-      <lens-chart
-        class="chart-gender-distribution"
-        title="Gender Distribution"
-        chartData={JSON.stringify(chart3Data)}
-        backgroundColors={JSON.stringify(chartColors)}
-        backgroundHoverColors={JSON.stringify(chartBackgroudnColors)}
-      />
-      <lens-chart
-        class="chart-age-distribution"
-        title="Age Distribution"
-        chartData={JSON.stringify(chart1Data)}
-        backgroundColors={JSON.stringify(chartColors)}
-        backgroundHoverColors={JSON.stringify(chartBackgroudnColors)}
-      />
-      <lens-chart
-        class="chart-specimens"
-        title="Specimens"
-        chartData={JSON.stringify(chart2Data)}
-        backgroundColors={JSON.stringify(chartColors)}
-        backgroundHoverColors={JSON.stringify(chartBackgroudnColors)}
-      />
-      <lens-chart
-        class="chart-diagnosis"
-        title="Diagnosis"
-        chartData={JSON.stringify(chart4Data)}
-        backgroundColors={JSON.stringify(chartColors)}
-        backgroundHoverColors={JSON.stringify(chartBackgroudnColors)}
-      />
+      <div class="chart-wrapper summary-bar">
+        <lens-result-summary
+          title="Results"
+          resultSummaryDataTypes={JSON.stringify([
+            "Sites",
+            "Patients",
+            "Specimens",
+          ])}
+        />
+      </div>
+      <div class="chart-wrapper result-table">
+        <lens-result-table pageSize="3" title="Responding sites" />
+      </div>
+      <div class="chart-wrapper chart-gender-distribution">
+        <lens-chart
+          title="Gender Distribution"
+          chartData={JSON.stringify(chart3Data)}
+          backgroundColors={JSON.stringify(chartColors)}
+          backgroundHoverColors={JSON.stringify(chartBackgroudnColors)}
+        />
+      </div>
+      <div class="chart-wrapper chart-age-distribution">
+        <lens-chart
+          title="Age Distribution"
+          chartData={JSON.stringify(chart1Data)}
+          backgroundColors={JSON.stringify(chartColors)}
+          backgroundHoverColors={JSON.stringify(chartBackgroudnColors)}
+        />
+      </div>
+      <div class="chart-wrapper chart-specimens">
+        <lens-chart
+          title="Specimens"
+          chartData={JSON.stringify(chart2Data)}
+          backgroundColors={JSON.stringify(chartColors)}
+          backgroundHoverColors={JSON.stringify(chartBackgroudnColors)}
+        />
+      </div>
+      <div class="chart-wrapper chart-diagnosis">
+        <lens-chart
+          title="Diagnosis"
+          chartData={JSON.stringify(chart4Data)}
+          backgroundColors={JSON.stringify(chartColors)}
+          backgroundHoverColors={JSON.stringify(chartBackgroudnColors)}
+        />
+      </div>
     </div>
   </div>
 </main>
