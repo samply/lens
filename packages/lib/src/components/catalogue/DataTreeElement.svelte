@@ -43,7 +43,7 @@
     })
 
 
-    $: $numberInputComponents
+    $: numberInput = $numberInputComponents
 
 
 </script>
@@ -72,7 +72,7 @@
                     
                     {JSON.stringify($numberInputComponents.map((item) => item.queryBindId))}
                 </div>
-                    {#each $numberInputComponents as numberInputComponent}
+                    {#each numberInput as numberInputComponent}
                     {JSON.stringify(numberInputComponent.queryBindId)}
                     <NumberInputComponent
                         queryItem={{

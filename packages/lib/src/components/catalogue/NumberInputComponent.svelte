@@ -84,12 +84,12 @@
         $queryStore.forEach((_, index) =>
             removeItemFromQuery(queryItem, index)
         );
-        console.log(queryItem);
-        removeNumberInputComponent(queryItem);
+        console.log(queryBindId);
+        removeNumberInputComponent(queryBindId);
     };
     
 </script>
-
+<div>{JSON.stringify(queryBindId)}</div>
 <div part="criterion-wrapper number-input-wrapper">
     <div part="criterion-item criterion-item-number-input">
         <div part="criterion-section criterion-section-values">
@@ -123,6 +123,15 @@
         >
             &minus;
         </button>
-        <QueryAddButtonComponent {queryItem} />
+        <QueryAddButtonComponent queryItem={{
+            ...queryItem,
+            values: [
+                {
+                    name: `From ${from} to ${to}`,
+                    value: { min: from, max: to },
+                    queryBindId: queryBindId,
+                },
+            ],
+        }} />
     </div>
 </div>
