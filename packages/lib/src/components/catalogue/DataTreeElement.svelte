@@ -4,8 +4,6 @@
     import NumberInputComponent from "./NumberInputComponent.svelte";
     import AutocompleteComponent from "./AutoCompleteComponent.svelte";
     import SingleSelectComponent from "./SingleSelectComponent.svelte";
-    import { queryStore, removeItemFromQuery } from "../../stores/query";
-    import type { QueryItem, QueryValue } from "../../types/queryData";
     import {numberInputComponents, addNumberInputComponent} from '../../stores/catalogue-inputs'
     import { onMount } from "svelte";
     import { v4 as uuidv4 } from "uuid";

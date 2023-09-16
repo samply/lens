@@ -2,7 +2,7 @@
     import {
         addItemToQuery,
         queryStore,
-        removeItemFromQuery,
+        removeValueFromQuery,
     } from "../../stores/query";
     import type { QueryItem, QueryValue } from "../../types/queryData";
 
@@ -26,7 +26,7 @@
         if (checked) {
             addItemToQuery(queryItem, index);
         } else {
-            removeItemFromQuery(queryItem, index);
+            removeValueFromQuery(queryItem, index);
         }
         isChecked = !isChecked;
     };

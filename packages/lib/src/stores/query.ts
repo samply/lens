@@ -98,7 +98,7 @@ export const addItemToQuery = (queryObject: QueryItem, queryGroupIndex: number) 
  * @param queryObject 
  * @param queryGroupIndex 
  */
-export const removeItemFromQuery = (queryObject: QueryItem, queryGroupIndex: number) => {
+export const removeValueFromQuery = (queryObject: QueryItem, queryGroupIndex: number) => {
     /**
      * prevent mutation of the original object
      * otherwise the queryStore will not update properly with live changes inside the catalogue
@@ -123,6 +123,26 @@ export const removeItemFromQuery = (queryObject: QueryItem, queryGroupIndex: num
     });
 }
 
+
+export const removeItemFromQuery = (queryObject: QueryItem, queryGroupIndex: number) => {
+    /**
+     * prevent mutation of the original object
+     * otherwise the queryStore will not update properly with live changes inside the catalogue
+     * (e.g. when numbers are changed)
+     */
+    queryObject = Object.assign({}, queryObject)
+
+    queryStore.update((query) => {
+        let queryStoreGroup: QueryItem[] = query[queryGroupIndex];
+
+        queryStoreGroup = queryStoreGroup.filter((item) => {
+            console.log(item.id, queryObject.id)
+            return item.id !== queryObject.id});
+
+        query[queryGroupIndex] = queryStoreGroup;
+        return query;
+    });
+};
 
 /**
      * finds objects with the same name in an array

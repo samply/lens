@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { queryStore, removeItemFromQuery } from "../../stores/query";
+    import { queryStore, removeValueFromQuery } from "../../stores/query";
     import type { QueryItem, QueryValue } from "../../types/queryData";
     import { catalogueTextStore } from "../../stores/texts";
     import QueryAddButtonComponent from "./QueryAddButtonComponent.svelte";
@@ -82,7 +82,7 @@
 
     const handleRemoveElement = (): void => {
         $queryStore.forEach((_, index) =>
-            removeItemFromQuery(queryItem, index)
+            removeValueFromQuery(queryItem, index)
         );
         console.log(queryBindId);
         removeNumberInputComponent(queryBindId);

@@ -4,7 +4,7 @@
         props: {
             treeData: { type: "Object" },
             noMatchesFoundMessage: { type: "String" },
-            chips: { type: "Boolean"}
+            chips: { type: "Boolean" },
         },
     }}
 />
@@ -12,9 +12,14 @@
 <script lang="ts">
     import { writable } from "svelte/store";
     import type { Category } from "../../types/treeData";
-    import { addItemToQuery, queryStore, activeQueryGroupIndex } from "../../stores/query";
+    import {
+        addItemToQuery,
+        queryStore,
+        activeQueryGroupIndex,
+    } from "../../stores/query";
     import type { AutoCompleteItem, QueryItem } from "../../types/queryData";
     import { v4 as uuidv4 } from "uuid";
+    import StoreDeleteButtonComponent from "../buttons/StoreDeleteButtonComponent.svelte";
 
     /**
      * props
@@ -103,7 +108,9 @@
         return (
             item.name.toLowerCase().includes(clearedInputValue) ||
             item.criterion.name.toLowerCase().includes(clearedInputValue) ||
-            item.criterion.description?.toLowerCase().includes(clearedInputValue)
+            item.criterion.description
+                ?.toLowerCase()
+                .includes(clearedInputValue)
         );
     });
 
@@ -200,15 +207,29 @@
 <div part="lens-searchbar">
     {#if chips}
         <div part="lens-searchbar-chips">
-                {#each queryGroup as queryItem}
-                    <div part="lens-searchbar-chip">
-                        {#each queryItem.values as value, index }
-                            <span part="lens-searchbar-chip-item">
-                                {value.name}  {index === queryItem.values.length -1 ? '' : ' or '}
-                            </span>
-                        {/each}
-                    </div>
-                {/each}
+            {#each queryGroup as queryItem}
+                <div part="lens-searchbar-chip">
+                    {#each queryItem.values as value, i}
+                        <span part="lens-searchbar-chip-item">
+                            <span>{value.name}</span>
+                            <StoreDeleteButtonComponent
+                                itemToDelete={{
+                                    type: "value",
+                                    index,
+                                    item: {
+                                        ...queryItem,
+                                        values: [value],
+                                    },
+                                }}
+                            />
+                            <span>{i === queryItem.values.length - 1 ? "" : " or "}</span>
+                        </span>
+                    {/each}
+                    <StoreDeleteButtonComponent
+                        itemToDelete={{ type: "item", index, item: queryItem }}
+                    />
+                </div>
+            {/each}
         </div>
     {/if}
     <input
@@ -231,20 +252,21 @@
     {#if autoCompleteOpen && inputValue.length > 0}
         <ul part="lens-searchbar-autocomplete-options">
             {#if $inputOptions?.length > 0}
-                {#each $inputOptions as inputOption, index}
+                {#each $inputOptions as inputOption, i}
                     <!-- svelte-ignore a11y-click-events-have-key-events -->
                     <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
                     <!-- this is handled with the handleKeyDown method -->
                     <!-- onmousedown is chosen because the input looses focus when clicked outside, 
                              which will close the options before the click is finshed -->
                     <li
-                        part="lens-searchbar-autocomplete-options-item {index ===
+                        part="lens-searchbar-autocomplete-options-item {i ===
                         focusedItemIndex
                             ? 'lens-searchbar-autocomplete-options-item-focused'
                             : ''}"
                         on:mousedown={() => selectItemByClick(inputOption)}
                     >
-                        {inputOption.name} : {inputOption.criterion.name} - {inputOption.criterion.description}
+                        {inputOption.name} : {inputOption.criterion.name} - {inputOption
+                            .criterion.description}
                     </li>
                 {/each}
             {:else}
@@ -252,4 +274,5 @@
             {/if}
         </ul>
     {/if}
+    <StoreDeleteButtonComponent itemToDelete={{ type: "group", index }} />
 </div>
