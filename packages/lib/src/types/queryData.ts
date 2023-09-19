@@ -2,6 +2,8 @@ export type QueryItem = {
     id: string;
     key: string;
     name: string;
+    type: string;
+    system?: string;
     values: QueryValue[];
     description?: string;
 }
@@ -16,6 +18,9 @@ export type QueryValue = {
 export type AutoCompleteItem = {
     name: string;
     key: string;
+    description?: string;
+    system?: string;
+    type: string;
     criterion: {
         key: string;
         name: string;

@@ -10,8 +10,6 @@
 
     export let element: Category;
 
-    const isSuperCategory: boolean = "childCategories" in element;
-
     /**
      * defines the layer of the element in the tree
      */
@@ -35,7 +33,7 @@
      * initializes the frist number input component
     */
     onMount(() => {
-        if (element.type === "number") {
+        if ('fieldType' in element && element.fieldType === "number") {
             addNumberInputComponent(element.key, element.name)
         }
     })
@@ -51,7 +49,7 @@
         >{element.name}</button
     >
     {#if childOpen}
-        {#if isSuperCategory}
+        {#if "childCategories" in element}
             {#each element.childCategories as child}
                 <div
                     part={`data-tree-element-child-category data-tree-element-child-category-layer-${layer}`}
@@ -61,11 +59,11 @@
             {/each}
         {:else}
             <div part="data-tree-element-last-child-options">
-                {#if element.type === "single-select" && "criteria" in element}
+                {#if 'fieldType' in element && element.fieldType === "single-select"}
                     <SingleSelectComponent {element} />
-                {:else if element.type === "autocomplete" && "criteria" in element}
+                {:else if 'fieldType' in element &&  element.fieldType === "autocomplete"}
                     <AutocompleteComponent {element} />
-                {:else if element.type === "number"}
+                {:else if 'fieldType' in element &&  element.fieldType === "number"}
                 <div>
                     
                     {JSON.stringify($numberInputComponents.map((item) => item.queryBindId))}
@@ -77,6 +75,7 @@
                             id: uuidv4(),
                             key: element.key,
                             name: element.name,
+                            type: element.type,
                             values: [numberInputComponent]
                         }}
                         />

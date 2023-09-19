@@ -7,7 +7,13 @@ export type Criteria = {
 export type Category = {
     key: string;
     name: string;
-    type?: 'single-select' | 'autocomplete' | 'number';
     childCategories?: Category[] 
-    criteria?: | Criteria[];
+} | {
+    key: string;
+    name: string;
+    system?: string;
+    fieldType: 'single-select' | 'autocomplete' | 'number';
+    type: 'EQUALS' | 'BETWEEN';
+    criteria: | Criteria[];
+
 }

@@ -11,7 +11,7 @@
 
 <script lang="ts">
     import { writable } from "svelte/store";
-    import type { Category } from "../../types/treeData";
+    import type { Category, Criteria } from "../../types/treeData";
     import {
         addItemToQuery,
         queryStore,
@@ -48,9 +48,11 @@
     ): AutoCompleteItem[] => {
         let autoCompleteItems: AutoCompleteItem[];
         if ("criteria" in category)
-            autoCompleteItems = category.criteria.map((criterion) => ({
+            autoCompleteItems = category.criteria.map((criterion: Criteria) => ({
                 name: category.name,
                 key: category.key,
+                type: category.type,
+                system: category.system,
                 criterion: criterion,
             }));
         return autoCompleteItems;
@@ -135,6 +137,8 @@
             id: uuidv4(),
             name: inputItem.name,
             key: inputItem.key,
+            type: inputItem.type,
+            system: "system" in inputItem && inputItem.system,
             values: [
                 {
                     value: inputItem.criterion.key,

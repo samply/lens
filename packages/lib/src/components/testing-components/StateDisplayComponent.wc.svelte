@@ -4,4 +4,4 @@
     import { queryStore } from "../../stores/query";
 </script>
 
-<div>{JSON.stringify($queryStore)}</div>
+<pre>{@html JSON.stringify($queryStore, null, 2)}</pre>

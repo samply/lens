@@ -3,6 +3,8 @@
   import type { CatalogueText } from "../../lib/src/types/texts";
   import type { Category } from "../../lib/src/types/treeData";
 
+
+          
   const mockCatalogueData: Category[] = [
     {
       key: "donor",
@@ -11,7 +13,8 @@
         {
           key: "gender",
           name: "Gender",
-          type: "single-select",
+          type: "EQUALS",
+          fieldType: "single-select",
           criteria: [
             {
               key: "male",
@@ -34,7 +37,8 @@
         {
           key: "diagnosis",
           name: "Diagnosis ICD-10",
-          type: "autocomplete",
+          type: "EQUALS",
+          fieldType: "autocomplete",
           criteria: [
             {
               key: "C31",
@@ -62,7 +66,8 @@
         {
           key: "diagnosis_age_donor",
           name: "Diagnosis age",
-          type: "number",
+          fieldType: "number",
+          type: "BETWEEN",
         },
       ],
     },
@@ -148,6 +153,14 @@
 </script>
 
 <main>
+  <h2>Catalogue</h2>
+  <div class="componentBox">
+    <lens-catalogue
+    treeData={JSON.stringify(mockCatalogueData)}
+    texts={catalogueText}
+    open={true}
+    />
+  </div>
     <h2>Search bars</h2>
     <div class="componentBox">
       <lens-search-bar-multiple
@@ -155,19 +168,16 @@
         noMatchesFoundMessage={"No matches found"}
       />
     </div>
+    <h2>State display</h2>
+    <div class="componentBox">
+      <lens-state-display />
+    </div>
     <h2>Search Button</h2>
     <div class="componentBox">
       <lens-search-button
       />
     </div>
-    <h2>Catalogue</h2>
-    <div class="componentBox">
-      <lens-catalogue
-      treeData={JSON.stringify(mockCatalogueData)}
-      texts={catalogueText}
-      open={true}
-      />
-    </div>
+    
     <h2>Result Summary Bar</h2>
     <div class="componentBox">
     <lens-result-summary
@@ -193,8 +203,5 @@
         />
       </div>
     </div>
-    <h2>State display</h2>
-    <div class="componentBox">
-      <lens-state-display />
-    </div>
+    
 </main>

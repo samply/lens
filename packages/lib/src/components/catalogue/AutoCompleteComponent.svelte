@@ -17,7 +17,7 @@
     /**
      * stores the full list of autocomplete items
      */
-    const criteria: Criteria[] = element.criteria;
+    const criteria: Criteria[] = 'criteria' in element && element.criteria;
 
     /**
      * stores the filtered list of autocomplete items
@@ -86,6 +86,7 @@
             id: uuidv4(),
             name: element.name,
             key: element.key,
+            type: 'type' in element && element.type,
             values: [
                 {
                     value: inputItem.key,

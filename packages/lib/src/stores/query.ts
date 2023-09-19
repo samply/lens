@@ -59,6 +59,8 @@ export const addItemToQuery = (queryObject: QueryItem, queryGroupIndex: number) 
                 id: uuidv4(),
                 key: duplicateObjects[0].key,
                 name: duplicateObjects[0].name,
+                type: duplicateObjects[0].type,
+                system: duplicateObjects[0].system,
                 values: [],
             };
             duplicateObjects.forEach((obj: QueryItem) => {
