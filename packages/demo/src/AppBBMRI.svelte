@@ -11,7 +11,8 @@
         {
           key: "gender",
           name: "Gender",
-          type: "single-select",
+          fieldType: "single-select",
+          type: "EQUALS",
           criteria: [
             {
               key: "male",
@@ -34,7 +35,8 @@
         {
           key: "diagnosis",
           name: "Diagnosis ICD-10",
-          type: "autocomplete",
+          fieldType: "autocomplete",
+          type: "EQUALS",
           criteria: [
             {
               key: "C31",
@@ -62,7 +64,8 @@
         {
           key: "diagnosis_age_donor",
           name: "Diagnosis age",
-          type: "number",
+          fieldType: "number",
+          type: "BETWEEN",
         },
       ],
     },
@@ -71,6 +74,7 @@
   const catalogueText: CatalogueText = {
     group: "Group",
     collapseButtonTitle: "Full Parameter Search",
+    expandButtonTitle: "Full Parameter Search",
     numberInput: {
       labelFrom: "from",
       labelTo: "to",

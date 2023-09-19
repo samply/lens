@@ -43,6 +43,7 @@
     let initializedTexts = {
         group: texts.group || "Group",
         collapseButtonTitle: texts.collapseButtonTitle || "Collapse Tree",
+        expandButtonTitle: texts.expandButtonTitle || "Expand Tree",
         numberInput: {
             labelFrom: texts.numberInput?.labelFrom || "From",
             labelTo: texts.numberInput?.labelTo || "to",
@@ -57,7 +58,7 @@
     {#if toggle.collapsable}
         <button part="lens-catalogue-toggle-button {toggle.open ? 'lens-catalogue-button-open' : ''}" on:click={handleToggle}>
             <div part="toggle-button-icon {toggle.open ? 'toggle-button-open-icon' : ''}">&#9660;</div>
-            <div part="toggle-button-text {toggle.open ? 'toggle-button-open-text' : ''}">{$catalogueTextStore.collapseButtonTitle}</div>
+            <div part="toggle-button-text {toggle.open ? 'toggle-button-open-text' : ''}">{ toggle.open ? $catalogueTextStore.collapseButtonTitle : $catalogueTextStore.expandButtonTitle}</div>
             </button
         >
     {/if}
