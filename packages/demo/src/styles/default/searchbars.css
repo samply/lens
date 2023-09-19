@@ -19,6 +19,7 @@ lens-search-bar-multiple::part(lens-searchbar):focus-within {
   border-color: var(--blue);
   border: solid 1px var(--blue);
   border-radius: var(--border-radius-small);
+  z-index: 2;
 }
 
 lens-search-bar-multiple::part(lens-searchbar) {
