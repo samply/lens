@@ -20,6 +20,7 @@
     import type { AutoCompleteItem, QueryItem, QueryValue } from "../../types/queryData";
     import { v4 as uuidv4 } from "uuid";
     import StoreDeleteButtonComponent from "../buttons/StoreDeleteButtonComponent.svelte";
+    import { addPercentageSignToCriteria } from "../../helpers/object-formaters";
 
     /**
      * props
@@ -32,6 +33,10 @@
     export let chips: boolean = false;
     export let queryGroup: QueryItem[] = [];
     export let index: number = 0;
+
+
+    console.log(treeData);
+
 
     /**
      * handles the focus state of the input element
@@ -71,6 +76,9 @@
                     ...buildDatalistItems(category.childCategories),
                 ];
             } else {
+                if ('criteria' in category)
+                    addPercentageSignToCriteria(category.criteria);
+
                 if (buildDatalistItemFromBottomCategory(category))
                     autoCompleteItems = [
                         ...autoCompleteItems,
@@ -85,7 +93,7 @@
      * stores the full list of autocomplete items
      */
     const criteria: AutoCompleteItem[] = buildDatalistItems(treeData);
-
+   
     /**
      * stores the filtered list of autocomplete items
      */

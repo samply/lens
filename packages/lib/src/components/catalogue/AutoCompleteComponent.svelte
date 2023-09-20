@@ -1,10 +1,11 @@
 <script lang="ts">
     import type { Category, Criteria } from "../../types/treeData";
-    import { writable } from "svelte/store";
     import { v4 as uuidv4 } from "uuid";
     import { addItemToQuery, queryStore } from "../../stores/query";
     import type { QueryItem, QueryValue } from "../../types/queryData";
     import AutoCompleteCriterionComponent from "./AutoCompleteCriterionComponent.svelte";
+    import { onMount } from "svelte";
+    import { addPercentageSignToCriteria } from "../../helpers/object-formaters";
 
     /**
      * mockdata to get from texts store
@@ -15,14 +16,21 @@
     export let element: Category;
 
     /**
-     * stores the full list of autocomplete items
+     * list of criteria
      */
-    const criteria: Criteria[] = "criteria" in element && element.criteria;
+    let criteria: Criteria[] = "criteria" in element ? element.criteria : [];
+
+    onMount(() => {
+        /**
+         * adds .% option to find all subgroups of if the element key is "diagnosis"
+         */
+        if (element.key === "diagnosis") addPercentageSignToCriteria(criteria);
+    });
 
     /**
      * stores the filtered list of autocomplete items
      */
-    const inputOptions = writable<Criteria[]>();
+    let inputOptions: Criteria[] = [];
 
     /**
      * input element binds to this variable. Used to focus the input element
@@ -42,13 +50,12 @@
     /**
      * watches the input value and updates the input options
      */
-    $: $inputOptions = criteria.filter((item) => {
+    $: inputOptions = criteria.filter((item) => {
         return (
             item.name.toLowerCase().includes(inputValue) ||
             item.description.toLowerCase().includes(inputValue)
         );
     });
-
 
     /**
      * list of options that allready have been chosen and should be displayed beneath the autocomplete input
@@ -148,18 +155,18 @@
         if (event.key === "ArrowDown") {
             event.preventDefault();
             focusedItemIndex = focusedItemIndex + 1;
-            if (focusedItemIndex > $inputOptions.length - 1)
+            if (focusedItemIndex > inputOptions.length - 1)
                 focusedItemIndex = 0;
         }
         if (event.key === "ArrowUp") {
             event.preventDefault();
             focusedItemIndex = focusedItemIndex - 1;
             if (focusedItemIndex < 0)
-                focusedItemIndex = $inputOptions.length - 1;
+                focusedItemIndex = inputOptions.length - 1;
         }
         if (event.key === "Enter") {
             event.preventDefault();
-            addInputValueToStore($inputOptions[focusedItemIndex]);
+            addInputValueToStore(inputOptions[focusedItemIndex]);
         }
     };
 
@@ -186,8 +193,8 @@
         />
         {#if autoCompleteOpen && inputValue.length > 0}
             <ul part="autocomplete-options">
-                {#if $inputOptions?.length > 0}
-                    {#each $inputOptions as inputOption, index}
+                {#if inputOptions?.length > 0}
+                    {#each inputOptions as inputOption, index}
                         <!-- svelte-ignore a11y-click-events-have-key-events -->
                         <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
                         <!-- this is handled with the handleKeyDown method -->
