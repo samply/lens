@@ -24,7 +24,8 @@
         /**
          * adds .% option to find all subgroups of if the element key is "diagnosis"
          */
-        if (element.key === "diagnosis") addPercentageSignToCriteria(criteria);
+        if (element.key === "diagnosis") 
+            criteria = addPercentageSignToCriteria(criteria);
     });
 
     /**

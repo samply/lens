@@ -1,6 +1,7 @@
 import type { Criteria } from "../types/treeData";
 
-export const addPercentageSignToCriteria = (criteria: Criteria[]): void => {
+export const addPercentageSignToCriteria = (criteria: Criteria[]): Criteria[] => {
+    criteria = Object.assign([], criteria);
     criteria.forEach((criterion: Criteria, index: number) => {
         criterion.name.length === 3 &&
         criteria.splice(index + 1, 0, {
@@ -10,4 +11,5 @@ export const addPercentageSignToCriteria = (criteria: Criteria[]): void => {
             description: `search for all subgroups of ${criterion.name}`,
         });
     });
+    return criteria;
 };

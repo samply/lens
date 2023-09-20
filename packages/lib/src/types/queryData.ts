@@ -11,7 +11,7 @@ export type QueryItem = {
 export type QueryValue = {
     name: string;
     value: string | {min: number, max: number};
-    queryBindId?: string;
+    queryBindId: string;
     description?: string;
 }
 

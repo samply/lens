@@ -77,7 +77,7 @@
                 ];
             } else {
                 if ('criteria' in category)
-                    addPercentageSignToCriteria(category.criteria);
+                    category.criteria = addPercentageSignToCriteria(category.criteria);
 
                 if (buildDatalistItemFromBottomCategory(category))
                     autoCompleteItems = [
@@ -222,10 +222,10 @@
 <div part="lens-searchbar">
     {#if chips}
         <div part="lens-searchbar-chips">
-            {#each queryGroup as queryItem}
+            {#each queryGroup as queryItem (queryItem.id)}
                 <div part="lens-searchbar-chip">
                     <span part="lens-searchbar-chip-name">{queryItem.name}:{' '}</span>
-                    {#each queryItem.values as value, i}
+                    {#each queryItem.values as value, i (value.queryBindId)}
                         <span part="lens-searchbar-chip-item">
                             <span>{value.name}</span>
                             <StoreDeleteButtonComponent

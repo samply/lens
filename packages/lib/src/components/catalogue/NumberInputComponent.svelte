@@ -3,9 +3,9 @@
     import type { QueryItem, QueryValue } from "../../types/queryData";
     import { catalogueTextStore } from "../../stores/texts";
     import QueryAddButtonComponent from "./QueryAddButtonComponent.svelte";
-    import { removeNumberInputComponent } from "../../stores/catalogue-inputs";
 
     export let queryItem: QueryItem;
+    export let deleteNumberInput
     const {
         values: [{ queryBindId }],
     } = queryItem;
@@ -91,7 +91,8 @@
             removeValueFromQuery(queryItem, index)
         );
         console.log(queryBindId);
-        removeNumberInputComponent(queryBindId);
+        // removeNumberInputComponent(queryBindId);
+        deleteNumberInput(queryBindId);
     };
 </script>
 
