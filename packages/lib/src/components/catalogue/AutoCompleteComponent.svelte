@@ -2,8 +2,8 @@
     import type { Category, Criteria } from "../../types/treeData";
     import { writable } from "svelte/store";
     import { v4 as uuidv4 } from "uuid";
-    import { addItemToQuery } from "../../stores/query";
-    import type { QueryItem } from "../../types/queryData";
+    import { addItemToQuery, queryStore } from "../../stores/query";
+    import type { QueryItem, QueryValue } from "../../types/queryData";
     import AutoCompleteCriterionComponent from "./AutoCompleteCriterionComponent.svelte";
 
     /**
@@ -17,7 +17,7 @@
     /**
      * stores the full list of autocomplete items
      */
-    const criteria: Criteria[] = 'criteria' in element && element.criteria;
+    const criteria: Criteria[] = "criteria" in element && element.criteria;
 
     /**
      * stores the filtered list of autocomplete items
@@ -49,10 +49,41 @@
         );
     });
 
+
     /**
-     * list of options that are allready chosen and should be displayed beneath the input alongside the group checkboxes
+     * list of options that allready have been chosen and should be displayed beneath the autocomplete input
+     * chosenOptions are constructed from the query store and has no duplicates
+     * if an option is put into the store from anywhere it will update
      */
-    let chosenOptions: QueryItem[] = [];
+    $: chosenOptions = getChosenOptionsFromQueryStore($queryStore).reduce(
+        (acc: QueryItem[], queryItem: QueryItem) => {
+            const optionAllreadyPresent = acc.find((option: QueryItem) => {
+                return option.values[0].value === queryItem.values[0].value;
+            });
+            if (optionAllreadyPresent || queryItem.key !== element.key) {
+                return acc;
+            }
+            return [...acc, queryItem];
+        },
+        []
+    );
+
+    const getChosenOptionsFromQueryStore = (queryStore): QueryItem[] => {
+        return queryStore
+            .flat()
+            .map((queryItem: QueryItem) => {
+                const queryItemValues = queryItem.values.map(
+                    (queryValue: QueryValue) => {
+                        return {
+                            ...queryItem,
+                            values: [queryValue],
+                        };
+                    }
+                );
+                return queryItemValues;
+            })
+            .flat();
+    };
 
     /**
      * keeps track of the focused item index
@@ -86,7 +117,7 @@
             id: uuidv4(),
             name: element.name,
             key: element.key,
-            type: 'type' in element && element.type,
+            type: "type" in element && element.type,
             values: [
                 {
                     value: inputItem.key,
@@ -101,7 +132,7 @@
         focusedItemIndex = 0;
 
         addItemToQuery(queryItem, indexOfChosenStore);
-        chosenOptions = [...chosenOptions, queryItem];
+        // chosenOptions = [...chosenOptions, queryItem];
     };
 
     /**
@@ -187,7 +218,7 @@
     </div>
     <div part="criterion-wrapper autocomplete-wrapper">
         {#each chosenOptions as chosenOption}
-          <AutoCompleteCriterionComponent {chosenOption} />
+            <AutoCompleteCriterionComponent {chosenOption} />
         {/each}
     </div>
 </div>
