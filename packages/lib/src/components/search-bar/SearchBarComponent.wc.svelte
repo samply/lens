@@ -17,7 +17,7 @@
         queryStore,
         activeQueryGroupIndex,
     } from "../../stores/query";
-    import type { AutoCompleteItem, QueryItem } from "../../types/queryData";
+    import type { AutoCompleteItem, QueryItem, QueryValue } from "../../types/queryData";
     import { v4 as uuidv4 } from "uuid";
     import StoreDeleteButtonComponent from "../buttons/StoreDeleteButtonComponent.svelte";
 
@@ -206,6 +206,9 @@
     const selectItemByClick = (inputOption) => {
         addInputValueToStore(inputOption, extractTargetGroupFromInputValue());
     };
+
+
+
 </script>
 
 <div part="lens-searchbar">
@@ -213,6 +216,7 @@
         <div part="lens-searchbar-chips">
             {#each queryGroup as queryItem}
                 <div part="lens-searchbar-chip">
+                    <span part="lens-searchbar-chip-name">{queryItem.name}:{' '}</span>
                     {#each queryItem.values as value, i}
                         <span part="lens-searchbar-chip-item">
                             <span>{value.name}</span>

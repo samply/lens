@@ -47,6 +47,10 @@ lens-search-bar-multiple::part(lens-searchbar-chips) {
   gap: var(--gap-xs);
 }
 
+lens-search-bar-multiple::part(lens-searchbar-chip-name) {
+  font-weight: bold;
+}
+
 lens-search-bar-multiple::part(lens-searchbar-chip) {
   background-color: var(--blue);
   color: var(--white);

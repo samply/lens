@@ -3,23 +3,30 @@
     import type { QueryItem, QueryValue } from "../../types/queryData";
     import { catalogueTextStore } from "../../stores/texts";
     import QueryAddButtonComponent from "./QueryAddButtonComponent.svelte";
-    import { numberInputComponents, removeNumberInputComponent } from "../../stores/catalogue-inputs";
-    import { onDestroy } from "svelte";
+    import { removeNumberInputComponent } from "../../stores/catalogue-inputs";
 
     export let queryItem: QueryItem;
     const {
         values: [{ queryBindId }],
     } = queryItem;
-    console.log(queryBindId);
 
     /**
      * defines and handles the number inputs
      */
-    let from: number = 0;
-    let to: number = 0;
+    let from: number | null = 0;
+    let to: number | null = 0;
+
     /**
-     * used to identify the value in the query store which has to update when 'from' or 'to' changes
+     * build the proper name for the query value
      */
+    const transformName = (): string => {
+        if (from === to) return `${from}`;
+        if (from < to && !from) return `≤ ${to}`;
+        if (from !== null && to === null) return `≥ ${from}`;
+        if (from === null && to !== null) return `≤ ${to}`;
+        if (from < to) return ` ${from} - ${to}`;
+        return "invalid";
+    };
 
     /**
      * update all groups in the store when from or to changes
@@ -29,7 +36,7 @@
             queryGroup.forEach((item: QueryItem) => {
                 item.values.forEach((queryValue: QueryValue) => {
                     if (queryValue.queryBindId === queryBindId) {
-                        queryValue.name = `From ${from} to ${to}`;
+                        queryValue.name = transformName();
                         queryValue.value = { min: from, max: to };
                     }
                 });
@@ -37,7 +44,6 @@
         });
         return store;
     });
-
 
     /**
      * when some parts of the element change, the values are watched
@@ -47,7 +53,7 @@
         ...queryItem,
         values: [
             {
-                name: `From ${from} to ${to}`,
+                name: transformName(),
                 value: { min: from, max: to },
                 queryBindId: queryBindId,
             },
@@ -87,8 +93,8 @@
         console.log(queryBindId);
         removeNumberInputComponent(queryBindId);
     };
-    
 </script>
+
 <div>{JSON.stringify(queryBindId)}</div>
 <div part="criterion-wrapper number-input-wrapper">
     <div part="criterion-item criterion-item-number-input">
@@ -98,7 +104,10 @@
             >
                 {$catalogueTextStore.numberInput.labelFrom}
                 <input
-                    part="number-input-formfield number-input-formfield-from"
+                    part="number-input-formfield number-input-formfield-from{from >
+                        to &&
+                        to !== null &&
+                        ' formfield-error'}"
                     type="number"
                     bind:value={from}
                     min="0"
@@ -110,7 +119,10 @@
             >
                 {$catalogueTextStore.numberInput.labelTo}
                 <input
-                    part="number-input-formfield number-input-formfield-from"
+                    part="number-input-formfield number-input-formfield-from{from >
+                        to &&
+                        to !== null &&
+                        ' formfield-error'}"
                     type="number"
                     bind:value={to}
                     min="0"
@@ -123,7 +135,7 @@
         >
             &minus;
         </button>
-        <QueryAddButtonComponent queryItem={{
+        <!-- <QueryAddButtonComponent queryItem={{
             ...queryItem,
             values: [
                 {
@@ -132,6 +144,7 @@
                     queryBindId: queryBindId,
                 },
             ],
-        }} />
+        }} /> -->
+        <QueryAddButtonComponent {queryItem} />
     </div>
 </div>

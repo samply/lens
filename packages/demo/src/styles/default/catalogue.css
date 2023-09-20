@@ -227,3 +227,7 @@ lens-catalogue::part(lens-catalogue-toggle-button) {
     border: solid 1px var(--green);
   }
   
+  lens-catalogue::part(formfield-error) {
+    color: var(--red);
+    border-color: var(--red);
+  }
