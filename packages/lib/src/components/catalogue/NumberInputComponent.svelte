@@ -96,7 +96,6 @@
     };
 </script>
 
-<div>{JSON.stringify(queryBindId)}</div>
 <div part="criterion-wrapper number-input-wrapper">
     <div part="criterion-item criterion-item-number-input">
         <div part="criterion-section criterion-section-values">

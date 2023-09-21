@@ -132,8 +132,7 @@
                 {:else if "fieldType" in element && element.fieldType === "autocomplete"}
                     <AutocompleteComponent {element} />
                 {:else if "fieldType" in element && element.fieldType === "number"}
-                <div>{JSON.stringify(numberInputs.map(item => item.values[0].queryBindId))}</div>
-                    {#each numberInputs as numberInputComponent (numberInputComponent.values[0].queryBindId)}))}
+                    {#each numberInputs as numberInputComponent (numberInputComponent.values[0].queryBindId)}
                         <NumberInputComponent
                             queryItem={numberInputComponent} deleteNumberInput={deleteNumberInput}
                         />
