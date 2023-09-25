@@ -1,3 +1,5 @@
+import type { AggregatedValue } from "./treeData";
+
 export type QueryItem = {
     id: string;
     key: string;
@@ -10,9 +12,10 @@ export type QueryItem = {
 
 export type QueryValue = {
     name: string;
-    value: string | {min: number, max: number};
+    value: string | {min: number, max: number} | AggregatedValue[][];
     queryBindId: string;
     description?: string;
+
 }
 
 export type AutoCompleteItem = {
@@ -27,3 +30,5 @@ export type AutoCompleteItem = {
         description?: string;
     };
 };
+
+export type queryStoreItem = QueryItem[] | QueryItem | QueryValue[] | QueryValue | AggregatedValue[] | AggregatedValue

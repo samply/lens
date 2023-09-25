@@ -2,76 +2,84 @@
   import "../../lib";
   import type { CatalogueText } from "../../lib/src/types/texts";
   import type { Category } from "../../lib/src/types/treeData";
-
+  // import * as mockCatalogueData from "./catalogues/catalogue-example.json"
+  
+  let mockCatalogueData = ''
+  
+  fetch("catalogues/catalogue-example.json").then((response) => response.text()).then((data) => {
+    mockCatalogueData = data
+  })
+  
+  // $: console.log(mockCatalogueData)
 
           
-  const mockCatalogueData: Category[] = [
-    {
-      key: "donor",
-      name: "Donor/Clinical Information",
-      childCategories: [
-        {
-          key: "gender",
-          name: "Gender",
-          type: "EQUALS",
-          fieldType: "single-select",
-          criteria: [
-            {
-              key: "male",
-              name: "male",
-            },
-            {
-              key: "female",
-              name: "female",
-            },
-            {
-              key: "other",
-              name: "other",
-            },
-            {
-              key: "sex_uncharted",
-              name: "sex uncharted",
-            },
-          ],
-        },
-        {
-          key: "diagnosis",
-          name: "Diagnosis ICD-10",
-          type: "EQUALS",
-          fieldType: "autocomplete",
-          criteria: [
-            {
-              key: "C31",
-              name: "C31",
-              description: "Malignant neoplasm of accessory sinuses",
-            },
-            {
-              key: "C31.0",
-              name: "C31.0",
-              description: "Malignant neoplasm: Maxillary sinus",
-            },
-            {
-              key: "C41",
-              name: "C41",
-              description:
-                "Malignant neoplasm of bone and articular cartilage of other and unspecified sites",
-            },
-            {
-              key: "C41.0",
-              name: "C41.0",
-              description: "Malignant neoplasm: Bones of skull and face",
-            },
-          ],
-        },
-        {
-          key: "diagnosis_age_donor",
-          name: "Diagnosis age",
-          fieldType: "number",
-          type: "BETWEEN",
-        },
-      ],
-    },
-  ];
+  // const mockCatalogueData: Category[] = [
+  //   {
+  //     key: "donor",
+  //     name: "Donor/Clinical Information",
+  //     childCategories: [
+  //       {
+  //         key: "gender",
+  //         name: "Gender",
+  //         type: "EQUALS",
+  //         fieldType: "single-select",
+  //         criteria: [
+  //           {
+  //             key: "male",
+  //             name: "male",
+  //           },
+  //           {
+  //             key: "female",
+  //             name: "female",
+  //           },
+  //           {
+  //             key: "other",
+  //             name: "other",
+  //           },
+  //           {
+  //             key: "sex_uncharted",
+  //             name: "sex uncharted",
+  //           },
+  //         ],
+  //       },
+  //       {
+  //         key: "diagnosis",
+  //         name: "Diagnosis ICD-10",
+  //         type: "EQUALS",
+  //         fieldType: "autocomplete",
+  //         criteria: [
+  //           {
+  //             key: "C31",
+  //             name: "C31",
+  //             description: "Malignant neoplasm of accessory sinuses",
+  //           },
+  //           {
+  //             key: "C31.0",
+  //             name: "C31.0",
+  //             description: "Malignant neoplasm: Maxillary sinus",
+  //           },
+  //           {
+  //             key: "C41",
+  //             name: "C41",
+  //             description:
+  //               "Malignant neoplasm of bone and articular cartilage of other and unspecified sites",
+  //           },
+  //           {
+  //             key: "C41.0",
+  //             name: "C41.0",
+  //             description: "Malignant neoplasm: Bones of skull and face",
+  //           },
+  //         ],
+  //       },
+  //       {
+  //         key: "diagnosis_age_donor",
+  //         name: "Diagnosis age",
+  //         fieldType: "number",
+  //         type: "BETWEEN",
+  //       },
+  //     ],
+  //   },
+  // ];
 
   const catalogueText: CatalogueText = {
     group: "Group",
@@ -156,24 +164,25 @@
 <main>
   <h2>Catalogue</h2>
   <div class="componentBox">
+    <!-- <pre>{mockCatalogueData}</pre> -->
     <lens-catalogue
-    treeData={JSON.stringify(mockCatalogueData)}
+    treeData={mockCatalogueData}
     texts={catalogueText}
     open={true}
     />
   </div>
-    <h2>Search bars</h2>
+    <!-- <h2>Search bars</h2>
     <div class="componentBox">
       <lens-search-bar-multiple
         treeData={JSON.stringify(mockCatalogueData)}
         noMatchesFoundMessage={"No matches found"}
       />
-    </div>
+    </div> -->
     <h2>State display</h2>
     <div class="componentBox">
       <lens-state-display />
     </div>
-    <h2>Search Button</h2>
+    <!-- <h2>Search Button</h2>
     <div class="componentBox">
       <lens-search-button
       />
@@ -204,5 +213,5 @@
         />
       </div>
     </div>
-    
+     -->
 </main>

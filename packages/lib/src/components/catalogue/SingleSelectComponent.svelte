@@ -6,7 +6,9 @@
 </script>
 
 <div part="criterion-wrapper single-select-wrapper">
-    {#each element.criteria as criterion}
-       <SingleSelectItemComponent {element} {criterion} />
-    {/each}
+    {#if "criteria" in element}
+        {#each element.criteria as criterion}
+           <SingleSelectItemComponent {element} {criterion} />
+        {/each}
+    {/if}
 </div>

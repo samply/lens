@@ -17,18 +17,22 @@
             {
               key: "male",
               name: "male",
+              description: ''
             },
             {
               key: "female",
               name: "female",
+              description: ''
             },
             {
               key: "other",
               name: "other",
+              description: ''
             },
             {
               key: "sex_uncharted",
               name: "sex uncharted",
+              description: ''
             },
           ],
         },

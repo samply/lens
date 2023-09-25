@@ -1,8 +1,3 @@
-export type Criteria = {
-    key: string;
-    name: string;
-    description?: string;
-}
 
 export type Category = {
     key: string;
@@ -15,5 +10,19 @@ export type Category = {
     fieldType: 'single-select' | 'autocomplete' | 'number';
     type: 'EQUALS' | 'BETWEEN';
     criteria: | Criteria[];
+    
+}
 
+export type Criteria = {
+    key: string;
+    name: string;
+    description?: string;
+    aggregatedValue?: AggregatedValue[][]
+}
+
+export type AggregatedValue = {
+    value: string;
+    name: string;
+    type: string;
+    system?: string;
 }
