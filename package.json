@@ -1,10 +1,10 @@
 {
-  "name": "my-library",
-  "description": "A base template for building a shareable web components library with Vite + Svelte",
+  "name": "lens-web-componets",
+  "description": "A web component library for clinical data search and visualisation",
   "version": "0.0.0",
   "type": "module",
-  "module": "dist/lib/my-library.js",
-  "main": "dist/lib/my-library.umd.js",
+  "module": "dist/lib/lens-web-components.js",
+  "main": "dist/lib/lens-web-components.umd.js",
   "scripts": {
     "start": "npm run dev -s",
     "dev": "vite --config vite.demo.config.ts",

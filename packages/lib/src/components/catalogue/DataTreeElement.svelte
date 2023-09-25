@@ -4,10 +4,7 @@
     import NumberInputComponent from "./NumberInputComponent.svelte";
     import AutocompleteComponent from "./AutoCompleteComponent.svelte";
     import SingleSelectComponent from "./SingleSelectComponent.svelte";
-    import { onMount } from "svelte";
     import { v4 as uuidv4 } from "uuid";
-    import type { QueryItem } from "../../types/queryData";
-    import { writable } from "svelte/store";
 
     export let element: Category;
 
@@ -68,48 +65,6 @@
         numberInputs = numberInputs.filter(item => item.values[0].queryBindId !== queryBindId)
     };
 
-    // const numberInputs = writable( [
-    //     {
-    //         id: uuidv4(),
-    //         key: element.key,
-    //         name: element.name,
-    //         type: 'type' in element ? element.type : '',
-    //         system: 'system' in element ? element.system : '',
-    //         values: [{name: "", value: {min: 0, max: 0}, queryBindId: uuidv4()}],
-    //     },
-    // ])
-
-    // /**
-    //  * adds a new number input component
-    //  */
-    // const addNumberInput = () => {
-    //     numberInputs.update(store => {
-    //         const inputs = [
-    //             ...store,
-    //             {
-    //                 id: uuidv4(),
-    //                 key: element.key,
-    //                 name: element.name,
-    //                 type: 'type' in element ? element.type : '',
-    //                 system: 'system' in element ? element.system : '',
-    //                 values: [{name: "", value: {min: 0, max: 0}, queryBindId: uuidv4()}],
-    //             },
-    //         ]
-    //         return inputs
-    //     })
-    // };
-
-    // /**
-    //  * deletes a number input component
-    //  */
-    // const deleteNumberInput = (queryBindId: string) => {
-    //     //filter the store and remove the number input component with the given queryBindId
-    //     numberInputs.update(store => {
-    //         console.log(store)
-    //         const inputs = store.filter(item => item.values[0].queryBindId !== queryBindId)
-    //         return inputs
-    //     })
-    // };
 </script>
 
 <div part="data-tree-element">
