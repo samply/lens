@@ -168,27 +168,27 @@
     <lens-catalogue
     treeData={mockCatalogueData}
     texts={catalogueText}
-    open={true}
+    toggle={{ collapsable: true, open: catalogueopen }}
     />
   </div>
-    <!-- <h2>Search bars</h2>
+    <h2>Search bars</h2>
     <div class="componentBox">
       <lens-search-bar-multiple
-        treeData={JSON.stringify(mockCatalogueData)}
+        treeData={mockCatalogueData}
         noMatchesFoundMessage={"No matches found"}
       />
-    </div> -->
+    </div>
     <h2>State display</h2>
     <div class="componentBox">
       <lens-state-display />
     </div>
-    <!-- <h2>Search Button</h2>
+    <h2>Search Button</h2>
     <div class="componentBox">
       <lens-search-button
       />
     </div>
     
-    <h2>Result Summary Bar</h2>
+    <!-- <h2>Result Summary Bar</h2>
     <div class="componentBox">
     <lens-result-summary
       title="Results"
@@ -196,12 +196,12 @@
       negotiateButton={true}
       negotiateButtonText="Negotiate with biobanks"
     />
-    </div>
-    <h2>Result Table</h2>
+    </div> -->
+    <!-- <h2>Result Table</h2>
     <div class="componentBox">
       <lens-result-table pageSize="3" title="Responding sites"/>
-    </div>
-    <h2>Result Table</h2>
+    </div> -->
+    <!-- <h2>Result Table</h2>
     <div class="componentBox">
       <div>
 
@@ -212,6 +212,6 @@
         chartData={JSON.stringify(chart1Data)}
         />
       </div>
-    </div>
-     -->
+    </div> -->
+    
 </main>

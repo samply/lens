@@ -3,18 +3,18 @@
     import type { QueryItem, QueryValue } from "../../types/queryData";
     import { catalogueTextStore } from "../../stores/texts";
     import QueryAddButtonComponent from "./QueryAddButtonComponent.svelte";
+    import { activeNumberInputs } from "../../stores/catalogue";
 
     export let queryItem: QueryItem;
-    export let deleteNumberInput
-    const {
-        values: [{ queryBindId }],
-    } = queryItem;
+
+    const queryBindId = queryItem.values[0].queryBindId;
+    const value = queryItem.values[0].value as { min: number; max: number };
 
     /**
      * defines and handles the number inputs
      */
-    let from: number | null = 0;
-    let to: number | null = 0;
+    let from: number | null = value.min;
+    let to: number | null = value.max;
 
     /**
      * build the proper name for the query value
@@ -29,21 +29,45 @@
     };
 
     /**
-     * update all groups in the store when from or to changes
+     * update all groups in the query store when from or to changes
+     * update values in the activeNumberInputs store
+     * @param from
+     * @param to
      */
-    $: queryStore.update((store) => {
-        store.forEach((queryGroup: QueryItem[]) => {
-            queryGroup.forEach((item: QueryItem) => {
-                item.values.forEach((queryValue: QueryValue) => {
-                    if (queryValue.queryBindId === queryBindId) {
-                        queryValue.name = transformName();
-                        queryValue.value = { min: from, max: to };
-                    }
+
+    const updateStores = (from: number, to: number): void => {
+
+        queryStore.update((store: QueryItem [][]): QueryItem[][] => {
+            store.forEach((queryGroup: QueryItem[]) => {
+                queryGroup.forEach((item: QueryItem) => {
+                    item.values.forEach((queryValue: QueryValue) => {
+                        if (queryValue.queryBindId === queryBindId) {
+                            queryValue.name = transformName();
+                            queryValue.value = { min: from, max: to };
+                        }
+                    });
                 });
             });
+            return store;
         });
-        return store;
-    });
+
+        activeNumberInputs.update((store: QueryItem[]): QueryItem[] => {
+            store.forEach((item: QueryItem) => {
+                if (item.key === queryItem.key) {
+                    console.log(item);
+                    item.values.forEach((queryValue: QueryValue) => {
+                        if (queryValue.queryBindId === queryBindId) {
+                            queryValue.name = transformName();
+                            queryValue.value = { min: from, max: to };
+                        }
+                    });
+                }
+            });
+            return store;
+        });
+    };
+
+    $: updateStores(from, to);
 
     /**
      * when some parts of the element change, the values are watched
@@ -61,38 +85,24 @@
     };
 
     /**
-     * update all groups in the store when from or to changes
-     * @param from
-     * @param to
-     * @returns void
+     * removes the number input from the query store
+     * removes the number input from the activeNumberInputs store
      */
-    // const changeQueryStoreWhenFromOrToChanges = (from: number, to: number): void => {
-    //     queryStore.update((store) => {
-    //         store.forEach((queryGroup: QueryItem[]) => {
-    //             queryGroup.forEach((item: QueryItem) => {
-    //                 if (item.id !== queryItem.id) {
-    //                     return store;
-    //                 }
-    //                 item.values.forEach((queryValue: QueryValue) => {
-    //                     if (queryValue.queryBindId === queryBindId) {
-    //                         queryValue.name = `From ${from} to ${to}`;
-    //                         queryValue.value = { min: from, max: to };
-    //                     }
-    //                 });
-    //             });
-    //         });
-    //         return store;
-    //     });
-    // }
-    // $: changeQueryStoreWhenFromOrToChanges(from, to);
-
     const handleRemoveElement = (): void => {
-        $queryStore.forEach((_, index) =>
+        $queryStore.forEach((_ : QueryItem[], index: number) =>
             removeValueFromQuery(queryItem, index)
         );
-        console.log(queryBindId);
-        // removeNumberInputComponent(queryBindId);
-        deleteNumberInput(queryBindId);
+        activeNumberInputs.update((store: QueryItem[]): QueryItem[] => {
+            store.forEach((item: QueryItem) => {
+                if (item.key === queryItem.key) {
+                    item.values = item.values.filter(
+                        (queryValue: QueryValue): Boolean =>
+                            queryValue.queryBindId !== queryBindId
+                    );
+                }
+            });
+            return store;
+        });
     };
 </script>
 
@@ -135,16 +145,6 @@
         >
             &minus;
         </button>
-        <!-- <QueryAddButtonComponent queryItem={{
-            ...queryItem,
-            values: [
-                {
-                    name: `From ${from} to ${to}`,
-                    value: { min: from, max: to },
-                    queryBindId: queryBindId,
-                },
-            ],
-        }} /> -->
         <QueryAddButtonComponent {queryItem} />
     </div>
 </div>

@@ -12,30 +12,39 @@
 
 <script lang="ts">
     import { catalogueTextStore } from "../../stores/texts";
+    import { catalogue } from "../../stores/catalogue";
     import type { ToggleAttribute } from "../../types/helpers";
     import type { CatalogueText } from "../../types/texts";
     import type { Category } from "../../types/treeData";
     import DataTreeElement from "./DataTreeElement.svelte";
-    import { slide } from "svelte/transition";
-
 
     export let treeData: Category[] = [];
     export let texts: CatalogueText = {};
 
+      /**
+     * Initialize the catalogue store with the given tree data
+     * watch for changes from other components
+     */
+     $: $catalogue = treeData;
+
+    /**
+     * Initialize the text store with the given texts
+     */
+    $: $catalogueTextStore = initializedTexts;
 
     /**
      * handle the toggle of the catalogue
      */
     export let toggle: ToggleAttribute = {
         collapsable: true,
-        open: true,
-        animated: true,
+        open: false,
     };
+    
+    let toggleTree = toggle.open;
 
     const handleToggle = () => {
-        toggle.open = !toggle.open;
+        toggleTree = !toggleTree;
     };
-
 
     /**
      * Initialize the catalogue text store with the given texts
@@ -50,34 +59,40 @@
         },
     };
 
-    catalogueTextStore.set(initializedTexts);
-    
+  
 </script>
 
 <div part="lens-catalogue">
     {#if toggle.collapsable}
-        <button part="lens-catalogue-toggle-button {toggle.open ? 'lens-catalogue-button-open' : ''}" on:click={handleToggle}>
-            <div part="toggle-button-icon {toggle.open ? 'toggle-button-open-icon' : ''}">&#9660;</div>
-            <div part="toggle-button-text {toggle.open ? 'toggle-button-open-text' : ''}">{ toggle.open ? $catalogueTextStore.collapseButtonTitle : $catalogueTextStore.expandButtonTitle}</div>
-            </button
+        <button
+            part="lens-catalogue-toggle-button {toggle.open
+                ? 'lens-catalogue-button-open'
+                : ''}"
+            on:click={handleToggle}
         >
-    {/if}
-    {#if toggle.open}
-        {#if toggle.animated}
             <div
-                part="lens-catalogue-wrapper"
-                transition:slide={{ duration: 300 }}
+                part="toggle-button-icon {toggle.open
+                    ? 'toggle-button-open-icon'
+                    : ''}"
             >
-                {#each treeData as Category}
-                    <DataTreeElement open={toggle.open} element={Category} />
-                {/each}
+                &#9660;
             </div>
-        {:else}
-            <div part="lens-catalogue-wrapper">
-                {#each treeData as Category}
-                    <DataTreeElement element={Category} />
-                {/each}
+            <div
+                part="toggle-button-text {toggle.open
+                    ? 'toggle-button-open-text'
+                    : ''}"
+            >
+                {toggle.open
+                    ? $catalogueTextStore.collapseButtonTitle
+                    : $catalogueTextStore.expandButtonTitle}
             </div>
-        {/if}
+        </button>
+    {/if}
+    {#if toggleTree || !toggle.collapsable}
+        <div part="lens-catalogue-wrapper">
+            {#each $catalogue as Category}
+                <DataTreeElement element={Category} treeOpen={toggle.open} />
+            {/each}
+        </div>
     {/if}
 </div>

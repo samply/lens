@@ -17,10 +17,11 @@
         queryStore,
         activeQueryGroupIndex,
     } from "../../stores/query";
-    import type { AutoCompleteItem, QueryItem, QueryValue } from "../../types/queryData";
+    import type { AutoCompleteItem, QueryItem } from "../../types/queryData";
     import { v4 as uuidv4 } from "uuid";
     import StoreDeleteButtonComponent from "../buttons/StoreDeleteButtonComponent.svelte";
     import { addPercentageSignToCriteria } from "../../helpers/object-formaters";
+    import { catalogue } from "../../stores/catalogue";
 
     /**
      * props
@@ -34,8 +35,11 @@
     export let queryGroup: QueryItem[] = [];
     export let index: number = 0;
 
-
-    console.log(treeData);
+    /**
+     * Initialize the catalogue store with the given tree data
+     * watch for changes from other components
+    */
+    $: $catalogue = treeData;
 
 
     /**
@@ -68,6 +72,14 @@
      * @param treeData
      */
     const buildDatalistItems = (treeData: Category[]): AutoCompleteItem[] => {
+         /**
+         * FIX ME:
+         *  there seems to be a race condition where the catalogue is not yet loaded and the function is called right away
+         *  the data being a string probably comes from the data being passed as a json string
+         */
+        if (typeof treeData === 'string') {
+            return
+        }
         let autoCompleteItems: AutoCompleteItem[] = [];
         treeData.forEach((category) => {
             if ("childCategories" in category) {
@@ -92,7 +104,7 @@
     /**
      * stores the full list of autocomplete items
      */
-    const criteria: AutoCompleteItem[] = buildDatalistItems(treeData);
+    const criteria: AutoCompleteItem[] = buildDatalistItems($catalogue) || [];
    
     /**
      * stores the filtered list of autocomplete items
