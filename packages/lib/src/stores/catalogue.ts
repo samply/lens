@@ -5,7 +5,7 @@ import type { QueryItem } from "../types/queryData";
 /**
  * store to hold the catalogue
  * populated by the searchbar or the catalogue
- * FIX ME: should there be a seperate component without markup just for populating for the catalogue?
+ * DISCUSSION: should there be a seperate component without markup just for populating for the catalogue?
  * there could be some corner cases for that
  */
 export const catalogue = writable<Category[]>([]);
@@ -71,20 +71,28 @@ const getBottomLevelItems = (item: TreeNode, category: string): string[] => {
         return item.criteria.map((criterion) => getBottomLevelItems(criterion, category)).flat()
     }
 
-    if ('criteria' in item) {
-        return item.criteria.map((criterion) => {
-            if (criterion.aggregatedValue) {
-                return getBottomLevelItems(criterion, category)
-            }
-        }).flat()
-    }
 
-    if ('aggregatedValue' in item) {
-        return item.aggregatedValue.map((aggregatedValue) => getBottomLevelItems(aggregatedValue, category)).flat()
-    }
+    /**
+     * TODO:
+     * find deeper nested items to search for eg glioma
+     * not needed for right now
+     */
+
+    // if ('criteria' in item) {
+    //     return item.criteria.map((criterion) => {
+    //         if (criterion.aggregatedValue) {
+    //             return getBottomLevelItems(criterion, category)
+    //         }
+    //     }).flat()
+    // }
+
+    // if ('aggregatedValue' in item) {
+    //     return item.aggregatedValue.map((aggregatedValue) => getBottomLevelItems(aggregatedValue, category)).flat()
+    // }
 
     if (itemIsBottomLevel(item) && 'key' in item) {
         return [item.key]
     }
 
+    return
 }

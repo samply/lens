@@ -6,7 +6,7 @@ import type { QueryItem, QueryValue } from "../types/queryData";
 import { writable } from "svelte/store";
 import { v4 as uuidv4 } from "uuid";
 
-export const queryStore = writable([[]]);
+export const queryStore = writable<QueryItem[][]>([[]]);
 
 export const activeQueryGroupIndex = writable(0);
 
@@ -138,7 +138,6 @@ export const removeItemFromQuery = (queryObject: QueryItem, queryGroupIndex: num
         let queryStoreGroup: QueryItem[] = query[queryGroupIndex];
 
         queryStoreGroup = queryStoreGroup.filter((item) => {
-            console.log(item.id, queryObject.id)
             return item.id !== queryObject.id});
 
         query[queryGroupIndex] = queryStoreGroup;

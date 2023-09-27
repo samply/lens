@@ -9,6 +9,7 @@
 
 <script lang="ts">
     import { responseStore } from "../../stores/response";
+    import NegotiateButtonComponent from "../buttons/NegotiateButtonComponent.wc.svelte";
 
     export let title: string = "";
     export let resultSummaryDataTypes: string[] = [];
@@ -18,8 +19,6 @@
     /**
      * TODO: check which reuslt summary data types are available in the response
      * and only display those
-     * 
-     * TODO: create negotiate button component
      */
 
 </script>
@@ -40,8 +39,6 @@
 </div>
 {#if negotiateButton}
     <div part="result-summary-footer">
-        <button part="result-summary-footer-button">
-            {negotiateButtonText}
-        </button>
+       <NegotiateButtonComponent title={negotiateButtonText} />
     </div>
 {/if}

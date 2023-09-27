@@ -1,85 +1,14 @@
 <script lang="ts">
   import "../../lib";
   import type { CatalogueText } from "../../lib/src/types/texts";
-  import type { Category } from "../../lib/src/types/treeData";
-  // import * as mockCatalogueData from "./catalogues/catalogue-example.json"
-  
-  let mockCatalogueData = ''
-  
-  fetch("catalogues/catalogue-example.json").then((response) => response.text()).then((data) => {
-    mockCatalogueData = data
-  })
-  
-  // $: console.log(mockCatalogueData)
 
-          
-  // const mockCatalogueData: Category[] = [
-  //   {
-  //     key: "donor",
-  //     name: "Donor/Clinical Information",
-  //     childCategories: [
-  //       {
-  //         key: "gender",
-  //         name: "Gender",
-  //         type: "EQUALS",
-  //         fieldType: "single-select",
-  //         criteria: [
-  //           {
-  //             key: "male",
-  //             name: "male",
-  //           },
-  //           {
-  //             key: "female",
-  //             name: "female",
-  //           },
-  //           {
-  //             key: "other",
-  //             name: "other",
-  //           },
-  //           {
-  //             key: "sex_uncharted",
-  //             name: "sex uncharted",
-  //           },
-  //         ],
-  //       },
-  //       {
-  //         key: "diagnosis",
-  //         name: "Diagnosis ICD-10",
-  //         type: "EQUALS",
-  //         fieldType: "autocomplete",
-  //         criteria: [
-  //           {
-  //             key: "C31",
-  //             name: "C31",
-  //             description: "Malignant neoplasm of accessory sinuses",
-  //           },
-  //           {
-  //             key: "C31.0",
-  //             name: "C31.0",
-  //             description: "Malignant neoplasm: Maxillary sinus",
-  //           },
-  //           {
-  //             key: "C41",
-  //             name: "C41",
-  //             description:
-  //               "Malignant neoplasm of bone and articular cartilage of other and unspecified sites",
-  //           },
-  //           {
-  //             key: "C41.0",
-  //             name: "C41.0",
-  //             description: "Malignant neoplasm: Bones of skull and face",
-  //           },
-  //         ],
-  //       },
-  //       {
-  //         key: "diagnosis_age_donor",
-  //         name: "Diagnosis age",
-  //         fieldType: "number",
-  //         type: "BETWEEN",
-  //       },
-  //     ],
-  //   },
-  // ];
+  let mockCatalogueData = "";
+
+  fetch("catalogues/catalogue-example.json")
+    .then((response) => response.text())
+    .then((data) => {
+      mockCatalogueData = data;
+    });
 
   const catalogueText: CatalogueText = {
     group: "Group",
@@ -164,54 +93,55 @@
 <main>
   <h2>Catalogue</h2>
   <div class="componentBox">
-    <!-- <pre>{mockCatalogueData}</pre> -->
     <lens-catalogue
-    treeData={mockCatalogueData}
-    texts={catalogueText}
-    toggle={{ collapsable: true, open: catalogueopen }}
+      treeData={mockCatalogueData}
+      texts={catalogueText}
+      toggle={{ collapsable: true, open: catalogueopen }}
     />
   </div>
-    <h2>Search bars</h2>
-    <div class="componentBox">
-      <lens-search-bar-multiple
-        treeData={mockCatalogueData}
-        noMatchesFoundMessage={"No matches found"}
-      />
-    </div>
-    <h2>State display</h2>
-    <div class="componentBox">
-      <lens-state-display />
-    </div>
-    <h2>Search Button</h2>
-    <div class="componentBox">
-      <lens-search-button
-      />
-    </div>
-    
-    <!-- <h2>Result Summary Bar</h2>
-    <div class="componentBox">
+
+  <h2>Search bars</h2>
+  <div class="componentBox">
+    <lens-search-bar-multiple
+      treeData={mockCatalogueData}
+      noMatchesFoundMessage={"No matches found"}
+    />
+  </div>
+
+  <h2>State display</h2>
+  <div class="componentBox">
+    <lens-state-display />
+  </div>
+
+  <h2>Search Button</h2>
+  <div class="componentBox">
+    <lens-search-button />
+  </div>
+
+  <h2>Result Summary Bar</h2>
+  <div class="componentBox">
     <lens-result-summary
       title="Results"
       resultSummaryDataTypes={JSON.stringify(["Patients", "Samples", "sites"])}
       negotiateButton={true}
       negotiateButtonText="Negotiate with biobanks"
     />
-    </div> -->
-    <!-- <h2>Result Table</h2>
-    <div class="componentBox">
-      <lens-result-table pageSize="3" title="Responding sites"/>
-    </div> -->
-    <!-- <h2>Result Table</h2>
-    <div class="componentBox">
-      <div>
+  </div>
 
-        <lens-chart
+  <h2>Result Table</h2>
+  <div class="componentBox">
+    <lens-result-table pageSize="3" title="Responding sites" />
+  </div>
+
+  <h2>Result Table</h2>
+  <div class="componentBox">
+    <div>
+      <lens-chart
         class="chart1"
         title="Age at Diagnosis"
         hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit."
         chartData={JSON.stringify(chart1Data)}
-        />
-      </div>
-    </div> -->
-    
+      />
+    </div>
+  </div>
 </main>

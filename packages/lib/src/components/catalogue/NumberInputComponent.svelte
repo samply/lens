@@ -54,7 +54,6 @@
         activeNumberInputs.update((store: QueryItem[]): QueryItem[] => {
             store.forEach((item: QueryItem) => {
                 if (item.key === queryItem.key) {
-                    console.log(item);
                     item.values.forEach((queryValue: QueryValue) => {
                         if (queryValue.queryBindId === queryBindId) {
                             queryValue.name = transformName();

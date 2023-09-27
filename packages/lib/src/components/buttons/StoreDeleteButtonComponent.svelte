@@ -24,7 +24,6 @@
             });
         }
         if (type === "item") {
-            console.log("delete", itemToDelete);
             removeItemFromQuery(item, index);
         }
         if (type === "value") {

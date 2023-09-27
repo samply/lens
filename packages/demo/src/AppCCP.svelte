@@ -1,53 +1,26 @@
 <script lang="ts">
   import "../../lib";
   import type { CatalogueText } from "../../lib/src/types/texts";
-  import type { Category } from "../../lib/src/types/treeData";
-  import { diagnoses } from '../catalogue-ccp'
+  import {  
+      patientsMeasure,
+      diagnosisMeasure,
+      specimenMeasure,
+      proceduresMeasure,
+      medicationStatementsMeasure,
+    } from './measures'
 
-  const mockCatalogueData: Category[] = [
-    {
-      key: "donor",
-      name: "Donor/Clinical Information",
-      childCategories: [
-        {
-          key: "gender",
-          name: "Gender",
-          fieldType: "single-select",
-          type: "EQUALS",
-          criteria: [
-            {
-              key: "male",
-              name: "male",
-            },
-            {
-              key: "female",
-              name: "female",
-            },
-            {
-              key: "other",
-              name: "other",
-            },
-            {
-              key: "sex_uncharted",
-              name: "sex uncharted",
-            },
-          ],
-        },
-        {
-          key: "diagnosis",
-          name: "Diagnosis ICD-10",
-          fieldType: "autocomplete",
-          type: "EQUALS",
-          criteria: diagnoses,
-        },
-        {
-          key: "diagnosis_age_donor",
-          name: "Diagnosis age",
-          fieldType: "number",
-          type: "BETWEEN",
-        },
-      ],
-    },
+  let mockCatalogueData = ''
+  
+  fetch("catalogues/catalogue-example.json").then((response) => response.text()).then((data) => {
+    mockCatalogueData = data
+  })
+
+  const measures = [
+    patientsMeasure,
+      diagnosisMeasure,
+      specimenMeasure,
+      proceduresMeasure,
+      medicationStatementsMeasure,
   ];
 
   const catalogueText: CatalogueText = {
@@ -139,9 +112,12 @@
 <main>
   <div class="search">
     <lens-search-bar-multiple
-      treeData={JSON.stringify(mockCatalogueData)}
+      treeData={mockCatalogueData}
       noMatchesFoundMessage={"No matches found"}
-    />
+      measures={[patientsMeasure, diagnosisMeasure, specimenMeasure, proceduresMeasure, medicationStatementsMeasure]}
+    >
+      <lens-search-button title="Search Biobanks" measures={measures} />
+    </lens-search-bar-multiple>
   </div>
   <div class="grid">
     <div
@@ -149,7 +125,7 @@
       style={`max-width: ${catalogueopen ? "400px" : "288px"};`}
       >
       <lens-catalogue
-        treeData={JSON.stringify(mockCatalogueData)}
+        treeData={mockCatalogueData}
         texts={catalogueText}
         toggle={{ collapsable: false, open: true }}
       />

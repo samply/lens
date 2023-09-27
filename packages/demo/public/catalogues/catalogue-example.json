@@ -62,7 +62,7 @@
                 ]
             },
             {
-                "key": "diagnosis_age_donor",
+                "key": "age_at_diagnosis",
                 "name": "Diagnosis age",
                 "fieldType": "number",
                 "type": "BETWEEN",

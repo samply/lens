@@ -1,33 +1,34 @@
-export const alias = new Map<string, string>([
-    ["icd10", "http://fhir.de/CodeSystem/bfarm/icd-10-gm"],
-    ["loinc", "http://loinc.org"],
-    ["gradingcs", "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/GradingCS"],
-    ["ops", "http://fhir.de/CodeSystem/bfarm/ops"],
-    ["morph", "urn:oid:2.16.840.1.113883.6.43.1"],
-    ["lokalisation_icd_o_3", "urn:oid:2.16.840.1.113883.6.43.1"],
-    ["bodySite", "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SeitenlokalisationCS"],
-    ["Therapieart", "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SYSTTherapieartCS"],
-    ["specimentype", "https://fhir.bbmri.de/CodeSystem/SampleMaterialType"],
-    ["uiccstadiumcs", "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/UiccstadiumCS"],
-    ["lokalebeurteilungresidualstatuscs", "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/LokaleBeurteilungResidualstatusCS"],
-    ["gesamtbeurteilungtumorstatuscs", "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/GesamtbeurteilungTumorstatusCS"],
-    ["verlauflokalertumorstatuscs", "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/VerlaufLokalerTumorstatusCS"],
-    ["verlauftumorstatuslymphknotencs", "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/VerlaufTumorstatusLymphknotenCS"],
-    ["verlauftumorstatusfernmetastasencs", "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/VerlaufTumorstatusFernmetastasenCS"],
-    ["vitalstatuscs", "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/VitalstatusCS"],
-    ["jnucs", "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/JNUCS"],
-    ["fmlokalisationcs", "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/FMLokalisationCS"],
-    ["TNMTCS", "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMTCS"],
-    ["TNMNCS", "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMNCS"],
-    ["TNMMCS", "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMMCS"],
-    ["TNMySymbolCS", "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMySymbolCS"],
-    ["TNMrSymbolCS", "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMrSymbolCS"],
-    ["TNMmSymbolCS", "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMmSymbolCS"],
-    ["molecularMarker", "http://www.genenames.org"]
-  ])
 
-export const cqltemplate = new Map<string, string>([
-    ["gender", "Patient.gender"],
+export const alias = new Map<string, string>([
+  ["icd10", "http://fhir.de/CodeSystem/bfarm/icd-10-gm"],
+  ["loinc", "http://loinc.org"],
+  ["gradingcs", "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/GradingCS"],
+  ["ops", "http://fhir.de/CodeSystem/bfarm/ops"],
+  ["morph", "urn:oid:2.16.840.1.113883.6.43.1"],
+  ["lokalisation_icd_o_3", "urn:oid:2.16.840.1.113883.6.43.1"],
+  ["bodySite", "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SeitenlokalisationCS"],
+  ["Therapieart", "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SYSTTherapieartCS"],
+  ["specimentype", "https://fhir.bbmri.de/CodeSystem/SampleMaterialType"],
+  ["uiccstadiumcs", "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/UiccstadiumCS"],
+  ["lokalebeurteilungresidualstatuscs", "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/LokaleBeurteilungResidualstatusCS"],
+  ["gesamtbeurteilungtumorstatuscs", "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/GesamtbeurteilungTumorstatusCS"],
+  ["verlauflokalertumorstatuscs", "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/VerlaufLokalerTumorstatusCS"],
+  ["verlauftumorstatuslymphknotencs", "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/VerlaufTumorstatusLymphknotenCS"],
+  ["verlauftumorstatusfernmetastasencs", "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/VerlaufTumorstatusFernmetastasenCS"],
+  ["vitalstatuscs", "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/VitalstatusCS"],
+  ["jnucs", "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/JNUCS"],
+  ["fmlokalisationcs", "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/FMLokalisationCS"],
+  ["TNMTCS", "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMTCS"],
+  ["TNMNCS", "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMNCS"],
+  ["TNMMCS", "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMMCS"],
+  ["TNMySymbolCS", "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMySymbolCS"],
+  ["TNMrSymbolCS", "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMrSymbolCS"],
+  ["TNMmSymbolCS", "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMmSymbolCS"],
+  ["molecularMarker", "http://www.genenames.org"]
+])
+
+  export const cqltemplate = new Map<string, string>([
+    ["gender", "Patient.gender = '{{C}}'"],
     ["conditionValue", "exists [Condition: Code '{{C}}' from {{A1}}]"],
     ["conditionBodySite", "exists from [Condition] C\nwhere C.bodySite.coding contains Code '{{C}}' from {{A1}}"],
     //TODO Revert to first expression if https://github.com/samply/blaze/issues/808 is solved
@@ -56,7 +57,7 @@ export const cqltemplate = new Map<string, string>([
 
   ])
 
-export const criterionMap = new Map<string, {type: string, alias?: string[]}>([
+  export const criterionMap = new Map<string, {type: string, alias?: string[]}>([
     ["gender", {type: "gender"}],
     ["diagnosis", {type: "conditionValue", alias: ["icd10"]}],
     ["bodySite", {type: "conditionBodySite", alias: ["bodySite"]}],

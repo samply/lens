@@ -1,3 +1,4 @@
+export type TreeNode = Category[] |Category | Criteria | AggregatedValue[] | AggregatedValue
 
 export type Category = {
     key: string;

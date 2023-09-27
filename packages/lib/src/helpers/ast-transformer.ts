@@ -1,4 +1,4 @@
-import type { AstElement } from '../types/ast';
+import type { AstElement, AstTopLayer } from '../types/ast';
 import type { queryStoreItem } from '../types/queryData';
 
 
@@ -8,8 +8,16 @@ import type { queryStoreItem } from '../types/queryData';
  * @param queryStore 
  * @returns Ast: the AST will later be converted to a query language of choice
  */
-export const buildAstFromQuery = (queryStore): AstElement => {
-  const ast: AstElement = returnNestedValues(queryStore)
+export const buildAstFromQuery = (queryStore): AstTopLayer => {
+  const ast: AstTopLayer = returnNestedValues(queryStore) as AstTopLayer
+  
+  if (ast.children.length === 1 && ast.children[0] === null) {
+    return {
+      operand: 'OR',
+      children: []
+    }
+  }
+
   return ast;
 }
 
@@ -100,5 +108,5 @@ const returnNestedValues = (
     }
   }
 
-  return null
+  return
 }
