@@ -1,4 +1,6 @@
 import { buildLibrary, buildMeasure } from "../helpers/cql-measure";
+import { responseStore } from "../stores/response";
+import type { Site } from "../types/response";
 
 const measureDefinitionsMock = [
     {
@@ -56,11 +58,16 @@ const measureDefinitionsMock = [
 export class Blaze {
     constructor(
         private url: URL,
+        private name: string,
         private auth: string = "",
     ) {
     }
 
-    async send(cql: string): Promise<any> {
+    async send(cql: string) {
+        responseStore.update((store) => {
+            store.set(this.name, {status: "claimed", data: null});
+            return store;
+        });
         let libraryResponse = await fetch(
             new URL(`${this.url}/Library`), {
                 method: "POST",
@@ -71,7 +78,7 @@ export class Blaze {
             }
         )
         if (!libraryResponse.ok){
-            throw new Error(`Couldn't create Library in Blaze. Received error ${libraryResponse.status} with message ${libraryResponse.text()}`)
+            this.handleError(`Couldn't create Library in Blaze`, libraryResponse);
         }
         const library = await libraryResponse.json();
         const measureResponse = await fetch(
@@ -84,15 +91,29 @@ export class Blaze {
             }
         )
         if (!measureResponse.ok) {
-           throw new Error(`Couldn't create Measure in Blaze. Received error ${measureResponse.status} with message ${measureResponse.text()}`)
+            this.handleError(`Couldn't create Measure in Blaze`, measureResponse)
         }
         const measure = await measureResponse.json();
         const dataResponse = await fetch(
             new URL(`${this.url}/Measure/$evaluate-measure?measure=${measure.url}&periodStart=2000&periodEnd=2030`)
         )
         if (!dataResponse.ok) {
-            throw new Error(`Couldn't evaluate Measure in Blaze. Received error ${dataResponse.status} with message ${dataResponse.text()}`)
+            this.handleError(`Couldn't evaluate Measure in Blaze`, dataResponse)
         }
-        return dataResponse.json
+        const blazeResponse: Site = await dataResponse.json()
+        responseStore.update((store) => {
+            store.set(this.name, {status: 'succeeded', data: blazeResponse})
+            return store;
+        })
     }
+
+    async handleError(message: string, response: Response) {
+        const errorMessage = await response.text()
+        console.debug(`${message}. Received error ${response.status} with message ${errorMessage}`)
+        responseStore.update((store) => {
+            store.set(this.name, {status: 'permfailed', data: null})
+            return store;
+        })
+    }
+
 }

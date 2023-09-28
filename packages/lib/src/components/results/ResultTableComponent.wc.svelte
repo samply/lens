@@ -51,7 +51,7 @@
     /**
      * Data for the table is transformed to a Map to be able to sort the data
      */
-    const biobankDataAsMap: Biobank[] = $responseStore.map((obj: any) => {
+    const biobankDataAsMap: Biobank[] = Array.from($responseStore).map((obj: any) => {
         const map: Biobank = new Map(Object.entries(obj));
         const headerDataKeysInOrder: string[] = headerData.map(
             (header) => header.dataKey

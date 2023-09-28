@@ -3,6 +3,8 @@ export type Stratum = {
     population?: number
 }
 
+export type Status = "claimed" | "succeeded" | "tempfailed" | "permfailed";
+
 export type Site = {
     key: string,
     value: {

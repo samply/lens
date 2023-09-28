@@ -113,7 +113,8 @@ true`;
         console.log(cqlMock);
 
         // const blaze = new Blaze(
-        //     new URL('http://localhost:8080/fhir')
+        //     new URL('http://localhost:8080/fhir'),
+        //     "blaze"
         // )
         // const response = await blaze.send(cqlMock);
 
@@ -126,11 +127,15 @@ true`;
             ['dktk-test', 'mannheim']
         )
 
-        const response = await spot.send(
+        spot.send(
             btoa(unescape(JSON.stringify(query)))
         )
 
-        console.log(response)
+        responseStore.subscribe((data) => {
+            console.log(JSON.stringify(data.get('dktk-test')));
+            console.log(JSON.stringify(data.get('mannheim')));
+        })
+
     };
 </script>
 

@@ -1,12 +1,23 @@
 import { responseStore } from "../stores/response"
 
+import type { Status } from "../types/response"
+
+type BeamResult = {
+    body: string,
+    from: string,
+    metadata: string,
+    status: Status,
+    task: string,
+    to: string[]
+}
+
 export class Spot {
     constructor(
         private url: URL,
         private sites: Array<string>,
     ) { }
 
-    async send(query: string): Promise<any> {
+    async send(query: string) {
         const beamTaskResponse = await fetch(
             `${this.url}tasks?sites=${this.sites.toString()}`,
             {
@@ -39,7 +50,17 @@ export class Spot {
                 throw new Error(`Error then retrieving responses from Beam. Abborting requests ...`)
             }
 
-            const beamResponseData = await beamResponses.json();
+            const beamResponseData: Array<BeamResult> = await beamResponses.json();
+
+            responseStore.update((store) => {
+                beamResponseData.forEach((response: BeamResult) => {
+                    let site = response.from.split(".")[1]
+                    let status = response.status
+                    let body = (status !== "claimed") ? JSON.parse(atob(response.body)) : null;
+                    store.set(site, {status: status, data: body});
+                });
+                return store;
+            })
 
             responseCount = beamResponseData.length;
             let realResponseCount = beamResponseData.filter(response => response.status !== "claimed").length;
@@ -54,9 +75,6 @@ export class Spot {
                 break;
             }
 
-            console.log(continueRequests)
-
-            // responseStore.set(beamResponseData)
         } while (true)
 
     }
