@@ -1,14 +1,28 @@
 <script lang="ts">
   import "../../lib";
   import type { CatalogueText } from "../../lib/src/types/texts";
+  import {  
+      patientsMeasure,
+      diagnosisMeasure,
+      specimenMeasure,
+      proceduresMeasure,
+      medicationStatementsMeasure,
+    } from './measures'
 
-  let mockCatalogueData = "";
+  let mockCatalogueData = ''
+  
+  fetch("catalogues/catalogue-example.json").then((response) => response.text()).then((data) => {
+    mockCatalogueData = data
+  })
 
-  fetch("catalogues/catalogue-example.json")
-    .then((response) => response.text())
-    .then((data) => {
-      mockCatalogueData = data;
-    });
+
+  const measures = [
+    patientsMeasure,
+      diagnosisMeasure,
+      specimenMeasure,
+      proceduresMeasure,
+      medicationStatementsMeasure,
+  ];
 
   const catalogueText: CatalogueText = {
     group: "Group",
@@ -45,84 +59,33 @@
       ],
     },
   };
-  const chart2Data = {
-    type: "pie",
-    data: {
-      labels: ["Dresden", "Mannheim", "Frankfurt", "Berlin"],
-      datasets: [
-        {
-          label: "",
-          data: [3, 5, 12, 19],
-        },
-      ],
-    },
-  };
-  const chart3Data = {
-    type: "pie",
-    data: {
-      labels: ["male", "female", "undefined", "other"],
-      datasets: [
-        {
-          label: "",
-          data: [12, 19, 3, 5],
-        },
-      ],
-    },
-  };
-  const chart4Data = {
-    type: "bar",
-    data: {
-      labels: ["C31", "C31.0", "C41", "C41.0"],
-      datasets: [
-        {
-          label: [],
-          data: [12, 100, 30, 5],
-        },
-      ],
-    },
-    options: {
-      legend: {
-        display: false,
-      },
-    },
-  };
 
   let catalogueopen = true;
+
+  const resultSummaryConfig = [
+    {
+      key: 'sites',
+      title: 'Sites',
+    },
+    {
+      key: 'patients',
+      title: 'Patients',
+    },
+  ]
 </script>
 
 <main>
-  <h2>Catalogue</h2>
-  <div class="componentBox">
-    <lens-catalogue
-      treeData={mockCatalogueData}
-      texts={catalogueText}
-      toggle={{ collapsable: true, open: catalogueopen }}
-    />
-  </div>
-
-  <h2>Search bars</h2>
-  <div class="componentBox">
-    <lens-search-bar-multiple
-      treeData={mockCatalogueData}
-      noMatchesFoundMessage={"No matches found"}
-    />
-  </div>
-
-  <h2>State display</h2>
-  <div class="componentBox">
-    <lens-state-display />
-  </div>
-
+  
   <h2>Search Button</h2>
   <div class="componentBox">
-    <lens-search-button />
+    <lens-search-button measures={measures} />
   </div>
 
   <h2>Result Summary Bar</h2>
   <div class="componentBox">
     <lens-result-summary
       title="Results"
-      resultSummaryDataTypes={JSON.stringify(["Patients", "Samples", "sites"])}
+      resultSummaryDataTypes={JSON.stringify(resultSummaryConfig)}
       negotiateButton={true}
       negotiateButtonText="Negotiate with biobanks"
     />
@@ -144,4 +107,28 @@
       />
     </div>
   </div>
+
+  <h2>Catalogue</h2>
+  <div class="componentBox">
+    <lens-catalogue
+      treeData={mockCatalogueData}
+      texts={catalogueText}
+      toggle={{ collapsable: true, open: catalogueopen }}
+    />
+  </div>
+
+  <h2>Search bars</h2>
+  <div class="componentBox">
+    <lens-search-bar-multiple
+      treeData={mockCatalogueData}
+      noMatchesFoundMessage={"No matches found"}
+    >
+    </lens-search-bar-multiple>
+  </div>
+
+  <h2>State display</h2>
+  <div class="componentBox">
+    <lens-state-display />
+  </div>
+
 </main>
