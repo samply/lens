@@ -7,11 +7,9 @@
 }} />
 
 <script lang="ts">
-
-    
-
     // import { translateAstToCql } from "../../cql-translator-service/ast-to-cql-translator";
     import { buildAstFromQuery } from "../../helpers/ast-transformer";
+    import { Blaze } from "../../classes/blaze";
     import { queryStore } from "../../stores/query";
     import { measureStore } from "../../stores/measures";
     import { responseStore } from "../../stores/response";
@@ -24,15 +22,63 @@
     export let disabled: boolean = false;
     export let measures: Measure[] = [];
 
-    $measureStore = measures;
+    const cqlMock = `library Retrieve
+using FHIR version '4.0.0'
+include FHIRHelpers version '4.0.0'
+
+codesystem loinc: 'http://loinc.org'
+
+context Patient
+
+define Gender:
+if (Patient.gender is null) then 'unknown' else Patient.gender
+
+define AgeClass:
+if (Patient.birthDate is null) then 'unknown' else ToString((AgeInYears() div 10) * 10)
+
+define PatientDeceased:
+First (from [Observation: Code '75186-7' from loinc] O return O.value.coding.where(system = 'http://dktk.dkfz.de/fhir/onco/core/CodeSystem/VitalstatusCS').code.first())
+define Deceased:
+if (PatientDeceased is null) then 'unbekannt' else PatientDeceased
+
+define Diagnosis:
+if InInitialPopulation then [Condition] else {} as List<Condition>
+
+define function DiagnosisCode(condition FHIR.Condition):
+condition.code.coding.where(system = 'http://fhir.de/CodeSystem/bfarm/icd-10-gm').code.first()
+
+define Specimen:
+if InInitialPopulation then [Specimen] else {} as List<Specimen>
+
+define function SampleType(specimen FHIR.Specimen):
+specimen.type.coding.where(system = 'https://fhir.bbmri.de/CodeSystem/SampleMaterialType').code.first()
+
+define Procedure:
+if InInitialPopulation then [Procedure] else {} as List <Procedure>
+
+define function ProcedureType(procedure FHIR.Procedure):
+procedure.category.coding.where(system = 'http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SYSTTherapieartCS').code.first()
+
+define MedicationStatement:
+if InInitialPopulation then [MedicationStatement] else {} as List <MedicationStatement>
+define InInitialPopulation:
+true`;
 
 
-    /**
-     * TODO: send query to backend and process response
-     */
     const getResultsFromBiobanks = async () => {
         const ast = buildAstFromQuery($queryStore);
         const cql = translateAstToCql(ast);
+
+        console.log(cql);
+        console.log(cqlMock);
+
+        const blaze = new Blaze(
+            new URL('http://localhost:8080/fhir')
+        )
+
+        const response = await blaze.send(cqlMock);
+
+        console.log(response)
     };
 </script>
 
