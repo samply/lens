@@ -23,3 +23,7 @@ TODO
 *.njsproj
 *.sln
 *.sw?
+
+# Deployment Files
+.env
+docker-compose.override.yml

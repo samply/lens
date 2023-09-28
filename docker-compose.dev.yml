@@ -1,0 +1,55 @@
+version: "3.8"
+services:
+  blaze:
+    image: samply/blaze:develop
+    ports:
+      - "8080:8080"
+    profiles:
+      - "blaze"
+      - "default"
+
+  test-data-loader:
+    image: samply/test-data-loader
+    environment:
+      FHIR_STORE_URL: "http://blaze:8080/fhir"
+      PATIENT_COUNT: "2000"
+    command: sh -c "sleep 60 && /app/run.sh"
+    profiles:
+      - "blaze"
+      - "default"
+
+  spot:
+    # NOTE: This will be replaced by https://github.com/samply/spot soon.
+    image: docker.verbis.dkfz.de/ccp-private/central-spot
+    ports:
+      - 8080:8080
+    environment:
+      BEAM_SECRET: "${LOCAL_BEAM_SECRET}"
+      BEAM_URL: http://beam-proxy:8081
+      BEAM_PROXY_ID: ${LOCAL_BEAM_ID}
+      BEAM_BROKER_ID: ${BROKER_HOST}
+      BEAM_APP_ID: "focus"
+    depends_on:
+      - "beam-proxy"
+    profiles:
+      - "beam"
+
+  beam-proxy:
+    image: docker.verbis.dkfz.de/cache/samply/beam-proxy:develop
+    environment:
+      BROKER_URL: https://${BROKER_HOST}
+      PROXY_ID: ${LOCAL_BEAM_ID}.${BROKER_HOST}
+      APP_focus_KEY: ${LOCAL_BEAM_SECRET}
+      PRIVKEY_FILE: /run/secrets/proxy.pem
+      ALL_PROXY: ${http_proxy}
+    secrets:
+      - proxy.pem
+      - root.crt.pem
+    profiles:
+      - "beam"
+
+secrets:
+  proxy.pem:
+    file: /etc/lens/pki/${LOCAL_BEAM_ID}.priv.pem
+  root.crt.pem:
+    file: ./rootcerts/${BROKER_HOST}-root.crt.pem
