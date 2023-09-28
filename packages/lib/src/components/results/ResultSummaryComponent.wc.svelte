@@ -24,28 +24,29 @@
      * @param store
      */
     const fillPopulationToSummaryTypes = (store): void => {
-        
-        if (store[0] === undefined) return;
 
         resultSummaryDataTypes = resultSummaryDataTypes.map((type) => {
             /**
              * If the type is sites, the population is the length of the store
+             * TODO: very specific. this should be more generic
              */
             if (type.key === "sites") {
-                type.population = store.length;
+                type.population = store.size;
                 return type;
             }
 
             /**
              * otherwise, get the population from the store
              */
-            type.population = getAggregatedPopulation(store, "patients");
+            type.population = getAggregatedPopulation(store, type.key);
             return type;
         });
-        console.log(store[0].value.group);
     };
 
-    $: fillPopulationToSummaryTypes($responseStore);
+    responseStore.subscribe((store) => {
+        fillPopulationToSummaryTypes(store);
+    });
+
 </script>
 
 {#if title}
@@ -58,7 +59,7 @@
 <div part="result-summary-content">
     {#each resultSummaryDataTypes as type}
         <div part="result-summary-content-type">
-            {type.title}: {type.population}
+            {type.title}: {type.population || 0}
         </div>
     {/each}
 </div>
