@@ -15,6 +15,8 @@
     import { responseStore } from "../../stores/response";
     import {translateAstToCql} from "../../cql-translator-service/ast-to-cql-translator";
     import type { Measure } from "../../types/Measure";
+    import { Spot } from "../../classes/spot";
+    import { buildLibrary, buildMeasure } from "../../helpers/cql-measure";
 
 
     export let title: string = "Search";
@@ -30,39 +32,77 @@ codesystem loinc: 'http://loinc.org'
 
 context Patient
 
-define Gender:
-if (Patient.gender is null) then 'unknown' else Patient.gender
+DKTK_STRAT_GENDER_STRATIFIER
 
-define AgeClass:
-if (Patient.birthDate is null) then 'unknown' else ToString((AgeInYears() div 10) * 10)
+DKTK_STRAT_AGE_STRATIFIER
 
-define PatientDeceased:
-First (from [Observation: Code '75186-7' from loinc] O return O.value.coding.where(system = 'http://dktk.dkfz.de/fhir/onco/core/CodeSystem/VitalstatusCS').code.first())
-define Deceased:
-if (PatientDeceased is null) then 'unbekannt' else PatientDeceased
+DKTK_STRAT_DECEASED_STRATIFIER
 
-define Diagnosis:
-if InInitialPopulation then [Condition] else {} as List<Condition>
+DKTK_STRAT_DIAGNOSIS_STRATIFIER
 
-define function DiagnosisCode(condition FHIR.Condition):
-condition.code.coding.where(system = 'http://fhir.de/CodeSystem/bfarm/icd-10-gm').code.first()
+DKTK_STRAT_SPECIMEN_STRATIFIER
 
-define Specimen:
-if InInitialPopulation then [Specimen] else {} as List<Specimen>
+DKTK_STRAT_PROCEDURE_STRATIFIER
 
-define function SampleType(specimen FHIR.Specimen):
-specimen.type.coding.where(system = 'https://fhir.bbmri.de/CodeSystem/SampleMaterialType').code.first()
+DKTK_STRAT_MEDICATION_STRATIFIER
 
-define Procedure:
-if InInitialPopulation then [Procedure] else {} as List <Procedure>
+DKTK_STRAT_ENCOUNTER_STRATIFIER
 
-define function ProcedureType(procedure FHIR.Procedure):
-procedure.category.coding.where(system = 'http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SYSTTherapieartCS').code.first()
-
-define MedicationStatement:
-if InInitialPopulation then [MedicationStatement] else {} as List <MedicationStatement>
-define InInitialPopulation:
+DKTK_STRAT_DEF_IN_INITIAL_POPULATION
 true`;
+
+    const measureDefinitionsMock = [
+    {
+        "code": {
+            "text": "patients"
+        },
+        "population": [
+            {
+                "code": {
+                    "coding": [
+                        {
+                            "system": "http://terminology.hl7.org/CodeSystem/measure-population",
+                            "code": "initial-population"
+                        }
+                    ]
+                },
+                "criteria": {
+                    "language": "text/cql-identifier",
+                    "expression": "InInitialPopulation"
+                }
+            }
+        ],
+        "stratifier": [
+            {
+                "code": {
+                    "text": "Gender"
+                },
+                "criteria": {
+                    "language": "text/cql",
+                    "expression": "Gender"
+                }
+            },
+            {
+                "code": {
+                    "text": "75186-7"
+                },
+                "criteria": {
+                    "language": "text/cql",
+                    "expression": "Deceased"
+                }
+            },
+            {
+                "code": {
+                    "text": "Age"
+                },
+                "criteria": {
+                    "language": "text/cql",
+                    "expression": "AgeClass"
+                }
+            }
+        ]
+    }
+]
 
 
     const getResultsFromBiobanks = async () => {
@@ -72,11 +112,23 @@ true`;
         console.log(cql);
         console.log(cqlMock);
 
-        const blaze = new Blaze(
-            new URL('http://localhost:8080/fhir')
+        // const blaze = new Blaze(
+        //     new URL('http://localhost:8080/fhir')
+        // )
+        // const response = await blaze.send(cqlMock);
+
+        const library = buildLibrary(cqlMock)
+        const measure = buildMeasure(library.url, measureDefinitionsMock)
+        const query = {lang: "cql", lib: library, measure: measure};
+
+        const spot = new Spot(
+            new URL('http://localhost:8080'),
+            ['dktk-test', 'mannheim']
         )
 
-        const response = await blaze.send(cqlMock);
+        const response = await spot.send(
+            btoa(unescape(JSON.stringify(query)))
+        )
 
         console.log(response)
     };
