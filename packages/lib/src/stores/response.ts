@@ -1,9 +1,10 @@
 import {  writable } from "svelte/store";
 import type { Site, SiteData, Status, Stratum } from "../types/response";
+import type { ResponseStore } from "../types/backend";
 
 
-export const responseStore = writable<Map<string, {status: Status, data: Site}>>(
-    new Map<string, {status: Status, data: Site}>()
+export const responseStore = writable<ResponseStore>(
+    new Map<string, Site>()
 );
 
 
@@ -13,13 +14,13 @@ export const responseStore = writable<Map<string, {status: Status, data: Site}>>
  * @param code the code to search for
  * @returns the aggregated population count for a given code
  */
-export const getAggregatedPopulation = (store: Map<string, Site>, code: string): number => {
-
-    const sites = Array.from(store.values());
-
+export const getAggregatedPopulation = (store: ResponseStore, code: string): number => {
+    if (store.size === 0) return 0;
+    
+    const sites: Site[] = Array.from(store.values());
+    
     let population = 0;
 
-    if (store.size === 0) return 0;
 
     sites.forEach((site) => {
         if (site.data === null) return;
@@ -53,7 +54,7 @@ export const getSitePopulationForCode = (site: SiteData, code: string): number =
  * @param code the code to search for
  * @returns the aggregated population count for a given stratum code
  */
-export const getAggregatedStratifierForStratumCode = (store: Map<string, Site>, code: string): number => {
+export const getAggregatedStratifierForStratumCode = (store: ResponseStore, code: string): number => {
 
     const sites = Array.from(store.values());
 

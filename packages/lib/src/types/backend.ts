@@ -1,3 +1,5 @@
+import type { Site } from "./response";
+
 export type Measure = {
     key: string;
     measure: object;
@@ -9,3 +11,5 @@ export type BackendConfig = {
     backends: string[];
     uiSiteMap: string[][];
 };
+
+export type ResponseStore = Map<string, Site>

@@ -12,6 +12,7 @@
         responseStore,
         getAggregatedPopulation,
     } from "../../stores/response";
+    import type { ResponseStore } from "../../types/backend";
     import NegotiateButtonComponent from "../buttons/NegotiateButtonComponent.wc.svelte";
 
     export let title: string = "";
@@ -23,9 +24,9 @@
      * Extracts the population for each result summary data type and adds it to the type object
      * @param store
      */
-    const fillPopulationToSummaryTypes = (store): void => {
+    const fillPopulationToSummaryTypes = (store: ResponseStore): void => {
 
-        resultSummaryDataTypes = resultSummaryDataTypes.map((type) => {
+        resultSummaryDataTypes = resultSummaryDataTypes.map((type) => {  
             /**
              * If the type is sites, the population is the length of the store
              * TODO: very specific. this should be more generic
@@ -43,7 +44,7 @@
         });
     };
 
-    responseStore.subscribe((store) => {
+    responseStore.subscribe((store: ResponseStore): void => {
         fillPopulationToSummaryTypes(store);
     });
 

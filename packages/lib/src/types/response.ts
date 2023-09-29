@@ -7,7 +7,7 @@ export type Status = "claimed" | "succeeded" | "tempfailed" | "permfailed";
 
 export type Site =
     {
-        status: string,
+        status: Status,
         data: SiteData
     }
 
