@@ -11,21 +11,13 @@
     import { buildAstFromQuery } from "../../helpers/ast-transformer";
     import { queryStore } from "../../stores/query";
     import { measureStore } from "../../stores/measures";
-    import { responseStore } from "../../stores/response";
     import {translateAstToCql} from "../../cql-translator-service/ast-to-cql-translator";
-    import type { Measure } from "../../types/measure";
     import { buildLibrary, buildMeasure } from "../../helpers/cql-measure";
     import { Spot } from "../../classes/spot";
     import { uiSiteMappingsStore } from "../../stores/mappings";
+    import type { Measure, BackendConfig } from "../../types/backend";
 
-
-    type BackendConfig = {
-        url: string;
-        backends: string[];
-        uiSiteMap: string[][];
-    };
-
-    
+  
     export let title: string = "Search";
     export let backendConfig: BackendConfig = {
         url: "http://localhost:8080",
@@ -36,18 +28,23 @@
     export let disabled: boolean = false;
     export let measures: Measure[] = [];
     
+    /**
+     * watches the backendConfig for changes to populate the uiSiteMappingsStore with a map
+     * web components' props are json, meaning that Maps are not supported
+     * therefore it's a 2d array of strings which is converted to a map
+    */
     $: uiSiteMappingsStore.update((mappings) => {
-
         backendConfig.uiSiteMap.forEach((site) => {
             mappings.set(site[0], site[1]);
         })
-        
         return mappings
     })
     
+    /**
+     * watches the measures for changes to populate the measureStore
+    */
     $: measureStore.set(measures);
    
-    $: console.log($uiSiteMappingsStore);
 
     const cqlMock = `library Retrieve
 using FHIR version '4.0.0'
@@ -76,76 +73,17 @@ DKTK_STRAT_ENCOUNTER_STRATIFIER
 DKTK_STRAT_DEF_IN_INITIAL_POPULATION
 true`;
 
-    const measureDefinitionsMock = [
-    {
-        "code": {
-            "text": "patients"
-        },
-        "population": [
-            {
-                "code": {
-                    "coding": [
-                        {
-                            "system": "http://terminology.hl7.org/CodeSystem/measure-population",
-                            "code": "initial-population"
-                        }
-                    ]
-                },
-                "criteria": {
-                    "language": "text/cql-identifier",
-                    "expression": "InInitialPopulation"
-                }
-            }
-        ],
-        "stratifier": [
-            {
-                "code": {
-                    "text": "Gender"
-                },
-                "criteria": {
-                    "language": "text/cql",
-                    "expression": "Gender"
-                }
-            },
-            {
-                "code": {
-                    "text": "75186-7"
-                },
-                "criteria": {
-                    "language": "text/cql",
-                    "expression": "Deceased"
-                }
-            },
-            {
-                "code": {
-                    "text": "Age"
-                },
-                "criteria": {
-                    "language": "text/cql",
-                    "expression": "AgeClass"
-                }
-            }
-        ]
-    }
-]
 
-  
 
-    const getResultsFromBiobanks = async () => {
+    /**
+     * triggers a request to the backend via the spot class
+     */
+    const getResultsFromBackend = async () => {
         const ast = buildAstFromQuery($queryStore);
         const cql = translateAstToCql(ast);
 
-        console.log(cql);
-        console.log(cqlMock);
-
-        // const blaze = new Blaze(
-        //     new URL('http://localhost:8080/fhir'),
-        //     "blaze"
-        // )
-        // const response = await blaze.send(cqlMock);
-
         const library = buildLibrary(cqlMock)
-        const measure = buildMeasure(library.url, measureDefinitionsMock)
+        const measure = buildMeasure(library.url, $measureStore.map( measureItem => measureItem.measure))
         const query = {lang: "cql", lib: library, measure: measure};
 
         const spot = new Spot(
@@ -153,21 +91,11 @@ true`;
             backendConfig.backends,
         )
 
-
         spot.send(
-            btoa(unescape(JSON.stringify(query)))
+            btoa(decodeURI(JSON.stringify(query)))
         )
 
-        responseStore.subscribe((data) => {
-            console.log(JSON.stringify(data.get('dktk-test')));
-            console.log(JSON.stringify(data.get('mannheim')));
-        })
-
     };
-
-    $: $responseStore.forEach((value: any, key: string) => {
-        console.log(value, key);
-    });
 
 </script>
 
@@ -175,7 +103,7 @@ true`;
     part={`lens-search-button lens-search-button-${
         disabled ? "disabled" : "active"
     }`}
-    on:click={getResultsFromBiobanks}
+    on:click={getResultsFromBackend}
     {disabled}
 >
     <div part="lens-search-button-magnifying-glass">&#x26B2;</div>

@@ -108,7 +108,6 @@
     uiSiteMap: uiSiteMap,
   };
 
-  console.log(JSON.stringify(backendConfig));
 </script>
 
 <main>

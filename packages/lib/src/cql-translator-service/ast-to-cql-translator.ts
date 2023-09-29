@@ -7,7 +7,7 @@
 import type { AstBottomLayerValue, AstElement, AstTopLayer } from "../types/ast";
 import { alias as aliasMap, cqltemplate, criterionMap } from "./cqlquery-mappings";
 import { getCriteria } from "../stores/catalogue";
-import type { Measure } from '../types/measure'; 
+import type { Measure } from '../types/backend'; 
 import {measureStore}  from '../stores/measures';
 
 /**

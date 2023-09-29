@@ -22,9 +22,10 @@ export const getAggregatedPopulation = (store: Map<string, Site>, code: string):
     if (store.size === 0) return 0;
 
     sites.forEach((site) => {
+        if (site.data === null) return;
         population += getSitePopulationForCode(site.data, code);
     })
-
+    
     return population;
 }
 
@@ -32,11 +33,13 @@ export const getAggregatedPopulation = (store: Map<string, Site>, code: string):
  * @param site data of the responding site
  * @param code the code to search for
  * @returns the population count for a given code at a given site
- */
+*/
 export const getSitePopulationForCode = (site: SiteData, code: string): number => {
-
+    
     let population = 0;
-
+    console.log(site);
+    if (!site) return;
+    
     site.group.forEach((group) => {
         if (group.code.text === code) {
             population += group.population[0].count;

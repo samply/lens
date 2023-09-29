@@ -64,6 +64,7 @@
             if (index === 0) {
                 tableRow.push($uiSiteMappingsStore.get(key));
             } else {
+                if(value.status !== 'succeeded') return;
                 tableRow.push(
                     getSitePopulationForCode(value.data.data, header.dataKey)
                 );

@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';    
-import type { Measure } from '../types/measure';
+import type { Measure } from '../types/backend';
 
 /**
  * Store to hold the measures 

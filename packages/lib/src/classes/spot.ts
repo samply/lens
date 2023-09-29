@@ -1,3 +1,8 @@
+/**
+ * TODO: document this class
+ */
+
+
 import { responseStore } from "../stores/response"
 
 import type { Status } from "../types/response"
@@ -18,6 +23,8 @@ export class Spot {
     ) { }
 
     async send(query: string) {
+        console.log(`${this.url}tasks?sites=${this.sites.toString()}`);
+
         const beamTaskResponse = await fetch(
             `${this.url}tasks?sites=${this.sites.toString()}`,
             {
