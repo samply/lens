@@ -34,15 +34,46 @@
         },
         {
             title: "Samples",
-            dataKey: "specimens",
+            dataKey: "specimen",
         },
     ];
 
     /**
+     * watches the responseStore for changes to update the table
+     */
+    let tableRowData: (string | number)[][] = [];
+
+    const buildTableRowData = (responseStore): void => {
+        tableRowData = [];
+
+        responseStore.forEach((value: Site, key: string): void => {
+            if (value.status !== "succeeded") return;
+
+            let tableRow: (string | number)[] = [];
+
+            headerData.forEach((header: HeaderData, index: number): void => {
+                if (index === 0) {
+                    const name = $uiSiteMappingsStore.get(key);
+                    tableRow.push(name);
+                } else {
+                    tableRow.push(
+                        getSitePopulationForCode(value.data, header.dataKey)
+                    );
+                }
+            });
+
+            tableRowData = [...tableRowData, tableRow];
+            console.log(tableRowData);
+        });
+    };
+
+    $: buildTableRowData($responseStore);
+    $: console.log(tableRowData);
+    /**
      * pagination
      * pageSize will be set with the props of the custom element
      */
-    export let pageSize: number = 5;
+    export let pageSize: number = 10;
 
     let activePage: number = 1;
 
@@ -51,36 +82,15 @@
         activePage * pageSize
     );
 
-
-    /**
-     * watches the responseStore for changes to update the table
-     */
-    let tableRowData = [];
-
-    $: $responseStore.forEach((value: {status: Status, data: Site}, key: string): void => {
-        let tableRow: (string | number)[] = [];
-
-        headerData.forEach((header: HeaderData, index: number): void => {
-            if (index === 0) {
-                tableRow.push($uiSiteMappingsStore.get(key));
-            } else {
-                if(value.status !== 'succeeded') return;
-                tableRow.push(
-                    getSitePopulationForCode(value.data.data, header.dataKey)
-                );
-            }
-        });
-
-        tableRowData = [...tableRowData, tableRow];
-    });
-
     /**
      * watches the negotiateStore for changes to check or uncheck the checkbox
      * @param biobank: the biobank to check
      * @returns boolean
      */
-   
-    $: allChecked = $negotiateStore.length === tableRowData.length && tableRowData.length !== 0;
+
+    $: allChecked =
+        $negotiateStore.length === tableRowData.length &&
+        tableRowData.length !== 0;
 
     /**
      * checks or unchecks all biobanks
@@ -119,7 +129,7 @@
     </thead>
     <tbody part="table-body">
         {#each pageItems as tableRow}
-            <TableItemComponent {tableRowData} />
+            <TableItemComponent {tableRow} />
         {/each}
     </tbody>
 </table>
@@ -134,7 +144,7 @@
     <div part="table-pagination-pagenumber">{activePage}</div>
     <button
         part="table-pagination-button pagination-pagination-next"
-        disabled={activePage === Math.ceil($responseStore.size / pageSize)}
+        disabled={activePage === Math.ceil(tableRowData.length / pageSize)}
         on:click={() => {
             activePage = activePage + 1;
         }}>&#8594;</button

@@ -35,17 +35,15 @@ export const getAggregatedPopulation = (store: Map<string, Site>, code: string):
  * @returns the population count for a given code at a given site
 */
 export const getSitePopulationForCode = (site: SiteData, code: string): number => {
-    
+
     let population = 0;
-    console.log(site);
     if (!site) return;
-    
+
     site.group.forEach((group) => {
         if (group.code.text === code) {
             population += group.population[0].count;
         }
     })
-
     return population;
 }
 
