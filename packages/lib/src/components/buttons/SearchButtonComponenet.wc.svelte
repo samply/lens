@@ -3,13 +3,12 @@
     props: {
         measures: { type: "Object" },
         disabled: { type: "Boolean" },
+        backendConfig: { type: "Object" },
     }
 }} />
 
 <script lang="ts">
-    // import { translateAstToCql } from "../../cql-translator-service/ast-to-cql-translator";
     import { buildAstFromQuery } from "../../helpers/ast-transformer";
-    import { Blaze } from "../../classes/blaze";
     import { queryStore } from "../../stores/query";
     import { measureStore } from "../../stores/measures";
     import { responseStore } from "../../stores/response";
@@ -17,13 +16,38 @@
     import type { Measure } from "../../types/measure";
     import { buildLibrary, buildMeasure } from "../../helpers/cql-measure";
     import { Spot } from "../../classes/spot";
+    import { uiSiteMappingsStore } from "../../stores/mappings";
 
 
+    type BackendConfig = {
+        url: string;
+        backends: string[];
+        uiSiteMap: string[][];
+    };
 
+    
     export let title: string = "Search";
-    export let backendUrl: string = "";
+    export let backendConfig: BackendConfig = {
+        url: "http://localhost:8080",
+        backends: ['dktk-test', 'mannheim'],
+        uiSiteMap: [['dktk-test', 'DKTK Test'], ['mannheim', 'Mannheim']],
+    };
+
     export let disabled: boolean = false;
     export let measures: Measure[] = [];
+    
+    $: uiSiteMappingsStore.update((mappings) => {
+
+        backendConfig.uiSiteMap.forEach((site) => {
+            mappings.set(site[0], site[1]);
+        })
+        
+        return mappings
+    })
+    
+    $: measureStore.set(measures);
+   
+    $: console.log($uiSiteMappingsStore);
 
     const cqlMock = `library Retrieve
 using FHIR version '4.0.0'
@@ -105,7 +129,7 @@ true`;
     }
 ]
 
-    $: measureStore.set(measures);
+  
 
     const getResultsFromBiobanks = async () => {
         const ast = buildAstFromQuery($queryStore);
@@ -125,9 +149,10 @@ true`;
         const query = {lang: "cql", lib: library, measure: measure};
 
         const spot = new Spot(
-            new URL('http://localhost:8080'),
-            ['dktk-test', 'mannheim']
+            new URL(backendConfig.url),
+            backendConfig.backends,
         )
+
 
         spot.send(
             btoa(unescape(JSON.stringify(query)))
@@ -142,7 +167,6 @@ true`;
 
     $: $responseStore.forEach((value: any, key: string) => {
         console.log(value, key);
-        
     });
 
 </script>

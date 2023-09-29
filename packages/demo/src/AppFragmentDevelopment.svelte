@@ -1,27 +1,28 @@
 <script lang="ts">
   import "../../lib";
   import type { CatalogueText } from "../../lib/src/types/texts";
-  import {  
-      patientsMeasure,
-      diagnosisMeasure,
-      specimenMeasure,
-      proceduresMeasure,
-      medicationStatementsMeasure,
-    } from './measures'
+  import {
+    patientsMeasure,
+    diagnosisMeasure,
+    specimenMeasure,
+    proceduresMeasure,
+    medicationStatementsMeasure,
+  } from "./measures";
 
-  let mockCatalogueData = ''
-  
-  fetch("catalogues/catalogue-example.json").then((response) => response.text()).then((data) => {
-    mockCatalogueData = data
-  })
+  let mockCatalogueData = "";
 
+  fetch("catalogues/catalogue-example.json")
+    .then((response) => response.text())
+    .then((data) => {
+      mockCatalogueData = data;
+    });
 
   const measures = [
     patientsMeasure,
-      diagnosisMeasure,
-      specimenMeasure,
-      proceduresMeasure,
-      medicationStatementsMeasure,
+    diagnosisMeasure,
+    specimenMeasure,
+    proceduresMeasure,
+    medicationStatementsMeasure,
   ];
 
   const catalogueText: CatalogueText = {
@@ -64,21 +65,59 @@
 
   const resultSummaryConfig = [
     {
-      key: 'sites',
-      title: 'Sites',
+      key: "sites",
+      title: "Sites",
     },
     {
-      key: 'patients',
-      title: 'Patients',
+      key: "patients",
+      title: "Patients",
     },
-  ]
+  ];
+
+  const siteToDefaultCollectionId: string[][] = [
+    ["dresden", "bbmri-eric:ID:DE_BBD:collection:DILB"],
+    ["frankfurt", "bbmri-eric:ID:DE_iBDF:collection:UCT"],
+    ["berlin", "bbmri-eric:ID:DE_ZeBanC:collection:Onoloy"],
+    ["wuerzburg", "bbmri-eric:ID:DE_ibdw:collection:bc"],
+    ["brno", "bbmri-eric:ID:CZ_MMCI:collection:LTS"],
+    ["aachen", "bbmri-eric:ID:DE_RWTHCBMB:collection:RWTHCBMB_BC"],
+    ["leipzig", "bbmri-eric:ID:DE_LMB:collection:LIFE_ADULT"],
+    ["muenchen-hmgu", "bbmri-eric:ID:DE_Helmholtz-MuenchenBiobank:collection:DE_KORA"],
+    ["Pilsen", "bbmri-eric:ID:CZ_CUNI_PILS:collection:serum_plasma"],
+    ["regensburg", "bbmri-eric:ID:DE_ZBR:collection:Tissue"],
+    ["heidelberg", "bbmri-eric:ID:DE_BMBH:collection:Lungenbiobank"],
+    ["luebeck", "bbmri-eric:ID:DE_ICBL:collection:ICBL"],
+    ["augsburg", "bbmri-eric:ID:DE_ACBB:collection:TISSUE"],
+    ["mannheim", "bbmri-eric:ID:DE_BioPsy:collection:Main_collecion"],
+    ["marburg", "bbmri-eric:ID:DE_CBBMR:collection:main"],
+    ["goettingen", "bbmri-eric:ID:DE_UMGB:collection:UMG-startegy"],
+    ["hannover", "bbmri-eric:ID:DE_HUB:collection:ProBase"],
+    ["olomouc", "bbmri-eric:ID:CZ_UPOL_LF:collection:all_samples"],
+    ["prague-ffm", "bbmri-eric:ID:CZ_CUNI_PILS:collection:serum_plasma"],
+    ["prague-ior", "bbmri-eric:ID:CZ_CUNI_LF1:collection:all_samples"],
+  ];
+
+  const uiSiteMap: string[][] = [
+    ["dktk-test", "DKTK Test"],
+    ["mannheim", "Mannheim"],
+  ];
+
+  const backendConfig = {
+    url: "http://localhost:8080",
+    backends: ["dktk-test", "mannheim"],
+    uiSiteMap: uiSiteMap,
+  };
+
+  console.log(JSON.stringify(backendConfig));
 </script>
 
 <main>
-  
   <h2>Search Button</h2>
   <div class="componentBox">
-    <lens-search-button measures={measures} />
+    <lens-search-button
+      {measures}
+      backendConfig={JSON.stringify(backendConfig)}
+    />
   </div>
 
   <h2>Result Summary Bar</h2>
@@ -122,13 +161,11 @@
     <lens-search-bar-multiple
       treeData={mockCatalogueData}
       noMatchesFoundMessage={"No matches found"}
-    >
-    </lens-search-bar-multiple>
+    />
   </div>
 
   <h2>State display</h2>
   <div class="componentBox">
     <lens-state-display />
   </div>
-
 </main>

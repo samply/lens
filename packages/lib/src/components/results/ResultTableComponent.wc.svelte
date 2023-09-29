@@ -6,6 +6,7 @@
 />
 
 <script lang="ts">
+    import { uiSiteMappingsStore } from "../../stores/mappings";
     import { negotiateStore } from "../../stores/negotiate";
     import {
         getSitePopulationForCode,
@@ -50,7 +51,6 @@
         activePage * pageSize
     );
 
-    $:console.log(tableRowData);
 
     /**
      * watches the responseStore for changes to update the table
@@ -62,7 +62,7 @@
 
         headerData.forEach((header: HeaderData, index: number): void => {
             if (index === 0) {
-                tableRow.push(key);
+                tableRow.push($uiSiteMappingsStore.get(key));
             } else {
                 tableRow.push(
                     getSitePopulationForCode(value.data.data, header.dataKey)
@@ -79,7 +79,7 @@
      * @returns boolean
      */
    
-    $: allChecked = $negotiateStore.length === tableRowData.length;
+    $: allChecked = $negotiateStore.length === tableRowData.length && tableRowData.length !== 0;
 
     /**
      * checks or unchecks all biobanks
