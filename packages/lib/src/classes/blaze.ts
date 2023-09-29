@@ -1,59 +1,13 @@
 import { buildLibrary, buildMeasure } from "../helpers/cql-measure";
 import { responseStore } from "../stores/response";
 import type { Site } from "../types/response";
+import { measureStore } from "../stores/measures";
 
-const measureDefinitionsMock = [
-    {
-        "code": {
-            "text": "patients"
-        },
-        "population": [
-            {
-                "code": {
-                    "coding": [
-                        {
-                            "system": "http://terminology.hl7.org/CodeSystem/measure-population",
-                            "code": "initial-population"
-                        }
-                    ]
-                },
-                "criteria": {
-                    "language": "text/cql-identifier",
-                    "expression": "InInitialPopulation"
-                }
-            }
-        ],
-        "stratifier": [
-            {
-                "code": {
-                    "text": "Gender"
-                },
-                "criteria": {
-                    "language": "text/cql",
-                    "expression": "Gender"
-                }
-            },
-            {
-                "code": {
-                    "text": "75186-7"
-                },
-                "criteria": {
-                    "language": "text/cql",
-                    "expression": "Deceased"
-                }
-            },
-            {
-                "code": {
-                    "text": "Age"
-                },
-                "criteria": {
-                    "language": "text/cql",
-                    "expression": "AgeClass"
-                }
-            }
-        ]
-    }
-]
+let measureDefinitions
+
+measureStore.subscribe(store => {
+    measureDefinitions = store.map((measure) => measure.measure)
+})
 
 export class Blaze {
     constructor(
@@ -87,7 +41,7 @@ export class Blaze {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(buildMeasure(library.url, measureDefinitionsMock))
+                body: JSON.stringify(buildMeasure(library.url, measureDefinitions))
             }
         )
         if (!measureResponse.ok) {

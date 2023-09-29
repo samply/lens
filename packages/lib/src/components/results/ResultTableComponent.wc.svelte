@@ -7,8 +7,12 @@
 
 <script lang="ts">
     import { negotiateStore } from "../../stores/negotiate";
-    import { responseStore } from "../../stores/response";
-    import type { Biobank, HeaderData } from "../../types/biobanks";
+    import {
+        getSitePopulationForCode,
+        responseStore,
+    } from "../../stores/response";
+    import type { HeaderData } from "../../types/biobanks";
+    import type { Site, Status } from "../../types/response";
     import TableItemComponent from "./TableItemComponent.svelte";
 
     export let title: string = "";
@@ -17,6 +21,7 @@
      * data-types for the table
      * can be set with the props of the custom element
      */
+
     export let headerData: HeaderData[] = [
         {
             title: "Site",
@@ -28,7 +33,7 @@
         },
         {
             title: "Samples",
-            dataKey: "samples",
+            dataKey: "specimens",
         },
     ];
 
@@ -40,31 +45,32 @@
 
     let activePage: number = 1;
 
-    $: pageItems = biobankDataAsMap.slice(
+    $: pageItems = tableRowData.slice(
         (activePage - 1) * pageSize,
         activePage * pageSize
     );
 
+    $:console.log(tableRowData);
+
     /**
-     * TODO: refactor type of obj when structure is clear
+     * watches the responseStore for changes to update the table
      */
-    /**
-     * Data for the table is transformed to a Map to be able to sort the data
-     */
-    const biobankDataAsMap: Biobank[] = Array.from($responseStore).map((obj: any) => {
-        const map: Biobank = new Map(Object.entries(obj));
-        const headerDataKeysInOrder: string[] = headerData.map(
-            (header) => header.dataKey
-        );
-        const sortedEntries: [string, string | number | boolean][] = Array.from(
-            map
-        ).sort(
-            ([keyA], [keyB]) =>
-                headerDataKeysInOrder.indexOf(keyA) -
-                headerDataKeysInOrder.indexOf(keyB)
-        );
-        const sortedEntriesAsMap: Biobank = new Map(sortedEntries);
-        return new Map(sortedEntriesAsMap);
+    let tableRowData = [];
+
+    $: $responseStore.forEach((value: {status: Status, data: Site}, key: string): void => {
+        let tableRow: (string | number)[] = [];
+
+        headerData.forEach((header: HeaderData, index: number): void => {
+            if (index === 0) {
+                tableRow.push(key);
+            } else {
+                tableRow.push(
+                    getSitePopulationForCode(value.data.data, header.dataKey)
+                );
+            }
+        });
+
+        tableRowData = [...tableRowData, tableRow];
     });
 
     /**
@@ -72,14 +78,8 @@
      * @param biobank: the biobank to check
      * @returns boolean
      */
-    $: checked = (biobank: Biobank): boolean => {
-        const bioBankIsChecked = Array.from($negotiateStore).some(
-            (item) => biobank.get("site") === item.get("site")
-        );
-        return bioBankIsChecked;
-    };
-
-    $: allChecked = $negotiateStore.length === biobankDataAsMap.length;
+   
+    $: allChecked = $negotiateStore.length === tableRowData.length;
 
     /**
      * checks or unchecks all biobanks
@@ -89,7 +89,10 @@
         if (allChecked) {
             $negotiateStore = [];
         } else {
-            $negotiateStore = biobankDataAsMap;
+            console.log(tableRowData);
+            $negotiateStore = tableRowData.map(
+                (tableRow: (string | number)[]) => tableRow[0] as string
+            );
         }
     };
 </script>
@@ -114,8 +117,8 @@
         </tr>
     </thead>
     <tbody part="table-body">
-        {#each pageItems as biobank}
-            <TableItemComponent {biobank} checked={checked(biobank)} />
+        {#each pageItems as tableRow}
+            <TableItemComponent {tableRowData} />
         {/each}
     </tbody>
 </table>
@@ -130,7 +133,7 @@
     <div part="table-pagination-pagenumber">{activePage}</div>
     <button
         part="table-pagination-button pagination-pagination-next"
-        disabled={activePage === Math.ceil($responseStore.length / pageSize)}
+        disabled={activePage === Math.ceil($responseStore.size / pageSize)}
         on:click={() => {
             activePage = activePage + 1;
         }}>&#8594;</button

@@ -14,9 +14,10 @@
     import { measureStore } from "../../stores/measures";
     import { responseStore } from "../../stores/response";
     import {translateAstToCql} from "../../cql-translator-service/ast-to-cql-translator";
-    import type { Measure } from "../../types/Measure";
-    import { Spot } from "../../classes/spot";
+    import type { Measure } from "../../types/measure";
     import { buildLibrary, buildMeasure } from "../../helpers/cql-measure";
+    import { Spot } from "../../classes/spot";
+
 
 
     export let title: string = "Search";
@@ -104,6 +105,7 @@ true`;
     }
 ]
 
+    $: measureStore.set(measures);
 
     const getResultsFromBiobanks = async () => {
         const ast = buildAstFromQuery($queryStore);
@@ -137,6 +139,12 @@ true`;
         })
 
     };
+
+    $: $responseStore.forEach((value: any, key: string) => {
+        console.log(value, key);
+        
+    });
+
 </script>
 
 <button
