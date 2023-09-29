@@ -11,7 +11,7 @@
 
   let mockCatalogueData = "";
 
-  fetch("catalogues/catalogue-example.json")
+  fetch("catalogues/catalogue-dktk.json")
     .then((response) => response.text())
     .then((data) => {
       mockCatalogueData = data;
