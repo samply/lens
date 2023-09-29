@@ -1,8 +1,11 @@
-import { writable } from "svelte/store";
-import type { Site, SiteData, Stratum } from "../types/response";
+import {  writable } from "svelte/store";
+import type { Site, SiteData, Status, Stratum } from "../types/response";
 
 
-export const responseStore = writable<Map<string, Site>>(new Map());
+export const responseStore = writable<Map<string, {status: Status, data: Site}>>(
+    new Map<string, {status: Status, data: Site}>()
+);
+
 
 
 /**

@@ -12,7 +12,7 @@
         responseStore,
     } from "../../stores/response";
     import type { HeaderData } from "../../types/biobanks";
-    import type { Site } from "../../types/response";
+    import type { Site, Status } from "../../types/response";
     import TableItemComponent from "./TableItemComponent.svelte";
 
     export let title: string = "";
@@ -57,7 +57,7 @@
      */
     let tableRowData = [];
 
-    $: $responseStore.forEach((value: Site, key: string): void => {
+    $: $responseStore.forEach((value: {status: Status, data: Site}, key: string): void => {
         let tableRow: (string | number)[] = [];
 
         headerData.forEach((header: HeaderData, index: number): void => {
@@ -65,7 +65,7 @@
                 tableRow.push(key);
             } else {
                 tableRow.push(
-                    getSitePopulationForCode(value.data, header.dataKey)
+                    getSitePopulationForCode(value.data.data, header.dataKey)
                 );
             }
         });
@@ -118,7 +118,7 @@
     </thead>
     <tbody part="table-body">
         {#each pageItems as tableRow}
-            <TableItemComponent {tableRow} />
+            <TableItemComponent {tableRowData} />
         {/each}
     </tbody>
 </table>
