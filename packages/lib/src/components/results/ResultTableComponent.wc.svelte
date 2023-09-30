@@ -63,12 +63,10 @@
             });
 
             tableRowData = [...tableRowData, tableRow];
-            console.log(tableRowData);
         });
     };
 
     $: buildTableRowData($responseStore);
-    $: console.log(tableRowData);
     /**
      * pagination
      * pageSize will be set with the props of the custom element

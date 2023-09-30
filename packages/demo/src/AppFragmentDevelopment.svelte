@@ -25,6 +25,34 @@
     medicationStatementsMeasure,
   ];
 
+  const cqlHeader = `library Retrieve
+  using FHIR version '4.0.0'
+  include FHIRHelpers version '4.0.0'
+
+  codesystem loinc: 'http://loinc.org'
+
+  context Patient
+
+  DKTK_STRAT_GENDER_STRATIFIER
+
+  DKTK_STRAT_AGE_STRATIFIER
+
+  DKTK_STRAT_DECEASED_STRATIFIER
+
+  DKTK_STRAT_DIAGNOSIS_STRATIFIER
+
+  DKTK_STRAT_SPECIMEN_STRATIFIER
+
+  DKTK_STRAT_PROCEDURE_STRATIFIER
+
+  DKTK_STRAT_MEDICATION_STRATIFIER
+
+  DKTK_STRAT_ENCOUNTER_STRATIFIER
+
+  DKTK_STRAT_DEF_IN_INITIAL_POPULATION
+`
+
+
   const catalogueText: CatalogueText = {
     group: "Group",
     collapseButtonTitle: "Collapse Tree",
@@ -98,13 +126,41 @@
   ];
 
   const uiSiteMap: string[][] = [
-    ["dktk-test", "DKTK Test"],
+    ["berlin", "Berlin"],
+    ["bonn", "Bonn"],
+    ["dresden", "Dresden"],
+    ["essen", "Essen"],
+    ["frankfurt", "Frankfurt"],
+    ["freiburg", "Freiburg"],
+    ["hannover", "Hannover"],
+    ["mainz", "Mainz"],
+    ["muenchen-lmu", "München(LMU],"],
+    ["muenchen-tum", "München(TUM],"],
+    ["ulm", "Ulm"],
+    ["wuerzburg", "Würzburg"],
     ["mannheim", "Mannheim"],
+    ["dktk-test", "DKTK-Test"],
+
   ];
 
   const backendConfig = {
     url: "http://localhost:8080",
-    backends: ["dktk-test", "mannheim"],
+    backends: [
+      "berlin",
+      "bonn",
+      "dresden",
+      "essen",
+      "frankfurt",
+      "freiburg",
+      "hannover",
+      "mainz",
+      "muenchen-lmu",
+      "muenchen-tum",
+      "ulm",
+      "wuerzburg",
+      "mannheim",
+      "dktk-test",
+      ],
     uiSiteMap: uiSiteMap,
   };
 
@@ -116,6 +172,7 @@
     <lens-search-button
       {measures}
       backendConfig={JSON.stringify(backendConfig)}
+      {cqlHeader}
     />
   </div>
 
@@ -134,7 +191,7 @@
     <lens-result-table pageSize="3" title="Responding sites" />
   </div>
 
-  <h2>Result Table</h2>
+  <h2>Result Chart</h2>
   <div class="componentBox">
     <div>
       <lens-chart

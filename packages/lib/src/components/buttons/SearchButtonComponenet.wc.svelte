@@ -16,6 +16,7 @@
     import { Spot } from "../../classes/spot";
     import { uiSiteMappingsStore } from "../../stores/mappings";
     import type { Measure, BackendConfig } from "../../types/backend";
+    import { responseStore } from "../../stores/response";
 
   
     export let title: string = "Search";
@@ -27,6 +28,7 @@
 
     export let disabled: boolean = false;
     export let measures: Measure[] = [];
+    export let cqlHeader: string = "";
     
     /**
      * watches the backendConfig for changes to populate the uiSiteMappingsStore with a map
@@ -46,32 +48,6 @@
     $: measureStore.set(measures);
    
 
-    const cqlMock = `library Retrieve
-using FHIR version '4.0.0'
-include FHIRHelpers version '4.0.0'
-
-codesystem loinc: 'http://loinc.org'
-
-context Patient
-
-DKTK_STRAT_GENDER_STRATIFIER
-
-DKTK_STRAT_AGE_STRATIFIER
-
-DKTK_STRAT_DECEASED_STRATIFIER
-
-DKTK_STRAT_DIAGNOSIS_STRATIFIER
-
-DKTK_STRAT_SPECIMEN_STRATIFIER
-
-DKTK_STRAT_PROCEDURE_STRATIFIER
-
-DKTK_STRAT_MEDICATION_STRATIFIER
-
-DKTK_STRAT_ENCOUNTER_STRATIFIER
-
-DKTK_STRAT_DEF_IN_INITIAL_POPULATION
-true`;
 
 
 
@@ -80,9 +56,9 @@ true`;
      */
     const getResultsFromBackend = async () => {
         const ast = buildAstFromQuery($queryStore);
-        const cql = translateAstToCql(ast);
+        const cql = translateAstToCql(ast, true);
 
-        const library = buildLibrary(cqlMock)
+        const library = buildLibrary(`${cqlHeader}\n${cql}`)
         const measure = buildMeasure(library.url, $measureStore.map( measureItem => measureItem.measure))
         const query = {lang: "cql", lib: library, measure: measure};
 
@@ -96,6 +72,8 @@ true`;
         )
 
     };
+
+    $: console.log($responseStore)
 
 </script>
 

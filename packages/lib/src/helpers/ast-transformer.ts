@@ -41,38 +41,39 @@ const returnNestedValues = (
   if (Array.isArray(item) && item.length === 0) {
     return null
   }
-
+  
   /**
    * sets the operand for the current layer
    * starts with 'OR' from the top layer and switches to the opposite each layer
-   */
-  operand = operand === 'OR' ? 'AND' : 'OR'
-
-  /**
-   * handles first layer of the store (QueryItem[]) 
-   * or entities (aggregatedValue)
-   */
-  if (Array.isArray(item)) {
-    return {
-      operand: operand,
+  */
+ operand = operand === 'OR' ? 'AND' : 'OR'
+ 
+ /**
+  * handles first layer of the store (QueryItem[]) 
+  * or entities (aggregatedValue)
+ */
+if (Array.isArray(item)) {
+  return {
+    operand: operand,
       children: item.map((value) => {
         return returnNestedValues(value, operand, item)
       })
     }
   }
-
+  
   /**
    * handles second layer of the store (queryItem)
-   */
-  if ('values' in item && Array.isArray(item.values)) {
-    return {
-      operand: operand,
-      children: item.values.map((value) => {
-        return returnNestedValues(value, operand, item)
+  */
+ if ('values' in item && Array.isArray(item.values)) {
+   return {
+     operand: operand,
+     children: item.values.map((value) => {
+       return returnNestedValues(value, operand, item)
       })
     }
   }
-
+  
+  console.log(item)
   /**
    * handles the third layer of store when the value of the QueryItem is an entity (aggregatedValue)
    */
@@ -88,11 +89,12 @@ const returnNestedValues = (
   /**
    * return bottom level object of an entity (aggregatedValue)
    */
-  if ('key' in item) {
+  console.log(item)
+  if ('value' in item && typeof item.value === 'string') {
     return {
-      key: item.key,
-      type: item.type,
-      system: item.system || '',
+      key: item.value,
+      type: 'EQUALS',
+      system: '',
       value: item.name,
     }
   }

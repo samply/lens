@@ -7,8 +7,8 @@
 import type { AstBottomLayerValue, AstElement, AstTopLayer } from "../types/ast";
 import { alias as aliasMap, cqltemplate, criterionMap } from "./cqlquery-mappings";
 import { getCriteria } from "../stores/catalogue";
-import type { Measure } from '../types/backend'; 
-import {measureStore}  from '../stores/measures';
+import type { Measure } from '../types/backend';
+import { measureStore } from '../stores/measures';
 
 /**
  * Get all cql from the project specific measures from the store
@@ -25,7 +25,7 @@ let criteria: string[]
 
 
 
-export const translateAstToCql = (query: AstTopLayer): string => {
+export const translateAstToCql = (query: AstTopLayer, returnOnlySingeltons: boolean = true): string => {
   criteria = getCriteria("diagnosis")
 
   /**
@@ -42,11 +42,15 @@ export const translateAstToCql = (query: AstTopLayer): string => {
     "include FHIRHelpers version '4.0.0'\n" +
     "\n"
 
-  let singletons: string = "define InInitialPopulation:\n"
+  let singletons: string = returnOnlySingeltons ? '': "define InInitialPopulation:\n" 
   singletons += resolveOperation(query)
 
   if (query.children.length == 0) {
     singletons += "true"
+  }
+
+  if (returnOnlySingeltons) {
+    return singletons
   }
 
   return cqlHeader +
@@ -57,10 +61,11 @@ export const translateAstToCql = (query: AstTopLayer): string => {
 }
 
 const resolveOperation = (operation: AstElement): string => {
+
   let expression: string = "";
 
-  if ('children' in operation && operation.children.length > 1) { 
-    expression += "(" 
+  if ('children' in operation && operation.children.length > 1) {
+    expression += "("
   }
 
   'children' in operation && operation.children.forEach((element: AstElement, index) => {
@@ -152,7 +157,7 @@ const getSingleton = (criterion: AstBottomLayerValue): string => {
         case "conditionRangeDate":
         case "conditionRangeAge": {
           if (typeof criterion.value == "object"
-          && !(criterion.value instanceof Array)) {
+            && !(criterion.value instanceof Array)) {
             expression += substituteCQLExpression(criterion.key, myCriterion.alias, myCQL, "", criterion.value.min as number, criterion.value.max as number)
           }
           break
