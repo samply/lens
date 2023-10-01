@@ -9,7 +9,4 @@ RUN npm run build
 RUN npm run build:demo
 
 FROM nginx:stable-alpine
-ARG TARGET_PROJECT="lens-demo"
-ENV NGINX_PORT=80 NGINX_DEPLOYMENT_CONTEXT=/
-COPY nginx.conf /etc/nginx/templates/demo.nginx.conf.template
 COPY --from=build /usr/src/app/dist/demo /usr/share/nginx/html
