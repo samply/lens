@@ -1,13 +1,7 @@
 <script lang="ts">
   import "../../lib";
   import type { CatalogueText } from "../../lib/src/types/texts";
-  import {  
-      patientsMeasure,
-      diagnosisMeasure,
-      specimenMeasure,
-      proceduresMeasure,
-      medicationStatementsMeasure,
-    } from './measures'
+    import { dktkDiagnosisMeasure, dktkMedicationStatementsMeasure, dktkPatientsMeasure, dktkProceduresMeasure, dktkSpecimenMeasure } from "./measures";
 
   let mockCatalogueData = ''
   
@@ -15,12 +9,23 @@
     mockCatalogueData = data
   })
 
+  const resultSummaryConfig = [
+    {
+      key: "sites",
+      title: "Sites",
+    },
+    {
+      key: "patients",
+      title: "Patients",
+    },
+  ];
+
   const measures = [
-    patientsMeasure,
-      diagnosisMeasure,
-      specimenMeasure,
-      proceduresMeasure,
-      medicationStatementsMeasure,
+    dktkPatientsMeasure,
+    dktkDiagnosisMeasure,
+    dktkSpecimenMeasure,
+    dktkProceduresMeasure,
+    dktkMedicationStatementsMeasure
   ];
 
   const catalogueText: CatalogueText = {
@@ -101,6 +106,44 @@
   };
 
   let catalogueopen = true;
+
+  const uiSiteMap: string[][] = [
+    ["berlin", "Berlin"],
+    ["bonn", "Bonn"],
+    ["dresden", "Dresden"],
+    ["essen", "Essen"],
+    ["frankfurt", "Frankfurt"],
+    ["freiburg", "Freiburg"],
+    ["hannover", "Hannover"],
+    ["mainz", "Mainz"],
+    ["muenchen-lmu", "München(LMU],"],
+    ["muenchen-tum", "München(TUM],"],
+    ["ulm", "Ulm"],
+    ["wuerzburg", "Würzburg"],
+    ["mannheim", "Mannheim"],
+    ["dktk-test", "DKTK-Test"],
+    ["hamburg", "Hamburg"],
+
+  ];
+
+  const backendConfig = {
+    url: "http://localhost:8080",
+    backends: [
+      'mannheim',
+      'freiburg',
+      'muenchen-tum',
+      'hamburg',
+      'frankfurt',
+      'berlin',
+      'dresden',
+      'mainz',
+      'muenchen-lmu',
+      'essen',
+      'ulm',
+      'wuerzburg',
+    ],
+    uiSiteMap: uiSiteMap,
+  };
 </script>
 
 <header>
@@ -114,9 +157,9 @@
     <lens-search-bar-multiple
       treeData={mockCatalogueData}
       noMatchesFoundMessage={"No matches found"}
-      measures={[patientsMeasure, diagnosisMeasure, specimenMeasure, proceduresMeasure, medicationStatementsMeasure]}
+      measures={[dktkPatientsMeasure, dktkDiagnosisMeasure, dktkSpecimenMeasure, dktkPatientsMeasure, dktkMedicationStatementsMeasure]}
     >
-      <lens-search-button title="Search Biobanks" measures={measures} />
+      <lens-search-button title="Search Biobanks" measures={measures} backendConfig={JSON.stringify(backendConfig)}/>
     </lens-search-bar-multiple>
   </div>
   <div class="grid">
@@ -143,7 +186,7 @@
       <div class="chart-wrapper result-summary">
         <lens-result-summary
         title="Results"
-        resultSummaryDataTypes={JSON.stringify(["Patients", "Samples", "sites"])}
+        resultSummaryDataTypes={JSON.stringify(resultSummaryConfig)}
         negotiateButton={true}
         negotiateButtonText="Negotiate with biobanks"
         />
