@@ -140,27 +140,26 @@
     ["wuerzburg", "Würzburg"],
     ["mannheim", "Mannheim"],
     ["dktk-test", "DKTK-Test"],
+    ["hamburg", "Hamburg"],
 
   ];
 
   const backendConfig = {
     url: "http://localhost:8080",
     backends: [
-      "berlin",
-      "bonn",
-      "dresden",
-      "essen",
-      "frankfurt",
-      "freiburg",
-      "hannover",
-      "mainz",
-      "muenchen-lmu",
-      "muenchen-tum",
-      "ulm",
-      "wuerzburg",
-      "mannheim",
-      "dktk-test",
-      ],
+      'mannheim',
+      'freiburg',
+      'muenchen-tum',
+      'hamburg',
+      'frankfurt',
+      'berlin',
+      'dresden',
+      'mainz',
+      'muenchen-lmu',
+      'essen',
+      'ulm',
+      'wuerzburg',
+    ],
     uiSiteMap: uiSiteMap,
   };
 
