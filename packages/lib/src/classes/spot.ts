@@ -29,7 +29,7 @@ export class Spot {
             `${this.url}tasks?sites=${this.sites.toString()}`,
             {
                 method: 'POST',
-                // credentials: 'include',
+                credentials: 'include',
                 body: query,
             }
         )
@@ -49,6 +49,9 @@ export class Spot {
 
             const beamResponses = await fetch(
                 `${this.url}tasks/${beamTask.id}?wait_count=${responseCount + 1}&wait_time=${requestTimeOut}ms`,
+                {
+                    credentials: 'include'
+                }
             )
 
             if (!beamResponses.ok) {
