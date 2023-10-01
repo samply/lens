@@ -63,7 +63,7 @@ export class Spot {
                 beamResponseData.forEach((response: BeamResult) => {
                     let site = response.from.split(".")[1]
                     let status = response.status
-                    let body = (status !== "claimed") ? JSON.parse(atob(response.body)) : null;
+                    let body = (status === "succeeded") ? JSON.parse(atob(response.body)) : null;
                     store.set(site, {status: status, data: body});
                 });
                 return store;
