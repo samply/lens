@@ -56,7 +56,7 @@
      */
     const getResultsFromBackend = async () => {
         const ast = buildAstFromQuery($queryStore);
-        const cql = translateAstToCql(ast, true);
+        const cql = translateAstToCql(ast, false, true);
 
         const library = buildLibrary(`${cqlHeader}\n${cql}`)
         const measure = buildMeasure(library.url, $measureStore.map( measureItem => measureItem.measure))

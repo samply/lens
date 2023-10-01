@@ -25,7 +25,7 @@ let criteria: string[]
 
 
 
-export const translateAstToCql = (query: AstTopLayer, returnOnlySingeltons: boolean = true): string => {
+export const translateAstToCql = (query: AstTopLayer, returnOnlySingeltons: boolean = true, backendMeasureReplacement: boolean = false): string => {
   criteria = getCriteria("diagnosis")
 
   /**
@@ -42,7 +42,11 @@ export const translateAstToCql = (query: AstTopLayer, returnOnlySingeltons: bool
     "include FHIRHelpers version '4.0.0'\n" +
     "\n"
 
-  let singletons: string = returnOnlySingeltons ? '': "define InInitialPopulation:\n" 
+  let singletons: string = "";
+  singletons = (backendMeasureReplacement)
+    ? "DKTK_STRAT_DEF_IN_INITIAL_POPULATION\n"
+    : "define InInitialPopulation:\n"
+  console.log(singletons)
   singletons += resolveOperation(query)
 
   if (query.children.length == 0) {
