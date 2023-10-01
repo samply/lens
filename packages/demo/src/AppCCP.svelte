@@ -127,7 +127,7 @@
   ];
 
   const backendConfig = {
-    url: "http://localhost:8080",
+    url: "https://backend.demo.lens.samply.de/prod/",
     backends: [
       'mannheim',
       'freiburg',
@@ -148,7 +148,7 @@
 
 <header>
   <div class="logo">
-    <img src="../public/BBMRI-ERIC-gateway-for-health.svg" alt="Biobank Sweden logo" />
+    <img src="./BBMRI-ERIC-gateway-for-health.svg" alt="Biobank Sweden logo" />
   </div>
   <h1>Sample Locator</h1>
 </header>
@@ -225,9 +225,9 @@
 <footer>
   <h3>made with &#10084; & samply-lens</h3>
   <div class="img-container">
-    <img src="../public/logo_ce-en-rvb-lr.jpg" alt="" />
+    <img src="./logo_ce-en-rvb-lr.jpg" alt="" />
   </div>
   <div class="img-container">
-    <img src="../public/BMBF_logo.png" alt="" />
+    <img src="./BMBF_logo.png" alt="" />
   </div>
 </footer>
