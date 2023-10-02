@@ -97,6 +97,7 @@ export const getAggregatedPopulationForStratumCode = (store: ResponseStore, stra
  * @returns the population for a given stratum code for a given site
  */
 export const getSitePopulationForStratumCode = (site: SiteData, stratumCode: string): number => {
+    if (!site) return 0;
 
     let population = 0;
 
@@ -149,7 +150,7 @@ export const getSiteStratifierCodesForGroupCode = (site: SiteData, code: string)
 
     site.group.forEach((groupItem) => {
         groupItem.stratifier.forEach(stratifierItem => {
-            if (stratifierItem.code[0].text === code) {
+            if (stratifierItem.code[0].text === code && stratifierItem.stratum) {
                 stratifierItem.stratum.forEach((stratumItem) => {
                     codes.push(stratumItem.value.text);
                 })

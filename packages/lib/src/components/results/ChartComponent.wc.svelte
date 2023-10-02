@@ -116,14 +116,13 @@
 
         if (perSite) {
             dataSet = chartLabels.map((label: string) => {
-                console.log(label);
-                console.log(responseStore);
                 const site: Site = responseStore.get(label);
 
+                if(site.data === null) return 0;
+                
                 let data = site.data.group.find(
                     (groupItem) => groupItem.code.text === catalogueGroupCode
                 );
-                console.log(data?.population[0]?.count);
                 return data?.population[0]?.count || 0;
             });
         } else {
@@ -166,9 +165,6 @@
         if (perSite) {
             responseStore.forEach(
                 (value: Site, key: string, map: ResponseStore) => {
-                    console.log("value", value);
-                    console.log("key", key);
-                    console.log("map", map);
                     chartLabels.push(key);
                 }
             );

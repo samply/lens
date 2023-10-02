@@ -232,7 +232,7 @@
 </script>
 
 <div part="lens-searchbar">
-    {#if chips}
+    {#if queryGroup.length > 0}
         <div part="lens-searchbar-chips">
             {#each queryGroup as queryItem (queryItem.id)}
                 <div part="lens-searchbar-chip">
