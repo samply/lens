@@ -149,11 +149,17 @@
 <header>
   <div class="logo">
     <img
-      src="../public/BBMRI-ERIC-gateway-for-health.svg"
+      src="../public/dktk.svg"
       alt="Biobank Sweden logo"
     />
   </div>
-  <h1>Sample Locator</h1>
+  <h1>CCP Explorer</h1>
+  <div class="logo logo-dkfz">
+    <img
+      src="../public/logo-dkfz.svg"
+      alt="Biobank Sweden logo"
+    />
+  </div>
 </header>
 <main>
   <div class="search">
