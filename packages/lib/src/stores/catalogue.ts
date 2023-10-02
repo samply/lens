@@ -121,7 +121,6 @@ export const getCriteriaNamesFromKey = (catalogue: Category[], key: string): str
     if(criteriaNames.length === 0) {
         criteriaNames = ['20', '30', '40', '50',]
     }
-    console.log(key, criteriaNames)
     return criteriaNames
 }
 
