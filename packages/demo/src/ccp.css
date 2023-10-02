@@ -180,3 +180,32 @@ footer {
   justify-self: end;
   text-align: right;
 }
+
+/**
+* Overrides
+*/
+
+lens-catalogue::part(autocomplete-formfield-input):focus {
+  border-color: var(--light-blue);
+}
+lens-catalogue::part(query-add-button) {
+  background-color: var(--light-blue);
+}
+lens-catalogue::part(number-input-formfield):focus {
+  border-color: var(--light-blue);
+  outline: none;
+}
+lens-search-bar-multiple::part(lens-searchbar-chip) {
+  background-color: var(--light-blue);
+}
+lens-search-bar-multiple::part(query-delete-button) {
+  background-color: var(--light-blue);
+  border-color: var(--light-blue);
+}
+lens-search-bar-multiple::part(query-delete-button-item) {
+  border-color: var(--white);
+}
+lens-search-bar-multiple::part(query-delete-button-group) {
+  background-color: var(--white);
+  border-color: var(--white);
+}

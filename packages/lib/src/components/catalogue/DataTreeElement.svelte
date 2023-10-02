@@ -98,9 +98,10 @@
 </script>
 
 <div part="data-tree-element">
-    <button part="data-tree-element-name" on:click={toggleChildren}
-        >{element.name}</button
-    >
+    <button part="data-tree-element-name" on:click={toggleChildren}>
+        <span part="data-tree-element-toggle-icon {open ? 'data-tree-element-toggle-icon-open': ''}">&#8964;</span>
+        {element.name}
+    </button>
     {#if open}
         {#if "childCategories" in element}
             {#each element.childCategories as child}
