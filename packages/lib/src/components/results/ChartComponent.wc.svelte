@@ -5,6 +5,7 @@
             chartData: { type: "Object" },
             backgroundColors: { type: "Array" },
             backgroundHoverColors: { type: "Array" },
+            perSite: { type: "Boolean" },
         },
     }}
 />
@@ -13,7 +14,8 @@
     import Chart, { type ChartTypeRegistry } from "chart.js/auto";
     import { onMount } from "svelte";
     import {
-    getAggregatedPopulationForStratumCode,
+        getAggregatedPopulationForStratumCode,
+        getSitePopulationForCode,
         getStratifierCodesForGroupCode,
         responseStore,
     } from "../../stores/response";
@@ -23,17 +25,20 @@
     import type { QueryItem, QueryValue } from "../../types/queryData";
     import type { Category, Criteria } from "../../types/treeData";
     import { catalogueKeyToResponseKeyMap } from "../../stores/mappings";
+    import type { ResponseStore } from "../../types/backend";
+    import type { Site } from "../../types/response";
 
     export let title: string = ""; // e.g. 'Gender Distribution'
     export let catalogueGroupCode: string = ""; // e.g. "gender"
 
-    let responseGroupCode: string
-    $: responseGroupCode = $catalogueKeyToResponseKeyMap.get(catalogueGroupCode);
-
+    let responseGroupCode: string;
+    $: responseGroupCode =
+        $catalogueKeyToResponseKeyMap.get(catalogueGroupCode);
 
     export let hintText: string = "";
     export let displayLegends: boolean = false;
     export let chartType: keyof ChartTypeRegistry = "pie";
+    export let perSite: boolean = false;
 
     export let backgroundColors: string[] = [
         "#4dc9f6",
@@ -69,11 +74,11 @@
     let initialChartData = {
         type: chartType,
         data: {
-            labels: ['','','',''],
+            labels: ["", "", "", ""],
             datasets: [
                 {
                     label: "",
-                    data: [1,1,1,1],
+                    data: [1, 1, 1, 1],
                     backgroundColors: ["#aaa"],
                     backgroundHoverColors: ["#bbb"],
                 },
@@ -90,11 +95,11 @@
     };
 
     /**
-     * searches the catalogue for the criteria names for the given catalogueGroupCode 
+     * searches the catalogue for the criteria names for the given catalogueGroupCode
      * and sets them as chart labels
      * DISCUSSION: needed? if so how do we implement this for bar charts?
-    */
-    // $: { 
+     */
+    // $: {
     //     if(chartType === 'pie')
     //         initialChartData.data.labels = getCriteriaNamesFromKey($catalogue, catalogueGroupCode);
     // }
@@ -104,18 +109,34 @@
      * @returns an array of chart data sets from the response store
      */
     const getChartDataSets = (
+        responseStore: ResponseStore,
         chartLabels: string[]
     ): { label; data; backgroundColors; backgroundHoverColors }[] => {
-        const dataSet: number[] = chartLabels.map((label: string): number => {
-            const stratifierCode = label;
-            const stratifierCodeCount: number =
-                getAggregatedPopulationForStratumCode(
-                    $responseStore,
-                    stratifierCode
-                );
-            return stratifierCodeCount;
-        });
+        let dataSet: number[];
 
+        if (perSite) {
+            dataSet = chartLabels.map((label: string) => {
+                console.log(label);
+                console.log(responseStore);
+                const site: Site = responseStore.get(label);
+
+                let data = site.data.group.find(
+                    (groupItem) => groupItem.code.text === catalogueGroupCode
+                );
+                console.log(data?.population[0]?.count);
+                return data?.population[0]?.count || 0;
+            });
+        } else {
+            dataSet = chartLabels.map((label: string): number => {
+                const stratifierCode = label;
+                const stratifierCodeCount: number =
+                    getAggregatedPopulationForStratumCode(
+                        responseStore,
+                        stratifierCode
+                    );
+                return stratifierCodeCount;
+            });
+        }
         return [
             {
                 label: "",
@@ -129,26 +150,39 @@
     /**
      * watches the response store and updates the chart data
      */
-    const setChartData = (responseStore) => {
-        
+    const setChartData = (responseStore: ResponseStore) => {
         if (responseStore.size === 0) return;
-        let isDataAvailable = false;
+
+        let isDataAvailable: boolean = false;
+
         responseStore.forEach((value, key) => {
             if (value.data !== null) isDataAvailable = true;
         });
-        
+
         if (!isDataAvailable) return;
 
-        
-        const chartLabels = getStratifierCodesForGroupCode(
-            responseStore,
-            responseGroupCode
-        );
+        let chartLabels: string[] = [];
+
+        if (perSite) {
+            responseStore.forEach(
+                (value: Site, key: string, map: ResponseStore) => {
+                    console.log("value", value);
+                    console.log("key", key);
+                    console.log("map", map);
+                    chartLabels.push(key);
+                }
+            );
+        } else {
+            chartLabels = getStratifierCodesForGroupCode(
+                responseStore,
+                responseGroupCode
+            );
+        }
 
         chartLabels.sort(customSort);
 
         chart.data.labels = chartLabels;
-        chart.data.datasets = getChartDataSets(chartLabels);
+        chart.data.datasets = getChartDataSets(responseStore, chartLabels);
         chart.update();
     };
 
@@ -158,25 +192,24 @@
         chart = new Chart(canvas, initialChartData);
     });
 
-    const customSort = (a, b) : number =>{
-
+    const customSort = (a, b): number => {
         // "unknown" should come after numeric values
         if (a === "unknown" && b !== "unknown") {
-            return 1; 
+            return 1;
         }
         // Numeric values should come before "unknown"
         if (a !== "unknown" && b === "unknown") {
-            return -1; 
+            return -1;
         }
         // Convert values to numbers for numeric comparison
         const numA = parseInt(a, 10);
         const numB = parseInt(b, 10);
         return numA - numB;
-    }
-     
+    };
+
     /**
      * adds stratifier as a search parameter when clicked
-     * 
+     *
      */
     const handleClickOnStratifier = () => {
         /**
@@ -186,45 +219,53 @@
         if (!stratifier) return;
         const label: string = chart.data.labels[stratifier.index] as string;
 
-
-        let queryItem: QueryItem
+        let queryItem: QueryItem;
 
         $catalogue.forEach((parentCategory: Category) => {
-            if('childCategories' in parentCategory) {
+            if ("childCategories" in parentCategory) {
+                parentCategory.childCategories.forEach(
+                    (childCategorie: Category) => {
+                        if (
+                            childCategorie.key === catalogueGroupCode &&
+                            "criteria" in childCategorie
+                        ) {
+                            let values: QueryValue[] = [];
+                            childCategorie.criteria.forEach(
+                                (criterion: Criteria) => {
+                                    if (criterion.key === label) {
+                                        values[0] = {
+                                            name: criterion.name,
+                                            value: criterion.key,
+                                            queryBindId: uuidv4(),
+                                            description: criterion.description,
+                                        };
+                                    }
+                                }
+                            );
 
-                parentCategory.childCategories.forEach((childCategorie: Category) => {
-                    if(childCategorie.key === catalogueGroupCode && 'criteria' in childCategorie){
-                        
-                        let values: QueryValue[] = []
-                        childCategorie.criteria.forEach((criterion: Criteria) => {
+                            queryItem = {
+                                id: uuidv4(),
+                                key: childCategorie.key,
+                                name: childCategorie.name,
+                                system:
+                                    "system" in childCategorie
+                                        ? childCategorie.system
+                                        : "",
+                                type:
+                                    "type" in childCategorie
+                                        ? childCategorie.type
+                                        : "BETWEEN",
+                                values: values,
+                            };
 
-                            if(criterion.key === label) {
-                            values[0] = {
-                                name: criterion.name,
-                                value: criterion.key,
-                                queryBindId: uuidv4(),
-                                description: criterion.description,
-                            }}
-                        })
-
-                        queryItem = {
-                            id: uuidv4(),
-                            key: childCategorie.key,
-                            name: childCategorie.name,
-                            system: 'system' in childCategorie? childCategorie.system: '',
-                            type: 'type' in childCategorie ? childCategorie.type: 'BETWEEN',
-                            values: values,
+                            addItemToQuery(queryItem, $activeQueryGroupIndex);
                         }
-
-                        addItemToQuery(queryItem, $activeQueryGroupIndex)
                     }
-                });
+                );
             }
-        })
+        });
 
-
-        addItemToQuery(queryItem, $activeQueryGroupIndex)
-        
+        addItemToQuery(queryItem, $activeQueryGroupIndex);
     };
 </script>
 

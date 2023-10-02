@@ -1,27 +1,57 @@
 <script lang="ts">
-  import "../../lib";
+ import "../../lib";
   import type { CatalogueText } from "../../lib/src/types/texts";
-  import {  
-      patientsMeasure,
-      diagnosisMeasure,
-      specimenMeasure,
-      proceduresMeasure,
-      medicationStatementsMeasure,
-    } from './measures'
+  import {
+    patientsMeasure,
+    diagnosisMeasure,
+    specimenMeasure,
+    proceduresMeasure,
+    medicationStatementsMeasure,
+  } from "./measures";
 
-  let mockCatalogueData = ''
-  
-  fetch("catalogues/catalogue-example.json").then((response) => response.text()).then((data) => {
-    mockCatalogueData = data
-  })
+  let mockCatalogueData = "";
+
+  fetch("catalogues/catalogue-dktk.json")
+    .then((response) => response.text())
+    .then((data) => {
+      mockCatalogueData = data;
+    });
 
   const measures = [
     patientsMeasure,
-      diagnosisMeasure,
-      specimenMeasure,
-      proceduresMeasure,
-      medicationStatementsMeasure,
+    diagnosisMeasure,
+    specimenMeasure,
+    proceduresMeasure,
+    medicationStatementsMeasure,
   ];
+
+  const cqlHeader = `library Retrieve
+  using FHIR version '4.0.0'
+  include FHIRHelpers version '4.0.0'
+
+  codesystem loinc: 'http://loinc.org'
+
+  context Patient
+
+  DKTK_STRAT_GENDER_STRATIFIER
+
+  DKTK_STRAT_AGE_STRATIFIER
+
+  DKTK_STRAT_DECEASED_STRATIFIER
+
+  DKTK_STRAT_DIAGNOSIS_STRATIFIER
+
+  DKTK_STRAT_SPECIMEN_STRATIFIER
+
+  DKTK_STRAT_PROCEDURE_STRATIFIER
+
+  DKTK_STRAT_MEDICATION_STRATIFIER
+
+  DKTK_STRAT_ENCOUNTER_STRATIFIER
+
+  DKTK_STRAT_DEF_IN_INITIAL_POPULATION
+`
+
 
   const catalogueText: CatalogueText = {
     group: "Group",
@@ -33,74 +63,88 @@
     },
   };
 
-  const chart1Data = {
-    type: "bar",
-    data: {
-      labels: [
-        "0-9",
-        "10-19",
-        "20-29",
-        "30-39",
-        "40-49",
-        "50-59",
-        "60-69",
-        "70-79",
-        "80-89",
-        "90-99",
-        "100-109",
-        "110-119",
-      ],
-      datasets: [
-        {
-          label: "",
-          data: [12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3],
-        },
-      ],
+
+  let catalogueopen = false;
+
+  const resultSummaryConfig = [
+    {
+      key: "sites",
+      title: "Standorte",
     },
-  };
-  const chart2Data = {
-    type: "pie",
-    data: {
-      labels: ["Dresden", "Mannheim", "Frankfurt", "Berlin"],
-      datasets: [
-        {
-          label: "",
-          data: [3, 5, 12, 19],
-        },
+    {
+      key: "patients",
+      title: "Patienten",
+    },
+  ];
+
+  const siteToDefaultCollectionId: string[][] = [
+    ["dresden", "bbmri-eric:ID:DE_BBD:collection:DILB"],
+    ["frankfurt", "bbmri-eric:ID:DE_iBDF:collection:UCT"],
+    ["berlin", "bbmri-eric:ID:DE_ZeBanC:collection:Onoloy"],
+    ["wuerzburg", "bbmri-eric:ID:DE_ibdw:collection:bc"],
+    ["brno", "bbmri-eric:ID:CZ_MMCI:collection:LTS"],
+    ["aachen", "bbmri-eric:ID:DE_RWTHCBMB:collection:RWTHCBMB_BC"],
+    ["leipzig", "bbmri-eric:ID:DE_LMB:collection:LIFE_ADULT"],
+    ["muenchen-hmgu", "bbmri-eric:ID:DE_Helmholtz-MuenchenBiobank:collection:DE_KORA"],
+    ["Pilsen", "bbmri-eric:ID:CZ_CUNI_PILS:collection:serum_plasma"],
+    ["regensburg", "bbmri-eric:ID:DE_ZBR:collection:Tissue"],
+    ["heidelberg", "bbmri-eric:ID:DE_BMBH:collection:Lungenbiobank"],
+    ["luebeck", "bbmri-eric:ID:DE_ICBL:collection:ICBL"],
+    ["augsburg", "bbmri-eric:ID:DE_ACBB:collection:TISSUE"],
+    ["mannheim", "bbmri-eric:ID:DE_BioPsy:collection:Main_collecion"],
+    ["marburg", "bbmri-eric:ID:DE_CBBMR:collection:main"],
+    ["goettingen", "bbmri-eric:ID:DE_UMGB:collection:UMG-startegy"],
+    ["hannover", "bbmri-eric:ID:DE_HUB:collection:ProBase"],
+    ["olomouc", "bbmri-eric:ID:CZ_UPOL_LF:collection:all_samples"],
+    ["prague-ffm", "bbmri-eric:ID:CZ_CUNI_PILS:collection:serum_plasma"],
+    ["prague-ior", "bbmri-eric:ID:CZ_CUNI_LF1:collection:all_samples"],
+  ];
+
+  const uiSiteMap: string[][] = [
+    ["berlin", "Berlin"],
+    ["bonn", "Bonn"],
+    ["dresden", "Dresden"],
+    ["essen", "Essen"],
+    ["frankfurt", "Frankfurt"],
+    ["freiburg", "Freiburg"],
+    ["hannover", "Hannover"],
+    ["mainz", "Mainz"],
+    ["muenchen-lmu", "München(LMU],"],
+    ["muenchen-tum", "München(TUM],"],
+    ["ulm", "Ulm"],
+    ["wuerzburg", "Würzburg"],
+    ["mannheim", "Mannheim"],
+    ["dktk-test", "DKTK-Test"],
+
+  ];
+
+const catalogueKeyToResponseKeyMap = [
+  ['gender', 'Gender'],
+  ["age_at_diagnosis", 'Age']
+]
+
+  const backendConfig = {
+    url: "http://localhost:8080",
+    backends: [
+      "berlin",
+      "bonn",
+      "dresden",
+      "essen",
+      "frankfurt",
+      "freiburg",
+      "hannover",
+      "mainz",
+      "muenchen-lmu",
+      "muenchen-tum",
+      "ulm",
+      "wuerzburg",
+      "mannheim",
+      "dktk-test",
       ],
-    },
-  };
-  const chart3Data = {
-    type: "pie",
-    data: {
-      labels: ["male", "female", "undefined", "other"],
-      datasets: [
-        {
-          label: "",
-          data: [12, 19, 3, 5],
-        },
-      ],
-    },
-  };
-  const chart4Data = {
-    type: "bar",
-    data: {
-      labels: ["C31", "C31.0", "C41", "C41.0"],
-      datasets: [
-        {
-          label: [],
-          data: [12, 100, 30, 5],
-        },
-      ],
-    },
-    options: {
-      legend: {
-        display: false,
-      },
-    },
+    uiSiteMap: uiSiteMap,
+    catalogueKeyToResponseKeyMap: catalogueKeyToResponseKeyMap,
   };
 
-  let catalogueopen = true;
 </script>
 
 <header>
@@ -116,7 +160,11 @@
       noMatchesFoundMessage={"No matches found"}
       measures={[patientsMeasure, diagnosisMeasure, specimenMeasure, proceduresMeasure, medicationStatementsMeasure]}
     >
-      <lens-search-button title="Search Biobanks" measures={measures} />
+      <lens-search-button
+        {measures}
+        backendConfig={JSON.stringify(backendConfig)}
+        {cqlHeader}
+      />
     </lens-search-bar-multiple>
   </div>
   <div class="grid">
@@ -127,7 +175,7 @@
       <lens-catalogue
         treeData={mockCatalogueData}
         texts={catalogueText}
-        toggle={{ collapsable: false, open: true }}
+        toggle={{ collapsable: false, open: false }}
       />
       {#if catalogueopen}
         <button on:click={() => (catalogueopen = !catalogueopen)}>
@@ -142,12 +190,19 @@
     <div class="charts">
       <div class="chart-wrapper result-summary">
         <lens-result-summary
-        title="Results"
-        resultSummaryDataTypes={JSON.stringify(["Patients", "Samples", "sites"])}
+        title="Ergebnisse"
+        resultSummaryDataTypes={JSON.stringify(resultSummaryConfig)}
         negotiateButton={true}
         negotiateButtonText="Negotiate with biobanks"
         />
       </div>
+      <lens-chart
+      title="Patienten pro Standort"
+      catalogueGroupCode='patients'
+      perSite={true}
+      chartType="pie"
+      />
+    </div>
       <div class="chart-wrapper">
         <lens-result-table pageSize="3" title="Responding sites"/>
       </div>
@@ -155,24 +210,24 @@
         <lens-chart
         title="Age at Diagnosis"
         hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit."
-        chartData={JSON.stringify(chart1Data)}
+        catalogueGroupCode='age_at_diagnosis'
+        chartType="bar"
         />
       </div>
+      <div class="chart-wrapper">
       <div class="chart-wrapper">
         <lens-chart
-        title="Patients Per Site"
-        hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit."
-        chartData={JSON.stringify(chart2Data)}
-        />
-      </div>
-      <div class="chart-wrapper">
-        <lens-chart title="Gender" chartData={JSON.stringify(chart3Data)} />
+        title="Gender distribution"
+        catalogueGroupCode='gender'
+        chartType="pie"
+      />
       </div>
       <div class="chart-wrapper">
       <lens-chart
         title="Diagnosis"
         hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit."
-        chartData={JSON.stringify(chart4Data)}
+        catalogueGroupCode='diagnosis'
+        chartType="bar"
       />
       </div>
     </div>

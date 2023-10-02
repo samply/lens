@@ -175,7 +175,6 @@ const catalogueKeyToResponseKeyMap = [
   <h2>Result Pie Chart</h2>
   <div class="componentBox">
       <lens-chart
-        class="chart1"
         title="Gender distribution"
         hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit."
         catalogueGroupCode='gender'
