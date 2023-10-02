@@ -1,5 +1,5 @@
 <script lang="ts">
- import "../../lib";
+  import "../../lib";
   import type { CatalogueText } from "../../lib/src/types/texts";
   import {
     patientsMeasure,
@@ -50,8 +50,7 @@
   DKTK_STRAT_ENCOUNTER_STRATIFIER
 
   DKTK_STRAT_DEF_IN_INITIAL_POPULATION
-`
-
+`;
 
   const catalogueText: CatalogueText = {
     group: "Group",
@@ -62,7 +61,6 @@
       labelTo: "to",
     },
   };
-
 
   let catalogueopen = false;
 
@@ -85,7 +83,10 @@
     ["brno", "bbmri-eric:ID:CZ_MMCI:collection:LTS"],
     ["aachen", "bbmri-eric:ID:DE_RWTHCBMB:collection:RWTHCBMB_BC"],
     ["leipzig", "bbmri-eric:ID:DE_LMB:collection:LIFE_ADULT"],
-    ["muenchen-hmgu", "bbmri-eric:ID:DE_Helmholtz-MuenchenBiobank:collection:DE_KORA"],
+    [
+      "muenchen-hmgu",
+      "bbmri-eric:ID:DE_Helmholtz-MuenchenBiobank:collection:DE_KORA",
+    ],
     ["Pilsen", "bbmri-eric:ID:CZ_CUNI_PILS:collection:serum_plasma"],
     ["regensburg", "bbmri-eric:ID:DE_ZBR:collection:Tissue"],
     ["heidelberg", "bbmri-eric:ID:DE_BMBH:collection:Lungenbiobank"],
@@ -115,13 +116,12 @@
     ["wuerzburg", "Würzburg"],
     ["mannheim", "Mannheim"],
     ["dktk-test", "DKTK-Test"],
-
   ];
 
-const catalogueKeyToResponseKeyMap = [
-  ['gender', 'Gender'],
-  ["age_at_diagnosis", 'Age']
-]
+  const catalogueKeyToResponseKeyMap = [
+    ["gender", "Gender"],
+    ["age_at_diagnosis", "Age"],
+  ];
 
   const backendConfig = {
     url: "http://localhost:8080",
@@ -140,16 +140,18 @@ const catalogueKeyToResponseKeyMap = [
       "wuerzburg",
       "mannheim",
       "dktk-test",
-      ],
+    ],
     uiSiteMap: uiSiteMap,
     catalogueKeyToResponseKeyMap: catalogueKeyToResponseKeyMap,
   };
-
 </script>
 
 <header>
   <div class="logo">
-    <img src="../public/BBMRI-ERIC-gateway-for-health.svg" alt="Biobank Sweden logo" />
+    <img
+      src="../public/BBMRI-ERIC-gateway-for-health.svg"
+      alt="Biobank Sweden logo"
+    />
   </div>
   <h1>Sample Locator</h1>
 </header>
@@ -158,7 +160,13 @@ const catalogueKeyToResponseKeyMap = [
     <lens-search-bar-multiple
       treeData={mockCatalogueData}
       noMatchesFoundMessage={"No matches found"}
-      measures={[patientsMeasure, diagnosisMeasure, specimenMeasure, proceduresMeasure, medicationStatementsMeasure]}
+      measures={[
+        patientsMeasure,
+        diagnosisMeasure,
+        specimenMeasure,
+        proceduresMeasure,
+        medicationStatementsMeasure,
+      ]}
     >
       <lens-search-button
         {measures}
@@ -168,66 +176,55 @@ const catalogueKeyToResponseKeyMap = [
     </lens-search-bar-multiple>
   </div>
   <div class="grid">
-    <div
-      class="catalogue"
-      style={`max-width: ${catalogueopen ? "400px" : "288px"};`}
-      >
+    <div class="catalogue">
+      <!-- style={`max-width: ${catalogueopen ? "400px" : "288px"};`} -->
       <lens-catalogue
         treeData={mockCatalogueData}
         texts={catalogueText}
-        toggle={{ collapsable: false, open: false }}
+        toggle={{ collapsable: false, open: catalogueopen }}
       />
-      {#if catalogueopen}
-        <button on:click={() => (catalogueopen = !catalogueopen)}>
-          &#8676;
-        </button>
-      {:else}
-        <button on:click={() => (catalogueopen = !catalogueopen)}>
-          &#8677;
-        </button>
-      {/if}
     </div>
     <div class="charts">
       <div class="chart-wrapper result-summary">
         <lens-result-summary
-        title="Ergebnisse"
-        resultSummaryDataTypes={JSON.stringify(resultSummaryConfig)}
-        />
-      </div>
-      <lens-chart
-      title="Patienten pro Standort"
-      catalogueGroupCode='patients'
-      perSite={true}
-      chartType="pie"
-      />
-    </div>
-      <div class="chart-wrapper">
-        <lens-result-table pageSize="10" title="Responding sites"/>
-      </div>
-      <div class="chart-wrapper">
-        <lens-chart
-        title="Age at Diagnosis"
-        hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit."
-        catalogueGroupCode='age_at_diagnosis'
-        chartType="bar"
+          title="Ergebnisse"
+          resultSummaryDataTypes={JSON.stringify(resultSummaryConfig)}
         />
       </div>
       <div class="chart-wrapper">
+        <lens-chart
+          title="Patienten pro Standort"
+          catalogueGroupCode="patients"
+          perSite={true}
+          chartType="pie"
+        />
+      </div>
+      <div class="chart-wrapper">
+        <lens-result-table pageSize="10" title="Responding sites" />
+      </div>
       <div class="chart-wrapper">
         <lens-chart
-        title="Gender distribution"
-        catalogueGroupCode='gender'
-        chartType="pie"
-      />
+          title="Age at Diagnosis"
+          hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit."
+          catalogueGroupCode="age_at_diagnosis"
+          chartType="bar"
+        />
       </div>
-      <div class="chart-wrapper">
-      <lens-chart
-        title="Diagnosis"
-        hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit."
-        catalogueGroupCode='diagnosis'
-        chartType="bar"
-      />
-      </div>
+        <div class="chart-wrapper">
+          <lens-chart
+            title="Gender distribution"
+            catalogueGroupCode="gender"
+            chartType="pie"
+          />
+        </div>
+        <div class="chart-wrapper">
+          <lens-chart
+            title="Diagnosis"
+            hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit."
+            catalogueGroupCode="diagnosis"
+            chartType="bar"
+          />
+        </div>
     </div>
   </div>
 </main>
