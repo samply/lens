@@ -96,8 +96,7 @@
     const getChartDataSets = (
         chartLabels: string[]
     ): { label; data; backgroundColors; backgroundHoverColors }[] => {
-        console.log('chartLabels',chartLabels);
-        const dataSet: number[] = chartLabels.map((label: string): number => {
+                const dataSet: number[] = chartLabels.map((label: string): number => {
             const stratifierCode = label;
             const stratifierCodeCount: number =
                 getAggregatedPopulationForStratumCode(
@@ -122,8 +121,7 @@
      */
 
     const setChartData = (responseStore) => {
-        console.log(responseStore);
-
+        
         if (responseStore.size === 0) return;
         let isDataAvailable = false;
         responseStore.forEach((value, key) => {
@@ -132,15 +130,13 @@
         
         if (!isDataAvailable) return;
 
-        console.log('groupCode', responseGroupCode);
-
+        
         const chartLabels = getStratifierCodesForGroupCode(
             responseStore,
             responseGroupCode
         );
 
-        console.log('chartLabels',chartLabels);
-        chart.data.labels = chartLabels;
+                chart.data.labels = chartLabels;
         chart.data.datasets = getChartDataSets(chartLabels);
         chart.update();
     };

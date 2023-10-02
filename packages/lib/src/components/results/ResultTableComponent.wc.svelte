@@ -98,8 +98,7 @@
         if (allChecked) {
             $negotiateStore = [];
         } else {
-            console.log(tableRowData);
-            $negotiateStore = tableRowData.map(
+                        $negotiateStore = tableRowData.map(
                 (tableRow: (string | number)[]) => tableRow[0] as string
             );
         }
