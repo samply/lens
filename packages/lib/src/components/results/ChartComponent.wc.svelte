@@ -19,7 +19,7 @@
     } from "../../stores/response";
     import { v4 as uuidv4 } from "uuid";
     import { activeQueryGroupIndex, addItemToQuery } from "../../stores/query";
-    import { catalogue } from "../../stores/catalogue";
+    import { catalogue, getCriteriaNamesFromKey } from "../../stores/catalogue";
     import type { QueryItem, QueryValue } from "../../types/queryData";
     import type { Category, Criteria } from "../../types/treeData";
     import { catalogueKeyToResponseKeyMap } from "../../stores/mappings";
@@ -69,11 +69,11 @@
     let initialChartData = {
         type: chartType,
         data: {
-            labels: ["male"],
+            labels: ['','','',''],
             datasets: [
                 {
                     label: "",
-                    data: [1],
+                    data: [1,1,1,1],
                     backgroundColors: ["#aaa"],
                     backgroundHoverColors: ["#bbb"],
                 },
@@ -90,13 +90,23 @@
     };
 
     /**
+     * searches the catalogue for the criteria names for the given catalogueGroupCode 
+     * and sets them as chart labels
+     * DISCUSSION: needed? if so how do we implement this for bar charts?
+    */
+    // $: { 
+    //     if(chartType === 'pie')
+    //         initialChartData.data.labels = getCriteriaNamesFromKey($catalogue, catalogueGroupCode);
+    // }
+
+    /**
      * @param chartLabels
      * @returns an array of chart data sets from the response store
      */
     const getChartDataSets = (
         chartLabels: string[]
     ): { label; data; backgroundColors; backgroundHoverColors }[] => {
-                const dataSet: number[] = chartLabels.map((label: string): number => {
+        const dataSet: number[] = chartLabels.map((label: string): number => {
             const stratifierCode = label;
             const stratifierCodeCount: number =
                 getAggregatedPopulationForStratumCode(
@@ -119,7 +129,6 @@
     /**
      * watches the response store and updates the chart data
      */
-
     const setChartData = (responseStore) => {
         
         if (responseStore.size === 0) return;
@@ -136,7 +145,9 @@
             responseGroupCode
         );
 
-                chart.data.labels = chartLabels;
+        chartLabels.sort(customSort);
+
+        chart.data.labels = chartLabels;
         chart.data.datasets = getChartDataSets(chartLabels);
         chart.update();
     };
@@ -147,6 +158,22 @@
         chart = new Chart(canvas, initialChartData);
     });
 
+    const customSort = (a, b) : number =>{
+
+        // "unknown" should come after numeric values
+        if (a === "unknown" && b !== "unknown") {
+            return 1; 
+        }
+        // Numeric values should come before "unknown"
+        if (a !== "unknown" && b === "unknown") {
+            return -1; 
+        }
+        // Convert values to numbers for numeric comparison
+        const numA = parseInt(a, 10);
+        const numB = parseInt(b, 10);
+        return numA - numB;
+    }
+     
     /**
      * adds stratifier as a search parameter when clicked
      * 

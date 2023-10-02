@@ -64,7 +64,7 @@
   };
 
 
-  let catalogueopen = true;
+  let catalogueopen = false;
 
   const resultSummaryConfig = [
     {
@@ -119,7 +119,8 @@
   ];
 
 const catalogueKeyToResponseKeyMap = [
-  ['gender', 'Gender']
+  ['gender', 'Gender'],
+  ["age_at_diagnosis", 'Age']
 ]
 
   const backendConfig = {
@@ -171,17 +172,26 @@ const catalogueKeyToResponseKeyMap = [
     <lens-result-table pageSize="3" title="Responding sites" />
   </div>
 
-  <h2>Result Chart</h2>
+  <h2>Result Pie Chart</h2>
   <div class="componentBox">
-    <div>
       <lens-chart
         class="chart1"
         title="Gender distribution"
         hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit."
         catalogueGroupCode='gender'
-
+        chartType="pie"
       />
-    </div>
+  </div>
+
+  <h2>Result Bar Chart</h2>
+  <div class="componentBox">
+      <lens-chart
+        class="chart1"
+        title="Alter bei Erstdiagnose"
+        hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit."
+        catalogueGroupCode='age_at_diagnosis'
+        chartType="bar"
+      />
   </div>
 
   <h2>Catalogue</h2>

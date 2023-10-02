@@ -96,3 +96,32 @@ const getBottomLevelItems = (item: TreeNode, category: string): string[] => {
 
     return
 }
+
+
+
+export const getCriteriaNamesFromKey = (catalogue: Category[], key: string): string[] => {
+    
+    let criteriaNames: string[] = []
+
+
+    if(catalogue.length === 0 || key === '') {
+        return criteriaNames
+    }
+
+    catalogue.forEach((category: Category):void => {
+        if ('childCategories' in category) {
+            category.childCategories.forEach((childCategory: Category):void => {
+                if ('criteria' in childCategory && childCategory.key === key) {
+                    criteriaNames = childCategory.criteria.map((criterion) => criterion.name)
+                }
+            })
+        }
+    })
+
+    if(criteriaNames.length === 0) {
+        criteriaNames = ['20', '30', '40', '50',]
+    }
+    console.log(key, criteriaNames)
+    return criteriaNames
+}
+
