@@ -127,18 +127,18 @@
   const backendConfig = {
     url: "http://localhost:8080",
     backends: [
-           'mannheim',
-      'freiburg',
-      'muenchen-tum',
-      'hamburg',
-      'frankfurt',
-      'berlin',
-      'dresden',
-      'mainz',
-      'muenchen-lmu',
-      'essen',
-      'ulm',
-      'wuerzburg',
+      "mannheim",
+      "freiburg",
+      "muenchen-tum",
+      "hamburg",
+      "frankfurt",
+      "berlin",
+      "dresden",
+      "mainz",
+      "muenchen-lmu",
+      "essen",
+      "ulm",
+      "wuerzburg",
     ],
     uiSiteMap: uiSiteMap,
     catalogueKeyToResponseKeyMap: catalogueKeyToResponseKeyMap,
@@ -147,17 +147,11 @@
 
 <header>
   <div class="logo">
-    <img
-      src="../public/dktk.svg"
-      alt="Biobank Sweden logo"
-    />
+    <img src="../public/dktk.svg" alt="Biobank Sweden logo" />
   </div>
   <h1>CCP Explorer</h1>
   <div class="logo logo-dkfz">
-    <img
-      src="../public/logo-dkfz.svg"
-      alt="Biobank Sweden logo"
-    />
+    <img src="../public/logo-dkfz.svg" alt="Biobank Sweden logo" />
   </div>
 </header>
 <main>
@@ -204,32 +198,59 @@
           chartType="pie"
         />
       </div>
-      <div class="chart-wrapper">
+      <div class="chart-wrapper result-table">
         <lens-result-table pageSize="10" title="Responding sites" />
       </div>
       <div class="chart-wrapper">
         <lens-chart
-          title="Age at Diagnosis"
+          title="Geschlecht"
+          catalogueGroupCode="gender"
+          chartType="pie"
+        />
+      </div>
+      <div class="chart-wrapper chart-diagnosis">
+        <lens-chart
+          title="Diagnosis"
           hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit."
+          catalogueGroupCode="diagnosis"
+          chartType="bar"
+        />
+      </div>
+      <div class="chart-wrapper chart-age-distribution">
+        <lens-chart
+          title="Alter bei Erstdiagnose"
           catalogueGroupCode="age_at_diagnosis"
           chartType="bar"
         />
       </div>
-        <div class="chart-wrapper">
-          <lens-chart
-            title="Gender distribution"
-            catalogueGroupCode="gender"
-            chartType="pie"
-          />
-        </div>
-        <div class="chart-wrapper">
-          <lens-chart
-            title="Diagnosis"
-            hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit."
-            catalogueGroupCode="diagnosis"
-            chartType="bar"
-          />
-        </div>
+      <div class="chart-wrapper">
+        <lens-chart
+          title="Vitalstatus"
+          catalogueGroupCode="75186-7"
+          chartType="pie"
+        />
+      </div>
+      <div class="chart-wrapper">
+        <lens-chart
+          title="Therapieart"
+          catalogueGroupCode="therapy_of_tumor"
+          chartType="bar"
+        />
+      </div>
+      <div class="chart-wrapper">
+        <lens-chart
+          title="Systemische Therapien"
+          catalogueGroupCode=""
+          chartType="bar"
+        />
+      </div>
+      <div class="chart-wrapper">
+        <lens-chart
+          title="Proben"
+          catalogueGroupCode="sample_kind"
+          chartType="bar"
+        />
+      </div>
     </div>
   </div>
 </main>
@@ -239,6 +260,8 @@
   <a class="email" href="mailto:CCP@dkfz.de">CCP@dkfz.de</a>
   <div class="copyright">
     <span>&#169; 2023</span>
-    <a href="https://dktk.dkfz.de/en/clinical-platform/about-ccp">Clinical Comunication Platform (CCP)</a>
+    <a href="https://dktk.dkfz.de/en/clinical-platform/about-ccp"
+      >Clinical Comunication Platform (CCP)</a
+    >
   </div>
 </footer>
