@@ -4,8 +4,9 @@
 
 
 import { responseStore } from "../stores/response"
+import type { ResponseStore } from "../types/backend";
 
-import type { Status } from "../types/response"
+import type { SiteData, Status } from "../types/response"
 
 type BeamResult = {
     body: string,
@@ -40,30 +41,34 @@ export class Spot {
         }
         const beamTask = await beamTaskResponse.json()
 
-        let responseCount = 0
+        let responseCount: number = 0
         // the time to wait in ms for a response from beam
-        let requestTimeOut = 500;
-        let continueRequests = false;
+        let requestTimeOut: number = 500;
+        let continueRequests: boolean = false;
 
         do {
 
-            const beamResponses = await fetch(
+            const beamResponses: Response = await fetch(
                 `${this.url}tasks/${beamTask.id}?wait_count=${responseCount + 1}&wait_time=${requestTimeOut}ms`,
             )
 
             if (!beamResponses.ok) {
-                const error = await beamResponses.text()
+                const error: string = await beamResponses.text()
                 console.debug(`Received ${beamResponses.status} with message ${error}`)
                 throw new Error(`Error then retrieving responses from Beam. Abborting requests ...`)
             }
 
             const beamResponseData: Array<BeamResult> = await beamResponses.json();
 
-            responseStore.update((store) => {
+            responseStore.update((store: ResponseStore): ResponseStore => {
                 beamResponseData.forEach((response: BeamResult) => {
-                    let site = response.from.split(".")[1]
-                    let status = response.status
-                    let body = (status !== "claimed" && status !== 'permfailed') ? JSON.parse(atob(response.body)) : null;
+                    let site: string = response.from.split(".")[1]
+                    let status: Status = response.status
+                    let body: SiteData = (status !== "claimed" && status !== 'permfailed') ? JSON.parse(atob(response.body)) : null;
+
+                    // if the site is already in the store and the status is claimed, don't update the store
+                    if(store.get(site)?.status === status) return;
+
                     store.set(site, {status: status, data: body});
                 });
                 return store;
