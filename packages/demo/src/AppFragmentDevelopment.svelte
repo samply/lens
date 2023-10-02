@@ -63,31 +63,6 @@
     },
   };
 
-  const chart1Data = {
-    type: "bar",
-    data: {
-      labels: [
-        "0-9",
-        "10-19",
-        "20-29",
-        "30-39",
-        "40-49",
-        "50-59",
-        "60-69",
-        "70-79",
-        "80-89",
-        "90-99",
-        "100-109",
-        "110-119",
-      ],
-      datasets: [
-        {
-          label: "",
-          data: [12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3],
-        },
-      ],
-    },
-  };
 
   let catalogueopen = true;
 
@@ -143,6 +118,10 @@
 
   ];
 
+const catalogueKeyToResponseKeyMap = [
+  ['gender', 'Gender']
+]
+
   const backendConfig = {
     url: "http://localhost:8080",
     backends: [
@@ -162,6 +141,7 @@
       "dktk-test",
       ],
     uiSiteMap: uiSiteMap,
+    catalogueKeyToResponseKeyMap: catalogueKeyToResponseKeyMap,
   };
 
 </script>
@@ -196,9 +176,10 @@
     <div>
       <lens-chart
         class="chart1"
-        title="Age at Diagnosis"
+        title="Gender distribution"
         hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit."
-        chartData={JSON.stringify(chart1Data)}
+        catalogueGroupCode='gender'
+
       />
     </div>
   </div>

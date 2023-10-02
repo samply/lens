@@ -10,6 +10,7 @@ export type BackendConfig = {
     url: string;
     backends: string[];
     uiSiteMap: string[][];
+    catalogueKeyToResponseKeyMap: string[][];
 };
 
 export type ResponseStore = Map<string, Site>
