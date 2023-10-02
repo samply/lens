@@ -88,12 +88,12 @@ if (Array.isArray(item)) {
   /**
    * return bottom level object of an entity (aggregatedValue)
    */
-  if ('value' in item && typeof item.value === 'string') {
+  if ('key' in topLayerItem && 'value' in item && typeof item.value === 'string') {
     return {
-      key: item.value,
+      key: topLayerItem.key,
       type: 'EQUALS',
       system: '',
-      value: item.name,
+      value: item.value,
     }
   }
   /**

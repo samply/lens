@@ -16,7 +16,6 @@
     import { Spot } from "../../classes/spot";
     import { catalogueKeyToResponseKeyMap, uiSiteMappingsStore } from "../../stores/mappings";
     import type { Measure, BackendConfig } from "../../types/backend";
-    import { responseStore } from "../../stores/response";
 
   
     export let title: string = "Search";
@@ -76,7 +75,7 @@
         )
 
         spot.send(
-            btoa(unescape(JSON.stringify(query)))
+            btoa(decodeURI(JSON.stringify(query)))
         )
 
     };
