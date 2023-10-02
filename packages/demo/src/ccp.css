@@ -164,21 +164,19 @@ footer {
 
 
 footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   padding: var(--gap-s);
   background-color: var(--white);
   border-radius: var(--border-radius-small);
   border: solid 1px var(--lightest-gray);
 }
 
-footer .img-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.email {
+  justify-self: center;
 }
 
-footer img {
-  height: 100px;
+.copyright {
+  justify-self: end;
+  text-align: right;
 }

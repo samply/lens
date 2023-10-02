@@ -236,11 +236,10 @@
 </main>
 
 <footer>
-  <h3>made with &#10084; & samply-lens</h3>
-  <div class="img-container">
-    <img src="../public/logo_ce-en-rvb-lr.jpg" alt="" />
-  </div>
-  <div class="img-container">
-    <img src="../public/BMBF_logo.png" alt="" />
+  <a class="user-agreement" href="">Nutzervereinbarung</a>
+  <a class="email" href="mailto:CCP@dkfz.de">CCP@dkfz.de</a>
+  <div class="copyright">
+    <span>&#169; 2023</span>
+    <a href="https://dktk.dkfz.de/en/clinical-platform/about-ccp">Clinical Comunication Platform (CCP)</a>
   </div>
 </footer>
