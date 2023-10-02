@@ -192,8 +192,6 @@ const catalogueKeyToResponseKeyMap = [
         <lens-result-summary
         title="Ergebnisse"
         resultSummaryDataTypes={JSON.stringify(resultSummaryConfig)}
-        negotiateButton={true}
-        negotiateButtonText="Negotiate with biobanks"
         />
       </div>
       <lens-chart
@@ -204,7 +202,7 @@ const catalogueKeyToResponseKeyMap = [
       />
     </div>
       <div class="chart-wrapper">
-        <lens-result-table pageSize="3" title="Responding sites"/>
+        <lens-result-table pageSize="10" title="Responding sites"/>
       </div>
       <div class="chart-wrapper">
         <lens-chart
