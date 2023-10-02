@@ -11,8 +11,7 @@
      * @returns void
      */
     const updateStoreOnCheck = (): void => {
-        console.log(checked);
-        if (!checked) {
+                if (!checked) {
             negotiateStore.update((store: string[]) => {
                 return [...store, tableRow[0] as string];
             });

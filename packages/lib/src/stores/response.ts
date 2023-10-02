@@ -1,4 +1,4 @@
-import {  writable } from "svelte/store";
+import { writable } from "svelte/store";
 import type { Site, SiteData, Status, Stratum } from "../types/response";
 import type { ResponseStore } from "../types/backend";
 
@@ -16,9 +16,9 @@ export const responseStore = writable<ResponseStore>(
  */
 export const getAggregatedPopulation = (store: ResponseStore, code: string): number => {
     if (store.size === 0) return 0;
-    
+
     const sites: Site[] = Array.from(store.values());
-    
+
     let population = 0;
 
 
@@ -26,7 +26,7 @@ export const getAggregatedPopulation = (store: ResponseStore, code: string): num
         if (site.data === null) return;
         population += getSitePopulationForCode(site.data, code);
     })
-    
+
     return population;
 }
 
@@ -70,43 +70,94 @@ export const getAggregatedStratifierForStratumCode = (store: ResponseStore, code
 
 
 /**
+ * @param store the response store
+ * @param code the code to search for
+ * @returns the aggregated population count for a given stratum code 
+ * (stratum code is the value.text of a stratum item e.g.'male')
+ */
+
+export const getAggregatedPopulationForStratumCode = (store: ResponseStore, stratumCode: string): number => {
+
+    const sites = Array.from(store.values());
+
+    let population = [];
+    if (store.size === 0) return 1;
+
+    sites.forEach((site) => {
+        population.push(getSitePopulationForStratumCode(site.data, stratumCode))
+    })
+
+    return population.reduce((a, b) => a + b, 0);
+}
+
+
+/**
  * @param site data of the responding site
  * @param code the code to search for
  * @returns the population for a given stratum code for a given site
  */
-export const getSiteStratifierForStratumCode = (site: SiteData, code: string, subCode: string): Stratum[] => {
+export const getSitePopulationForStratumCode = (site: SiteData, stratumCode: string): number => {
 
-    let stratifier: Stratum[] = [];
+    let population = 0;
 
     site.group.forEach((group) => {
-        if (group.code.text === code) {
-            console.log(group);
-            group.stratifier.forEach((stratifierItem) => {
-                if (stratifierItem.code[0].text === subCode) {
-                    stratifierItem.stratum?.forEach((stratumItem) => {
-                        if ('stratum' in stratifierItem) {
-                            stratifier.push({
-                                code: stratumItem.value.text,
-                                population: stratumItem.population[0].count
-                            })
-                        } else {
-                            stratifier.push({
-                                code: stratumItem.value.text,
-                            })
-                        }
-                    })
+        group.stratifier.forEach((stratifierItem) => {
+            stratifierItem.stratum?.forEach((stratumItem) => {
+                if (stratumItem.value.text === stratumCode) {
+                    population = stratumItem.population[0].count;
                 }
             })
-        }
+        })
     })
 
-    return stratifier;
+    return population;
 }
 
 
+/**
+ * @param store the response store
+ * @param code the code to search for
+ * @returns the stratifier codes for a given group code
+ */
+export const getStratifierCodesForGroupCode = (store: ResponseStore, code: string): string[] => {
 
+    const sites = Array.from(store.values());
 
+    let codes: Set<string> = new Set();
+    if (store.size === 0) return [''];
 
+    sites.forEach((site) => {
+        let siteCodes = getSiteStratifierCodesForGroupCode(site.data, code);
+        siteCodes.forEach((code) => {
+            codes.add(code);
+        })
+    })
 
+    let codesArray = Array.from(codes);
+    return codesArray;
+}
+
+/**
+ * @param site data of the responding site
+ * @param code the code to search for
+ * @returns the stratifier codes for a given group code for a single site
+ */
+
+export const getSiteStratifierCodesForGroupCode = (site: SiteData, code: string): string[] => {
+    if (!site) return [''];
+    let codes: string[] = [];
+
+    site.group.forEach((groupItem) => {
+        groupItem.stratifier.forEach(stratifierItem => {
+            if (stratifierItem.code[0].text === code) {
+                stratifierItem.stratum.forEach((stratumItem) => {
+                    codes.push(stratumItem.value.text);
+                })
+            }
+        });
+    })
+
+    return codes;
+}
 
 

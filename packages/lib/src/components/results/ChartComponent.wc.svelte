@@ -5,76 +5,277 @@
             chartData: { type: "Object" },
             backgroundColors: { type: "Array" },
             backgroundHoverColors: { type: "Array" },
+            perSite: { type: "Boolean" },
         },
     }}
 />
 
 <script lang="ts">
-    import Chart, { Colors } from "chart.js/auto";
+    import Chart, { type ChartTypeRegistry } from "chart.js/auto";
     import { onMount } from "svelte";
+    import {
+        getAggregatedPopulationForStratumCode,
+        getSitePopulationForCode,
+        getStratifierCodesForGroupCode,
+        responseStore,
+    } from "../../stores/response";
+    import { v4 as uuidv4 } from "uuid";
+    import { activeQueryGroupIndex, addItemToQuery } from "../../stores/query";
+    import { catalogue, getCriteriaNamesFromKey } from "../../stores/catalogue";
+    import type { QueryItem, QueryValue } from "../../types/queryData";
+    import type { Category, Criteria } from "../../types/treeData";
+    import { catalogueKeyToResponseKeyMap } from "../../stores/mappings";
+    import type { ResponseStore } from "../../types/backend";
+    import type { Site } from "../../types/response";
 
-    export let title: string = "";
+    export let title: string = ""; // e.g. 'Gender Distribution'
+    export let catalogueGroupCode: string = ""; // e.g. "gender"
+
+    let responseGroupCode: string;
+    $: responseGroupCode =
+        $catalogueKeyToResponseKeyMap.get(catalogueGroupCode);
+
     export let hintText: string = "";
+    export let displayLegends: boolean = false;
+    export let chartType: keyof ChartTypeRegistry = "pie";
+    export let perSite: boolean = false;
+
     export let backgroundColors: string[] = [
-                    "#4dc9f6",
-                    "#f67019",
-                    "#f53794",
-                    "#537bc4",
-                    "#acc236",
-                    "#166a8f",
-                    "#00a950",
-                    "#58595b",
-                    "#8549ba",
-                    "#ff8a33",
-                    "#ff5996",
-                    "#8ace7e",
-                    "#c789d6",
-                    "#ffcc00",
-                    "#7fc2f4",
-                    "#969696",
-                    "#cfd27e",
-                    "#db843d",
-                    "#89a54e",
-                    "#80699b",
-                ];
-    export let backgroundHoverColors: string[] = ['#aaaaaa'];
+        "#4dc9f6",
+        "#f67019",
+        "#f53794",
+        "#537bc4",
+        "#acc236",
+        "#166a8f",
+        "#00a950",
+        "#58595b",
+        "#8549ba",
+        "#ff8a33",
+        "#ff5996",
+        "#8ace7e",
+        "#c789d6",
+        "#ffcc00",
+        "#7fc2f4",
+        "#969696",
+        "#cfd27e",
+        "#db843d",
+        "#89a54e",
+        "#80699b",
+    ];
+    export let backgroundHoverColors: string[] = ["#aaaaaa"];
 
     /**
-     * TODO: split options and data into two props
-     * data will come from the store
-     * options will be set from outside the component
+     * initialize the chart
      */
-    export let chartData: any = {};
-
     let canvas!: HTMLCanvasElement;
 
+    let chart: Chart;
+
+    let initialChartData = {
+        type: chartType,
+        data: {
+            labels: ["", "", "", ""],
+            datasets: [
+                {
+                    label: "",
+                    data: [1, 1, 1, 1],
+                    backgroundColors: ["#aaa"],
+                    backgroundHoverColors: ["#bbb"],
+                },
+            ],
+        },
+        options: {
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: displayLegends,
+                },
+            },
+        },
+    };
+
     /**
-     * initialize the chart on mount
+     * searches the catalogue for the criteria names for the given catalogueGroupCode
+     * and sets them as chart labels
+     * DISCUSSION: needed? if so how do we implement this for bar charts?
      */
-    onMount(() => {
-        /**
-         * set or overwrite important options
-         */
-        if (!chartData.options) chartData.options = {};
-        if (!chartData.options.plugins) chartData.options.plugins = {};
-        if (!chartData.options.plugins.legend)
-            chartData.options.plugins.legend = {};
+    // $: {
+    //     if(chartType === 'pie')
+    //         initialChartData.data.labels = getCriteriaNamesFromKey($catalogue, catalogueGroupCode);
+    // }
 
-        chartData.options.maintainAspectRatio = false;
-        if (chartData.type === "bar" && chartData.data.datasets.length <= 1)
-            chartData.options.plugins.legend.display = false;
+    /**
+     * @param chartLabels
+     * @returns an array of chart data sets from the response store
+     */
+    const getChartDataSets = (
+        responseStore: ResponseStore,
+        chartLabels: string[]
+    ): { label; data; backgroundColors; backgroundHoverColors }[] => {
+        let dataSet: number[];
 
-        chartData.data.datasets.forEach((dataset) => {
-            dataset.backgroundColor = backgroundColors;
-            dataset.hoverBackgroundColor = backgroundHoverColors;
+        if (perSite) {
+            dataSet = chartLabels.map((label: string) => {
+                console.log(label);
+                console.log(responseStore);
+                const site: Site = responseStore.get(label);
+
+                let data = site.data.group.find(
+                    (groupItem) => groupItem.code.text === catalogueGroupCode
+                );
+                console.log(data?.population[0]?.count);
+                return data?.population[0]?.count || 0;
+            });
+        } else {
+            dataSet = chartLabels.map((label: string): number => {
+                const stratifierCode = label;
+                const stratifierCodeCount: number =
+                    getAggregatedPopulationForStratumCode(
+                        responseStore,
+                        stratifierCode
+                    );
+                return stratifierCodeCount;
+            });
+        }
+        return [
+            {
+                label: "",
+                data: dataSet,
+                backgroundColors,
+                backgroundHoverColors,
+            },
+        ];
+    };
+
+    /**
+     * watches the response store and updates the chart data
+     */
+    const setChartData = (responseStore: ResponseStore) => {
+        if (responseStore.size === 0) return;
+
+        let isDataAvailable: boolean = false;
+
+        responseStore.forEach((value, key) => {
+            if (value.data !== null) isDataAvailable = true;
         });
 
-        new Chart(canvas, chartData);
+        if (!isDataAvailable) return;
+
+        let chartLabels: string[] = [];
+
+        if (perSite) {
+            responseStore.forEach(
+                (value: Site, key: string, map: ResponseStore) => {
+                    console.log("value", value);
+                    console.log("key", key);
+                    console.log("map", map);
+                    chartLabels.push(key);
+                }
+            );
+        } else {
+            chartLabels = getStratifierCodesForGroupCode(
+                responseStore,
+                responseGroupCode
+            );
+        }
+
+        chartLabels.sort(customSort);
+
+        chart.data.labels = chartLabels;
+        chart.data.datasets = getChartDataSets(responseStore, chartLabels);
+        chart.update();
+    };
+
+    $: setChartData($responseStore);
+
+    onMount(() => {
+        chart = new Chart(canvas, initialChartData);
     });
+
+    const customSort = (a, b): number => {
+        // "unknown" should come after numeric values
+        if (a === "unknown" && b !== "unknown") {
+            return 1;
+        }
+        // Numeric values should come before "unknown"
+        if (a !== "unknown" && b === "unknown") {
+            return -1;
+        }
+        // Convert values to numbers for numeric comparison
+        const numA = parseInt(a, 10);
+        const numB = parseInt(b, 10);
+        return numA - numB;
+    };
+
+    /**
+     * adds stratifier as a search parameter when clicked
+     *
+     */
+    const handleClickOnStratifier = () => {
+        /**
+         * the clicked stratifier
+         */
+        const stratifier = chart.getActiveElements()[0];
+        if (!stratifier) return;
+        const label: string = chart.data.labels[stratifier.index] as string;
+
+        let queryItem: QueryItem;
+
+        $catalogue.forEach((parentCategory: Category) => {
+            if ("childCategories" in parentCategory) {
+                parentCategory.childCategories.forEach(
+                    (childCategorie: Category) => {
+                        if (
+                            childCategorie.key === catalogueGroupCode &&
+                            "criteria" in childCategorie
+                        ) {
+                            let values: QueryValue[] = [];
+                            childCategorie.criteria.forEach(
+                                (criterion: Criteria) => {
+                                    if (criterion.key === label) {
+                                        values[0] = {
+                                            name: criterion.name,
+                                            value: criterion.key,
+                                            queryBindId: uuidv4(),
+                                            description: criterion.description,
+                                        };
+                                    }
+                                }
+                            );
+
+                            queryItem = {
+                                id: uuidv4(),
+                                key: childCategorie.key,
+                                name: childCategorie.name,
+                                system:
+                                    "system" in childCategorie
+                                        ? childCategorie.system
+                                        : "",
+                                type:
+                                    "type" in childCategorie
+                                        ? childCategorie.type
+                                        : "BETWEEN",
+                                values: values,
+                            };
+
+                            addItemToQuery(queryItem, $activeQueryGroupIndex);
+                        }
+                    }
+                );
+            }
+        });
+
+        addItemToQuery(queryItem, $activeQueryGroupIndex);
+    };
 </script>
 
 <div part="chart-wrapper">
     <h4 part="chart-title">{title}</h4>
-    <canvas part="chart-canvas" bind:this={canvas} id="chart" />
+    <canvas
+        part="chart-canvas"
+        bind:this={canvas}
+        id="chart"
+        on:click={handleClickOnStratifier}
+    />
     <div part="chart-hint">{hintText}</div>
 </div>

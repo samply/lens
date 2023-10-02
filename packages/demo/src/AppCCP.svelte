@@ -3,22 +3,13 @@
   import type { CatalogueText } from "../../lib/src/types/texts";
     import { dktkDiagnosisMeasure, dktkMedicationStatementsMeasure, dktkPatientsMeasure, dktkProceduresMeasure, dktkSpecimenMeasure } from "./measures";
 
-  let mockCatalogueData = ''
-  
-  fetch("catalogues/catalogue-example.json").then((response) => response.text()).then((data) => {
-    mockCatalogueData = data
-  })
+  let mockCatalogueData = "";
 
-  const resultSummaryConfig = [
-    {
-      key: "sites",
-      title: "Sites",
-    },
-    {
-      key: "patients",
-      title: "Patients",
-    },
-  ];
+  fetch("catalogues/catalogue-dktk.json")
+    .then((response) => response.text())
+    .then((data) => {
+      mockCatalogueData = data;
+    });
 
   const measures = [
     dktkPatientsMeasure,
@@ -27,6 +18,33 @@
     dktkProceduresMeasure,
     dktkMedicationStatementsMeasure
   ];
+
+  const cqlHeader = `library Retrieve
+  using FHIR version '4.0.0'
+  include FHIRHelpers version '4.0.0'
+
+  codesystem loinc: 'http://loinc.org'
+
+  context Patient
+
+  DKTK_STRAT_GENDER_STRATIFIER
+
+  DKTK_STRAT_AGE_STRATIFIER
+
+  DKTK_STRAT_DECEASED_STRATIFIER
+
+  DKTK_STRAT_DIAGNOSIS_STRATIFIER
+
+  DKTK_STRAT_SPECIMEN_STRATIFIER
+
+  DKTK_STRAT_PROCEDURE_STRATIFIER
+
+  DKTK_STRAT_MEDICATION_STRATIFIER
+
+  DKTK_STRAT_ENCOUNTER_STRATIFIER
+
+  DKTK_STRAT_DEF_IN_INITIAL_POPULATION
+`;
 
   const catalogueText: CatalogueText = {
     group: "Group",
@@ -38,74 +56,49 @@
     },
   };
 
-  const chart1Data = {
-    type: "bar",
-    data: {
-      labels: [
-        "0-9",
-        "10-19",
-        "20-29",
-        "30-39",
-        "40-49",
-        "50-59",
-        "60-69",
-        "70-79",
-        "80-89",
-        "90-99",
-        "100-109",
-        "110-119",
-      ],
-      datasets: [
-        {
-          label: "",
-          data: [12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3],
-        },
-      ],
-    },
-  };
-  const chart2Data = {
-    type: "pie",
-    data: {
-      labels: ["Dresden", "Mannheim", "Frankfurt", "Berlin"],
-      datasets: [
-        {
-          label: "",
-          data: [3, 5, 12, 19],
-        },
-      ],
-    },
-  };
-  const chart3Data = {
-    type: "pie",
-    data: {
-      labels: ["male", "female", "undefined", "other"],
-      datasets: [
-        {
-          label: "",
-          data: [12, 19, 3, 5],
-        },
-      ],
-    },
-  };
-  const chart4Data = {
-    type: "bar",
-    data: {
-      labels: ["C31", "C31.0", "C41", "C41.0"],
-      datasets: [
-        {
-          label: [],
-          data: [12, 100, 30, 5],
-        },
-      ],
-    },
-    options: {
-      legend: {
-        display: false,
-      },
-    },
-  };
+  let catalogueopen = false;
 
-  let catalogueopen = true;
+  const resultSummaryConfig = [
+    {
+      key: "sites",
+      title: "Standorte",
+    },
+    {
+      key: "patients",
+      title: "Patienten",
+    },
+  ];
+
+  const catalogueKeyToResponseKeyMap = [
+    ["gender", "Gender"],
+    ["age_at_diagnosis", "Age"],
+  ];
+
+  const siteToDefaultCollectionId: string[][] = [
+    ["dresden", "bbmri-eric:ID:DE_BBD:collection:DILB"],
+    ["frankfurt", "bbmri-eric:ID:DE_iBDF:collection:UCT"],
+    ["berlin", "bbmri-eric:ID:DE_ZeBanC:collection:Onoloy"],
+    ["wuerzburg", "bbmri-eric:ID:DE_ibdw:collection:bc"],
+    ["brno", "bbmri-eric:ID:CZ_MMCI:collection:LTS"],
+    ["aachen", "bbmri-eric:ID:DE_RWTHCBMB:collection:RWTHCBMB_BC"],
+    ["leipzig", "bbmri-eric:ID:DE_LMB:collection:LIFE_ADULT"],
+    [
+      "muenchen-hmgu",
+      "bbmri-eric:ID:DE_Helmholtz-MuenchenBiobank:collection:DE_KORA",
+    ],
+    ["Pilsen", "bbmri-eric:ID:CZ_CUNI_PILS:collection:serum_plasma"],
+    ["regensburg", "bbmri-eric:ID:DE_ZBR:collection:Tissue"],
+    ["heidelberg", "bbmri-eric:ID:DE_BMBH:collection:Lungenbiobank"],
+    ["luebeck", "bbmri-eric:ID:DE_ICBL:collection:ICBL"],
+    ["augsburg", "bbmri-eric:ID:DE_ACBB:collection:TISSUE"],
+    ["mannheim", "bbmri-eric:ID:DE_BioPsy:collection:Main_collecion"],
+    ["marburg", "bbmri-eric:ID:DE_CBBMR:collection:main"],
+    ["goettingen", "bbmri-eric:ID:DE_UMGB:collection:UMG-startegy"],
+    ["hannover", "bbmri-eric:ID:DE_HUB:collection:ProBase"],
+    ["olomouc", "bbmri-eric:ID:CZ_UPOL_LF:collection:all_samples"],
+    ["prague-ffm", "bbmri-eric:ID:CZ_CUNI_PILS:collection:serum_plasma"],
+    ["prague-ior", "bbmri-eric:ID:CZ_CUNI_LF1:collection:all_samples"],
+  ];
 
   const uiSiteMap: string[][] = [
     ["berlin", "Berlin"],
@@ -143,14 +136,28 @@
       'wuerzburg',
     ],
     uiSiteMap: uiSiteMap,
+    catalogueKeyToResponseKeyMap: catalogueKeyToResponseKeyMap,
   };
+
+ 
+  
+    
 </script>
 
 <header>
   <div class="logo">
-    <img src="./BBMRI-ERIC-gateway-for-health.svg" alt="Biobank Sweden logo" />
+    <img
+      src="../public/dktk.svg"
+      alt="Biobank Sweden logo"
+    />
   </div>
-  <h1>Sample Locator</h1>
+  <h1>CCP Explorer</h1>
+  <div class="logo logo-dkfz">
+    <img
+      src="../public/logo-dkfz.svg"
+      alt="Biobank Sweden logo"
+    />
+  </div>
 </header>
 <main>
   <div class="search">
@@ -159,75 +166,74 @@
       noMatchesFoundMessage={"No matches found"}
       measures={[dktkPatientsMeasure, dktkDiagnosisMeasure, dktkSpecimenMeasure, dktkPatientsMeasure, dktkMedicationStatementsMeasure]}
     >
-      <lens-search-button title="Search Biobanks" measures={measures} backendConfig={JSON.stringify(backendConfig)}/>
+
+      <lens-search-button
+        title="Suchen"
+        {measures}
+        backendConfig={JSON.stringify(backendConfig)}
+        {cqlHeader}
+      />
     </lens-search-bar-multiple>
   </div>
   <div class="grid">
-    <div
-      class="catalogue"
-      style={`max-width: ${catalogueopen ? "400px" : "288px"};`}
-      >
+    <div class="catalogue">
+      <!-- style={`max-width: ${catalogueopen ? "400px" : "288px"};`} -->
       <lens-catalogue
         treeData={mockCatalogueData}
         texts={catalogueText}
-        toggle={{ collapsable: false, open: true }}
+        toggle={{ collapsable: false, open: catalogueopen }}
       />
-      {#if catalogueopen}
-        <button on:click={() => (catalogueopen = !catalogueopen)}>
-          &#8676;
-        </button>
-      {:else}
-        <button on:click={() => (catalogueopen = !catalogueopen)}>
-          &#8677;
-        </button>
-      {/if}
     </div>
     <div class="charts">
       <div class="chart-wrapper result-summary">
         <lens-result-summary
-        title="Results"
-        resultSummaryDataTypes={JSON.stringify(resultSummaryConfig)}
-        negotiateButton={true}
-        negotiateButtonText="Negotiate with biobanks"
-        />
-      </div>
-      <div class="chart-wrapper">
-        <lens-result-table pageSize="3" title="Responding sites"/>
-      </div>
-      <div class="chart-wrapper">
-        <lens-chart
-        title="Age at Diagnosis"
-        hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit."
-        chartData={JSON.stringify(chart1Data)}
+          title="Ergebnisse"
+          resultSummaryDataTypes={JSON.stringify(resultSummaryConfig)}
         />
       </div>
       <div class="chart-wrapper">
         <lens-chart
-        title="Patients Per Site"
-        hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit."
-        chartData={JSON.stringify(chart2Data)}
+          title="Patienten pro Standort"
+          catalogueGroupCode="patients"
+          perSite={true}
+          chartType="pie"
         />
       </div>
       <div class="chart-wrapper">
-        <lens-chart title="Gender" chartData={JSON.stringify(chart3Data)} />
+        <lens-result-table pageSize="10" title="Responding sites" />
       </div>
       <div class="chart-wrapper">
-      <lens-chart
-        title="Diagnosis"
-        hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit."
-        chartData={JSON.stringify(chart4Data)}
-      />
+        <lens-chart
+          title="Age at Diagnosis"
+          hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit."
+          catalogueGroupCode="age_at_diagnosis"
+          chartType="bar"
+        />
       </div>
+        <div class="chart-wrapper">
+          <lens-chart
+            title="Gender distribution"
+            catalogueGroupCode="gender"
+            chartType="pie"
+          />
+        </div>
+        <div class="chart-wrapper">
+          <lens-chart
+            title="Diagnosis"
+            hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit."
+            catalogueGroupCode="diagnosis"
+            chartType="bar"
+          />
+        </div>
     </div>
   </div>
 </main>
 
 <footer>
-  <h3>made with &#10084; & samply-lens</h3>
-  <div class="img-container">
-    <img src="./logo_ce-en-rvb-lr.jpg" alt="" />
-  </div>
-  <div class="img-container">
-    <img src="./BMBF_logo.png" alt="" />
+  <a class="user-agreement" href="">Nutzervereinbarung</a>
+  <a class="email" href="mailto:CCP@dkfz.de">CCP@dkfz.de</a>
+  <div class="copyright">
+    <span>&#169; 2023</span>
+    <a href="https://dktk.dkfz.de/en/clinical-platform/about-ccp">Clinical Comunication Platform (CCP)</a>
   </div>
 </footer>

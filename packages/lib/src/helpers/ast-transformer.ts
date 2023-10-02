@@ -73,7 +73,6 @@ if (Array.isArray(item)) {
     }
   }
   
-  console.log(item)
   /**
    * handles the third layer of store when the value of the QueryItem is an entity (aggregatedValue)
    */
@@ -89,13 +88,12 @@ if (Array.isArray(item)) {
   /**
    * return bottom level object of an entity (aggregatedValue)
    */
-  console.log(item)
-  if ('value' in item && typeof item.value === 'string') {
+  if ('key' in topLayerItem && 'value' in item && typeof item.value === 'string') {
     return {
-      key: item.value,
+      key: topLayerItem.key,
       type: 'EQUALS',
       system: '',
-      value: item.name,
+      value: item.value,
     }
   }
   /**

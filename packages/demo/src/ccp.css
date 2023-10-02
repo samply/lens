@@ -15,7 +15,7 @@
   --light-gray: #dee2e6;
   --lightest-gray: #efefef;
   --dark-gray: #323232;
-  --blue: #0047b9;
+  --blue: #00489c;
   --light-blue: #007bff;
   --lightest-blue: #adc7f3;
   --dark-blue: #002d80;
@@ -64,17 +64,25 @@ header {
   background-color: var(--white);
   padding: var(--gap-s);
   display: grid;
-  grid-template-columns: 120px 1fr;
+  align-items: center;
+  grid-template-columns: 1fr 1fr 1fr;
   border-radius: var(--border-radius-small);
   border: solid 1px var(--lightest-gray);
 }
 
 .logo img {
-  height: 70px;
+  height: 30px;
+}
+
+.logo-dkfz {
+  justify-self: end;
 }
 
 header h1 {
   text-align: center;
+  font-size: var(--font-size-xl);
+  font-weight: normal;
+  color: var(--blue);
 }
 
 main>div,
@@ -84,48 +92,32 @@ footer {
 }
 
 .search {
-  display: grid;
-  grid-template-columns: 1fr auto;
   grid-gap: var(--gap-s);
+  padding: var(--gap-s) 0;
+  background-color: var(--ghost-white);
 }
 
 .grid {
   position: relative;
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  grid-gap: var(--gap-m);
 }
 
 .catalogue {
   padding: var(--gap-s);
   border-radius: var(--border-radius-small);
   border: solid 1px var(--lightest-gray);
-  position: absolute;
-  height: 100%;
-  display: flex;
-  overflow: hidden;
   background-color: var(--white);
-  transition: all 0.5s ease;
-  width: min-content;
+  grid-row: 1/-1;
+  overflow: scroll;
+  height: 100vh;
+  position: sticky;
+  top: 0;
 }
-
-.catalogue button {
-  height: 30px;
-  background-color: var(--white);
-  border: none;
-  position: absolute;
-  right: 5px;
-  top: 5px;
-  font-size: var(--font-size-xl);
-  color: var(--blue);
-  cursor: pointer;
-}
-
-.catalogue button:hover {
-  color: var(--light-blue);
-}
-
 
 .charts {
   min-height: 600px;
-  margin-left: 320px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   grid-gap: var(--gap-xs);
@@ -172,21 +164,19 @@ footer {
 
 
 footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   padding: var(--gap-s);
   background-color: var(--white);
   border-radius: var(--border-radius-small);
   border: solid 1px var(--lightest-gray);
 }
 
-footer .img-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.email {
+  justify-self: center;
 }
 
-footer img {
-  height: 100px;
+.copyright {
+  justify-self: end;
+  text-align: right;
 }

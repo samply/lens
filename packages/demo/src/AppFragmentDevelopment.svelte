@@ -63,33 +63,8 @@
     },
   };
 
-  const chart1Data = {
-    type: "bar",
-    data: {
-      labels: [
-        "0-9",
-        "10-19",
-        "20-29",
-        "30-39",
-        "40-49",
-        "50-59",
-        "60-69",
-        "70-79",
-        "80-89",
-        "90-99",
-        "100-109",
-        "110-119",
-      ],
-      datasets: [
-        {
-          label: "",
-          data: [12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3],
-        },
-      ],
-    },
-  };
 
-  let catalogueopen = true;
+  let catalogueopen = false;
 
   const resultSummaryConfig = [
     {
@@ -144,6 +119,11 @@
 
   ];
 
+const catalogueKeyToResponseKeyMap = [
+  ['gender', 'Gender'],
+  ["age_at_diagnosis", 'Age']
+]
+
   const backendConfig = {
     url: "http://localhost:8080",
     backends: [
@@ -161,6 +141,7 @@
       'wuerzburg',
     ],
     uiSiteMap: uiSiteMap,
+    catalogueKeyToResponseKeyMap: catalogueKeyToResponseKeyMap,
   };
 
 </script>
@@ -190,16 +171,25 @@
     <lens-result-table pageSize="3" title="Responding sites" />
   </div>
 
-  <h2>Result Chart</h2>
+  <h2>Result Pie Chart</h2>
   <div class="componentBox">
-    <div>
+      <lens-chart
+        title="Gender distribution"
+        hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit."
+        catalogueGroupCode='gender'
+        chartType="pie"
+      />
+  </div>
+
+  <h2>Result Bar Chart</h2>
+  <div class="componentBox">
       <lens-chart
         class="chart1"
-        title="Age at Diagnosis"
+        title="Alter bei Erstdiagnose"
         hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit."
-        chartData={JSON.stringify(chart1Data)}
+        catalogueGroupCode='age_at_diagnosis'
+        chartType="bar"
       />
-    </div>
   </div>
 
   <h2>Catalogue</h2>

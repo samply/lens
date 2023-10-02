@@ -14,7 +14,7 @@
     import {translateAstToCql} from "../../cql-translator-service/ast-to-cql-translator";
     import { buildLibrary, buildMeasure } from "../../helpers/cql-measure";
     import { Spot } from "../../classes/spot";
-    import { uiSiteMappingsStore } from "../../stores/mappings";
+    import { catalogueKeyToResponseKeyMap, uiSiteMappingsStore } from "../../stores/mappings";
     import type { Measure, BackendConfig } from "../../types/backend";
     import { responseStore } from "../../stores/response";
 
@@ -24,6 +24,7 @@
         url: "http://localhost:8080",
         backends: ['dktk-test', 'mannheim'],
         uiSiteMap: [['dktk-test', 'DKTK Test'], ['mannheim', 'Mannheim']],
+        catalogueKeyToResponseKeyMap: []
     };
 
     export let disabled: boolean = false;
@@ -38,6 +39,13 @@
     $: uiSiteMappingsStore.update((mappings) => {
         backendConfig.uiSiteMap.forEach((site) => {
             mappings.set(site[0], site[1]);
+        })
+        return mappings
+    })
+
+    $: catalogueKeyToResponseKeyMap.update((mappings) => {
+        backendConfig.catalogueKeyToResponseKeyMap.forEach((mapping) => {
+            mappings.set(mapping[0], mapping[1]);
         })
         return mappings
     })
@@ -73,7 +81,8 @@
 
     };
 
-    $: console.log($responseStore)
+    $: console.log($responseStore);
+
 
 </script>
 
