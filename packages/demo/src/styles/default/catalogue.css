@@ -215,7 +215,7 @@ lens-catalogue::part(autocomplete-options) {
   list-style-type: none;
   padding: var(--gap-s);
   margin: 0;
-  border: solid 1px var(--border-color);
+  border: solid 1px var(--light-blue);
   border-top: none;
   width: calc(100% - 2*var(--gap-s) - 2px);
   /* padding of container plus borders */
@@ -224,17 +224,24 @@ lens-catalogue::part(autocomplete-options) {
   color: black;
   border-bottom-left-radius: var(--border-radius-small);
   border-bottom-right-radius: var(--border-radius-small);
+  max-height: 400px;
+  overflow: scroll;
 }
 
 
 lens-catalogue::part(autocomplete-options-item) {
-  display: grid;
-  grid-template-columns: 70px 1fr;
   cursor: pointer;
+  padding-bottom: var(--gap-s);
 }
 
 lens-catalogue::part(autocomplete-options-item-focused) {
   color: coral;
+}
+
+lens-catalogue::part(autocomplete-options-item-description) {
+  padding-top: var(--gap-xxs);
+  font-size: var(--font-size-xs);
+  color: var(--blue);
 }
 
 
