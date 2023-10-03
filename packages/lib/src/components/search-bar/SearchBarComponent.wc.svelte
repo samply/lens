@@ -31,16 +31,14 @@
     export let treeData: Category[] = [];
     export let noMatchesFoundMessage: string = "No matches found";
     export let placeholderText: string = "Type to filter conditions";
-    export let chips: boolean = false;
     export let queryGroup: QueryItem[] = [];
     export let index: number = 0;
 
     /**
      * Initialize the catalogue store with the given tree data
      * watch for changes from other components
-    */
+     */
     $: $catalogue = treeData;
-
 
     /**
      * handles the focus state of the input element
@@ -57,13 +55,15 @@
     ): AutoCompleteItem[] => {
         let autoCompleteItems: AutoCompleteItem[];
         if ("criteria" in category)
-            autoCompleteItems = category.criteria.map((criterion: Criteria) => ({
-                name: category.name,
-                key: category.key,
-                type: category.type,
-                system: category.system,
-                criterion: criterion,
-            }));
+            autoCompleteItems = category.criteria.map(
+                (criterion: Criteria) => ({
+                    name: category.name,
+                    key: category.key,
+                    type: category.type,
+                    system: category.system,
+                    criterion: criterion,
+                })
+            );
         return autoCompleteItems;
     };
 
@@ -72,13 +72,13 @@
      * @param treeData
      */
     const buildDatalistItems = (treeData: Category[]): AutoCompleteItem[] => {
-         /**
+        /**
          * FIX ME:
          *  there seems to be a race condition where the catalogue is not yet loaded and the function is called right away
          *  the data being a string probably comes from the data being passed as a json string
          */
-        if (typeof treeData === 'string') {
-            return
+        if (typeof treeData === "string") {
+            return;
         }
         let autoCompleteItems: AutoCompleteItem[] = [];
         treeData.forEach((category) => {
@@ -88,8 +88,10 @@
                     ...buildDatalistItems(category.childCategories),
                 ];
             } else {
-                if ('criteria' in category)
-                    category.criteria = addPercentageSignToCriteria(category.criteria);
+                if ("criteria" in category)
+                    category.criteria = addPercentageSignToCriteria(
+                        category.criteria
+                    );
 
                 if (buildDatalistItemFromBottomCategory(category))
                     autoCompleteItems = [
@@ -104,8 +106,9 @@
     /**
      * stores the full list of autocomplete items
      */
-    const criteria: AutoCompleteItem[] = buildDatalistItems($catalogue) || [];
-   
+    let criteria: AutoCompleteItem[];
+    $: criteria = buildDatalistItems($catalogue) || [];
+
     /**
      * stores the filtered list of autocomplete items
      */
@@ -123,7 +126,7 @@
     /**
      * watches the input value and updates the input options
      */
-    $: $inputOptions = criteria.filter((item) => {
+    $: $inputOptions = criteria.filter((item: AutoCompleteItem) => {
         const clearedInputValue = inputValue
             .replace(/^[0-9]*:/g, "")
             .toLocaleLowerCase();
@@ -133,6 +136,13 @@
             item.criterion.description
                 ?.toLowerCase()
                 .includes(clearedInputValue)
+
+            /**
+             * FIX ME:
+             * should only take names. This needs a catalogue fix
+             */
+            // item.key.toLocaleLowerCase().includes(clearedInputValue) ||
+            // item.criterion.key.toLowerCase().includes(clearedInputValue) ||
         );
     });
 
@@ -227,8 +237,32 @@
         addInputValueToStore(inputOption, extractTargetGroupFromInputValue());
     };
 
+    /**
+     * returns the input option with the matched substring wrapped in <strong> tags
+     * @param inputOption
+     * @returns string
+     */
+     const getBoldedText = (inputOption: string): string => {
+        // Use a regular expression to find all occurrences of the substring
 
+        const inputValueLength: number = inputValue.length;
+        const indexOfSubStringStart: number = inputOption
+            .toLocaleLowerCase()
+            .indexOf(inputValue.toLocaleLowerCase());
+        const indexOfSubStringEnd: number = indexOfSubStringStart + inputValueLength;
+        const subString: string = inputOption.slice(
+            indexOfSubStringStart,
+            indexOfSubStringEnd
+        );
+        const regex: RegExp = new RegExp(subString, "g");
 
+        // Replace each occurrence with the same substring wrapped in <strong> tags
+        const resultString: string = inputOption.replace(
+            regex,
+            `<strong>${subString}</strong>`
+        );
+        return resultString;
+    };
 </script>
 
 <div part="lens-searchbar">
@@ -236,7 +270,9 @@
         <div part="lens-searchbar-chips">
             {#each queryGroup as queryItem (queryItem.id)}
                 <div part="lens-searchbar-chip">
-                    <span part="lens-searchbar-chip-name">{queryItem.name}:{' '}</span>
+                    <span part="lens-searchbar-chip-name"
+                        >{queryItem.name}:{" "}</span
+                    >
                     {#each queryItem.values as value, i (value.queryBindId)}
                         <span part="lens-searchbar-chip-item">
                             <span>{value.name}</span>
@@ -250,7 +286,11 @@
                                     },
                                 }}
                             />
-                            <span>{i === queryItem.values.length - 1 ? "" : " or "}</span>
+                            <span
+                                >{i === queryItem.values.length - 1
+                                    ? ""
+                                    : ""}</span
+                            >
                         </span>
                     {/each}
                     <StoreDeleteButtonComponent
@@ -278,29 +318,43 @@
         }}
     />
     {#if autoCompleteOpen && inputValue.length > 0}
-        <ul part="lens-searchbar-autocomplete-options">
-            {#if $inputOptions?.length > 0}
-                {#each $inputOptions as inputOption, i}
-                    <!-- svelte-ignore a11y-click-events-have-key-events -->
-                    <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-                    <!-- this is handled with the handleKeyDown method -->
-                    <!-- onmousedown is chosen because the input looses focus when clicked outside, 
+    <ul part="lens-searchbar-autocomplete-options">
+        {#if $inputOptions?.length > 0}
+            {#each $inputOptions as inputOption, i}
+                <!-- svelte-ignore a11y-click-events-have-key-events -->
+                <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+                <!-- this is handled with the handleKeyDown method -->
+                <!-- onmousedown is chosen because the input looses focus when clicked outside, 
                              which will close the options before the click is finshed -->
-                    <li
-                        part="lens-searchbar-autocomplete-options-item {i ===
-                        focusedItemIndex
-                            ? 'lens-searchbar-autocomplete-options-item-focused'
-                            : ''}"
-                        on:mousedown={() => selectItemByClick(inputOption)}
-                    >
-                        {inputOption.name} : {inputOption.criterion.name} - {inputOption
-                            .criterion.description}
-                    </li>
-                {/each}
-            {:else}
-                <li>{noMatchesFoundMessage}</li>
-            {/if}
-        </ul>
+                <li
+                    part="lens-searchbar-autocomplete-options-item {i ===
+                    focusedItemIndex
+                        ? 'lens-searchbar-autocomplete-options-item-focused'
+                        : ''}"
+                    on:mousedown={() => selectItemByClick(inputOption)}
+                >
+                    <div part="autocomplete-options-item-name">
+                        {@html getBoldedText(
+                            inputOption.name +
+                                " : " +
+                                inputOption.criterion.name
+                        )}
+                    </div>
+                    {#if inputOption.criterion.description}
+                        <div part="autocomplete-options-item-description">
+                            {@html getBoldedText(
+                                inputOption.criterion.description
+                            )}
+                        </div>
+                    {/if}
+                    <!-- {inputOption.name} : {inputOption.criterion.name} - {inputOption
+                            .criterion.description} -->
+                </li>
+            {/each}
+        {:else}
+            <li>{noMatchesFoundMessage}</li>
+        {/if}
+    </ul>
     {/if}
     <StoreDeleteButtonComponent itemToDelete={{ type: "group", index }} />
 </div>

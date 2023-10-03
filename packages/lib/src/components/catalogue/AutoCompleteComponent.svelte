@@ -24,7 +24,7 @@
         /**
          * adds .% option to find all subgroups of if the element key is "diagnosis"
          */
-        if (element.key === "diagnosis") 
+        if (element.key === "diagnosis")
             criteria = addPercentageSignToCriteria(criteria);
     });
 
@@ -51,10 +51,16 @@
     /**
      * watches the input value and updates the input options
      */
-    $: inputOptions = criteria.filter((item) => {
+    $: inputOptions = criteria.filter((item: Criteria) => {
         return (
             item.name.toLowerCase().includes(inputValue) ||
             item.description.toLowerCase().includes(inputValue)
+            /**
+             * FIX ME:
+             * should only take names. This needs a catalogue fix
+             */
+            // item.key.toLocaleLowerCase().includes(clearedInputValue) ||
+            // item.criterion.key.toLowerCase().includes(clearedInputValue) ||
         );
     });
 
@@ -174,6 +180,33 @@
     const selectItemByClick = (inputOption) => {
         addInputValueToStore(inputOption);
     };
+
+    /**
+     * returns the input option with the matched substring wrapped in <strong> tags
+     * @param inputOption
+     * @returns string
+     */
+    const getBoldedText = (inputOption: string): string => {
+        // Use a regular expression to find all occurrences of the substring
+
+        const inputValueLength: number = inputValue.length;
+        const indexOfSubStringStart: number = inputOption
+            .toLocaleLowerCase()
+            .indexOf(inputValue.toLocaleLowerCase());
+        const indexOfSubStringEnd: number = indexOfSubStringStart + inputValueLength;
+        const subString: string = inputOption.slice(
+            indexOfSubStringStart,
+            indexOfSubStringEnd
+        );
+        const regex: RegExp = new RegExp(subString, "g");
+
+        // Replace each occurrence with the same substring wrapped in <strong> tags
+        const resultString: string = inputOption.replace(
+            regex,
+            `<strong>${subString}</strong>`
+        );
+        return resultString;
+    };
 </script>
 
 <div part="autocomplete-container">
@@ -207,11 +240,12 @@
                                 'autocomplete-options-item-focused'}"
                             on:mousedown={() => selectItemByClick(inputOption)}
                         >
-                            <span part="autocomplete-options-item-name"
-                                >{inputOption.name}</span
-                            ><span part="autocomplete-options-item-discription"
-                                >{inputOption.description}</span
-                            >
+                            <div part="autocomplete-options-item-name">
+                                {@html getBoldedText(inputOption.name)}
+                            </div>
+                            <div part="autocomplete-options-item-description">
+                                {@html getBoldedText(inputOption.description)}
+                            </div>
                         </li>
                     {/each}
                 {:else}

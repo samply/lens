@@ -105,10 +105,19 @@ lens-search-bar-multiple::part(lens-searchbar-autocomplete-options) {
 
 lens-search-bar-multiple::part(lens-searchbar-autocomplete-options-item) {
   cursor: pointer;
+  padding-bottom: var(--gap-s);
 }
 
 lens-search-bar-multiple::part(lens-searchbar-autocomplete-options-item-focused) {
   color: coral;
+}
+
+lens-search-bar-multiple::part(autocomplete-options-item-description) {
+  color: var(--blue);
+  font-size: var(--font-size-s);
+  padding-top: var(--gap-xs);
+  padding-right: var(--gap-m);
+  padding-left: var(--gap-xs);
 }
 
 lens-search-bar-multiple::part(lens-searchbar-add-button) {
