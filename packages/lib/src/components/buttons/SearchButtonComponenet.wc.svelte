@@ -66,7 +66,7 @@
         const ast = buildAstFromQuery($queryStore);
         const cql = translateAstToCql(ast, false, true);
 
-        const library = buildLibrary(`${cqlHeader}\n${cql}`)
+        const library = buildLibrary(`${cql}`)
         const measure = buildMeasure(library.url, $measureStore.map( measureItem => measureItem.measure))
         const query = {lang: "cql", lib: library, measure: measure};
 
