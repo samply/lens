@@ -147,9 +147,11 @@
     });
 
     /**
-     * keeps track of the focused item index
+     * keeps track of the focused item
      */
     let focusedItemIndex: number = 0;
+
+    let activeDomElement: HTMLElement;
 
     /**
      * transforms the inputvalue to a QueryItem, adds it to the query store
@@ -229,6 +231,29 @@
         }
     };
 
+
+    /**
+     * scrolls the active dom element into view when it is out of view
+     * @param activeDomElement
+     */
+    const scrollInsideContainerWhenActiveDomElementIsOutOfView = (activeDomElement): void => {
+        if (!activeDomElement) return;
+        const container: HTMLElement = activeDomElement.parentElement;
+        const containerTop: number = container.scrollTop;
+        const containerBottom: number = containerTop + container.clientHeight;
+        const elementTop: number = activeDomElement.offsetTop;
+        const elementBottom: number = elementTop + activeDomElement.clientHeight;
+
+        if (elementTop < containerTop) {
+            container.scrollTop = elementTop;
+        } else if (elementBottom > containerBottom) {
+            container.scrollTop = elementBottom - container.clientHeight;
+        }
+    }
+
+    $: scrollInsideContainerWhenActiveDomElementIsOutOfView(activeDomElement);
+
+
     /**
      * handles click events to make input options selectable
      * @param inputOption
@@ -242,14 +267,15 @@
      * @param inputOption
      * @returns string
      */
-     const getBoldedText = (inputOption: string): string => {
+    const getBoldedText = (inputOption: string): string => {
         // Use a regular expression to find all occurrences of the substring
 
         const inputValueLength: number = inputValue.length;
         const indexOfSubStringStart: number = inputOption
             .toLocaleLowerCase()
             .indexOf(inputValue.toLocaleLowerCase());
-        const indexOfSubStringEnd: number = indexOfSubStringStart + inputValueLength;
+        const indexOfSubStringEnd: number =
+            indexOfSubStringStart + inputValueLength;
         const subString: string = inputOption.slice(
             indexOfSubStringStart,
             indexOfSubStringEnd
@@ -321,35 +347,58 @@
     <ul part="lens-searchbar-autocomplete-options">
         {#if $inputOptions?.length > 0}
             {#each $inputOptions as inputOption, i}
-                <!-- svelte-ignore a11y-click-events-have-key-events -->
-                <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-                <!-- this is handled with the handleKeyDown method -->
-                <!-- onmousedown is chosen because the input looses focus when clicked outside, 
-                             which will close the options before the click is finshed -->
-                <li
-                    part="lens-searchbar-autocomplete-options-item {i ===
-                    focusedItemIndex
-                        ? 'lens-searchbar-autocomplete-options-item-focused'
-                        : ''}"
-                    on:mousedown={() => selectItemByClick(inputOption)}
-                >
-                    <div part="autocomplete-options-item-name">
-                        {@html getBoldedText(
-                            inputOption.name +
-                                " : " +
-                                inputOption.criterion.name
-                        )}
-                    </div>
-                    {#if inputOption.criterion.description}
-                        <div part="autocomplete-options-item-description">
+                {#if i === focusedItemIndex}
+                    <!-- svelte-ignore a11y-click-events-have-key-events -->
+                    <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+                    <!-- this is handled with the handleKeyDown method -->
+                    <!-- onmousedown is chosen because the input looses focus when clicked outside, 
+                         which will close the options before the click is finshed -->
+                    <li
+                        bind:this={activeDomElement}
+                        part="lens-searchbar-autocomplete-options-item lens-searchbar-autocomplete-options-item-focused"
+                        on:mousedown={() => selectItemByClick(inputOption)}
+                    >
+                        <div part="autocomplete-options-item-name">
                             {@html getBoldedText(
-                                inputOption.criterion.description
+                                inputOption.name +
+                                    " : " +
+                                    inputOption.criterion.name
                             )}
                         </div>
-                    {/if}
-                    <!-- {inputOption.name} : {inputOption.criterion.name} - {inputOption
-                            .criterion.description} -->
-                </li>
+                        {#if inputOption.criterion.description}
+                            <div part="autocomplete-options-item-description">
+                                {@html getBoldedText(
+                                    inputOption.criterion.description
+                                )}
+                            </div>
+                        {/if}
+                    </li>
+                {:else}
+                    <!-- svelte-ignore a11y-click-events-have-key-events -->
+                    <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+                    <!-- this is handled with the handleKeyDown method -->
+                    <!-- onmousedown is chosen because the input looses focus when clicked outside, 
+                             which will close the options before the click is finshed -->
+                    <li
+                        part="lens-searchbar-autocomplete-options-item"
+                        on:mousedown={() => selectItemByClick(inputOption)}
+                    >
+                        <div part="autocomplete-options-item-name">
+                            {@html getBoldedText(
+                                inputOption.name +
+                                    " : " +
+                                    inputOption.criterion.name
+                            )}
+                        </div>
+                        {#if inputOption.criterion.description}
+                            <div part="autocomplete-options-item-description">
+                                {@html getBoldedText(
+                                    inputOption.criterion.description
+                                )}
+                            </div>
+                        {/if}
+                    </li>
+                {/if}
             {/each}
         {:else}
             <li>{noMatchesFoundMessage}</li>
