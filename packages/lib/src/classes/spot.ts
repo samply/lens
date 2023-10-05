@@ -6,7 +6,7 @@
 import { responseStore } from "../stores/response"
 import type { ResponseStore } from "../types/backend";
 
-import type { SiteData, Status } from "../types/response"
+import type { Site, SiteData, Status } from "../types/response"
 
 type BeamResult = {
     body: string,
@@ -18,10 +18,13 @@ type BeamResult = {
 }
 
 export class Spot {
+    private storeCache;
     constructor(
         private url: URL,
         private sites: Array<string>,
-    ) { }
+    ) {
+        responseStore.subscribe(store => this.storeCache = store)
+    }
 
     async send(query: string) {
         console.log(`${this.url}tasks?sites=${this.sites.toString()}`);
@@ -42,14 +45,12 @@ export class Spot {
         const beamTask = await beamTaskResponse.json()
 
         let responseCount: number = 0
-        // the time to wait in ms for a response from beam
-        let requestTimeOut: number = 500;
         let continueRequests: boolean = false;
 
         do {
 
             const beamResponses: Response = await fetch(
-                `${this.url}tasks/${beamTask.id}?wait_count=${responseCount + 1}&wait_time=${requestTimeOut}ms`,
+                `${this.url}tasks/${beamTask.id}?wait_count=${responseCount + 1}`,
                 {
                     credentials: 'include'
                 }
@@ -63,19 +64,27 @@ export class Spot {
 
             const beamResponseData: Array<BeamResult> = await beamResponses.json();
 
-            responseStore.update((store: ResponseStore): ResponseStore => {
-                beamResponseData.forEach((response: BeamResult) => {
-                    let site: string = response.from.split(".")[1]
-                    let status: Status = response.status
-                    let body: SiteData = (status !== "claimed" && status !== 'permfailed') ? JSON.parse(atob(response.body)) : null;
+            let changes = new Map<string, Site>();
+            beamResponseData.forEach((response: BeamResult) => {
+                let site: string = response.from.split(".")[1]
+                let status: Status = response.status
+                let body: SiteData = (status === "succeeded") ? JSON.parse(atob(response.body)) : null;
 
-                    // if the site is already in the store and the status is claimed, don't update the store
-                    if(store.get(site)?.status === status) return;
+                // if the site is already in the store and the status is claimed, don't update the store
+                if(this.storeCache.get(site)?.status === status) return;
 
-                    store.set(site, {status: status, data: body});
-                });
-                return store;
-            })
+                // TODO: Make this a ste
+                changes.set(site, {status: status, data: body});
+            });
+            if (changes.size > 0) {
+                responseStore.update((store: ResponseStore): ResponseStore => {
+                    changes.forEach((value, key) => {
+                        store.set(key, value)
+                    })
+                    return store;
+                })
+            }
+
 
             responseCount = beamResponseData.length;
             let realResponseCount = beamResponseData.filter(response => response.status !== "claimed").length;
