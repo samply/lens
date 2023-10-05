@@ -7,7 +7,7 @@
 @import url('./styles/default/negotiate-button.css');
 
 :root {
-  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  font-family: Open_Sans, sans-serif;
   --white: #ffffff;
   --ghost-white: #f8f8ff;
   --black: #000000;
@@ -71,7 +71,7 @@ header {
 }
 
 .logo img {
-  height: 30px;
+  height: 40px;
 }
 
 .logo-dkfz {
@@ -93,7 +93,7 @@ footer {
 
 .search {
   grid-gap: var(--gap-s);
-  padding: var(--gap-s) 0;
+  padding: var(--gap-xxs) 0;
   background-color: var(--ghost-white);
 }
 

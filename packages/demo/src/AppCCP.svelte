@@ -109,8 +109,8 @@
     ["freiburg", "Freiburg"],
     ["hannover", "Hannover"],
     ["mainz", "Mainz"],
-    ["muenchen-lmu", "München(LMU),"],
-    ["muenchen-tum", "München(TUM),"],
+    ["muenchen-lmu", "München(LMU)"],
+    ["muenchen-tum", "München(TUM)"],
     ["ulm", "Ulm"],
     ["wuerzburg", "Würzburg"],
     ["mannheim", "Mannheim"],
@@ -206,7 +206,6 @@
       <div class="chart-wrapper chart-diagnosis">
         <lens-chart
           title="Diagnosis"
-          hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit."
           catalogueGroupCode="diagnosis"
           chartType="bar"
         />
