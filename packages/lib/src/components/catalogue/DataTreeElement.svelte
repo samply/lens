@@ -128,14 +128,17 @@
                             } 
                             />
                     {/each}
-                    <div part="number-input-add">
+                    <!-- not needed for the moment. 
+                        maybe turn on over config, if the needs of the projects differ in the future
+                    -->
+                    <!-- <div part="number-input-add">
                         <button
                             part="number-input-add-button"
                             on:click={() => addNumberInput()}
                         >
                             &plus;
                         </button>
-                    </div>
+                    </div> -->
                 {/if}
             </div>
         {/if}
