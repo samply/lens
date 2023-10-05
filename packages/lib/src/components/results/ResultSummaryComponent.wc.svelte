@@ -27,13 +27,20 @@
      */
     const fillPopulationToSummaryTypes = (store: ResponseStore): void => {
         
+        /**
+         * show the number of sites with data and the number of sites claimed/succeeded
+         * like this: 2 / 3
+         */
+        let sitesClaimed: number = 0;
         let sitesWithData: number = 0;
         store.forEach((site) => {
-            if (site.data !== null) {
+            if (site.status === 'claimed' || site.status === 'succeeded') {
+                sitesClaimed++;
+            }
+            if (site.status === 'succeeded') {
                 sitesWithData++;
-            }    
+            }
         });
-
 
         resultSummaryDataTypes = resultSummaryDataTypes.map((type) => {  
             /**
@@ -41,7 +48,7 @@
              * TODO: very specific. this should be more generic
              */
             if (type.key === "sites") {
-                type.population =`${sitesWithData} / ${store.size}`;
+                type.population =`${sitesWithData} / ${sitesClaimed}`;
                 return type;
             }
 
