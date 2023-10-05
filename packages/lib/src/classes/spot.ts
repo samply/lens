@@ -30,7 +30,7 @@ export class Spot {
             `${this.url}tasks?sites=${this.sites.toString()}`,
             {
                 method: 'POST',
-                credentials: 'include',
+                // credentials: 'include',
                 body: query,
             }
         )
@@ -51,7 +51,7 @@ export class Spot {
             const beamResponses: Response = await fetch(
                 `${this.url}tasks/${beamTask.id}?wait_count=${responseCount + 1}&wait_time=${requestTimeOut}ms`,
                 {
-                    credentials: 'include'
+                    // credentials: 'include'
                 }
             )
 
@@ -67,7 +67,7 @@ export class Spot {
                 beamResponseData.forEach((response: BeamResult) => {
                     let site: string = response.from.split(".")[1]
                     let status: Status = response.status
-                    let body: SiteData = (status !== "claimed" && status !== 'permfailed') ? JSON.parse(atob(response.body)) : null;
+                    let body: SiteData = (status === 'succeeded') ? JSON.parse(atob(response.body)) : null;
 
                     // if the site is already in the store and the status is claimed, don't update the store
                     if(store.get(site)?.status === status) return;

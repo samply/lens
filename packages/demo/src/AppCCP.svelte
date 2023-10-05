@@ -120,7 +120,7 @@
   ];
 
   const backendConfig = {
-    url: "https://backend.demo.lens.samply.de/prod/",
+    url: "http://localhost:8080",
     backends: [
       'mannheim',
       'freiburg',
@@ -146,11 +146,11 @@
 
 <header>
   <div class="logo">
-    <img src="../public/dktk.svg" alt="Biobank Sweden logo" />
+    <img src="../dktk.svg" alt="Biobank Sweden logo" />
   </div>
   <h1>CCP Explorer</h1>
   <div class="logo logo-dkfz">
-    <img src="../public/logo-dkfz.svg" alt="Biobank Sweden logo" />
+    <img src="../logo-dkfz.svg" alt="Biobank Sweden logo" />
   </div>
 </header>
 <main>
