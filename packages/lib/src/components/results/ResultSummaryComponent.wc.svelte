@@ -8,6 +8,7 @@
 />
 
 <script lang="ts">
+    import { uiSiteMappingsStore } from "../../stores/mappings";
     import {
         responseStore,
         getAggregatedPopulation,
@@ -16,7 +17,7 @@
     import NegotiateButtonComponent from "../buttons/NegotiateButtonComponent.wc.svelte";
 
     export let title: string = "";
-    export let resultSummaryDataTypes: { key; title; population? }[] = [];
+    export let resultSummaryDataTypes: { key: string; title: string; population?: string | number }[] = [];
     export let negotiateButton: boolean = false;
     export let negotiateButtonText: string = "Negotiate";
 
@@ -25,6 +26,14 @@
      * @param store
      */
     const fillPopulationToSummaryTypes = (store: ResponseStore): void => {
+        
+        let sitesWithData: number = 0;
+        store.forEach((site) => {
+            if (site.data !== null) {
+                sitesWithData++;
+            }    
+        });
+
 
         resultSummaryDataTypes = resultSummaryDataTypes.map((type) => {  
             /**
@@ -32,7 +41,7 @@
              * TODO: very specific. this should be more generic
              */
             if (type.key === "sites") {
-                type.population = store.size;
+                type.population =`${sitesWithData} / ${store.size}`;
                 return type;
             }
 
