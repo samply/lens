@@ -13,16 +13,18 @@
         responseStore,
     } from "../../stores/response";
     import type { HeaderData } from "../../types/biobanks";
-    import type { Site, Status } from "../../types/response";
+    import type { Site } from "../../types/response";
     import TableItemComponent from "./TableItemComponent.svelte";
 
     export let title: string = "";
+
+   
+
 
     /**
      * data-types for the table
      * can be set with the props of the custom element
      */
-
     export let headerData: HeaderData[] = [
         {
             title: "Site",
@@ -38,10 +40,16 @@
         },
     ];
 
+    headerData.forEach((header: HeaderData, index: number): void => {
+        header.ascending = true;
+    });
+
+
     /**
      * watches the responseStore for changes to update the table
      */
-    let tableRowData: (string | number)[][] = [];
+    type TableRowData = (string | number)[][];
+    let tableRowData: TableRowData = [];
 
     const buildTableRowData = (responseStore): void => {
         tableRowData = [];
@@ -67,6 +75,13 @@
     };
 
     $: buildTableRowData($responseStore);
+    $: tableRowData = sortTable(
+        sortColumnIndex,
+        headerData[sortColumnIndex].ascending,
+        tableRowData
+    );
+
+
     /**
      * pagination
      * pageSize will be set with the props of the custom element
@@ -98,10 +113,53 @@
         if (allChecked) {
             $negotiateStore = [];
         } else {
-                        $negotiateStore = tableRowData.map(
+            $negotiateStore = tableRowData.map(
                 (tableRow: (string | number)[]) => tableRow[0] as string
             );
         }
+    };
+
+    /**
+     * sort tableRowData alphanumerically by the given column
+     */
+
+    
+
+    let sortColumnIndex: number = 0;
+
+    /**
+     * sorts the tableRowData by the given column
+     * @param column column to sort
+     * @param ascending order of the sort, changes after every click but not on incoming responses
+     * @param tableRowData as an argument to make the function reactive and prevent race conditions with incoming responses
+     * @param changeAscending if true, the order of the sort will change after every click
+     */
+    const sortTable = (
+        column: number,
+        ascending: boolean = true,
+        tableRowData: TableRowData,
+        changeAscending: boolean = false
+    ): TableRowData => {
+        /**
+         * sets the index of the column to sort, so that further incoming responses don't mess up the sorting
+         */
+        sortColumnIndex = column;
+
+        tableRowData = tableRowData.sort((a, b) => {
+            if (a[column] < b[column]) {
+                return ascending ? -1 : 1;
+            }
+            if (a[column] > b[column]) {
+                return ascending ? 1 : -1;
+            }
+            return 0;
+        });
+
+        if (changeAscending) {
+            headerData[column].ascending = !ascending;
+        }
+
+        return tableRowData;
     };
 </script>
 
@@ -117,9 +175,12 @@
                     on:change={checkAllBiobanks}
                 /></th
             >
-            {#each headerData as header}
-                <th part="table-header-cell table-header-datatype"
-                    >{header.title}</th
+            {#each headerData as header, index}
+                <th
+                    part="table-header-cell table-header-datatype"
+                    on:click={() =>
+                        sortTable(index, header.ascending, tableRowData, true)}
+                    >&#8693;{header.title}</th
                 >
             {/each}
         </tr>

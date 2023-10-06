@@ -85,7 +85,6 @@ export class Spot {
                 })
             }
 
-
             responseCount = beamResponseData.length;
             let realResponseCount = beamResponseData.filter(response => response.status !== "claimed").length;
 

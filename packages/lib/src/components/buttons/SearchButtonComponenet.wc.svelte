@@ -63,6 +63,7 @@
      * triggers a request to the backend via the spot class
      */
     const getResultsFromBackend = async () => {
+
         const ast = buildAstFromQuery($queryStore);
         const cql = translateAstToCql(ast, false, true);
 

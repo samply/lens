@@ -131,12 +131,13 @@ lens-catalogue::part(number-input-label) {
 }
 
 lens-catalogue::part(number-input-formfield) {
-  width: 30px;
-  margin: 0 0 0 10px;
+  width: 60px;
+  margin-left: var(--gap-xs);
   border: solid 1px var(--dark-gray);
   border-top: none;
-  padding: var(--gap-xxs) 0 var(--gap-xxs) var(--gap-s);
   border-radius: var(--border-radius-small);
+  text-align: center;
+  font-size: var(--font-size-s);
 }
 
 lens-catalogue::part(number-input-formfield):focus {
@@ -198,11 +199,11 @@ lens-catalogue::part(autocomplete-formfield-input) {
   box-sizing: border-box;
   border: solid 1px var(--dark-gray);
   border-top: none;
-  padding: var(--gap-xxs) var(--gap-s);
-  padding: var(--gap-xxs) var(--gap-s);
+  padding-left: var(--gap-xs);
   outline: none;
   border-top-left-radius: var(--border-radius-small);
   border-top-right-radius: var(--border-radius-small);
+  font-size: var(--font-size-s);
 }
 
 lens-catalogue::part(autocomplete-formfield-input):focus {
