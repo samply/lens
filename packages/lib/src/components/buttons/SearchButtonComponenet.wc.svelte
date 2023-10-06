@@ -30,6 +30,7 @@
     export let disabled: boolean = false;
     export let measures: Measure[] = [];
     export let cqlHeader: string = "";
+    let controller: AbortController;
     
     /**
      * watches the backendConfig for changes to populate the uiSiteMappingsStore with a map
@@ -54,15 +55,17 @@
      * watches the measures for changes to populate the measureStore
     */
     $: measureStore.set(measures);
-   
-
-
-
 
     /**
      * triggers a request to the backend via the spot class
      */
     const getResultsFromBackend = async () => {
+
+        if (controller) {
+            controller.abort();
+        }
+
+        controller = new AbortController();
 
         const ast = buildAstFromQuery($queryStore);
         const cql = translateAstToCql(ast, false, true);
@@ -71,13 +74,14 @@
         const measure = buildMeasure(library.url, $measureStore.map( measureItem => measureItem.measure))
         const query = {lang: "cql", lib: library, measure: measure};
 
-        const spot = new Spot(
+        const backend = new Spot(
             new URL(backendConfig.url),
             backendConfig.backends,
         )
 
-        spot.send(
-            btoa(decodeURI(JSON.stringify(query)))
+        backend.send(
+            btoa(decodeURI(JSON.stringify(query))),
+            controller
         )
 
     };
