@@ -43,8 +43,6 @@
                 {treeData}
                 {noMatchesFoundMessage}
                 {placeholderText}
-                {chips}
-                {queryGroup}
                 {index}
             />
             {#if index === $queryStore.length - 1}

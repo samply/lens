@@ -4,7 +4,6 @@
         props: {
             treeData: { type: "Object" },
             noMatchesFoundMessage: { type: "String" },
-            chips: { type: "Boolean" },
         },
     }}
 />
@@ -31,8 +30,11 @@
     export let treeData: Category[] = [];
     export let noMatchesFoundMessage: string = "No matches found";
     export let placeholderText: string = "Type to filter conditions";
-    export let queryGroup: QueryItem[] = [];
     export let index: number = 0;
+
+    $: queryGroup = $queryStore[index];
+
+
 
     /**
      * Initialize the catalogue store with the given tree data

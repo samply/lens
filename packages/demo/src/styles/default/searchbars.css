@@ -60,12 +60,12 @@ lens-search-bar-multiple::part(lens-searchbar-chip-name) {
 
 lens-search-bar::part(lens-searchbar-chip),
 lens-search-bar-multiple::part(lens-searchbar-chip) {
-  background-color: var(--blue);
+  background-color: var(--light-blue);
   color: var(--white);
   border: solid 1px var(--lightest-gray);
   border-radius: var(--border-radius-small);
   width: max-content;
-  padding: 0 var(--gap-xs);
+  padding: 2px var(--gap-xs);
   display: flex;
   align-items: center;
   gap: var(--gap-xs);
@@ -157,8 +157,9 @@ lens-search-bar-multiple::part(lens-searchbar-add-button) {
 * delete buttons in searchbar and chips
 */
 
+lens-search-bar::part(query-delete-button),
 lens-search-bar-multiple::part(query-delete-button) {
-  background-color: var(--blue);
+  background-color: var(--white);
   color: var(--orange);
   cursor: pointer;
   padding: 0;
@@ -171,13 +172,16 @@ lens-search-bar-multiple::part(query-delete-button) {
 
 lens-search-bar::part(query-delete-button):hover,
 lens-search-bar-multiple::part(query-delete-button):hover {
-  border: solid var(--orange);
+  border: solid 1px var(--orange);
 }
 
 lens-search-bar::part(query-delete-button-value),
 lens-search-bar-multiple::part(query-delete-button-value) {
   font-size: var(--font-size-xxs);
+  color: var(--white);
   margin: 0 var(--gap-xs) 0 var(--gap-xxs);
+  background-color: var(--light-blue);
+  border: var(--white) 1px solid;
 }
 
 lens-search-bar::part(query-delete-button-item),
@@ -195,7 +199,7 @@ lens-search-bar-multiple::part(query-delete-button-group) {
   height: calc(var(--font-size-s) + 10px);
   width: calc(var(--font-size-s) + 10px);
   background-color: var(--white);
-  border: none;
+  border: solid 1px var(--white);
 }
 
 
