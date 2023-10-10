@@ -155,19 +155,18 @@
 </header>
 <main>
   <div class="search">
-    <lens-search-bar-multiple
+    <lens-search-bar
       treeData={mockCatalogueData}
       noMatchesFoundMessage={"No matches found"}
       measures={[dktkPatientsMeasure, dktkDiagnosisMeasure, dktkSpecimenMeasure, dktkPatientsMeasure, dktkMedicationStatementsMeasure]}
     >
-
-      <lens-search-button
-        title="Suchen"
-        {measures}
-        backendConfig={JSON.stringify(backendConfig)}
-        {cqlHeader}
-      />
-    </lens-search-bar-multiple>
+  </lens-search-bar>
+  <lens-search-button
+    title="Suchen"
+    {measures}
+    backendConfig={JSON.stringify(backendConfig)}
+    {cqlHeader}
+  />
   </div>
   <div class="grid">
     <div class="catalogue">
@@ -201,6 +200,7 @@
           title="Geschlecht"
           catalogueGroupCode="gender"
           chartType="pie"
+          clickToAddState={true}
         />
       </div>
       <div class="chart-wrapper chart-diagnosis">
@@ -208,6 +208,7 @@
           title="Diagnosis"
           catalogueGroupCode="diagnosis"
           chartType="bar"
+          clickToAddState={true}
         />
       </div>
       <div class="chart-wrapper chart-age-distribution">
@@ -215,6 +216,7 @@
           title="Alter bei Erstdiagnose"
           catalogueGroupCode="age_at_diagnosis"
           chartType="bar"
+          clickToAddState={true}
         />
       </div>
       <div class="chart-wrapper">
@@ -222,6 +224,7 @@
           title="Vitalstatus"
           catalogueGroupCode="75186-7"
           chartType="pie"
+          clickToAddState={true}
         />
       </div>
       <div class="chart-wrapper">
@@ -229,6 +232,7 @@
           title="Therapieart"
           catalogueGroupCode="therapy_of_tumor"
           chartType="bar"
+          clickToAddState={true}
         />
       </div>
       <div class="chart-wrapper">
@@ -236,6 +240,7 @@
           title="Systemische Therapien"
           catalogueGroupCode=""
           chartType="bar"
+          clickToAddState={true}
         />
       </div>
       <div class="chart-wrapper">
@@ -243,6 +248,7 @@
           title="Proben"
           catalogueGroupCode="sample_kind"
           chartType="bar"
+          clickToAddState={true}
         />
       </div>
     </div>

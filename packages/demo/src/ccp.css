@@ -92,6 +92,8 @@ footer {
 }
 
 .search {
+  display: grid;
+  grid-template-columns: 1fr auto;
   grid-gap: var(--gap-s);
   padding: var(--gap-xxs) 0;
   background-color: var(--ghost-white);

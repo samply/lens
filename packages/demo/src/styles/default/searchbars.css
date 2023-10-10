@@ -15,6 +15,7 @@ lens-search-bar-multiple::part(search-bar-wrapper) {
   flex-grow: 1;
 }
 
+lens-search-bar::part(lens-searchbar):focus-within,
 lens-search-bar-multiple::part(lens-searchbar):focus-within {
   border-color: var(--blue);
   border: solid 1px var(--blue);
@@ -22,6 +23,7 @@ lens-search-bar-multiple::part(lens-searchbar):focus-within {
   z-index: 2;
 }
 
+lens-search-bar::part(lens-searchbar),
 lens-search-bar-multiple::part(lens-searchbar) {
   position: relative;
   z-index: 1;
@@ -36,12 +38,14 @@ lens-search-bar-multiple::part(lens-searchbar) {
   width: -webkit-fill-available;
 }
 
+lens-search-bar::part(lens-searchbar-or-indicator),
 lens-search-bar-multiple::part(lens-searchbar-or-indicator) {
   margin-left: var(--gap-xs);
   text-align: center;
   width: 40px;
 }
 
+lens-search-bar::part(lens-searchbar-chips),
 lens-search-bar-multiple::part(lens-searchbar-chips) {
   display: flex;
   flex-wrap: wrap;
@@ -49,10 +53,12 @@ lens-search-bar-multiple::part(lens-searchbar-chips) {
   padding-right: var(--gap-xs);
 }
 
+lens-search-bar::part(lens-searchbar-chip-name),
 lens-search-bar-multiple::part(lens-searchbar-chip-name) {
   font-weight: bold;
 }
 
+lens-search-bar::part(lens-searchbar-chip),
 lens-search-bar-multiple::part(lens-searchbar-chip) {
   background-color: var(--blue);
   color: var(--white);
@@ -66,11 +72,13 @@ lens-search-bar-multiple::part(lens-searchbar-chip) {
   position: relative;
 }
 
+lens-search-bar::part(lens-searchbar-chip-item),
 lens-search-bar-multiple::part(lens-searchbar-chip-item) {
   display: inline-flex;
   align-items: center;
 }
 
+lens-search-bar::part(lens-searchbar-input),
 lens-search-bar-multiple::part(lens-searchbar-input) {
   box-sizing: border-box;
   padding: var(--gap-xs) var(--gap-s) var(--gap-xs) var(--gap-xs);
@@ -80,16 +88,18 @@ lens-search-bar-multiple::part(lens-searchbar-input) {
   border: none;
 }
 
+lens-search-bar::part(lens-searchbar-input-options-open),
 lens-search-bar-multiple::part(lens-searchbar-input-options-open) {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
 
+lens-search-bar::part(lens-searchbar-autocomplete-options),
 lens-search-bar-multiple::part(lens-searchbar-autocomplete-options) {
   max-height: 50vh;
   overflow: scroll;
   list-style-type: none;
-  padding: var(--gap-s);
+  padding: 0;
   margin: 0;
   border: solid 1px var(--blue);
   border-top: none;
@@ -103,21 +113,29 @@ lens-search-bar-multiple::part(lens-searchbar-autocomplete-options) {
   border-bottom-right-radius: var(--border-radius-small);
 }
 
+lens-search-bar::part(lens-searchbar-autocomplete-options-item),
 lens-search-bar-multiple::part(lens-searchbar-autocomplete-options-item) {
   cursor: pointer;
-  padding-bottom: var(--gap-s);
+  padding: var(--gap-xs) var(--gap-s);
 }
 
+lens-search-bar::part(lens-searchbar-autocomplete-options-item-focused),
 lens-search-bar-multiple::part(lens-searchbar-autocomplete-options-item-focused) {
-  color: coral;
+  color: var(--white);
+  background-color: var(--light-blue);
 }
 
+lens-search-bar::part(autocomplete-options-item-description),
 lens-search-bar-multiple::part(autocomplete-options-item-description) {
   color: var(--blue);
   font-size: var(--font-size-s);
   padding-top: var(--gap-xs);
   padding-right: var(--gap-m);
   padding-left: var(--gap-xs);
+}
+lens-search-bar::part(autocomplete-options-item-description-focused),
+lens-search-bar-multiple::part(autocomplete-options-item-description-focused) {
+  color: var(--white);
 }
 
 lens-search-bar-multiple::part(lens-searchbar-add-button) {
@@ -151,15 +169,18 @@ lens-search-bar-multiple::part(query-delete-button) {
   width: calc(var(--font-size-xs) + 6px);
 }
 
+lens-search-bar::part(query-delete-button):hover,
 lens-search-bar-multiple::part(query-delete-button):hover {
   border: solid var(--orange);
 }
 
+lens-search-bar::part(query-delete-button-value),
 lens-search-bar-multiple::part(query-delete-button-value) {
   font-size: var(--font-size-xxs);
   margin: 0 var(--gap-xs) 0 var(--gap-xxs);
 }
 
+lens-search-bar::part(query-delete-button-item),
 lens-search-bar-multiple::part(query-delete-button-item) {
   font-size: var(--font-size-xs);
   position: absolute;
@@ -168,6 +189,7 @@ lens-search-bar-multiple::part(query-delete-button-item) {
   border: solid 2px var(--white);
 }
 
+lens-search-bar::part(query-delete-button-group),
 lens-search-bar-multiple::part(query-delete-button-group) {
   font-size: var(--font-size-s);
   height: calc(var(--font-size-s) + 10px);

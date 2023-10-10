@@ -149,7 +149,7 @@
     /**
      * keeps track of the focused item
      */
-    let focusedItemIndex: number = 0;
+    let focusedItemIndex: number = -1;
 
     let activeDomElement: HTMLElement;
 
@@ -187,6 +187,7 @@
         focusedItemIndex = 0;
     };
 
+
     /**
      * extracts the group index from the input value
      * the user may specify the group index by typing a number followed by a colon
@@ -207,7 +208,7 @@
     const handleKeyDown = (event: KeyboardEvent): void => {
         if (inputValue.length === 0 || event.key === "Escape") {
             inputValue = "";
-            focusedItemIndex = 0;
+            focusedItemIndex = -1;
             return;
         }
         if (event.key === "ArrowDown") {
@@ -361,12 +362,12 @@
                         <div part="autocomplete-options-item-name">
                             {@html getBoldedText(
                                 inputOption.name +
-                                    " : " +
+                                    ": " +
                                     inputOption.criterion.name
                             )}
                         </div>
                         {#if inputOption.criterion.description}
-                            <div part="autocomplete-options-item-description">
+                            <div part="autocomplete-options-item-description autocomplete-options-item-description-focused">
                                 {@html getBoldedText(
                                     inputOption.criterion.description
                                 )}
