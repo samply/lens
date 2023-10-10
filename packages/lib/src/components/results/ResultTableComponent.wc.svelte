@@ -27,15 +27,15 @@
      */
     export let headerData: HeaderData[] = [
         {
-            title: "Site",
+            title: "Standorte",
             dataKey: "site",
         },
         {
-            title: "Patients",
+            title: "Patienten",
             dataKey: "patients",
         },
         {
-            title: "Samples",
+            title: "Bioproben",
             dataKey: "specimen",
         },
     ];
@@ -180,7 +180,7 @@
                     part="table-header-cell table-header-datatype"
                     on:click={() =>
                         sortTable(index, header.ascending, tableRowData, true)}
-                    >&#8693;{header.title}</th
+                    >{header.title}</th
                 >
             {/each}
         </tr>
