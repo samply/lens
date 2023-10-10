@@ -161,6 +161,7 @@
       measures={[dktkPatientsMeasure, dktkDiagnosisMeasure, dktkSpecimenMeasure, dktkPatientsMeasure, dktkMedicationStatementsMeasure]}
     >
   </lens-search-bar>
+  <lens-info-button />
   <lens-search-button
     title="Suchen"
     {measures}
@@ -170,7 +171,6 @@
   </div>
   <div class="grid">
     <div class="catalogue">
-      <!-- style={`max-width: ${catalogueopen ? "400px" : "288px"};`} -->
       <lens-catalogue
         treeData={mockCatalogueData}
         texts={catalogueText}

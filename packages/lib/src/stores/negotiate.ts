@@ -19,7 +19,7 @@ export const negotiate = async (sitesToNegotiate: string[]): Promise<void> => {
 /**
  * @returns a human readable query string built from the current query
  */
-const getHumanReadableQuery = (): string => {
+export const getHumanReadableQuery = (): string => {
 
     let humanReadableQuery: string = "";
     let query: AstTopLayer

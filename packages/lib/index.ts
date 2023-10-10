@@ -8,3 +8,4 @@ export { default as ResutSummaryComponent } from './src/components/results/Resul
 export { default as ResultTableComponent } from './src/components/results/ResultTableComponent.wc.svelte'
 export { default as SearchBarMultipleComponent } from './src/components/search-bar/SearchBarMultipleComponent.wc.svelte'
 export { default as NegotiateButtonComponent } from './src/components/buttons/NegotiateButtonComponent.wc.svelte'
+export { default as QueryInfoButton } from './src/components/buttons/QueryInfoButtonComponent.wc.svelte'

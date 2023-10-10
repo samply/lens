@@ -1,0 +1,26 @@
+lens-info-button::part(info-button) {
+    position: relative;
+    cursor: pointer;
+    height: 100%;
+    width: 38px;
+    background-color: var(--white);
+    border: solid 1px var(--light-blue);
+    border-radius: var(--border-radius-small);
+}
+
+lens-info-button::part(info-button-title) {
+}
+
+lens-info-button::part(info-button-dialogue) {
+    position: absolute;
+    border: none;
+    background-color: var(--white);
+    width: max-content;
+    max-width: 80vw;
+    z-index: 100;
+    padding: var(--gap-s);
+    top: 40px;
+    right: 0px;
+    border: solid 1px var(--light-blue);
+    border-radius: var(--border-radius-small);
+}

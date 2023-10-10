@@ -5,6 +5,7 @@
 @import url('./styles/default/result-table.css');
 @import url('./styles/default/result-chart.css');
 @import url('./styles/default/negotiate-button.css');
+@import url('./styles/default/info-button.css');
 
 :root {
   font-family: Open_Sans, sans-serif;
@@ -93,7 +94,7 @@ footer {
 
 .search {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr auto auto;
   grid-gap: var(--gap-s);
   padding: var(--gap-xxs) 0;
   background-color: var(--ghost-white);
@@ -237,4 +238,8 @@ lens-search-bar-multiple::part(query-delete-button-item) {
 lens-search-bar-multiple::part(query-delete-button-group) {
   background-color: var(--white);
   border-color: var(--white);
+}
+
+lens-search-button::part(lens-search-button) {
+  background-color: var(--light-blue);
 }
