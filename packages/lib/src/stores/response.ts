@@ -7,8 +7,6 @@ export const responseStore = writable<ResponseStore>(
     new Map<string, Site>()
 );
 
-
-
 /**
  * @param store the response store
  * @param code the code to search for

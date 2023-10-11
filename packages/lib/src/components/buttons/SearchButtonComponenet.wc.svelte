@@ -56,7 +56,13 @@
     $: measureStore.set(measures);
    
 
-
+    /**
+     * create a new Spot instance with the backend config
+     */
+    let spot = new Spot(
+            new URL(backendConfig.url),
+            backendConfig.backends,
+        )
 
 
     /**
@@ -68,22 +74,33 @@
         
         const ast = buildAstFromQuery($queryStore);
         const cql = translateAstToCql(ast, false, true);
+
         const library = buildLibrary(`${cql}`)
         const measure = buildMeasure(library.url, $measureStore.map( measureItem => measureItem.measure))
         const query = {lang: "cql", lib: library, measure: measure};
 
-        const spot = new Spot(
+        /**
+         * break the connection to the backend to prevent the backend from sending a response
+         * then send a new request
+        */
+        spot.stopRequests();
+        responseStore.set(new Map());
+
+        spot = new Spot(
             new URL(backendConfig.url),
             backendConfig.backends,
         )
 
-        spot.send(
-            btoa(decodeURI(JSON.stringify(query)))
-        )
+
+        setTimeout(() => {
+            spot.send(
+                btoa(decodeURI(JSON.stringify(query)))
+            )
+        }, 100);
 
     };
 
-    $: console.log($responseStore);
+    // $: console.log($responseStore);
 
 
 </script>

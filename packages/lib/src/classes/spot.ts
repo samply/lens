@@ -23,7 +23,14 @@ export class Spot {
         private sites: Array<string>,
     ) { }
 
+    sendsRequests: boolean = true;
+
+    stopRequests() {
+        this.sendsRequests = false;
+    }
+
     async send(query: string) {
+
         console.log(`${this.url}tasks?sites=${this.sites.toString()}`);
 
         const beamTaskResponse = await fetch(
@@ -44,9 +51,10 @@ export class Spot {
         let responseCount: number = 0
         // the time to wait in ms for a response from beam
         let requestTimeOut: number = 500;
-        let continueRequests: boolean = false;
 
         do {
+            if (!this.sendsRequests)
+                break;
 
             const beamResponses: Response = await fetch(
                 `${this.url}tasks/${beamTask.id}?wait_count=${responseCount + 1}&wait_time=${requestTimeOut}ms`,
@@ -62,35 +70,53 @@ export class Spot {
             }
 
             const beamResponseData: Array<BeamResult> = await beamResponses.json();
+            let realResponseCount = beamResponseData.filter(response => response.status !== "claimed").length;
 
-            responseStore.update((store: ResponseStore): ResponseStore => {
-                beamResponseData.forEach((response: BeamResult) => {
-                    let site: string = response.from.split(".")[1]
-                    let status: Status = response.status
-                    let body: SiteData = (status === 'succeeded') ? JSON.parse(atob(response.body)) : null;
+            beamResponseData.forEach((response: BeamResult) => {
 
-                    // if the site is already in the store and the status is claimed, don't update the store
-                    if(store.get(site)?.status === status) return;
+                let site: string = response.from.split(".")[1]
+                let status: Status = response.status
+                let body: SiteData = (status === 'succeeded') ? JSON.parse(atob(response.body)) : null;
 
-                    store.set(site, {status: status, data: body});
-                });
-                return store;
+                /**
+                 * set the site in the store if the request was claimed for the first time or succeeded
+                */
+                let storeStatus
+                responseStore.subscribe((store: ResponseStore) => {
+                    storeStatus = store.get(site)?.status
+                })
+                if (
+                    storeStatus === undefined && status === 'claimed' ||
+                    storeStatus === 'claimed' && status === 'succeeded' ||
+                    storeStatus === null
+
+                ) {
+                    responseStore.update((store: ResponseStore): ResponseStore => {
+                        store.set(site, { status: status, data: body });
+                        return store;
+                    });
+                }
+                /**
+                 * removes the site from the store if the request failed
+                 */
+                if (status === 'permfailed') {
+                    responseStore.update((store: ResponseStore): ResponseStore => {
+                        store.delete(site);
+                        return store;
+                    })
+                }
             })
 
             responseCount = beamResponseData.length;
-            let realResponseCount = beamResponseData.filter(response => response.status !== "claimed").length;
 
-            if (
-                (beamResponses.status === 200 || beamResponses.status === 206)
-                    && realResponseCount !== this.sites.length
-            ) {
-                continueRequests = true;
-            } else {
-                continueRequests = false;
-                break;
+
+            if (realResponseCount === this.sites.length || !(beamResponses.status === 200 || beamResponses.status === 206)) {
+                this.stopRequests();
             }
 
-        } while (true)
+
+
+        } while (this.sendsRequests)
 
     }
 }
