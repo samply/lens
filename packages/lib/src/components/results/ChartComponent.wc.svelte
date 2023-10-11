@@ -3,8 +3,8 @@
         tag: "lens-chart",
         props: {
             chartData: { type: "Object" },
-            backgroundColors: { type: "Array" },
-            backgroundHoverColors: { type: "Array" },
+            backgroundColor: { type: "Array" },
+            backgroundHoverColor: { type: "Array" },
             perSite: { type: "Boolean" },
         },
     }}
@@ -15,13 +15,12 @@
     import { onMount } from "svelte";
     import {
         getAggregatedPopulationForStratumCode,
-        getSitePopulationForCode,
         getStratifierCodesForGroupCode,
         responseStore,
     } from "../../stores/response";
     import { v4 as uuidv4 } from "uuid";
     import { activeQueryGroupIndex, addItemToQuery } from "../../stores/query";
-    import { catalogue, getCriteriaNamesFromKey } from "../../stores/catalogue";
+    import { catalogue } from "../../stores/catalogue";
     import type { QueryItem, QueryValue } from "../../types/queryData";
     import type { Category, Criteria } from "../../types/treeData";
     import { catalogueKeyToResponseKeyMap } from "../../stores/mappings";
@@ -30,7 +29,7 @@
 
     export let title: string = ""; // e.g. 'Gender Distribution'
     export let catalogueGroupCode: string = ""; // e.g. "gender"
-
+    export let clickToAddState: boolean = false;
     let responseGroupCode: string;
     $: responseGroupCode =
         $catalogueKeyToResponseKeyMap.get(catalogueGroupCode);
@@ -40,7 +39,7 @@
     export let chartType: keyof ChartTypeRegistry = "pie";
     export let perSite: boolean = false;
 
-    export let backgroundColors: string[] = [
+    export let backgroundColor: string[] = [
         "#4dc9f6",
         "#f67019",
         "#f53794",
@@ -62,7 +61,7 @@
         "#89a54e",
         "#80699b",
     ];
-    export let backgroundHoverColors: string[] = ["#aaaaaa"];
+    export let backgroundHoverColor: string[] = ["#aaaaaa"];
 
     /**
      * initialize the chart
@@ -79,8 +78,8 @@
                 {
                     label: "",
                     data: [1, 1, 1, 1],
-                    backgroundColors: ["#aaa"],
-                    backgroundHoverColors: ["#bbb"],
+                    backgroundColor: ["#E6E6E6"],
+                    backgroundHoverColor: ["#E6E6E6"],
                 },
             ],
         },
@@ -118,8 +117,8 @@
             dataSet = chartLabels.map((label: string) => {
                 const site: Site = responseStore.get(label);
 
-                if(site.data === null) return 0;
-                
+                if (site.data === null) return 0;
+
                 let data = site.data.group.find(
                     (groupItem) => groupItem.code.text === catalogueGroupCode
                 );
@@ -140,8 +139,8 @@
             {
                 label: "",
                 data: dataSet,
-                backgroundColors,
-                backgroundHoverColors,
+                backgroundColor,
+                backgroundHoverColor,
             },
         ];
     };
@@ -150,6 +149,7 @@
      * watches the response store and updates the chart data
      */
     const setChartData = (responseStore: ResponseStore) => {
+        console.log(responseStore);
         if (responseStore.size === 0) return;
 
         let isDataAvailable: boolean = false;
@@ -182,9 +182,16 @@
         chart.update();
     };
 
-    $: setChartData($responseStore);
+    $: {
+        if ($responseStore.size !== 0){
+            console.log($responseStore);
+            setChartData($responseStore);
+        }
+    } 
+    
 
     onMount(() => {
+        console.log(initialChartData);
         chart = new Chart(canvas, initialChartData);
     });
 
@@ -212,11 +219,11 @@
          * the clicked stratifier
          */
         const stratifier = chart.getActiveElements()[0];
-        if (!stratifier) return;
+        if (!stratifier || !clickToAddState) return;
+        console.log(typeof chart.data.labels[stratifier.index]);
         const label: string = chart.data.labels[stratifier.index] as string;
-
+        console.log(stratifier, label); 
         let queryItem: QueryItem;
-
         $catalogue.forEach((parentCategory: Category) => {
             if ("childCategories" in parentCategory) {
                 parentCategory.childCategories.forEach(
@@ -226,18 +233,34 @@
                             "criteria" in childCategorie
                         ) {
                             let values: QueryValue[] = [];
-                            childCategorie.criteria.forEach(
-                                (criterion: Criteria) => {
-                                    if (criterion.key === label) {
-                                        values[0] = {
-                                            name: criterion.name,
-                                            value: criterion.key,
-                                            queryBindId: uuidv4(),
-                                            description: criterion.description,
-                                        };
+                            console.log(childCategorie);
+
+                            if (childCategorie.fieldType === "number") {
+                                /**
+                                 * TODO: add customisation for the step size
+                                 */
+                                values = [
+                                    {
+                                        name: `${label} - ${parseInt(label) + 9}`,
+                                        value: { min: parseInt(label), max: parseInt(label) + 9},
+                                        queryBindId: uuidv4(),
+                                    },
+                                ];
+                            } else {
+                                childCategorie.criteria.forEach(
+                                    (criterion: Criteria) => {
+                                        if (criterion.key === label) {
+                                            values[0] = {
+                                                name: criterion.name,
+                                                value: criterion.key,
+                                                queryBindId: uuidv4(),
+                                                description:
+                                                    criterion.description,
+                                            };
+                                        }
                                     }
-                                }
-                            );
+                                );
+                            }
 
                             queryItem = {
                                 id: uuidv4(),
@@ -266,7 +289,7 @@
 </script>
 
 <div part="chart-wrapper">
-    <h4 part="chart-title">{title}</h4>
+    <h4 part="chart-title">{title}</h4> 
     <canvas
         part="chart-canvas"
         bind:this={canvas}
