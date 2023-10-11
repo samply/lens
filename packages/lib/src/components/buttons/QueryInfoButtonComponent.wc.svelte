@@ -14,7 +14,7 @@
     /**
      * handles the toggling of the tooltip
      */
-    let tooltipOpen: boolean = true;
+    let tooltipOpen: boolean = false;
 
     const displayQueryInfo = () => {
         query = getHumanReadableQuery();
