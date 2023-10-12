@@ -72,6 +72,12 @@ lens-catalogue::part(data-tree-element-last-child-options) {
   * Cataloque shared
   */
 
+  lens-catalogue::part(lens-catalogue-wrapper) {
+    display: grid;
+    grid-gap: var(--gap-xs);
+  }
+
+
 lens-catalogue::part(criterion-wrapper) {
   display: grid;
   grid-template-columns: auto 1fr;
