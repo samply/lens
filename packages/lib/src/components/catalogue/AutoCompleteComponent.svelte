@@ -102,7 +102,7 @@
     /**
      * keeps track of the focused item
      */
-    let focusedItemIndex: number = 0;
+    let focusedItemIndex: number = -1;
 
     let activeDomElement: HTMLElement;
 
@@ -158,7 +158,7 @@
     const handleKeyDown = (event: KeyboardEvent): void => {
         if (inputValue.length === 0 || event.key === "Escape") {
             inputValue = "";
-            focusedItemIndex = 0;
+            focusedItemIndex = -1;
             return;
         }
         if (event.key === "ArrowDown") {
@@ -268,7 +268,7 @@
                                 <div part="autocomplete-options-item-name">
                                     {@html getBoldedText(inputOption.name)}
                                 </div>
-                                <div part="autocomplete-options-item-description">
+                                <div part="autocomplete-options-item-description-focused">
                                     {@html getBoldedText(inputOption.description)}
                                 </div>
                             </li>

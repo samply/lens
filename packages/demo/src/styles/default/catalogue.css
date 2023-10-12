@@ -72,10 +72,10 @@ lens-catalogue::part(data-tree-element-last-child-options) {
   * Cataloque shared
   */
 
-  lens-catalogue::part(lens-catalogue-wrapper) {
-    display: grid;
-    grid-gap: var(--gap-xs);
-  }
+lens-catalogue::part(lens-catalogue-wrapper) {
+  display: grid;
+  grid-gap: var(--gap-xs);
+}
 
 
 lens-catalogue::part(criterion-wrapper) {
@@ -220,7 +220,7 @@ lens-catalogue::part(autocomplete-formfield-input):focus {
 lens-catalogue::part(autocomplete-options) {
   z-index: 1;
   list-style-type: none;
-  padding: var(--gap-s);
+  padding: 0;
   margin: 0;
   border: solid 1px var(--light-blue);
   border-top: none;
@@ -238,11 +238,12 @@ lens-catalogue::part(autocomplete-options) {
 
 lens-catalogue::part(autocomplete-options-item) {
   cursor: pointer;
-  padding-bottom: var(--gap-s);
+  padding: var(--gap-xs);
 }
 
 lens-catalogue::part(autocomplete-options-item-focused) {
-  color: coral;
+  color: var(--white);
+  background-color: var(--light-blue);
 }
 
 lens-catalogue::part(autocomplete-options-item-description) {
@@ -251,6 +252,11 @@ lens-catalogue::part(autocomplete-options-item-description) {
   color: var(--blue);
 }
 
+lens-catalogue::part(autocomplete-options-item-description-focused) {
+  color: var(--white);
+  padding-top: var(--gap-xxs);
+  font-size: var(--font-size-xs);
+}
 
 lens-catalogue::part(criterion-autocomplete-name) {
   position: relative;

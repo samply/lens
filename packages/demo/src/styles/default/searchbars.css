@@ -88,6 +88,10 @@ lens-search-bar-multiple::part(lens-searchbar-input) {
   border: none;
 }
 
+/**
+* Lens Search Bar Input Options
+*/
+
 lens-search-bar::part(lens-searchbar-input-options-open),
 lens-search-bar-multiple::part(lens-searchbar-input-options-open) {
   border-bottom-left-radius: 0;
