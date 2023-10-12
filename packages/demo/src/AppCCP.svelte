@@ -72,6 +72,12 @@
   const catalogueKeyToResponseKeyMap = [
     ["gender", "Gender"],
     ["age_at_diagnosis", "Age"],
+    ['diagnosis', 'diagnosis'],
+    ['medicationStatements', "MedicationType"],
+    ["sample_kind", 'sample_kind' ],
+    ["therapy_of_tumor", "ProcedureType"],
+    ["75186-7", "75186-7"],
+    // ["encounter", "Encounter"],
   ];
 
   const siteToDefaultCollectionId: string[][] = [
@@ -239,7 +245,7 @@
       <div class="chart-wrapper">
         <lens-chart
           title="Systemische Therapien"
-          catalogueGroupCode=""
+          catalogueGroupCode="medicationStatements"
           chartType="bar"
           clickToAddState={true}
         />
