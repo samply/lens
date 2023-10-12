@@ -10,6 +10,7 @@ measureStore.subscribe(store => {
 })
 
 export class Blaze {
+
     constructor(
         private url: URL,
         private name: string,
@@ -17,48 +18,60 @@ export class Blaze {
     ) {
     }
 
-    async send(cql: string) {
-        responseStore.update((store) => {
-            store.set(this.name, {status: "claimed", data: null});
-            return store;
-        });
-        let libraryResponse = await fetch(
-            new URL(`${this.url}/Library`), {
+    async send(cql: string, controller?: AbortController) {
+        try {
+            responseStore.update((store) => {
+                store.set(this.name, { status: "claimed", data: null });
+                return store;
+            });
+            let libraryResponse = await fetch(
+                new URL(`${this.url}/Library`), {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(buildLibrary(cql))
+                body: JSON.stringify(buildLibrary(cql)),
+                signal: controller.signal
             }
-        )
-        if (!libraryResponse.ok){
-            this.handleError(`Couldn't create Library in Blaze`, libraryResponse);
-        }
-        const library = await libraryResponse.json();
-        const measureResponse = await fetch(
-            new URL(`${this.url}/Measure`), {
+            )
+            if (!libraryResponse.ok) {
+                this.handleError(`Couldn't create Library in Blaze`, libraryResponse);
+            }
+            const library = await libraryResponse.json();
+            const measureResponse = await fetch(
+                new URL(`${this.url}/Measure`), {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(buildMeasure(library.url, measureDefinitions))
+                body: JSON.stringify(buildMeasure(library.url, measureDefinitions)),
+                signal: controller.signal
+            })
+            if (!measureResponse.ok) {
+                this.handleError(`Couldn't create Measure in Blaze`, measureResponse)
             }
-        )
-        if (!measureResponse.ok) {
-            this.handleError(`Couldn't create Measure in Blaze`, measureResponse)
+            const measure = await measureResponse.json();
+            const dataResponse = await fetch(
+                new URL(`${this.url}/Measure/$evaluate-measure?measure=${measure.url}&periodStart=2000&periodEnd=2030`),
+                {
+                    signal: controller.signal
+                }
+            )
+            if (!dataResponse.ok) {
+                this.handleError(`Couldn't evaluate Measure in Blaze`, dataResponse)
+            }
+            const blazeResponse: Site = await dataResponse.json()
+            responseStore.update((store) => {
+                store.set(this.name, { status: 'succeeded', data: blazeResponse })
+                return store;
+            })
+        } catch (err) {
+            if (err.name === "AbortError") {
+                console.log(`Aborting former blaze request.`)
+            } else {
+                console.error(err)
+            }
         }
-        const measure = await measureResponse.json();
-        const dataResponse = await fetch(
-            new URL(`${this.url}/Measure/$evaluate-measure?measure=${measure.url}&periodStart=2000&periodEnd=2030`)
-        )
-        if (!dataResponse.ok) {
-            this.handleError(`Couldn't evaluate Measure in Blaze`, dataResponse)
-        }
-        const blazeResponse: Site = await dataResponse.json()
-        responseStore.update((store) => {
-            store.set(this.name, {status: 'succeeded', data: blazeResponse})
-            return store;
-        })
     }
 
     async handleError(message: string, response: Response) {
