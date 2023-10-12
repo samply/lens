@@ -86,17 +86,6 @@ if (Array.isArray(item)) {
   }
 
   /**
-   * return bottom level object of an entity (aggregatedValue)
-   */
-  if ('key' in topLayerItem && 'value' in item && typeof item.value === 'string') {
-    return {
-      key: topLayerItem.key,
-      type: 'EQUALS',
-      system: '',
-      value: item.value,
-    }
-  }
-  /**
     * return bottom level object of other QueryValues (string | {min: number, max: number})
     */
   if ('value' in item && 'key' in topLayerItem && !Array.isArray(item.value)) {
@@ -105,6 +94,18 @@ if (Array.isArray(item)) {
       type: topLayerItem.type,
       system: topLayerItem.system || '',
       value: item.value,
+    }
+  }
+  
+  /**
+   * return bottom level object of an entity (aggregatedValue)
+   */
+  if ('value' in item && typeof item.value === 'string') {
+    return {
+      key: item.value,
+      type: 'EQUALS',
+      system: '',
+      value: item.name,
     }
   }
 

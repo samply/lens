@@ -73,6 +73,7 @@ const resolveOperation = (operation: AstElement): string => {
   }
 
   'children' in operation && operation.children.forEach((element: AstElement, index) => {
+    console.log(element);
     if ('children' in element) {
       expression += resolveOperation(element)
     }
@@ -92,6 +93,7 @@ const resolveOperation = (operation: AstElement): string => {
 
 const getSingleton = (criterion: AstBottomLayerValue): string => {
   let expression: string = "";
+  console.log(criterion)
   const myCriterion = criterionMap.get(criterion.key)
 
   if (myCriterion) {
