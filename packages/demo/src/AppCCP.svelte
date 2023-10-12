@@ -120,8 +120,8 @@
   ];
 
   const backendConfig = {
-    // url: "https://backend.demo.lens.samply.de/prod/",
-    url: "http://localhost:8080",
+    url: "https://backend.demo.lens.samply.de/prod/",
+    // url: "http://localhost:8080",
     backends: [
       'mannheim',
       'freiburg',
