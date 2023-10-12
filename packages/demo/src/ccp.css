@@ -243,3 +243,9 @@ lens-search-bar-multiple::part(query-delete-button-group) {
 lens-search-button::part(lens-search-button) {
   background-color: var(--light-blue);
 }
+
+.chart-diagnosis lens-chart::part(chart-canvas) {
+  width: 100%;
+  max-height: 1000px;
+  height: 940px;
+}

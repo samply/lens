@@ -29,6 +29,7 @@
 
     export let title: string = ""; // e.g. 'Gender Distribution'
     export let catalogueGroupCode: string = ""; // e.g. "gender"
+    export let indexAxis: string = "x";
     export let clickToAddState: boolean = false;
     let responseGroupCode: string;
     $: responseGroupCode =
@@ -84,6 +85,7 @@
             ],
         },
         options: {
+            indexAxis: indexAxis,
             maintainAspectRatio: false,
             plugins: {
                 legend: {
@@ -110,7 +112,7 @@
     const getChartDataSets = (
         responseStore: ResponseStore,
         chartLabels: string[]
-    ): { label; data; backgroundColors; backgroundHoverColors }[] => {
+    ): { label; data; backgroundColor; backgroundHoverColor }[] => {
         let dataSet: number[];
 
         if (perSite) {
@@ -149,7 +151,7 @@
      * watches the response store and updates the chart data
      */
     const setChartData = (responseStore: ResponseStore) => {
-        console.log(responseStore);
+
         if (responseStore.size === 0) return;
 
         let isDataAvailable: boolean = false;
@@ -184,14 +186,12 @@
 
     $: {
         if ($responseStore.size !== 0){
-            console.log($responseStore);
             setChartData($responseStore);
         }
     } 
     
 
     onMount(() => {
-        console.log(initialChartData);
         chart = new Chart(canvas, initialChartData);
     });
 
@@ -220,9 +220,7 @@
          */
         const stratifier = chart.getActiveElements()[0];
         if (!stratifier || !clickToAddState) return;
-        console.log(typeof chart.data.labels[stratifier.index]);
         const label: string = chart.data.labels[stratifier.index] as string;
-        console.log(stratifier, label); 
         let queryItem: QueryItem;
         $catalogue.forEach((parentCategory: Category) => {
             if ("childCategories" in parentCategory) {
@@ -233,7 +231,6 @@
                             "criteria" in childCategorie
                         ) {
                             let values: QueryValue[] = [];
-                            console.log(childCategorie);
 
                             if (childCategorie.fieldType === "number") {
                                 /**
