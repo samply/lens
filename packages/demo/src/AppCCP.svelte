@@ -151,7 +151,7 @@
   </div>
   <h1>CCP Explorer</h1>
   <div class="logo logo-dkfz">
-    <img src="../logo-dkfz.svg" alt="Logo des DKTK" />
+    <img src="../logo-dkfz.svg" alt="Logo des DKFZ" />
   </div>
 </header>
 <main>
