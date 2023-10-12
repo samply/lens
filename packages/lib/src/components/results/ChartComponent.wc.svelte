@@ -29,6 +29,7 @@
 
     export let title: string = ""; // e.g. 'Gender Distribution'
     export let catalogueGroupCode: string = ""; // e.g. "gender"
+    export let indexAxis: string = "x";
     export let clickToAddState: boolean = false;
     let responseGroupCode: string;
     $: responseGroupCode =
@@ -84,6 +85,7 @@
             ],
         },
         options: {
+            indexAxis: indexAxis,
             maintainAspectRatio: false,
             plugins: {
                 legend: {

@@ -215,6 +215,7 @@
           title="Diagnosis"
           catalogueGroupCode="diagnosis"
           chartType="bar"
+          indexAxis='y'
           clickToAddState={true}
         />
       </div>
