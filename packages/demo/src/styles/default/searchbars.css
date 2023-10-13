@@ -117,10 +117,18 @@ lens-search-bar-multiple::part(lens-searchbar-autocomplete-options) {
   border-bottom-right-radius: var(--border-radius-small);
 }
 
-lens-search-bar::part(lens-searchbar-autocomplete-options-item),
+lens-search-bar::part(autocomplete-options-category-name),
+lens-search-bar-multiple::part(autocomplete-category-category-name) {
+  padding: var(--gap-xs) var(--gap-s);
+  font-weight: bold;
+
+}
+
+
+  lens-search-bar::part(lens-searchbar-autocomplete-options-item),
 lens-search-bar-multiple::part(lens-searchbar-autocomplete-options-item) {
   cursor: pointer;
-  padding: var(--gap-xs) var(--gap-s);
+  padding: var(--gap-xs) var(--gap-m);
 }
 
 lens-search-bar::part(lens-searchbar-autocomplete-options-item-focused),
@@ -135,7 +143,7 @@ lens-search-bar-multiple::part(autocomplete-options-item-description) {
   font-size: var(--font-size-s);
   padding-top: var(--gap-xs);
   padding-right: var(--gap-m);
-  padding-left: var(--gap-xs);
+  /* padding-left: var(--gap-xs); */
 }
 lens-search-bar::part(autocomplete-options-item-description-focused),
 lens-search-bar-multiple::part(autocomplete-options-item-description-focused) {

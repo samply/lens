@@ -350,7 +350,7 @@
             {#if $inputOptions?.length > 0}
                 {#each $inputOptions as inputOption, i}
                     {#if $inputOptions.map( option => option.name).indexOf(inputOption.name) === i}
-                        <div part="autocomplete-options-item-name">
+                        <div part="autocomplete-options-category-name">
                             {@html getBoldedText(inputOption.name)}
                         </div>
                     {/if}
@@ -390,8 +390,6 @@
                         >
                             <div part="autocomplete-options-item-name">
                                 {@html getBoldedText(
-                                    inputOption.name +
-                                        " : " +
                                         inputOption.criterion.name
                                 )}
                             </div>
