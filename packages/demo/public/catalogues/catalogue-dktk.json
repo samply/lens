@@ -18621,54 +18621,39 @@
     {
         "key": "therapy_of_tumor",
         "name": "Therapie des Tumors",
-        "childCategories": [
+        "system": "",
+        "fieldType": "single-select",
+        "type": "EQUALS",
+        "criteria": [
             {
                 "key": "OP",
                 "name": "Operation",
-                "system": "",
-                "fieldType": "single-select",
-                "type": "EQUALS",
-                "criteria": []
+                "description": ""
             },
             {
                 "key": "ST",
                 "name": "Strahlentherapie",
-                "system": "",
-                "fieldType": "single-select",
-                "type": "EQUALS",
-                "criteria": []
+                "description": ""
             },
             {
                 "key": "CH",
                 "name": "Chemotherapie",
-                "system": "",
-                "fieldType": "single-select",
-                "type": "EQUALS",
-                "criteria": []
+                "description": ""
             },
             {
                 "key": "IM",
                 "name": "Immunotherapie",
-                "system": "",
-                "fieldType": "single-select",
-                "type": "EQUALS",
-                "criteria": []
+                "description": ""
             },
             {
                 "key": "HO",
                 "name": "Hormontherapie",
-                "system": "",
-                "fieldType": "single-select",
-                "type": "EQUALS",
-                "criteria": []
+                "description": ""
             },
             {
                 "key": "KM",
                 "name": "Knochentransplantation",
-                "system": "",
-                "fieldType": "single-select",
-                "type": "EQUALS",
-                "criteria": []
+                "description": ""
             }
         ]
     },
