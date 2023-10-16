@@ -168,7 +168,7 @@
       measures={[dktkPatientsMeasure, dktkDiagnosisMeasure, dktkSpecimenMeasure, dktkPatientsMeasure, dktkMedicationStatementsMeasure]}
     >
   </lens-search-bar>
-  <lens-info-button />
+  <lens-info-button iconUrl='../info-circle-svgrepo-com.svg' noQueryMessage="Leere Suchanfrage: Sucht nach allen Ergebnissen." />
   <lens-search-button
     title="Suchen"
     {measures}

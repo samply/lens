@@ -8,7 +8,8 @@
 <script lang="ts">
     import { getHumanReadableQuery } from "../../stores/negotiate";
 
-    export let title: string = "i";
+    export let noQueryMessage: string = "Search for all results";
+    export let iconUrl: string | null = null;
     $: query = "";
 
     /**
@@ -28,12 +29,14 @@
 </script>
 
 <button part="info-button" on:click={displayQueryInfo} on:focusout={onFocusOut}>
-    <div part="info-button-title">
-        {title}
-    </div>
+        {#if iconUrl}
+            <img part="info-button-icon" src={iconUrl} alt="info icon" />
+        {:else}
+            &#9432;
+        {/if}
     {#if tooltipOpen}
         <div part="info-button-dialogue">
-            {query.length > 0 ? query : "No query yet. Search for all"}
+            {query.length > 0 ? query : noQueryMessage}
         </div>
     {/if}
 </button>
