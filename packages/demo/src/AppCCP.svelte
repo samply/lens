@@ -198,6 +198,7 @@
           title="Patienten pro Standort"
           catalogueGroupCode="patients"
           perSite={true}
+          displayLegends={true}
           chartType="pie"
         />
       </div>
@@ -209,12 +210,13 @@
           title="Geschlecht"
           catalogueGroupCode="gender"
           chartType="pie"
+          displayLegends={true}
           clickToAddState={true}
         />
       </div>
       <div class="chart-wrapper chart-diagnosis">
         <lens-chart
-          title="Diagnosis"
+          title="Diagnose"
           catalogueGroupCode="diagnosis"
           chartType="bar"
           indexAxis='y'
@@ -234,6 +236,7 @@
           title="Vitalstatus"
           catalogueGroupCode="75186-7"
           chartType="pie"
+          displayLegends={true}
           clickToAddState={true}
         />
       </div>

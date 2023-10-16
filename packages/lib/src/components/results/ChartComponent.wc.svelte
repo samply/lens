@@ -90,6 +90,7 @@
             plugins: {
                 legend: {
                     display: displayLegends,
+                    position: "bottom",
                 },
             },
         },
