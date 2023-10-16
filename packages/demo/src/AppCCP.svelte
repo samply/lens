@@ -157,7 +157,7 @@
   </div>
   <h1>CCP Explorer</h1>
   <div class="logo logo-dkfz">
-    <img src="../logo-dkfz.svg" alt="Logo des DKTK" />
+    <img src="../Deutsches_Krebsforschungszentrum_Logo.svg" alt="Logo des DKTK" />
   </div>
 </header>
 <main>

@@ -91,6 +91,9 @@ header {
 .logo-dkfz {
   justify-self: end;
 }
+.logo-dkfz img {
+  height: 30px;
+}
 
 header h1 {
   text-align: center;
