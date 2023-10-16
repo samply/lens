@@ -6,6 +6,7 @@
             backgroundColor: { type: "Array" },
             backgroundHoverColor: { type: "Array" },
             perSite: { type: "Boolean" },
+            groupRange: { type: "Number" },
         },
     }}
 />
@@ -26,6 +27,7 @@
     import { catalogueKeyToResponseKeyMap } from "../../stores/mappings";
     import type { ResponseStore } from "../../types/backend";
     import type { Site } from "../../types/response";
+    import { parse } from "svelte/compiler";
 
     export let title: string = ""; // e.g. 'Gender Distribution'
     export let catalogueGroupCode: string = ""; // e.g. "gender"
@@ -39,6 +41,7 @@
     export let displayLegends: boolean = false;
     export let chartType: keyof ChartTypeRegistry = "pie";
     export let perSite: boolean = false;
+    export let groupRange: number | null = null;
 
     export let backgroundColor: string[] = [
         "#4dc9f6",
@@ -179,9 +182,33 @@
         }
 
         chartLabels.sort(customSort);
+        
+        /**
+         * remove labels and their corresponding data if the label is an empty string or null
+        */
+        chartLabels = chartLabels.filter((label) => label !== "" && label !== null);
+                
+
+        chart.data.datasets = getChartDataSets(responseStore, chartLabels);
+        
+        /**
+         * lets the user define a range for the labels when only single values are used eg. '60' -> '60 - 69'
+        */
+        if(groupRange !== null){
+            chartLabels = chartLabels.map((label) => 
+                {
+                    /**
+                     * check if label doesn't parse to a number
+                    */
+                    if(isNaN(parseInt(label)))
+                        return label;
+
+                    return `${parseInt(label)} - ${(parseInt(label) + groupRange)}`
+                }
+            );
+        }
 
         chart.data.labels = chartLabels;
-        chart.data.datasets = getChartDataSets(responseStore, chartLabels);
         chart.update();
     };
 

@@ -229,6 +229,7 @@
           catalogueGroupCode="age_at_diagnosis"
           chartType="bar"
           clickToAddState={true}
+          groupRange={10}
         />
       </div>
       <div class="chart-wrapper">
