@@ -138,12 +138,13 @@
                 />
             </label>
         </div>
-        <button
+        <!-- TODO: maybe needed later when multiple inputs are asked -->
+        <!-- <button
             part="number-input-delete-button"
             on:click={handleRemoveElement}
         >
             &minus;
-        </button>
+        </button> -->
         <QueryAddButtonComponent {queryItem} />
     </div>
 </div>
