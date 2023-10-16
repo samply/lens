@@ -76,7 +76,7 @@ button {
 
 header {
   background-color: var(--white);
-  padding: var(--gap-s);
+  padding: var(--gap-xs);
   display: grid;
   align-items: center;
   grid-template-columns: 1fr 1fr 1fr;
@@ -94,9 +94,10 @@ header {
 
 header h1 {
   text-align: center;
-  font-size: var(--font-size-xl);
-  font-weight: normal;
+  font-size: var(--font-size-xxl);
+  font-weight: lighter;
   color: var(--blue);
+  margin: 0;
 }
 
 main>div,

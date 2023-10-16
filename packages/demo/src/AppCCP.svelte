@@ -164,7 +164,7 @@
   <div class="search">
     <lens-search-bar
       treeData={mockCatalogueData}
-      noMatchesFoundMessage={"No matches found"}
+      noMatchesFoundMessage={"keine Ergebnisse gefunden"}
       measures={[dktkPatientsMeasure, dktkDiagnosisMeasure, dktkSpecimenMeasure, dktkPatientsMeasure, dktkMedicationStatementsMeasure]}
     >
   </lens-search-bar>
@@ -202,7 +202,7 @@
         />
       </div>
       <div class="chart-wrapper result-table">
-        <lens-result-table pageSize="10" title="Responding sites" />
+        <lens-result-table pageSize="10" />
       </div>
       <div class="chart-wrapper">
         <lens-chart
