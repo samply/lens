@@ -9,6 +9,7 @@ lens-info-button::part(info-button) {
 }
 
 lens-info-button::part(info-button-title) {
+    font-family: var(--font-family);
 }
 
 lens-info-button::part(info-button-dialogue) {

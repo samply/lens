@@ -179,6 +179,8 @@
   <div class="grid">
     <div class="catalogue">
       <lens-catalogue
+        toggleIconUrl='right-arrow-svgrepo-com.svg'
+        addIconUrl='long-right-arrow-svgrepo-com.svg'
         treeData={mockCatalogueData}
         texts={catalogueText}
         toggle={{ collapsable: false, open: catalogueopen }}

@@ -7,6 +7,7 @@
     import { v4 as uuidv4 } from "uuid";
     import { activeNumberInputs, openTreeNodes } from "../../stores/catalogue";
     import type { QueryItem } from "../../types/queryData";
+    import { iconStore } from "../../stores/icons";
 
     export let element: Category;
 
@@ -19,8 +20,8 @@
      * defines if the subcategorys are open, iterates over the whole tree
      */
     export let treeOpen: boolean = false;
-    
-    if(treeOpen){
+
+    if (treeOpen) {
         openTreeNodes.update((store: string[]): string[] => {
             store = [...store, element.key];
             return store;
@@ -35,44 +36,54 @@
     const toggleChildren = () => {
         openTreeNodes.update((store: string[]): string[] => {
             if (store.includes(element.key)) {
-                return store.filter((item: string): Boolean => item !== element.key);
+                return store.filter(
+                    (item: string): Boolean => item !== element.key
+                );
             } else {
                 return [...store, element.key];
             }
         });
     };
 
-
     /**
      * watches the number input store to update the number input components
      */
-    $: numberInput = $activeNumberInputs.find((item) => item.key === element.key)
-    
+    $: numberInput = $activeNumberInputs.find(
+        (item) => item.key === element.key
+    );
+
     /**
      * adds the number input to the store if it is not already in the store
      * @param store
      * @returns updated store
-    */
+     */
     activeNumberInputs.update((store: QueryItem[]): QueryItem[] => {
-        if(
-            'fieldType' in element &&
-            element.fieldType === 'number' &&
-            !store.find(item => item.key === element.key)
-        ){
-            return [...store, {
-                id: uuidv4(),
-                key: element.key,
-                name: element.name,
-                system: 'system' in element ? element.system : '',
-                type: 'type' in element ? element.type : '',
-                values: [{name: "0", value: {min: 0, max: 0}, queryBindId: uuidv4()}]
-            }]
+        if (
+            "fieldType" in element &&
+            element.fieldType === "number" &&
+            !store.find((item) => item.key === element.key)
+        ) {
+            return [
+                ...store,
+                {
+                    id: uuidv4(),
+                    key: element.key,
+                    name: element.name,
+                    system: "system" in element ? element.system : "",
+                    type: "type" in element ? element.type : "",
+                    values: [
+                        {
+                            name: "0",
+                            value: { min: 0, max: 0 },
+                            queryBindId: uuidv4(),
+                        },
+                    ],
+                },
+            ];
         }
-        return store        
-    })
-    
+        return store;
+    });
 
-   
     /**
      * adds a new number input component
      */
@@ -99,7 +110,23 @@
 
 <div part="data-tree-element">
     <button part="data-tree-element-name" on:click={toggleChildren}>
-        <span part="data-tree-element-toggle-icon {open ? 'data-tree-element-toggle-icon-open': ''}">&#8964;</span>
+        {#if $iconStore.get('toggleIconUrl')}
+            <img
+                part="data-tree-element-toggle-icon {open
+                    ? 'data-tree-element-toggle-icon-open'
+                    : ''}"
+                src={$iconStore.get('toggleIconUrl')}
+                alt="catalogue-open-close-icon"
+            />
+        {:else}
+            <span
+                part="data-tree-element-toggle-icon {open
+                    ? 'data-tree-element-toggle-icon-open'
+                    : ''}"
+            >
+                &#8964
+            </span>
+        {/if}
         {element.name}
     </button>
     {#if open}
@@ -108,7 +135,11 @@
                 <div
                     part={`data-tree-element-child-category data-tree-element-child-category-layer-${layer}`}
                 >
-                    <DataTreeElement layer={layer + 1} element={child} treeOpen={treeOpen}/>
+                    <DataTreeElement
+                        layer={layer + 1}
+                        element={child}
+                        {treeOpen}
+                    />
                 </div>
             {/each}
         {:else}
@@ -120,13 +151,11 @@
                 {:else if "fieldType" in element && element.fieldType === "number"}
                     {#each numberInput.values as numberInputValues (numberInputValues.queryBindId)}
                         <NumberInputComponent
-                            queryItem={
-                               {
-                                    ...numberInput,
-                                    values: [numberInputValues],
-                                } 
-                            } 
-                            />
+                            queryItem={{
+                                ...numberInput,
+                                values: [numberInputValues],
+                            }}
+                        />
                     {/each}
                     <!-- not needed for the moment. 
                         maybe turn on over config, if the needs of the projects differ in the future

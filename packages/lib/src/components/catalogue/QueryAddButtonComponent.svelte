@@ -4,6 +4,8 @@
         addItemToQuery,
     } from "../../stores/query";
     import type { QueryItem } from "../../types/queryData";
+    import {iconStore} from "../../stores/icons";
+    import { get } from "svelte/store";
 
     /**
      * index: index of the group in the query store
@@ -19,6 +21,13 @@
         addItemToQuery(queryItem, index);
     };
 
+
 </script>
 
-<button part="query-add-button" on:click={addItem}>&#8594;</button>
+<button part="query-add-button" on:click={addItem}>
+    {#if $iconStore.get('addIconUrl')}
+        <img part='query-add-button-icon' src={$iconStore.get('addIconUrl')} alt="add icon" />
+    {:else}
+        &#8594;
+    {/if}
+</button>

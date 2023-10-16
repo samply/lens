@@ -32,6 +32,9 @@ lens-search-button::part(lens-search-button-magnifying-glass) {
     line-height: 0;
 }
 
+lens-search-button::part(lens-search-button-title) {
+    font-family: var(--font-family);
+}
 
 /**
 * search button in multiple searchbar
