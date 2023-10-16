@@ -115,8 +115,9 @@
                 <input
                     part="number-input-formfield number-input-formfield-from{from >
                         to &&
-                        to !== null &&
-                        ' formfield-error'}"
+                        to !== null ?
+                        ' formfield-error': ''
+                        }"
                     type="number"
                     bind:value={from}
                     min="0"
@@ -130,20 +131,26 @@
                 <input
                     part="number-input-formfield number-input-formfield-from{from >
                         to &&
-                        to !== null &&
-                        ' formfield-error'}"
+                        to !== null ?
+                        ' formfield-error' : ''
+                        }"
                     type="number"
                     bind:value={to}
                     min="0"
                 />
             </label>
         </div>
-        <button
+        <!-- TODO: maybe needed later when multiple inputs are asked -->
+        <!-- <button
             part="number-input-delete-button"
             on:click={handleRemoveElement}
         >
             &minus;
-        </button>
+        </button> -->
         <QueryAddButtonComponent {queryItem} />
     </div>
 </div>
+
+<style>
+
+</style>

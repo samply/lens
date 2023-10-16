@@ -157,14 +157,14 @@
   </div>
   <h1>CCP Explorer</h1>
   <div class="logo logo-dkfz">
-    <img src="../logo-dkfz.svg" alt="Logo des DKFZ" />
+    <img src="../Deutsches_Krebsforschungszentrum_Logo.svg" alt="Logo des DKTK" />
   </div>
 </header>
 <main>
   <div class="search">
     <lens-search-bar
       treeData={mockCatalogueData}
-      noMatchesFoundMessage={"No matches found"}
+      noMatchesFoundMessage={"keine Ergebnisse gefunden"}
       measures={[dktkPatientsMeasure, dktkDiagnosisMeasure, dktkSpecimenMeasure, dktkPatientsMeasure, dktkMedicationStatementsMeasure]}
     >
   </lens-search-bar>
@@ -179,6 +179,8 @@
   <div class="grid">
     <div class="catalogue">
       <lens-catalogue
+        toggleIconUrl='right-arrow-svgrepo-com.svg'
+        addIconUrl='long-right-arrow-svgrepo-com.svg'
         treeData={mockCatalogueData}
         texts={catalogueText}
         toggle={{ collapsable: false, open: catalogueopen }}
@@ -196,23 +198,25 @@
           title="Patienten pro Standort"
           catalogueGroupCode="patients"
           perSite={true}
+          displayLegends={true}
           chartType="pie"
         />
       </div>
       <div class="chart-wrapper result-table">
-        <lens-result-table pageSize="10" title="Responding sites" />
+        <lens-result-table pageSize="10" />
       </div>
       <div class="chart-wrapper">
         <lens-chart
           title="Geschlecht"
           catalogueGroupCode="gender"
           chartType="pie"
+          displayLegends={true}
           clickToAddState={true}
         />
       </div>
       <div class="chart-wrapper chart-diagnosis">
         <lens-chart
-          title="Diagnosis"
+          title="Diagnose"
           catalogueGroupCode="diagnosis"
           chartType="bar"
           indexAxis='y'
@@ -232,6 +236,7 @@
           title="Vitalstatus"
           catalogueGroupCode="75186-7"
           chartType="pie"
+          displayLegends={true}
           clickToAddState={true}
         />
       </div>

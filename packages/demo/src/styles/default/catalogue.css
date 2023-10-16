@@ -31,6 +31,7 @@ lens-catalogue::part(data-tree-element-name) {
   border: none;
   background-color: unset;
   cursor: pointer;
+  font-family: var(--font-family);
 }
 
 lens-catalogue::part(data-tree-element-name) {
@@ -47,8 +48,8 @@ lens-catalogue::part(data-tree-element-name) {
 
 lens-catalogue::part(data-tree-element-toggle-icon) {
   position: absolute;
-  left: -6px;
-  top: -3px;
+  left: -15px;
+  top: -8px;
   font-size: 22px;
   font-weight: lighter;
   transform: rotate(-90deg);
@@ -59,12 +60,16 @@ lens-catalogue::part(data-tree-element-toggle-icon-open) {
   transform: rotate(0deg);
 }
 
+lens-catalogue::part(data-tree-element-child-category) {
+  padding: var(--gap-xs) var(--gap-s) 0;
+  border-left: solid 1px var(--lightest-gray);
+}
 
-lens-catalogue::part(data-tree-element-child-category),
 lens-catalogue::part(data-tree-element-last-child-options) {
-  padding-left: 20px;
-  margin-bottom: 20px;
-  border-left: solid 1px var(--gray);
+  border-left: solid 1px var(--lightest-gray);
+  padding-left: var(--gap-m);
+  padding-top: var(--gap-xs);
+  padding-bottom: var(--gap-xs);
 }
 
 
@@ -108,11 +113,15 @@ lens-catalogue::part(query-add-button) {
   color: var(--white);
   border: none;
   border-radius: var(--border-radius-small);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-m);
   cursor: pointer;
   width: 45px;
   height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
 
 
 lens-catalogue::part(criterion-section-values) {

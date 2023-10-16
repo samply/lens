@@ -17,9 +17,22 @@
     import type { CatalogueText } from "../../types/texts";
     import type { Category } from "../../types/treeData";
     import DataTreeElement from "./DataTreeElement.svelte";
+    import { iconStore } from "../../stores/icons";
 
     export let treeData: Category[] = [];
     export let texts: CatalogueText = {};
+    export let addIconUrl: string | null = null;
+    export let toggleIconUrl: string | null = null;
+
+    iconStore.update((store: Map<string,string>) => {
+        if (addIconUrl) {
+            store.set('addIconUrl', addIconUrl);
+        }
+        if (toggleIconUrl) {
+            store.set('toggleIconUrl', toggleIconUrl);
+        }
+        return store;
+    })
 
       /**
      * Initialize the catalogue store with the given tree data

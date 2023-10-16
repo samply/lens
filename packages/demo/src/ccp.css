@@ -7,8 +7,13 @@
 @import url('./styles/default/negotiate-button.css');
 @import url('./styles/default/info-button.css');
 
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  src: url('../public/fonts/Open_Sans/OpenSans-VariableFont_wdth\,wght.ttf') format('truetype');
+}
+
 :root {
-  font-family: Open_Sans, sans-serif;
   --white: #ffffff;
   --ghost-white: #f8f8ff;
   --black: #000000;
@@ -46,6 +51,8 @@
   --font-size-l: 18px;
   --font-size-xl: 24px;
   --font-size-xxl: 32px;
+
+  --font-family: 'Open Sans', sans-serif;
 }
 
 /**
@@ -59,11 +66,16 @@
 body {
   margin: 0px;
   background-color: var(--ghost-white);
+  font-family: var(--font-family);
+}
+
+button {
+  font-family: inherit;
 }
 
 header {
   background-color: var(--white);
-  padding: var(--gap-s);
+  padding: var(--gap-xs);
   display: grid;
   align-items: center;
   grid-template-columns: 1fr 1fr 1fr;
@@ -78,12 +90,16 @@ header {
 .logo-dkfz {
   justify-self: end;
 }
+.logo-dkfz img {
+  height: 30px;
+}
 
 header h1 {
   text-align: center;
-  font-size: var(--font-size-xl);
-  font-weight: normal;
+  font-size: var(--font-size-xxl);
+  font-weight: lighter;
   color: var(--blue);
+  margin: 0;
 }
 
 main>div,
@@ -248,4 +264,45 @@ lens-search-button::part(lens-search-button) {
   width: 100%;
   max-height: 1000px;
   height: 940px;
+}
+
+lens-catalogue::part(number-input-formfield) {
+  width: 60px;
+  margin-left: var(--gap-xs);
+  border: solid 1px var(--dark-gray);
+  border-radius: 0;
+  text-align: center;
+  font-size: var(--font-size-s);
+  -webkit-appearance: textfield;
+  -moz-appearance:    textfield;
+  appearance:         textfield !important;
+ 
+}
+
+lens-catalogue::part(number-input-formfield):focus {
+  border-color: var(--light-blue);
+  outline: none;
+}
+
+lens-catalogue::part(number-input-formfield)::-webkit-outer-spin-button,
+lens-catalogue::part(number-input-formfield)::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+lens-catalogue::part(data-tree-element-toggle-icon) {
+  width: 24px;
+  transform: rotate(0deg);
+  left: -15px;
+  top: 0px;
+  filter: invert(29%) sepia(17%) saturate(327%) hue-rotate(163deg) brightness(92%) contrast(85%);
+}
+
+lens-catalogue::part(data-tree-element-toggle-icon-open) {
+  transform: rotate(90deg);
+}
+
+lens-catalogue::part(query-add-button-icon) {
+  filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(213deg) brightness(100%) contrast(100%);
+  width: 21px;
 }

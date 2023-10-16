@@ -12,6 +12,7 @@ lens-result-summary::part(lens-negotiate-button) {
     display: flex;
     gap: var(--gap-xs);
     align-items: center;
+    font-family: var(--font-family);
 }
 
 lens-result-summary::part(lens-negotiate-button-active) {
