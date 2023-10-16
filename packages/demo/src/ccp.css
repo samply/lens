@@ -306,3 +306,21 @@ lens-catalogue::part(query-add-button-icon) {
   filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(213deg) brightness(100%) contrast(100%);
   width: 21px;
 }
+
+lens-search-button::part(lens-search-button) {
+  height: 100%;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+lens-info-button::part(info-button) {
+  height: 100%;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+lens-info-button::part(info-button-icon) {
+  width: 21px;
+}
