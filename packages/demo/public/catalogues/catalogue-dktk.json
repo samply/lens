@@ -18026,471 +18026,477 @@
                 ]
             },
             {
-                "key": "21905-5",
-                "name": "TNM-T",
-                "system": "",
-                "fieldType": "single-select",
-                "type": "EQUALS",
-                "criteria": [
-                    {
-                        "key": "0",
-                        "name": "0",
-                        "description": "0"
-                    },
-                    {
-                        "key": "1",
-                        "name": "1",
-                        "description": "1"
-                    },
-                    {
-                        "key": "1a",
-                        "name": "1a",
-                        "description": "1a"
-                    },
-                    {
-                        "key": "1a1",
-                        "name": "1a1",
-                        "description": "1a1"
-                    },
-                    {
-                        "key": "1a2",
-                        "name": "1a2",
-                        "description": "1a2"
-                    },
-                    {
-                        "key": "1b",
-                        "name": "1b",
-                        "description": "1b"
-                    },
-                    {
-                        "key": "1b1",
-                        "name": "1b1",
-                        "description": "1b1"
-                    },
-                    {
-                        "key": "1b2",
-                        "name": "1b2",
-                        "description": "1b2"
-                    },
-                    {
-                        "key": "1c",
-                        "name": "1c",
-                        "description": "1c"
-                    },
-                    {
-                        "key": "1c1",
-                        "name": "1c1",
-                        "description": "1c1"
-                    },
-                    {
-                        "key": "1c2",
-                        "name": "1c2",
-                        "description": "1c2"
-                    },
-                    {
-                        "key": "1c3",
-                        "name": "1c3",
-                        "description": "1c3"
-                    },
-                    {
-                        "key": "1d",
-                        "name": "1d",
-                        "description": "1d"
-                    },
-                    {
-                        "key": "1mi",
-                        "name": "1mi",
-                        "description": "1mi"
-                    },
-                    {
-                        "key": "2",
-                        "name": "2",
-                        "description": "2"
-                    },
-                    {
-                        "key": "2a",
-                        "name": "2a",
-                        "description": "2a"
-                    },
-                    {
-                        "key": "2a1",
-                        "name": "2a1",
-                        "description": "2a1"
-                    },
-                    {
-                        "key": "2a2",
-                        "name": "2a2",
-                        "description": "2a2"
-                    },
-                    {
-                        "key": "2b",
-                        "name": "2b",
-                        "description": "2b"
-                    },
-                    {
-                        "key": "2c",
-                        "name": "2c",
-                        "description": "2c"
-                    },
-                    {
-                        "key": "2d",
-                        "name": "2d",
-                        "description": "2d"
-                    },
-                    {
-                        "key": "3",
-                        "name": "3",
-                        "description": "3"
-                    },
-                    {
-                        "key": "3a",
-                        "name": "3a",
-                        "description": "3a"
-                    },
-                    {
-                        "key": "3b",
-                        "name": "3b",
-                        "description": "3b"
-                    },
-                    {
-                        "key": "3c",
-                        "name": "3c",
-                        "description": "3c"
-                    },
-                    {
-                        "key": "3d",
-                        "name": "3d",
-                        "description": "3d"
-                    },
-                    {
-                        "key": "4",
-                        "name": "4",
-                        "description": "4"
-                    },
-                    {
-                        "key": "4a",
-                        "name": "4a",
-                        "description": "4a"
-                    },
-                    {
-                        "key": "4b",
-                        "name": "4b",
-                        "description": "4b"
-                    },
-                    {
-                        "key": "4c",
-                        "name": "4c",
-                        "description": "4c"
-                    },
-                    {
-                        "key": "4d",
-                        "name": "4d",
-                        "description": "4d"
-                    },
-                    {
-                        "key": "4e",
-                        "name": "4e",
-                        "description": "4e"
-                    },
-                    {
-                        "key": "a",
-                        "name": "a",
-                        "description": "a"
-                    },
-                    {
-                        "key": "is",
-                        "name": "is",
-                        "description": "is"
-                    },
-                    {
-                        "key": "is(DCIS)",
-                        "name": "is(DCIS)",
-                        "description": "is(DCIS)"
-                    },
-                    {
-                        "key": "is(LCIS)",
-                        "name": "is(LCIS)",
-                        "description": "is(LCIS)"
-                    },
-                    {
-                        "key": "is(Paget)",
-                        "name": "is(Paget)",
-                        "description": "is(Paget)"
-                    },
-                    {
-                        "key": "is(pd)",
-                        "name": "is(pd)",
-                        "description": "is(pd)"
-                    },
-                    {
-                        "key": "is(pu)",
-                        "name": "is(pu)",
-                        "description": "is(pu)"
-                    },
-                    {
-                        "key": "X",
-                        "name": "X",
-                        "description": "X"
-                    }
-                ]
-            },
-            {
-                "key": "21906-3",
-                "name": "TNM-N",
-                "system": "",
-                "fieldType": "single-select",
-                "type": "EQUALS",
-                "criteria": [
-                    {
-                        "key": "0",
-                        "name": "0",
-                        "description": "0"
-                    },
-                    {
-                        "key": "0(i+)",
-                        "name": "0(i+)",
-                        "description": "0(i+)"
-                    },
-                    {
-                        "key": "0(i-)",
-                        "name": "0(i-)",
-                        "description": "0(i-)"
-                    },
-                    {
-                        "key": "0(mol+)",
-                        "name": "0(mol+)",
-                        "description": "0(mol+)"
-                    },
-                    {
-                        "key": "0(mol-)",
-                        "name": "0(mol-)",
-                        "description": "0(mol-)"
-                    },
-                    {
-                        "key": "1",
-                        "name": "1",
-                        "description": "1"
-                    },
-                    {
-                        "key": "1a",
-                        "name": "1a",
-                        "description": "1a"
-                    },
-                    {
-                        "key": "1b",
-                        "name": "1b",
-                        "description": "1b"
-                    },
-                    {
-                        "key": "1c",
-                        "name": "1c",
-                        "description": "1c"
-                    },
-                    {
-                        "key": "1mi",
-                        "name": "1mi",
-                        "description": "1mi"
-                    },
-                    {
-                        "key": "2",
-                        "name": "2",
-                        "description": "2"
-                    },
-                    {
-                        "key": "2a",
-                        "name": "2a",
-                        "description": "2a"
-                    },
-                    {
-                        "key": "2b",
-                        "name": "2b",
-                        "description": "2b"
-                    },
-                    {
-                        "key": "2c",
-                        "name": "2c",
-                        "description": "2c"
-                    },
-                    {
-                        "key": "3",
-                        "name": "3",
-                        "description": "3"
-                    },
-                    {
-                        "key": "3a",
-                        "name": "3a",
-                        "description": "3a"
-                    },
-                    {
-                        "key": "3b",
-                        "name": "3b",
-                        "description": "3b"
-                    },
-                    {
-                        "key": "3c",
-                        "name": "3c",
-                        "description": "3c"
-                    },
-                    {
-                        "key": "X",
-                        "name": "X",
-                        "description": "X"
-                    }
-                ]
-            },
-            {
-                "key": "21907-1",
-                "name": "TNM-M",
-                "system": "",
-                "fieldType": "single-select",
-                "type": "EQUALS",
-                "criteria": [
-                    {
-                        "key": "0",
-                        "name": "0",
-                        "description": "0"
-                    },
-                    {
-                        "key": "1",
-                        "name": "1",
-                        "description": "1"
-                    },
-                    {
-                        "key": "1a",
-                        "name": "1a",
-                        "description": "1a"
-                    },
-                    {
-                        "key": "1b",
-                        "name": "1b",
-                        "description": "1b"
-                    },
-                    {
-                        "key": "1c",
-                        "name": "1c",
-                        "description": "1c"
-                    },
-                    {
-                        "key": "1d",
-                        "name": "1d",
-                        "description": "1d"
-                    },
-                    {
-                        "key": "1e",
-                        "name": "1e",
-                        "description": "1e"
-                    },
-                    {
-                        "key": "0(i-)",
-                        "name": "0(i-)",
-                        "description": "0(i-)"
-                    },
-                    {
-                        "key": "0(i+)",
-                        "name": "0(i+)",
-                        "description": "0(i+)"
-                    },
-                    {
-                        "key": "0(mol-)",
-                        "name": "0(mol-)",
-                        "description": "0(mol-)"
-                    },
-                    {
-                        "key": "0(mol+)",
-                        "name": "0(mol+)",
-                        "description": "0(mol+)"
-                    }
-                ]
-            },
-            {
-                "key": "42030-7",
-                "name": "TNM-m-Symbol",
-                "system": "",
-                "fieldType": "single-select",
-                "type": "EQUALS",
-                "criteria": [
-                    {
-                        "key": "m",
-                        "name": "Kennzeichnet Vorhandensein multipler Primärtumoren in einem Bezirk",
-                        "description": "Kennzeichnet Vorhandensein multipler Primärtumoren in einem Bezirk"
-                    },
-                    {
-                        "key": "2",
-                        "name": "(2) simultaner Tumoren",
-                        "description": "(2) simultaner Tumoren"
-                    },
-                    {
-                        "key": "3",
-                        "name": "(3) simultaner Tumoren",
-                        "description": "(3) simultaner Tumoren"
-                    },
-                    {
-                        "key": "4",
-                        "name": "(4) simultaner Tumoren",
-                        "description": "(4) simultaner Tumoren"
-                    },
-                    {
-                        "key": "5",
-                        "name": "(5) simultaner Tumoren",
-                        "description": "(5) simultaner Tumoren"
-                    },
-                    {
-                        "key": "6",
-                        "name": "(6) simultaner Tumoren",
-                        "description": "(6) simultaner Tumoren"
-                    },
-                    {
-                        "key": "7",
-                        "name": "(7) simultaner Tumoren",
-                        "description": "(7) simultaner Tumoren"
-                    },
-                    {
-                        "key": "8",
-                        "name": "(8) simultaner Tumoren",
-                        "description": "(8) simultaner Tumoren"
-                    },
-                    {
-                        "key": "9",
-                        "name": "(9) simultaner Tumoren",
-                        "description": "(9) simultaner Tumoren"
-                    }
-                ]
-            },
-            {
-                "key": "59479-6",
-                "name": "TNM-y-Symbol",
-                "system": "",
-                "fieldType": "single-select",
-                "type": "EQUALS",
-                "criteria": [
-                    {
-                        "key": "y",
-                        "name": "Klassifikation erfolgte während oder nach initialer multimodaler Therapie",
-                        "description": "Klassifikation erfolgte während oder nach initialer multimodaler Therapie"
-                    },
-                    {
-                        "key": "9",
-                        "name": "native Klassifikation",
-                        "description": "native Klassifikation"
-                    }
-                ]
-            },
-            {
-                "key": "21983-2",
-                "name": "TNM-r-Symbol",
-                "system": "",
-                "fieldType": "single-select",
-                "type": "EQUALS",
-                "criteria": [
-                    {
-                        "key": "r",
-                        "name": "Klassifikation erfolgte zur Beurteilung eines Rezidivs",
-                        "description": "Klassifikation erfolgte zur Beurteilung eines Rezidivs"
-                    },
-                    {
-                        "key": "9",
-                        "name": "native Klassifikation vor Eintreten eines Rezidivs",
-                        "description": "native Klassifikation vor Eintreten eines Rezidivs"
+                "key": "tnm",
+                "name": "TNM(c)",
+                "childCategories": [
+                    {
+                        "key": "21905-5",
+                        "name": "TNM-T",
+                        "system": "",
+                        "fieldType": "single-select",
+                        "type": "EQUALS",
+                        "criteria": [
+                            {
+                                "key": "0",
+                                "name": "0",
+                                "description": "0"
+                            },
+                            {
+                                "key": "1",
+                                "name": "1",
+                                "description": "1"
+                            },
+                            {
+                                "key": "1a",
+                                "name": "1a",
+                                "description": "1a"
+                            },
+                            {
+                                "key": "1a1",
+                                "name": "1a1",
+                                "description": "1a1"
+                            },
+                            {
+                                "key": "1a2",
+                                "name": "1a2",
+                                "description": "1a2"
+                            },
+                            {
+                                "key": "1b",
+                                "name": "1b",
+                                "description": "1b"
+                            },
+                            {
+                                "key": "1b1",
+                                "name": "1b1",
+                                "description": "1b1"
+                            },
+                            {
+                                "key": "1b2",
+                                "name": "1b2",
+                                "description": "1b2"
+                            },
+                            {
+                                "key": "1c",
+                                "name": "1c",
+                                "description": "1c"
+                            },
+                            {
+                                "key": "1c1",
+                                "name": "1c1",
+                                "description": "1c1"
+                            },
+                            {
+                                "key": "1c2",
+                                "name": "1c2",
+                                "description": "1c2"
+                            },
+                            {
+                                "key": "1c3",
+                                "name": "1c3",
+                                "description": "1c3"
+                            },
+                            {
+                                "key": "1d",
+                                "name": "1d",
+                                "description": "1d"
+                            },
+                            {
+                                "key": "1mi",
+                                "name": "1mi",
+                                "description": "1mi"
+                            },
+                            {
+                                "key": "2",
+                                "name": "2",
+                                "description": "2"
+                            },
+                            {
+                                "key": "2a",
+                                "name": "2a",
+                                "description": "2a"
+                            },
+                            {
+                                "key": "2a1",
+                                "name": "2a1",
+                                "description": "2a1"
+                            },
+                            {
+                                "key": "2a2",
+                                "name": "2a2",
+                                "description": "2a2"
+                            },
+                            {
+                                "key": "2b",
+                                "name": "2b",
+                                "description": "2b"
+                            },
+                            {
+                                "key": "2c",
+                                "name": "2c",
+                                "description": "2c"
+                            },
+                            {
+                                "key": "2d",
+                                "name": "2d",
+                                "description": "2d"
+                            },
+                            {
+                                "key": "3",
+                                "name": "3",
+                                "description": "3"
+                            },
+                            {
+                                "key": "3a",
+                                "name": "3a",
+                                "description": "3a"
+                            },
+                            {
+                                "key": "3b",
+                                "name": "3b",
+                                "description": "3b"
+                            },
+                            {
+                                "key": "3c",
+                                "name": "3c",
+                                "description": "3c"
+                            },
+                            {
+                                "key": "3d",
+                                "name": "3d",
+                                "description": "3d"
+                            },
+                            {
+                                "key": "4",
+                                "name": "4",
+                                "description": "4"
+                            },
+                            {
+                                "key": "4a",
+                                "name": "4a",
+                                "description": "4a"
+                            },
+                            {
+                                "key": "4b",
+                                "name": "4b",
+                                "description": "4b"
+                            },
+                            {
+                                "key": "4c",
+                                "name": "4c",
+                                "description": "4c"
+                            },
+                            {
+                                "key": "4d",
+                                "name": "4d",
+                                "description": "4d"
+                            },
+                            {
+                                "key": "4e",
+                                "name": "4e",
+                                "description": "4e"
+                            },
+                            {
+                                "key": "a",
+                                "name": "a",
+                                "description": "a"
+                            },
+                            {
+                                "key": "is",
+                                "name": "is",
+                                "description": "is"
+                            },
+                            {
+                                "key": "is(DCIS)",
+                                "name": "is(DCIS)",
+                                "description": "is(DCIS)"
+                            },
+                            {
+                                "key": "is(LCIS)",
+                                "name": "is(LCIS)",
+                                "description": "is(LCIS)"
+                            },
+                            {
+                                "key": "is(Paget)",
+                                "name": "is(Paget)",
+                                "description": "is(Paget)"
+                            },
+                            {
+                                "key": "is(pd)",
+                                "name": "is(pd)",
+                                "description": "is(pd)"
+                            },
+                            {
+                                "key": "is(pu)",
+                                "name": "is(pu)",
+                                "description": "is(pu)"
+                            },
+                            {
+                                "key": "X",
+                                "name": "X",
+                                "description": "X"
+                            }
+                        ]
+                    },
+                    {
+                        "key": "21906-3",
+                        "name": "TNM-N",
+                        "system": "",
+                        "fieldType": "single-select",
+                        "type": "EQUALS",
+                        "criteria": [
+                            {
+                                "key": "0",
+                                "name": "0",
+                                "description": "0"
+                            },
+                            {
+                                "key": "0(i+)",
+                                "name": "0(i+)",
+                                "description": "0(i+)"
+                            },
+                            {
+                                "key": "0(i-)",
+                                "name": "0(i-)",
+                                "description": "0(i-)"
+                            },
+                            {
+                                "key": "0(mol+)",
+                                "name": "0(mol+)",
+                                "description": "0(mol+)"
+                            },
+                            {
+                                "key": "0(mol-)",
+                                "name": "0(mol-)",
+                                "description": "0(mol-)"
+                            },
+                            {
+                                "key": "1",
+                                "name": "1",
+                                "description": "1"
+                            },
+                            {
+                                "key": "1a",
+                                "name": "1a",
+                                "description": "1a"
+                            },
+                            {
+                                "key": "1b",
+                                "name": "1b",
+                                "description": "1b"
+                            },
+                            {
+                                "key": "1c",
+                                "name": "1c",
+                                "description": "1c"
+                            },
+                            {
+                                "key": "1mi",
+                                "name": "1mi",
+                                "description": "1mi"
+                            },
+                            {
+                                "key": "2",
+                                "name": "2",
+                                "description": "2"
+                            },
+                            {
+                                "key": "2a",
+                                "name": "2a",
+                                "description": "2a"
+                            },
+                            {
+                                "key": "2b",
+                                "name": "2b",
+                                "description": "2b"
+                            },
+                            {
+                                "key": "2c",
+                                "name": "2c",
+                                "description": "2c"
+                            },
+                            {
+                                "key": "3",
+                                "name": "3",
+                                "description": "3"
+                            },
+                            {
+                                "key": "3a",
+                                "name": "3a",
+                                "description": "3a"
+                            },
+                            {
+                                "key": "3b",
+                                "name": "3b",
+                                "description": "3b"
+                            },
+                            {
+                                "key": "3c",
+                                "name": "3c",
+                                "description": "3c"
+                            },
+                            {
+                                "key": "X",
+                                "name": "X",
+                                "description": "X"
+                            }
+                        ]
+                    },
+                    {
+                        "key": "21907-1",
+                        "name": "TNM-M",
+                        "system": "",
+                        "fieldType": "single-select",
+                        "type": "EQUALS",
+                        "criteria": [
+                            {
+                                "key": "0",
+                                "name": "0",
+                                "description": "0"
+                            },
+                            {
+                                "key": "1",
+                                "name": "1",
+                                "description": "1"
+                            },
+                            {
+                                "key": "1a",
+                                "name": "1a",
+                                "description": "1a"
+                            },
+                            {
+                                "key": "1b",
+                                "name": "1b",
+                                "description": "1b"
+                            },
+                            {
+                                "key": "1c",
+                                "name": "1c",
+                                "description": "1c"
+                            },
+                            {
+                                "key": "1d",
+                                "name": "1d",
+                                "description": "1d"
+                            },
+                            {
+                                "key": "1e",
+                                "name": "1e",
+                                "description": "1e"
+                            },
+                            {
+                                "key": "0(i-)",
+                                "name": "0(i-)",
+                                "description": "0(i-)"
+                            },
+                            {
+                                "key": "0(i+)",
+                                "name": "0(i+)",
+                                "description": "0(i+)"
+                            },
+                            {
+                                "key": "0(mol-)",
+                                "name": "0(mol-)",
+                                "description": "0(mol-)"
+                            },
+                            {
+                                "key": "0(mol+)",
+                                "name": "0(mol+)",
+                                "description": "0(mol+)"
+                            }
+                        ]
+                    },
+                    {
+                        "key": "42030-7",
+                        "name": "TNM-m-Symbol",
+                        "system": "",
+                        "fieldType": "single-select",
+                        "type": "EQUALS",
+                        "criteria": [
+                            {
+                                "key": "m",
+                                "name": "Kennzeichnet Vorhandensein multipler Primärtumoren in einem Bezirk",
+                                "description": "Kennzeichnet Vorhandensein multipler Primärtumoren in einem Bezirk"
+                            },
+                            {
+                                "key": "2",
+                                "name": "(2) simultaner Tumoren",
+                                "description": "(2) simultaner Tumoren"
+                            },
+                            {
+                                "key": "3",
+                                "name": "(3) simultaner Tumoren",
+                                "description": "(3) simultaner Tumoren"
+                            },
+                            {
+                                "key": "4",
+                                "name": "(4) simultaner Tumoren",
+                                "description": "(4) simultaner Tumoren"
+                            },
+                            {
+                                "key": "5",
+                                "name": "(5) simultaner Tumoren",
+                                "description": "(5) simultaner Tumoren"
+                            },
+                            {
+                                "key": "6",
+                                "name": "(6) simultaner Tumoren",
+                                "description": "(6) simultaner Tumoren"
+                            },
+                            {
+                                "key": "7",
+                                "name": "(7) simultaner Tumoren",
+                                "description": "(7) simultaner Tumoren"
+                            },
+                            {
+                                "key": "8",
+                                "name": "(8) simultaner Tumoren",
+                                "description": "(8) simultaner Tumoren"
+                            },
+                            {
+                                "key": "9",
+                                "name": "(9) simultaner Tumoren",
+                                "description": "(9) simultaner Tumoren"
+                            }
+                        ]
+                    },
+                    {
+                        "key": "59479-6",
+                        "name": "TNM-y-Symbol",
+                        "system": "",
+                        "fieldType": "single-select",
+                        "type": "EQUALS",
+                        "criteria": [
+                            {
+                                "key": "y",
+                                "name": "Klassifikation erfolgte während oder nach initialer multimodaler Therapie",
+                                "description": "Klassifikation erfolgte während oder nach initialer multimodaler Therapie"
+                            },
+                            {
+                                "key": "9",
+                                "name": "native Klassifikation",
+                                "description": "native Klassifikation"
+                            }
+                        ]
+                    },
+                    {
+                        "key": "21983-2",
+                        "name": "TNM-r-Symbol",
+                        "system": "",
+                        "fieldType": "single-select",
+                        "type": "EQUALS",
+                        "criteria": [
+                            {
+                                "key": "r",
+                                "name": "Klassifikation erfolgte zur Beurteilung eines Rezidivs",
+                                "description": "Klassifikation erfolgte zur Beurteilung eines Rezidivs"
+                            },
+                            {
+                                "key": "9",
+                                "name": "native Klassifikation vor Eintreten eines Rezidivs",
+                                "description": "native Klassifikation vor Eintreten eines Rezidivs"
+                            }
+                        ]
                     }
                 ]
             },
