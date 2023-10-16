@@ -294,7 +294,7 @@ lens-catalogue::part(data-tree-element-toggle-icon) {
   width: 24px;
   transform: rotate(0deg);
   left: -15px;
-  top: -4px;
+  top: 0px;
   filter: invert(29%) sepia(17%) saturate(327%) hue-rotate(163deg) brightness(92%) contrast(85%);
 }
 
