@@ -93,7 +93,13 @@ const resolveOperation = (operation: AstElement): string => {
 
 const getSingleton = (criterion: AstBottomLayerValue): string => {
   let expression: string = "";
-  console.log(criterion)
+  console.log(criterion);
+
+  //TODO: Workaround for using the value of "Therapy of Tumor" as key. Need an additional field in catalogue
+  if (criterion.key === "therapy_of_tumor") {
+    criterion.key = criterion.value as string;
+  }
+
   const myCriterion = criterionMap.get(criterion.key)
 
   if (myCriterion) {
