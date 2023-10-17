@@ -121,9 +121,59 @@
     catalogueKeyToResponseKeyMap: catalogueKeyToResponseKeyMap,
   };
 
- 
-  
-    
+  const genderHeaders: Map<string, string> = new Map<string, string>()
+    .set('male', 'männlich')
+    .set('female', 'weiblich')
+    .set('other', 'divers, intersexuell')
+    .set('unknown', 'unbekannt');
+
+  const vitalStateHeaders: Map<string, string> = new Map<string, string>()
+    .set('lebend', 'alive')
+    .set('verstorben', 'deceased')
+    .set('unbekannt', 'unknown');
+
+  const therapyHeaders: Map<string, string> = new Map<string, string>()
+    .set('medicationStatements', 'Sys. T');
+
+  const therapyTooltips: Map<string, string> = new Map<string, string>()
+    .set('OP', 'Operationen')
+    .set('ST', 'Strahlentherapien')
+    .set('medicationStatements', 'Systemische Therapien');
+
+  const systemicTherapyTooltips: Map<string, string> = new Map<string, string>()
+    .set('CH', 'Chemotherapie')
+    .set('HO', 'Hormontherapie')
+    .set('IM', 'Immun- und Antikörpertherapie')
+    .set('KM', 'Knochenmarkstransplantation')
+    .set('WS', 'Wait and see')
+    .set('AS', 'Active Surveillance')
+    .set('ZS', 'Zielgerichtete Substanzen')
+    .set('SO', 'Sonstiges')
+    .set('ST', 'Strahlentherapie')
+    .set('OP', 'Operation')
+
+  const specimenHeaders: Map<string, string> = new Map<string, string>()
+    .set('whole-blood','Whole blood')
+    .set('bone-marrow','Bone marrow')
+    .set('buffy-coat','Buffy-Coat')
+    .set('dried-whole-blood','Dried whole blood')
+    .set('peripheral-blood-cells-vital','Peripheral blood mononuclear cells (PBMCs, viable)')
+    .set('blood-plasma','Plasma')
+    .set('blood-serum','Serum')
+    .set('ascites','Ascites')
+    .set('csf-liquor','CSF/Liquor')
+    .set('saliva','Saliva')
+    .set('stool-faeces','Stool/Faeces')
+    .set('urine','Urine')
+    .set('swab','Swab')
+    .set('liquid-other','Other liquid biosample/storage')
+    .set('tissue-ffpe','Tissue FFPE')
+    .set('tissue-frozen','Tissue frozen')
+    .set('tissue-other','Other tissue storage')
+    .set('dna','DNA')
+    .set('rna','RNA')
+    .set('derivative-other','Other derivative')
+
 </script>
 
 <header>
@@ -187,6 +237,7 @@
           chartType="pie"
           displayLegends={true}
           clickToAddState={true}
+          headers={genderHeaders}
         />
       </div>
       <div class="chart-wrapper chart-diagnosis">
@@ -199,7 +250,8 @@
           groupingDivider='.'
           groupingLabel='.%'
           filterRegex='^[CD].*'
-
+          xAxisTitle="Anzahl der Diagnosen"
+          yAxisTitle="ICD-10-Codes"
         />
       </div>
       <div class="chart-wrapper chart-age-distribution">
@@ -209,6 +261,8 @@
           chartType="bar"
           clickToAddState={true}
           groupRange={10}
+          xAxisTitle="Alter"
+          yAxisTitle="Anzahl der Primärdiagnosen"
         />
       </div>
       <div class="chart-wrapper">
@@ -218,6 +272,7 @@
           chartType="pie"
           displayLegends={true}
           clickToAddState={true}
+          headers={vitalStateHeaders}
         />
       </div>
       <div class="chart-wrapper">
@@ -226,6 +281,9 @@
           catalogueGroupCode="therapy_of_tumor"
           chartType="bar"
           clickToAddState={true}
+          headers={therapyHeaders}
+          tooltips={therapyTooltips}
+          yAxisTitle="Anzahl der Therapien"
         />
       </div>
       <div class="chart-wrapper">
@@ -234,6 +292,8 @@
           catalogueGroupCode="medicationStatements"
           chartType="bar"
           clickToAddState={true}
+          tooltips={systemicTherapyTooltips}
+          yAxisTitle="Anzahl der Therapien"
         />
       </div>
       <div class="chart-wrapper">
@@ -242,6 +302,9 @@
           catalogueGroupCode="sample_kind"
           chartType="bar"
           clickToAddState={true}
+          xAxisTitle="Probentypen"
+          yAxisTitle="Probenanzahl"
+          tooltips={specimenHeaders}
         />
       </div>
     </div>
