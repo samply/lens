@@ -35,7 +35,17 @@ export const alias = new Map<string, string>([
     // ["conditionLocalization", "exists from [Condition] C\nwhere C.bodySite.coding contains Code '{{C}}' from {{A1}}"],
     ["conditionLocalization", "exists from [Condition] C\nwhere C.bodySite.coding.code contains '{{C}}'"],
     ["conditionRangeDate", "exists from [Condition] C\nwhere year from C.onset between {{D1}} and {{D2}}"],
+    ["conditionLowerThanDate", "exists from [Condition] C\nwhere year from C.onset <= {{D2}}"],
+    ["conditionGreaterThanDate", "exists from [Condition] C\nwhere year from C.onset >= {{D1}}"],
     ["conditionRangeAge", "exists [Condition] C\nwhere AgeInYearsAt(FHIRHelpers.ToDateTime(C.onset)) between {{D1}} and {{D2}}"],
+    ["conditionLowerThanAge", "exists [Condition] C\nwhere AgeInYearsAt(FHIRHelpers.ToDateTime(C.onset)) <= {{D2}}"],
+    ["conditionGreaterThanAge", "exists [Condition] C\nwhere AgeInYearsAt(FHIRHelpers.ToDateTime(C.onset)) >= {{D1}}"],
+    ["primaryConditionRangeDate", "year from PrimaryDiagnosis.onset between {{D1}} and {{D2}}"],
+    ["primaryConditionLowerThanDate", "year from PrimaryDiagnosis.onset <= {{D2}}"],
+    ["primaryConditionGreaterThanDate", "year from PrimaryDiagnosis.onset >= {{D1}}"],
+    ["primaryConditionRangeAge", "AgeInYearsAt(FHIRHelpers.ToDateTime(PrimaryDiagnosis.onset)) between {{D1}} and {{D2}}"],
+    ["primaryConditionLowerThanAge", "AgeInYearsAt(FHIRHelpers.ToDateTime(PrimaryDiagnosis.onset)) <= {{D2}}"],
+    ["primaryConditionGreaterThanAge", "AgeInYearsAt(FHIRHelpers.ToDateTime(PrimaryDiagnosis.onset)) >= {{D1}}"],
     //TODO Revert to first expression if https://github.com/samply/blaze/issues/808 is solved
     // ["observation", "exists from [Observation: Code '{{K}}' from {{A1}}] O\nwhere O.value.coding contains Code '{{C}}' from {{A2}}"],
     ["observation", "exists from [Observation: Code '{{K}}' from {{A1}}] O\nwhere O.value.coding.code contains '{{C}}'"],
@@ -73,9 +83,11 @@ export const alias = new Map<string, string>([
     ["KM", {type: "medicationStatement", alias: ["Therapieart"]}],              //Knochenmarktransplantation
     ["59847-4", {type: "observation", alias: ["loinc", "morph"]}],      //Morphologie
     ["year_of_diagnosis", {type: "conditionRangeDate"}],
+    ["year_of_primary_diagnosis", {type: "primaryConditionRangeDate"}],
     ["sample_kind", {type: "specimen", alias: ["specimentype"]}],
     ["pat_with_samples", {type: "hasSpecimen"}],
     ["age_at_diagnosis", {type: "conditionRangeAge"}],
+    ["age_at_primary_diagnosis", {type: "primaryConditionRangeAge"}],
     ["21908-9", {type: "observation", alias: ["loinc", "uiccstadiumcs"]}],  //uicc TODO 2 profiles TNMc and TNMp is that a problem?
     ["21905-5", {type: "TNM-x", alias: ["loinc", "TNMTCS"]}],  //tnm component
     ["21906-3", {type: "TNM-x", alias: ["loinc", "TNMNCS"]}],  //tnm component
