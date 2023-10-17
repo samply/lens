@@ -181,6 +181,7 @@ const getSingleton = (criterion: AstBottomLayerValue): string => {
 
 
 const substituteCQLExpression = (key: string, alias: string[] | undefined, cql: string, value?: string, min?: number, max?: number): string => {
+  console.log(min)
   let cqlString: string
   if (value) {
     cqlString = cql.replace(new RegExp("{{C}}"), value)
@@ -198,10 +199,10 @@ const substituteCQLExpression = (key: string, alias: string[] | undefined, cql: 
     const systemExpression = "codesystem " + alias[1] + ": '" + aliasMap.get(alias[1]) + "'"
     if (!codesystems.includes(systemExpression)) { codesystems.push(systemExpression) }
   }
-  if (min) {
+  if (min || min === 0) {
     cqlString = cqlString.replace(new RegExp("{{D1}}"), min.toString())
   }
-  if (max) {
+  if (max || max === 0) {
     cqlString = cqlString.replace(new RegExp("{{D2}}"), max.toString())
   }
   return cqlString

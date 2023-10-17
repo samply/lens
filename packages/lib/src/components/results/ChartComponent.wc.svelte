@@ -41,7 +41,9 @@
     export let chartType: keyof ChartTypeRegistry = "pie";
     export let perSite: boolean = false;
     export let groupRange: number | null = null;
-    export let groupingDivider: string | null = ".";
+    export let groupingDivider: string | null = null;
+    export let filterRegex: string | null = null;
+    export let groupingLabel: string = '';
 
     export let backgroundColor: string[] = [
         "#4dc9f6",
@@ -164,10 +166,21 @@
     };
 
     /**
+     * filters the labels by the given regex
+     * @param labels
+     * @returns the filtered labels
+     */
+    const filterRegexMatch = (labels: string[]): string[] => {
+        if (filterRegex === null) return labels;
+        return labels.filter((label) => label.match(filterRegex));
+    };
+
+    /**
      * combines subgroups into their supergroups like C30, C31.1 and C31.2 into C31
      * @param divider the divider used to split the labels
      * @param responseStore the response store
      * @param labels the labels to combine
+     * @returns the combined labels and their data
      */
     const combineSubGroups = (
         divider: string,
@@ -186,7 +199,7 @@
                     return [
                         ...acc,
                         {
-                            label: label + '.%',
+                            label: label + groupingLabel,
                             value: getAggregatedPopulationForStratumCode(
                                 responseStore,
                                 label
@@ -202,12 +215,12 @@
                  * and add it to the accumulator
                  */
                 let superClassItem: { label: string; value: number } = acc.find(
-                    (item) => item.label === label.split(divider)[0] + '.%'
+                    (item) => item.label === label.split(divider)[0] + groupingLabel
                 );
                 
                 if (!superClassItem) {
                     superClassItem = {
-                        label: label.split(divider)[0] + '.%',
+                        label: label.split(divider)[0] + groupingLabel,
                         value: 0,
                     };
                 }
@@ -219,7 +232,7 @@
                     );
                             
                 return [
-                    ...acc.filter((item) => item.label !== label.split(divider)[0] + '.%'),
+                    ...acc.filter((item) => item.label !== label.split(divider)[0] + groupingLabel),
                     superClassItem,
                 ];
 
@@ -259,25 +272,25 @@
                 responseGroupCode
             );
         }
-
+        chartLabels = filterRegexMatch(chartLabels);
         chartLabels.sort(customSort);
-
+        
         /**
          * remove labels and their corresponding data if the label is an empty string or null
          */
         chartLabels = chartLabels.filter(
             (label) => label !== "" && label !== null && label !== "null"
-        );
-
-        /**
-         * get the chart data sets from the response store
+            );
+            
+            /**
+             * get the chart data sets from the response store
          * will be aggregated in groups if a divider is set
          * eg. 'C30', 'C31.1', 'C31.2' -> 'C31' when divider is '.'
          */
         let chartData = getChartDataSets(responseStore, chartLabels);
         chart.data.datasets = chartData.data;
         chartLabels = chartData.labels;
-
+        
         /**
          * lets the user define a range for the labels when only single values are used eg. '60' -> '60 - 69'
          */
@@ -287,10 +300,11 @@
                  * check if label doesn't parse to a number
                  */
                 if (isNaN(parseInt(label))) return label;
-
+                
                 return `${parseInt(label)} - ${parseInt(label) + groupRange}`;
             });
         }
+        console.log(chartLabels);
 
         chart.data.labels = chartLabels;
 
