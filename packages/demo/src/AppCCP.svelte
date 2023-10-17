@@ -221,6 +221,10 @@
           chartType="bar"
           indexAxis='y'
           clickToAddState={true}
+          groupingDivider='.'
+          groupingLabel='.%'
+          filterRegex='^[CD].*'
+
         />
       </div>
       <div class="chart-wrapper chart-age-distribution">
