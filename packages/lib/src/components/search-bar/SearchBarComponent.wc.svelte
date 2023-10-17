@@ -128,9 +128,13 @@
      * watches the input value and updates the input options
      */
     $: $inputOptions = criteria.filter((item: AutoCompleteItem) => {
+        /**
+         * lets the user use a number followed by a colon to specify the search group. nice to have for the power users
+         */
         const clearedInputValue = inputValue
             .replace(/^[0-9]*:/g, "")
             .toLocaleLowerCase();
+
         return (
             item.name.toLowerCase().includes(clearedInputValue) ||
             item.criterion.name.toLowerCase().includes(clearedInputValue) ||
@@ -139,8 +143,8 @@
                 .includes(clearedInputValue)
 
             /**
-             * FIX ME:
-             * should only take names. This needs a catalogue fix
+             * Discussion:
+             * should it also be possible to search for the key?
              */
             // item.key.toLocaleLowerCase().includes(clearedInputValue) ||
             // item.criterion.key.toLowerCase().includes(clearedInputValue) ||
@@ -299,26 +303,23 @@
             {#each queryGroup as queryItem (queryItem.id)}
                 <div part="lens-searchbar-chip">
                     <span part="lens-searchbar-chip-name"
-                        >{queryItem.name}:{" "}</span
+                        >{queryItem.name}:</span
                     >
                     {#each queryItem.values as value, i (value.queryBindId)}
                         <span part="lens-searchbar-chip-item">
                             <span>{value.name}</span>
-                            <StoreDeleteButtonComponent
-                                itemToDelete={{
-                                    type: "value",
-                                    index,
-                                    item: {
-                                        ...queryItem,
-                                        values: [value],
-                                    },
-                                }}
-                            />
-                            <span
-                                >{i === queryItem.values.length - 1
-                                    ? ""
-                                    : ""}</span
-                            >
+                            {#if queryItem.values.length > 1}
+                                <StoreDeleteButtonComponent
+                                    itemToDelete={{
+                                        type: "value",
+                                        index,
+                                        item: {
+                                            ...queryItem,
+                                            values: [value],
+                                        },
+                                    }}
+                                />
+                            {/if}
                         </span>
                     {/each}
                     <StoreDeleteButtonComponent
@@ -349,7 +350,9 @@
         <ul part="lens-searchbar-autocomplete-options">
             {#if $inputOptions?.length > 0}
                 {#each $inputOptions as inputOption, i}
-                    {#if $inputOptions.map( option => option.name).indexOf(inputOption.name) === i}
+                    {#if $inputOptions
+                        .map((option) => option.name)
+                        .indexOf(inputOption.name) === i}
                         <div part="autocomplete-options-item-name">
                             {@html getBoldedText(inputOption.name)}
                         </div>
@@ -366,7 +369,9 @@
                             on:mousedown={() => selectItemByClick(inputOption)}
                         >
                             <div part="autocomplete-options-item-name">
-                                {@html getBoldedText(inputOption.criterion.name)}
+                                {@html getBoldedText(
+                                    inputOption.criterion.name
+                                )}
                             </div>
                             {#if inputOption.criterion.description}
                                 <div

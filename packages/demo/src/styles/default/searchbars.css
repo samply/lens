@@ -56,6 +56,7 @@ lens-search-bar-multiple::part(lens-searchbar-chips) {
 lens-search-bar::part(lens-searchbar-chip-name),
 lens-search-bar-multiple::part(lens-searchbar-chip-name) {
   font-weight: bold;
+  padding-right: var(--gap-xs);
 }
 
 lens-search-bar::part(lens-searchbar-chip),
@@ -65,10 +66,9 @@ lens-search-bar-multiple::part(lens-searchbar-chip) {
   border: solid 1px var(--lightest-gray);
   border-radius: var(--border-radius-small);
   width: max-content;
-  padding: 2px var(--gap-xs);
+  padding: 2px var(--gap-s) 2px var(--gap-xs);
   display: flex;
   align-items: center;
-  gap: var(--gap-xs);
   position: relative;
 }
 
