@@ -43,7 +43,7 @@
     export let groupRange: number | null = null;
     export let groupingDivider: string | null = null;
     export let filterRegex: string | null = null;
-    export let groupingLabel: string = '';
+    export let groupingLabel: string = "";
 
     export let backgroundColor: string[] = [
         "#4dc9f6",
@@ -135,6 +135,18 @@
                 );
                 return data?.population[0]?.count || 0;
             });
+
+            return {
+                labels: chartLabels,
+                data: [
+                    {
+                        label: "",
+                        data: dataSet,
+                        backgroundColor,
+                        backgroundHoverColor,
+                    },
+                ],
+            };
         } else {
             dataSet = chartLabels.map((label: string): number => {
                 const stratifierCode = label;
@@ -187,14 +199,12 @@
         responseStore: ResponseStore,
         labels: string[]
     ): { labels: string[]; data: number[] } => {
-       
         const groupedChartData: { label: string; value: number }[] =
             labels.reduce((acc, label) => {
-                
                 /**
                  * see if the label contains the divider
                  * if not, add it to the accumulator with a .% at the end
-                */
+                 */
                 if (!label.includes(divider)) {
                     return [
                         ...acc,
@@ -215,27 +225,30 @@
                  * and add it to the accumulator
                  */
                 let superClassItem: { label: string; value: number } = acc.find(
-                    (item) => item.label === label.split(divider)[0] + groupingLabel
+                    (item) =>
+                        item.label === label.split(divider)[0] + groupingLabel
                 );
-                
+
                 if (!superClassItem) {
                     superClassItem = {
                         label: label.split(divider)[0] + groupingLabel,
                         value: 0,
                     };
                 }
-                
-                superClassItem.value +=
-                    getAggregatedPopulationForStratumCode(
-                        responseStore,
-                        label
-                    );
-                            
+
+                superClassItem.value += getAggregatedPopulationForStratumCode(
+                    responseStore,
+                    label
+                );
+
                 return [
-                    ...acc.filter((item) => item.label !== label.split(divider)[0] + groupingLabel),
+                    ...acc.filter(
+                        (item) =>
+                            item.label !==
+                            label.split(divider)[0] + groupingLabel
+                    ),
                     superClassItem,
                 ];
-
             }, []);
 
         return {
@@ -274,23 +287,23 @@
         }
         chartLabels = filterRegexMatch(chartLabels);
         chartLabels.sort(customSort);
-        
+
         /**
          * remove labels and their corresponding data if the label is an empty string or null
          */
         chartLabels = chartLabels.filter(
             (label) => label !== "" && label !== null && label !== "null"
-            );
-            
-            /**
-             * get the chart data sets from the response store
+        );
+
+        /**
+         * get the chart data sets from the response store
          * will be aggregated in groups if a divider is set
          * eg. 'C30', 'C31.1', 'C31.2' -> 'C31' when divider is '.'
          */
         let chartData = getChartDataSets(responseStore, chartLabels);
         chart.data.datasets = chartData.data;
         chartLabels = chartData.labels;
-        
+
         /**
          * lets the user define a range for the labels when only single values are used eg. '60' -> '60 - 69'
          */
@@ -300,7 +313,7 @@
                  * check if label doesn't parse to a number
                  */
                 if (isNaN(parseInt(label))) return label;
-                
+
                 return `${parseInt(label)} - ${parseInt(label) + groupRange}`;
             });
         }
