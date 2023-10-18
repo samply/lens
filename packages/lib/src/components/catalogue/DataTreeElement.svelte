@@ -86,6 +86,7 @@
 
     /**
      * adds a new number input component
+     * not needed for the moment.
      */
     const addNumberInput = () => {
         activeNumberInputs.update((store: QueryItem[]): QueryItem[] => {
