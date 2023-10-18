@@ -317,7 +317,6 @@
                 return `${parseInt(label)} - ${parseInt(label) + groupRange}`;
             });
         }
-        console.log(chartLabels);
 
         chart.data.labels = chartLabels;
 

@@ -46,7 +46,6 @@ export const translateAstToCql = (query: AstTopLayer, returnOnlySingeltons: bool
   singletons = (backendMeasureReplacement)
     ? "DKTK_STRAT_DEF_IN_INITIAL_POPULATION\n"
     : "define InInitialPopulation:\n"
-  console.log(singletons)
   singletons += resolveOperation(query)
 
   if (query.children.length == 0) {
@@ -73,7 +72,6 @@ const resolveOperation = (operation: AstElement): string => {
   }
 
   'children' in operation && operation.children.forEach((element: AstElement, index) => {
-    console.log(element);
     if ('children' in element) {
       expression += resolveOperation(element)
     }
@@ -93,7 +91,6 @@ const resolveOperation = (operation: AstElement): string => {
 
 const getSingleton = (criterion: AstBottomLayerValue): string => {
   let expression: string = "";
-  console.log(criterion);
 
   //TODO: Workaround for using the value of "Therapy of Tumor" as key. Need an additional field in catalogue
   if (criterion.key === "therapy_of_tumor") {
@@ -187,7 +184,6 @@ const getSingleton = (criterion: AstBottomLayerValue): string => {
 
 
 const substituteCQLExpression = (key: string, alias: string[] | undefined, cql: string, value?: string, min?: number, max?: number): string => {
-  console.log(min)
   let cqlString: string
   if (value) {
     cqlString = cql.replace(new RegExp("{{C}}"), value)
