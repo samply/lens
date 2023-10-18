@@ -31,7 +31,6 @@ export const getCriteria = (category: string): string[] => {
 }
 
 /**
- * 
  * @param item the TreeNode you want to check
  * @returns true if the item is a bottom level item, false otherwise
  */
@@ -43,7 +42,6 @@ const itemIsBottomLevel = (item: TreeNode): Boolean => {
 }
 
 /**
- * 
  * @param item takes any item from the catalogue
  * @param category string of the category you want to get the bottom level items from
  * @returns an array of strings containing the bottom level items' keys

@@ -106,9 +106,10 @@
 
     /**
      * stores the full list of autocomplete items
+     * structuredClone is used to prevent the store from being mutated when the .% is added to the criteria
      */
     let criteria: AutoCompleteItem[];
-    $: criteria = buildDatalistItems($catalogue) || [];
+    $: criteria = buildDatalistItems(structuredClone($catalogue)) || [];
 
     /**
      * stores the filtered list of autocomplete items
@@ -395,9 +396,7 @@
                         >
                             <div part="autocomplete-options-item-name">
                                 {@html getBoldedText(
-                                    inputOption.name +
-                                        " : " +
-                                        inputOption.criterion.name
+                                    inputOption.criterion.name
                                 )}
                             </div>
                             {#if inputOption.criterion.description}
