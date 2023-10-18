@@ -51,8 +51,8 @@
     collapseButtonTitle: "Collapse Tree",
     expandButtonTitle: "Expand Tree",
     numberInput: {
-      labelFrom: "From",
-      labelTo: "to",
+      labelFrom: "von",
+      labelTo: "bis",
     },
   };
 

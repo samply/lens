@@ -22,11 +22,9 @@
 
     onMount(() => {
         /**
-         * adds .% option to find all subgroups of if the element key is "diagnosis"
+         * adds .% option to find all subgroups
          */
-        if (element.key === "diagnosis"){
-            criteria = addPercentageSignToCriteria(structuredClone(criteria));
-        }
+        criteria = addPercentageSignToCriteria(structuredClone(criteria));
     });
 
     /**

@@ -34,6 +34,16 @@ export const addPercentageSignToCriteria = (criteria: Criteria[]): Criteria[] =>
 
         criteriaGroup.add(criterion.key.split('.')[0]);
     });
+
+    criteria = criteria.sort((a, b) => {
+        if(a.key < b.key) {
+            return -1;
+        }
+        if(a.key > b.key) {
+            return 1;
+        }
+        return 0;
+    })
   
     return criteria;
 };
