@@ -25,7 +25,7 @@ let criteria: string[]
 
 
 
-export const translateAstToCql = (query: AstTopLayer, returnOnlySingeltons: boolean = true, backendMeasureReplacement: boolean = false): string => {
+export const translateAstToCql = (query: AstTopLayer, returnOnlySingeltons: boolean = true, backendMeasures: string): string => {
   criteria = getCriteria("diagnosis")
 
   /**
@@ -43,9 +43,7 @@ export const translateAstToCql = (query: AstTopLayer, returnOnlySingeltons: bool
     "\n"
 
   let singletons: string = "";
-  singletons = (backendMeasureReplacement)
-    ? "DKTK_STRAT_DEF_IN_INITIAL_POPULATION\n"
-    : "define InInitialPopulation:\n"
+  singletons = backendMeasures
   singletons += resolveOperation(query)
 
   if (query.children.length == 0) {
