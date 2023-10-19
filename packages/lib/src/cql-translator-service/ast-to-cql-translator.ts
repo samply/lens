@@ -204,13 +204,13 @@ const substituteRangeCQLExpression = (
   } else if (input.min === 0) {
     const lowerThanDateTemplate = cqltemplate.get(`${criterionPrefix}LowerThan${criterionSuffix}`)
     if (lowerThanDateTemplate)
-      return substituteCQLExpression(criterion.key, myCriterion.alias, lowerThanDateTemplate, "", input.min, input.max) + " and\n"
+      return substituteCQLExpression(criterion.key, myCriterion.alias, lowerThanDateTemplate, "", input.min, input.max)
   } else if (input.max === 0) {
     const greaterThanDateTemplate = cqltemplate.get(`${criterionPrefix}GreaterThan${criterionSuffix}`)
     if (greaterThanDateTemplate)
-      return substituteCQLExpression(criterion.key, myCriterion.alias, greaterThanDateTemplate, "", input.min, input.max) + " and\n"
+      return substituteCQLExpression(criterion.key, myCriterion.alias, greaterThanDateTemplate, "", input.min, input.max)
   } else {
-    return substituteCQLExpression(criterion.key, myCriterion.alias, rangeCQL, "", input.min, input.max) + " and\n"
+    return substituteCQLExpression(criterion.key, myCriterion.alias, rangeCQL, "", input.min, input.max)
   }
   return
 }
