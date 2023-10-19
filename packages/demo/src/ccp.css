@@ -10,7 +10,7 @@
 @font-face {
   font-family: 'Open Sans';
   font-style: normal;
-  src: url('../public/fonts/Open_Sans/OpenSans-VariableFont_wdth\,wght.ttf') format('truetype');
+  src: url('../fonts/Open_Sans/OpenSans-VariableFont_wdth\,wght.ttf') format('truetype');
 }
 
 :root {
