@@ -7183,7 +7183,7 @@
         "name": "Klassifikation von Tumoren",
         "childCategories": [
             {
-                "key": "year_of_diagnosis",
+                "key": "year_of_primary_diagnosis",
                 "name": "Diagnosejahr",
                 "system": "",
                 "fieldType": "number",
@@ -7191,7 +7191,7 @@
                 "criteria": []
             },
             {
-                "key": "age_at_diagnosis",
+                "key": "age_at_primary_diagnosis",
                 "name": "Alter bei Erstdiagnose",
                 "system": "",
                 "fieldType": "number",
