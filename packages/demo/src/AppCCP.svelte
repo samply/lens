@@ -116,6 +116,7 @@
       'essen',
       'ulm',
       'wuerzburg',
+      'hannover',
     ],
     uiSiteMap: uiSiteMap,
     catalogueKeyToResponseKeyMap: catalogueKeyToResponseKeyMap,
