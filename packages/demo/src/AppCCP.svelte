@@ -206,6 +206,7 @@
       <lens-catalogue
         toggleIconUrl='right-arrow-svgrepo-com.svg'
         addIconUrl='long-right-arrow-svgrepo-com.svg'
+        infoIconUrl='info-circle-svgrepo-com.svg'
         treeData={mockCatalogueData}
         texts={catalogueText}
         toggle={{ collapsable: false, open: catalogueopen }}

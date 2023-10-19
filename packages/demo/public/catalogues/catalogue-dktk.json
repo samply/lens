@@ -2,6 +2,7 @@
     {
         "key": "patient",
         "name": "Patient",
+        "description": "Hier könnte ihre Werbung stehen!",
         "childCategories": [
             {
                 "key": "gender",
@@ -9,6 +10,7 @@
                 "system": "",
                 "fieldType": "single-select",
                 "type": "EQUALS",
+                "description": "Hier ebenfalls!",
                 "criteria": [
                     {
                         "key": "male",

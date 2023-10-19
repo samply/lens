@@ -130,6 +130,33 @@
         {/if}
         {element.name}
     </button>
+    {#if element.description}
+        <span>
+            {#if $iconStore.get('infoIconUrl')}
+                <img
+                    part="data-tree-element-info-icon {open
+                        ? 'data-tree-element-info-icon'
+                        : ''}"
+                    src={$iconStore.get('infoIconUrl')}
+                    alt="catalogue-category-info-icon"
+                />
+            {:else}
+                <span
+                    part="data-tree-element-info-icon {open
+                        ? 'data-tree-element-info-icon'
+                        : ''}"
+                >
+                    &#0069
+                </span>
+            {/if}
+            <span part="data-tree-element-info-text {open
+                      ? 'data-tree-element-info-text'
+                      : ''}">
+                {element.description}
+            </span>
+        </span>
+    {/if}
+
     {#if open}
         {#if "childCategories" in element}
             {#each element.childCategories as child}

@@ -23,7 +23,6 @@ lens-catalogue::part(toggle-button-open-icon) {
   transform: rotate(180deg);
 }
 
-
 lens-catalogue::part(data-tree-element-name) {
   font-size: var(--font-size-m);
   color: var(--dark-gray);
@@ -58,6 +57,35 @@ lens-catalogue::part(data-tree-element-toggle-icon) {
 
 lens-catalogue::part(data-tree-element-toggle-icon-open) {
   transform: rotate(0deg);
+}
+
+lens-catalogue::part(data-tree-element-info-icon) {
+  position: absolute;
+  height: 22px;
+  width: 22px;
+  right: 15px;
+  cursor: pointer;
+}
+
+lens-catalogue::part(data-tree-element-info-text) {
+  visibility: visible;
+  width: 200px;
+  height: 50px;
+  background-color: lightgray;
+  color: black;
+  text-align: center;
+  border-radius: 1px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 100;
+  top: 50px;
+  right: 15px;
+}
+
+lens-catalogue::part(data-tree-element-info-icon):hover ~ lens-catalogue::part(data-tree-element-info-text) {
+  visibility: hidden !important;
 }
 
 lens-catalogue::part(data-tree-element-child-category) {
