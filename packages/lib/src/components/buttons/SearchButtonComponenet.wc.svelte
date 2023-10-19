@@ -18,7 +18,6 @@
     import type { Measure, BackendConfig } from "../../types/backend";
     import { responseStore } from "../../stores/response";
 
-  
     export let title: string = "Search";
     export let backendConfig: BackendConfig = {
         url: "http://localhost:8080",
@@ -29,7 +28,7 @@
 
     export let disabled: boolean = false;
     export let measures: Measure[] = [];
-    export let cqlHeader: string = "";
+    export let backendMeasures: string = "";
     let controller: AbortController;
     
     /**
@@ -68,11 +67,15 @@
         controller = new AbortController();
 
         const ast = buildAstFromQuery($queryStore);
-        const cql = translateAstToCql(ast, false, true);
+        const cql = translateAstToCql(ast, false, backendMeasures);
+        console.log(cql);
 
         const library = buildLibrary(`${cql}`)
         const measure = buildMeasure(library.url, $measureStore.map( measureItem => measureItem.measure))
         const query = {lang: "cql", lib: library, measure: measure};
+
+        console.log(query);
+
 
         const backend = new Spot(
             new URL(backendConfig.url),
@@ -86,7 +89,7 @@
 
     };
 
-    // $: console.log($responseStore);
+    $: console.log($responseStore);
 
 
 </script>
