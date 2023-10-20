@@ -65,9 +65,9 @@ lens-search-bar-multiple::part(lens-searchbar-chip) {
   color: var(--white);
   border: solid 1px var(--lightest-gray);
   border-radius: var(--border-radius-small);
-  width: max-content;
   padding: 2px var(--gap-s) 2px var(--gap-xs);
   display: flex;
+  flex-flow: row wrap;
   align-items: center;
   position: relative;
 }

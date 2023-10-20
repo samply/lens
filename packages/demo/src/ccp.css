@@ -110,7 +110,7 @@ footer {
 
 .search {
   display: grid;
-  grid-template-columns: 1fr auto auto;
+  grid-template-columns: minmax(0, 1fr) auto auto;
   grid-gap: var(--gap-s);
   padding: var(--gap-xxs) 0;
   background-color: var(--ghost-white);
