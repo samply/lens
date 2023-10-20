@@ -114,6 +114,10 @@ footer {
   grid-gap: var(--gap-s);
   padding: var(--gap-xxs) 0;
   background-color: var(--ghost-white);
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+  z-index: 1;
 }
 
 .grid {
