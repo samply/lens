@@ -6,6 +6,7 @@ export type Category = {
     childCategories?: Category[];
     // TODO: Discuss naming with Mats, as this has another meaning than descrtiption in criteria
     description?: string;
+    subCategoryName?: string;
 } | {
     key: string;
     name: string;

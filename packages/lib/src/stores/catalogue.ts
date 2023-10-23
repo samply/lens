@@ -10,7 +10,7 @@ import type { QueryItem } from "../types/queryData";
  */
 export const catalogue = writable<Category[]>([]);
 
-export const openTreeNodes = writable<string[]>([]);
+export const openTreeNodes = writable<Map<string, {key: string, subCategoryNames: string[] | null}>>(new Map());
 
 export const activeNumberInputs = writable<QueryItem[]>([]);
 

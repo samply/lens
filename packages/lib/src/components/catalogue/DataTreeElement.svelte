@@ -11,38 +11,74 @@
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
 
     export let element: Category;
-
+    const subCategoryName: string | null = ("subCategoryName" in element && element.subCategoryName !== undefined && element.subCategoryName !== null) ? element.subCategoryName : null;
     /**
      * defines the layer of the element in the tree
      */
     export let layer: number = 1;
-
+    
     /**
      * defines if the subcategorys are open, iterates over the whole tree
      */
     export let treeOpen: boolean = false;
-
+    
     if (treeOpen) {
-        openTreeNodes.update((store: string[]): string[] => {
-            store = [...store, element.key];
-            return store;
-        });
+       /**
+        * DISCUSS: open all subcategorys on creation needed? 
+        */         
     }
-
+    
     /**
      * toggles the open state of the subcategorys
      */
-    $: open = $openTreeNodes.includes(element.key);
-
+    let open: boolean = false;
+    
+    $: {
+        if(subCategoryName){
+            open = $openTreeNodes.get(element.key).subCategoryNames?.includes(subCategoryName)
+        } else {
+            open = $openTreeNodes.get(element.key) ? true : false;
+        }
+    }
+    
+    
+    
     const toggleChildren = () => {
-        openTreeNodes.update((store: string[]): string[] => {
-            if (store.includes(element.key)) {
-                return store.filter(
-                    (item: string): Boolean => item !== element.key
-                );
-            } else {
-                return [...store, element.key];
+        openTreeNodes.update((store) => {
+            
+            let storeTreeNode = store.get(element.key);
+
+            if(!storeTreeNode){
+                store.set(element.key, {key: element.key, subCategoryNames: null })
+                return store;
             }
+
+            if(subCategoryName === null) {
+                store.delete(element.key);
+                return store;
+            }
+
+            if(storeTreeNode.subCategoryNames === null){
+                storeTreeNode.subCategoryNames = [subCategoryName];
+                store.set(element.key, storeTreeNode);
+                return store;
+            }
+
+            if(storeTreeNode.subCategoryNames.includes(subCategoryName)){
+                storeTreeNode.subCategoryNames = storeTreeNode.subCategoryNames.filter((name) => name !== subCategoryName);
+                store.set(element.key, storeTreeNode);
+                return store;
+            }
+
+            if(!storeTreeNode.subCategoryNames.includes(subCategoryName)){
+                storeTreeNode.subCategoryNames.push(subCategoryName);
+                store.set(element.key, storeTreeNode);
+                return store;
+            }
+            
+            console.log(store);
+            
+            return store;
         });
     };
 
@@ -129,7 +165,7 @@
                 &#8964
             </span>
         {/if}
-        {element.name}
+        {'subCategoryName' in element && element.subCategoryName ? element.subCategoryName : element.name}
     </button>
     {#if element.description}
         <InfoButtonComponent message={element.description} />
