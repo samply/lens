@@ -13,6 +13,7 @@ lens-catalogue::part(lens-catalogue-toggle-button) {
   cursor: pointer;
   display: flex;
   gap: var(--gap-xs);
+  width: 100%;
 }
 
 lens-catalogue::part(lens-catalogue-toggle-button):hover {
@@ -35,6 +36,7 @@ lens-catalogue::part(data-tree-element-name) {
 
 lens-catalogue::part(data-tree-element-name) {
   padding-left: var(--gap-s);
+  padding-right: 0;
   font-size: var(--font-size-m);
   color: var(--dark-gray);
   margin-bottom: 10px;
@@ -59,37 +61,43 @@ lens-catalogue::part(data-tree-element-toggle-icon-open) {
   transform: rotate(0deg);
 }
 
-lens-catalogue::part(data-tree-element-info-icon) {
-  position: absolute;
-  height: 22px;
-  width: 22px;
-  right: 15px;
+
+lens-catalogue::part(info-button) {
+  position: relative;
   cursor: pointer;
+  background-color: var(--white);
+  border: none;
+  padding: 0;
 }
 
-lens-catalogue::part(data-tree-element-info-text) {
-  visibility: visible;
-  width: 200px;
-  height: 50px;
-  background-color: lightgray;
-  color: black;
-  text-align: center;
-  border-radius: 1px;
-  padding: 5px 0;
-
-  /* Position the tooltip */
+lens-catalogue::part(info-button-icon) {
   position: absolute;
-  z-index: 100;
-  top: 50px;
-  right: 15px;
+  bottom: var(--gap-xxs);
+  width: 16px;
+  height: 16px;
 }
 
-lens-catalogue::part(data-tree-element-info-icon):hover ~ lens-catalogue::part(data-tree-element-info-text) {
-  visibility: hidden !important;
+lens-catalogue::part(info-button-dialogue) {
+    position: absolute;
+    border: none;
+    background-color: var(--white);
+    width: max-content;
+    max-width: 80vw;
+    z-index: 100;
+    padding: var(--gap-xs);
+    top: 0;
+    left: var(--gap-xxs);
+    border: solid 1px var(--light-blue);
+    border-radius: var(--border-radius-small);
+}
+
+
+lens-catalogue::part(data-tree-element-info-icon):hover lens-catalogue::part(data-tree-element-info-text) {
+  display: block;
 }
 
 lens-catalogue::part(data-tree-element-child-category) {
-  padding: var(--gap-xs) var(--gap-s) 0;
+  padding: var(--gap-xs) 0 0 var(--gap-s);
   border-left: solid 1px var(--lightest-gray);
 }
 

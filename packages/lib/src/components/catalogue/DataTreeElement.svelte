@@ -8,6 +8,7 @@
     import { activeNumberInputs, openTreeNodes } from "../../stores/catalogue";
     import type { QueryItem } from "../../types/queryData";
     import { iconStore } from "../../stores/icons";
+    import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
 
     export let element: Category;
 
@@ -131,30 +132,7 @@
         {element.name}
     </button>
     {#if element.description}
-        <span>
-            {#if $iconStore.get('infoIconUrl')}
-                <img
-                    part="data-tree-element-info-icon {open
-                        ? 'data-tree-element-info-icon'
-                        : ''}"
-                    src={$iconStore.get('infoIconUrl')}
-                    alt="catalogue-category-info-icon"
-                />
-            {:else}
-                <span
-                    part="data-tree-element-info-icon {open
-                        ? 'data-tree-element-info-icon'
-                        : ''}"
-                >
-                    &#0069
-                </span>
-            {/if}
-            <span part="data-tree-element-info-text {open
-                      ? 'data-tree-element-info-text'
-                      : ''}">
-                {element.description}
-            </span>
-        </span>
+        <InfoButtonComponent message={element.description} />
     {/if}
 
     {#if open}
