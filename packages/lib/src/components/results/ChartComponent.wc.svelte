@@ -314,7 +314,7 @@
                  */
                 if (isNaN(parseInt(label))) return label;
 
-                return `${parseInt(label)} - ${parseInt(label) + groupRange}`;
+                return `${parseInt(label)} - ${parseInt(label) + groupRange - 1}`;
             });
         }
 
@@ -376,12 +376,10 @@
                                  */
                                 values = [
                                     {
-                                        name: `${label} - ${
-                                            parseInt(label) + 9
-                                        }`,
+                                        name: `${label}`,
                                         value: {
                                             min: parseInt(label),
-                                            max: parseInt(label) + 9,
+                                            max: parseInt(label) + groupRange - 1,
                                         },
                                         queryBindId: uuidv4(),
                                     },
