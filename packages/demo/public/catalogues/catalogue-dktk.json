@@ -2,6 +2,7 @@
     {
         "key": "patient",
         "name": "Patient",
+        "description": "Hier könnte ihre Werbung stehen!",
         "childCategories": [
             {
                 "key": "gender",
@@ -9,6 +10,7 @@
                 "system": "",
                 "fieldType": "single-select",
                 "type": "EQUALS",
+                "description": "Hier ebenfalls!",
                 "criteria": [
                     {
                         "key": "male",
@@ -7181,7 +7183,7 @@
         "name": "Klassifikation von Tumoren",
         "childCategories": [
             {
-                "key": "year_of_diagnosis",
+                "key": "year_of_primary_diagnosis",
                 "name": "Diagnosejahr",
                 "system": "",
                 "fieldType": "number",
@@ -7189,7 +7191,7 @@
                 "criteria": []
             },
             {
-                "key": "age_at_diagnosis",
+                "key": "age_at_primary_diagnosis",
                 "name": "Alter bei Erstdiagnose",
                 "system": "",
                 "fieldType": "number",
@@ -11357,7 +11359,7 @@
             },
             {
                 "key": "urn:oid:2.16.840.1.113883.6.43.1",
-                "name": "Lokalisation (ICD-O-3 Klassifizierung)",
+                "name": "Lokalisation ICD-O-3",
                 "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
                 "fieldType": "autocomplete",
                 "type": "EQUALS",
@@ -17889,139 +17891,191 @@
             {
                 "key": "21908-9",
                 "name": "UICC Stadium",
-                "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/UiccstadiumCS",
-                "fieldType": "single-select",
-                "type": "EQUALS",
-                "criteria": [
+                "childCategories": [
                     {
-                        "key": "0is",
-                        "name": "0is",
-                        "description": "0is"
+                        "key": "21908-9",
+                        "subCategoryName": "0",
+                        "name": "UICC Stadium",
+                        "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/UiccstadiumCS",
+                        "fieldType": "single-select",
+                        "type": "EQUALS",
+                        "criteria": [
+                            {
+                                "key": "0",
+                                "name": "0",
+                                "description": "0"
+                            },
+                            {
+                                "key": "0is",
+                                "name": "0is",
+                                "description": "0is"
+                            },
+                            {
+                                "key": "0a",
+                                "name": "0a",
+                                "description": "0a"
+                            }
+                        ]
                     },
                     {
-                        "key": "0a",
-                        "name": "0a",
-                        "description": "0a"
+                        "key": "21908-9",
+                        "subCategoryName": "I",
+                        "name": "UICC Stadium",
+                        "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/UiccstadiumCS",
+                        "fieldType": "single-select",
+                        "type": "EQUALS",
+                        "criteria": [
+                            {
+                                "key": "I",
+                                "name": "I",
+                                "description": "I"
+                            },
+                            {
+                                "key": "IA",
+                                "name": "IA",
+                                "description": "IA"
+                            },
+                            {
+                                "key": "IA1",
+                                "name": "IA1",
+                                "description": "IA1"
+                            },
+                            {
+                                "key": "IA2",
+                                "name": "IA2",
+                                "description": "IA2"
+                            },
+                            {
+                                "key": "IB",
+                                "name": "IB",
+                                "description": "IB"
+                            },
+                            {
+                                "key": "IB1",
+                                "name": "IB1",
+                                "description": "IB1"
+                            },
+                            {
+                                "key": "IB2",
+                                "name": "IB2",
+                                "description": "IB2"
+                            },
+                            {
+                                "key": "IS",
+                                "name": "IS",
+                                "description": "IS"
+                            }
+                        ]
                     },
                     {
-                        "key": "0",
-                        "name": "0",
-                        "description": "0"
+                        "key": "21908-9",
+                        "subCategoryName": "II",
+                        "name": "UICC Stadium",
+                        "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/UiccstadiumCS",
+                        "fieldType": "single-select",
+                        "type": "EQUALS",
+                        "criteria": [
+                            {
+                                "key": "II",
+                                "name": "II",
+                                "description": "II"
+                            },
+                            {
+                                "key": "IIA",
+                                "name": "IIA",
+                                "description": "IIA"
+                            },
+                            {
+                                "key": "IIA1",
+                                "name": "IIA1",
+                                "description": "IIA1"
+                            },
+                            {
+                                "key": "IIA2",
+                                "name": "IIA2",
+                                "description": "IIA2"
+                            },
+                            {
+                                "key": "IIB",
+                                "name": "IIB",
+                                "description": "IIB"
+                            },
+                            {
+                                "key": "IIC",
+                                "name": "IIC",
+                                "description": "IIC"
+                            }
+                        ]
                     },
                     {
-                        "key": "IA2",
-                        "name": "IA2",
-                        "description": "IA2"
+                        "key": "21908-9",
+                        "subCategoryName": "III",
+                        "name": "UICC Stadium",
+                        "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/UiccstadiumCS",
+                        "fieldType": "single-select",
+                        "type": "EQUALS",
+                        "criteria": [
+                            {
+                                "key": "III",
+                                "name": "III",
+                                "description": "III"
+                            },
+                            {
+                                "key": "IIIA",
+                                "name": "IIIA",
+                                "description": "IIIA"
+                            },
+                            {
+                                "key": "IIIB",
+                                "name": "IIIB",
+                                "description": "IIIB"
+                            },
+                            {
+                                "key": "IIIC",
+                                "name": "IIIC",
+                                "description": "IIIC"
+                            },
+                            {
+                                "key": "IIIC1",
+                                "name": "IIIC1",
+                                "description": "IIIC1"
+                            },
+                            {
+                                "key": "IIIC2",
+                                "name": "IIIC2",
+                                "description": "IIIC2"
+                            }
+                        ]
                     },
                     {
-                        "key": "IA1",
-                        "name": "IA1",
-                        "description": "IA1"
-                    },
-                    {
-                        "key": "IA",
-                        "name": "IA",
-                        "description": "IA"
-                    },
-                    {
-                        "key": "IB2",
-                        "name": "IB2",
-                        "description": "IB2"
-                    },
-                    {
-                        "key": "IB1",
-                        "name": "IB1",
-                        "description": "IB1"
-                    },
-                    {
-                        "key": "IB",
-                        "name": "IB",
-                        "description": "IB"
-                    },
-                    {
-                        "key": "IIC",
-                        "name": "IIC",
-                        "description": "IIC"
-                    },
-                    {
-                        "key": "IIB",
-                        "name": "IIB",
-                        "description": "IIB"
-                    },
-                    {
-                        "key": "IIA2",
-                        "name": "IIA2",
-                        "description": "IIA2"
-                    },
-                    {
-                        "key": "IIA1",
-                        "name": "IIA1",
-                        "description": "IIA1"
-                    },
-                    {
-                        "key": "IIA",
-                        "name": "IIA",
-                        "description": "IIA"
-                    },
-                    {
-                        "key": "II",
-                        "name": "II",
-                        "description": "II"
-                    },
-                    {
-                        "key": "IIIC2",
-                        "name": "IIIC2",
-                        "description": "IIIC2"
-                    },
-                    {
-                        "key": "IIIC1",
-                        "name": "IIIC1",
-                        "description": "IIIC1"
-                    },
-                    {
-                        "key": "IIIC",
-                        "name": "IIIC",
-                        "description": "IIIC"
-                    },
-                    {
-                        "key": "IIIB",
-                        "name": "IIIB",
-                        "description": "IIIB"
-                    },
-                    {
-                        "key": "IIIA",
-                        "name": "IIIA",
-                        "description": "IIIA"
-                    },
-                    {
-                        "key": "III",
-                        "name": "III",
-                        "description": "III"
-                    },
-                    {
-                        "key": "IVC",
-                        "name": "IVC",
-                        "description": "IVC"
-                    },
-                    {
-                        "key": "IVB",
-                        "name": "IVB",
-                        "description": "IVB"
-                    },
-                    {
-                        "key": "IVA",
-                        "name": "IVA",
-                        "description": "IVA"
-                    },
-                    {
-                        "key": "IV",
-                        "name": "IV",
-                        "description": "IV"
-                    },
-                    {
-                        "key": "IS",
-                        "name": "IS",
-                        "description": "IS"
+                        "key": "21908-9",
+                        "subCategoryName": "IV",
+                        "name": "UICC Stadium",
+                        "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/UiccstadiumCS",
+                        "fieldType": "single-select",
+                        "type": "EQUALS",
+                        "criteria": [
+                            {
+                                "key": "IV",
+                                "name": "IV",
+                                "description": "IV"
+                            },
+                            {
+                                "key": "IVA",
+                                "name": "IVA",
+                                "description": "IVA"
+                            },
+                            {
+                                "key": "IVB",
+                                "name": "IVB",
+                                "description": "IVB"
+                            },
+                            {
+                                "key": "IVC",
+                                "name": "IVC",
+                                "description": "IVC"
+                            }
+                        ]
                     }
                 ]
             },
@@ -18032,209 +18086,286 @@
                     {
                         "key": "21905-5",
                         "name": "TNM-T",
-                        "system": "",
-                        "fieldType": "single-select",
-                        "type": "EQUALS",
-                        "criteria": [
+                        "childCategories": [
                             {
-                                "key": "0",
-                                "name": "0",
-                                "description": "0"
+                                "key": "21905-5",
+                                "name": "TNM-T",
+                                "subCategoryName": "0",
+                                "system": "",
+                                "fieldType": "single-select",
+                                "type": "EQUALS",
+                                "criteria": [
+                                    {
+                                        "key": "0",
+                                        "name": "0",
+                                        "description": "0"
+                                    }
+                                ]
                             },
                             {
-                                "key": "1",
-                                "name": "1",
-                                "description": "1"
+                                "key": "21905-5",
+                                "name": "TNM-T",
+                                "subCategoryName": "1",
+                                "system": "",
+                                "fieldType": "single-select",
+                                "type": "EQUALS",
+                                "criteria": [
+                                    {
+                                        "key": "1",
+                                        "name": "1",
+                                        "description": "1"
+                                    },
+                                    {
+                                        "key": "1a",
+                                        "name": "1a",
+                                        "description": "1a"
+                                    },
+                                    {
+                                        "key": "1a1",
+                                        "name": "1a1",
+                                        "description": "1a1"
+                                    },
+                                    {
+                                        "key": "1a2",
+                                        "name": "1a2",
+                                        "description": "1a2"
+                                    },
+                                    {
+                                        "key": "1b",
+                                        "name": "1b",
+                                        "description": "1b"
+                                    },
+                                    {
+                                        "key": "1b1",
+                                        "name": "1b1",
+                                        "description": "1b1"
+                                    },
+                                    {
+                                        "key": "1b2",
+                                        "name": "1b2",
+                                        "description": "1b2"
+                                    },
+                                    {
+                                        "key": "1c",
+                                        "name": "1c",
+                                        "description": "1c"
+                                    },
+                                    {
+                                        "key": "1c1",
+                                        "name": "1c1",
+                                        "description": "1c1"
+                                    },
+                                    {
+                                        "key": "1c2",
+                                        "name": "1c2",
+                                        "description": "1c2"
+                                    },
+                                    {
+                                        "key": "1c3",
+                                        "name": "1c3",
+                                        "description": "1c3"
+                                    },
+                                    {
+                                        "key": "1d",
+                                        "name": "1d",
+                                        "description": "1d"
+                                    },
+                                    {
+                                        "key": "1mi",
+                                        "name": "1mi",
+                                        "description": "1mi"
+                                    }
+                                ]
                             },
                             {
-                                "key": "1a",
-                                "name": "1a",
-                                "description": "1a"
+                                "key": "21905-5",
+                                "name": "TNM-T",
+                                "subCategoryName": "2",
+                                "system": "",
+                                "fieldType": "single-select",
+                                "type": "EQUALS",
+                                "criteria": [
+                                    {
+                                        "key": "2",
+                                        "name": "2",
+                                        "description": "2"
+                                    },
+                                    {
+                                        "key": "2a",
+                                        "name": "2a",
+                                        "description": "2a"
+                                    },
+                                    {
+                                        "key": "2a1",
+                                        "name": "2a1",
+                                        "description": "2a1"
+                                    },
+                                    {
+                                        "key": "2a2",
+                                        "name": "2a2",
+                                        "description": "2a2"
+                                    },
+                                    {
+                                        "key": "2b",
+                                        "name": "2b",
+                                        "description": "2b"
+                                    },
+                                    {
+                                        "key": "2c",
+                                        "name": "2c",
+                                        "description": "2c"
+                                    },
+                                    {
+                                        "key": "2d",
+                                        "name": "2d",
+                                        "description": "2d"
+                                    }
+                                ]
                             },
                             {
-                                "key": "1a1",
-                                "name": "1a1",
-                                "description": "1a1"
+                                "key": "21905-5",
+                                "name": "TNM-T",
+                                "subCategoryName": "3",
+                                "system": "",
+                                "fieldType": "single-select",
+                                "type": "EQUALS",
+                                "criteria": [
+                                    {
+                                        "key": "3",
+                                        "name": "3",
+                                        "description": "3"
+                                    },
+                                    {
+                                        "key": "3a",
+                                        "name": "3a",
+                                        "description": "3a"
+                                    },
+                                    {
+                                        "key": "3b",
+                                        "name": "3b",
+                                        "description": "3b"
+                                    },
+                                    {
+                                        "key": "3c",
+                                        "name": "3c",
+                                        "description": "3c"
+                                    },
+                                    {
+                                        "key": "3d",
+                                        "name": "3d",
+                                        "description": "3d"
+                                    }
+                                ]
                             },
                             {
-                                "key": "1a2",
-                                "name": "1a2",
-                                "description": "1a2"
+                                "key": "21905-5",
+                                "name": "TNM-T",
+                                "subCategoryName": "4",
+                                "system": "",
+                                "fieldType": "single-select",
+                                "type": "EQUALS",
+                                "criteria": [
+                                    {
+                                        "key": "4",
+                                        "name": "4",
+                                        "description": "4"
+                                    },
+                                    {
+                                        "key": "4a",
+                                        "name": "4a",
+                                        "description": "4a"
+                                    },
+                                    {
+                                        "key": "4b",
+                                        "name": "4b",
+                                        "description": "4b"
+                                    },
+                                    {
+                                        "key": "4c",
+                                        "name": "4c",
+                                        "description": "4c"
+                                    },
+                                    {
+                                        "key": "4d",
+                                        "name": "4d",
+                                        "description": "4d"
+                                    },
+                                    {
+                                        "key": "4e",
+                                        "name": "4e",
+                                        "description": "4e"
+                                    }
+                                ]
                             },
                             {
-                                "key": "1b",
-                                "name": "1b",
-                                "description": "1b"
+                                "key": "21905-5",
+                                "name": "TNM-T",
+                                "subCategoryName": "a",
+                                "system": "",
+                                "fieldType": "single-select",
+                                "type": "EQUALS",
+                                "criteria": [
+                                    {
+                                        "key": "a",
+                                        "name": "a",
+                                        "description": "a"
+                                    }
+                                ]
                             },
                             {
-                                "key": "1b1",
-                                "name": "1b1",
-                                "description": "1b1"
+                                "key": "21905-5",
+                                "name": "TNM-T",
+                                "subCategoryName": "is",
+                                "system": "",
+                                "fieldType": "single-select",
+                                "type": "EQUALS",
+                                "criteria": [
+                                    {
+                                        "key": "is",
+                                        "name": "is",
+                                        "description": "is"
+                                    },
+                                    {
+                                        "key": "is(DCIS)",
+                                        "name": "is(DCIS)",
+                                        "description": "is(DCIS)"
+                                    },
+                                    {
+                                        "key": "is(LCIS)",
+                                        "name": "is(LCIS)",
+                                        "description": "is(LCIS)"
+                                    },
+                                    {
+                                        "key": "is(Paget)",
+                                        "name": "is(Paget)",
+                                        "description": "is(Paget)"
+                                    },
+                                    {
+                                        "key": "is(pd",
+                                        "name": "is(pd)",
+                                        "description": "is(pd)"
+                                    },
+                                    {
+                                        "key": "is(pu)",
+                                        "name": "is(pu)",
+                                        "description": "is(pu)"
+                                    }
+                                ]
                             },
                             {
-                                "key": "1b2",
-                                "name": "1b2",
-                                "description": "1b2"
-                            },
-                            {
-                                "key": "1c",
-                                "name": "1c",
-                                "description": "1c"
-                            },
-                            {
-                                "key": "1c1",
-                                "name": "1c1",
-                                "description": "1c1"
-                            },
-                            {
-                                "key": "1c2",
-                                "name": "1c2",
-                                "description": "1c2"
-                            },
-                            {
-                                "key": "1c3",
-                                "name": "1c3",
-                                "description": "1c3"
-                            },
-                            {
-                                "key": "1d",
-                                "name": "1d",
-                                "description": "1d"
-                            },
-                            {
-                                "key": "1mi",
-                                "name": "1mi",
-                                "description": "1mi"
-                            },
-                            {
-                                "key": "2",
-                                "name": "2",
-                                "description": "2"
-                            },
-                            {
-                                "key": "2a",
-                                "name": "2a",
-                                "description": "2a"
-                            },
-                            {
-                                "key": "2a1",
-                                "name": "2a1",
-                                "description": "2a1"
-                            },
-                            {
-                                "key": "2a2",
-                                "name": "2a2",
-                                "description": "2a2"
-                            },
-                            {
-                                "key": "2b",
-                                "name": "2b",
-                                "description": "2b"
-                            },
-                            {
-                                "key": "2c",
-                                "name": "2c",
-                                "description": "2c"
-                            },
-                            {
-                                "key": "2d",
-                                "name": "2d",
-                                "description": "2d"
-                            },
-                            {
-                                "key": "3",
-                                "name": "3",
-                                "description": "3"
-                            },
-                            {
-                                "key": "3a",
-                                "name": "3a",
-                                "description": "3a"
-                            },
-                            {
-                                "key": "3b",
-                                "name": "3b",
-                                "description": "3b"
-                            },
-                            {
-                                "key": "3c",
-                                "name": "3c",
-                                "description": "3c"
-                            },
-                            {
-                                "key": "3d",
-                                "name": "3d",
-                                "description": "3d"
-                            },
-                            {
-                                "key": "4",
-                                "name": "4",
-                                "description": "4"
-                            },
-                            {
-                                "key": "4a",
-                                "name": "4a",
-                                "description": "4a"
-                            },
-                            {
-                                "key": "4b",
-                                "name": "4b",
-                                "description": "4b"
-                            },
-                            {
-                                "key": "4c",
-                                "name": "4c",
-                                "description": "4c"
-                            },
-                            {
-                                "key": "4d",
-                                "name": "4d",
-                                "description": "4d"
-                            },
-                            {
-                                "key": "4e",
-                                "name": "4e",
-                                "description": "4e"
-                            },
-                            {
-                                "key": "a",
-                                "name": "a",
-                                "description": "a"
-                            },
-                            {
-                                "key": "is",
-                                "name": "is",
-                                "description": "is"
-                            },
-                            {
-                                "key": "is(DCIS)",
-                                "name": "is(DCIS)",
-                                "description": "is(DCIS)"
-                            },
-                            {
-                                "key": "is(LCIS)",
-                                "name": "is(LCIS)",
-                                "description": "is(LCIS)"
-                            },
-                            {
-                                "key": "is(Paget)",
-                                "name": "is(Paget)",
-                                "description": "is(Paget)"
-                            },
-                            {
-                                "key": "is(pd)",
-                                "name": "is(pd)",
-                                "description": "is(pd)"
-                            },
-                            {
-                                "key": "is(pu)",
-                                "name": "is(pu)",
-                                "description": "is(pu)"
-                            },
-                            {
-                                "key": "X",
-                                "name": "X",
-                                "description": "X"
+                                "key": "21905-5",
+                                "name": "TNM-T",
+                                "subCategoryName": "X",
+                                "system": "",
+                                "fieldType": "single-select",
+                                "type": "EQUALS",
+                                "criteria": [
+                                    {
+                                        "key": "X",
+                                        "name": "X",
+                                        "description": "X"
+                                    }
+                                ]
                             }
                         ]
                     },
@@ -18471,11 +18602,6 @@
                                 "key": "y",
                                 "name": "Klassifikation erfolgte während oder nach initialer multimodaler Therapie",
                                 "description": "Klassifikation erfolgte während oder nach initialer multimodaler Therapie"
-                            },
-                            {
-                                "key": "9",
-                                "name": "native Klassifikation",
-                                "description": "native Klassifikation"
                             }
                         ]
                     },
@@ -18490,11 +18616,6 @@
                                 "key": "r",
                                 "name": "Klassifikation erfolgte zur Beurteilung eines Rezidivs",
                                 "description": "Klassifikation erfolgte zur Beurteilung eines Rezidivs"
-                            },
-                            {
-                                "key": "9",
-                                "name": "native Klassifikation vor Eintreten eines Rezidivs",
-                                "description": "native Klassifikation vor Eintreten eines Rezidivs"
                             }
                         ]
                     }

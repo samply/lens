@@ -161,12 +161,23 @@ const getSingleton = (criterion: AstBottomLayerValue): string => {
           break
         }
 
-        case "conditionRangeDate":
+        case "conditionRangeDate": {
+          expression += substituteRangeCQLExpression(criterion, myCriterion, "condition", "Date", myCQL);
+          break
+        }
+
+        case "primaryConditionRangeDate": {
+          expression += substituteRangeCQLExpression(criterion, myCriterion, "primaryCondition", "Date", myCQL);
+          break
+        }
+
         case "conditionRangeAge": {
-          if (typeof criterion.value == "object"
-            && !(criterion.value instanceof Array)) {
-            expression += substituteCQLExpression(criterion.key, myCriterion.alias, myCQL, "", criterion.value.min as number, criterion.value.max as number)
-          }
+          expression += substituteRangeCQLExpression(criterion, myCriterion, "condition", "Age", myCQL);
+          break
+        }
+
+        case "primaryConditionRangeAge": {
+          expression += substituteRangeCQLExpression(criterion, myCriterion, "primaryCondition", "Age", myCQL);
           break
         }
       }
@@ -175,11 +186,34 @@ const getSingleton = (criterion: AstBottomLayerValue): string => {
   return expression
 }
 
-
-
-
-
-
+const substituteRangeCQLExpression = (
+  criterion: AstBottomLayerValue,
+  myCriterion: {type: string; alias?: string[]},
+  criterionPrefix: string,
+  criterionSuffix: string,
+  rangeCQL: string
+): string => {
+  const input = criterion.value as { min: number, max: number }
+  if (input === null) {
+    console.warn(`Throwing away a ${criterionPrefix}Range${criterionSuffix} criterion, as it is not of type {min: number, max: number}!`)
+    return
+  }
+  if (input.min === 0 && input.max === 0) {
+    console.warn(`Throwing away a ${criterionPrefix}Range${criterionSuffix} criterion, as both dates are undefined!`)
+    return
+  } else if (input.min === 0) {
+    const lowerThanDateTemplate = cqltemplate.get(`${criterionPrefix}LowerThan${criterionSuffix}`)
+    if (lowerThanDateTemplate)
+      return substituteCQLExpression(criterion.key, myCriterion.alias, lowerThanDateTemplate, "", input.min, input.max)
+  } else if (input.max === 0) {
+    const greaterThanDateTemplate = cqltemplate.get(`${criterionPrefix}GreaterThan${criterionSuffix}`)
+    if (greaterThanDateTemplate)
+      return substituteCQLExpression(criterion.key, myCriterion.alias, greaterThanDateTemplate, "", input.min, input.max)
+  } else {
+    return substituteCQLExpression(criterion.key, myCriterion.alias, rangeCQL, "", input.min, input.max)
+  }
+  return
+}
 
 const substituteCQLExpression = (key: string, alias: string[] | undefined, cql: string, value?: string, min?: number, max?: number): string => {
   let cqlString: string

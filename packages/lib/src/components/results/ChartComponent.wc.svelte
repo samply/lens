@@ -31,12 +31,16 @@
     export let title: string = ""; // e.g. 'Gender Distribution'
     export let catalogueGroupCode: string = ""; // e.g. "gender"
     export let indexAxis: string = "x";
+    export let xAxisTitle: string = "";
+    export let yAxisTitle: string = "";
     export let clickToAddState: boolean = false;
     let responseGroupCode: string;
     $: responseGroupCode =
         $catalogueKeyToResponseKeyMap.get(catalogueGroupCode);
 
     export let hintText: string = "";
+    export let tooltips: Map<string, string> = new Map<string, string>();
+    export let headers: Map<string, string> = new Map<string, string>();
     export let displayLegends: boolean = false;
     export let chartType: keyof ChartTypeRegistry = "pie";
     export let perSite: boolean = false;
@@ -97,7 +101,44 @@
                     display: displayLegends,
                     position: "bottom",
                 },
+                tooltip: {
+                   callbacks: {
+                       title: (context: any) => {
+                           const key = context[0].label || '';
+                           let result = (tooltips.get(key))
+                                      ? tooltips.get(key) : key;
+                           return result
+                       }
+                   }
+                }
             },
+            scales: {
+                y: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: yAxisTitle
+                    }
+                },
+                x: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: xAxisTitle
+                    },
+                    ticks: (chartType === "bar") ? {
+                        callback: (val: any) => {
+                            if (typeof val === 'string') return val.toString()
+                            const key: unknown = (initialChartData.data.labels[val])
+                                ? initialChartData.data.labels[val] : val.toString();
+                            if (typeof key !== 'string') return val.toString()
+                            let result = (headers.get(key))
+                                ? headers.get(key) : key;
+                            return result
+                        }
+                    } : []
+                }
+            }
         },
     };
 

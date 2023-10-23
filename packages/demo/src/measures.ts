@@ -58,8 +58,16 @@ export const patientsMeasure = {
 define Gender:
 if (Patient.gender is null) then 'unknown' else Patient.gender
 
+define PrimaryDiagnosis:
+First(
+  from [Condition] C
+  where C.extension.where(url='http://hl7.org/fhir/StructureDefinition/condition-related').empty()
+  sort by date from onset asc
+)
+
 define AgeClass:
 if (Patient.birthDate is null) then 'unknown' else ToString((AgeInYears() div 10) * 10)
+if (PrimaryDiagnosis.onset is null) then 'unknown' else ToString((AgeInYearsAt(FHIRHelpers.ToDateTime(PrimaryDiagnosis.onset)) div 10) * 10)
 
 define PatientDeceased:
 First (from [Observation: Code '75186-7' from loinc] O return O.value.coding.where(system = 'http://dktk.dkfz.de/fhir/onco/core/CodeSystem/VitalstatusCS').code.first())

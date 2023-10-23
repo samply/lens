@@ -23,6 +23,7 @@
     export let texts: CatalogueText = {};
     export let addIconUrl: string | null = null;
     export let toggleIconUrl: string | null = null;
+    export let infoIconUrl: string | null = null;
 
     iconStore.update((store: Map<string,string>) => {
         if (addIconUrl) {
@@ -30,6 +31,9 @@
         }
         if (toggleIconUrl) {
             store.set('toggleIconUrl', toggleIconUrl);
+        }
+        if (infoIconUrl) {
+            store.set('infoIconUrl', infoIconUrl);
         }
         return store;
     })
