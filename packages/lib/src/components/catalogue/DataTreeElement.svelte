@@ -29,7 +29,7 @@
     }
     
     /**
-     * toggles the open state of the subcategorys
+     * watches the open tree nodes store to update the open state of the subcategorys
      */
     let open: boolean = false;
     
@@ -42,8 +42,10 @@
     }
     
     
-    
-    const toggleChildren = () => {
+    /**
+     * adds and removes the subcategorys from the open tree nodes store
+     */
+    const toggleChildren = (): void => {
         openTreeNodes.update((store) => {
             
             let storeTreeNode = store.get(element.key);
@@ -167,8 +169,8 @@
         {/if}
         {'subCategoryName' in element && element.subCategoryName ? element.subCategoryName : element.name}
     </button>
-    {#if element.description}
-        <InfoButtonComponent message={element.description} />
+    {#if element.infoButtonText}
+        <InfoButtonComponent message={element.infoButtonText} />
     {/if}
 
     {#if open}

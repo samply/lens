@@ -24,6 +24,11 @@ lens-catalogue::part(toggle-button-open-icon) {
   transform: rotate(180deg);
 }
 
+
+lens-catalogue::part(data-tree-element) {
+  position: relative;
+}
+
 lens-catalogue::part(data-tree-element-name) {
   font-size: var(--font-size-m);
   color: var(--dark-gray);
@@ -63,7 +68,6 @@ lens-catalogue::part(data-tree-element-toggle-icon-open) {
 
 
 lens-catalogue::part(info-button) {
-  position: relative;
   cursor: pointer;
   background-color: var(--white);
   border: none;
@@ -71,7 +75,6 @@ lens-catalogue::part(info-button) {
 }
 
 lens-catalogue::part(info-button-icon) {
-  position: absolute;
   bottom: var(--gap-xxs);
   width: 16px;
   height: 16px;
@@ -82,13 +85,14 @@ lens-catalogue::part(info-button-dialogue) {
     border: none;
     background-color: var(--white);
     width: max-content;
-    max-width: 80vw;
+    max-width: 200px;
     z-index: 100;
-    padding: var(--gap-xs);
-    top: 0;
-    left: var(--gap-xxs);
+    padding: var(--gap-s);
+    top: var(--gap-m);
+    left: var(--gap-s);
     border: solid 1px var(--light-blue);
     border-radius: var(--border-radius-small);
+    text-align: left;
 }
 
 

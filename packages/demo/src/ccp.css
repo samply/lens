@@ -133,7 +133,7 @@ footer {
   border: solid 1px var(--lightest-gray);
   background-color: var(--white);
   grid-row: 1/-1;
-  overflow: scroll;
+  overflow-y: scroll; 
   height: 100vh;
   position: sticky;
   top: 0;
