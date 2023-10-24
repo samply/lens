@@ -11,7 +11,7 @@
     import { iconStore } from "../../stores/icons";
     import { getHumanReadableQuery } from "../../stores/negotiate";
     
-    export let message: string = "";
+    export let message: string[] = [];
     export let noQueryMessage: string = "Search for all results";
     export let showQuery: boolean = false;
     export let infoIconUrl: string | null = null;
@@ -35,7 +35,7 @@
 
     const displayQueryInfo = () => {
         if(showQuery){
-            message = getHumanReadableQuery().length > 0 ? getHumanReadableQuery() : noQueryMessage;
+            message = getHumanReadableQuery().length > 0 ? [getHumanReadableQuery()] : [noQueryMessage];
         }
         tooltipOpen = !tooltipOpen;
     };
@@ -52,7 +52,9 @@
         {/if}
     {#if tooltipOpen}
         <div part="info-button-dialogue">
-            {message}
+            {#each message as msg}
+                <div part="info-button-dialogue-message">{msg}</div>
+            {/each}
         </div>
     {/if}
 </button>

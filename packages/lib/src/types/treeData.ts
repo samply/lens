@@ -4,8 +4,7 @@ export type Category = {
     key: string;
     name: string;
     childCategories?: Category[];
-    // TODO: Discuss naming with Mats, as this has another meaning than descrtiption in criteria
-    description?: string;
+    infoButtonText?: string[];
     subCategoryName?: string;
 } | {
     key: string;
@@ -15,7 +14,7 @@ export type Category = {
     type: 'EQUALS' | 'BETWEEN';
     criteria: | Criteria[];
     description?: string;
-    
+    infoButtonText?: string[];
 }
 
 export type Criteria = {

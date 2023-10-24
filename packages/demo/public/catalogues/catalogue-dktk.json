@@ -2,7 +2,6 @@
     {
         "key": "patient",
         "name": "Patient",
-        "description": "Hier könnte ihre Werbung stehen!",
         "childCategories": [
             {
                 "key": "gender",
@@ -10,7 +9,6 @@
                 "system": "",
                 "fieldType": "single-select",
                 "type": "EQUALS",
-                "description": "Hier ebenfalls!",
                 "criteria": [
                     {
                         "key": "male",
@@ -39,6 +37,10 @@
                 "name": "Vitalstatus",
                 "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/VitalstatusCS",
                 "fieldType": "single-select",
+                "infoButtonText": [
+                    "\"verstorben\": ein Todesdatum ist dokumentiert oder das aktuelle Lebensalter ist größer 123 Jahre.",
+                    "\"lebend\": wird angenommen, wenn kein Todesdatum dokumentiert ist oder das aktuelle Lebensalter nicht 123 Jahre überschritten hat."
+                ],
                 "type": "EQUALS",
                 "criteria": [
                     {
@@ -58,6 +60,7 @@
     {
         "key": "tumor_entity",
         "name": "Tumorentität",
+        "infoButtonText": ["Ausgewählte Tumorentitäten, die nach Diagnosen (ICD-10-GM Version 2015) und Morphologien (ICD-O-3 Erste Revision 2014) in klinisch relevante Gruppen zusammengefasst sind."],
         "childCategories": [
             {
                 "key": "gliom_all_groups",
@@ -7204,6 +7207,7 @@
                 "system": "http://fhir.de/CodeSystem/dimdi/icd-10-gm",
                 "fieldType": "autocomplete",
                 "type": "EQUALS",
+                "infoButtonText": ["Eine Suche mit dem Platzhalter (%) schließt Untergruppen in die Suche ein, z.B. C34.% sucht nach allen Untergruppen für C34."],
                 "criteria": [
                     {
                         "key": "C97",
@@ -11360,6 +11364,7 @@
             {
                 "key": "urn:oid:2.16.840.1.113883.6.43.1",
                 "name": "Lokalisation ICD-O-3",
+                "infoButtonText": ["Eine Suche mit dem Platzhalter (%) schließt Untergruppen in die Suche ein, z.B. C34.% sucht nach allen Untergruppen für C34."],
                 "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
                 "fieldType": "autocomplete",
                 "type": "EQUALS",
@@ -17891,6 +17896,7 @@
             {
                 "key": "21908-9",
                 "name": "UICC Stadium",
+                "infoButtonText": ["Kriterien beziehen sich auf die klinische oder pathologische TNM-Klassifikation."],
                 "childCategories": [
                     {
                         "key": "21908-9",
@@ -18081,7 +18087,8 @@
             },
             {
                 "key": "tnm",
-                "name": "TNM(c)",
+                "name": "TNM",
+                "infoButtonText": ["Kriterien beziehen sich auf die klinische oder pathologische TNM-Klassifikation."],
                 "childCategories": [
                     {
                         "key": "21905-5",
@@ -18748,6 +18755,7 @@
     {
         "key": "therapy_of_tumor",
         "name": "Therapie des Tumors",
+        "infoButtonText": ["Gibt an, ob für den Patienten ausgewählte Therapien dokumentiert wurden."],
         "system": "",
         "fieldType": "single-select",
         "type": "EQUALS",
@@ -18769,7 +18777,7 @@
             },
             {
                 "key": "IM",
-                "name": "Immunotherapie",
+                "name": "Immuntherapie",
                 "description": ""
             },
             {
@@ -18779,7 +18787,7 @@
             },
             {
                 "key": "KM",
-                "name": "Knochentransplantation",
+                "name": "Knochenmarktransplantation",
                 "description": ""
             }
         ]
@@ -18787,6 +18795,7 @@
     {
         "key": "response_to_therapy",
         "name": "Ansprechen auf Therapie",
+        "infoButtonText": ["Beurteilung der Erkrankung im Verlauf"],
         "childCategories": [
             {
                 "key": "21976-6",
@@ -18794,6 +18803,7 @@
                 "system": "",
                 "fieldType": "single-select",
                 "type": "EQUALS",
+                "infoButtonText": ["Gesamtbeurteilung des Tumorstatus"],
                 "criteria": [
                     {
                         "key": "V",
@@ -18848,6 +18858,7 @@
                 "system": "",
                 "fieldType": "single-select",
                 "type": "EQUALS",
+                "infoButtonText": ["Beurteilung der Situation im Primärtumorbereich"],
                 "criteria": [
                     {
                         "key": "K",
@@ -18897,6 +18908,7 @@
                 "system": "",
                 "fieldType": "single-select",
                 "type": "EQUALS",
+                "infoButtonText": ["Beurteilung der Situation im Bereich der regionären Lymphknoten."],
                 "criteria": [
                     {
                         "key": "K",
@@ -18946,6 +18958,7 @@
                 "system": "",
                 "fieldType": "single-select",
                 "type": "EQUALS",
+                "infoButtonText": ["Beurteilung der Situation im Bereich der Fernmetastasen."],
                 "criteria": [
                     {
                         "key": "K",
@@ -18999,6 +19012,7 @@
     {
         "key": "biosamples",
         "name": "Bioproben",
+        "infoButtonText": ["Bioprobentypen der Patienten gemäß der ausgewählten Kriterien. Es werden auch Einträge angezeigt, die ggfs. außerhalb der Suchkriterien liegen."],
         "childCategories": [
             {
                 "key": "sample_kind",
@@ -19006,6 +19020,7 @@
                 "system": "",
                 "fieldType": "single-select",
                 "type": "EQUALS",
+                "infoButtonText": ["Materialtyp der Bioprobe"],
                 "criteria": [
                     {
                         "key": "tumor-tissue-ffpe",
