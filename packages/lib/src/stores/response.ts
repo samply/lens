@@ -74,7 +74,7 @@ export const getAggregatedStratifierForStratumCode = (store: ResponseStore, code
  * (stratum code is the value.text of a stratum item e.g.'male')
  */
 
-export const getAggregatedPopulationForStratumCode = (store: ResponseStore, stratumCode: string): number => {
+export const getAggregatedPopulationForStratumCode = (store: ResponseStore, stratumCode: string, stratifier: string): number => {
 
     const sites = Array.from(store.values());
 
@@ -82,7 +82,7 @@ export const getAggregatedPopulationForStratumCode = (store: ResponseStore, stra
     if (store.size === 0) return 1;
 
     sites.forEach((site) => {
-        population.push(getSitePopulationForStratumCode(site.data, stratumCode))
+        population.push(getSitePopulationForStratumCode(site.data, stratumCode, stratifier))
     })
 
     return population.reduce((a, b) => a + b, 0);
@@ -94,13 +94,14 @@ export const getAggregatedPopulationForStratumCode = (store: ResponseStore, stra
  * @param code the code to search for
  * @returns the population for a given stratum code for a given site
  */
-export const getSitePopulationForStratumCode = (site: SiteData, stratumCode: string): number => {
+export const getSitePopulationForStratumCode = (site: SiteData, stratumCode: string, stratifier: string): number => {
     if (!site) return 0;
 
     let population = 0;
 
     site.group.forEach((group) => {
         group.stratifier.forEach((stratifierItem) => {
+            if(stratifierItem.code[0].text !== stratifier) return;
             stratifierItem.stratum?.forEach((stratumItem) => {
                 if (stratumItem.value.text === stratumCode) {
                     population = stratumItem.population[0].count;
