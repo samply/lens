@@ -17912,30 +17912,25 @@
                                 "description": "0"
                             },
                             {
-                                "key": "0is",
-                                "name": "0is",
-                                "description": "0is"
-                            },
-                            {
                                 "key": "0a",
                                 "name": "0a",
                                 "description": "0a"
+                            },
+                            {
+                                "key": "0is",
+                                "name": "0is",
+                                "description": "0is"
                             }
                         ]
                     },
                     {
                         "key": "21908-9",
-                        "subCategoryName": "I",
+                        "subCategoryName": "IA",
                         "name": "UICC Stadium",
                         "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/UiccstadiumCS",
                         "fieldType": "single-select",
                         "type": "EQUALS",
                         "criteria": [
-                            {
-                                "key": "I",
-                                "name": "I",
-                                "description": "I"
-                            },
                             {
                                 "key": "IA",
                                 "name": "IA",
@@ -17950,7 +17945,17 @@
                                 "key": "IA2",
                                 "name": "IA2",
                                 "description": "IA2"
-                            },
+                            }
+                        ]
+                    },
+                    {
+                        "key": "21908-9",
+                        "subCategoryName": "IB",
+                        "name": "UICC Stadium",
+                        "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/UiccstadiumCS",
+                        "fieldType": "single-select",
+                        "type": "EQUALS",
+                        "criteria": [
                             {
                                 "key": "IB",
                                 "name": "IB",
@@ -17965,11 +17970,21 @@
                                 "key": "IB2",
                                 "name": "IB2",
                                 "description": "IB2"
-                            },
+                            }
+                        ]
+                    },
+                    {
+                        "key": "21908-9",
+                        "subCategoryName": "IC",
+                        "name": "UICC Stadium",
+                        "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/UiccstadiumCS",
+                        "fieldType": "single-select",
+                        "type": "EQUALS",
+                        "criteria": [
                             {
-                                "key": "IS",
-                                "name": "IS",
-                                "description": "IS"
+                                "key": "IC",
+                                "name": "IC",
+                                "description": "IC"
                             }
                         ]
                     },
@@ -18082,6 +18097,21 @@
                                 "description": "IVC"
                             }
                         ]
+                    },
+                    {
+                        "key": "21908-9",
+                        "subCategoryName": "IS",
+                        "name": "UICC Stadium",
+                        "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/UiccstadiumCS",
+                        "fieldType": "single-select",
+                        "type": "EQUALS",
+                        "criteria": [
+                            {
+                                "key": "IS",
+                                "name": "IS",
+                                "description": "IS"
+                            }
+                        ]
                     }
                 ]
             },
@@ -18178,9 +18208,9 @@
                                         "description": "1d"
                                     },
                                     {
-                                        "key": "1mi",
-                                        "name": "1mi",
-                                        "description": "1mi"
+                                        "key": "1mic",
+                                        "name": "1mic",
+                                        "description": "1mic"
                                     }
                                 ]
                             },
@@ -18307,21 +18337,6 @@
                             {
                                 "key": "21905-5",
                                 "name": "TNM-T",
-                                "subCategoryName": "a",
-                                "system": "",
-                                "fieldType": "single-select",
-                                "type": "EQUALS",
-                                "criteria": [
-                                    {
-                                        "key": "a",
-                                        "name": "a",
-                                        "description": "a"
-                                    }
-                                ]
-                            },
-                            {
-                                "key": "21905-5",
-                                "name": "TNM-T",
                                 "subCategoryName": "is",
                                 "system": "",
                                 "fieldType": "single-select",
@@ -18331,7 +18346,17 @@
                                         "key": "is",
                                         "name": "is",
                                         "description": "is"
-                                    },
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "21905-5",
+                                "name": "TNM-T",
+                                "subCategoryName": "is (Mamma)",
+                                "system": "",
+                                "fieldType": "single-select",
+                                "type": "EQUALS",
+                                "criteria": [
                                     {
                                         "key": "is(DCIS)",
                                         "name": "is(DCIS)",
@@ -18346,16 +18371,26 @@
                                         "key": "is(Paget)",
                                         "name": "is(Paget)",
                                         "description": "is(Paget)"
-                                    },
-                                    {
-                                        "key": "is(pd",
-                                        "name": "is(pd)",
-                                        "description": "is(pd)"
-                                    },
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "21905-5",
+                                "name": "TNM-T",
+                                "subCategoryName": "is (Prostata)",
+                                "system": "",
+                                "fieldType": "single-select",
+                                "type": "EQUALS",
+                                "criteria": [
                                     {
                                         "key": "is(pu)",
                                         "name": "is(pu)",
                                         "description": "is(pu)"
+                                    },
+                                    {
+                                        "key": "is(pd)",
+                                        "name": "is(pd)",
+                                        "description": "is(pd)"
                                     }
                                 ]
                             },
@@ -18384,9 +18419,64 @@
                         "type": "EQUALS",
                         "criteria": [
                             {
+                                "key": "(sn)(mol+)",
+                                "name": "(sn)(mol+)",
+                                "description": "(sn)(mol+)"
+                            },
+                            {
+                                "key": "(sn)(mol-)",
+                                "name": "(sn)(mol-)",
+                                "description": "(sn)(mol-)"
+                            },
+                            {
+                                "key": "(sn)(i+)",
+                                "name": "(sn)(i+)",
+                                "description": "(sn)(i+)"
+                            },
+                            {
+                                "key": "(sn)(i-)",
+                                "name": "(sn)(i-)",
+                                "description": "(sn)(i-)"
+                            },
+                            {
+                                "key": "(mol+)",
+                                "name": "(mol+)",
+                                "description": "(mol+)"
+                            },
+                            {
+                                "key": "(mol-)",
+                                "name": "(mol-)",
+                                "description": "(mol-)"
+                            },
+                            {
+                                "key": "(i+)",
+                                "name": "(i+)",
+                                "description": "(i+)"
+                            },
+                            {
+                                "key": "(i-)",
+                                "name": "(i-)",
+                                "description": "(i-)"
+                            },
+                            {
+                                "key": "X",
+                                "name": "X",
+                                "description": "X"
+                            },
+                            {
+                                "key": "X(sn)",
+                                "name": "X(sn)",
+                                "description": "X(sn)"
+                            },
+                            {
                                 "key": "0",
                                 "name": "0",
                                 "description": "0"
+                            },
+                            {
+                                "key": "0(sn)",
+                                "name": "0(sn)",
+                                "description": "0(sn)"
                             },
                             {
                                 "key": "0(i+)",
@@ -18394,24 +18484,19 @@
                                 "description": "0(i+)"
                             },
                             {
-                                "key": "0(i-)",
-                                "name": "0(i-)",
-                                "description": "0(i-)"
-                            },
-                            {
-                                "key": "0(mol+)",
-                                "name": "0(mol+)",
-                                "description": "0(mol+)"
-                            },
-                            {
-                                "key": "0(mol-)",
-                                "name": "0(mol-)",
-                                "description": "0(mol-)"
-                            },
-                            {
                                 "key": "1",
                                 "name": "1",
                                 "description": "1"
+                            },
+                            {
+                                "key": "1(sn)",
+                                "name": "1(sn)",
+                                "description": "1(sn)"
+                            },
+                            {
+                                "key": "1mi",
+                                "name": "1mi",
+                                "description": "1mi"
                             },
                             {
                                 "key": "1a",
@@ -18427,11 +18512,6 @@
                                 "key": "1c",
                                 "name": "1c",
                                 "description": "1c"
-                            },
-                            {
-                                "key": "1mi",
-                                "name": "1mi",
-                                "description": "1mi"
                             },
                             {
                                 "key": "2",
@@ -18472,11 +18552,6 @@
                                 "key": "3c",
                                 "name": "3c",
                                 "description": "3c"
-                            },
-                            {
-                                "key": "X",
-                                "name": "X",
-                                "description": "X"
                             }
                         ]
                     },
@@ -18488,14 +18563,104 @@
                         "type": "EQUALS",
                         "criteria": [
                             {
-                                "key": "0",
-                                "name": "0",
-                                "description": "0"
+                                "key": "2(cy-)",
+                                "name": "2(cy-)",
+                                "description": "2(cy-)"
                             },
                             {
-                                "key": "1",
-                                "name": "1",
-                                "description": "1"
+                                "key": "2(cy+)",
+                                "name": "2(cy+)",
+                                "description": "2(cy+)"
+                            },
+                            {
+                                "key": "2(mol-)",
+                                "name": "2(mol-)",
+                                "description": "2(mol-)"
+                            },
+                            {
+                                "key": "2(mol+)",
+                                "name": "2(mol+)",
+                                "description": "2(mol+)"
+                            },
+                            {
+                                "key": "2(i-)",
+                                "name": "2(i-)",
+                                "description": "2(i-)"
+                            },
+                            {
+                                "key": "2(i+)",
+                                "name": "2(i+)",
+                                "description": "2(i+)"
+                            },
+                            {
+                                "key": "1(cy-)",
+                                "name": "1(cy-)",
+                                "description": "1(cy-)"
+                            },
+                            {
+                                "key": "1(cy+)",
+                                "name": "1(cy+)",
+                                "description": "1(cy+)"
+                            },
+                            {
+                                "key": "1(mol-)",
+                                "name": "1(mol-)",
+                                "description": "1(mol-)"
+                            },
+                            {
+                                "key": "1(mol+)",
+                                "name": "1(mol+)",
+                                "description": "1(mol+)"
+                            },
+                            {
+                                "key": "1(i-)",
+                                "name": "1(i-)",
+                                "description": "1(i-)"
+                            },
+                            {
+                                "key": "1(i+)",
+                                "name": "1(i+)",
+                                "description": "1(i+)"
+                            },
+                            {
+                                "key": "1e",
+                                "name": "1e",
+                                "description": "1e"
+                            },
+                            {
+                                "key": "1d",
+                                "name": "1d",
+                                "description": "1d"
+                            },
+                            {
+                                "key": "0(cy-)",
+                                "name": "0(cy-)",
+                                "description": "0(cy-)"
+                            },
+                            {
+                                "key": "0(cy+)",
+                                "name": "0(cy+)",
+                                "description": "0(cy+)"
+                            },
+                            {
+                                "key": "0(mol-)",
+                                "name": "0(mol-)",
+                                "description": "0(mol-)"
+                            },
+                            {
+                                "key": "0(mol+)",
+                                "name": "0(mol+)",
+                                "description": "0(mol+)"
+                            },
+                            {
+                                "key": "0(i-)",
+                                "name": "0(i-)",
+                                "description": "0(i-)"
+                            },
+                            {
+                                "key": "0(i+)",
+                                "name": "0(i+)",
+                                "description": "0(i+)"
                             },
                             {
                                 "key": "1a",
@@ -18513,34 +18678,39 @@
                                 "description": "1c"
                             },
                             {
-                                "key": "1d",
-                                "name": "1d",
-                                "description": "1d"
+                                "key": "2",
+                                "name": "2",
+                                "description": "2"
                             },
                             {
-                                "key": "1e",
-                                "name": "1e",
-                                "description": "1e"
+                                "key": "2a",
+                                "name": "2a",
+                                "description": "2a"
                             },
                             {
-                                "key": "0(i-)",
-                                "name": "0(i-)",
-                                "description": "0(i-)"
+                                "key": "2b",
+                                "name": "2b",
+                                "description": "2b"
                             },
                             {
-                                "key": "0(i+)",
-                                "name": "0(i+)",
-                                "description": "0(i+)"
+                                "key": "2c",
+                                "name": "2c",
+                                "description": "2c"
                             },
                             {
-                                "key": "0(mol-)",
-                                "name": "0(mol-)",
-                                "description": "0(mol-)"
+                                "key": "1",
+                                "name": "1",
+                                "description": "1"
                             },
                             {
-                                "key": "0(mol+)",
-                                "name": "0(mol+)",
-                                "description": "0(mol+)"
+                                "key": "0",
+                                "name": "0",
+                                "description": "0"
+                            },
+                            {
+                                "key": "X",
+                                "name": "X",
+                                "description": "X"
                             }
                         ]
                     },
