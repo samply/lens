@@ -64,7 +64,7 @@ export const alias = new Map<string, string>([
     ["TNM-x", "exists from [Observation: Code '21908-9' from {{A1}}] O\nwhere O.component.where(code.coding contains Code '{{K}}' from {{A1}}).value.coding contains Code '{{C}}' from {{A2}}"],
     ["Organization", "Patient.managingOrganization.reference = \"Organization Ref\"('Klinisches Krebsregister/ITM')"],
     ["department", "exists from [Encounter] I\nwhere I.identifier.value = '{{C}}' "],
-
+    ["uiccstadium", "(exists ([Observation: Code '21908-9' from loinc] O where O.value.coding.code contains '{{C}}')) or (exists ([Observation: Code '21902-2' from loinc] O where O.value.coding.code contains '{{C}}'))"]
   ])
 
   export const criterionMap = new Map<string, {type: string, alias?: string[]}>([
@@ -88,7 +88,7 @@ export const alias = new Map<string, string>([
     ["pat_with_samples", {type: "hasSpecimen"}],
     ["age_at_diagnosis", {type: "conditionRangeAge"}],
     ["age_at_primary_diagnosis", {type: "primaryConditionRangeAge"}],
-    ["21908-9", {type: "observation", alias: ["loinc", "uiccstadiumcs"]}],  //uicc TODO 2 profiles TNMc and TNMp is that a problem?
+    ["21908-9", {type: "uiccstadium", alias: ["loinc", "uiccstadiumcs"]}],
     ["21905-5", {type: "TNM-x", alias: ["loinc", "TNMTCS"]}],  //tnm component
     ["21906-3", {type: "TNM-x", alias: ["loinc", "TNMNCS"]}],  //tnm component
     ["21907-1", {type: "TNM-x", alias: ["loinc", "TNMMCS"]}],  //tnm component

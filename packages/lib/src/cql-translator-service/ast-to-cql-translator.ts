@@ -106,6 +106,7 @@ const getSingleton = (criterion: AstBottomLayerValue): string => {
         case "conditionBodySite":
         case "conditionLocalization":
         case "observation":
+        case "uiccstadium":
         case "observationMetastasis":
         case "observationMetastasisBodySite":
         case "procedure":
@@ -218,7 +219,7 @@ const substituteRangeCQLExpression = (
 const substituteCQLExpression = (key: string, alias: string[] | undefined, cql: string, value?: string, min?: number, max?: number): string => {
   let cqlString: string
   if (value) {
-    cqlString = cql.replace(new RegExp("{{C}}"), value)
+    cqlString = cql.replace(/{{C}}/g, value)
   } else {
     cqlString = cql
   }
