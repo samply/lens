@@ -1,0 +1,19 @@
+{"chartOptions": 
+    {
+        "diagnosis": {
+            "hintText": ["Bei Patienten mit mehreren onkologischen Diagnosen werden auch Einträge angezeigt, die ggfs. nicht den ausgewählten Suchkriterien entsprechen."]
+        },
+        "age_at_diagnosis": {
+            "hintText": ["Bei Patienten mit mehreren Erstdiagnosen werden auch Einträge angezeigt, die ggfs. außerhalb der Suchkriterien liegen. "]
+        },
+        "75186-7": {
+            "hintText": ["\"verstorben\": ein Todesdatum ist dokumentiert oder das aktuelle Lebensalter ist größer 123 Jahre.", "\"lebend\": wird angenommen, wenn kein Todesdatum dokumentiert ist oder das aktuelle Lebensalter nicht 123 Jahre überschritten hat.", "\"unbekannt\": kein Geburtsdatum oder Todesdatum bekannt."]
+        },
+        "medicationStatements": {
+            "hintText": ["Art der systemischen oder abwartenden Therapie (ADT Basisdatensatz Versionen 2014, 2021)"]
+        },
+        "sample_kind": {
+            "hintText":["Verteilung der Bioprobentypen der Patienten gemäß der ausgewählten Kriterien. Es werden auch Einträge angezeigt, die ggfs. außerhalb der Suchkriterien liegen."]
+        } 
+    }
+}

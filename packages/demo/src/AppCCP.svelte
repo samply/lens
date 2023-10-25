@@ -10,11 +10,18 @@
   } from "./measures";
 
   let mockCatalogueData = "";
+  let libraryOptions = ""
 
   fetch("catalogues/catalogue-dktk.json")
     .then((response) => response.text())
     .then((data) => {
       mockCatalogueData = data;
+    });
+
+  fetch("options.json")
+    .then((response) => response.json())
+    .then((data) => {
+      libraryOptions = data
     });
 
   const measures = [
@@ -186,6 +193,7 @@
     .set("derivative-other", "Other derivative");
 </script>
 
+
 <header>
   <div class="logo">
     <img src="../dktk.svg" alt="Logo des DKTK" />
@@ -203,13 +211,6 @@
     <lens-search-bar
       treeData={mockCatalogueData}
       noMatchesFoundMessage={"keine Ergebnisse gefunden"}
-      measures={[
-        dktkPatientsMeasure,
-        dktkDiagnosisMeasure,
-        dktkSpecimenMeasure,
-        dktkPatientsMeasure,
-        dktkMedicationStatementsMeasure,
-      ]}
     />
     <lens-info-button
       infoIconUrl="info-circle-svgrepo-com.svg"
@@ -338,3 +339,4 @@
     >
   </div>
 </footer>
+<lens-options options={libraryOptions} catalogueData={mockCatalogueData}/>
