@@ -1,7 +1,13 @@
 <script lang="ts">
   import "../../lib";
   import type { CatalogueText } from "../../lib/src/types/texts";
-    import { dktkDiagnosisMeasure, dktkMedicationStatementsMeasure, dktkPatientsMeasure, dktkProceduresMeasure, dktkSpecimenMeasure } from "./measures";
+  import {
+    dktkDiagnosisMeasure,
+    dktkMedicationStatementsMeasure,
+    dktkPatientsMeasure,
+    dktkProceduresMeasure,
+    dktkSpecimenMeasure,
+  } from "./measures";
 
   let mockCatalogueData = "";
 
@@ -16,10 +22,10 @@
     dktkDiagnosisMeasure,
     dktkSpecimenMeasure,
     dktkProceduresMeasure,
-    dktkMedicationStatementsMeasure
+    dktkMedicationStatementsMeasure,
   ];
 
-  const backendMeasures = `DKTK_STRAT_DEF_IN_INITIAL_POPULATION`
+  const backendMeasures = `DKTK_STRAT_DEF_IN_INITIAL_POPULATION`;
 
   const catalogueText: CatalogueText = {
     group: "Group",
@@ -47,9 +53,9 @@
   const catalogueKeyToResponseKeyMap = [
     ["gender", "Gender"],
     ["age_at_diagnosis", "Age"],
-    ['diagnosis', 'diagnosis'],
-    ['medicationStatements', "MedicationType"],
-    ["sample_kind", 'sample_kind' ],
+    ["diagnosis", "diagnosis"],
+    ["medicationStatements", "MedicationType"],
+    ["sample_kind", "sample_kind"],
     ["therapy_of_tumor", "ProcedureType"],
     ["75186-7", "75186-7"],
     // ["encounter", "Encounter"],
@@ -97,84 +103,87 @@
     ["mannheim", "Mannheim"],
     ["dktk-test", "DKTK-Test"],
     ["hamburg", "Hamburg"],
-
   ];
 
   const backendConfig = {
     url: "https://backend.demo.lens.samply.de/prod/",
     // url: "http://localhost:8080",
     backends: [
-      'mannheim',
-      'freiburg',
-      'muenchen-tum',
-      'hamburg',
-      'frankfurt',
-      'berlin',
-      'dresden',
-      'mainz',
-      'muenchen-lmu',
-      'essen',
-      'ulm',
-      'wuerzburg',
-      'hannover',
+      "mannheim",
+      "freiburg",
+      "muenchen-tum",
+      "hamburg",
+      "frankfurt",
+      "berlin",
+      "dresden",
+      "mainz",
+      "muenchen-lmu",
+      "essen",
+      "ulm",
+      "wuerzburg",
+      "hannover",
     ],
     uiSiteMap: uiSiteMap,
     catalogueKeyToResponseKeyMap: catalogueKeyToResponseKeyMap,
   };
 
   const genderHeaders: Map<string, string> = new Map<string, string>()
-    .set('male', 'männlich')
-    .set('female', 'weiblich')
-    .set('other', 'divers, intersexuell')
-    .set('unknown', 'unbekannt');
+    .set("male", "männlich")
+    .set("female", "weiblich")
+    .set("other", "divers, intersexuell")
+    .set("unknown", "unbekannt");
 
   const vitalStateHeaders: Map<string, string> = new Map<string, string>()
-    .set('lebend', 'alive')
-    .set('verstorben', 'deceased')
-    .set('unbekannt', 'unknown');
+    .set("lebend", "alive")
+    .set("verstorben", "deceased")
+    .set("unbekannt", "unknown");
 
-  const therapyHeaders: Map<string, string> = new Map<string, string>()
-    .set('medicationStatements', 'Sys. T');
+  const therapyHeaders: Map<string, string> = new Map<string, string>().set(
+    "medicationStatements",
+    "Sys. T"
+  );
 
   const therapyTooltips: Map<string, string> = new Map<string, string>()
-    .set('OP', 'Operationen')
-    .set('ST', 'Strahlentherapien')
-    .set('medicationStatements', 'Systemische Therapien');
+    .set("OP", "Operationen")
+    .set("ST", "Strahlentherapien")
+    .set("medicationStatements", "Systemische Therapien");
 
   const systemicTherapyTooltips: Map<string, string> = new Map<string, string>()
-    .set('CH', 'Chemotherapie')
-    .set('HO', 'Hormontherapie')
-    .set('IM', 'Immun- und Antikörpertherapie')
-    .set('KM', 'Knochenmarkstransplantation')
-    .set('WS', 'Wait and see')
-    .set('AS', 'Active Surveillance')
-    .set('ZS', 'Zielgerichtete Substanzen')
-    .set('SO', 'Sonstiges')
-    .set('ST', 'Strahlentherapie')
-    .set('OP', 'Operation')
+    .set("CH", "Chemotherapie")
+    .set("HO", "Hormontherapie")
+    .set("IM", "Immun- und Antikörpertherapie")
+    .set("KM", "Knochenmarkstransplantation")
+    .set("WS", "Wait and see")
+    .set("AS", "Active Surveillance")
+    .set("ZS", "Zielgerichtete Substanzen")
+    .set("SO", "Sonstiges")
+    .set("ST", "Strahlentherapie")
+    .set("OP", "Operation");
 
   const specimenHeaders: Map<string, string> = new Map<string, string>()
-    .set('whole-blood','Whole blood')
-    .set('bone-marrow','Bone marrow')
-    .set('buffy-coat','Buffy-Coat')
-    .set('dried-whole-blood','Dried whole blood')
-    .set('peripheral-blood-cells-vital','Peripheral blood mononuclear cells (PBMCs, viable)')
-    .set('blood-plasma','Plasma')
-    .set('blood-serum','Serum')
-    .set('ascites','Ascites')
-    .set('csf-liquor','CSF/Liquor')
-    .set('saliva','Saliva')
-    .set('stool-faeces','Stool/Faeces')
-    .set('urine','Urine')
-    .set('swab','Swab')
-    .set('liquid-other','Other liquid biosample/storage')
-    .set('tissue-ffpe','Tissue FFPE')
-    .set('tissue-frozen','Tissue frozen')
-    .set('tissue-other','Other tissue storage')
-    .set('dna','DNA')
-    .set('rna','RNA')
-    .set('derivative-other','Other derivative')
-
+    .set("whole-blood", "Whole blood")
+    .set("bone-marrow", "Bone marrow")
+    .set("buffy-coat", "Buffy-Coat")
+    .set("dried-whole-blood", "Dried whole blood")
+    .set(
+      "peripheral-blood-cells-vital",
+      "Peripheral blood mononuclear cells (PBMCs, viable)"
+    )
+    .set("blood-plasma", "Plasma")
+    .set("blood-serum", "Serum")
+    .set("ascites", "Ascites")
+    .set("csf-liquor", "CSF/Liquor")
+    .set("saliva", "Saliva")
+    .set("stool-faeces", "Stool/Faeces")
+    .set("urine", "Urine")
+    .set("swab", "Swab")
+    .set("liquid-other", "Other liquid biosample/storage")
+    .set("tissue-ffpe", "Tissue FFPE")
+    .set("tissue-frozen", "Tissue frozen")
+    .set("tissue-other", "Other tissue storage")
+    .set("dna", "DNA")
+    .set("rna", "RNA")
+    .set("derivative-other", "Other derivative");
 </script>
 
 <header>
@@ -183,7 +192,10 @@
   </div>
   <h1>CCP Explorer</h1>
   <div class="logo logo-dkfz">
-    <img src="../Deutsches_Krebsforschungszentrum_Logo.svg" alt="Logo des DKTK" />
+    <img
+      src="../Deutsches_Krebsforschungszentrum_Logo.svg"
+      alt="Logo des DKTK"
+    />
   </div>
 </header>
 <main>
@@ -191,23 +203,32 @@
     <lens-search-bar
       treeData={mockCatalogueData}
       noMatchesFoundMessage={"keine Ergebnisse gefunden"}
-      measures={[dktkPatientsMeasure, dktkDiagnosisMeasure, dktkSpecimenMeasure, dktkPatientsMeasure, dktkMedicationStatementsMeasure]}
-    >
-  </lens-search-bar>
-  <lens-info-button infoIconUrl='info-circle-svgrepo-com.svg' noQueryMessage="Leere Suchanfrage: Sucht nach allen Ergebnissen." showQuery={true} />
-  <lens-search-button
-    title="Suchen"
-    {measures}
-    backendConfig={JSON.stringify(backendConfig)}
-    {backendMeasures}
-  />
+      measures={[
+        dktkPatientsMeasure,
+        dktkDiagnosisMeasure,
+        dktkSpecimenMeasure,
+        dktkPatientsMeasure,
+        dktkMedicationStatementsMeasure,
+      ]}
+    />
+    <lens-info-button
+      infoIconUrl="info-circle-svgrepo-com.svg"
+      noQueryMessage="Leere Suchanfrage: Sucht nach allen Ergebnissen."
+      showQuery={true}
+    />
+    <lens-search-button
+      title="Suchen"
+      {measures}
+      backendConfig={JSON.stringify(backendConfig)}
+      {backendMeasures}
+    />
   </div>
   <div class="grid">
     <div class="catalogue">
       <lens-catalogue
-        toggleIconUrl='right-arrow-svgrepo-com.svg'
-        addIconUrl='long-right-arrow-svgrepo-com.svg'
-        infoIconUrl='info-circle-svgrepo-com.svg'
+        toggleIconUrl="right-arrow-svgrepo-com.svg"
+        addIconUrl="long-right-arrow-svgrepo-com.svg"
+        infoIconUrl="info-circle-svgrepo-com.svg"
         treeData={mockCatalogueData}
         texts={catalogueText}
         toggle={{ collapsable: false, open: catalogueopen }}
@@ -238,7 +259,6 @@
           catalogueGroupCode="gender"
           chartType="pie"
           displayLegends={true}
-          clickToAddState={true}
           headers={genderHeaders}
         />
       </div>
@@ -247,11 +267,10 @@
           title="Diagnose"
           catalogueGroupCode="diagnosis"
           chartType="bar"
-          indexAxis='y'
-          clickToAddState={true}
-          groupingDivider='.'
-          groupingLabel='.%'
-          filterRegex='^[CD].*'
+          indexAxis="y"
+          groupingDivider="."
+          groupingLabel=".%"
+          filterRegex="^[CD].*"
           xAxisTitle="Anzahl der Diagnosen"
           yAxisTitle="ICD-10-Codes"
         />
@@ -261,7 +280,6 @@
           title="Alter bei Erstdiagnose"
           catalogueGroupCode="age_at_diagnosis"
           chartType="bar"
-          clickToAddState={true}
           groupRange={10}
           xAxisTitle="Alter"
           yAxisTitle="Anzahl der Primärdiagnosen"
@@ -273,7 +291,6 @@
           catalogueGroupCode="75186-7"
           chartType="pie"
           displayLegends={true}
-          clickToAddState={true}
           headers={vitalStateHeaders}
         />
       </div>
@@ -282,7 +299,6 @@
           title="Therapieart"
           catalogueGroupCode="therapy_of_tumor"
           chartType="bar"
-          clickToAddState={true}
           headers={therapyHeaders}
           tooltips={therapyTooltips}
           yAxisTitle="Anzahl der Therapien"
@@ -293,7 +309,6 @@
           title="Systemische Therapien"
           catalogueGroupCode="medicationStatements"
           chartType="bar"
-          clickToAddState={true}
           tooltips={systemicTherapyTooltips}
           yAxisTitle="Anzahl der Therapien"
         />
@@ -303,7 +318,6 @@
           title="Proben"
           catalogueGroupCode="sample_kind"
           chartType="bar"
-          clickToAddState={true}
           xAxisTitle="Probentypen"
           yAxisTitle="Probenanzahl"
           tooltips={specimenHeaders}
