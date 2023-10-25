@@ -281,6 +281,7 @@
           catalogueGroupCode="age_at_diagnosis"
           chartType="bar"
           groupRange={10}
+          filterRegex="^(1*[12]*[0-9])"
           xAxisTitle="Alter"
           yAxisTitle="Anzahl der Primärdiagnosen"
         />
