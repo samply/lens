@@ -48,6 +48,7 @@
     export let groupingDivider: string | null = null;
     export let filterRegex: string | null = null;
     export let groupingLabel: string = "";
+    export let viewScales: boolean = chartType !== "pie" ? true : false;
 
     export let backgroundColor: string[] = [
         "#4dc9f6",
@@ -114,14 +115,14 @@
             },
             scales: {
                 y: {
-                    display: true,
+                    display: viewScales,
                     title: {
                         display: true,
                         text: yAxisTitle
                     }
                 },
                 x: {
-                    display: true,
+                    display: viewScales,
                     title: {
                         display: true,
                         text: xAxisTitle
