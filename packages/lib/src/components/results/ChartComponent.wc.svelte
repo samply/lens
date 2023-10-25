@@ -194,7 +194,8 @@
                 const stratifierCodeCount: number =
                     getAggregatedPopulationForStratumCode(
                         responseStore,
-                        stratifierCode
+                        stratifierCode,
+                        responseGroupCode
                     );
                 return stratifierCodeCount;
             });
@@ -253,7 +254,8 @@
                             label: label + groupingLabel,
                             value: getAggregatedPopulationForStratumCode(
                                 responseStore,
-                                label
+                                label,
+                                responseGroupCode
                             ),
                         },
                     ];
@@ -279,7 +281,8 @@
 
                 superClassItem.value += getAggregatedPopulationForStratumCode(
                     responseStore,
-                    label
+                    label,
+                    responseGroupCode
                 );
 
                 return [
