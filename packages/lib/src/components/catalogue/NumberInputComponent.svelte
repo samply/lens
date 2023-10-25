@@ -21,9 +21,8 @@
      */
     const transformName = (): string => {
         if (from === to) return `${from}`;
-        if (from < to && !from) return `≤ ${to}`;
-        if (from !== null && to === null) return `≥ ${from}`;
-        if (from === null && to !== null) return `≤ ${to}`;
+        if(!to && from) return `≥ ${from}`
+        if(!from && to) return `≤ ${to}`
         if (from < to) return ` ${from} - ${to}`;
         return "invalid";
     };
@@ -113,11 +112,8 @@
             >
                 {$catalogueTextStore.numberInput.labelFrom}
                 <input
-                    part="number-input-formfield number-input-formfield-from{from >
-                        to &&
-                        to !== null ?
-                        ' formfield-error': ''
-                        }"
+                    part="number-input-formfield number-input-formfield-from
+                        {to && from > to ? ' formfield-error': ''}"
                     type="number"
                     bind:value={from}
                     min="0"
@@ -129,11 +125,8 @@
             >
                 {$catalogueTextStore.numberInput.labelTo}
                 <input
-                    part="number-input-formfield number-input-formfield-from{from >
-                        to &&
-                        to !== null ?
-                        ' formfield-error' : ''
-                        }"
+                    part="number-input-formfield number-input-formfield-from
+                        {to && from > to ? ' formfield-error' : ''}"
                     type="number"
                     bind:value={to}
                     min="0"
