@@ -47,7 +47,7 @@ export const translateAstToCql = (query: AstTopLayer, returnOnlySingeltons: bool
   singletons += resolveOperation(query)
 
   if (query.children.length == 0) {
-    singletons += "true"
+    singletons += "\ntrue"
   }
 
   if (returnOnlySingeltons) {

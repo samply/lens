@@ -7,9 +7,11 @@ lens-chart {
   lens-chart::part(chart-wrapper) {
     display: grid;
     grid-template-rows: auto 1fr auto;
+    position: relative;
   
   }
   
+
   lens-chart::part(chart-title) {
     text-align: center;
     margin: 0;
@@ -17,14 +19,44 @@ lens-chart {
   }
   
   
-  lens-chart::part(chart-canvas) {
-    width: 100%;
-    max-height: 400px;
-  }
-  
-  lens-chart::part(chart-hint) {
-    font-size: var(--font-size-xs);
-    padding-top: var(--gap-m);
-  }
-  
-  
+lens-chart::part(info-button) {
+  position: absolute;
+  cursor: pointer;
+  background-color: var(--white);
+  border: none;
+  padding: 0;
+  top: -10px;
+  right: -10px;
+}
+
+lens-chart::part(info-button-icon) {
+  bottom: var(--gap-xxs);
+  width: 16px;
+  height: 16px;
+}
+lens-chart::part(info-button-dialogue) {
+    position: absolute;
+    border: none;
+    background-color: var(--white);
+    width: max-content;
+    max-width: 300px;
+    z-index: 100;
+    padding: var(--gap-s);
+    top: 40px;
+    right: 0px;
+    border: solid 1px var(--light-blue);
+    border-radius: var(--border-radius-small);
+    text-align: left;
+}
+
+
+
+lens-chart::part(chart-canvas) {
+  width: 100%;
+  max-height: 400px;
+}
+
+lens-chart::part(chart-hint) {
+  font-size: var(--font-size-xs);
+  padding-top: var(--gap-m);
+}

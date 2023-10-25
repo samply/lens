@@ -68,13 +68,11 @@
 
         const ast = buildAstFromQuery($queryStore);
         const cql = translateAstToCql(ast, false, backendMeasures);
-        console.log(cql);
 
         const library = buildLibrary(`${cql}`)
         const measure = buildMeasure(library.url, $measureStore.map( measureItem => measureItem.measure))
         const query = {lang: "cql", lib: library, measure: measure};
 
-        console.log(query);
 
 
         const backend = new Spot(
@@ -88,9 +86,6 @@
         )
 
     };
-
-    $: console.log($responseStore);
-
 
 </script>
 

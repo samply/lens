@@ -78,8 +78,6 @@
                 return store;
             }
             
-            console.log(store);
-            
             return store;
         });
     };

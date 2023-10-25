@@ -27,6 +27,8 @@
     import { catalogueKeyToResponseKeyMap } from "../../stores/mappings";
     import type { ResponseStore } from "../../types/backend";
     import type { Site } from "../../types/response";
+    import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
+    import { lensOptions } from "../../stores/options";
 
     export let title: string = ""; // e.g. 'Gender Distribution'
     export let catalogueGroupCode: string = ""; // e.g. "gender"
@@ -38,7 +40,6 @@
     $: responseGroupCode =
         $catalogueKeyToResponseKeyMap.get(catalogueGroupCode);
 
-    export let hintText: string = "";
     export let tooltips: Map<string, string> = new Map<string, string>();
     export let headers: Map<string, string> = new Map<string, string>();
     export let displayLegends: boolean = false;
@@ -48,6 +49,10 @@
     export let groupingDivider: string | null = null;
     export let filterRegex: string | null = null;
     export let groupingLabel: string = "";
+    export let viewScales: boolean = chartType !== "pie" ? true : false;
+
+    let options: any
+    $: options = $lensOptions?.chartOptions && $lensOptions?.chartOptions[catalogueGroupCode] || {}
 
     export let backgroundColor: string[] = [
         "#4dc9f6",
@@ -114,14 +119,14 @@
             },
             scales: {
                 y: {
-                    display: true,
+                    display: viewScales,
                     title: {
                         display: true,
                         text: yAxisTitle
                     }
                 },
                 x: {
-                    display: true,
+                    display: viewScales,
                     title: {
                         display: true,
                         text: xAxisTitle
@@ -194,7 +199,8 @@
                 const stratifierCodeCount: number =
                     getAggregatedPopulationForStratumCode(
                         responseStore,
-                        stratifierCode
+                        stratifierCode,
+                        responseGroupCode
                     );
                 return stratifierCodeCount;
             });
@@ -253,7 +259,8 @@
                             label: label + groupingLabel,
                             value: getAggregatedPopulationForStratumCode(
                                 responseStore,
-                                label
+                                label,
+                                responseGroupCode
                             ),
                         },
                     ];
@@ -279,7 +286,8 @@
 
                 superClassItem.value += getAggregatedPopulationForStratumCode(
                     responseStore,
-                    label
+                    label,
+                    responseGroupCode
                 );
 
                 return [
@@ -465,15 +473,18 @@
 
         addItemToQuery(queryItem, $activeQueryGroupIndex);
     };
+    // console.log(hintText);
 </script>
 
 <div part="chart-wrapper">
     <h4 part="chart-title">{title}</h4>
+    {#if options.hintText}
+        <InfoButtonComponent message={options.hintText}/>
+    {/if}
     <canvas
         part="chart-canvas"
         bind:this={canvas}
         id="chart"
         on:click={handleClickOnStratifier}
     />
-    <div part="chart-hint">{hintText}</div>
 </div>
