@@ -1,19 +1,58 @@
-{"chartOptions": 
-    {
+{
+    "chartOptions": {
+        "patients": {
+            "legendMapping": {
+                "berlin": "Berlin",
+                "bonn": "Bonn",
+                "dresden": "Dresden",
+                "essen": "Essen",
+                "frankfurt": "Frankfurt",
+                "freiburg": "Freiburg",
+                "hannover": "Hannover",
+                "mainz": "Mainz",
+                "muenchen-lmu": "München(LMU)",
+                "muenchen-tum": "München(TUM)",
+                "ulm": "Ulm",
+                "wuerzburg": "Würzburg",
+                "mannheim": "Mannheim",
+                "dktk-test": "DKTK-Test",
+                "hamburg": "Hamburg"
+            }
+        },
+        "gender": {
+            "legendMapping": {
+                "male": "Männlich",
+                "female": "Weiblich",
+                "unknown": "Unbekannt",
+                "other": "Divers"
+            }
+        },
         "diagnosis": {
-            "hintText": ["Bei Patienten mit mehreren onkologischen Diagnosen werden auch Einträge angezeigt, die ggfs. nicht den ausgewählten Suchkriterien entsprechen."]
+            "hintText": [
+                "Bei Patienten mit mehreren onkologischen Diagnosen werden auch Einträge angezeigt, die ggfs. nicht den ausgewählten Suchkriterien entsprechen."
+            ]
         },
         "age_at_diagnosis": {
-            "hintText": ["Bei Patienten mit mehreren Erstdiagnosen werden auch Einträge angezeigt, die ggfs. außerhalb der Suchkriterien liegen. "]
+            "hintText": [
+                "Bei Patienten mit mehreren Erstdiagnosen werden auch Einträge angezeigt, die ggfs. außerhalb der Suchkriterien liegen. "
+            ]
         },
         "75186-7": {
-            "hintText": ["\"verstorben\": ein Todesdatum ist dokumentiert oder das aktuelle Lebensalter ist größer 123 Jahre.", "\"lebend\": wird angenommen, wenn kein Todesdatum dokumentiert ist oder das aktuelle Lebensalter nicht 123 Jahre überschritten hat.", "\"unbekannt\": kein Geburtsdatum oder Todesdatum bekannt."]
+            "hintText": [
+                "\"verstorben\": ein Todesdatum ist dokumentiert oder das aktuelle Lebensalter ist größer 123 Jahre.",
+                "\"lebend\": wird angenommen, wenn kein Todesdatum dokumentiert ist oder das aktuelle Lebensalter nicht 123 Jahre überschritten hat.",
+                "\"unbekannt\": kein Geburtsdatum oder Todesdatum bekannt."
+            ]
         },
         "medicationStatements": {
-            "hintText": ["Art der systemischen oder abwartenden Therapie (ADT Basisdatensatz Versionen 2014, 2021)"]
+            "hintText": [
+                "Art der systemischen oder abwartenden Therapie (ADT Basisdatensatz Versionen 2014, 2021)"
+            ]
         },
         "sample_kind": {
-            "hintText":["Verteilung der Bioprobentypen der Patienten gemäß der ausgewählten Kriterien. Es werden auch Einträge angezeigt, die ggfs. außerhalb der Suchkriterien liegen."]
-        } 
+            "hintText": [
+                "Verteilung der Bioprobentypen der Patienten gemäß der ausgewählten Kriterien. Es werden auch Einträge angezeigt, die ggfs. außerhalb der Suchkriterien liegen."
+            ]
+        }
     }
 }
