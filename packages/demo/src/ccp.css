@@ -137,8 +137,17 @@ footer {
   overflow-y: scroll; 
   height: 100vh;
   position: sticky;
-  top: 0;
+  top: 40px;
 }
+
+.catalogue h2 {
+  margin: 0;
+  margin-bottom: var(--gap-s);
+  font-size: var(--font-size-l);
+  font-weight: 400;
+  color: var(--dark-gray);
+}
+
 
 .charts {
   display: grid;
@@ -239,16 +248,9 @@ footer {
 * Overrides
 */
 
-lens-catalogue::part(autocomplete-formfield-input):focus {
-  border-color: var(--light-blue);
-}
-lens-catalogue::part(query-add-button) {
-  background-color: var(--light-blue);
-}
-lens-catalogue::part(number-input-formfield):focus {
-  border-color: var(--light-blue);
-  outline: none;
-}
+/**
+  Searchbars
+*/
 lens-search-bar-multiple::part(lens-searchbar-chip) {
   background-color: var(--light-blue);
 }
@@ -266,6 +268,26 @@ lens-search-bar-multiple::part(query-delete-button-group) {
 
 lens-search-button::part(lens-search-button) {
   background-color: var(--light-blue);
+}
+
+
+/**
+  Catalogue
+*/
+
+lens-catalogue::part(lens-catalogue) {
+  padding-left: 8px;
+}
+
+lens-catalogue::part(autocomplete-formfield-input):focus {
+  border-color: var(--light-blue);
+}
+lens-catalogue::part(query-add-button) {
+  background-color: var(--light-blue);
+}
+lens-catalogue::part(number-input-formfield):focus {
+  border-color: var(--light-blue);
+  outline: none;
 }
 
 .chart-diagnosis lens-chart::part(chart-canvas) {
@@ -331,4 +353,18 @@ lens-info-button::part(info-button) {
 
 lens-info-button::part(info-button-icon) {
   width: 21px;
+}
+
+.catalogue lens-info-button::part(info-button){
+  height: 38px;
+  padding: 0;
+  top: var(--gap-xs);
+  right: var(--gap-xs);
+  border: none;
+  position: absolute;
+}
+
+.catalogue lens-info-button::part(info-button-dialogue){
+  max-width: 300px;
+  text-align: left;
 }
