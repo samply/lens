@@ -304,6 +304,7 @@
           chartType="bar"
           headers={therapyHeaders}
           tooltips={therapyTooltips}
+          xAxisTitle="Art der Therapie"
           yAxisTitle="Anzahl der Therapien"
         />
       </div>
@@ -313,6 +314,7 @@
           catalogueGroupCode="medicationStatements"
           chartType="bar"
           tooltips={systemicTherapyTooltips}
+          xAxisTitle="Art der Therapie"
           yAxisTitle="Anzahl der Therapien"
         />
       </div>
