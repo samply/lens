@@ -44,6 +44,9 @@
                 "\"unbekannt\": kein Geburtsdatum oder Todesdatum bekannt."
             ]
         },
+        "therapy_of_tumor": {
+            "aggregations": ["medicationStatements"]
+        },
         "medicationStatements": {
             "hintText": [
                 "Art der systemischen oder abwartenden Therapie (ADT Basisdatensatz Versionen 2014, 2021)"
