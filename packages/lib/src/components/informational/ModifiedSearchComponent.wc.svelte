@@ -6,8 +6,6 @@
 
 <script lang="ts">
     import { queryModified } from "../../stores/query";
-    console.log('asdf');
-    $: console.log($queryModified);
 </script>
 
 {#if $queryModified}

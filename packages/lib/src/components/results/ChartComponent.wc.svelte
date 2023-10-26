@@ -15,6 +15,7 @@
     import Chart, { type ChartTypeRegistry } from "chart.js/auto";
     import { onMount } from "svelte";
     import {
+        getAggregatedPopulation,
         getAggregatedPopulationForStratumCode,
         getStratifierCodesForGroupCode,
         responseStore,
@@ -164,16 +165,6 @@
     };
 
     /**
-     * searches the catalogue for the criteria names for the given catalogueGroupCode
-     * and sets them as chart labels
-     * DISCUSSION: needed? if so how do we implement this for bar charts?
-     */
-    // $: {
-    //     if(chartType === 'pie')
-    //         initialChartData.data.labels = getCriteriaNamesFromKey($catalogue, catalogueGroupCode);
-    // }
-
-    /**
      * @param chartLabels
      * @returns an array of chart data sets from the response store
      */
@@ -209,24 +200,28 @@
                     },
                 ],
             };
-        } else {
-            dataSet = chartLabels.map((label: string): number => {
-                const stratifierCode = label;
-                const stratifierCodeCount: number =
-                    getAggregatedPopulationForStratumCode(
-                        responseStore,
-                        stratifierCode,
-                        responseGroupCode
-                    );
-                return stratifierCodeCount;
-            });
-        }
+        } 
+
 
         const combinedSubGroupData = combineSubGroups(
             groupingDivider,
             responseStore,
             chartLabels
         );
+
+
+        /**
+         * if aggregations are set, aggregate the data from other groups and adds them to the chart
+         * e.g. add aggregated number of medical statements to the chart for therapy of tumor
+        */
+        if(options.aggregations){
+            options.aggregations.forEach((aggregation) => {
+                const aggregationCount = getAggregatedPopulation(responseStore, aggregation);
+                combinedSubGroupData.data.push(aggregationCount);
+                combinedSubGroupData.labels.push(aggregation);
+            });
+        }
+
         return {
             labels: combinedSubGroupData.labels,
             data: [
@@ -390,7 +385,6 @@
          * if a legend mapping is set, use the legend mapping
          */
         chart.data.labels = options.legendMapping ? chartLabels.map(label => {
-            console.log(label, options )
             return options.legendMapping[label]
         }): chartLabels;
 
@@ -504,7 +498,6 @@
 
         addItemToQuery(queryItem, $activeQueryGroupIndex);
     };
-    // console.log(hintText);
 </script>
 
 <div part="chart-wrapper">
