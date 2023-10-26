@@ -63,6 +63,7 @@
         if (controller) {
             controller.abort();
         }
+        responseStore.set(new Map());
 
         controller = new AbortController();
 

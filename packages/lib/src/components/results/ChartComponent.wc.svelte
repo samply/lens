@@ -373,9 +373,7 @@
     };
 
     $: {
-        if ($responseStore.size !== 0) {
-            setChartData($responseStore);
-        }
+        setChartData($responseStore);
     }
 
     onMount(() => {
