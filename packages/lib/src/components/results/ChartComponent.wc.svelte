@@ -123,7 +123,7 @@
                     title: {
                         display: true,
                         text: yAxisTitle
-                    }
+                    },
                 },
                 x: {
                     display: viewScales,
@@ -133,12 +133,12 @@
                     },
                     ticks: (chartType === "bar") ? {
                         callback: (val: any) => {
-                            if (typeof val === 'string') return val.toString()
-                            const key: unknown = (initialChartData.data.labels[val])
+                            if(indexAxis === 'y') return val.toString()
+                            if (typeof val === 'string') return val
+                            const key: unknown = (initialChartData.data.labels[val]) !== undefined
                                 ? initialChartData.data.labels[val] : val.toString();
                             if (typeof key !== 'string') return val.toString()
-                            let result = (headers.get(key))
-                                ? headers.get(key) : key;
+                            let result = (headers.get(key)) ? headers.get(key) : key;
                             return result
                         }
                     } : []
