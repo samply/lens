@@ -414,10 +414,15 @@
         if (a !== "unknown" && b === "unknown") {
             return -1;
         }
-        // Convert values to numbers for numeric comparison
-        const numA = parseInt(a, 10);
-        const numB = parseInt(b, 10);
-        return numA - numB;
+        // Convert numeric values to numbers for comparison
+        if(!isNaN(a) && !isNaN(b)) {
+            a = parseInt(a, 10);
+            b = parseInt(b, 10);
+        }
+        
+        return a > b ? 1 : -1;
+
+
     };
 
     /**
