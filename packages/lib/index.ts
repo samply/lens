@@ -10,3 +10,4 @@ export { default as SearchBarMultipleComponent } from './src/components/search-b
 export { default as NegotiateButtonComponent } from './src/components/buttons/NegotiateButtonComponent.wc.svelte'
 export { default as InfoButton } from './src/components/buttons/InfoButtonComponent.wc.svelte'
 export { default as lensOptions } from './src/components/Options.wc.svelte'
+export { default as ModifiedSearchComponent } from './src/components/informational/ModifiedSearchComponent.wc.svelte'

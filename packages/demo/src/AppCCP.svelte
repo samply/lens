@@ -241,6 +241,7 @@
           title="Ergebnisse"
           resultSummaryDataTypes={JSON.stringify(resultSummaryConfig)}
         />
+        <lens-search-modified-display>Diagramme repräsentieren nicht mehr die aktuelle Suche!</lens-search-modified-display>
       </div>
       <div class="chart-wrapper">
         <lens-chart
