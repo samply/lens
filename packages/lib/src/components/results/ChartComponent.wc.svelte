@@ -51,8 +51,11 @@
     export let groupingLabel: string = "";
     export let viewScales: boolean = chartType !== "pie" ? true : false;
 
-    let options: any
-    $: options = $lensOptions?.chartOptions && $lensOptions?.chartOptions[catalogueGroupCode] || {}
+    let options: any;
+    $: options =
+        ($lensOptions?.chartOptions &&
+            $lensOptions?.chartOptions[catalogueGroupCode]) ||
+        {};
 
     export let backgroundColor: string[] = [
         "#4dc9f6",
@@ -107,43 +110,56 @@
                     position: "bottom",
                 },
                 tooltip: {
-                   callbacks: {
-                       title: (context: any) => {
-                           const key = context[0].label || '';
-                           let result = (tooltips.get(key))
-                                      ? tooltips.get(key) : key;
-                           return result
-                       }
-                   }
-                }
+                    callbacks: {
+                        title: (context: any) => {
+                            const key = context[0].label || "";
+                            let result = tooltips.get(key)
+                                ? tooltips.get(key)
+                                : key;
+                            return result;
+                        },
+                    },
+                },
             },
             scales: {
                 y: {
                     display: viewScales,
                     title: {
                         display: true,
-                        text: yAxisTitle
+                        text: yAxisTitle,
                     },
                 },
                 x: {
                     display: viewScales,
                     title: {
                         display: true,
-                        text: xAxisTitle
+                        text: xAxisTitle,
                     },
-                    ticks: (chartType === "bar") ? {
-                        callback: (val: any) => {
-                            if(indexAxis === 'y') return val.toString()
-                            if (typeof val === 'string') return val
-                            const key: unknown = (initialChartData.data.labels[val]) !== undefined
-                                ? initialChartData.data.labels[val] : val.toString();
-                            if (typeof key !== 'string') return val.toString()
-                            let result = (headers.get(key)) ? headers.get(key) : key;
-                            return result
-                        }
-                    } : []
-                }
-            }
+                    ticks:
+                        chartType === "bar"
+                            ? {
+                                  callback: (val: any) => {
+                                      if (indexAxis === "y")
+                                          return val.toString();
+                                      if (typeof val === "string") return val;
+                                      const key: unknown =
+                                          initialChartData.data.labels[val] !==
+                                          undefined
+                                              ? initialChartData.data.labels[
+                                                    val
+                                                ]
+                                              : val.toString();
+                                      if (typeof key !== "string")
+                                          return val.toString();
+                                      let result = headers.get(key)
+                                          ? headers.get(key)
+                                          : key;
+                                      return result;
+                                  },
+                              }
+                            : [],
+                },
+            },
         },
     };
 
@@ -363,11 +379,20 @@
                  */
                 if (isNaN(parseInt(label))) return label;
 
-                return `${parseInt(label)} - ${parseInt(label) + groupRange - 1}`;
+                return `${parseInt(label)} - ${
+                    parseInt(label) + groupRange - 1
+                }`;
             });
         }
 
-        chart.data.labels = chartLabels;
+        /**
+         * set the labels of the chart
+         * if a legend mapping is set, use the legend mapping
+         */
+        chart.data.labels = options.legendMapping ? chartLabels.map(label => {
+            console.log(label, options )
+            return options.legendMapping[label]
+        }): chartLabels;
 
         chart.update();
     };
@@ -426,7 +451,10 @@
                                         name: `${label}`,
                                         value: {
                                             min: parseInt(label),
-                                            max: parseInt(label) + groupRange - 1,
+                                            max:
+                                                parseInt(label) +
+                                                groupRange -
+                                                1,
                                         },
                                         queryBindId: uuidv4(),
                                     },
@@ -477,7 +505,7 @@
 <div part="chart-wrapper">
     <h4 part="chart-title">{title}</h4>
     {#if options.hintText}
-        <InfoButtonComponent message={options.hintText}/>
+        <InfoButtonComponent message={options.hintText} />
     {/if}
     <canvas
         part="chart-canvas"
