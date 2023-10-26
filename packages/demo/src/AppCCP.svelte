@@ -241,6 +241,7 @@
           title="Ergebnisse"
           resultSummaryDataTypes={JSON.stringify(resultSummaryConfig)}
         />
+        <lens-search-modified-display>Diagramme repräsentieren nicht mehr die aktuelle Suche!</lens-search-modified-display>
       </div>
       <div class="chart-wrapper">
         <lens-chart
@@ -303,6 +304,7 @@
           chartType="bar"
           headers={therapyHeaders}
           tooltips={therapyTooltips}
+          xAxisTitle="Art der Therapie"
           yAxisTitle="Anzahl der Therapien"
         />
       </div>
@@ -312,6 +314,7 @@
           catalogueGroupCode="medicationStatements"
           chartType="bar"
           tooltips={systemicTherapyTooltips}
+          xAxisTitle="Art der Therapie"
           yAxisTitle="Anzahl der Therapien"
         />
       </div>

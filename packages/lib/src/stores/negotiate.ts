@@ -75,7 +75,7 @@ const buildHumanReadableRecursively = (queryLayer: AstElement, humanReadableQuer
         if(index === queryLayer.children.length - 1){
         }
         if(index < queryLayer.children.length - 1){
-            humanReadableQuery += queryLayer.operand
+            humanReadableQuery += ` ${queryLayer.operand} `
         }
 
     })

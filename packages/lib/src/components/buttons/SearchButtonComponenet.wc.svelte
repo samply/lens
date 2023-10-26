@@ -9,7 +9,7 @@
 
 <script lang="ts">
     import { buildAstFromQuery } from "../../helpers/ast-transformer";
-    import { queryStore } from "../../stores/query";
+    import { queryModified, queryStore } from "../../stores/query";
     import { measureStore } from "../../stores/measures";
     import {translateAstToCql} from "../../cql-translator-service/ast-to-cql-translator";
     import { buildLibrary, buildMeasure } from "../../helpers/cql-measure";
@@ -85,6 +85,8 @@
             btoa(decodeURI(JSON.stringify(query))),
             controller
         )
+
+        queryModified.set(false);
 
     };
 

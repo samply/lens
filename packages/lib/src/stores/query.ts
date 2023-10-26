@@ -6,9 +6,13 @@ import type { QueryItem, QueryValue } from "../types/queryData";
 import { writable } from "svelte/store";
 import { v4 as uuidv4 } from "uuid";
 
+
+
 export const queryStore = writable<QueryItem[][]>([[]]);
 
 export const activeQueryGroupIndex = writable(0);
+
+export const queryModified = writable(false);
 
 /**
  * Adds an item to the query
@@ -20,6 +24,8 @@ export const activeQueryGroupIndex = writable(0);
  * @param queryGroupIndex 
  */
 export const addItemToQuery = (queryObject: QueryItem, queryGroupIndex: number) => {
+    queryModified.set(true);
+
     /**
      * prevent mutation of the original object
      * otherwise the queryStore will not update properly with live changes inside the catalogue
@@ -101,6 +107,7 @@ export const addItemToQuery = (queryObject: QueryItem, queryGroupIndex: number) 
  * @param queryGroupIndex 
  */
 export const removeValueFromQuery = (queryObject: QueryItem, queryGroupIndex: number) => {
+    queryModified.set(true);
     /**
      * prevent mutation of the original object
      * otherwise the queryStore will not update properly with live changes inside the catalogue
@@ -127,6 +134,7 @@ export const removeValueFromQuery = (queryObject: QueryItem, queryGroupIndex: nu
 
 
 export const removeItemFromQuery = (queryObject: QueryItem, queryGroupIndex: number) => {
+    queryModified.set(true);
     /**
      * prevent mutation of the original object
      * otherwise the queryStore will not update properly with live changes inside the catalogue
