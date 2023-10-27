@@ -18212,7 +18212,19 @@
                                     {
                                         "key": "0",
                                         "name": "0",
-                                        "description": "0"
+                                        "description": "0",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "0"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "0"
+                                            }
+                                            ]
+                                        ]
                                     }
                                 ]
                             },
@@ -18227,67 +18239,223 @@
                                     {
                                         "key": "1",
                                         "name": "1",
-                                        "description": "1"
+                                        "description": "1",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "1"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "1"
+                                            }
+                                            ]
+                                        ]
                                     },
                                     {
                                         "key": "1a",
                                         "name": "1a",
-                                        "description": "1a"
+                                        "description": "1a",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "0"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "0"
+                                            }
+                                            ]
+                                        ]
                                     },
                                     {
                                         "key": "1a1",
                                         "name": "1a1",
-                                        "description": "1a1"
+                                        "description": "1a1",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "0"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "0"
+                                            }
+                                            ]
+                                        ]
                                     },
                                     {
                                         "key": "1a2",
                                         "name": "1a2",
-                                        "description": "1a2"
+                                        "description": "1a2",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "0"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "0"
+                                            }
+                                            ]
+                                        ]
                                     },
                                     {
                                         "key": "1b",
                                         "name": "1b",
-                                        "description": "1b"
+                                        "description": "1b",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "0"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "0"
+                                            }
+                                            ]
+                                        ]
                                     },
                                     {
                                         "key": "1b1",
                                         "name": "1b1",
-                                        "description": "1b1"
+                                        "description": "1b1",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "0"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "0"
+                                            }
+                                            ]
+                                        ]
                                     },
                                     {
                                         "key": "1b2",
                                         "name": "1b2",
-                                        "description": "1b2"
+                                        "description": "1b2",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "0"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "0"
+                                            }
+                                            ]
+                                        ]
                                     },
                                     {
                                         "key": "1c",
                                         "name": "1c",
-                                        "description": "1c"
+                                        "description": "1c",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "0"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "0"
+                                            }
+                                            ]
+                                        ]
                                     },
                                     {
                                         "key": "1c1",
                                         "name": "1c1",
-                                        "description": "1c1"
+                                        "description": "1c1",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "0"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "0"
+                                            }
+                                            ]
+                                        ]
                                     },
                                     {
                                         "key": "1c2",
                                         "name": "1c2",
-                                        "description": "1c2"
+                                        "description": "1c2",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "0"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "0"
+                                            }
+                                            ]
+                                        ]
                                     },
                                     {
                                         "key": "1c3",
                                         "name": "1c3",
-                                        "description": "1c3"
+                                        "description": "1c3",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "0"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "0"
+                                            }
+                                            ]
+                                        ]
                                     },
                                     {
                                         "key": "1d",
                                         "name": "1d",
-                                        "description": "1d"
+                                        "description": "1d",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "0"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "0"
+                                            }
+                                            ]
+                                        ]
                                     },
                                     {
-                                        "key": "1mic",
-                                        "name": "1mic",
-                                        "description": "1mic"
+                                        "key": "1mi",
+                                        "name": "1mi",
+                                        "description": "1mi",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "0"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "0"
+                                            }
+                                            ]
+                                        ]
                                     }
                                 ]
                             },
@@ -18302,37 +18470,121 @@
                                     {
                                         "key": "2",
                                         "name": "2",
-                                        "description": "2"
+                                        "description": "2",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "0"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "0"
+                                            }
+                                            ]
+                                        ]
                                     },
                                     {
                                         "key": "2a",
                                         "name": "2a",
-                                        "description": "2a"
+                                        "description": "2a",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "0"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "0"
+                                            }
+                                            ]
+                                        ]
                                     },
                                     {
                                         "key": "2a1",
                                         "name": "2a1",
-                                        "description": "2a1"
+                                        "description": "2a1",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "0"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "0"
+                                            }
+                                            ]
+                                        ]
                                     },
                                     {
                                         "key": "2a2",
                                         "name": "2a2",
-                                        "description": "2a2"
+                                        "description": "2a2",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "0"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "0"
+                                            }
+                                            ]
+                                        ]
                                     },
                                     {
                                         "key": "2b",
                                         "name": "2b",
-                                        "description": "2b"
+                                        "description": "2b",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "0"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "0"
+                                            }
+                                            ]
+                                        ]
                                     },
                                     {
                                         "key": "2c",
                                         "name": "2c",
-                                        "description": "2c"
+                                        "description": "2c",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "0"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "0"
+                                            }
+                                            ]
+                                        ]
                                     },
                                     {
                                         "key": "2d",
                                         "name": "2d",
-                                        "description": "2d"
+                                        "description": "2d",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "0"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "0"
+                                            }
+                                            ]
+                                        ]
                                     }
                                 ]
                             },
@@ -18347,27 +18599,87 @@
                                     {
                                         "key": "3",
                                         "name": "3",
-                                        "description": "3"
+                                        "description": "3",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "0"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "0"
+                                            }
+                                            ]
+                                        ]
                                     },
                                     {
                                         "key": "3a",
                                         "name": "3a",
-                                        "description": "3a"
+                                        "description": "3a",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "0"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "0"
+                                            }
+                                            ]
+                                        ]
                                     },
                                     {
                                         "key": "3b",
                                         "name": "3b",
-                                        "description": "3b"
+                                        "description": "3b",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "0"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "0"
+                                            }
+                                            ]
+                                        ]
                                     },
                                     {
                                         "key": "3c",
                                         "name": "3c",
-                                        "description": "3c"
+                                        "description": "3c",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "0"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "0"
+                                            }
+                                            ]
+                                        ]
                                     },
                                     {
                                         "key": "3d",
                                         "name": "3d",
-                                        "description": "3d"
+                                        "description": "3d",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "0"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "0"
+                                            }
+                                            ]
+                                        ]
                                     }
                                 ]
                             },
@@ -18382,32 +18694,104 @@
                                     {
                                         "key": "4",
                                         "name": "4",
-                                        "description": "4"
+                                        "description": "4",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "0"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "0"
+                                            }
+                                            ]
+                                        ]
                                     },
                                     {
                                         "key": "4a",
                                         "name": "4a",
-                                        "description": "4a"
+                                        "description": "4a",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "0"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "0"
+                                            }
+                                            ]
+                                        ]
                                     },
                                     {
                                         "key": "4b",
                                         "name": "4b",
-                                        "description": "4b"
+                                        "description": "4b",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "0"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "0"
+                                            }
+                                            ]
+                                        ]
                                     },
                                     {
                                         "key": "4c",
                                         "name": "4c",
-                                        "description": "4c"
+                                        "description": "4c",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "0"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "0"
+                                            }
+                                            ]
+                                        ]
                                     },
                                     {
                                         "key": "4d",
                                         "name": "4d",
-                                        "description": "4d"
+                                        "description": "4d",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "0"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "0"
+                                            }
+                                            ]
+                                        ]
                                     },
                                     {
                                         "key": "4e",
                                         "name": "4e",
-                                        "description": "4e"
+                                        "description": "4e",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "0"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "0"
+                                            }
+                                            ]
+                                        ]
                                     }
                                 ]
                             },
@@ -18420,9 +18804,21 @@
                                 "type": "EQUALS",
                                 "criteria": [
                                     {
-                                        "key": "is",
-                                        "name": "is",
-                                        "description": "is"
+                                        "key": "a",
+                                        "name": "a",
+                                        "description": "a",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "0"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "0"
+                                            }
+                                            ]
+                                        ]
                                     }
                                 ]
                             },
@@ -18435,39 +18831,106 @@
                                 "type": "EQUALS",
                                 "criteria": [
                                     {
+                                        "key": "is",
+                                        "name": "is",
+                                        "description": "is",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "0"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "0"
+                                            }
+                                            ]
+                                        ]
+                                    },
+                                    {
                                         "key": "is(DCIS)",
                                         "name": "is(DCIS)",
-                                        "description": "is(DCIS)"
+                                        "description": "is(DCIS)",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "0"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "0"
+                                            }
+                                            ]
+                                        ]
                                     },
                                     {
                                         "key": "is(LCIS)",
                                         "name": "is(LCIS)",
-                                        "description": "is(LCIS)"
+                                        "description": "is(LCIS)",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "0"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "0"
+                                            }
+                                            ]
+                                        ]
                                     },
                                     {
                                         "key": "is(Paget)",
                                         "name": "is(Paget)",
-                                        "description": "is(Paget)"
-                                    }
-                                ]
-                            },
-                            {
-                                "key": "21905-5",
-                                "name": "TNM-T",
-                                "subCategoryName": "is (Prostata)",
-                                "system": "",
-                                "fieldType": "single-select",
-                                "type": "EQUALS",
-                                "criteria": [
+                                        "description": "is(Paget)",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "0"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "0"
+                                            }
+                                            ]
+                                        ]
+                                    },
+                                    {
+                                        "key": "is(pd",
+                                        "name": "is(pd)",
+                                        "description": "is(pd)",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "0"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "0"
+                                            }
+                                            ]
+                                        ]
+                                    },
                                     {
                                         "key": "is(pu)",
                                         "name": "is(pu)",
-                                        "description": "is(pu)"
-                                    },
-                                    {
-                                        "key": "is(pd)",
-                                        "name": "is(pd)",
-                                        "description": "is(pd)"
+                                        "description": "is(pu)",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "0"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "0"
+                                            }
+                                            ]
+                                        ]
                                     }
                                 ]
                             },
@@ -18482,7 +18945,19 @@
                                     {
                                         "key": "X",
                                         "name": "X",
-                                        "description": "X"
+                                        "description": "X",
+                                        "aggregatedValue": [
+                                            [
+                                            {
+                                                "value": "21905-5",
+                                                "name": "0"
+                                            },
+                                            {
+                                                "value": "21899-0",
+                                                "name": "0"
+                                            }
+                                            ]
+                                        ]
                                     }
                                 ]
                             }

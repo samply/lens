@@ -121,7 +121,8 @@ const getSingleton = (criterion: AstBottomLayerValue): string => {
         case "observationMolecularMarkerSeqRefNCBI":
         case "observationMolecularMarkerEnsemblID":
         case "department":
-        case "TNM-x": {
+        case "TNMp":
+        case "TNMc": {
           if (typeof criterion.value === "string") {
             // TODO: Check if we really need to do this or we can somehow tell cql to do that expansion it self
             if (criterion.value.slice(-1) === "%") {

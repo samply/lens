@@ -61,7 +61,8 @@ export const alias = new Map<string, string>([
     ["medicationStatement", "exists [MedicationStatement: category in Code '{{K}}' from {{A1}}]"],
     ["hasSpecimen", "exists [Specimen]"],
     ["specimen", "exists [Specimen: Code '{{C}}' from {{A1}}]"],
-    ["TNM-x", "exists from [Observation: Code '21908-9' from {{A1}}] O\nwhere O.component.where(code.coding contains Code '{{K}}' from {{A1}}).value.coding contains Code '{{C}}' from {{A2}}"],
+    ["TNMc", "exists from [Observation: Code '21908-9' from {{A1}}] O\nwhere O.component.where(code.coding contains Code '{{K}}' from {{A1}}).value.coding contains Code '{{C}}' from {{A2}}"],
+    ["TNMp", "exists from [Observation: Code '21902-2' from {{A1}}] O\nwhere O.component.where(code.coding contains Code '{{K}}' from {{A1}}).value.coding contains Code '{{C}}' from {{A2}}"],
     ["Organization", "Patient.managingOrganization.reference = \"Organization Ref\"('Klinisches Krebsregister/ITM')"],
     ["department", "exists from [Encounter] I\nwhere I.identifier.value = '{{C}}' "],
     ["uiccstadium", "(exists ([Observation: Code '21908-9' from loinc] O where O.value.coding.code contains '{{C}}')) or (exists ([Observation: Code '21902-2' from loinc] O where O.value.coding.code contains '{{C}}'))"]
@@ -89,12 +90,19 @@ export const alias = new Map<string, string>([
     ["age_at_diagnosis", {type: "conditionRangeAge"}],
     ["age_at_primary_diagnosis", {type: "primaryConditionRangeAge"}],
     ["21908-9", {type: "uiccstadium", alias: ["loinc", "uiccstadiumcs"]}],
-    ["21905-5", {type: "TNM-x", alias: ["loinc", "TNMTCS"]}],  //tnm component
-    ["21906-3", {type: "TNM-x", alias: ["loinc", "TNMNCS"]}],  //tnm component
-    ["21907-1", {type: "TNM-x", alias: ["loinc", "TNMMCS"]}],  //tnm component
-    ["42030-7", {type: "TNM-x", alias: ["loinc", "TNMmSymbolCS"]}],  //tnm component
-    ["59479-6", {type: "TNM-x", alias: ["loinc", "TNMySymbolCS"]}],  //tnm component
-    ["21983-2", {type: "TNM-x", alias: ["loinc", "TNMrSymbolCS"]}],  //tnm component
+    ["21905-5", {type: "TNMc", alias: ["loinc", "TNMTCS"]}],  //tnm component
+    ["21906-3", {type: "TNMc", alias: ["loinc", "TNMNCS"]}],  //tnm component
+    ["21907-1", {type: "TNMc", alias: ["loinc", "TNMMCS"]}],  //tnm component
+    ["42030-7", {type: "TNMc", alias: ["loinc", "TNMmSymbolCS"]}],  //tnm component
+    ["59479-6", {type: "TNMc", alias: ["loinc", "TNMySymbolCS"]}],  //tnm component
+    ["21983-2", {type: "TNMc", alias: ["loinc", "TNMrSymbolCS"]}],  //tnm component
+    ["21899-0", {type: "TNMp", alias: ["loinc", "TNMTCS"]}],  //tnm component
+    ["21900-6", {type: "TNMp", alias: ["loinc", "TNMNCS"]}],  //tnm component
+    ["21901-4", {type: "TNMp", alias: ["loinc", "TNMMCS"]}],  //tnm component
+    ["42030-7", {type: "TNMp", alias: ["loinc", "TNMmSymbolCS"]}],  //tnm component
+    ["59479-6", {type: "TNMp", alias: ["loinc", "TNMySymbolCS"]}],  //tnm component
+    ["21983-2", {type: "TNMp", alias: ["loinc", "TNMrSymbolCS"]}],  //tnm component
+
     ["Organization", {type: "Organization"}],  //organization
     ["48018-6", {type: "observationMolecularMarkerName", alias: ["loinc", "molecularMarker"]}],  //molecular marker name
     ["48005-3", {type: "observationMolecularMarkerAminoacidchange", alias: ["loinc"]}],  //molecular marker
