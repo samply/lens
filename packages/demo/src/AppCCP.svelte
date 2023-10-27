@@ -167,30 +167,28 @@
     .set("ST", "Strahlentherapie")
     .set("OP", "Operation");
 
-  const specimenHeaders: Map<string, string> = new Map<string, string>()
-    .set("whole-blood", "Whole blood")
-    .set("bone-marrow", "Bone marrow")
-    .set("buffy-coat", "Buffy-Coat")
-    .set("dried-whole-blood", "Dried whole blood")
-    .set(
-      "peripheral-blood-cells-vital",
-      "Peripheral blood mononuclear cells (PBMCs, viable)"
-    )
+  const specimenTooltips: Map<string, string> = new Map<string, string>()
+    .set("whole-blood", "Vollblut")
+    .set("bone-marrow", "Knochenmark")
+    .set("buffy-coat", "Buffycoat")
+    .set("dried-whole-blood", "Blutkarten Guthrie")
+    .set("peripheral-blood-cells",  "Periphere mononukleäre Blutzellen (PBMC)")
     .set("blood-plasma", "Plasma")
     .set("blood-serum", "Serum")
-    .set("ascites", "Ascites")
-    .set("csf-liquor", "CSF/Liquor")
-    .set("saliva", "Saliva")
-    .set("stool-faeces", "Stool/Faeces")
-    .set("urine", "Urine")
-    .set("swab", "Swab")
-    .set("liquid-other", "Other liquid biosample/storage")
-    .set("tissue-ffpe", "Tissue FFPE")
-    .set("tissue-frozen", "Tissue frozen")
-    .set("tissue-other", "Other tissue storage")
+    .set("ascites", "Aszites")
+    .set("csf-liquor", "Liquor")
+    .set("saliva", "Speichel")
+    .set("stool-faeces", "Stuhl")
+    .set("urine", "Urin")
+    .set("swab", "Abstrich")
+    .set("liquid-other", "Flüssigprobe, Andere")
+    .set("tissue-ffpe", "Gewebe FFPE")
+    .set("tissue-frozen", "Gewebe schockgefroren")
+    .set("tissue-other", "Gewebe, Andere Konservierungsart")
     .set("dna", "DNA")
     .set("rna", "RNA")
-    .set("derivative-other", "Other derivative");
+    .set("derivative-other", "Derivat, Andere")
+
 </script>
 
 
@@ -333,7 +331,7 @@
           chartType="bar"
           xAxisTitle="Probentypen"
           yAxisTitle="Probenanzahl"
-          tooltips={specimenHeaders}
+          tooltips={specimenTooltips}
         />
       </div>
     </div>
