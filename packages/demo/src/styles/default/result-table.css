@@ -32,10 +32,6 @@ lens-result-table {
     width: 32%;
   }
 
-  lens-result-table::part(table-header-datatype) {
-    display: inline-flex;
-  }
-
   lens-result-table::part(table-header-cell-checkbox) {
     padding-bottom: var(--gap-xs);
     width: 4%;
@@ -65,20 +61,17 @@ lens-result-table {
   }
   
   lens-result-table::part(info-button) {
-    position: relative;
     cursor: pointer;
     background-color: var(--white);
     border: none;
     padding: 0;
+    vertical-align: top;
 }
 
 lens-result-table::part(info-button-icon) {
-  position: absolute;
   bottom: var(--gap-xxs);
   width: 16px;
   height: 16px;
-  left: 1px;
-  top: -1px
 }
 
 
