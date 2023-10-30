@@ -112,9 +112,13 @@
     ["hamburg", "Hamburg"],
   ];
 
+  // VITE_TARGET_ENVIRONMENT should be set by the ci pipeline
+  const backendUrl = (import.meta.env.VITE_TARGET_ENVIRONMENT === "production")
+               ? "https://backend.data.dktk.dkfz.de/prod/"
+               : "https://backend.demo.lens.samply.de/prod/"
+
   const backendConfig = {
-    // url: "https://backend.demo.lens.samply.de/prod/",
-    url: "http://localhost:8080",
+    url: (import.meta.env.PROD) ? backendUrl : "http://localhost:8080",
     backends: [
       "mannheim",
       "freiburg",
