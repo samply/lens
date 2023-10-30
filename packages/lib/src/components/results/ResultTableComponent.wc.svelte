@@ -12,38 +12,28 @@
         getSitePopulationForCode,
         responseStore,
     } from "../../stores/response";
+    import TableItemComponent from "./TableItemComponent.svelte";
+    import { lensOptions } from "../../stores/options";
     import type { HeaderData } from "../../types/biobanks";
     import type { Site } from "../../types/response";
-    import TableItemComponent from "./TableItemComponent.svelte";
+    import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
 
     export let title: string = "";
 
-   
-
-
     /**
      * data-types for the table
-     * can be set with the props of the custom element
+     * can be set via options component
      */
-    export let headerData: HeaderData[] = [
-        {
-            title: "Standorte",
-            dataKey: "site",
-        },
-        {
-            title: "Patienten",
-            dataKey: "patients",
-        },
-        {
-            title: "Bioproben",
-            dataKey: "specimen",
-        },
-    ];
+    let options: any;
+    $: options = ($lensOptions?.tableOptions && $lensOptions?.tableOptions) || {
+        headerData: [{ title: "", dataKey: "" }],
+    };
 
-    headerData.forEach((header: HeaderData, index: number): void => {
-        header.ascending = true;
-    });
-
+    $: options?.headerData?.forEach(
+        (header: HeaderData, index: number): void => {
+            header.ascending = true;
+        }
+    );
 
     /**
      * watches the responseStore for changes to update the table
@@ -59,16 +49,18 @@
 
             let tableRow: (string | number)[] = [];
 
-            headerData.forEach((header: HeaderData, index: number): void => {
-                if (index === 0) {
-                    const name = $uiSiteMappingsStore.get(key);
-                    tableRow.push(name);
-                } else {
-                    tableRow.push(
-                        getSitePopulationForCode(value.data, header.dataKey)
-                    );
+            options.headerData.forEach(
+                (header: HeaderData, index: number): void => {
+                    if (index === 0) {
+                        const name = $uiSiteMappingsStore.get(key);
+                        tableRow.push(name);
+                    } else {
+                        tableRow.push(
+                            getSitePopulationForCode(value.data, header.dataKey)
+                        );
+                    }
                 }
-            });
+            );
 
             tableRowData = [...tableRowData, tableRow];
         });
@@ -77,10 +69,9 @@
     $: buildTableRowData($responseStore);
     $: tableRowData = sortTable(
         sortColumnIndex,
-        headerData[sortColumnIndex].ascending,
+        options.headerData[sortColumnIndex].ascending,
         tableRowData
     );
-
 
     /**
      * pagination
@@ -123,8 +114,6 @@
      * sort tableRowData alphanumerically by the given column
      */
 
-    
-
     let sortColumnIndex: number = 0;
 
     /**
@@ -156,7 +145,7 @@
         });
 
         if (changeAscending) {
-            headerData[column].ascending = !ascending;
+            options.headerData[column].ascending = !ascending;
         }
 
         return tableRowData;
@@ -175,13 +164,17 @@
                     on:change={checkAllBiobanks}
                 /></th
             >
-            {#each headerData as header, index}
+            {#each options.headerData as header, index}
                 <th
                     part="table-header-cell table-header-datatype"
                     on:click={() =>
                         sortTable(index, header.ascending, tableRowData, true)}
-                    >{header.title}</th
-                >
+                    >
+                    {header.title}
+                    {#if header.hintText}
+                        <InfoButtonComponent message={header.hintText} />
+                    {/if}
+                </th>
             {/each}
         </tr>
     </thead>

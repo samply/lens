@@ -182,6 +182,11 @@ footer {
   grid-column: span 2;
 }
 
+.sample-information-text {
+  font-size: var(--font-size-xxs);
+
+}
+
 
 @media screen and (max-width: 1200px) {
   .charts {

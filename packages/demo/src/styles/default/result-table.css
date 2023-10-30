@@ -32,6 +32,10 @@ lens-result-table {
     width: 32%;
   }
 
+  lens-result-table::part(table-header-datatype) {
+    display: inline-flex;
+  }
+
   lens-result-table::part(table-header-cell-checkbox) {
     padding-bottom: var(--gap-xs);
     width: 4%;
@@ -60,3 +64,34 @@ lens-result-table {
     padding: var(--gap-xxs) var(--gap-s);
   }
   
+  lens-result-table::part(info-button) {
+    position: relative;
+    cursor: pointer;
+    background-color: var(--white);
+    border: none;
+    padding: 0;
+}
+
+lens-result-table::part(info-button-icon) {
+  position: absolute;
+  bottom: var(--gap-xxs);
+  width: 16px;
+  height: 16px;
+  left: 1px;
+  top: -1px
+}
+
+
+lens-result-table::part(info-button-dialogue) {
+    position: absolute;
+    border: none;
+    background-color: var(--white);
+    width: max-content;
+    max-width: 80vw;
+    z-index: 100;
+    padding: var(--gap-s);
+    top: 40px;
+    right: 0px;
+    border: solid 1px var(--light-blue);
+    border-radius: var(--border-radius-small);
+}
