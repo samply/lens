@@ -290,7 +290,9 @@
           chartType="bar"
           xAxisTitle="Probentypen"
           yAxisTitle="Probenanzahl"
-        />
+        >
+        <div class="sample-information-text">* Es sind in der Regel auch FFPE-Gewebeproben verfügbar</div>
+    </lens-chart>
       </div>
     </div>
   </div>

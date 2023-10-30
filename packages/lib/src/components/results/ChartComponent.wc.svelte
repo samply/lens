@@ -511,4 +511,5 @@
         id="chart"
         on:click={handleClickOnStratifier}
     />
+    <slot></slot>
 </div>
