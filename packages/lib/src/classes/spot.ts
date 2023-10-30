@@ -34,7 +34,7 @@ export class Spot {
                 `${this.url}tasks?sites=${this.sites.toString()}`,
                 {
                     method: 'POST',
-                    credentials: 'include',
+                    credentials: (import.meta.env.PROD) ? "include" : "omit",
                     body: query,
                     signal: controller.signal
                 }
@@ -54,7 +54,7 @@ export class Spot {
                 const beamResponses: Response = await fetch(
                     `${this.url}tasks/${this.currentTask}?wait_count=${responseCount + 1}`,
                     {
-                        credentials: 'include',
+                        credentials: (import.meta.env.PROD) ? "include" : "omit",
                         signal: controller.signal
                     }
                 )
