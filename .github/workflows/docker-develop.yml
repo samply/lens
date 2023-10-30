@@ -1,18 +1,12 @@
-name: Build and Push Image samply/lens-web-components
+name: Build and Push Develop Image samply/lens-web-components
 
 on:
   push:
     branches:
-      - main
-    # Build then a new version is tagged
-    tags:
-      - '*.*.*'
+      - develop
   pull_request:
     branches:
-      - main
-  schedule:
-    # Build every night at 1am
-    - cron: '0 1 * * *'
+      - develop
 jobs:
   build:
     # This workflow defines how a samply docker image is built, tested and published.
@@ -21,7 +15,7 @@ jobs:
     with:
       image-name: "samply/lens-web-components"
       build-args: |
-        TARGET_ENVIRONMENT=production
+        TARGET_ENVIRONMENT=staging
     # This passes the secrets from calling workflow to the called workflow
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
