@@ -150,45 +150,6 @@
     "Sys. T"
   );
 
-  const therapyTooltips: Map<string, string> = new Map<string, string>()
-    .set("OP", "Operationen")
-    .set("ST", "Strahlentherapien")
-    .set("medicationStatements", "Systemische Therapien");
-
-  const systemicTherapyTooltips: Map<string, string> = new Map<string, string>()
-    .set("CH", "Chemotherapie")
-    .set("HO", "Hormontherapie")
-    .set("IM", "Immun- und Antikörpertherapie")
-    .set("KM", "Knochenmarkstransplantation")
-    .set("WS", "Wait and see")
-    .set("AS", "Active Surveillance")
-    .set("ZS", "Zielgerichtete Substanzen")
-    .set("SO", "Sonstiges")
-    .set("ST", "Strahlentherapie")
-    .set("OP", "Operation");
-
-  const specimenTooltips: Map<string, string> = new Map<string, string>()
-    .set("whole-blood", "Vollblut")
-    .set("bone-marrow", "Knochenmark")
-    .set("buffy-coat", "Buffycoat")
-    .set("dried-whole-blood", "Blutkarten Guthrie")
-    .set("peripheral-blood-cells",  "Periphere mononukleäre Blutzellen (PBMC)")
-    .set("blood-plasma", "Plasma")
-    .set("blood-serum", "Serum")
-    .set("ascites", "Aszites")
-    .set("csf-liquor", "Liquor")
-    .set("saliva", "Speichel")
-    .set("stool-faeces", "Stuhl")
-    .set("urine", "Urin")
-    .set("swab", "Abstrich")
-    .set("liquid-other", "Flüssigprobe, Andere")
-    .set("tissue-ffpe", "Gewebe FFPE")
-    .set("tissue-frozen", "Gewebe schockgefroren")
-    .set("tissue-other", "Gewebe, Andere Konservierungsart")
-    .set("dna", "DNA")
-    .set("rna", "RNA")
-    .set("derivative-other", "Derivat, Andere")
-
 </script>
 
 
@@ -309,7 +270,6 @@
           catalogueGroupCode="therapy_of_tumor"
           chartType="bar"
           headers={therapyHeaders}
-          tooltips={therapyTooltips}
           xAxisTitle="Art der Therapie"
           yAxisTitle="Anzahl der Therapien"
         />
@@ -319,7 +279,6 @@
           title="Systemische Therapien"
           catalogueGroupCode="medicationStatements"
           chartType="bar"
-          tooltips={systemicTherapyTooltips}
           xAxisTitle="Art der Therapie"
           yAxisTitle="Anzahl der Therapien"
         />
@@ -331,7 +290,6 @@
           chartType="bar"
           xAxisTitle="Probentypen"
           yAxisTitle="Probenanzahl"
-          tooltips={specimenTooltips}
         />
       </div>
     </div>
