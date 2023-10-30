@@ -114,9 +114,9 @@
                     callbacks: {
                         title: (context: any) => {
                             const key = context[0].label || "";
-                            let result = tooltips.get(key)
-                                ? tooltips.get(key)
-                                : key;
+                            let result = options.tooltips && options.tooltips[key]
+                                ? options.tooltips[key]
+                                : key
                             return result;
                         },
                     },
