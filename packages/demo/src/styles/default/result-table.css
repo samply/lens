@@ -2,7 +2,7 @@
 lens-result-table {
     background-color: var(--white);
     display: grid;
-    grid-template-rows: auto auto 1fr;
+    grid-template-rows: auto auto 1fr auto auto;
   }
   
   lens-result-table::part(result-table-title) {

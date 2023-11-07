@@ -41,7 +41,6 @@
     $: responseGroupCode =
         $catalogueKeyToResponseKeyMap.get(catalogueGroupCode);
 
-    export let tooltips: Map<string, string> = new Map<string, string>();
     export let headers: Map<string, string> = new Map<string, string>();
     export let displayLegends: boolean = false;
     export let chartType: keyof ChartTypeRegistry = "pie";

@@ -224,7 +224,11 @@
         />
       </div>
       <div class="chart-wrapper result-table">
-        <lens-result-table pageSize="10" />
+        <lens-result-table pageSize="10" >
+          <div slot="above-pagination" class="result-table-hint-text">
+            * Es sind in der Regel auch FFPE-Gewebeproben verfügbar
+          </div>
+        </lens-result-table>
       </div>
       <div class="chart-wrapper">
         <lens-chart
@@ -294,6 +298,7 @@
           chartType="bar"
           xAxisTitle="Probentypen"
           yAxisTitle="Probenanzahl"
+          filterRegex="^(?!(tissue-other|buffy-coat|peripheral-blood-cells|dried-whole-blood|swab|ascites|stool-faeces|saliva|liquid-other|derivative-other))"
         >
         <div class="sample-information-text">* Es sind in der Regel auch FFPE-Gewebeproben verfügbar</div>
     </lens-chart>

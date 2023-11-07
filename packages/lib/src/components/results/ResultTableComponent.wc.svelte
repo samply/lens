@@ -184,6 +184,7 @@
         {/each}
     </tbody>
 </table>
+<slot name="above-pagination"/>
 <div part="table-pagination">
     <button
         part="table-pagination-button pagination-pagination-previous"
@@ -194,10 +195,11 @@
     >
     <div part="table-pagination-pagenumber">{activePage}</div>
     <button
-        part="table-pagination-button pagination-pagination-next"
-        disabled={activePage === Math.ceil(tableRowData.length / pageSize)}
-        on:click={() => {
-            activePage = activePage + 1;
-        }}>&#8594;</button
+    part="table-pagination-button pagination-pagination-next"
+    disabled={activePage === Math.ceil(tableRowData.length / pageSize)}
+    on:click={() => {
+        activePage = activePage + 1;
+    }}>&#8594;</button
     >
 </div>
+<slot name="beneath-pagination"/>
