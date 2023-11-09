@@ -19237,11 +19237,6 @@
                         "description": "Liquor/CSF"
                     },
                     {
-                        "key": "stool-faeces",
-                        "name": "Stuhl/Kot",
-                        "description": "Stuhl/Kot"
-                    },
-                    {
                         "key": "bone-marrow",
                         "name": "Knochenmark",
                         "description": "Knochenmark"

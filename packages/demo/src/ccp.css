@@ -373,3 +373,8 @@ lens-info-button::part(info-button-icon) {
   max-width: 300px;
   text-align: left;
 }
+
+.result-table-hint-text {
+ display: flex;
+ align-items: end;
+}
