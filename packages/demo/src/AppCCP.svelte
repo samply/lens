@@ -125,7 +125,7 @@
       "muenchen-tum",
       "hamburg",
       "frankfurt",
-      "berlin",
+      "berlin-test",
       "dresden",
       "mainz",
       "muenchen-lmu",
