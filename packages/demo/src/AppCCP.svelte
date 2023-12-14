@@ -96,6 +96,7 @@
 
   const uiSiteMap: string[][] = [
     ["berlin", "Berlin"],
+    ["berlin-test", "Berlin"],
     ["bonn", "Bonn"],
     ["dresden", "Dresden"],
     ["essen", "Essen"],
