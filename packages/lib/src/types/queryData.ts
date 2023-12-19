@@ -32,3 +32,9 @@ export type AutoCompleteItem = {
 };
 
 export type queryStoreItem = QueryItem[] | QueryItem | QueryValue[] | QueryValue | AggregatedValue[] | AggregatedValue
+
+
+export type SendableQuery = {
+    query: QueryItem[][],
+    id: string,
+}

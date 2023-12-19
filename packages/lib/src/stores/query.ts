@@ -10,9 +10,26 @@ import { v4 as uuidv4 } from "uuid";
 
 export const queryStore = writable<QueryItem[][]>([[]]);
 
-export const activeQueryGroupIndex = writable(0);
+/**
+ * when the url has a query as base64 string, this will be parsed and the queryStore will be updated
+ */
+const urlParams: URLSearchParams = new URLSearchParams(window.location.search);
+const queryParam: string = urlParams.get("query");
 
-export const queryModified = writable(false);
+if (queryParam !== null) {
+    const queryParamDecoded: QueryItem[][] = JSON.parse(atob(queryParam));
+    queryStore.set(queryParamDecoded);
+}
+
+/**
+ * the index of the currently active search bar
+ */
+export const activeQueryGroupIndex = writable<number>(0);
+
+/**
+ * checks if the query has been modified since the last time the query was sent to the server
+ */
+export const queryModified = writable<boolean>(false);
 
 /**
  * Adds an item to the query
