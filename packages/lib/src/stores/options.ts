@@ -1,4 +1,4 @@
 import { writable } from "svelte/store";
 
 
-export const lensOptions = writable<any>()
+export const lensOptions = writable<any>({})

@@ -7,6 +7,7 @@
     dktkPatientsMeasure,
     dktkProceduresMeasure,
     dktkSpecimenMeasure,
+    dktkHistologyMeasure
   } from "./measures";
 
   let mockCatalogueData = "";
@@ -30,6 +31,7 @@
     dktkSpecimenMeasure,
     dktkProceduresMeasure,
     dktkMedicationStatementsMeasure,
+    dktkHistologyMeasure
   ];
 
   const backendMeasures = `DKTK_STRAT_DEF_IN_INITIAL_POPULATION`;
@@ -209,8 +211,6 @@
     <div class="charts">
       <div class="chart-wrapper result-summary">
         <lens-result-summary
-          title="Ergebnisse"
-          resultSummaryDataTypes={JSON.stringify(resultSummaryConfig)}
         />
         <lens-search-modified-display>Diagramme repräsentieren nicht mehr die aktuelle Suche!</lens-search-modified-display>
       </div>
