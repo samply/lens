@@ -17,9 +17,6 @@
     import type { ResponseStore } from "../../types/backend";
 
 
-    /**
-     * options set in project
-     */
     let options: any = {};
     $: options = $lensOptions.resultSummaryOptions
 
@@ -70,7 +67,6 @@
                 type.population = getAggregatedPopulation(store, type.dataKey);
                 return type;
             }
-
 
             /**
              * if the type has multiple dataKeys to aggregate, the population is the aggregated population of all dataKeys

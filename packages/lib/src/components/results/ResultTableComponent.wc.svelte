@@ -51,7 +51,11 @@
             let tableRow: (string | number)[] = [];
 
 
-
+            /**
+             * builds the table items for each row
+             * the first item is the name of the collection
+             * the following items are the population for each data type (single or aggregated)
+            */
             options.headerData.forEach(
                 (header: HeaderData, index: number): void => {
                     if (index === 0) {
