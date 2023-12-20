@@ -8,24 +8,34 @@
 />
 
 <script lang="ts">
-    import { uiSiteMappingsStore } from "../../stores/mappings";
+    import { lensOptions } from "../../stores/options";
     import {
         responseStore,
         getAggregatedPopulation,
+        getAggregatedPopulationForStratumCode,
     } from "../../stores/response";
     import type { ResponseStore } from "../../types/backend";
-    import NegotiateButtonComponent from "../buttons/NegotiateButtonComponent.wc.svelte";
 
-    export let title: string = "";
-    export let resultSummaryDataTypes: { key: string; title: string; population?: string | number }[] = [];
-    export let negotiateButton: boolean = false;
-    export let negotiateButtonText: string = "Negotiate";
 
+    /**
+     * options set in project
+     */
+    let options: any = {};
+    $: options = $lensOptions.resultSummaryOptions
+
+    let resultSummaryDataTypes: { key: string; title: string; population?: string | number }[]
+    $: resultSummaryDataTypes = options?.dataTypes || [];
+
+    
     /**
      * Extracts the population for each result summary data type and adds it to the type object
      * @param store
      */
     const fillPopulationToSummaryTypes = (store: ResponseStore): void => {
+        if (!options?.dataTypes) {
+            return;
+        }
+        console.log(store);
         
         /**
          * show the number of sites with data and the number of sites claimed/succeeded
@@ -42,34 +52,56 @@
             }
         });
 
-        resultSummaryDataTypes = resultSummaryDataTypes.map((type) => {  
+        resultSummaryDataTypes = options.dataTypes.map((type) => {
             /**
-             * If the type is sites, the population is the length of the store
-             * TODO: very specific. this should be more generic
+             * If the type is collections, the population is the length of the store
              */
-            if (type.key === "sites") {
+            if (type.dataKey === "collections") {
                 type.population =`${sitesWithData} / ${sitesClaimed}`;
                 return type;
             }
 
             /**
-             * otherwise, get the population from the store
+             * if the type has only one dataKey, the population is the aggregated population of that dataKey
              */
-            type.population = getAggregatedPopulation(store, type.key);
+
+            if(type.dataKey) {
+                type.population = getAggregatedPopulation(store, type.dataKey);
+                return type;
+            }
+
+
+            /**
+             * if the type has multiple dataKeys to aggregate, the population is the aggregated population of all dataKeys
+             */
+
+            let aggregatedPopulation: number = 0;
+
+            type.aggregatedDataKeys.forEach((dataKey) => {
+                if(dataKey.groupCode){
+                    aggregatedPopulation += getAggregatedPopulation(store, dataKey.groupCode);
+                } else if(dataKey.stratifierCode && dataKey.stratumCode) {
+                    aggregatedPopulation += getAggregatedPopulationForStratumCode(store, dataKey.stratumCode, dataKey.stratifierCode);
+                }
+                /**
+                 * TODO: add support for stratifiers if needed?
+                 * needs to be implemented in response.ts
+                */
+            });
+
+            type.population = aggregatedPopulation;
             return type;
         });
     };
 
-    responseStore.subscribe((store: ResponseStore): void => {
-        fillPopulationToSummaryTypes(store);
-    });
+    $: fillPopulationToSummaryTypes($responseStore);
 
 </script>
 
-{#if title}
+{#if options?.title}
     <div part="result-summary-header">
         <h4 part="result-summary-header-title">
-            {title}
+            {options.title}
         </h4>
     </div>
 {/if}
@@ -80,8 +112,4 @@
         </div>
     {/each}
 </div>
-{#if negotiateButton}
-    <div part="result-summary-footer">
-        <NegotiateButtonComponent title={negotiateButtonText} />
-    </div>
-{/if}
+

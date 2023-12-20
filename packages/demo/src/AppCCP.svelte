@@ -120,19 +120,19 @@
   const backendConfig = {
     url: (import.meta.env.PROD) ? backendUrl : "http://localhost:8080",
     backends: [
-      "mannheim",
-      "freiburg",
-      "muenchen-tum",
-      "hamburg",
-      "frankfurt",
-      "berlin",
-      "dresden",
+      // "mannheim",
+      // "freiburg",
+      // "muenchen-tum",
+      // "hamburg",
+      // "frankfurt",
+      // "berlin",
+      // "dresden",
       "mainz",
-      "muenchen-lmu",
-      "essen",
-      "ulm",
-      "wuerzburg",
-      "hannover",
+      // "muenchen-lmu",
+      // "essen",
+      // "ulm",
+      // "wuerzburg",
+      // "hannover",
     ],
     uiSiteMap: uiSiteMap,
     catalogueKeyToResponseKeyMap: catalogueKeyToResponseKeyMap,
@@ -209,8 +209,6 @@
     <div class="charts">
       <div class="chart-wrapper result-summary">
         <lens-result-summary
-          title="Ergebnisse"
-          resultSummaryDataTypes={JSON.stringify(resultSummaryConfig)}
         />
         <lens-search-modified-display>Diagramme repräsentieren nicht mehr die aktuelle Suche!</lens-search-modified-display>
       </div>

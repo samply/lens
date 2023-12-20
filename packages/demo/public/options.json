@@ -118,5 +118,33 @@
                 "dataKey": "specimen"
             }
         ]
+    },
+    "resultSummaryOptions": {
+        "title": "Ergebnisse",
+        "dataTypes": [
+            {
+                "title": "Standorte",
+                "dataKey": "collections"
+            },
+            {
+                "title": "Patienten",
+                "dataKey": "patients"
+            },
+            {
+                "title": "Bioproben*",
+                "dataKey": "specimen",
+                "aggregatedDataKeys": [
+                    {
+                        "groupCode": "specimen"
+                    },
+                    {
+                        "stratifierCode": "Histlogoies",//typo?
+                        "stratumCode": "1"
+                    },
+                    {
+                    }
+                ]
+            }
+        ]
     }
 }
