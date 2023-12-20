@@ -10,6 +10,7 @@
     import { negotiateStore } from "../../stores/negotiate";
     import {
         getSitePopulationForCode,
+        getSitePopulationForStratumCode,
         responseStore,
     } from "../../stores/response";
     import TableItemComponent from "./TableItemComponent.svelte";
@@ -26,7 +27,7 @@
      */
     let options: any;
     $: options = ($lensOptions?.tableOptions && $lensOptions?.tableOptions) || {
-        headerData: [{ title: "", dataKey: "" }],
+        headerData: [{ title: "", dataKey: "", aggregatedDataKeys: []}],
     };
 
     $: options?.headerData?.forEach(
@@ -49,16 +50,36 @@
 
             let tableRow: (string | number)[] = [];
 
+
+
             options.headerData.forEach(
                 (header: HeaderData, index: number): void => {
                     if (index === 0) {
                         const name = $uiSiteMappingsStore.get(key);
                         tableRow.push(name);
-                    } else {
-                        tableRow.push(
-                            getSitePopulationForCode(value.data, header.dataKey)
-                        );
+                        return;
                     }
+                    if(header.dataKey) {
+                        tableRow.push(getSitePopulationForCode(value.data, header.dataKey));
+                        return;
+                    }
+
+                    let aggregatedPopulation: number = 0;
+
+                    header.aggregatedDataKeys.forEach((dataKey) => {
+                        if(dataKey.groupCode){
+                            aggregatedPopulation += getSitePopulationForCode(value.data, dataKey.groupCode);
+                        } else if(dataKey.stratifierCode && dataKey.stratumCode) {
+                            aggregatedPopulation += getSitePopulationForStratumCode(value.data, dataKey.stratumCode, dataKey.stratifierCode);
+                        }
+                        /**
+                         * TODO: add support for stratifiers if needed?
+                         * needs to be implemented in response.ts
+                        */
+                    });
+
+                    tableRow.push(aggregatedPopulation);
+
                 }
             );
 
