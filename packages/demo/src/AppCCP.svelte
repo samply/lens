@@ -7,6 +7,7 @@
     dktkPatientsMeasure,
     dktkProceduresMeasure,
     dktkSpecimenMeasure,
+    dktkHistologyMeasure
   } from "./measures";
 
   let mockCatalogueData = "";
@@ -30,6 +31,7 @@
     dktkSpecimenMeasure,
     dktkProceduresMeasure,
     dktkMedicationStatementsMeasure,
+    dktkHistologyMeasure
   ];
 
   const backendMeasures = `DKTK_STRAT_DEF_IN_INITIAL_POPULATION`;

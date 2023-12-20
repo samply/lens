@@ -53,6 +53,7 @@
         });
 
         resultSummaryDataTypes = options.dataTypes.map((type) => {
+            console.log(getAggregatedPopulationForStratumCode(store, '1', "Histlogoies"));
             /**
              * If the type is collections, the population is the length of the store
              */
