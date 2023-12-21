@@ -9,7 +9,7 @@
 
 <script lang="ts">
     import { buildAstFromQuery } from "../../helpers/ast-transformer";
-    import { queryModified, queryStore } from "../../stores/query";
+    import { queryBase64Store, queryModified, queryStore } from "../../stores/query";
     import { measureStore } from "../../stores/measures";
     import {translateAstToCql} from "../../cql-translator-service/ast-to-cql-translator";
     import { buildLibrary, buildMeasure } from "../../helpers/cql-measure";
@@ -74,7 +74,12 @@
         const measure = buildMeasure(library.url, $measureStore.map( measureItem => measureItem.measure))
         const query = {lang: "cql", lib: library, measure: measure};
 
-
+        const queryString = btoa(decodeURI(JSON.stringify(query)));
+        
+        /**
+         * also used as data for negotiator / project manager
+        */
+        queryBase64Store.set(queryString);
 
         const backend = new Spot(
             new URL(backendConfig.url),
@@ -82,7 +87,7 @@
         )
 
         backend.send(
-            btoa(decodeURI(JSON.stringify(query))),
+            queryString,
             controller
         )
 

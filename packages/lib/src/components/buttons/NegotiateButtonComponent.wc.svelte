@@ -7,6 +7,7 @@
 
 <script lang="ts">
     import { negotiate, negotiateStore } from "../../stores/negotiate";
+    import { queryBase64Store } from "../../stores/query";
 
     export let title: string = "Negotiate with biobanks";
     let disabled: boolean = false;
@@ -21,7 +22,7 @@
     part={`lens-negotiate-button lens-negotiate-button-${
         disabled ? "disabled" : "active"
     }`}
-    on:click={() => negotiate($negotiateStore)}
+    on:click={() => negotiate($negotiateStore, $queryBase64Store)}
     disabled={disabled}
 >
     <div part="lens-negotiate-button-title">

@@ -161,7 +161,7 @@ export const getCollections = (sitesToNegotiate: string[]): Collection[] => {
  * redirects to negotiator
  * @param sitesToNegotiate the sites to negotiate with
 */
-export const negotiate = async (sitesToNegotiate: string[]) => {
+export const negotiate = async (sitesToNegotiate: string[], queryBase64String: string) => {
 
     let sendableQuery: SendableQuery
     queryStore.subscribe((value: QueryItem[][]) => {
@@ -174,7 +174,7 @@ export const negotiate = async (sitesToNegotiate: string[]) => {
 
     let humanReadable: string = getHumanReadableQuery();
     let collections: Collection[] = getCollections(sitesToNegotiate)
-    let negotiatorResponse = await sendRequestToNegotiator(sendableQuery, humanReadable, collections)
+    let negotiatorResponse = await sendRequestToNegotiator(sendableQuery, humanReadable, collections, queryBase64String)
     window.location.href = negotiatorResponse.redirect_uri.toString()
 }
 
@@ -186,7 +186,7 @@ export const negotiate = async (sitesToNegotiate: string[]) => {
  * @param collections the collections to negotiate with
  * @returns the redirect uri from the negotiator
  */
-async function sendRequestToNegotiator(sendableQuery: SendableQuery, humanReadable: string, collections: Collection[]): Promise<any> {
+async function sendRequestToNegotiator(sendableQuery: SendableQuery, humanReadable: string, collections: Collection[], queryBase64String: string): Promise<any> {
 
     let base64Query: string = btoa(JSON.stringify(sendableQuery.query))
 
@@ -207,6 +207,7 @@ async function sendRequestToNegotiator(sendableQuery: SendableQuery, humanReadab
                 URL: returnURL,
                 collections: collections,
                 nToken: sendableQuery.id,
+                query: queryBase64String
             }),
         }
     );

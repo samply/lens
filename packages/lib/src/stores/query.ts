@@ -10,6 +10,8 @@ import { v4 as uuidv4 } from "uuid";
 
 export const queryStore = writable<QueryItem[][]>([[]]);
 
+export const queryBase64Store = writable<string>("");
+
 /**
  * when the url has a query as base64 string, this will be parsed and the queryStore will be updated
  */
