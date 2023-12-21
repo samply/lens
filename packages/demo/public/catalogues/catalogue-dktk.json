@@ -19193,23 +19193,13 @@
                 "criteria": [
                     {
                         "key": "tumor-tissue-ffpe",
-                        "name": "Tumorgewebe (FFPE)",
+                        "name": "Gewebe FFPE",
                         "description": "Tumorgewebe (FFPE)"
                     },
                     {
                         "key": "tumor-tissue-frozen",
-                        "name": "Tumorgewebe (Kryo/Frisch)",
+                        "name": "Gewebe schockgefroren",
                         "description": "Tumorgewebe (Kryo/Frisch)"
-                    },
-                    {
-                        "key": "normal-tissue-ffpe",
-                        "name": "Normalgewebe (FFPE)",
-                        "description": "Normalgewebe (FFPE)"
-                    },
-                    {
-                        "key": "normal-tissue-frozen",
-                        "name": "Normalgewebe (Kryo/Frisch)",
-                        "description": "Normalgewebe (Kryo/Frisch)"
                     },
                     {
                         "key": "whole-blood",
@@ -19233,7 +19223,7 @@
                     },
                     {
                         "key": "csf-liquor",
-                        "name": "Liquor/CSF",
+                        "name": "Liquor",
                         "description": "Liquor/CSF"
                     },
                     {
