@@ -226,7 +226,7 @@
       <div class="chart-wrapper result-table">
         <lens-result-table pageSize="10" >
           <div slot="above-pagination" class="result-table-hint-text">
-            * Es sind in der Regel auch FFPE-Gewebeproben verfügbar
+            *Die Anzahl der möglichen vorhandenen FFPE-Proben aus der Pathologie beruht auf der Menge der gezählten Histologien
           </div>
         </lens-result-table>
       </div>

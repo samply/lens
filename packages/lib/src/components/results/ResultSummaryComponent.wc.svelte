@@ -32,7 +32,6 @@
         if (!options?.dataTypes) {
             return;
         }
-        console.log(store);
         
         /**
          * show the number of sites with data and the number of sites claimed/succeeded
@@ -50,7 +49,6 @@
         });
 
         resultSummaryDataTypes = options.dataTypes.map((type) => {
-            console.log(getAggregatedPopulationForStratumCode(store, '1', "Histlogoies"));
             /**
              * If the type is collections, the population is the length of the store
              */

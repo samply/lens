@@ -100,6 +100,28 @@
                 "dna": "DNA",
                 "rna": "RNA",
                 "derivative-other": "Derivat, Andere"
+            },
+            "legendMapping":{
+                "tissue-ffpe": "Gewebe FFPE",
+                "tissue-frozen": "Gewebe schockgefroren",
+                "tissue-other": "Gewebe, Andere Konservierungsart",
+                "whole-blood": "Vollblut",
+                "blood-serum": "Serum",
+                "blood-plasma": "Plasma",
+                "buffy-coat": "Buffycoat",
+                "peripheral-blood-cells": "Periphere mononukleäre Blutzellen (PBMC)",
+                "dried-whole-blood": "Blutkarten",
+                "swab": "Abstrich",
+                "ascites": "Aszites",
+                "stool-faeces": "Stuhl",
+                "urine": "Urin",
+                "csf-liquor": "Liquor",
+                "bone-marrow": "Knochenmark",
+                "saliva": "Speichel",
+                "liquid-other": "Flüssigprobe, Andere",
+                "dna": "DNA",
+                "rna": "RNA",
+                "derivative-other": "Derivat, Andere"
             }
         }
     },
