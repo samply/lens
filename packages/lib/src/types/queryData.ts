@@ -28,6 +28,7 @@ export type AutoCompleteItem = {
         key: string;
         name: string;
         description?: string;
+        aggregatedValue?: AggregatedValue[][];
     };
 };
 

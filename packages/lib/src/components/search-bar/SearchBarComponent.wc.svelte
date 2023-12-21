@@ -175,11 +175,11 @@
             id: uuidv4(),
             name: inputItem.name,
             key: inputItem.key,
-            type: inputItem.type,
+            type: "type" in inputItem && inputItem.type,
             system: "system" in inputItem && inputItem.system,
             values: [
                 {
-                    value: inputItem.criterion.key,
+                    value: 'aggregatedValue' in inputItem.criterion ? inputItem.criterion.aggregatedValue : inputItem.criterion.key,
                     name: inputItem.criterion.name,
                     description: inputItem.criterion.description,
                     queryBindId: uuidv4(),
