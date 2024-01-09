@@ -19202,6 +19202,11 @@
                         "description": "Tumorgewebe (Kryo/Frisch)"
                     },
                     {
+                        "key": "tissue-other",
+                        "name": "Gewebe, andere Konservierungsart",
+                        "description": "???"
+                    },
+                    {
                         "key": "whole-blood",
                         "name": "Vollblut",
                         "description": "Vollblut"
@@ -19212,9 +19217,19 @@
                         "description": "Serum"
                     },
                     {
-                        "key": "blood-plasma",
-                        "name": "Plasma",
-                        "description": "Plasma"
+                        "key": "buffy-coat",
+                        "name": "Buffycoat",
+                        "description": ""
+                    },
+                    {
+                        "key": "peripheral-blood-cells-vital",
+                        "name": "Periphere mononukleäre Blutzellen (PBMC)",
+                        "description": ""
+                    },
+                    {
+                        "key": "dried-whole-blood",
+                        "name": "Blutkarten",
+                        "description": ""
                     },
                     {
                         "key": "urine",
@@ -19222,14 +19237,39 @@
                         "description": "Urin"
                     },
                     {
+                        "key": "swab",
+                        "name": "Abstrich",
+                        "description": ""
+                    },
+                    {
+                        "key": "ascites",
+                        "name": "Aszites",
+                        "description": ""
+                    },
+                    {
                         "key": "csf-liquor",
                         "name": "Liquor",
                         "description": "Liquor/CSF"
                     },
                     {
+                        "key": "stool-faeces",
+                        "name": "Stuhl",
+                        "description": ""
+                    },
+                    {
                         "key": "bone-marrow",
                         "name": "Knochenmark",
                         "description": "Knochenmark"
+                    },
+                    {
+                        "key": "saliva",
+                        "name": "Speichel",
+                        "description": ""
+                    },
+                    {
+                        "key": "liquid-other",
+                        "name": "Flüssigprobe, andere",
+                        "description": ""
                     },
                     {
                         "key": "dna",
@@ -19240,6 +19280,11 @@
                         "key": "rna",
                         "name": "RNA",
                         "description": "RNA"
+                    },
+                    {
+                        "key": "derivative-other",
+                        "name": "Derivat, andere",
+                        "description": ""
                     }
                 ]
             }
