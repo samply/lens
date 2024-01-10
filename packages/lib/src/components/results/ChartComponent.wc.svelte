@@ -258,6 +258,9 @@
     ): { labels: string[]; data: number[] } => {
         const groupedChartData: { label: string; value: number }[] =
             labels.reduce((acc, label) => {
+                // This is a hack! This will help with the wrong coding of ICD10
+                label = label.replaceAll("_", ".")
+
                 /**
                  * see if the label contains the divider
                  * if not, add it to the accumulator with a .% at the end
