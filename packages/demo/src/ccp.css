@@ -275,6 +275,12 @@ lens-search-button::part(lens-search-button) {
   background-color: var(--light-blue);
 }
 
+lens-search-button::part(lens-search-button):hover {background-color: #006adb}
+
+lens-search-button::part(lens-search-button):active {
+  background-color: #003d7e;
+  transform: translateX(1px);
+}
 
 /**
   Catalogue
@@ -372,6 +378,20 @@ lens-info-button::part(info-button-icon) {
 .catalogue lens-info-button::part(info-button-dialogue){
   max-width: 300px;
   text-align: left;
+}
+
+lens-info-button::part(info-button-dialogue):hover {background-color: #b8bfb8}
+
+lens-info-button::part(info-button):hover {background-color: #b8bfb8}
+
+lens-info-button::part(info-button):active {
+  background-color: #585958;
+  transform: translateX(1px);
+}
+
+lens-info-button::part(info-button-dialogue):active {
+  background-color: #585958;
+  transform: translateX(1px);
 }
 
 .result-table-hint-text {
