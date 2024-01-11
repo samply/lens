@@ -98,6 +98,11 @@
         <h4 part="result-summary-header-title">
             {options.title}
         </h4>
+        <lens-info-button
+        infoIconUrl="info-circle-svgrepo-com.svg"
+        noQueryMessage="Um eine Re-Identifizierung zu erschweren, werden Standortergebnisse modifiziert und auf Zehnerstellen gerundet. Meldet ein Standort keinen Treffer, wird für diesen null angezeigt."
+        showQuery={true}
+        />
     </div>
 {/if}
 <div part="result-summary-content">
