@@ -179,6 +179,7 @@
         if (perSite) {
             dataSet = chartLabels.map((label: string) => {
                 const site: Site = responseStore.get(label);
+                console.log(site.data)
 
                 if (site.data === null) return 0;
 
