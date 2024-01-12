@@ -7,6 +7,51 @@
     }}
 />
 
+<style>
+
+lens-info-button::part(info-button-icon) {
+  width: 21px;
+}
+
+lens-info-button::part(info-button) {
+    position: relative;
+    cursor: pointer;
+    height: 100%;
+    width: 38px;
+    background-color: var(--white);
+    border: solid 1px var(--light-blue);
+    border-radius: var(--border-radius-small);
+}
+
+lens-info-button::part(info-button-title) {
+    font-family: var(--font-family);
+}
+
+lens-info-button::part(info-button-dialogue) {
+    position: absolute;
+    border: none;
+    background-color: var(--white);
+    width: max-content;
+    max-width: 80vw;
+    padding: var(--gap-s);
+    z-index: 100;
+    top: 40px;
+    left: 40px;
+    border: solid 1px var(--light-blue);
+    border-radius: var(--border-radius-small);
+}
+
+.heading {
+    float: left;
+}
+
+.info {
+    float: left;
+    margin-top: 1.2rem;
+    margin-left: 0.2rem;
+}
+ </style>
+
 <script lang="ts">
     import { lensOptions } from "../../stores/options";
     import {
@@ -95,9 +140,18 @@
 
 {#if options?.title}
     <div part="result-summary-header">
+        <div class="heading">
         <h4 part="result-summary-header-title">
             {options.title}
         </h4>
+       </div>
+       <div class="info">
+        <lens-info-button
+        infoIconUrl="info-circle-svgrepo-com.svg"
+        noQueryMessage="Um eine Re-Identifizierung zu erschweren, werden Standortergebnisse modifiziert und auf Zehnerstellen gerundet. Meldet ein Standort keinen Treffer, wird für diesen null angezeigt."
+        showQuery={true}
+        />
+    </div>
     </div>
 {/if}
 <div part="result-summary-content">
