@@ -226,7 +226,7 @@
       <div class="chart-wrapper result-table">
         <lens-result-table pageSize="10" >
           <div slot="above-pagination" class="result-table-hint-text">
-            *Die Anzahl der möglichen vorhandenen FFPE-Proben aus der Pathologie beruht auf der Menge der gezählten Histologien
+            * Umfasst Gewebe- und flüssige Proben. Abschätzung der FFPE Proben entspricht der Zahl der Diagnosen.
           </div>
         </lens-result-table>
       </div>
@@ -300,7 +300,6 @@
           yAxisTitle="Probenanzahl"
           filterRegex="^(?!(tissue-other|buffy-coat|peripheral-blood-cells|dried-whole-blood|swab|ascites|stool-faeces|saliva|liquid-other|derivative-other))"
         >
-        <div class="sample-information-text">* Es sind in der Regel auch FFPE-Gewebeproben verfügbar</div>
     </lens-chart>
       </div>
     </div>
