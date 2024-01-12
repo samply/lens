@@ -143,7 +143,7 @@
   const genderHeaders: Map<string, string> = new Map<string, string>()
     .set("male", "männlich")
     .set("female", "weiblich")
-    .set("other", "divers, intersexuell")
+    .set("other", "Divers, Intersexuell")
     .set("unknown", "unbekannt");
 
 const barChartBackgroundColors: string[] = ["#4dc9f6","#3da4c7"];

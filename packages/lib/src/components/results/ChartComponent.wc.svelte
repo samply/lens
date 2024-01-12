@@ -175,7 +175,7 @@
         data: { label; data; backgroundColor; backgroundHoverColor }[];
     } => {
         let dataSet: number[];
-
+        
         if (perSite) {
             dataSet = chartLabels.map((label: string) => {
                 const site: Site = responseStore.get(label);
@@ -187,6 +187,19 @@
                 );
                 return data?.population[0]?.count || 0;
             });
+
+            let remove_indexes = [];
+
+            dataSet.forEach((value, index) => {
+            if (value === 0) {
+                remove_indexes.unshift(index)
+            }
+            });
+
+            remove_indexes.forEach(index => {
+                dataSet.splice(index, 1)
+                chartLabels.splice(index, 1)
+            })
 
             return {
                 labels: chartLabels,
