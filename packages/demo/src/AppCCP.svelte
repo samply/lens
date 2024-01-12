@@ -146,6 +146,8 @@
     .set("other", "divers, intersexuell")
     .set("unknown", "unbekannt");
 
+const barChartBackgroundColors: string[] = ["#4dc9f6","#3da4c7"];
+
   const vitalStateHeaders: Map<string, string> = new Map<string, string>()
     .set("lebend", "alive")
     .set("verstorben", "deceased")
@@ -250,6 +252,7 @@
           filterRegex="^[CD].*"
           xAxisTitle="Anzahl der Diagnosen"
           yAxisTitle="ICD-10-Codes"
+          backgroundColor={JSON.stringify(barChartBackgroundColors)}
         />
       </div>
       <div class="chart-wrapper chart-age-distribution">
@@ -261,6 +264,7 @@
           filterRegex="^(1*[12]*[0-9])"
           xAxisTitle="Alter"
           yAxisTitle="Anzahl der Primärdiagnosen"
+          backgroundColor={JSON.stringify(barChartBackgroundColors)}
         />
       </div>
       <div class="chart-wrapper">
@@ -280,6 +284,7 @@
           headers={therapyHeaders}
           xAxisTitle="Art der Therapie"
           yAxisTitle="Anzahl der Therapien"
+          backgroundColor={JSON.stringify(barChartBackgroundColors)}
         />
       </div>
       <div class="chart-wrapper">
@@ -289,6 +294,7 @@
           chartType="bar"
           xAxisTitle="Art der Therapie"
           yAxisTitle="Anzahl der Therapien"
+          backgroundColor={JSON.stringify(barChartBackgroundColors)}
         />
       </div>
       <div class="chart-wrapper">
@@ -299,6 +305,7 @@
           xAxisTitle="Probentypen"
           yAxisTitle="Probenanzahl"
           filterRegex="^(?!(tissue-other|buffy-coat|peripheral-blood-cells|dried-whole-blood|swab|ascites|stool-faeces|saliva|liquid-other|derivative-other))"
+          backgroundColor={JSON.stringify(barChartBackgroundColors)}
         >
     </lens-chart>
       </div>
