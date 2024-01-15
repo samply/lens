@@ -98,6 +98,7 @@
 
   const uiSiteMap: string[][] = [
     ["berlin", "Berlin"],
+    ["berlin-test", "Berlin"],
     ["bonn", "Bonn"],
     ["dresden", "Dresden"],
     ["essen", "Essen"],
@@ -127,7 +128,7 @@
       "muenchen-tum",
       "hamburg",
       "frankfurt",
-      "berlin",
+      "berlin-test",
       "dresden",
       "mainz",
       "muenchen-lmu",
