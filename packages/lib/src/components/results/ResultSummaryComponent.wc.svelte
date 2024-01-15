@@ -156,8 +156,9 @@ lens-info-button::part(info-button-dialogue) {
        <div class="info">
         <lens-info-button
         infoIconUrl="info-circle-svgrepo-com.svg"
-        noQueryMessage="Um eine Re-Identifizierung zu erschweren, werden Standortergebnisse modifiziert und auf Zehnerstellen gerundet. Meldet ein Standort keinen Treffer, wird für diesen null angezeigt."
-        showQuery={true}
+        message={[
+            `Um eine Re-Identifizierung zu erschweren, werden Standortergebnisse modifiziert und auf Zehnerstellen gerundet. Meldet ein Standort keinen Treffer, wird für diesen null angezeigt.`
+          ]}
         />
     </div>
     </div>
