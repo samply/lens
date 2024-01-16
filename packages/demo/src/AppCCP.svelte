@@ -118,7 +118,7 @@
                : "https://backend.demo.lens.samply.de/prod/"
 
   const backendConfig = {
-    url: (import.meta.env.PROD) ? backendUrl : "http://localhost:8080",
+    url: "http://localhost:8080",
     backends: [
       "mannheim",
       "freiburg",
@@ -212,6 +212,7 @@
           title="Ergebnisse"
           resultSummaryDataTypes={JSON.stringify(resultSummaryConfig)}
         />
+        <lens-negotiator-button></lens-negotiator-button>
         <lens-search-modified-display>Diagramme repräsentieren nicht mehr die aktuelle Suche!</lens-search-modified-display>
       </div>
       <div class="chart-wrapper">

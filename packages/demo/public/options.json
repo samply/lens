@@ -120,11 +120,11 @@
         ]
     },
     "negotiateOptions": {
-        "negotiatorURL": "https://negotiator.bbmri-eric.eu/api/directory/create_query",
+        "negotiatorURL": "http://localhost:8097/create-query-and-design-project",
         "siteMapping": [
             {
                 "site": "Dresden",
-                "collection": "bbmri-eric:ID:DE_BBD:collection:DILB"
+                "collection": "dresden"
             },
             {
                 "site": "Frankfurt",

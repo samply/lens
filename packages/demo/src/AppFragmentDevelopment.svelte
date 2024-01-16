@@ -118,7 +118,7 @@
                : "https://backend.demo.lens.samply.de/prod/"
 
   const backendConfig = {
-    url: (import.meta.env.PROD) ? backendUrl : "http://localhost:8080",
+    url: "http://localhost:8080",
     backends: [
       "mannheim",
       "freiburg",

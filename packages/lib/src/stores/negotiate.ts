@@ -8,8 +8,15 @@ import { responseStore } from "./response";
 import { v4 as uuidv4 } from 'uuid';
 import type { Collection } from "../types/collection";
 import type { SendableQuery } from "../types/queryData";
+import { authStore } from "./auth";
 
 export const negotiateStore = writable<string[]>([]);
+
+let authHeader: string = "";
+
+authStore.subscribe((value) => {
+    authHeader=value;
+})
 
 
 /**
@@ -112,6 +119,7 @@ export const getCollections = (sitesToNegotiate: string[]): Collection[] => {
     sitesToNegotiate.forEach((site: string) => {
         let collectionId: string = "couldn't map site in search UI"
 
+        // TODO: Why is site id mapped to Uppercase?
         if (siteCollectionMap.has(site) && siteCollectionMap.get(site) !== '') {
             collectionId = siteCollectionMap[site]
         }
@@ -174,7 +182,10 @@ export const negotiate = async (sitesToNegotiate: string[], queryBase64String: s
 
     let humanReadable: string = getHumanReadableQuery();
     let collections: Collection[] = getCollections(sitesToNegotiate)
-    let negotiatorResponse = await sendRequestToNegotiator(sendableQuery, humanReadable, collections, queryBase64String)
+    // TODO: Implement proper configuration option for the switch between negotiator and project manager
+    let negotiatorResponse = (false)
+        ? await sendRequestToNegotiator(sendableQuery, humanReadable, collections, queryBase64String)
+        : await sendRequestToProjectManager(sendableQuery, humanReadable, collections, queryBase64String)
     window.location.href = negotiatorResponse.redirect_uri.toString()
 }
 
@@ -209,6 +220,42 @@ async function sendRequestToNegotiator(sendableQuery: SendableQuery, humanReadab
                 nToken: sendableQuery.id,
                 query: queryBase64String
             }),
+        }
+    );
+    return response.json();
+}
+
+/**
+ *
+ * @param sendableQuery the query to be sent to the negotiator
+ * @param humanReadable a human readable query string to view in the negotiator project
+ * @param collections the collections to negotiate with
+ * @returns the redirect uri from the negotiator
+ * */
+async function sendRequestToProjectManager(sendableQuery: SendableQuery, humanReadable: string, collections: Collection[], queryBase64String: string): Promise<any> {
+
+
+    let base64Query: string = btoa(JSON.stringify(sendableQuery.query))
+
+    const returnURL: string = `${window.location.protocol}//${window.location.host}/?query=${base64Query}`;
+
+    console.log(collections)
+    // TODO: should use collectionId
+    const negotiationPartners = collections.map(collection => collection.siteId.toLocaleLowerCase()).join(',')
+    console.log(negotiationPartners)
+
+    const response: Response = await fetch(
+        `${negotiateOptions.negotiatorURL}?explorerIds=${negotiationPartners}&query-format=CQL_DATA&human-readable=${humanReadable}&explorer-url=${returnURL}`,
+        {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json; charset=utf-8',
+                'Content-Type': 'application/json',
+                'Authorization': authHeader
+                // NOTE: Workaround then david can't solve the bearer token issue
+                // 'Cookie': 'JSESSIONID=6C0A111CF969B92606A445E8A5E0FB7'
+            },
+            body: base64Query,
         }
     );
     return response.json();
