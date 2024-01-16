@@ -212,7 +212,8 @@
 <slot name="above-pagination"/>
 <div part="table-pagination">
     <button
-        part="table-pagination-button pagination-pagination-previous"
+        part="table-pagination-button pagination-pagination-previous 
+                {activePage === 1 ? 'pagination-button-disabled' : ''}"
         disabled={activePage === 1}
         on:click={() => {
             activePage = activePage - 1;
@@ -220,8 +221,9 @@
     >
     <div part="table-pagination-pagenumber">{activePage}</div>
     <button
-    part="table-pagination-button pagination-pagination-next"
-    disabled={activePage === Math.ceil(tableRowData.length / pageSize)}
+    part="table-pagination-button pagination-pagination-next
+            {activePage === Math.ceil(tableRowData.length / pageSize) || pageItems.length === 0 ? 'pagination-button-disabled' : ''}"
+    disabled={activePage === Math.ceil(tableRowData.length / pageSize)|| pageItems.length === 0}
     on:click={() => {
         activePage = activePage + 1;
     }}>&#8594;</button
