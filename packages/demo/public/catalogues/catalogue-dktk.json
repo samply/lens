@@ -12,23 +12,24 @@
                 "criteria": [
                     {
                         "key": "male",
-                        "name": "männlich",
-                        "description": "männlich"
+                        "name": "Männlich",
+                        "description": "Männlich"
                     },
                     {
                         "key": "female",
-                        "name": "weiblich",
-                        "description": "weiblich"
+                        "name": "Weiblich",
+                        "description": "eiblich"
                     },
                     {
                         "key": "other",
-                        "name": "Sonstiges / intersexuell",
-                        "description": "Divers / intersexuell"
+                        "name": "Sonstiges / Intersexuell",
+                        "description": "Sonstiges / Intersexuell"
+
                     },
                     {
                         "key": "unknown",
-                        "name": "unbekannt",
-                        "description": "unbekannt"
+                        "name": "Unbekannt",
+                        "description": "Unbekannt"
                     }
                 ]
             },
