@@ -227,7 +227,7 @@ const barChartBackgroundColors: string[] = ["#4dc9f6","#3da4c7"];
         />
       </div>
       <div class="chart-wrapper result-table">
-        <lens-result-table pageSize="4" >
+        <lens-result-table pageSize="10" >
           <div slot="above-pagination" class="result-table-hint-text">
             * Umfasst Gewebe- und flüssige Proben. Die Anzahl der FFPE Proben (Schätzung) entspricht der Zahl der Diagnosen
           </div>
