@@ -19,9 +19,17 @@ lens-info-button::part(info-button) {
     height: 100%;
     width: 38px;
     background-color: var(--white);
-    border: solid 1px var(--light-blue);
     border-radius: var(--border-radius-small);
+    border: 0;
 }
+
+lens-info-button::part(info-button):hover {background-color: #b8bfb8}
+
+lens-info-button::part(info-button):active {
+  background-color: #585958;
+  transform: translateX(1px);
+}
+
 
 lens-info-button::part(info-button-title) {
     font-family: var(--font-family);
@@ -148,8 +156,9 @@ lens-info-button::part(info-button-dialogue) {
        <div class="info">
         <lens-info-button
         infoIconUrl="info-circle-svgrepo-com.svg"
-        noQueryMessage="Um eine Re-Identifizierung zu erschweren, werden Standortergebnisse modifiziert und auf Zehnerstellen gerundet. Meldet ein Standort keinen Treffer, wird für diesen null angezeigt."
-        showQuery={true}
+        message={[
+            `Um eine Re-Identifizierung zu erschweren, werden Standortergebnisse modifiziert und auf Zehnerstellen gerundet. Meldet ein Standort keinen Treffer, wird für diesen null angezeigt.`
+          ]}
         />
     </div>
     </div>
