@@ -68,6 +68,7 @@ lens-info-button::part(info-button-dialogue) {
         getAggregatedPopulationForStratumCode,
     } from "../../stores/response";
     import type { ResponseStore } from "../../types/backend";
+    import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
 
 
     let options: any = {};
@@ -154,7 +155,7 @@ lens-info-button::part(info-button-dialogue) {
         </h4>
        </div>
        <div class="info">
-        <lens-info-button
+        <InfoButtonComponent
         infoIconUrl="info-circle-svgrepo-com.svg"
         message={[
             `Um eine Re-Identifizierung zu erschweren, werden Standortergebnisse modifiziert und auf Zehnerstellen gerundet. Meldet ein Standort keinen Treffer, wird für diesen null angezeigt.`
