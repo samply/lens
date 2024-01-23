@@ -19,7 +19,7 @@ jobs:
     # Visit: https://github.com/samply/github-workflows/blob/main/.github/workflows/docker-ci.yml, for more information
     uses: samply/github-workflows/.github/workflows/docker-ci.yml@main
     with:
-      image-name: "samply/lens-web-components"
+      image-name: "samply/lens"
       build-args: |
         TARGET_ENVIRONMENT=production
     # This passes the secrets from calling workflow to the called workflow
