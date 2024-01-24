@@ -1,15 +1,18 @@
 <script lang="ts">
   import "../../lib";
+  // import "../../../dist/lib/lens-web-componets";
   import type { CatalogueText } from "../../lib/src/types/texts";
   import {
-    patientsMeasure,
-    diagnosisMeasure,
-    specimenMeasure,
-    proceduresMeasure,
-    medicationStatementsMeasure,
+    dktkDiagnosisMeasure,
+    dktkMedicationStatementsMeasure,
+    dktkPatientsMeasure,
+    dktkProceduresMeasure,
+    dktkSpecimenMeasure,
+    dktkHistologyMeasure
   } from "./measures";
 
   let mockCatalogueData = "";
+  let libraryOptions = "";
 
   fetch("catalogues/catalogue-dktk.json")
     .then((response) => response.text())
@@ -17,41 +20,22 @@
       mockCatalogueData = data;
     });
 
+  fetch("options.json")
+    .then((response) => response.json())
+    .then((data) => {
+      libraryOptions = data;
+    });
+
   const measures = [
-    patientsMeasure,
-    diagnosisMeasure,
-    specimenMeasure,
-    proceduresMeasure,
-    medicationStatementsMeasure,
+    dktkPatientsMeasure,
+    dktkDiagnosisMeasure,
+    dktkSpecimenMeasure,
+    dktkProceduresMeasure,
+    dktkMedicationStatementsMeasure,
+    dktkHistologyMeasure
   ];
 
-  const cqlHeader = `library Retrieve
-  using FHIR version '4.0.0'
-  include FHIRHelpers version '4.0.0'
-
-  codesystem loinc: 'http://loinc.org'
-
-  context Patient
-
-  DKTK_STRAT_GENDER_STRATIFIER
-
-  DKTK_STRAT_AGE_STRATIFIER
-
-  DKTK_STRAT_DECEASED_STRATIFIER
-
-  DKTK_STRAT_DIAGNOSIS_STRATIFIER
-
-  DKTK_STRAT_SPECIMEN_STRATIFIER
-
-  DKTK_STRAT_PROCEDURE_STRATIFIER
-
-  DKTK_STRAT_MEDICATION_STRATIFIER
-
-  DKTK_STRAT_ENCOUNTER_STRATIFIER
-
-  DKTK_STRAT_DEF_IN_INITIAL_POPULATION
-`
-
+  const backendMeasures = `DKTK_STRAT_DEF_IN_INITIAL_POPULATION`;
 
   const catalogueText: CatalogueText = {
     group: "Group",
@@ -63,18 +47,17 @@
     },
   };
 
-
   let catalogueopen = false;
 
-  const resultSummaryConfig = [
-    {
-      key: "sites",
-      title: "Sites",
-    },
-    {
-      key: "patients",
-      title: "Patients",
-    },
+  const catalogueKeyToResponseKeyMap = [
+    ["gender", "Gender"],
+    ["age_at_diagnosis", "Age"],
+    ["diagnosis", "diagnosis"],
+    ["medicationStatements", "MedicationType"],
+    ["sample_kind", "sample_kind"],
+    ["therapy_of_tumor", "ProcedureType"],
+    ["75186-7", "75186-7"],
+    // ["encounter", "Encounter"],
   ];
 
   const siteToDefaultCollectionId: string[][] = [
@@ -85,7 +68,10 @@
     ["brno", "bbmri-eric:ID:CZ_MMCI:collection:LTS"],
     ["aachen", "bbmri-eric:ID:DE_RWTHCBMB:collection:RWTHCBMB_BC"],
     ["leipzig", "bbmri-eric:ID:DE_LMB:collection:LIFE_ADULT"],
-    ["muenchen-hmgu", "bbmri-eric:ID:DE_Helmholtz-MuenchenBiobank:collection:DE_KORA"],
+    [
+      "muenchen-hmgu",
+      "bbmri-eric:ID:DE_Helmholtz-MuenchenBiobank:collection:DE_KORA",
+    ],
     ["Pilsen", "bbmri-eric:ID:CZ_CUNI_PILS:collection:serum_plasma"],
     ["regensburg", "bbmri-eric:ID:DE_ZBR:collection:Tissue"],
     ["heidelberg", "bbmri-eric:ID:DE_BMBH:collection:Lungenbiobank"],
@@ -102,6 +88,7 @@
 
   const uiSiteMap: string[][] = [
     ["berlin", "Berlin"],
+    ["berlin-test", "Berlin"],
     ["bonn", "Bonn"],
     ["dresden", "Dresden"],
     ["essen", "Essen"],
@@ -109,61 +96,92 @@
     ["freiburg", "Freiburg"],
     ["hannover", "Hannover"],
     ["mainz", "Mainz"],
-    ["muenchen-lmu", "München(LMU],"],
-    ["muenchen-tum", "München(TUM],"],
+    ["muenchen-lmu", "München(LMU)"],
+    ["muenchen-tum", "München(TUM)"],
     ["ulm", "Ulm"],
     ["wuerzburg", "Würzburg"],
     ["mannheim", "Mannheim"],
     ["dktk-test", "DKTK-Test"],
     ["hamburg", "Hamburg"],
-
   ];
 
-const catalogueKeyToResponseKeyMap = [
-  ['gender', 'Gender'],
-  ["age_at_diagnosis", 'Age']
-]
+  // VITE_TARGET_ENVIRONMENT should be set by the ci pipeline
+  const backendUrl = (import.meta.env.VITE_TARGET_ENVIRONMENT === "production")
+               ? "https://backend.data.dktk.dkfz.de/prod/"
+               : "https://backend.demo.lens.samply.de/prod/"
 
   const backendConfig = {
-    url: "http://localhost:8080",
+    url: (import.meta.env.PROD) ? backendUrl : "http://localhost:8080",
     backends: [
-      'mannheim',
-      'freiburg',
-      'muenchen-tum',
-      'hamburg',
-      'frankfurt',
-      'berlin',
-      'dresden',
-      'mainz',
-      'muenchen-lmu',
-      'essen',
-      'ulm',
-      'wuerzburg',
+      "mannheim",
+      "freiburg",
+      "muenchen-tum",
+      "hamburg",
+      "frankfurt",
+      "berlin-test",
+      "dresden",
+      "mainz",
+      "muenchen-lmu",
+      "essen",
+      "ulm",
+      "wuerzburg",
+      "hannover",
     ],
     uiSiteMap: uiSiteMap,
     catalogueKeyToResponseKeyMap: catalogueKeyToResponseKeyMap,
   };
 
+  const genderHeaders: Map<string, string> = new Map<string, string>()
+    .set("male", "männlich")
+    .set("female", "weiblich")
+    .set("other", "Divers, Intersexuell")
+    .set("unknown", "unbekannt");
+
+const barChartBackgroundColors: string[] = ["#4dc9f6","#3da4c7"];
+
+  const vitalStateHeaders: Map<string, string> = new Map<string, string>()
+    .set("lebend", "alive")
+    .set("verstorben", "deceased")
+    .set("unbekannt", "unknown");
+
+  const therapyHeaders: Map<string, string> = new Map<string, string>().set(
+    "medicationStatements",
+    "Sys. T"
+  );
+
+  let dataPasser: any;
+
+  const getQuery = () => {
+    if (!dataPasser) return;
+    console.log(dataPasser, dataPasser.getQuery());
+  };
+
+  const getResponse = () => {
+    if (!dataPasser) return;
+    console.log(dataPasser, dataPasser.getResponse());
+  };
 </script>
 
 <main>
+  <h2>Data Passer</h2>
+  <div class="componentBox">
+    <lens-data-passer bind:this={dataPasser} />
+    <button on:click={() => getQuery()}>Get Query Store</button>
+    <button on:click={() => getResponse()}>Get Response Store</button>
+  </div>
+
   <h2>Search Button</h2>
   <div class="componentBox">
     <lens-search-button
       {measures}
       backendConfig={JSON.stringify(backendConfig)}
-      {cqlHeader}
+      {backendMeasures}
     />
   </div>
 
   <h2>Result Summary Bar</h2>
   <div class="componentBox">
-    <lens-result-summary
-      title="Results"
-      resultSummaryDataTypes={JSON.stringify(resultSummaryConfig)}
-      negotiateButton={true}
-      negotiateButtonText="Negotiate with biobanks"
-    />
+    <lens-result-summary />
   </div>
 
   <h2>Result Table</h2>
@@ -173,29 +191,25 @@ const catalogueKeyToResponseKeyMap = [
 
   <h2>Result Pie Chart</h2>
   <div class="componentBox">
-      <lens-chart
-        title="Gender distribution"
-        hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit."
-        catalogueGroupCode='gender'
-        chartType="pie"
-      />
+    <lens-chart
+      title="Gender distribution"
+      catalogueGroupCode="gender"
+      chartType="pie"
+    />
   </div>
 
   <h2>Result Bar Chart</h2>
   <div class="componentBox">
-      <lens-chart
-        class="chart1"
-        title="Alter bei Erstdiagnose"
-        hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit."
-        catalogueGroupCode='age_at_diagnosis'
-        chartType="bar"
-      />
+    <lens-chart
+      title="Alter bei Erstdiagnose"
+      catalogueGroupCode="age_at_diagnosis"
+      chartType="bar"
+    />
   </div>
 
   <h2>Catalogue</h2>
   <div class="componentBox">
     <lens-catalogue
-      treeData={mockCatalogueData}
       texts={catalogueText}
       toggle={{ collapsable: true, open: catalogueopen }}
     />
@@ -204,7 +218,6 @@ const catalogueKeyToResponseKeyMap = [
   <h2>Search bars</h2>
   <div class="componentBox">
     <lens-search-bar-multiple
-      treeData={mockCatalogueData}
       noMatchesFoundMessage={"No matches found"}
     />
   </div>
@@ -214,3 +227,5 @@ const catalogueKeyToResponseKeyMap = [
     <lens-state-display />
   </div>
 </main>
+
+<lens-options options={libraryOptions} catalogueData={mockCatalogueData}/>
