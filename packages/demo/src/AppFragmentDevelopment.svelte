@@ -1,5 +1,7 @@
 <script lang="ts">
+    import { get } from "svelte/store";
   import "../../lib";
+    import type { QueryItem, QueryValue } from "../../lib/src/types/queryData";
   // import "../../../dist/lib/lens-web-componets";
   import type { CatalogueText } from "../../lib/src/types/texts";
   import {
@@ -131,38 +133,33 @@
     catalogueKeyToResponseKeyMap: catalogueKeyToResponseKeyMap,
   };
 
-  const genderHeaders: Map<string, string> = new Map<string, string>()
-    .set("male", "männlich")
-    .set("female", "weiblich")
-    .set("other", "Divers, Intersexuell")
-    .set("unknown", "unbekannt");
-
-const barChartBackgroundColors: string[] = ["#4dc9f6","#3da4c7"];
-
-  const vitalStateHeaders: Map<string, string> = new Map<string, string>()
-    .set("lebend", "alive")
-    .set("verstorben", "deceased")
-    .set("unbekannt", "unknown");
-
-  const therapyHeaders: Map<string, string> = new Map<string, string>().set(
-    "medicationStatements",
-    "Sys. T"
-  );
-
   let dataPasser: any;
 
   const getQuery = () => {
-    // if (!dataPasser) return;
-    console.log(dataPasser, dataPasser.getQuery());
+    console.log(dataPasser, dataPasser.getQueryAPI());
+    queryStore = dataPasser.getQueryAPI();
   };
 
   const getResponse = () => {
-    console.log(dataPasser, dataPasser.getResponse());
+    console.log(dataPasser, dataPasser.getResponseAPI());
   };
 
   const getAST = () => {
-    console.log(dataPasser, dataPasser.getAST());
+    console.log(dataPasser, dataPasser.getAstAPI());
   };
+
+  const removeItem = (queryObject) => {
+    dataPasser.removeItemFromQuyeryAPI({queryObject});
+    getQuery();
+  };
+
+  const removeValue = (queryItem: QueryItem, value: QueryValue) => {
+    console.log(queryItem, value);
+    dataPasser.removeValueFromQueryAPI({queryItem, value});
+    getQuery();
+  };
+
+  let queryStore: QueryItem[][] = [];
 </script>
 
 <main>
@@ -172,6 +169,33 @@ const barChartBackgroundColors: string[] = ["#4dc9f6","#3da4c7"];
     <button on:click={() => getQuery()}>Get Query Store</button>
     <button on:click={() => getResponse()}>Get Response Store</button>
     <button on:click={() => getAST()}>Get AST</button>
+    {#each queryStore as queryStoreGroup}
+      <div>
+        {#each queryStoreGroup as queryStoreItem}
+          <div>
+            <button on:click={() => removeItem(queryStoreItem)}>
+              remove {queryStoreItem.name}: 
+            </button>
+            <ul>
+              {#each queryStoreItem.values as queryStoreValue}
+                <li>
+                  <button on:click={() => removeValue(queryStoreItem, queryStoreValue)}>
+                    remove {queryStoreValue.name}
+                  </button>
+                </li>
+              {/each}
+            </ul>
+          </div>
+        {/each}
+      </div>
+    {/each}
+  </div>
+
+  <h2>Search bars</h2>
+  <div class="componentBox">
+    <lens-search-bar-multiple
+      noMatchesFoundMessage={"No matches found"}
+    />
   </div>
 
   <h2>Search Button</h2>
@@ -219,12 +243,7 @@ const barChartBackgroundColors: string[] = ["#4dc9f6","#3da4c7"];
     />
   </div>
 
-  <h2>Search bars</h2>
-  <div class="componentBox">
-    <lens-search-bar-multiple
-      noMatchesFoundMessage={"No matches found"}
-    />
-  </div>
+  
 
   <h2>State display</h2>
   <div class="componentBox">
