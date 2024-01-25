@@ -152,13 +152,16 @@ const barChartBackgroundColors: string[] = ["#4dc9f6","#3da4c7"];
   let dataPasser: any;
 
   const getQuery = () => {
-    if (!dataPasser) return;
+    // if (!dataPasser) return;
     console.log(dataPasser, dataPasser.getQuery());
   };
 
   const getResponse = () => {
-    if (!dataPasser) return;
     console.log(dataPasser, dataPasser.getResponse());
+  };
+
+  const getAST = () => {
+    console.log(dataPasser, dataPasser.getAST());
   };
 </script>
 
@@ -168,6 +171,7 @@ const barChartBackgroundColors: string[] = ["#4dc9f6","#3da4c7"];
     <lens-data-passer bind:this={dataPasser} />
     <button on:click={() => getQuery()}>Get Query Store</button>
     <button on:click={() => getResponse()}>Get Response Store</button>
+    <button on:click={() => getAST()}>Get AST</button>
   </div>
 
   <h2>Search Button</h2>

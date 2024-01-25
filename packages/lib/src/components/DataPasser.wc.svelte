@@ -10,6 +10,7 @@
 	import { addStratifier, queryStore} from "../stores/query";
 	import type { QueryItem } from "../types/queryData";
     import type { ResponseStore } from "../types/backend";
+    import { buildAstFromQuery } from "../helpers/ast-transformer";
 
     /**
      * returns the query store to the library user
@@ -44,6 +45,14 @@
     */
     export const getResponse = () : ResponseStore => {
         return $responseStore;
+    }
+
+    /**
+     * returns the AST to the library user
+     * @returns the AST
+    */
+    export const getAST = () : string => {
+        return buildAstFromQuery($queryStore);
     }
 
 </script>
