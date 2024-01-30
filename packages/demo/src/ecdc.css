@@ -1,0 +1,410 @@
+@import url('./styles/default/searchbars.css');
+@import url('./styles/default/search-button.css');
+@import url('./styles/default/catalogue.css');
+@import url('./styles/default/results-overview.css');
+@import url('./styles/default/result-table.css');
+@import url('./styles/default/result-chart.css');
+@import url('./styles/default/negotiate-button.css');
+@import url('./styles/default/info-button.css');
+@import url('./styles/default/search-modified-display.css');
+
+/*
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  src: url('../fonts/Open_Sans/OpenSans-VariableFont_wdth\,wght.ttf') format('truetype');
+}
+*/
+
+:root {
+  --white: #ffffff;
+  /*--ghost-white: #f8f8ff;*/
+  --ghost-white: #ffffff; /* Taken from ECDC CSS */
+  --black: #000000;
+  /*--gray: #a7a7a7;*/
+  --gray: #7cbdc1; /* Taken from ECDC CSS */
+  --light-gray: #dee2e6;
+  /*--lightest-gray: #efefef;*/
+  --lightest-gray: #ffffff; /* Taken from ECDC CSS */
+  --dark-gray: #323232;
+  /*--blue: #00489c;*/
+  --blue: #333333; /* Taken from ECDC CSS */
+  /*--light-blue: #007bff;*/
+  --light-blue: #4f841a; /* Taken from ECDC CSS */
+  --lightest-blue: #adc7f3;
+  --dark-blue: #002d80;
+  --green: #00882d;
+  --light-green: #00b33c;
+  --dark-green: #00591a;
+  --red: #b90000;
+  --light-red: #ff0000;
+  --dark-red: #800000;
+  --orange: #e95713;
+  --light-orange: #ffa750;
+
+  --border-radius-small: 5px;
+
+  --gap-xxs: 5px;
+  --gap-xs: 10px;
+  --gap-s: 20px;
+  --gap-m: 30px;
+  --gap-l: 40px;
+  --gap-xl: 50px;
+  --gap-xxl: 60px;
+
+  --font-size-xxs: 10px;
+  --font-size-xs: 12px;
+  --font-size-s: 14px;
+  --font-size-m: 16px;
+  --font-size-l: 18px;
+  --font-size-xl: 24px;
+  --font-size-xxl: 32px;
+
+  /*--font-family: 'Open Sans', sans-serif;*/
+  /*--font-family: "MetaPro", Georgia, "Times New Roman", Times, serif; !* Taken from ECDC CSS *!*/
+  --font-family: "Roboto", sans-serif; /* Taken from ECDC CSS */
+}
+
+/**
+* Demo
+*/
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0px;
+  background-color: var(--ghost-white);
+  font-family: var(--font-family);
+}
+
+button {
+  font-family: inherit;
+}
+
+header {
+  font-weight: bold; /* Taken from ECDC CSS */
+  background-color: var(--white);
+  padding: var(--gap-xs);
+  display: grid;
+  align-items: center;
+  grid-template-columns: 1fr 1fr 1fr;
+  border-radius: var(--border-radius-small);
+  border: solid 1px var(--lightest-gray);
+}
+
+.logo img {
+  height: 40px;
+}
+
+.logo-dkfz {
+  justify-self: end;
+}
+.logo-dkfz img {
+  height: 30px;
+}
+
+header h1 {
+  text-align: center;
+  font-size: var(--font-size-xxl);
+  font-weight: lighter;
+  color: var(--blue);
+  margin: 0;
+}
+
+main>div,
+header,
+footer {
+  margin: var(--gap-xs);
+}
+
+.search {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-gap: var(--gap-s);
+  padding: var(--gap-xxs) 0;
+  background-color: var(--ghost-white);
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  grid-gap: var(--gap-m);
+}
+
+.catalogue {
+  padding: var(--gap-s);
+  border-radius: var(--border-radius-small);
+  border: solid 1px var(--lightest-gray);
+  background-color: var(--white);
+  grid-row: 1/-1;
+  overflow-y: scroll; 
+  height: 100vh;
+  position: sticky;
+  top: 40px;
+}
+
+.catalogue h2 {
+  margin: 0;
+  margin-bottom: var(--gap-s);
+  font-size: var(--font-size-l);
+  font-weight: 400;
+  color: var(--dark-gray);
+}
+
+
+.charts {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: var(--gap-xs);
+}
+
+
+.chart-wrapper {
+  padding: var(--gap-s);
+  background-color: var(--white);
+  border-radius: var(--border-radius-small);
+  border: solid 1px var(--lightest-gray);
+  display: grid;
+}
+
+.result-summary {
+  grid-column: 1/-1;
+}
+
+.result-table {
+  grid-column: span 2;
+}
+
+.chart-diagnosis {
+  grid-row: span 2;
+  grid-column: 1/2;
+
+}
+
+.chart-age-distribution{
+  grid-column: span 2;
+}
+
+.sample-information-text {
+  font-size: var(--font-size-xxs);
+
+}
+
+
+@media screen and (max-width: 1200px) {
+  .charts {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .chart-age-distribution{
+    grid-row: 3/4;
+    grid-column: 2/4;
+  }
+}
+
+
+
+
+@media screen and (max-width: 1023px) {
+
+  .grid {
+    display: grid;
+    grid-gap: var(--gap-m);
+  }
+
+  .catalogue {
+    position: static;
+    max-width: 100% !important;
+    width: 100%;
+    flex-direction: column;
+    height: auto;
+  }
+
+  .catalogue button {
+    display: none;
+  }
+
+  .charts {
+    margin-left: 0px;
+  }
+  
+}
+
+
+
+footer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding: var(--gap-s);
+  background-color: var(--white);
+  border-radius: var(--border-radius-small);
+  border: solid 1px var(--lightest-gray);
+  position: sticky;
+  position: -webkit-sticky;
+  bottom: 0;
+}
+
+.email {
+  justify-self: center;
+}
+
+.copyright {
+  justify-self: end;
+  text-align: right;
+}
+
+/**
+* Overrides
+*/
+
+/**
+  Searchbars
+*/
+lens-search-bar-multiple::part(lens-searchbar-chip) {
+  background-color: var(--light-blue);
+}
+lens-search-bar-multiple::part(query-delete-button) {
+  background-color: var(--light-blue);
+  border-color: var(--light-blue);
+}
+lens-search-bar-multiple::part(query-delete-button-item) {
+  border-color: var(--white);
+}
+lens-search-bar-multiple::part(query-delete-button-group) {
+  background-color: var(--white);
+  border-color: var(--white);
+}
+
+lens-search-button::part(lens-search-button) {
+  background-color: var(--light-blue);
+}
+
+lens-search-button::part(lens-search-button):hover {background-color: #006adb}
+
+lens-search-button::part(lens-search-button):active {
+  background-color: #003d7e;
+  transform: translateX(1px);
+}
+
+/**
+  Catalogue
+*/
+
+lens-catalogue::part(lens-catalogue) {
+  padding-left: 8px;
+}
+
+lens-catalogue::part(autocomplete-formfield-input):focus {
+  border-color: var(--light-blue);
+}
+lens-catalogue::part(query-add-button) {
+  background-color: var(--light-blue);
+}
+lens-catalogue::part(number-input-formfield):focus {
+  border-color: var(--light-blue);
+  outline: none;
+}
+
+.chart-diagnosis lens-chart::part(chart-canvas) {
+  width: 100%;
+  max-height: 1000px;
+  height: 940px;
+}
+
+lens-catalogue::part(number-input-formfield) {
+  width: 60px;
+  margin-left: var(--gap-xs);
+  border: solid 1px var(--dark-gray);
+  border-radius: 0;
+  text-align: center;
+  font-size: var(--font-size-s);
+  -webkit-appearance: textfield;
+  -moz-appearance:    textfield;
+  appearance:         textfield !important;
+ 
+}
+
+lens-catalogue::part(number-input-formfield):focus {
+  border-color: var(--light-blue);
+  outline: none;
+}
+
+lens-catalogue::part(number-input-formfield)::-webkit-outer-spin-button,
+lens-catalogue::part(number-input-formfield)::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+lens-catalogue::part(data-tree-element-toggle-icon) {
+  width: 24px;
+  transform: rotate(0deg);
+  left: -15px;
+  top: 0px;
+  filter: invert(29%) sepia(17%) saturate(327%) hue-rotate(163deg) brightness(92%) contrast(85%);
+}
+
+lens-catalogue::part(data-tree-element-toggle-icon-open) {
+  transform: rotate(90deg);
+}
+
+lens-catalogue::part(query-add-button-icon) {
+  filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(213deg) brightness(100%) contrast(100%);
+  width: 21px;
+}
+
+lens-search-button::part(lens-search-button) {
+  height: 100%;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+lens-info-button::part(info-button) {
+  height: 100%;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+lens-info-button::part(info-button-icon) {
+  width: 21px;
+}
+
+.catalogue lens-info-button::part(info-button){
+  height: 38px;
+  padding: 0;
+  top: var(--gap-xs);
+  right: var(--gap-xs);
+  border: none;
+  position: absolute;
+}
+
+.catalogue lens-info-button::part(info-button-dialogue){
+  max-width: 300px;
+  text-align: left;
+}
+
+lens-info-button::part(info-button-dialogue):hover {background-color: #b8bfb8}
+
+lens-info-button::part(info-button):hover {background-color: #b8bfb8}
+
+lens-info-button::part(info-button):active {
+  background-color: #585958;
+  transform: translateX(1px);
+}
+
+lens-info-button::part(info-button-dialogue):active {
+  background-color: #585958;
+  transform: translateX(1px);
+}
+
+.result-table-hint-text {
+ display: flex;
+ align-items: end;
+}

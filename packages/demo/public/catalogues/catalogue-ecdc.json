@@ -1,0 +1,38 @@
+[
+    {
+        "key": "patient",
+        "name": "Patient",
+        "childCategories": [
+            {
+                "key": "gender",
+                "name": "Gender",
+                "system": "",
+                "fieldType": "single-select",
+                "type": "EQUALS",
+                "criteria": [
+                    {
+                        "key": "male",
+                        "name": "Male",
+                        "description": "Male"
+                    },
+                    {
+                        "key": "female",
+                        "name": "Female",
+                        "description": "Female"
+                    },
+                    {
+                        "key": "other",
+                        "name": "Other",
+                        "description": "Other"
+
+                    },
+                    {
+                        "key": "unknown",
+                        "name": "Unknown",
+                        "description": "Unknown"
+                    }
+                ]
+            }
+        ]
+    }
+]

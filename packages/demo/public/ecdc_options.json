@@ -1,0 +1,34 @@
+{
+    "chartOptions": {
+        "patients": {
+            "legendMapping": {
+                "croatia": "Croatia"
+            }
+        },
+        "gender": {
+            "legendMapping": {
+                "male": "Male",
+                "female": "Female",
+                "unknown": "Unknown",
+                "other": "Other"
+            }
+        },
+        "age_at_diagnosis": {
+            "hintText": [
+                "Bei Patienten mit mehreren Erstdiagnosen werden auch Einträge angezeigt, die ggfs. außerhalb der Suchkriterien liegen. "
+            ]
+        }
+    },
+    "tableOptions": {
+        "headerData": [
+            {
+                "title": "Sites",
+                "dataKey": "site"
+            },
+            {
+                "title": "Patients",
+                "dataKey": "patients"
+            }
+        ]
+    }
+}
