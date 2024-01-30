@@ -2,8 +2,22 @@ import { defineConfig } from 'vite'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
 import { transform } from 'esbuild';
 import pkg from './package.json';
+import sveltePreprocess from 'svelte-preprocess';
+import dts from 'vite-plugin-dts';
+import { readdirSync, readFileSync, writeFileSync } from 'fs';
 
-const bundleComponents = process.env.BUNDLE_COMPONENTS ?? true;
+
+const bundleComponents = true //process.env.BUNDLE_COMPONENTS ?? true;
+
+// Function to concatenate declaration files into one
+function concatenateDeclarationFiles() {
+  const declarationFiles = readdirSync('./dist/lib/src/types')
+    .map((file) => readFileSync(`./dist/lib/src/types/${file}`, 'utf-8'))
+    .join('\n');
+
+  // Write the concatenated declaration files to a single file
+  writeFileSync('./dist/lib/svelte-web-components.d.ts', declarationFiles);
+}
 
 export default defineConfig({
   root: './packages/lib/',
@@ -26,17 +40,20 @@ export default defineConfig({
         chunkFileNames: "[name].js",
         manualChunks: { 'svelte': ["svelte"] }
       }
-    }
+    },
   },
   plugins: [
     svelte({
-      exclude: /\.wc\.svelte$/ as any,
+      preprocess: [sveltePreprocess({ typescript: true })],
       compilerOptions: {
         customElement: true
       }
     }),
-    svelte({
-      include: /\.wc\.svelte$/ as any,
+    dts({
+
+      // insertTypesEntry: true,
+      include: ["**/types/*.ts"],
+      afterBuild: () => concatenateDeclarationFiles()
     }),
     minifyEs()
   ]

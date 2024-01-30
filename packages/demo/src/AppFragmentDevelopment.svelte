@@ -1,6 +1,15 @@
 <script lang="ts">
-  import "../../lib";
-  import type { CatalogueText } from "../../lib/src/types/texts";
+  // import "../../lib";
+  import "../../../dist/lib/lens-web-componets";
+  // import "../../../dist/lib"
+
+  // import type { Category } from  '../../../dist/lib/lens-web-componets'
+
+
+
+
+  // let a: Category
+
   import {
     patientsMeasure,
     diagnosisMeasure,
