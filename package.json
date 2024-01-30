@@ -1,7 +1,7 @@
 {
   "name": "@samply/lens",
   "description": "A web component library for clinical data search and visualisation",
-  "version": "0.0.0",
+  "version": "0.0.1-0",
   "type": "module",
   "module": "dist/lib/lens-web-components.js",
   "main": "dist/lib/lens-web-components.umd.js",
