@@ -14,7 +14,8 @@
     "build:demo": "vite build --config vite.demo.config.ts",
     "preview": "vite preview --config vite.demo.config.ts",
     "check": "svelte-check --tsconfig ./tsconfig.json",
-    "prepublishOnly": "npm run build -s"
+    "prepublishOnly": "npm run build -s",
+    "version": "npm version -m \"build: release version %s\""
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^2.5.3",
