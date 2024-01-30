@@ -1,5 +1,5 @@
 {
-  "name": "lens-web-componets",
+  "name": "@samply/lens",
   "description": "A web component library for clinical data search and visualisation",
   "version": "0.0.0",
   "type": "module",
