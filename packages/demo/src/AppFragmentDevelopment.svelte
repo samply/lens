@@ -1,14 +1,6 @@
 <script lang="ts">
-  // import "../../lib";
-  import "../../../dist/lib/lens-web-componets";
-  // import "../../../dist/lib"
-
-  // import type { Category } from  '../../../dist/lib/lens-web-componets'
-
-
-
-
-  // let a: Category
+  import "@samply/lens";
+  import type { CatalogueText } from "@samply/lens";
 
   import {
     patientsMeasure,
@@ -59,8 +51,7 @@
   DKTK_STRAT_ENCOUNTER_STRATIFIER
 
   DKTK_STRAT_DEF_IN_INITIAL_POPULATION
-`
-
+`;
 
   const catalogueText: CatalogueText = {
     group: "Group",
@@ -71,7 +62,6 @@
       labelTo: "to",
     },
   };
-
 
   let catalogueopen = false;
 
@@ -94,7 +84,10 @@
     ["brno", "bbmri-eric:ID:CZ_MMCI:collection:LTS"],
     ["aachen", "bbmri-eric:ID:DE_RWTHCBMB:collection:RWTHCBMB_BC"],
     ["leipzig", "bbmri-eric:ID:DE_LMB:collection:LIFE_ADULT"],
-    ["muenchen-hmgu", "bbmri-eric:ID:DE_Helmholtz-MuenchenBiobank:collection:DE_KORA"],
+    [
+      "muenchen-hmgu",
+      "bbmri-eric:ID:DE_Helmholtz-MuenchenBiobank:collection:DE_KORA",
+    ],
     ["Pilsen", "bbmri-eric:ID:CZ_CUNI_PILS:collection:serum_plasma"],
     ["regensburg", "bbmri-eric:ID:DE_ZBR:collection:Tissue"],
     ["heidelberg", "bbmri-eric:ID:DE_BMBH:collection:Lungenbiobank"],
@@ -125,34 +118,32 @@
     ["mannheim", "Mannheim"],
     ["dktk-test", "DKTK-Test"],
     ["hamburg", "Hamburg"],
-
   ];
 
-const catalogueKeyToResponseKeyMap = [
-  ['gender', 'Gender'],
-  ["age_at_diagnosis", 'Age']
-]
+  const catalogueKeyToResponseKeyMap = [
+    ["gender", "Gender"],
+    ["age_at_diagnosis", "Age"],
+  ];
 
   const backendConfig = {
     url: "http://localhost:8080",
     backends: [
-      'mannheim',
-      'freiburg',
-      'muenchen-tum',
-      'hamburg',
-      'frankfurt',
-      'berlin',
-      'dresden',
-      'mainz',
-      'muenchen-lmu',
-      'essen',
-      'ulm',
-      'wuerzburg',
+      "mannheim",
+      "freiburg",
+      "muenchen-tum",
+      "hamburg",
+      "frankfurt",
+      "berlin",
+      "dresden",
+      "mainz",
+      "muenchen-lmu",
+      "essen",
+      "ulm",
+      "wuerzburg",
     ],
     uiSiteMap: uiSiteMap,
     catalogueKeyToResponseKeyMap: catalogueKeyToResponseKeyMap,
   };
-
 </script>
 
 <main>
@@ -182,23 +173,23 @@ const catalogueKeyToResponseKeyMap = [
 
   <h2>Result Pie Chart</h2>
   <div class="componentBox">
-      <lens-chart
-        title="Gender distribution"
-        hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit."
-        catalogueGroupCode='gender'
-        chartType="pie"
-      />
+    <lens-chart
+      title="Gender distribution"
+      hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit."
+      catalogueGroupCode="gender"
+      chartType="pie"
+    />
   </div>
 
   <h2>Result Bar Chart</h2>
   <div class="componentBox">
-      <lens-chart
-        class="chart1"
-        title="Alter bei Erstdiagnose"
-        hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit."
-        catalogueGroupCode='age_at_diagnosis'
-        chartType="bar"
-      />
+    <lens-chart
+      class="chart1"
+      title="Alter bei Erstdiagnose"
+      hintText="Lorem ipsum dolor sit amet consectetur adipisicing elit."
+      catalogueGroupCode="age_at_diagnosis"
+      chartType="bar"
+    />
   </div>
 
   <h2>Catalogue</h2>

@@ -1,11 +1,21 @@
 {
-  "name": "lens-web-componets",
+  "name": "@samply/lens",
   "description": "A web component library for clinical data search and visualisation",
   "version": "0.0.0",
   "type": "module",
-  "module": "dist/lib/lens-web-components.js",
-  "main": "dist/lib/lens-web-components.umd.js",
-  "types": "dist/lib/lens-web-components.d.ts",
+  "module": "dist/lens.js",
+  "main": "dist/lens.umd.js",
+  "types": "dist/types.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/lens.js",
+      "require": "./dist/lens.umd.js",
+      "types": "./dist/types.d.ts"
+    }
+  },
   "license": "MIT",
   "scripts": {
     "start": "npm run dev -s",
@@ -28,10 +38,8 @@
     "vite-plugin-dts": "^3.7.2",
     "vitest": "^0.34.2"
   },
-  "files": [
-    "dist/lib"
-  ],
   "dependencies": {
+    "@samply/lens": "file:samply-lens-0.0.0.tgz",
     "chart.js": "^4.4.0",
     "svelte-dnd-action": "^0.9.26",
     "uuid": "^9.0.0"
