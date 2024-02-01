@@ -1,0 +1,47 @@
+name: "Samply.Lens verify new Code"
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+  push:
+    branches:
+      - develop
+
+jobs:
+  verify-code:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'npm'
+      - run: npm ci
+      - name: "Check Code Format"
+        run: npm run format:check
+      - name: "Check Security"
+        run: npm run security:check
+      - name: "Verify Commit Messages"
+        run: npm run lint:commits
+      - run: npm run lint
+
+
+      
+#   test:
+#     needs: [verify-code]
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v3
+#       - uses: actions/setup-node@v3
+#         with:
+#           node-version: 16
+#           cache: 'npm'
+#       - run: npm ci
+#       - run: npm run build:lib @samply/lens-core
+#       - run: npm run build:lib @samply/lens-components
+#       - run: npm run build:lib @samply/lens-auth
+#       # Unit Tests need to run here because they require the libraries build
+#       - run: npm run test:headless
