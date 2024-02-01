@@ -1,4 +1,4 @@
-name: Build and Push Image samply/lens-web-components
+name: Build and Push Image samply/lens
 
 on:
   push:
@@ -15,6 +15,13 @@ on:
     - cron: '0 1 * * *'
 jobs:
   build:
+    # Necessary after this repository was renamed from samply/lens-web-components to samply/lens
+    permissions:
+      contents: read
+      packages: write
+      pull-requests: read
+      security-events: write
+      statuses: read
     # This workflow defines how a samply docker image is built, tested and published.
     # Visit: https://github.com/samply/github-workflows/blob/main/.github/workflows/docker-ci.yml, for more information
     uses: samply/github-workflows/.github/workflows/docker-ci.yml@main
