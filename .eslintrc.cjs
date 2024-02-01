@@ -3,8 +3,8 @@ module.exports = {
       'plugin:@typescript-eslint/recommended',
       'plugin:svelte/recommended',
       'plugin:svelte/prettier', 
+      'eslint-config-prettier',
       'prettier',
-      'prettier/@typescript-eslint',
     ],
     parser: '@typescript-eslint/parser',
     parserOptions: {
@@ -15,16 +15,12 @@ module.exports = {
       {
         files: ['*.svelte'],
         parser: 'svelte-eslint-parser',
-        parseOptions: {
+        parserOptions: {
             parser: '@typescript-eslint/parser',
         }
       }
     ],
-    rules: {
-      // Add any additional rules or overrides as needed
-    },
     settings: {
-      // Svelte configuration
-      'svelte3/typescript': require('typescript'),
+      'svelte/typescript': import('typescript'),
     },
   };

@@ -12,6 +12,7 @@
     "build:demo": "vite build --config vite.demo.config.ts",
     "preview": "vite preview --config vite.demo.config.ts",
     "check": "svelte-check --tsconfig ./tsconfig.json",
+    "lint-staged": "lint-staged",
     "prepublishOnly": "npm run build -s"
   },
   "devDependencies": {
@@ -20,7 +21,10 @@
     "@typescript-eslint/eslint-plugin": "^6.20.0",
     "@typescript-eslint/parser": "^6.20.0",
     "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-svelte": "^2.35.1",
+    "husky": "^9.0.9",
+    "lint-staged": "^15.2.1",
     "prettier": "^3.2.4",
     "prettier-plugin-svelte": "^3.1.2",
     "svelte": "^4.0.0",
@@ -38,12 +42,6 @@
     "chart.js": "^4.4.0",
     "svelte-dnd-action": "^0.9.26",
     "uuid": "^9.0.0"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "pre-push": "npm test"
-    }
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,svelte}": [
