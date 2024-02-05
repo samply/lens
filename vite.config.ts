@@ -76,7 +76,7 @@ function afterBuild() :void {
    * Building somehow adds another @samply folder to the dist folder so this workaround is needed
    * to move the files to the root of the dist folder and delete the unnecessary folder
    */
-  restructureDirectory('./dist/@samply/');
+  // restructureDirectory('./dist/@samply/');
 }
 
 /**
