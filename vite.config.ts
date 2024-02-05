@@ -76,7 +76,7 @@ function afterBuild() :void {
    * Building somehow adds another @samply folder to the dist folder so this workaround is needed
    * to move the files to the root of the dist folder and delete the unnecessary folder
    */
-  // restructureDirectory('./dist/@samply/');
+  restructureDirectory('./dist/@samply/');
 }
 
 /**
@@ -118,16 +118,16 @@ function moveFile(oldFile: string, target: string): void {
   const interval = setInterval(() => {
     attempts++;
     if (fs.readFileSync(oldFile, 'utf-8').length > 0) {
-      // fs.renameSync(oldFile, target);
-      fs.copyFileSync(oldFile, target);
+      fs.renameSync(oldFile, target);
+      // fs.copyFileSync(oldFile, target);
       clearInterval(interval);
     } else if (attempts > 10) {
       clearInterval(interval);
       throw new Error('File not found');
     }
-    // if(fs.readdirSync('./dist/@samply/').length === 0) {
-    //   fs.rmSync('./dist/@samply/', { recursive: true, force: true });
-    // }
+    if(fs.readdirSync('./dist/@samply/').length === 0) {
+      fs.rmSync('./dist/@samply/', { recursive: true, force: true });
+    }
   }, 1000);
 }
 
