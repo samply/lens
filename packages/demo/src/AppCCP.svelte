@@ -9,7 +9,7 @@
     dktkSpecimenMeasure,
     dktkHistologyMeasure
   } from "./measures";
-    import type { CatalogueText } from "@samply/lens";
+
 
   let mockCatalogueData = "";
   let libraryOptions = ""
@@ -37,7 +37,7 @@
 
   const backendMeasures = `DKTK_STRAT_DEF_IN_INITIAL_POPULATION`;
 
-  const catalogueText: CatalogueText = {
+  const catalogueText = {
     group: "Group",
     collapseButtonTitle: "Collapse Tree",
     expandButtonTitle: "Expand Tree",

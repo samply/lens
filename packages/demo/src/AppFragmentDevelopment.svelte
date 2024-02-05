@@ -1,6 +1,6 @@
 <script lang="ts">
   import "@samply/lens";
-  import type { CatalogueText } from "@samply/lens";
+
 
   import {
     patientsMeasure,
@@ -53,7 +53,7 @@
   DKTK_STRAT_DEF_IN_INITIAL_POPULATION
 `;
 
-  const catalogueText: CatalogueText = {
+  const catalogueText = {
     group: "Group",
     collapseButtonTitle: "Collapse Tree",
     expandButtonTitle: "Expand Tree",
