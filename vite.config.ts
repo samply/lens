@@ -71,6 +71,7 @@ function minifyEs() {
  */
 function afterBuild() :void {
   concatenateDeclarationFiles('./dist/src/types/');
+
   /**
    * Building somehow adds another @samply folder to the dist folder so this workaround is needed
    * to move the files to the root of the dist folder and delete the unnecessary folder
@@ -89,6 +90,8 @@ function concatenateDeclarationFiles(folderPath: string): void {
 
   // Write the concatenated declaration files to a single file and remove the folder
   writeFileSync('./dist/types.d.ts', declarationFiles);
+  removeImportLinesFromFile('./dist/types.d.ts');
+
   fs.rmSync('./dist/src', { recursive: true, force: true });
 }
 
@@ -126,3 +129,38 @@ function moveFile(oldFile: string, target: string): void {
     }
   }, 1000);
 }
+
+
+/**
+ * removes all import statements from a file
+ * @param filePath the path of the file
+ */
+function removeImportLinesFromFile(filePath: string): void {
+  // Read the file content
+  fs.readFile(filePath, 'utf8', (err: NodeJS.ErrnoException | null, data: string) => {
+    if (err) {
+      console.error('Error reading file:', err);
+      return;
+    }
+
+    // Split the content into lines
+    const lines: string[] = data.split('\n');
+
+    // Filter out lines starting with 'import'
+    const filteredLines: string[] = lines.filter(line => !line.trim().startsWith('import'));
+
+    // Join the remaining lines
+    const modifiedContent: string = filteredLines.join('\n');
+
+    // Write the modified content back to the file
+    fs.writeFile(filePath, modifiedContent, 'utf8', (err: NodeJS.ErrnoException | null) => {
+      if (err) {
+        console.error('Error writing file:', err);
+        return;
+      }
+      console.log('File updated successfully.');
+    });
+  });
+}
+
+// Call the function with the file path
