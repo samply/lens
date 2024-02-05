@@ -69,7 +69,7 @@ function minifyEs() {
 /**
  * runs after the dts plugin has finished
  */
-function afterBuild() :void {
+function afterBuild(): void {
   concatenateDeclarationFiles('./dist/src/types/');
 
   /**
@@ -102,9 +102,14 @@ function concatenateDeclarationFiles(folderPath: string): void {
  * @param path the path where the files are located
  */
 async function restructureDirectory(path: string) {
-  moveFile(`${path}lens.js`, "./dist/lens.js");
-  moveFile(`${path}lens.min.js`, "./dist/lens.min.js");
-  moveFile(`${path}lens.umd.js`, "./dist/lens.umd.js");
+  try {
+    fs.accessSync('./dist/@samply', fs.constants.F_OK);
+    moveFile(`${path}lens.js`, "./dist/lens.js");
+    moveFile(`${path}lens.min.js`, "./dist/lens.min.js");
+    moveFile(`${path}lens.umd.js`, "./dist/lens.umd.js");
+  } catch (e) {
+    throw new Error('Folder not found');
+  }
 }
 
 /**
@@ -119,13 +124,12 @@ function moveFile(oldFile: string, target: string): void {
     attempts++;
     if (fs.readFileSync(oldFile, 'utf-8').length > 0) {
       fs.renameSync(oldFile, target);
-      // fs.copyFileSync(oldFile, target);
       clearInterval(interval);
     } else if (attempts > 10) {
       clearInterval(interval);
       throw new Error('File not found');
     }
-    if(fs.readdirSync('./dist/@samply/').length === 0) {
+    if (fs.readdirSync('./dist/@samply/').length === 0) {
       fs.rmSync('./dist/@samply/', { recursive: true, force: true });
     }
   }, 1000);
