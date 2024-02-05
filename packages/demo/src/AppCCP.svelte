@@ -1,5 +1,5 @@
 <script lang="ts">
-  import "../../../dist/lens";
+  import "../../lib";
 
   import {
     dktkDiagnosisMeasure,
