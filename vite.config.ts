@@ -118,14 +118,15 @@ function moveFile(oldFile: string, target: string): void {
   const interval = setInterval(() => {
     attempts++;
     if (fs.readFileSync(oldFile, 'utf-8').length > 0) {
-      fs.renameSync(oldFile, target);
+      // fs.renameSync(oldFile, target);
+      fs.copyFileSync(oldFile, target);
       clearInterval(interval);
     } else if (attempts > 10) {
       throw new Error('File not found');
       clearInterval(interval);
     }
     if(fs.readdirSync('./dist/@samply/').length === 0) {
-      fs.rmSync('./dist/@samply/', { recursive: true, force: true });
+      // fs.rmSync('./dist/@samply/', { recursive: true, force: true });
     }
   }, 1000);
 }
