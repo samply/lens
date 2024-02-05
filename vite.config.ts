@@ -76,7 +76,9 @@ function afterBuild(): void {
    * Building somehow adds another @samply folder to the dist folder so this workaround is needed
    * to move the files to the root of the dist folder and delete the unnecessary folder
    */
-  restructureDirectory('./dist/@samply/');
+  if (fs.existsSync('./dist/@samply/')) {
+    restructureDirectory('./dist/@samply/');
+  }
 }
 
 /**
@@ -102,14 +104,9 @@ function concatenateDeclarationFiles(folderPath: string): void {
  * @param path the path where the files are located
  */
 async function restructureDirectory(path: string) {
-  try {
-    fs.accessSync('./dist/@samply', fs.constants.F_OK);
     moveFile(`${path}lens.js`, "./dist/lens.js");
     moveFile(`${path}lens.min.js`, "./dist/lens.min.js");
     moveFile(`${path}lens.umd.js`, "./dist/lens.umd.js");
-  } catch (e) {
-    throw new Error('Folder not found');
-  }
 }
 
 /**
