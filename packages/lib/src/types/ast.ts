@@ -9,5 +9,5 @@ export type AstBottomLayerValue = {
   key: string;
   type: string;
   system?: string;
-  value: string | boolean | Array<string> | {min: number, max: number} | {min: Date | undefined, max: Date | undefined}
+  value: string | boolean | Array<string> | { min: number, max: number } | { min: Date | undefined, max: Date | undefined }
 }
