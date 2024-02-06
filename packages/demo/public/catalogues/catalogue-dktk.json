@@ -19308,6 +19308,11 @@
                         "description": "Serum"
                     },
                     {
+                        "key": "blood-plasma",
+                        "name": "Plasma",
+                        "description": "Plasma"
+                    },
+                    {
                         "key": "buffy-coat",
                         "name": "Buffycoat",
                         "description": ""
