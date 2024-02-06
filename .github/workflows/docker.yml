@@ -6,7 +6,7 @@ on:
       - main
     # Build then a new version is tagged
     tags:
-      - '*.*.*'
+      - 'v*.*.*'
   pull_request:
     branches:
       - main

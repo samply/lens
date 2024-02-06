@@ -1,0 +1,22 @@
+name: "Samply.Lens verify new Release"
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  verify-new-release:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - run: git checkout --track origin/main
+      - run: git checkout --track origin/develop
+      - name: "Ensure Package Version changed"
+        run: |
+            if [ "$(git diff main develop -- package.json | grep version | wc -l)" -eq 0 ]; then \
+              echo "::error:: Please run `npm run version` before merging to main!"; \
+              exit 1; \
+            fi
