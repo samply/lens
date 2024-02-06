@@ -258,13 +258,13 @@ const substituteRangeCQLExpression = (
         console.warn(
             `Throwing away a ${criterionPrefix}Range${criterionSuffix} criterion, as it is not of type {min: number, max: number}!`,
         );
-        return;
+        return "";
     }
     if (input.min === 0 && input.max === 0) {
         console.warn(
             `Throwing away a ${criterionPrefix}Range${criterionSuffix} criterion, as both dates are undefined!`,
         );
-        return;
+        return "";
     } else if (input.min === 0) {
         const lowerThanDateTemplate = cqltemplate.get(
             `${criterionPrefix}LowerThan${criterionSuffix}`,
@@ -301,7 +301,7 @@ const substituteRangeCQLExpression = (
             input.max,
         );
     }
-    return;
+    return "";
 };
 
 const substituteCQLExpression = (
@@ -314,7 +314,7 @@ const substituteCQLExpression = (
 ): string => {
     let cqlString: string;
     if (value) {
-        cqlString = cql.replace(new RegExp("{{C}}"), value);
+        cqlString = cql.replace(/{{C}}/g, value);
     } else {
         cqlString = cql;
     }
