@@ -5,6 +5,7 @@
 import type { QueryItem, QueryValue } from "../types/queryData";
 import { writable } from "svelte/store";
 import { v4 as uuidv4 } from "uuid";
+import type { Category, Criteria } from "../types/treeData";
 
 
 
@@ -100,7 +101,7 @@ export const addItemToQuery = (queryObject: QueryItem, queryGroupIndex: number) 
 };
 
 /**
- * Removes an item from the query
+ * Removes an value of an Item from the query
  * If the item has multiple values, only the value will be removed
  * If the item has only one value, the item will be removed
  * @param queryObject 
@@ -132,7 +133,11 @@ export const removeValueFromQuery = (queryObject: QueryItem, queryGroupIndex: nu
     });
 }
 
-
+/**
+ * removes an item from the query
+ * @param queryObject the object to be removed
+ * @param queryGroupIndex index of the group where the object is located
+ */
 export const removeItemFromQuery = (queryObject: QueryItem, queryGroupIndex: number) => {
     queryModified.set(true);
     /**
@@ -142,7 +147,7 @@ export const removeItemFromQuery = (queryObject: QueryItem, queryGroupIndex: num
      */
     queryObject = Object.assign({}, queryObject)
 
-    queryStore.update((query) => {
+    queryStore.update((query: QueryItem[][]) => {
         let queryStoreGroup: QueryItem[] = query[queryGroupIndex];
 
         queryStoreGroup = queryStoreGroup.filter((item) => {
@@ -178,3 +183,87 @@ function findObjectsWithSameName(objectsArray: QueryItem[]) {
 }
 
 
+
+
+/**
+ * adds a single stratifier to the query
+ * numbers can be grouped together by setting the groupRange
+ * @param label the value of the stratifier (e.g. "C31")
+ * @param catalogue the catalogue where the stratifier is located
+ * @param catalogueGroupCode the code of the group where the stratifier is located (e.g. "diagnosis")
+ * @param queryGroupIndex the index of the query group where the stratifier should be added
+ */
+
+export interface AddStratifierParams {
+    label: string,
+    catalogueGroupCode: string,
+    catalogue: Category[],
+    queryGroupIndex?: number,
+    groupRange?: number
+}
+
+export const addStratifier = ({ label, catalogue, catalogueGroupCode, queryGroupIndex = 0, groupRange }): void => {
+
+    let queryItem: QueryItem;
+    console.log(catalogue);
+    catalogue.forEach((parentCategory: Category) => {
+        if ("childCategories" in parentCategory) {
+            parentCategory.childCategories.forEach(
+                (childCategorie: Category) => {
+                    if (
+                        childCategorie.key === catalogueGroupCode &&
+                        "criteria" in childCategorie
+                    ) {
+                        let values: QueryValue[] = [];
+
+                        if (childCategorie.fieldType === "number") {
+                            values = [
+                                {
+                                    name: `${label}`,
+                                    value: {
+                                        min: parseInt(label),
+                                        max:
+                                            parseInt(label) +
+                                            groupRange - 1,
+                                    },
+                                    queryBindId: uuidv4(),
+                                },
+                            ];
+                        } else {
+                            childCategorie.criteria.forEach(
+                                (criterion: Criteria) => {
+                                    if (criterion.key === label) {
+                                        values[0] = {
+                                            name: criterion.name,
+                                            value: criterion.key,
+                                            queryBindId: uuidv4(),
+                                            description:
+                                                criterion.description,
+                                        };
+                                    }
+                                }
+                            );
+                        }
+
+                        queryItem = {
+                            id: uuidv4(),
+                            key: childCategorie.key,
+                            name: childCategorie.name,
+                            system:
+                                "system" in childCategorie
+                                    ? childCategorie.system
+                                    : "",
+                            type:
+                                "type" in childCategorie
+                                    ? childCategorie.type
+                                    : "BETWEEN",
+                            values: values,
+                        };
+
+                        addItemToQuery(queryItem, queryGroupIndex);
+                    }
+                }
+            );
+        }
+    });
+}
