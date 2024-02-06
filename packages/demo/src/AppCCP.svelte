@@ -1,6 +1,6 @@
 <script lang="ts">
   import "../../lib";
-  import type { CatalogueText } from "../../lib/src/types/texts";
+
   import {
     dktkDiagnosisMeasure,
     dktkMedicationStatementsMeasure,
@@ -9,6 +9,7 @@
     dktkSpecimenMeasure,
     dktkHistologyMeasure
   } from "./measures";
+
 
   let mockCatalogueData = "";
   let libraryOptions = ""
@@ -36,7 +37,7 @@
 
   const backendMeasures = `DKTK_STRAT_DEF_IN_INITIAL_POPULATION`;
 
-  const catalogueText: CatalogueText = {
+  const catalogueText = {
     group: "Group",
     collapseButtonTitle: "Collapse Tree",
     expandButtonTitle: "Expand Tree",
@@ -324,4 +325,5 @@ const barChartBackgroundColors: string[] = ["#4dc9f6","#3da4c7"];
     >
   </div>
 </footer>
+
 <lens-options options={libraryOptions} catalogueData={mockCatalogueData}/>

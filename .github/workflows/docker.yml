@@ -6,7 +6,7 @@ on:
       - main
     # Build then a new version is tagged
     tags:
-      - '*.*.*'
+      - 'v*.*.*'
   pull_request:
     branches:
       - main
@@ -29,6 +29,7 @@ jobs:
       image-name: "samply/lens"
       build-args: |
         TARGET_ENVIRONMENT=production
+      build-platforms: "linux/amd64"
     # This passes the secrets from calling workflow to the called workflow
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
