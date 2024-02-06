@@ -52,15 +52,13 @@
      */
     $: inputOptions = criteria.filter((item: Criteria) => {
         const clearedInputValue = inputValue
-        .replace(/^[0-9]*:/g, "")
-        .toLocaleLowerCase();
+            .replace(/^[0-9]*:/g, "")
+            .toLocaleLowerCase();
 
         return (
             item.name.toLowerCase().includes(clearedInputValue) ||
             item.key.toLowerCase().includes(clearedInputValue) ||
-            item.description
-                ?.toLowerCase()
-                .includes(clearedInputValue)
+            item.description?.toLowerCase().includes(clearedInputValue)
             /**
              * FIX ME:
              * should only take names. This needs a catalogue fix
@@ -85,7 +83,7 @@
             }
             return [...acc, queryItem];
         },
-        []
+        [],
     );
 
     const getChosenOptionsFromQueryStore = (queryStore): QueryItem[] => {
@@ -98,7 +96,7 @@
                             ...queryItem,
                             values: [queryValue],
                         };
-                    }
+                    },
                 );
                 return queryItemValues;
             })
@@ -119,7 +117,7 @@
      */
     const addInputValueToStore = (
         inputItem: Criteria,
-        indexOfChosenStore: number = 0
+        indexOfChosenStore: number = 0,
     ): void => {
         /**
          * check if option is allready present in the query store
@@ -189,28 +187,29 @@
         addInputValueToStore(inputOption);
     };
 
-
     /**
      * scrolls the active dom element into view when it is out of view
      * @param activeDomElement
      */
-     const scrollInsideContainerWhenActiveDomElementIsOutOfView = (activeDomElement): void => {
+    const scrollInsideContainerWhenActiveDomElementIsOutOfView = (
+        activeDomElement,
+    ): void => {
         if (!activeDomElement) return;
         const container: HTMLElement = activeDomElement.parentElement;
         const containerTop: number = container.scrollTop;
         const containerBottom: number = containerTop + container.clientHeight;
         const elementTop: number = activeDomElement.offsetTop;
-        const elementBottom: number = elementTop + activeDomElement.clientHeight;
+        const elementBottom: number =
+            elementTop + activeDomElement.clientHeight;
 
         if (elementTop < containerTop) {
             container.scrollTop = elementTop;
         } else if (elementBottom > containerBottom) {
             container.scrollTop = elementBottom - container.clientHeight;
         }
-    }
+    };
 
     $: scrollInsideContainerWhenActiveDomElementIsOutOfView(activeDomElement);
-
 
     /**
      * returns the input option with the matched substring wrapped in <strong> tags
@@ -224,17 +223,18 @@
         const indexOfSubStringStart: number = inputOption
             .toLocaleLowerCase()
             .indexOf(inputValue.toLocaleLowerCase());
-        const indexOfSubStringEnd: number = indexOfSubStringStart + inputValueLength;
+        const indexOfSubStringEnd: number =
+            indexOfSubStringStart + inputValueLength;
         const subString: string = inputOption.slice(
             indexOfSubStringStart,
-            indexOfSubStringEnd
+            indexOfSubStringEnd,
         );
         const regex: RegExp = new RegExp(subString, "g");
 
         // Replace each occurrence with the same substring wrapped in <strong> tags
         const resultString: string = inputOption.replace(
             regex,
-            `<strong>${subString}</strong>`
+            `<strong>${subString}</strong>`,
         );
         return resultString;
     };
@@ -261,41 +261,47 @@
                 {#if inputOptions?.length > 0}
                     {#each inputOptions as inputOption, index}
                         {#if index === focusedItemIndex}
-                            <!-- svelte-ignore a11y-click-events-have-key-events -->
                             <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-                            <!-- this is handled with the handleKeyDown method -->
                             <!-- onmousedown is chosen because the input looses focus when clicked outside, 
                                 which will close the options before the click is finshed -->
                             <li
                                 bind:this={activeDomElement}
                                 part="autocomplete-options-item autocomplete-options-item-focused"
-                                on:mousedown={() => selectItemByClick(inputOption)}
+                                on:mousedown={() =>
+                                    selectItemByClick(inputOption)}
                             >
                                 <div part="autocomplete-options-item-name">
                                     {@html getBoldedText(inputOption.name)}
                                 </div>
-                                <div part="autocomplete-options-item-description-focused">
-                                    {@html getBoldedText(inputOption.description)}
+                                <div
+                                    part="autocomplete-options-item-description-focused"
+                                >
+                                    {@html getBoldedText(
+                                        inputOption.description,
+                                    )}
                                 </div>
                             </li>
-                            {:else}
-                            <!-- svelte-ignore a11y-click-events-have-key-events -->
+                        {:else}
                             <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-                            <!-- this is handled with the handleKeyDown method -->
                             <!-- onmousedown is chosen because the input looses focus when clicked outside, 
                                 which will close the options before the click is finshed -->
                             <li
                                 part="autocomplete-options-item"
-                                on:mousedown={() => selectItemByClick(inputOption)}
+                                on:mousedown={() =>
+                                    selectItemByClick(inputOption)}
                             >
                                 <div part="autocomplete-options-item-name">
                                     {@html getBoldedText(inputOption.name)}
                                 </div>
-                                <div part="autocomplete-options-item-description">
-                                    {@html getBoldedText(inputOption.description)}
+                                <div
+                                    part="autocomplete-options-item-description"
+                                >
+                                    {@html getBoldedText(
+                                        inputOption.description,
+                                    )}
                                 </div>
                             </li>
-                            {/if}
+                        {/if}
                     {/each}
                 {:else}
                     <li

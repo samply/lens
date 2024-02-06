@@ -23,4 +23,8 @@ module.exports = {
     settings: {
       'svelte/typescript': import('typescript'),
     },
+    rules: {
+      'svelte/no-at-html-tags': 'off',
+    },
+    ignorePatterns: ['**/dist/**'],
   };

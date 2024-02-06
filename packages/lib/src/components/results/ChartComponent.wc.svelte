@@ -30,6 +30,7 @@
     import type { Site } from "../../types/response";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
     import { lensOptions } from "../../stores/options";
+    import type { LensOptions } from "../../types/options";
 
     export let title: string = ""; // e.g. 'Gender Distribution'
     export let catalogueGroupCode: string = ""; // e.g. "gender"
@@ -51,7 +52,7 @@
     export let groupingLabel: string = "";
     export let viewScales: boolean = chartType !== "pie" ? true : false;
 
-    let options: any;
+    let options: LensOptions;
     $: options =
         ($lensOptions?.chartOptions &&
             $lensOptions?.chartOptions[catalogueGroupCode]) ||
@@ -111,11 +112,12 @@
                 },
                 tooltip: {
                     callbacks: {
-                        title: (context: any) => {
+                        title: (context: string[]) => {
                             const key = context[0].label || "";
-                            let result = options.tooltips && options.tooltips[key]
-                                ? options.tooltips[key]
-                                : key
+                            let result =
+                                options.tooltips && options.tooltips[key]
+                                    ? options.tooltips[key]
+                                    : key;
                             return result;
                         },
                     },
@@ -138,7 +140,7 @@
                     ticks:
                         chartType === "bar"
                             ? {
-                                  callback: (val: any) => {
+                                  callback: (val: string | number) => {
                                       if (indexAxis === "y")
                                           return val.toString();
                                       if (typeof val === "string") return val;
@@ -169,13 +171,13 @@
      */
     const getChartDataSets = (
         responseStore: ResponseStore,
-        chartLabels: string[]
+        chartLabels: string[],
     ): {
         labels: string[];
         data: { label; data; backgroundColor; backgroundHoverColor }[];
     } => {
         let dataSet: number[];
-        
+
         if (perSite) {
             dataSet = chartLabels.map((label: string) => {
                 const site: Site = responseStore.get(label);
@@ -183,7 +185,7 @@
                 if (site.data === null) return 0;
 
                 let data = site.data.group.find(
-                    (groupItem) => groupItem.code.text === catalogueGroupCode
+                    (groupItem) => groupItem.code.text === catalogueGroupCode,
                 );
                 return data?.population[0]?.count || 0;
             });
@@ -191,15 +193,15 @@
             let remove_indexes = [];
 
             dataSet.forEach((value, index) => {
-            if (value === 0) {
-                remove_indexes.unshift(index)
-            }
+                if (value === 0) {
+                    remove_indexes.unshift(index);
+                }
             });
 
-            remove_indexes.forEach(index => {
-                dataSet.splice(index, 1)
-                chartLabels.splice(index, 1)
-            })
+            remove_indexes.forEach((index) => {
+                dataSet.splice(index, 1);
+                chartLabels.splice(index, 1);
+            });
 
             return {
                 labels: chartLabels,
@@ -212,23 +214,24 @@
                     },
                 ],
             };
-        } 
-
+        }
 
         const combinedSubGroupData = combineSubGroups(
             groupingDivider,
             responseStore,
-            chartLabels
+            chartLabels,
         );
-
 
         /**
          * if aggregations are set, aggregate the data from other groups and adds them to the chart
          * e.g. add aggregated number of medical statements to the chart for therapy of tumor
-        */
-        if(options.aggregations){
+         */
+        if (options.aggregations) {
             options.aggregations.forEach((aggregation) => {
-                const aggregationCount = getAggregatedPopulation(responseStore, aggregation);
+                const aggregationCount = getAggregatedPopulation(
+                    responseStore,
+                    aggregation,
+                );
                 combinedSubGroupData.data.push(aggregationCount);
                 combinedSubGroupData.labels.push(aggregation);
             });
@@ -267,12 +270,12 @@
     const combineSubGroups = (
         divider: string,
         responseStore: ResponseStore,
-        labels: string[]
+        labels: string[],
     ): { labels: string[]; data: number[] } => {
         const groupedChartData: { label: string; value: number }[] =
             labels.reduce((acc, label) => {
                 // This is a hack! This will help with the wrong coding of ICD10
-                label = label.replaceAll("_", ".")
+                label = label.replaceAll("_", ".");
 
                 /**
                  * see if the label contains the divider
@@ -286,7 +289,7 @@
                             value: getAggregatedPopulationForStratumCode(
                                 responseStore,
                                 label,
-                                responseGroupCode
+                                responseGroupCode,
                             ),
                         },
                     ];
@@ -300,7 +303,7 @@
                  */
                 let superClassItem: { label: string; value: number } = acc.find(
                     (item) =>
-                        item.label === label.split(divider)[0] + groupingLabel
+                        item.label === label.split(divider)[0] + groupingLabel,
                 );
 
                 if (!superClassItem) {
@@ -313,14 +316,14 @@
                 superClassItem.value += getAggregatedPopulationForStratumCode(
                     responseStore,
                     label,
-                    responseGroupCode
+                    responseGroupCode,
                 );
 
                 return [
                     ...acc.filter(
                         (item) =>
                             item.label !==
-                            label.split(divider)[0] + groupingLabel
+                            label.split(divider)[0] + groupingLabel,
                     ),
                     superClassItem,
                 ];
@@ -340,7 +343,7 @@
 
         let isDataAvailable: boolean = false;
 
-        responseStore.forEach((value, key) => {
+        responseStore.forEach((value) => {
             if (value.data !== null) isDataAvailable = true;
         });
 
@@ -349,15 +352,13 @@
         let chartLabels: string[] = [];
 
         if (perSite) {
-            responseStore.forEach(
-                (value: Site, key: string, map: ResponseStore) => {
-                    chartLabels.push(key);
-                }
-            );
+            responseStore.forEach((value: Site, key: string) => {
+                chartLabels.push(key);
+            });
         } else {
             chartLabels = getStratifierCodesForGroupCode(
                 responseStore,
-                responseGroupCode
+                responseGroupCode,
             );
         }
         chartLabels = filterRegexMatch(chartLabels);
@@ -367,7 +368,7 @@
          * remove labels and their corresponding data if the label is an empty string or null
          */
         chartLabels = chartLabels.filter(
-            (label) => label !== "" && label !== null && label !== "null"
+            (label) => label !== "" && label !== null && label !== "null",
         );
 
         /**
@@ -399,9 +400,11 @@
          * set the labels of the chart
          * if a legend mapping is set, use the legend mapping
          */
-        chart.data.labels = options.legendMapping ? chartLabels.map(label => {
-            return options.legendMapping[label]
-        }): chartLabels;
+        chart.data.labels = options.legendMapping
+            ? chartLabels.map((label) => {
+                  return options.legendMapping[label];
+              })
+            : chartLabels;
 
         chart.update();
     };
@@ -424,14 +427,12 @@
             return -1;
         }
         // Convert numeric values to numbers for comparison
-        if(!isNaN(a) && !isNaN(b)) {
+        if (!isNaN(a) && !isNaN(b)) {
             a = parseInt(a, 10);
             b = parseInt(b, 10);
         }
-        
+
         return a > b ? 1 : -1;
-
-
     };
 
     /**
@@ -485,7 +486,7 @@
                                                     criterion.description,
                                             };
                                         }
-                                    }
+                                    },
                                 );
                             }
 
@@ -506,7 +507,7 @@
 
                             addItemToQuery(queryItem, $activeQueryGroupIndex);
                         }
-                    }
+                    },
                 );
             }
         });
@@ -526,5 +527,5 @@
         id="chart"
         on:click={handleClickOnStratifier}
     />
-    <slot></slot>
+    <slot />
 </div>

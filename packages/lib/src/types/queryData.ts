@@ -8,15 +8,14 @@ export type QueryItem = {
     system?: string;
     values: QueryValue[];
     description?: string;
-}
+};
 
 export type QueryValue = {
     name: string;
-    value: string | {min: number, max: number} | AggregatedValue[][];
+    value: string | { min: number; max: number } | AggregatedValue[][];
     queryBindId: string;
     description?: string;
-
-}
+};
 
 export type AutoCompleteItem = {
     name: string;
@@ -32,4 +31,10 @@ export type AutoCompleteItem = {
     };
 };
 
-export type queryStoreItem = QueryItem[] | QueryItem | QueryValue[] | QueryValue | AggregatedValue[] | AggregatedValue
+export type queryStoreItem =
+    | QueryItem[]
+    | QueryItem
+    | QueryValue[]
+    | QueryValue
+    | AggregatedValue[]
+    | AggregatedValue;

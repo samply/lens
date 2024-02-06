@@ -51,7 +51,7 @@
      * @param category
      */
     const buildDatalistItemFromBottomCategory = (
-        category: Category
+        category: Category,
     ): AutoCompleteItem[] => {
         let autoCompleteItems: AutoCompleteItem[];
         if ("criteria" in category)
@@ -62,7 +62,7 @@
                     type: category.type,
                     system: category.system,
                     criterion: criterion,
-                })
+                }),
             );
         return autoCompleteItems;
     };
@@ -90,7 +90,7 @@
             } else {
                 if ("criteria" in category)
                     category.criteria = addPercentageSignToCriteria(
-                        category.criteria
+                        category.criteria,
                     );
 
                 if (buildDatalistItemFromBottomCategory(category))
@@ -166,7 +166,7 @@
      */
     const addInputValueToStore = (
         inputItem: AutoCompleteItem,
-        indexOfChosenStore: number = $queryStore.length
+        indexOfChosenStore: number = $queryStore.length,
     ): void => {
         /**
          * transform inputItem to QueryItem
@@ -179,7 +179,10 @@
             system: "system" in inputItem && inputItem.system,
             values: [
                 {
-                    value: 'aggregatedValue' in inputItem.criterion ? inputItem.criterion.aggregatedValue : inputItem.criterion.key,
+                    value:
+                        "aggregatedValue" in inputItem.criterion
+                            ? inputItem.criterion.aggregatedValue
+                            : inputItem.criterion.key,
                     name: inputItem.criterion.name,
                     description: inputItem.criterion.description,
                     queryBindId: uuidv4(),
@@ -232,7 +235,7 @@
             event.preventDefault();
             addInputValueToStore(
                 $inputOptions[focusedItemIndex],
-                extractTargetGroupFromInputValue()
+                extractTargetGroupFromInputValue(),
             );
         }
     };
@@ -242,7 +245,7 @@
      * @param activeDomElement
      */
     const scrollInsideContainerWhenActiveDomElementIsOutOfView = (
-        activeDomElement
+        activeDomElement,
     ): void => {
         if (!activeDomElement) return;
         const container: HTMLElement = activeDomElement.parentElement;
@@ -285,14 +288,14 @@
             indexOfSubStringStart + inputValueLength;
         const subString: string = inputOption.slice(
             indexOfSubStringStart,
-            indexOfSubStringEnd
+            indexOfSubStringEnd,
         );
         const regex: RegExp = new RegExp(subString, "g");
 
         // Replace each occurrence with the same substring wrapped in <strong> tags
         const resultString: string = inputOption.replace(
             regex,
-            `<strong>${subString}</strong>`
+            `<strong>${subString}</strong>`,
         );
         return resultString;
     };
@@ -306,7 +309,7 @@
                     <span part="lens-searchbar-chip-name"
                         >{queryItem.name}:</span
                     >
-                    {#each queryItem.values as value, i (value.queryBindId)}
+                    {#each queryItem.values as value (value.queryBindId)}
                         <span part="lens-searchbar-chip-item">
                             <span>{value.name}</span>
                             {#if queryItem.values.length > 1}
@@ -359,11 +362,9 @@
                         </div>
                     {/if}
                     {#if i === focusedItemIndex}
-                        <!-- svelte-ignore a11y-click-events-have-key-events -->
                         <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-                        <!-- this is handled with the handleKeyDown method -->
                         <!-- onmousedown is chosen because the input looses focus when clicked outside, 
-                         which will close the options before the click is finshed -->
+                             which will close the options before the click is finshed -->
                         <li
                             bind:this={activeDomElement}
                             part="lens-searchbar-autocomplete-options-item lens-searchbar-autocomplete-options-item-focused"
@@ -371,7 +372,7 @@
                         >
                             <div part="autocomplete-options-item-name">
                                 {@html getBoldedText(
-                                    inputOption.criterion.name
+                                    inputOption.criterion.name,
                                 )}
                             </div>
                             {#if inputOption.criterion.description}
@@ -379,15 +380,13 @@
                                     part="autocomplete-options-item-description autocomplete-options-item-description-focused"
                                 >
                                     {@html getBoldedText(
-                                        inputOption.criterion.description
+                                        inputOption.criterion.description,
                                     )}
                                 </div>
                             {/if}
                         </li>
                     {:else}
-                        <!-- svelte-ignore a11y-click-events-have-key-events -->
                         <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-                        <!-- this is handled with the handleKeyDown method -->
                         <!-- onmousedown is chosen because the input looses focus when clicked outside, 
                              which will close the options before the click is finshed -->
                         <li
@@ -396,7 +395,7 @@
                         >
                             <div part="autocomplete-options-item-name">
                                 {@html getBoldedText(
-                                    inputOption.criterion.name
+                                    inputOption.criterion.name,
                                 )}
                             </div>
                             {#if inputOption.criterion.description}
@@ -404,7 +403,7 @@
                                     part="autocomplete-options-item-description"
                                 >
                                     {@html getBoldedText(
-                                        inputOption.criterion.description
+                                        inputOption.criterion.description,
                                     )}
                                 </div>
                             {/if}

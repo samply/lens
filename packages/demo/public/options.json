@@ -25,7 +25,7 @@
                 "male": "Männlich",
                 "female": "Weiblich",
                 "unknown": "Unbekannt",
-                "other": "Sonstiges / Intersexuell"
+                "other": "Divers / intersexuell"
             }
         },
         "diagnosis": {
@@ -154,6 +154,7 @@
     },
     "resultSummaryOptions": {
         "title": "Ergebnisse",
+        "infoButtonText": "Um eine Re-Identifizierung zu erschweren, werden Standortergebnisse modifiziert und auf Zehnerstellen gerundet. Meldet ein Standort keinen Treffer, wird für diesen null angezeigt.",
         "dataTypes": [
             {
                 "title": "Standorte",
@@ -162,20 +163,6 @@
             {
                 "title": "Patienten",
                 "dataKey": "patients"
-            },
-            {
-                "title": "Bioproben*",
-                "aggregatedDataKeys": [
-                    {
-                        "groupCode": "specimen"
-                    },
-                    {
-                        "stratifierCode": "Histlogoies",
-                        "stratumCode": "1"
-                    },
-                    {
-                    }
-                ]
             }
         ]
     }
