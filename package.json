@@ -24,7 +24,7 @@
     "build:demo": "vite build --config vite.demo.config.ts",
     "preview": "vite preview --config vite.demo.config.ts",
     "check": "svelte-check --tsconfig ./tsconfig.json",
-    "lint-staged": "lint-staged",
+    "lint": "lint-staged",
     "prepublishOnly": "npm run build -s",
     "security:check": "npm audit --omit=dev --audit-level high",
     "version": "npm version -m \"build: release version %s\""
