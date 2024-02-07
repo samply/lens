@@ -9,6 +9,8 @@
     "declaration": true,
     "emitDeclarationOnly": true,
     "declarationDir": "dist/",
+    "strict": true,
+    "noImplicitAny": true,
   },
   
 }

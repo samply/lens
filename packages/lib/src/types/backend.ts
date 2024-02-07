@@ -13,4 +13,4 @@ export type BackendConfig = {
     catalogueKeyToResponseKeyMap: string[][];
 };
 
-export type ResponseStore = Map<string, Site>
+export type ResponseStore = Map<string, Site>;

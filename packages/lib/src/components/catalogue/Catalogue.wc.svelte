@@ -25,24 +25,24 @@
     export let toggleIconUrl: string | null = null;
     export let infoIconUrl: string | null = null;
 
-    iconStore.update((store: Map<string,string>) => {
+    iconStore.update((store: Map<string, string>) => {
         if (addIconUrl) {
-            store.set('addIconUrl', addIconUrl);
+            store.set("addIconUrl", addIconUrl);
         }
         if (toggleIconUrl) {
-            store.set('toggleIconUrl', toggleIconUrl);
+            store.set("toggleIconUrl", toggleIconUrl);
         }
         if (infoIconUrl) {
-            store.set('infoIconUrl', infoIconUrl);
+            store.set("infoIconUrl", infoIconUrl);
         }
         return store;
-    })
+    });
 
-      /**
+    /**
      * Initialize the catalogue store with the given tree data
      * watch for changes from other components
      */
-     $: $catalogue = treeData;
+    $: $catalogue = treeData;
 
     /**
      * Initialize the text store with the given texts
@@ -56,10 +56,10 @@
         collapsable: true,
         open: false,
     };
-    
+
     let toggleTree = toggle.open;
 
-    const handleToggle = () => {
+    const handleToggle = (): void => {
         toggleTree = !toggleTree;
     };
 
@@ -75,8 +75,6 @@
             labelTo: texts.numberInput?.labelTo || "to",
         },
     };
-
-  
 </script>
 
 <div part="lens-catalogue">

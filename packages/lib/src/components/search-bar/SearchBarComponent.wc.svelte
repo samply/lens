@@ -48,12 +48,13 @@
 
     /**
      * Build a full list of autocomplete items and saves it to 'criteria'
-     * @param category
+     * @param category - a bottom layer of the category tree
+     * @returns an item that can be used in the autocomplete list
      */
     const buildDatalistItemFromBottomCategory = (
-        category: Category
+        category: Category,
     ): AutoCompleteItem[] => {
-        let autoCompleteItems: AutoCompleteItem[];
+        let autoCompleteItems: AutoCompleteItem[] = [];
         if ("criteria" in category)
             autoCompleteItems = category.criteria.map(
                 (criterion: Criteria) => ({
@@ -62,14 +63,15 @@
                     type: category.type,
                     system: category.system,
                     criterion: criterion,
-                })
+                }),
             );
         return autoCompleteItems;
     };
 
     /**
      * Build a full list of autocomplete items from a given Category tree
-     * @param treeData
+     * @param treeData - a category tree
+     * @returns an array of items that can be used in the autocomplete list
      */
     const buildDatalistItems = (treeData: Category[]): AutoCompleteItem[] => {
         /**
@@ -77,20 +79,23 @@
          *  there seems to be a race condition where the catalogue is not yet loaded and the function is called right away
          *  the data being a string probably comes from the data being passed as a json string
          */
-        if (typeof treeData === "string") {
-            return;
-        }
         let autoCompleteItems: AutoCompleteItem[] = [];
+
+        if (typeof treeData === "string") {
+            return autoCompleteItems;
+        }
         treeData.forEach((category: Category) => {
             if ("childCategories" in category) {
                 autoCompleteItems = [
                     ...autoCompleteItems,
-                    ...buildDatalistItems(category.childCategories),
+                    ...buildDatalistItems(
+                        category.childCategories as Category[],
+                    ),
                 ];
             } else {
                 if ("criteria" in category)
                     category.criteria = addPercentageSignToCriteria(
-                        category.criteria
+                        category.criteria,
                     );
 
                 if (buildDatalistItemFromBottomCategory(category))
@@ -162,11 +167,12 @@
     /**
      * transforms the inputvalue to a QueryItem, adds it to the query store
      * and resets the input value and the focused item index
-     * @param indexOfChosenStore
+     * @param inputItem - the item to add to the query store
+     * @param indexOfChosenStore - the index of the query store to add the item to
      */
     const addInputValueToStore = (
         inputItem: AutoCompleteItem,
-        indexOfChosenStore: number = $queryStore.length
+        indexOfChosenStore: number = $queryStore.length,
     ): void => {
         /**
          * transform inputItem to QueryItem
@@ -179,7 +185,10 @@
             system: "system" in inputItem && inputItem.system,
             values: [
                 {
-                    value: 'aggregatedValue' in inputItem.criterion ? inputItem.criterion.aggregatedValue : inputItem.criterion.key,
+                    value:
+                        "aggregatedValue" in inputItem.criterion
+                            ? inputItem.criterion.aggregatedValue
+                            : inputItem.criterion.key,
                     name: inputItem.criterion.name,
                     description: inputItem.criterion.description,
                     queryBindId: uuidv4(),
@@ -196,6 +205,7 @@
     /**
      * extracts the group index from the input value
      * the user may specify the group index by typing a number followed by a colon
+     * @returns the group index
      */
     const extractTargetGroupFromInputValue = (): number => {
         const splitInputValue = inputValue.split(":");
@@ -208,7 +218,7 @@
 
     /**
      * handles keyboard events to make input options selectable
-     * @param event
+     * @param event - the keyboard event
      */
     const handleKeyDown = (event: KeyboardEvent): void => {
         if (inputValue.length === 0 || event.key === "Escape") {
@@ -232,20 +242,21 @@
             event.preventDefault();
             addInputValueToStore(
                 $inputOptions[focusedItemIndex],
-                extractTargetGroupFromInputValue()
+                extractTargetGroupFromInputValue(),
             );
         }
     };
 
     /**
      * scrolls the active dom element into view when it is out of view
-     * @param activeDomElement
+     * @param activeDomElement - the active dom element
      */
     const scrollInsideContainerWhenActiveDomElementIsOutOfView = (
-        activeDomElement
+        activeDomElement: HTMLElement,
     ): void => {
         if (!activeDomElement) return;
-        const container: HTMLElement = activeDomElement.parentElement;
+        const container: HTMLElement =
+            activeDomElement.parentElement as HTMLElement;
         const containerTop: number = container.scrollTop;
         const containerBottom: number = containerTop + container.clientHeight;
         const elementTop: number = activeDomElement.offsetTop;
@@ -263,16 +274,16 @@
 
     /**
      * handles click events to make input options selectable
-     * @param inputOption
+     * @param inputOption - the input option to add to the query store
      */
-    const selectItemByClick = (inputOption) => {
+    const selectItemByClick = (inputOption: AutoCompleteItem): void => {
         addInputValueToStore(inputOption, extractTargetGroupFromInputValue());
     };
 
     /**
      * returns the input option with the matched substring wrapped in <strong> tags
-     * @param inputOption
-     * @returns string
+     * @param inputOption - the input option to bold
+     * @returns the input option with the matched substring wrapped in <strong> tags
      */
     const getBoldedText = (inputOption: string): string => {
         // Use a regular expression to find all occurrences of the substring
@@ -285,14 +296,14 @@
             indexOfSubStringStart + inputValueLength;
         const subString: string = inputOption.slice(
             indexOfSubStringStart,
-            indexOfSubStringEnd
+            indexOfSubStringEnd,
         );
         const regex: RegExp = new RegExp(subString, "g");
 
         // Replace each occurrence with the same substring wrapped in <strong> tags
         const resultString: string = inputOption.replace(
             regex,
-            `<strong>${subString}</strong>`
+            `<strong>${subString}</strong>`,
         );
         return resultString;
     };
@@ -306,7 +317,7 @@
                     <span part="lens-searchbar-chip-name"
                         >{queryItem.name}:</span
                     >
-                    {#each queryItem.values as value, i (value.queryBindId)}
+                    {#each queryItem.values as value (value.queryBindId)}
                         <span part="lens-searchbar-chip-item">
                             <span>{value.name}</span>
                             {#if queryItem.values.length > 1}
@@ -359,11 +370,9 @@
                         </div>
                     {/if}
                     {#if i === focusedItemIndex}
-                        <!-- svelte-ignore a11y-click-events-have-key-events -->
                         <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-                        <!-- this is handled with the handleKeyDown method -->
                         <!-- onmousedown is chosen because the input looses focus when clicked outside, 
-                         which will close the options before the click is finshed -->
+                             which will close the options before the click is finshed -->
                         <li
                             bind:this={activeDomElement}
                             part="lens-searchbar-autocomplete-options-item lens-searchbar-autocomplete-options-item-focused"
@@ -371,7 +380,7 @@
                         >
                             <div part="autocomplete-options-item-name">
                                 {@html getBoldedText(
-                                    inputOption.criterion.name
+                                    inputOption.criterion.name,
                                 )}
                             </div>
                             {#if inputOption.criterion.description}
@@ -379,15 +388,13 @@
                                     part="autocomplete-options-item-description autocomplete-options-item-description-focused"
                                 >
                                     {@html getBoldedText(
-                                        inputOption.criterion.description
+                                        inputOption.criterion.description,
                                     )}
                                 </div>
                             {/if}
                         </li>
                     {:else}
-                        <!-- svelte-ignore a11y-click-events-have-key-events -->
                         <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-                        <!-- this is handled with the handleKeyDown method -->
                         <!-- onmousedown is chosen because the input looses focus when clicked outside, 
                              which will close the options before the click is finshed -->
                         <li
@@ -396,7 +403,7 @@
                         >
                             <div part="autocomplete-options-item-name">
                                 {@html getBoldedText(
-                                    inputOption.criterion.name
+                                    inputOption.criterion.name,
                                 )}
                             </div>
                             {#if inputOption.criterion.description}
@@ -404,7 +411,7 @@
                                     part="autocomplete-options-item-description"
                                 >
                                     {@html getBoldedText(
-                                        inputOption.criterion.description
+                                        inputOption.criterion.description,
                                     )}
                                 </div>
                             {/if}

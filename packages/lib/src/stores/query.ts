@@ -7,8 +7,6 @@ import { writable } from "svelte/store";
 import { v4 as uuidv4 } from "uuid";
 import type { Category, Criteria } from "../types/treeData";
 
-
-
 export const queryStore = writable<QueryItem[][]>([[]]);
 
 export const activeQueryGroupIndex = writable(0);
@@ -21,10 +19,13 @@ export const queryModified = writable(false);
  * If the item does not exist in the query, a new item will be created
  * if the item is added to a group that does not exist, a new group will be created
  * if the group index is negative, the item will be added to the first group
- * @param queryObject 
- * @param queryGroupIndex 
+ * @param queryObject - the object to be added to the store
+ * @param queryGroupIndex - the index of the group (searchbar) where the object should be added
  */
-export const addItemToQuery = (queryObject: QueryItem, queryGroupIndex: number) => {
+export const addItemToQuery = (
+    queryObject: QueryItem,
+    queryGroupIndex: number,
+): void => {
     queryModified.set(true);
 
     /**
@@ -32,9 +33,8 @@ export const addItemToQuery = (queryObject: QueryItem, queryGroupIndex: number) 
      * otherwise the queryStore will not update properly with live changes inside the catalogue
      * (e.g. when numbers are changed)
      */
-    queryObject = Object.assign({}, queryObject)
+    queryObject = Object.assign({}, queryObject);
     queryStore.update((query) => {
-
         /**
          * handles the case when the group index is negative or too high
          */
@@ -45,9 +45,8 @@ export const addItemToQuery = (queryObject: QueryItem, queryGroupIndex: number) 
         }
 
         if (queryGroupIndex === query.length) {
-            query = [...query, []]
+            query = [...query, []];
         }
-
 
         /**
          * finds objects with the same name in the query
@@ -55,12 +54,13 @@ export const addItemToQuery = (queryObject: QueryItem, queryGroupIndex: number) 
 
         let queryStoreGroup: QueryItem[] = query[queryGroupIndex];
 
-        const duplicateObjects: QueryItem[] = 
-            findObjectsWithSameName(queryStoreGroup.concat(queryObject));
+        const duplicateObjects: QueryItem[] = findObjectsWithSameName(
+            queryStoreGroup.concat(queryObject),
+        );
 
         /**
          * merges the values of the duplicate objects
-        */
+         */
         if (duplicateObjects !== undefined) {
             queryObject = {
                 id: uuidv4(),
@@ -77,7 +77,7 @@ export const addItemToQuery = (queryObject: QueryItem, queryGroupIndex: number) 
                      */
                     if (
                         !queryObject.values.some(
-                            (val: QueryValue) => val.name === value.name
+                            (val: QueryValue) => val.name === value.name,
                         )
                     ) {
                         queryObject.values.push(value);
@@ -87,16 +87,16 @@ export const addItemToQuery = (queryObject: QueryItem, queryGroupIndex: number) 
         }
 
         /**
-         * removes all items with the same name from the group, 
-         * then adds the new item 
-         */ 
-        queryStoreGroup = queryStoreGroup.filter((item) => item.name !== queryObject.name);
+         * removes all items with the same name from the group,
+         * then adds the new item
+         */
+        queryStoreGroup = queryStoreGroup.filter(
+            (item) => item.name !== queryObject.name,
+        );
         queryStoreGroup.push(queryObject);
-    
 
         query[queryGroupIndex] = queryStoreGroup;
         return query;
-
     });
 };
 
@@ -104,54 +104,37 @@ export const addItemToQuery = (queryObject: QueryItem, queryGroupIndex: number) 
  * Removes an value of an Item from the query
  * If the item has multiple values, only the value will be removed
  * If the item has only one value, the item will be removed
- * @param queryObject 
- * @param queryGroupIndex 
+ * @param queryObject - the object to be removed
+ * @param queryGroupIndex - the index of the group (searchbar) where the object is located
  */
-export const removeValueFromQuery = (queryObject: QueryItem, queryGroupIndex: number) => {
+export const removeValueFromQuery = (
+    queryObject: QueryItem,
+    queryGroupIndex: number,
+): void => {
     queryModified.set(true);
     /**
      * prevent mutation of the original object
      * otherwise the queryStore will not update properly with live changes inside the catalogue
      * (e.g. when numbers are changed)
      */
-    queryObject = Object.assign({}, queryObject)
+    queryObject = Object.assign({}, queryObject);
 
     queryStore.update((query) => {
         let queryStoreGroup: QueryItem[] = query[queryGroupIndex];
 
         queryStoreGroup = queryStoreGroup.map((item) => {
             if (item.name === queryObject.name) {
-                item.values = item.values.filter((value: QueryValue) => value.queryBindId !== queryObject.values[0].queryBindId);
+                item.values = item.values.filter(
+                    (value: QueryValue) =>
+                        value.queryBindId !== queryObject.values[0].queryBindId,
+                );
             }
             return item;
         });
 
-        queryStoreGroup = queryStoreGroup.filter((item) => item.values.length > 0);
-
-        query[queryGroupIndex] = queryStoreGroup;
-        return query;
-    });
-}
-
-/**
- * removes an item from the query
- * @param queryObject the object to be removed
- * @param queryGroupIndex index of the group where the object is located
- */
-export const removeItemFromQuery = (queryObject: QueryItem, queryGroupIndex: number) => {
-    queryModified.set(true);
-    /**
-     * prevent mutation of the original object
-     * otherwise the queryStore will not update properly with live changes inside the catalogue
-     * (e.g. when numbers are changed)
-     */
-    queryObject = Object.assign({}, queryObject)
-
-    queryStore.update((query: QueryItem[][]) => {
-        let queryStoreGroup: QueryItem[] = query[queryGroupIndex];
-
-        queryStoreGroup = queryStoreGroup.filter((item) => {
-            return item.id !== queryObject.id});
+        queryStoreGroup = queryStoreGroup.filter(
+            (item) => item.values.length > 0,
+        );
 
         query[queryGroupIndex] = queryStoreGroup;
         return query;
@@ -159,31 +142,57 @@ export const removeItemFromQuery = (queryObject: QueryItem, queryGroupIndex: num
 };
 
 /**
-     * finds objects with the same name in an array
-     * @param objectsArray
-     * @returns QueryItem[]
+ * removes an item from the query
+ * @param queryObject the object to be removed
+ * @param queryGroupIndex index of the group where the object is located
+ */
+export const removeItemFromQuery = (
+    queryObject: QueryItem,
+    queryGroupIndex: number,
+): void => {
+    queryModified.set(true);
+    /**
+     * prevent mutation of the original object
+     * otherwise the queryStore will not update properly with live changes inside the catalogue
+     * (e.g. when numbers are changed)
      */
-function findObjectsWithSameName(objectsArray: QueryItem[]) {
+    queryObject = Object.assign({}, queryObject);
+
+    queryStore.update((query: QueryItem[][]) => {
+        let queryStoreGroup: QueryItem[] = query[queryGroupIndex];
+
+        queryStoreGroup = queryStoreGroup.filter((item) => {
+            return item.id !== queryObject.id;
+        });
+
+        query[queryGroupIndex] = queryStoreGroup;
+        return query;
+    });
+};
+
+/**
+ * finds objects with the same name in an array
+ * @param objectsArray - the array to be searched
+ * @returns the objects with the same name
+ */
+function findObjectsWithSameName(objectsArray: QueryItem[]): QueryItem[] {
     const nameObjectMap = new Map<string, QueryItem[]>();
 
     objectsArray.forEach((obj: QueryItem) => {
         const name = obj.name;
         if (nameObjectMap.has(name)) {
-            nameObjectMap.get(name).push(obj);
+            nameObjectMap.get(name)?.push(obj);
         } else {
             nameObjectMap.set(name, [obj]);
         }
     });
 
     const duplicateObjects: QueryItem[] = Array.from(
-        nameObjectMap.values()
+        nameObjectMap.values(),
     ).filter((objects: QueryItem[]) => objects.length > 1)[0];
 
     return duplicateObjects;
 }
-
-
-
 
 /**
  * adds a single stratifier to the query
@@ -195,15 +204,20 @@ function findObjectsWithSameName(objectsArray: QueryItem[]) {
  */
 
 export interface AddStratifierParams {
-    label: string,
-    catalogueGroupCode: string,
-    catalogue: Category[],
-    queryGroupIndex?: number,
-    groupRange?: number
+    label: string;
+    catalogueGroupCode: string;
+    catalogue: Category[];
+    queryGroupIndex?: number;
+    groupRange?: number;
 }
 
-export const addStratifier = ({ label, catalogue, catalogueGroupCode, queryGroupIndex = 0, groupRange }): void => {
-
+export const addStratifier = ({
+    label,
+    catalogue,
+    catalogueGroupCode,
+    queryGroupIndex = 0,
+    groupRange,
+}): void => {
     let queryItem: QueryItem;
     console.log(catalogue);
     catalogue.forEach((parentCategory: Category) => {
@@ -222,9 +236,7 @@ export const addStratifier = ({ label, catalogue, catalogueGroupCode, queryGroup
                                     name: `${label}`,
                                     value: {
                                         min: parseInt(label),
-                                        max:
-                                            parseInt(label) +
-                                            groupRange - 1,
+                                        max: parseInt(label) + groupRange - 1,
                                     },
                                     queryBindId: uuidv4(),
                                 },
@@ -237,11 +249,10 @@ export const addStratifier = ({ label, catalogue, catalogueGroupCode, queryGroup
                                             name: criterion.name,
                                             value: criterion.key,
                                             queryBindId: uuidv4(),
-                                            description:
-                                                criterion.description,
+                                            description: criterion.description,
                                         };
                                     }
-                                }
+                                },
                             );
                         }
 
@@ -262,8 +273,8 @@ export const addStratifier = ({ label, catalogue, catalogueGroupCode, queryGroup
 
                         addItemToQuery(queryItem, queryGroupIndex);
                     }
-                }
+                },
             );
         }
     });
-}
+};

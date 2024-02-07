@@ -30,6 +30,8 @@
     import type { Site } from "../../types/response";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
     import { lensOptions } from "../../stores/options";
+    import type { ChartOption } from "../../types/options";
+    import type { ChartDataSets } from "../../types/charts";
 
     export let title: string = ""; // e.g. 'Gender Distribution'
     export let catalogueGroupCode: string = ""; // e.g. "gender"
@@ -39,23 +41,23 @@
     export let clickToAddState: boolean = false;
     let responseGroupCode: string;
     $: responseGroupCode =
-        $catalogueKeyToResponseKeyMap.get(catalogueGroupCode);
+        $catalogueKeyToResponseKeyMap.get(catalogueGroupCode) || "";
 
     export let headers: Map<string, string> = new Map<string, string>();
     export let displayLegends: boolean = false;
     export let chartType: keyof ChartTypeRegistry = "pie";
     export let perSite: boolean = false;
-    export let groupRange: number | null = null;
-    export let groupingDivider: string | null = null;
-    export let filterRegex: string | null = null;
+    export let groupRange: number = 0;
+    export let groupingDivider: string = "";
+    export let filterRegex: string = "";
     export let groupingLabel: string = "";
     export let viewScales: boolean = chartType !== "pie" ? true : false;
 
-    let options: any;
+    let options: ChartOption;
     $: options =
         ($lensOptions?.chartOptions &&
             $lensOptions?.chartOptions[catalogueGroupCode]) ||
-        {};
+        ({} as ChartOption);
 
     export let backgroundColor: string[] = [
         "#4dc9f6",
@@ -111,11 +113,17 @@
                 },
                 tooltip: {
                     callbacks: {
-                        title: (context: any) => {
+                        title: (
+                            context: {
+                                [key: string]: unknown;
+                                label: string;
+                            }[],
+                        ) => {
                             const key = context[0].label || "";
-                            let result = options.tooltips && options.tooltips[key]
-                                ? options.tooltips[key]
-                                : key
+                            let result =
+                                options.tooltips && options.tooltips[key]
+                                    ? options.tooltips[key]
+                                    : key;
                             return result;
                         },
                     },
@@ -138,7 +146,7 @@
                     ticks:
                         chartType === "bar"
                             ? {
-                                  callback: (val: any) => {
+                                  callback: (val: string | number) => {
                                       if (indexAxis === "y")
                                           return val.toString();
                                       if (typeof val === "string") return val;
@@ -164,42 +172,41 @@
     };
 
     /**
-     * @param chartLabels
+     * gets the aggregated population for a given stratum code
+     * @param responseStore - the response store
+     * @param chartLabels - the labels for the chart
      * @returns an array of chart data sets from the response store
      */
     const getChartDataSets = (
         responseStore: ResponseStore,
-        chartLabels: string[]
-    ): {
-        labels: string[];
-        data: { label; data; backgroundColor; backgroundHoverColor }[];
-    } => {
+        chartLabels: string[],
+    ): ChartDataSets => {
         let dataSet: number[];
-        
+
         if (perSite) {
             dataSet = chartLabels.map((label: string) => {
-                const site: Site = responseStore.get(label);
+                const site: Site | undefined = responseStore.get(label);
 
-                if (site.data === null) return 0;
+                if (site === undefined || site.data === null) return 0;
 
                 let data = site.data.group.find(
-                    (groupItem) => groupItem.code.text === catalogueGroupCode
+                    (groupItem) => groupItem.code.text === catalogueGroupCode,
                 );
                 return data?.population[0]?.count || 0;
             });
 
-            let remove_indexes = [];
+            let remove_indexes: number[] = [];
 
             dataSet.forEach((value, index) => {
-            if (value === 0) {
-                remove_indexes.unshift(index)
-            }
+                if (value === 0) {
+                    remove_indexes.unshift(index);
+                }
             });
 
-            remove_indexes.forEach(index => {
-                dataSet.splice(index, 1)
-                chartLabels.splice(index, 1)
-            })
+            remove_indexes.forEach((index) => {
+                dataSet.splice(index, 1);
+                chartLabels.splice(index, 1);
+            });
 
             return {
                 labels: chartLabels,
@@ -212,23 +219,24 @@
                     },
                 ],
             };
-        } 
-
+        }
 
         const combinedSubGroupData = combineSubGroups(
             groupingDivider,
             responseStore,
-            chartLabels
+            chartLabels,
         );
-
 
         /**
          * if aggregations are set, aggregate the data from other groups and adds them to the chart
          * e.g. add aggregated number of medical statements to the chart for therapy of tumor
-        */
-        if(options.aggregations){
+         */
+        if (options.aggregations) {
             options.aggregations.forEach((aggregation) => {
-                const aggregationCount = getAggregatedPopulation(responseStore, aggregation);
+                const aggregationCount = getAggregatedPopulation(
+                    responseStore,
+                    aggregation,
+                );
                 combinedSubGroupData.data.push(aggregationCount);
                 combinedSubGroupData.labels.push(aggregation);
             });
@@ -249,7 +257,7 @@
 
     /**
      * filters the labels by the given regex
-     * @param labels
+     * @param labels - the labels to filter
      * @returns the filtered labels
      */
     const filterRegexMatch = (labels: string[]): string[] => {
@@ -267,12 +275,12 @@
     const combineSubGroups = (
         divider: string,
         responseStore: ResponseStore,
-        labels: string[]
+        labels: string[],
     ): { labels: string[]; data: number[] } => {
         const groupedChartData: { label: string; value: number }[] =
-            labels.reduce((acc, label) => {
+            labels.reduce<{ label: string; value: number }[]>((acc, label) => {
                 // This is a hack! This will help with the wrong coding of ICD10
-                label = label.replaceAll("_", ".")
+                label = label.replaceAll("_", ".");
 
                 /**
                  * see if the label contains the divider
@@ -286,7 +294,7 @@
                             value: getAggregatedPopulationForStratumCode(
                                 responseStore,
                                 label,
-                                responseGroupCode
+                                responseGroupCode,
                             ),
                         },
                     ];
@@ -298,9 +306,11 @@
                  * add the value of the current label to the value of the super class item
                  * and add it to the accumulator
                  */
-                let superClassItem: { label: string; value: number } = acc.find(
+                let superClassItem:
+                    | { label: string; value: number }
+                    | undefined = acc.find(
                     (item) =>
-                        item.label === label.split(divider)[0] + groupingLabel
+                        item.label === label.split(divider)[0] + groupingLabel,
                 );
 
                 if (!superClassItem) {
@@ -313,14 +323,14 @@
                 superClassItem.value += getAggregatedPopulationForStratumCode(
                     responseStore,
                     label,
-                    responseGroupCode
+                    responseGroupCode,
                 );
 
                 return [
                     ...acc.filter(
                         (item) =>
                             item.label !==
-                            label.split(divider)[0] + groupingLabel
+                            label.split(divider)[0] + groupingLabel,
                     ),
                     superClassItem,
                 ];
@@ -334,13 +344,14 @@
 
     /**
      * watches the response store and updates the chart data
+     * @param responseStore - the response store
      */
-    const setChartData = (responseStore: ResponseStore) => {
+    const setChartData = (responseStore: ResponseStore): void => {
         if (responseStore.size === 0) return;
 
         let isDataAvailable: boolean = false;
 
-        responseStore.forEach((value, key) => {
+        responseStore.forEach((value) => {
             if (value.data !== null) isDataAvailable = true;
         });
 
@@ -349,15 +360,13 @@
         let chartLabels: string[] = [];
 
         if (perSite) {
-            responseStore.forEach(
-                (value: Site, key: string, map: ResponseStore) => {
-                    chartLabels.push(key);
-                }
-            );
+            responseStore.forEach((value: Site, key: string) => {
+                chartLabels.push(key);
+            });
         } else {
             chartLabels = getStratifierCodesForGroupCode(
                 responseStore,
-                responseGroupCode
+                responseGroupCode,
             );
         }
         chartLabels = filterRegexMatch(chartLabels);
@@ -367,7 +376,7 @@
          * remove labels and their corresponding data if the label is an empty string or null
          */
         chartLabels = chartLabels.filter(
-            (label) => label !== "" && label !== null && label !== "null"
+            (label) => label !== "" && label !== null && label !== "null",
         );
 
         /**
@@ -382,7 +391,7 @@
         /**
          * lets the user define a range for the labels when only single values are used eg. '60' -> '60 - 69'
          */
-        if (groupRange !== null) {
+        if (groupRange !== 0) {
             chartLabels = chartLabels.map((label) => {
                 /**
                  * check if label doesn't parse to a number
@@ -399,9 +408,14 @@
          * set the labels of the chart
          * if a legend mapping is set, use the legend mapping
          */
-        chart.data.labels = options.legendMapping ? chartLabels.map(label => {
-            return options.legendMapping[label]
-        }): chartLabels;
+        chart.data.labels = options.legendMapping
+            ? chartLabels.map((label) => {
+                  return (
+                      (options.legendMapping && options.legendMapping[label]) ||
+                      ""
+                  );
+              })
+            : chartLabels;
 
         chart.update();
     };
@@ -414,7 +428,7 @@
         chart = new Chart(canvas, initialChartData);
     });
 
-    const customSort = (a, b): number => {
+    const customSort = (a: string, b: string): number => {
         // "unknown" should come after numeric values
         if (a === "unknown" && b !== "unknown") {
             return 1;
@@ -424,31 +438,31 @@
             return -1;
         }
         // Convert numeric values to numbers for comparison
-        if(!isNaN(a) && !isNaN(b)) {
-            a = parseInt(a, 10);
-            b = parseInt(b, 10);
+        if (!isNaN(parseInt(a)) && !isNaN(parseInt(b))) {
+            const aNum = parseInt(a, 10);
+            const bNum = parseInt(b, 10);
+            return aNum > bNum ? 1 : -1;
         }
-        
+
         return a > b ? 1 : -1;
-
-
     };
 
     /**
      * adds stratifier as a search parameter when clicked
-     *
      */
-    const handleClickOnStratifier = () => {
+    const handleClickOnStratifier = (): void => {
         /**
          * the clicked stratifier
          */
         const stratifier = chart.getActiveElements()[0];
         if (!stratifier || !clickToAddState) return;
-        const label: string = chart.data.labels[stratifier.index] as string;
-        let queryItem: QueryItem;
+        const label: string = chart.data.labels
+            ? (chart.data.labels[stratifier.index] as string)
+            : "";
+        let queryItem!: QueryItem;
         $catalogue.forEach((parentCategory: Category) => {
             if ("childCategories" in parentCategory) {
-                parentCategory.childCategories.forEach(
+                parentCategory.childCategories?.forEach(
                     (childCategorie: Category) => {
                         if (
                             childCategorie.key === catalogueGroupCode &&
@@ -485,7 +499,7 @@
                                                     criterion.description,
                                             };
                                         }
-                                    }
+                                    },
                                 );
                             }
 
@@ -506,7 +520,7 @@
 
                             addItemToQuery(queryItem, $activeQueryGroupIndex);
                         }
-                    }
+                    },
                 );
             }
         });
@@ -526,5 +540,5 @@
         id="chart"
         on:click={handleClickOnStratifier}
     />
-    <slot></slot>
+    <slot />
 </div>
