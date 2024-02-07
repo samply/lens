@@ -30,7 +30,8 @@
     import type { Site } from "../../types/response";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
     import { lensOptions } from "../../stores/options";
-    import type { LensOptions } from "../../types/options";
+    import type { ChartOption } from "../../types/options";
+    import type { ChartDataSets } from "../../types/charts";
 
     export let title: string = ""; // e.g. 'Gender Distribution'
     export let catalogueGroupCode: string = ""; // e.g. "gender"
@@ -40,23 +41,23 @@
     export let clickToAddState: boolean = false;
     let responseGroupCode: string;
     $: responseGroupCode =
-        $catalogueKeyToResponseKeyMap.get(catalogueGroupCode);
+        $catalogueKeyToResponseKeyMap.get(catalogueGroupCode) || "";
 
     export let headers: Map<string, string> = new Map<string, string>();
     export let displayLegends: boolean = false;
     export let chartType: keyof ChartTypeRegistry = "pie";
     export let perSite: boolean = false;
-    export let groupRange: number | null = null;
-    export let groupingDivider: string | null = null;
-    export let filterRegex: string | null = null;
+    export let groupRange: number = 0;
+    export let groupingDivider: string = "";
+    export let filterRegex: string = "";
     export let groupingLabel: string = "";
     export let viewScales: boolean = chartType !== "pie" ? true : false;
 
-    let options: LensOptions;
+    let options: ChartOption;
     $: options =
         ($lensOptions?.chartOptions &&
             $lensOptions?.chartOptions[catalogueGroupCode]) ||
-        {};
+        ({} as ChartOption);
 
     export let backgroundColor: string[] = [
         "#4dc9f6",
@@ -112,7 +113,12 @@
                 },
                 tooltip: {
                     callbacks: {
-                        title: (context: string[]) => {
+                        title: (
+                            context: {
+                                [key: string]: unknown;
+                                label: string;
+                            }[],
+                        ) => {
                             const key = context[0].label || "";
                             let result =
                                 options.tooltips && options.tooltips[key]
@@ -166,23 +172,22 @@
     };
 
     /**
-     * @param chartLabels
+     * gets the aggregated population for a given stratum code
+     * @param responseStore - the response store
+     * @param chartLabels - the labels for the chart
      * @returns an array of chart data sets from the response store
      */
     const getChartDataSets = (
         responseStore: ResponseStore,
         chartLabels: string[],
-    ): {
-        labels: string[];
-        data: { label; data; backgroundColor; backgroundHoverColor }[];
-    } => {
+    ): ChartDataSets => {
         let dataSet: number[];
 
         if (perSite) {
             dataSet = chartLabels.map((label: string) => {
-                const site: Site = responseStore.get(label);
+                const site: Site | undefined = responseStore.get(label);
 
-                if (site.data === null) return 0;
+                if (site === undefined || site.data === null) return 0;
 
                 let data = site.data.group.find(
                     (groupItem) => groupItem.code.text === catalogueGroupCode,
@@ -190,7 +195,7 @@
                 return data?.population[0]?.count || 0;
             });
 
-            let remove_indexes = [];
+            let remove_indexes: number[] = [];
 
             dataSet.forEach((value, index) => {
                 if (value === 0) {
@@ -252,7 +257,7 @@
 
     /**
      * filters the labels by the given regex
-     * @param labels
+     * @param labels - the labels to filter
      * @returns the filtered labels
      */
     const filterRegexMatch = (labels: string[]): string[] => {
@@ -273,7 +278,7 @@
         labels: string[],
     ): { labels: string[]; data: number[] } => {
         const groupedChartData: { label: string; value: number }[] =
-            labels.reduce((acc, label) => {
+            labels.reduce<{ label: string; value: number }[]>((acc, label) => {
                 // This is a hack! This will help with the wrong coding of ICD10
                 label = label.replaceAll("_", ".");
 
@@ -301,7 +306,9 @@
                  * add the value of the current label to the value of the super class item
                  * and add it to the accumulator
                  */
-                let superClassItem: { label: string; value: number } = acc.find(
+                let superClassItem:
+                    | { label: string; value: number }
+                    | undefined = acc.find(
                     (item) =>
                         item.label === label.split(divider)[0] + groupingLabel,
                 );
@@ -337,8 +344,9 @@
 
     /**
      * watches the response store and updates the chart data
+     * @param responseStore - the response store
      */
-    const setChartData = (responseStore: ResponseStore) => {
+    const setChartData = (responseStore: ResponseStore): void => {
         if (responseStore.size === 0) return;
 
         let isDataAvailable: boolean = false;
@@ -383,7 +391,7 @@
         /**
          * lets the user define a range for the labels when only single values are used eg. '60' -> '60 - 69'
          */
-        if (groupRange !== null) {
+        if (groupRange !== 0) {
             chartLabels = chartLabels.map((label) => {
                 /**
                  * check if label doesn't parse to a number
@@ -402,7 +410,10 @@
          */
         chart.data.labels = options.legendMapping
             ? chartLabels.map((label) => {
-                  return options.legendMapping[label];
+                  return (
+                      (options.legendMapping && options.legendMapping[label]) ||
+                      ""
+                  );
               })
             : chartLabels;
 
@@ -417,7 +428,7 @@
         chart = new Chart(canvas, initialChartData);
     });
 
-    const customSort = (a, b): number => {
+    const customSort = (a: string, b: string): number => {
         // "unknown" should come after numeric values
         if (a === "unknown" && b !== "unknown") {
             return 1;
@@ -427,9 +438,10 @@
             return -1;
         }
         // Convert numeric values to numbers for comparison
-        if (!isNaN(a) && !isNaN(b)) {
-            a = parseInt(a, 10);
-            b = parseInt(b, 10);
+        if (!isNaN(parseInt(a)) && !isNaN(parseInt(b))) {
+            const aNum = parseInt(a, 10);
+            const bNum = parseInt(b, 10);
+            return aNum > bNum ? 1 : -1;
         }
 
         return a > b ? 1 : -1;
@@ -437,19 +449,20 @@
 
     /**
      * adds stratifier as a search parameter when clicked
-     *
      */
-    const handleClickOnStratifier = () => {
+    const handleClickOnStratifier = (): void => {
         /**
          * the clicked stratifier
          */
         const stratifier = chart.getActiveElements()[0];
         if (!stratifier || !clickToAddState) return;
-        const label: string = chart.data.labels[stratifier.index] as string;
-        let queryItem: QueryItem;
+        const label: string = chart.data.labels
+            ? (chart.data.labels[stratifier.index] as string)
+            : "";
+        let queryItem!: QueryItem;
         $catalogue.forEach((parentCategory: Category) => {
             if ("childCategories" in parentCategory) {
-                parentCategory.childCategories.forEach(
+                parentCategory.childCategories?.forEach(
                     (childCategorie: Category) => {
                         if (
                             childCategorie.key === catalogueGroupCode &&

@@ -5,8 +5,8 @@ import type { ResponseStore } from "../types/backend";
 export const responseStore = writable<ResponseStore>(new Map<string, Site>());
 
 /**
- * @param store the response store
- * @param code the code to search for
+ * @param store - the response store
+ * @param code - the code to search for
  * @returns the aggregated population count for a given code
  */
 export const getAggregatedPopulation = (
@@ -28,8 +28,8 @@ export const getAggregatedPopulation = (
 };
 
 /**
- * @param site data of the responding site
- * @param code the code to search for
+ * @param site - data of the responding site
+ * @param code - the code to search for
  * @returns the population count for a given code at a given site
  */
 export const getSitePopulationForCode = (
@@ -48,8 +48,8 @@ export const getSitePopulationForCode = (
 };
 
 /**
- * @param store the response store
- * @param code the code to search for
+ * @param store - the response store
+ * @param code - the code to search for
  * @returns the aggregated population count for a given stratum code
  */
 export const getAggregatedStratifierForStratumCode = (
@@ -69,8 +69,8 @@ export const getAggregatedStratifierForStratumCode = (
 };
 
 /**
- * @param store the response store
- * @param code the code to search for
+ * @param store - the response store
+ * @param code - the code to search for
  * @returns the aggregated population count for a given stratum code
  * (stratum code is the value.text of a stratum item e.g.'male')
  */
@@ -95,8 +95,9 @@ export const getAggregatedPopulationForStratumCode = (
 };
 
 /**
- * @param site data of the responding site
- * @param code the code to search for
+ * @param site - data of the responding site
+ * @param stratumCode - the code to search for
+ * @param stratifier - the stratifier code to define where the stratumCode should be searched
  * @returns the population for a given stratum code for a given site
  */
 export const getSitePopulationForStratumCode = (
@@ -126,8 +127,8 @@ export const getSitePopulationForStratumCode = (
 };
 
 /**
- * @param store the response store
- * @param code the code to search for
+ * @param store - the response store
+ * @param code - the code to search for
  * @returns the stratifier codes for a given group code
  */
 export const getStratifierCodesForGroupCode = (
@@ -154,8 +155,8 @@ export const getStratifierCodesForGroupCode = (
 };
 
 /**
- * @param site data of the responding site
- * @param code the code to search for
+ * @param site - data of the responding site
+ * @param code - the code to search for
  * @returns the stratifier codes for a given group code for a single site
  */
 

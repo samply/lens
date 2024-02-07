@@ -15,10 +15,10 @@
     } from "../../stores/response";
     import TableItemComponent from "./TableItemComponent.svelte";
     import { lensOptions } from "../../stores/options";
-    import type { LensOptions } from "../../types/options";
     import type { HeaderData } from "../../types/biobanks";
     import type { Site } from "../../types/response";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
+    import type { ResponseStore } from "../../types/backend";
 
     export let title: string = "";
 
@@ -26,8 +26,10 @@
      * data-types for the table
      * can be set via options component
      */
-    let options: LensOptions;
-    $: options = ($lensOptions?.tableOptions && $lensOptions?.tableOptions) || {
+    let options: { headerData: HeaderData[] };
+    $: options = (($lensOptions?.tableOptions && $lensOptions.tableOptions) as {
+        headerData: HeaderData[];
+    }) || {
         headerData: [{ title: "", dataKey: "", aggregatedDataKeys: [] }],
     };
 
@@ -41,7 +43,7 @@
     type TableRowData = (string | number)[][];
     let tableRowData: TableRowData = [];
 
-    const buildTableRowData = (responseStore): void => {
+    const buildTableRowData = (responseStore: ResponseStore): void => {
         tableRowData = [];
 
         responseStore.forEach((value: Site, key: string): void => {
@@ -57,7 +59,9 @@
             options.headerData.forEach(
                 (header: HeaderData, index: number): void => {
                     if (index === 0) {
-                        const name = $uiSiteMappingsStore.get(key);
+                        const name: string | undefined =
+                            $uiSiteMappingsStore.get(key);
+                        if (name === undefined) return;
                         tableRow.push(name);
                         return;
                     }
@@ -73,7 +77,7 @@
 
                     let aggregatedPopulation: number = 0;
 
-                    header.aggregatedDataKeys.forEach((dataKey) => {
+                    header.aggregatedDataKeys?.forEach((dataKey) => {
                         if (dataKey.groupCode) {
                             aggregatedPopulation += getSitePopulationForCode(
                                 value.data,
@@ -90,10 +94,6 @@
                                     dataKey.stratifierCode,
                                 );
                         }
-                        /**
-                         * TODO: add support for stratifiers if needed?
-                         * needs to be implemented in response.ts
-                         */
                     });
 
                     tableRow.push(aggregatedPopulation);
@@ -126,17 +126,14 @@
 
     /**
      * watches the negotiateStore for changes to check or uncheck the checkbox
-     * @param biobank: the biobank to check
-     * @returns boolean
      */
-
+    let allChecked: boolean = false;
     $: allChecked =
         $negotiateStore.length === tableRowData.length &&
         tableRowData.length !== 0;
 
     /**
      * checks or unchecks all biobanks
-     * @returns void
      */
     const checkAllBiobanks = (): void => {
         if (allChecked) {
@@ -156,10 +153,11 @@
 
     /**
      * sorts the tableRowData by the given column
-     * @param column column to sort
-     * @param ascending order of the sort, changes after every click but not on incoming responses
-     * @param tableRowData as an argument to make the function reactive and prevent race conditions with incoming responses
-     * @param changeAscending if true, the order of the sort will change after every click
+     * @param column - column to sort
+     * @param ascending - order of the sort, changes after every click but not on incoming responses
+     * @param tableRowData - as an argument to make the function reactive and prevent race conditions with incoming responses
+     * @param changeAscending - if true, the order of the sort will change after every click
+     * @returns the sorted tableRowData
      */
     const sortTable = (
         column: number,

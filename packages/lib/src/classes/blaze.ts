@@ -16,7 +16,12 @@ export class Blaze {
         private auth: string = "",
     ) {}
 
-    async send(cql: string, controller?: AbortController) {
+    /**
+     * sends the query to beam and updates the store with the results
+     * @param cql the query as cql string
+     * @param controller the abort controller to cancel the request
+     */
+    async send(cql: string, controller?: AbortController): Promise<void> {
         try {
             responseStore.update((store) => {
                 store.set(this.name, { status: "claimed", data: null });
@@ -30,7 +35,7 @@ export class Blaze {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify(buildLibrary(cql)),
-                    signal: controller.signal,
+                    signal: controller?.signal,
                 },
             );
             if (!libraryResponse.ok) {
@@ -91,7 +96,7 @@ export class Blaze {
         }
     }
 
-    async handleError(message: string, response: Response) {
+    async handleError(message: string, response: Response): Promise<void> {
         const errorMessage = await response.text();
         console.debug(
             `${message}. Received error ${response.status} with message ${errorMessage}`,

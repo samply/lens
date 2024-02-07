@@ -1,4 +1,4 @@
-import { defineConfig } from "vite";
+import { defineConfig, PluginOption } from "vite";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import { transform } from "esbuild";
 import pkg from "./package.json";
@@ -53,8 +53,12 @@ export default defineConfig({
     ],
 });
 
-// Workaround for https://github.com/vitejs/vite/issues/6555
-function minifyEs() {
+/**
+ * Workaround for https://github.com/vitejs/vite/issues/6555
+ * Minify the es output
+ * @returns the minifyEs plugin
+ */
+function minifyEs(): PluginOption {
     return {
         name: "minifyEs",
         renderChunk: {
@@ -108,7 +112,7 @@ function concatenateDeclarationFiles(folderPath: string): void {
  * this removes the @samply folder and moves the files to the root of the dist folder
  * @param path the path where the files are located
  */
-async function restructureDirectory(path: string) {
+async function restructureDirectory(path: string): void {
     moveFile(`${path}lens.js`, "./dist/lens.js");
     moveFile(`${path}lens.min.js`, "./dist/lens.min.js");
     moveFile(`${path}lens.umd.js`, "./dist/lens.umd.js");

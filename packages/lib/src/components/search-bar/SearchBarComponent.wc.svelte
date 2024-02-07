@@ -48,12 +48,13 @@
 
     /**
      * Build a full list of autocomplete items and saves it to 'criteria'
-     * @param category
+     * @param category - a bottom layer of the category tree
+     * @returns an item that can be used in the autocomplete list
      */
     const buildDatalistItemFromBottomCategory = (
         category: Category,
     ): AutoCompleteItem[] => {
-        let autoCompleteItems: AutoCompleteItem[];
+        let autoCompleteItems: AutoCompleteItem[] = [];
         if ("criteria" in category)
             autoCompleteItems = category.criteria.map(
                 (criterion: Criteria) => ({
@@ -69,7 +70,8 @@
 
     /**
      * Build a full list of autocomplete items from a given Category tree
-     * @param treeData
+     * @param treeData - a category tree
+     * @returns an array of items that can be used in the autocomplete list
      */
     const buildDatalistItems = (treeData: Category[]): AutoCompleteItem[] => {
         /**
@@ -77,15 +79,18 @@
          *  there seems to be a race condition where the catalogue is not yet loaded and the function is called right away
          *  the data being a string probably comes from the data being passed as a json string
          */
-        if (typeof treeData === "string") {
-            return;
-        }
         let autoCompleteItems: AutoCompleteItem[] = [];
+
+        if (typeof treeData === "string") {
+            return autoCompleteItems;
+        }
         treeData.forEach((category: Category) => {
             if ("childCategories" in category) {
                 autoCompleteItems = [
                     ...autoCompleteItems,
-                    ...buildDatalistItems(category.childCategories),
+                    ...buildDatalistItems(
+                        category.childCategories as Category[],
+                    ),
                 ];
             } else {
                 if ("criteria" in category)
@@ -162,7 +167,8 @@
     /**
      * transforms the inputvalue to a QueryItem, adds it to the query store
      * and resets the input value and the focused item index
-     * @param indexOfChosenStore
+     * @param inputItem - the item to add to the query store
+     * @param indexOfChosenStore - the index of the query store to add the item to
      */
     const addInputValueToStore = (
         inputItem: AutoCompleteItem,
@@ -199,6 +205,7 @@
     /**
      * extracts the group index from the input value
      * the user may specify the group index by typing a number followed by a colon
+     * @returns the group index
      */
     const extractTargetGroupFromInputValue = (): number => {
         const splitInputValue = inputValue.split(":");
@@ -211,7 +218,7 @@
 
     /**
      * handles keyboard events to make input options selectable
-     * @param event
+     * @param event - the keyboard event
      */
     const handleKeyDown = (event: KeyboardEvent): void => {
         if (inputValue.length === 0 || event.key === "Escape") {
@@ -242,13 +249,14 @@
 
     /**
      * scrolls the active dom element into view when it is out of view
-     * @param activeDomElement
+     * @param activeDomElement - the active dom element
      */
     const scrollInsideContainerWhenActiveDomElementIsOutOfView = (
-        activeDomElement,
+        activeDomElement: HTMLElement,
     ): void => {
         if (!activeDomElement) return;
-        const container: HTMLElement = activeDomElement.parentElement;
+        const container: HTMLElement =
+            activeDomElement.parentElement as HTMLElement;
         const containerTop: number = container.scrollTop;
         const containerBottom: number = containerTop + container.clientHeight;
         const elementTop: number = activeDomElement.offsetTop;
@@ -266,16 +274,16 @@
 
     /**
      * handles click events to make input options selectable
-     * @param inputOption
+     * @param inputOption - the input option to add to the query store
      */
-    const selectItemByClick = (inputOption) => {
+    const selectItemByClick = (inputOption: AutoCompleteItem): void => {
         addInputValueToStore(inputOption, extractTargetGroupFromInputValue());
     };
 
     /**
      * returns the input option with the matched substring wrapped in <strong> tags
-     * @param inputOption
-     * @returns string
+     * @param inputOption - the input option to bold
+     * @returns the input option with the matched substring wrapped in <strong> tags
      */
     const getBoldedText = (inputOption: string): string => {
         // Use a regular expression to find all occurrences of the substring

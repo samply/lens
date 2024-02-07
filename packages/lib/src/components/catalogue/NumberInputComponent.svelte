@@ -18,6 +18,7 @@
 
     /**
      * build the proper name for the query value
+     * @returns the "from", "≥ from", "≤ to", "from - to" or "invalid"
      */
     const transformName = (): string => {
         if (from === to) return `${from}`;

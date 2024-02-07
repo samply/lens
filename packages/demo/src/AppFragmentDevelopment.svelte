@@ -135,25 +135,25 @@
 
     let dataPasser: HTMLElement;
 
-    const getQuery = () => {
+    const getQuery = (): void => {
         console.log(dataPasser, dataPasser.getQueryAPI());
         queryStore = dataPasser.getQueryAPI();
     };
 
-    const getResponse = () => {
+    const getResponse = (): void => {
         console.log(dataPasser, dataPasser.getResponseAPI());
     };
 
-    const getAST = () => {
+    const getAST = (): void => {
         console.log(dataPasser, dataPasser.getAstAPI());
     };
 
-    const removeItem = (queryObject) => {
+    const removeItem = (queryObject): void => {
         dataPasser.removeItemFromQuyeryAPI({ queryObject });
         getQuery();
     };
 
-    const removeValue = (queryItem: QueryItem, value: QueryValue) => {
+    const removeValue = (queryItem: QueryItem, value: QueryValue): void => {
         console.log(queryItem, value);
         dataPasser.removeValueFromQueryAPI({ queryItem, value });
         getQuery();

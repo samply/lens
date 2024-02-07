@@ -17,8 +17,8 @@ type BeamResult = {
 };
 
 export class Spot {
-    private storeCache: ResponseStore;
-    private currentTask: string;
+    private storeCache!: ResponseStore;
+    private currentTask!: string;
 
     constructor(
         private url: URL,
@@ -29,7 +29,12 @@ export class Spot {
         );
     }
 
-    async send(query: string, controller?: AbortController) {
+    /**
+     * sends the query to beam and updates the store with the results
+     * @param query the query as base64 encoded string
+     * @param controller the abort controller to cancel the request
+     */
+    async send(query: string, controller?: AbortController): Promise<void> {
         try {
             const beamTaskResponse = await fetch(
                 `${this.url}tasks?sites=${this.sites.toString()}`,
@@ -56,7 +61,7 @@ export class Spot {
                     `${this.url}tasks/${this.currentTask}?wait_count=${responseCount + 1}`,
                     {
                         credentials: import.meta.env.PROD ? "include" : "omit",
-                        signal: controller.signal,
+                        signal: controller?.signal,
                     },
                 );
 

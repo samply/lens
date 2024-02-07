@@ -113,7 +113,8 @@
     /**
      * transforms the inputvalue to a QueryItem, adds it to the query store
      * and resets the input value and the focused item index
-     * @param indexOfChosenStore
+     * @param inputItem - the input item to add to the query store
+     * @param indexOfChosenStore - the index of the chosen store to add the input item to
      */
     const addInputValueToStore = (
         inputItem: Criteria,
@@ -152,12 +153,11 @@
         focusedItemIndex = 0;
 
         addItemToQuery(queryItem, indexOfChosenStore);
-        // chosenOptions = [...chosenOptions, queryItem];
     };
 
     /**
      * handles keyboard events to make input options selectable
-     * @param event
+     * @param event - the keyboard event
      */
     const handleKeyDown = (event: KeyboardEvent): void => {
         if (inputValue.length === 0 || event.key === "Escape") {
@@ -183,13 +183,17 @@
         }
     };
 
-    const selectItemByClick = (inputOption) => {
+    /**
+     * adds the input option to the query store
+     * @param inputOption - the input option to add to the query store
+     */
+    const selectItemByClick = (inputOption): void => {
         addInputValueToStore(inputOption);
     };
 
     /**
      * scrolls the active dom element into view when it is out of view
-     * @param activeDomElement
+     * @param activeDomElement - the active dom element
      */
     const scrollInsideContainerWhenActiveDomElementIsOutOfView = (
         activeDomElement,
@@ -213,8 +217,8 @@
 
     /**
      * returns the input option with the matched substring wrapped in <strong> tags
-     * @param inputOption
-     * @returns string
+     * @param inputOption - the input option to bold
+     * @returns the input option with the matched substring wrapped in <strong> tags
      */
     const getBoldedText = (inputOption: string): string => {
         // Use a regular expression to find all occurrences of the substring

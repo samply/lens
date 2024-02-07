@@ -19,13 +19,13 @@ export const queryModified = writable(false);
  * If the item does not exist in the query, a new item will be created
  * if the item is added to a group that does not exist, a new group will be created
  * if the group index is negative, the item will be added to the first group
- * @param queryObject
- * @param queryGroupIndex
+ * @param queryObject - the object to be added to the store
+ * @param queryGroupIndex - the index of the group (searchbar) where the object should be added
  */
 export const addItemToQuery = (
     queryObject: QueryItem,
     queryGroupIndex: number,
-) => {
+): void => {
     queryModified.set(true);
 
     /**
@@ -104,13 +104,13 @@ export const addItemToQuery = (
  * Removes an value of an Item from the query
  * If the item has multiple values, only the value will be removed
  * If the item has only one value, the item will be removed
- * @param queryObject
- * @param queryGroupIndex
+ * @param queryObject - the object to be removed
+ * @param queryGroupIndex - the index of the group (searchbar) where the object is located
  */
 export const removeValueFromQuery = (
     queryObject: QueryItem,
     queryGroupIndex: number,
-) => {
+): void => {
     queryModified.set(true);
     /**
      * prevent mutation of the original object
@@ -149,7 +149,7 @@ export const removeValueFromQuery = (
 export const removeItemFromQuery = (
     queryObject: QueryItem,
     queryGroupIndex: number,
-) => {
+): void => {
     queryModified.set(true);
     /**
      * prevent mutation of the original object
@@ -172,16 +172,16 @@ export const removeItemFromQuery = (
 
 /**
  * finds objects with the same name in an array
- * @param objectsArray
- * @returns QueryItem[]
+ * @param objectsArray - the array to be searched
+ * @returns the objects with the same name
  */
-function findObjectsWithSameName(objectsArray: QueryItem[]) {
+function findObjectsWithSameName(objectsArray: QueryItem[]): QueryItem[] {
     const nameObjectMap = new Map<string, QueryItem[]>();
 
     objectsArray.forEach((obj: QueryItem) => {
         const name = obj.name;
         if (nameObjectMap.has(name)) {
-            nameObjectMap.get(name).push(obj);
+            nameObjectMap.get(name)?.push(obj);
         } else {
             nameObjectMap.set(name, [obj]);
         }
