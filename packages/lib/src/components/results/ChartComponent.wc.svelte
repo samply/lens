@@ -286,7 +286,7 @@
                  * see if the label contains the divider
                  * if not, add it to the accumulator with a .% at the end
                  */
-                if (!label.includes(divider)) {
+                if (!label.includes(divider) || divider === "") {
                     return [
                         ...acc,
                         {
@@ -391,7 +391,7 @@
         /**
          * lets the user define a range for the labels when only single values are used eg. '60' -> '60 - 69'
          */
-        if (groupRange !== 0) {
+        if (groupRange !== undefined && groupRange !== 0) {
             chartLabels = chartLabels.map((label) => {
                 /**
                  * check if label doesn't parse to a number
