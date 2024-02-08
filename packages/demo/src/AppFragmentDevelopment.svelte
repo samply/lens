@@ -62,32 +62,6 @@
         // ["encounter", "Encounter"],
     ];
 
-    // const siteToDefaultCollectionId: string[][] = [
-    //   ["dresden", "bbmri-eric:ID:DE_BBD:collection:DILB"],
-    //   ["frankfurt", "bbmri-eric:ID:DE_iBDF:collection:UCT"],
-    //   ["berlin", "bbmri-eric:ID:DE_ZeBanC:collection:Onoloy"],
-    //   ["wuerzburg", "bbmri-eric:ID:DE_ibdw:collection:bc"],
-    //   ["brno", "bbmri-eric:ID:CZ_MMCI:collection:LTS"],
-    //   ["aachen", "bbmri-eric:ID:DE_RWTHCBMB:collection:RWTHCBMB_BC"],
-    //   ["leipzig", "bbmri-eric:ID:DE_LMB:collection:LIFE_ADULT"],
-    //   [
-    //     "muenchen-hmgu",
-    //     "bbmri-eric:ID:DE_Helmholtz-MuenchenBiobank:collection:DE_KORA",
-    //   ],
-    //   ["Pilsen", "bbmri-eric:ID:CZ_CUNI_PILS:collection:serum_plasma"],
-    //   ["regensburg", "bbmri-eric:ID:DE_ZBR:collection:Tissue"],
-    //   ["heidelberg", "bbmri-eric:ID:DE_BMBH:collection:Lungenbiobank"],
-    //   ["luebeck", "bbmri-eric:ID:DE_ICBL:collection:ICBL"],
-    //   ["augsburg", "bbmri-eric:ID:DE_ACBB:collection:TISSUE"],
-    //   ["mannheim", "bbmri-eric:ID:DE_BioPsy:collection:Main_collecion"],
-    //   ["marburg", "bbmri-eric:ID:DE_CBBMR:collection:main"],
-    //   ["goettingen", "bbmri-eric:ID:DE_UMGB:collection:UMG-startegy"],
-    //   ["hannover", "bbmri-eric:ID:DE_HUB:collection:ProBase"],
-    //   ["olomouc", "bbmri-eric:ID:CZ_UPOL_LF:collection:all_samples"],
-    //   ["prague-ffm", "bbmri-eric:ID:CZ_CUNI_PILS:collection:serum_plasma"],
-    //   ["prague-ior", "bbmri-eric:ID:CZ_CUNI_LF1:collection:all_samples"],
-    // ];
-
     const uiSiteMap: string[][] = [
         ["berlin", "Berlin"],
         ["berlin-test", "Berlin"],
@@ -98,8 +72,8 @@
         ["freiburg", "Freiburg"],
         ["hannover", "Hannover"],
         ["mainz", "Mainz"],
-        ["muenchen-lmu", "München(LMU)"],
-        ["muenchen-tum", "München(TUM)"],
+        ["muenchen-lmu", "München(LMU],"],
+        ["muenchen-tum", "München(TUM],"],
         ["ulm", "Ulm"],
         ["wuerzburg", "Würzburg"],
         ["mannheim", "Mannheim"],
@@ -107,14 +81,32 @@
         ["hamburg", "Hamburg"],
     ];
 
-    // VITE_TARGET_ENVIRONMENT should be set by the ci pipeline
-    const backendUrl =
-        import.meta.env.VITE_TARGET_ENVIRONMENT === "production"
-            ? "https://backend.data.dktk.dkfz.de/prod/"
-            : "https://backend.demo.lens.samply.de/prod/";
+    //   bbmri sites
+    //   const siteToDefaultCollectionId: string[][] = [
+    //     ["dresden", "bbmri-eric:ID:DE_BBD:collection:DILB"],
+    //     ["frankfurt", "bbmri-eric:ID:DE_iBDF:collection:UCT"],
+    //     ["berlin", "bbmri-eric:ID:DE_ZeBanC:collection:Onoloy"],
+    //     ["wuerzburg", "bbmri-eric:ID:DE_ibdw:collection:bc"],
+    //     ["brno", "bbmri-eric:ID:CZ_MMCI:collection:LTS"],
+    //     ["aachen", "bbmri-eric:ID:DE_RWTHCBMB:collection:RWTHCBMB_BC"],
+    //     ["leipzig", "bbmri-eric:ID:DE_LMB:collection:LIFE_ADULT"],
+    //     ["muenchen-hmgu", "bbmri-eric:ID:DE_Helmholtz-MuenchenBiobank:collection:DE_KORA"],
+    //     ["Pilsen", "bbmri-eric:ID:CZ_CUNI_PILS:collection:serum_plasma"],
+    //     ["regensburg", "bbmri-eric:ID:DE_ZBR:collection:Tissue"],
+    //     ["heidelberg", "bbmri-eric:ID:DE_BMBH:collection:Lungenbiobank"],
+    //     ["luebeck", "bbmri-eric:ID:DE_ICBL:collection:ICBL"],
+    //     ["augsburg", "bbmri-eric:ID:DE_ACBB:collection:TISSUE"],
+    //     ["mannheim", "bbmri-eric:ID:DE_BioPsy:collection:Main_collecion"],
+    //     ["marburg", "bbmri-eric:ID:DE_CBBMR:collection:main"],
+    //     ["goettingen", "bbmri-eric:ID:DE_UMGB:collection:UMG-startegy"],
+    //     ["hannover", "bbmri-eric:ID:DE_HUB:collection:ProBase"],
+    //     ["olomouc", "bbmri-eric:ID:CZ_UPOL_LF:collection:all_samples"],
+    //     ["prague-ffm", "bbmri-eric:ID:CZ_CUNI_PILS:collection:serum_plasma"],
+    //     ["prague-ior", "bbmri-eric:ID:CZ_CUNI_LF1:collection:all_samples"],
+    //   ];
 
     const backendConfig = {
-        url: import.meta.env.PROD ? backendUrl : "http://localhost:8080",
+        url: "http://localhost:8080",
         backends: [
             "mannheim",
             "freiburg",
@@ -132,6 +124,8 @@
         uiSiteMap: uiSiteMap,
         catalogueKeyToResponseKeyMap: catalogueKeyToResponseKeyMap,
     };
+
+    let queryStore: QueryItem[][] = [];
 
     let dataPasser: HTMLElement;
 
@@ -158,8 +152,6 @@
         dataPasser.removeValueFromQueryAPI({ queryItem, value });
         getQuery();
     };
-
-    let queryStore: QueryItem[][] = [];
 </script>
 
 <main>

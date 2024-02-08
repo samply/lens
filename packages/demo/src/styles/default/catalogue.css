@@ -267,14 +267,14 @@ lens-catalogue::part(autocomplete-formfield-input):focus {
 }
 
 lens-catalogue::part(autocomplete-options) {
+  box-sizing: border-box;
   z-index: 1;
   list-style-type: none;
   padding: 0;
   margin: 0;
   border: solid 1px var(--light-blue);
   border-top: none;
-  width: calc(100% - 2*var(--gap-s) - 2px);
-  /* padding of container plus borders */
+  width: 100%;
   position: absolute;
   background-color: white;
   color: black;
