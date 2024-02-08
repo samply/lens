@@ -6,16 +6,15 @@
 
     /**
      * TODO: implement negotiator connection
-    */
-
-
+     */
 </script>
+
 <button
     part={`lens-negotiate-button lens-negotiate-button-${
         disabled ? "disabled" : "active"
     }`}
     on:click={() => negotiate([])}
-    disabled={disabled}
+    {disabled}
 >
     <div part="lens-negotiate-button-title">
         {title}

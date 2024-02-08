@@ -2,7 +2,7 @@
 lens-result-table {
     background-color: var(--white);
     display: grid;
-    grid-template-rows: auto auto 1fr;
+    grid-template-rows: auto auto 1fr auto auto;
   }
   
   lens-result-table::part(result-table-title) {
@@ -54,10 +54,20 @@ lens-result-table {
   }
   
   lens-result-table::part(table-pagination-button) {
-    border: solid 1px var(--gray);
+    border: solid 1px var(--blue);
     background: var(--white);
     border-radius: var(--border-radius-small);
     padding: var(--gap-xxs) var(--gap-s);
+    cursor: pointer;
+  }
+  
+  
+  lens-result-table::part(pagination-button-disabled) {
+    border: solid 1px var(--light-gray);
+    background: var(--white);
+    border-radius: var(--border-radius-small);
+    padding: var(--gap-xxs) var(--gap-s);
+    cursor: auto;
   }
   
   lens-result-table::part(info-button) {

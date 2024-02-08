@@ -1,55 +1,54 @@
 export type Stratum = {
-    code: string,
-    population?: number
-}
+    code: string;
+    population?: number;
+};
 
 export type Status = "claimed" | "succeeded" | "tempfailed" | "permfailed";
 
-export type Site =
-    {
-        status: Status,
-        data: SiteData
-    }
+export type Site = {
+    status: Status;
+    data: SiteData;
+};
 
 export type SiteData = {
-    date: string,
-    extension: object[],
+    date: string;
+    extension: object[];
     group: {
         code: {
-            text: string
-        },
+            text: string;
+        };
         population: {
-            count: number,
+            count: number;
             code: {
                 coding: {
-                    system: string
-                    code: string,
-                }[]
-            }
-        }[]
+                    system: string;
+                    code: string;
+                }[];
+            };
+        }[];
         stratifier: {
             code: {
-                text: string
-            }[],
+                text: string;
+            }[];
             stratum?: {
                 population?: {
-                    count: number,
+                    count: number;
                     code: {
                         coding: {
-                            code: string,
-                            system: string
-                        }[]
-                    }
-                }[],
+                            code: string;
+                            system: string;
+                        }[];
+                    };
+                }[];
                 value: {
-                    text: string
-                },
-            }[],
-        }[],
-    }[],
-    measure: string,
-    period: object,
-    resourceType: string,
-    status: string,
-    type: string,
-}
+                    text: string;
+                };
+            }[];
+        }[];
+    }[];
+    measure: string;
+    period: object;
+    resourceType: string;
+    status: string;
+    type: string;
+};

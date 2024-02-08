@@ -6,87 +6,94 @@ import type { AstElement, AstTopLayer } from "../types/ast";
 
 export const negotiateStore = writable<string[]>([]);
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const negotiate = async (sitesToNegotiate: string[]): Promise<void> => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const humanReadable = getHumanReadableQuery();
 
-    let humanReadable = getHumanReadableQuery();
-    
     /**
      * TODO: implement negotiator connection
-    */
-
-}
+     */
+};
 
 /**
  * @returns a human readable query string built from the current query
  */
 export const getHumanReadableQuery = (): string => {
-
     let humanReadableQuery: string = "";
-    let query: AstTopLayer
 
     queryStore.subscribe((value: QueryItem[][]) => {
-        query = buildAstFromQuery(value)
-    })
+        const query: AstTopLayer = buildAstFromQuery(value);
+        humanReadableQuery = buildHumanReadableRecursively(
+            query,
+            humanReadableQuery,
+        );
+    });
 
-    humanReadableQuery = buildHumanReadableRecursively(query, humanReadableQuery)
-
-    return humanReadableQuery
-}
-
+    return humanReadableQuery;
+};
 
 /**
  * Recursively builds a human readable query string from the AST
- * @param queryLayer the current layer of the query 
+ * @param queryLayer the current layer of the query
  * @param humanReadableQuery string to append to
  * @returns a human readable query string
  */
-const buildHumanReadableRecursively = (queryLayer: AstElement, humanReadableQuery: string): string => {
+const buildHumanReadableRecursively = (
+    queryLayer: AstElement,
+    humanReadableQuery: string,
+): string => {
     if (
-        queryLayer === null || 
-        !('children' in queryLayer) ||
-        'children' in queryLayer && 
-        (
-            queryLayer.children === null || 
-            queryLayer.children.length === 0 || 
-            queryLayer.children[0] === null
-        )
+        queryLayer === null ||
+        !("children" in queryLayer) ||
+        ("children" in queryLayer &&
+            (queryLayer.children === null ||
+                queryLayer.children.length === 0 ||
+                queryLayer.children[0] === null))
     ) {
-        return humanReadableQuery
+        return humanReadableQuery;
     }
 
-
-    if(queryLayer.children.length > 1){
-        humanReadableQuery += '('
+    if (queryLayer.children.length > 1) {
+        humanReadableQuery += "(";
     }
 
     queryLayer.children.forEach((child: AstElement, index: number): void => {
-        
-        if('type' in child && 'value' in child && 'key' in child){
-            if( typeof child.value === 'string') {
-                humanReadableQuery += `(${child.key} ${child.type} ${child.value})`
+        if ("type" in child && "value" in child && "key" in child) {
+            if (typeof child.value === "string") {
+                humanReadableQuery += `(${child.key} ${child.type} ${child.value})`;
             }
-            if( typeof child.value === 'object' && 'min' in child.value && 'max' in child.value) {
-                humanReadableQuery += `(${child.key} ${child.type} ${child.value.min} and ${child.value.max})`
+            if (
+                typeof child.value === "object" &&
+                "min" in child.value &&
+                "max" in child.value
+            ) {
+                humanReadableQuery += `(${child.key} ${child.type} ${child.value.min} and ${child.value.max})`;
             }
-        }
-        
-        humanReadableQuery = buildHumanReadableRecursively(child, humanReadableQuery)
-        
-        if(index === queryLayer.children.length - 1){
-        }
-        if(index < queryLayer.children.length - 1){
-            humanReadableQuery += ` ${queryLayer.operand} `
         }
 
-    })
+        humanReadableQuery = buildHumanReadableRecursively(
+            child,
+            humanReadableQuery,
+        );
 
-    if(queryLayer.children.length > 1){
-        humanReadableQuery += ')'
+        if (index === queryLayer.children.length - 1) {
+        }
+        if (index < queryLayer.children.length - 1) {
+            humanReadableQuery += ` ${queryLayer.operand} `;
+        }
+    });
+
+    if (queryLayer.children.length > 1) {
+        humanReadableQuery += ")";
     }
 
-    return humanReadableQuery
-}
-
+    return humanReadableQuery;
+};
+/**
+ * TODO: move to options
+ */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const siteToDefaultCollectionId: Map<string, string> = new Map<string, string>()
     .set("dresden", "bbmri-eric:ID:DE_BBD:collection:DILB")
     .set("frankfurt", "bbmri-eric:ID:DE_iBDF:collection:UCT")
@@ -95,7 +102,10 @@ const siteToDefaultCollectionId: Map<string, string> = new Map<string, string>()
     .set("brno", "bbmri-eric:ID:CZ_MMCI:collection:LTS")
     .set("aachen", "bbmri-eric:ID:DE_RWTHCBMB:collection:RWTHCBMB_BC")
     .set("leipzig", "bbmri-eric:ID:DE_LMB:collection:LIFE_ADULT")
-    .set("muenchen-hmgu", "bbmri-eric:ID:DE_Helmholtz-MuenchenBiobank:collection:DE_KORA")
+    .set(
+        "muenchen-hmgu",
+        "bbmri-eric:ID:DE_Helmholtz-MuenchenBiobank:collection:DE_KORA",
+    )
     .set("Pilsen", "bbmri-eric:ID:CZ_CUNI_PILS:collection:serum_plasma")
     .set("regensburg", "bbmri-eric:ID:DE_ZBR:collection:Tissue")
     .set("heidelberg", "bbmri-eric:ID:DE_BMBH:collection:Lungenbiobank")
@@ -107,4 +117,4 @@ const siteToDefaultCollectionId: Map<string, string> = new Map<string, string>()
     .set("hannover", "bbmri-eric:ID:DE_HUB:collection:ProBase")
     .set("olomouc", "bbmri-eric:ID:CZ_UPOL_LF:collection:all_samples")
     .set("prague-ffm", "bbmri-eric:ID:CZ_CUNI_PILS:collection:serum_plasma")
-    .set("prague-ior", "bbmri-eric:ID:CZ_CUNI_LF1:collection:all_samples")
+    .set("prague-ior", "bbmri-eric:ID:CZ_CUNI_LF1:collection:all_samples");

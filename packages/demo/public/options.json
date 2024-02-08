@@ -25,7 +25,7 @@
                 "male": "Männlich",
                 "female": "Weiblich",
                 "unknown": "Unbekannt",
-                "other": "Divers"
+                "other": "Divers / intersexuell"
             }
         },
         "diagnosis": {
@@ -81,23 +81,45 @@
                 "Verteilung der Probentypen die mit den identifizierten Patienten verbunden sind."
             ],
             "tooltips": {
-                "whole-blood": "Vollblut",
-                "bone-marrow": "Knochenmark",
-                "buffy-coat": "Buffycoat",
-                "dried-whole-blood": "Blutkarten",
-                "peripheral-blood-cells": "Periphere mononukleäre Blutzellen (PBMC)",
-                "blood-plasma": "Plasma",
-                "blood-serum": "Serum",
-                "ascites": "Aszites",
-                "csf-liquor": "Liquor",
-                "saliva": "Speichel",
-                "stool-faeces": "Stuhl",
-                "urine": "Urin",
-                "swab": "Abstrich",
-                "liquid-other": "Flüssigprobe, Andere",
                 "tissue-ffpe": "Gewebe FFPE",
                 "tissue-frozen": "Gewebe schockgefroren",
                 "tissue-other": "Gewebe, Andere Konservierungsart",
+                "whole-blood": "Vollblut",
+                "blood-serum": "Serum",
+                "blood-plasma": "Plasma",
+                "buffy-coat": "Buffy Coat",
+                "peripheral-blood-cells": "Periphere mononukleäre Blutzellen (PBMC)",
+                "dried-whole-blood": "Blutkarten",
+                "swab": "Abstrich",
+                "ascites": "Aszites",
+                "stool-faeces": "Stuhl",
+                "urine": "Urin",
+                "csf-liquor": "Liquor",
+                "bone-marrow": "Knochenmark",
+                "saliva": "Speichel",
+                "liquid-other": "Flüssigprobe, Andere",
+                "dna": "DNA",
+                "rna": "RNA",
+                "derivative-other": "Derivat, Andere"
+            },
+            "legendMapping":{
+                "tissue-ffpe": "Gewebe FFPE",
+                "tissue-frozen": "Gewebe schockgefroren",
+                "tissue-other": "Gewebe, Andere Konservierungsart",
+                "whole-blood": "Vollblut",
+                "blood-serum": "Serum",
+                "blood-plasma": "Plasma",
+                "buffy-coat": "Buffy Coat",
+                "peripheral-blood-cells": "Periphere mononukleäre Blutzellen (PBMC)",
+                "dried-whole-blood": "Blutkarten",
+                "swab": "Abstrich",
+                "ascites": "Aszites",
+                "stool-faeces": "Stuhl",
+                "urine": "Urin",
+                "csf-liquor": "Liquor",
+                "bone-marrow": "Knochenmark",
+                "saliva": "Speichel",
+                "liquid-other": "Flüssigprobe, Andere",
                 "dna": "DNA",
                 "rna": "RNA",
                 "derivative-other": "Derivat, Andere"
@@ -115,9 +137,32 @@
                 "dataKey": "patients"
             },
             {
-                "title": "Bioproben",
-                "dataKey": "specimen",
-                "hintText": ["Es sind in der Regel auch FFPE-Gewebeproben verfügbar"]
+                "title": "Bioproben*",
+                "aggregatedDataKeys": [
+                    {
+                        "groupCode": "specimen"
+                    },
+                    {
+                        "stratifierCode": "Histlogoies",
+                        "stratumCode": "1"
+                    },
+                    {
+                    }
+                ]
+            }
+        ]
+    },
+    "resultSummaryOptions": {
+        "title": "Ergebnisse",
+        "infoButtonText": "Um eine Re-Identifizierung zu erschweren, werden Standortergebnisse modifiziert und auf Zehnerstellen gerundet. Meldet ein Standort keinen Treffer, wird für diesen null angezeigt.",
+        "dataTypes": [
+            {
+                "title": "Standorte",
+                "dataKey": "collections"
+            },
+            {
+                "title": "Patienten",
+                "dataKey": "patients"
             }
         ]
     }

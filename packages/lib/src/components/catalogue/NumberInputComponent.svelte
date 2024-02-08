@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { queryStore, removeValueFromQuery } from "../../stores/query";
+    import { queryStore } from "../../stores/query";
     import type { QueryItem, QueryValue } from "../../types/queryData";
     import { catalogueTextStore } from "../../stores/texts";
     import QueryAddButtonComponent from "./QueryAddButtonComponent.svelte";
@@ -18,11 +18,12 @@
 
     /**
      * build the proper name for the query value
+     * @returns the "from", "≥ from", "≤ to", "from - to" or "invalid"
      */
     const transformName = (): string => {
         if (from === to) return `${from}`;
-        if(!to && from) return `≥ ${from}`
-        if(!from && to) return `≤ ${to}`
+        if (!to && from) return `≥ ${from}`;
+        if (!from && to) return `≤ ${to}`;
         if (from < to) return ` ${from} - ${to}`;
         return "invalid";
     };
@@ -35,8 +36,7 @@
      */
 
     const updateStores = (from: number, to: number): void => {
-
-        queryStore.update((store: QueryItem [][]): QueryItem[][] => {
+        queryStore.update((store: QueryItem[][]): QueryItem[][] => {
             store.forEach((queryGroup: QueryItem[]) => {
                 queryGroup.forEach((item: QueryItem) => {
                     item.values.forEach((queryValue: QueryValue) => {
@@ -81,27 +81,6 @@
             },
         ],
     };
-
-    /**
-     * removes the number input from the query store
-     * removes the number input from the activeNumberInputs store
-     */
-    const handleRemoveElement = (): void => {
-        $queryStore.forEach((_ : QueryItem[], index: number) =>
-            removeValueFromQuery(queryItem, index)
-        );
-        activeNumberInputs.update((store: QueryItem[]): QueryItem[] => {
-            store.forEach((item: QueryItem) => {
-                if (item.key === queryItem.key) {
-                    item.values = item.values.filter(
-                        (queryValue: QueryValue): Boolean =>
-                            queryValue.queryBindId !== queryBindId
-                    );
-                }
-            });
-            return store;
-        });
-    };
 </script>
 
 <div part="criterion-wrapper number-input-wrapper">
@@ -113,7 +92,7 @@
                 {$catalogueTextStore.numberInput.labelFrom}
                 <input
                     part="number-input-formfield number-input-formfield-from
-                        {to && from > to ? ' formfield-error': ''}"
+                        {to && from > to ? ' formfield-error' : ''}"
                     type="number"
                     bind:value={from}
                     min="0"
@@ -133,17 +112,9 @@
                 />
             </label>
         </div>
-        <!-- TODO: maybe needed later when multiple inputs are asked -->
-        <!-- <button
-            part="number-input-delete-button"
-            on:click={handleRemoveElement}
-        >
-            &minus;
-        </button> -->
         <QueryAddButtonComponent {queryItem} />
     </div>
 </div>
 
 <style>
-
 </style>
