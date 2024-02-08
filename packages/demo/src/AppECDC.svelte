@@ -49,11 +49,11 @@
 
   // VITE_TARGET_ENVIRONMENT should be set by the ci pipeline
   const backendUrl = (import.meta.env.VITE_TARGET_ENVIRONMENT === "production")
-               ? "https://backend.data.dktk.dkfz.de/prod/"
-               : "https://backend.demo.lens.samply.de/prod/"
+               ? "http://spot:8100"
+               : "http://spot:8100"
 
   const backendConfig = {
-    url: (import.meta.env.PROD) ? backendUrl : "http://localhost:8080",
+    url: (import.meta.env.PROD) ? backendUrl : "http://spot:8100",
     backends: [
       "croatia"
     ],
