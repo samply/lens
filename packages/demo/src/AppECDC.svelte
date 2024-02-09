@@ -44,22 +44,27 @@
   ];
 
   const uiSiteMap: string[][] = [
-    ["croatia", "Croatia"]
+    ["ecdc-bridgehead-test1", "Test1"]
   ];
 
   // VITE_TARGET_ENVIRONMENT should be set by the ci pipeline
   const backendUrl = (import.meta.env.VITE_TARGET_ENVIRONMENT === "production")
-               ? "http://spot:8100"
-               : "http://spot:8100"
+          ? "http://localhost:8100"
+          : "http://localhost:8100"
+                  // ? "https://backend.data.dktk.dkfz.de/prod/"
+                  // : "https://backend.demo.lens.samply.de/prod/"
 
   const backendConfig = {
-    url: (import.meta.env.PROD) ? backendUrl : "http://spot:8100",
+    // url: (import.meta.env.PROD) ? backendUrl : "http://localhost:8080",
+    url: (import.meta.env.PROD) ? backendUrl : "http://localhost:8100",
     backends: [
-      "croatia"
+      "ecdc-bridgehead-test1"
     ],
     uiSiteMap: uiSiteMap,
     catalogueKeyToResponseKeyMap: catalogueKeyToResponseKeyMap,
   };
+
+  const barChartBackgroundColors: string[] = ["#4dc9f6","#3da4c7"];
 
   const genderHeaders: Map<string, string> = new Map<string, string>()
     .set("male", "male")
@@ -96,7 +101,7 @@
   </div>
   <div class="grid">
     <div class="catalogue">
-      <h2>Search criteria</h2>
+      <h2>Search tree</h2>
       <lens-catalogue
         toggleIconUrl="right-arrow-svgrepo-com.svg"
         addIconUrl="long-right-arrow-svgrepo-com.svg"
@@ -115,9 +120,10 @@
         <lens-chart
           title="Gender"
           catalogueGroupCode="gender"
-          chartType="pie"
-          displayLegends={true}
-          headers={genderHeaders}
+          chartType="bar"
+          xAxisTitle="Gender signifier"
+          yAxisTitle="Number of patients"
+          backgroundColor={JSON.stringify(barChartBackgroundColors)}
         />
       </div>
     </div>

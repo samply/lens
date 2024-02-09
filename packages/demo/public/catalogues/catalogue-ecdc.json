@@ -1,7 +1,7 @@
 [
     {
         "key": "patient",
-        "name": "Patient",
+        "name": "Epidemiology (Patient) [Group]",
         "childCategories": [
             {
                 "key": "gender",
