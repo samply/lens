@@ -119,6 +119,7 @@ const getSingleton = (criterion: AstBottomLayerValue): string => {
         if (myCQL) {
             switch (myCriterion.type) {
                 case "gender":
+                case "histology":
                 case "conditionValue":
                 case "conditionBodySite":
                 case "conditionLocalization":
