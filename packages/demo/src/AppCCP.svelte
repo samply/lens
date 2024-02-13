@@ -193,7 +193,7 @@
                 <lens-result-table pageSize="10">
                     <div slot="above-pagination" class="result-table-hint-text">
                         * Umfasst Gewebe- und flüssige Proben. Die Anzahl der
-                        FFPE Proben (Schätzung) entspricht der Zahl der
+                        FFPE-Proben (Schätzung) entspricht der Zahl der
                         Diagnosen.
                     </div>
                 </lens-result-table>
