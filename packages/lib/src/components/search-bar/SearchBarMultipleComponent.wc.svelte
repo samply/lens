@@ -23,7 +23,6 @@
     export let treeData: Category[] = [];
     export let noMatchesFoundMessage: string = "No matches found";
     export let placeholderText: string = "Type to filter conditions";
-    export let chips: boolean = true;
 
     /**
      * Adds a new search bar to the query store
@@ -37,7 +36,8 @@
 </script>
 
 <div part="lens-searchbar-multiple">
-    {#each $queryStore as queryGroup, index}
+    <!-- eslint-disable-next-line @typescript-eslint/no-unused-vars -->
+    {#each $queryStore as _, index}
         <div part="search-bar-wrapper">
             <SearchBarComponent
                 {treeData}

@@ -7,61 +7,9 @@
     }}
 />
 
-<style>
-
-lens-info-button::part(info-button-icon) {
-  width: 21px;
-}
-
-lens-info-button::part(info-button) {
-    position: relative;
-    cursor: pointer;
-    height: 100%;
-    width: 38px;
-    background-color: var(--white);
-    border-radius: var(--border-radius-small);
-    border: 0;
-}
-
-lens-info-button::part(info-button):hover {background-color: #b8bfb8}
-
-lens-info-button::part(info-button):active {
-  background-color: #585958;
-  transform: translateX(1px);
-}
-
-
-lens-info-button::part(info-button-title) {
-    font-family: var(--font-family);
-}
-
-lens-info-button::part(info-button-dialogue) {
-    position: absolute;
-    border: none;
-    background-color: var(--white);
-    width: max-content;
-    max-width: 80vw;
-    padding: var(--gap-s);
-    z-index: 100;
-    top: 40px;
-    left: 40px;
-    border: solid 1px var(--light-blue);
-    border-radius: var(--border-radius-small);
-}
-
-.heading {
-    float: left;
-}
-
-.info {
-    float: left;
-    margin-top: 1.2rem;
-    margin-left: 0.2rem;
-}
- </style>
-
 <script lang="ts">
     import { lensOptions } from "../../stores/options";
+    import type { LensOptions } from "../../types/options";
     import {
         responseStore,
         getAggregatedPopulation,
@@ -69,99 +17,113 @@ lens-info-button::part(info-button-dialogue) {
     } from "../../stores/response";
     import type { ResponseStore } from "../../types/backend";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
+    import type { Site } from "../../types/response";
+    import type { HeaderData } from "../../types/biobanks";
 
+    type ResultSummaryDataType = HeaderData & { population?: string | number };
 
-    let options: any = {};
-    $: options = $lensOptions.resultSummaryOptions
+    let options: LensOptions & { infoButtonText?: string };
+    $: options = $lensOptions?.resultSummaryOptions as LensOptions & {
+        infoButtonText?: string;
+    };
 
-    let resultSummaryDataTypes: { key: string; title: string; population?: string | number }[]
-    $: resultSummaryDataTypes = options?.dataTypes || [];
+    let dataTypes: ResultSummaryDataType[];
+    $: dataTypes = options?.dataTypes as ResultSummaryDataType[];
 
-    
+    let resultSummaryDataTypes: ResultSummaryDataType[];
+    $: resultSummaryDataTypes = dataTypes || [];
+
     /**
      * Extracts the population for each result summary data type and adds it to the type object
-     * @param store
+     * @param store - the response store
      */
     const fillPopulationToSummaryTypes = (store: ResponseStore): void => {
-        if (!options?.dataTypes) {
+        if (!dataTypes) {
             return;
         }
-        
+
         /**
          * show the number of sites with data and the number of sites claimed/succeeded
          * like this: 2 / 3
          */
         let sitesClaimed: number = 0;
         let sitesWithData: number = 0;
-        store.forEach((site) => {
-            if (site.status === 'claimed' || site.status === 'succeeded') {
+        store.forEach((site: Site): void => {
+            if (site.status === "claimed" || site.status === "succeeded") {
                 sitesClaimed++;
             }
-            if (site.status === 'succeeded') {
+            if (site.status === "succeeded") {
                 sitesWithData++;
             }
         });
 
-        resultSummaryDataTypes = options.dataTypes.map((type) => {
-            /**
-             * If the type is collections, the population is the length of the store
-             */
-            if (type.dataKey === "collections") {
-                type.population =`${sitesWithData} / ${sitesClaimed}`;
-                return type;
-            }
-
-            /**
-             * if the type has only one dataKey, the population is the aggregated population of that dataKey
-             */
-
-            if(type.dataKey) {
-                type.population = getAggregatedPopulation(store, type.dataKey);
-                return type;
-            }
-
-            /**
-             * if the type has multiple dataKeys to aggregate, the population is the aggregated population of all dataKeys
-             */
-
-            let aggregatedPopulation: number = 0;
-
-            type.aggregatedDataKeys.forEach((dataKey) => {
-                if(dataKey.groupCode){
-                    aggregatedPopulation += getAggregatedPopulation(store, dataKey.groupCode);
-                } else if(dataKey.stratifierCode && dataKey.stratumCode) {
-                    aggregatedPopulation += getAggregatedPopulationForStratumCode(store, dataKey.stratumCode, dataKey.stratifierCode);
-                }
+        resultSummaryDataTypes = dataTypes.map(
+            (type: ResultSummaryDataType): ResultSummaryDataType => {
                 /**
-                 * TODO: add support for stratifiers if needed?
-                 * needs to be implemented in response.ts
-                */
-            });
+                 * If the type is collections, the population is the length of the store
+                 */
+                if (type.dataKey === "collections") {
+                    type.population = `${sitesWithData} / ${sitesClaimed}`;
+                    return type;
+                }
 
-            type.population = aggregatedPopulation;
-            return type;
-        });
+                /**
+                 * if the type has only one dataKey, the population is the aggregated population of that dataKey
+                 */
+
+                if (type.dataKey) {
+                    type.population = getAggregatedPopulation(
+                        store,
+                        type.dataKey,
+                    );
+                    return type;
+                }
+
+                /**
+                 * if the type has multiple dataKeys to aggregate, the population is the aggregated population of all dataKeys
+                 */
+
+                let aggregatedPopulation: number = 0;
+
+                type.aggregatedDataKeys?.forEach((dataKey) => {
+                    if (dataKey.groupCode) {
+                        aggregatedPopulation += getAggregatedPopulation(
+                            store,
+                            dataKey.groupCode,
+                        );
+                    } else if (dataKey.stratifierCode && dataKey.stratumCode) {
+                        aggregatedPopulation +=
+                            getAggregatedPopulationForStratumCode(
+                                store,
+                                dataKey.stratumCode,
+                                dataKey.stratifierCode,
+                            );
+                    }
+                    /**
+                     * TODO: add support for stratifiers if needed?
+                     * needs to be implemented in response.ts
+                     */
+                });
+
+                type.population = aggregatedPopulation;
+                return type;
+            },
+        );
     };
 
     $: fillPopulationToSummaryTypes($responseStore);
-
 </script>
 
 {#if options?.title}
     <div part="result-summary-header">
-        <div class="heading">
-        <h4 part="result-summary-header-title">
-            {options.title}
-        </h4>
-       </div>
-       <div class="info">
-        <InfoButtonComponent
-        infoIconUrl="info-circle-svgrepo-com.svg"
-        message={[
-            `Um eine Re-Identifizierung zu erschweren, werden Standortergebnisse modifiziert und auf Zehnerstellen gerundet. Meldet ein Standort keinen Treffer, wird für diesen null angezeigt.`
-          ]}
-        />
-    </div>
+        <div part="heading">
+            <h4 part="result-summary-header-title">
+                {options.title}
+                {#if options.infoButtonText}
+                    <InfoButtonComponent message={[options.infoButtonText]} />
+                {/if}
+            </h4>
+        </div>
     </div>
 {/if}
 <div part="result-summary-content">
@@ -171,4 +133,3 @@ lens-info-button::part(info-button-dialogue) {
         </div>
     {/each}
 </div>
-

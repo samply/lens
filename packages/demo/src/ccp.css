@@ -395,6 +395,7 @@ lens-info-button::part(info-button-dialogue):active {
 }
 
 .result-table-hint-text {
+  padding-top: 20px;
  display: flex;
  align-items: end;
 }

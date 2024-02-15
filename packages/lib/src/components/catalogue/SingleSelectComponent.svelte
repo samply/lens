@@ -5,14 +5,9 @@
     import type { Category } from "../../types/treeData";
     import SingleSelectItemComponent from "./SingleSelectItemComponent.svelte";
     import { v4 as uuidv4 } from "uuid";
-    import { activeQueryGroupIndex } from "../../stores/query";
 
     export let element: Category;
     export let subgrouping: boolean = false;
-
-    let index: number;
-
-    $: index = $activeQueryGroupIndex;
 
     const addAll = (): void => {
         if (!("criteria" in element)) return;
