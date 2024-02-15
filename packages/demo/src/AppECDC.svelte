@@ -49,14 +49,14 @@
 
   // VITE_TARGET_ENVIRONMENT should be set by the ci pipeline
   const backendUrl = (import.meta.env.VITE_TARGET_ENVIRONMENT === "production")
-          ? "http://localhost:8100"
-          : "http://localhost:8100"
-                  // ? "https://backend.data.dktk.dkfz.de/prod/"
-                  // : "https://backend.demo.lens.samply.de/prod/"
+          ? "http://spot"
+          : "http://spot"
+          //         ? "http://localhost:8100"
+          //         : "http://localhost:8100"
 
   const backendConfig = {
-    // url: (import.meta.env.PROD) ? backendUrl : "http://localhost:8080",
-    url: (import.meta.env.PROD) ? backendUrl : "http://localhost:8100",
+    // url: (import.meta.env.PROD) ? backendUrl : "http://localhost:8100",
+    url: (import.meta.env.PROD) ? backendUrl : "http://spot",
     backends: [
       "ecdc-bridgehead-test1"
     ],
