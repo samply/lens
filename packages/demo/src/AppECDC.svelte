@@ -6,7 +6,7 @@
   } from "./measures";
 
   let mockCatalogueData = "";
-  let libraryOptions = ""
+  let libraryOptions = "";
 
   fetch("catalogues/catalogue-ecdc.json")
     .then((response) => response.text())
@@ -17,7 +17,7 @@
   fetch("ecdc_options.json")
     .then((response) => response.json())
     .then((data) => {
-      libraryOptions = data
+      libraryOptions = data;
     });
 
   const measures = [
@@ -43,16 +43,22 @@
     ["age_at_diagnosis", "Age"]
   ];
 
+  // VITE_TARGET_ENVIRONMENT should be set by the ci pipeline
+  const backendUrl =
+          import.meta.env.VITE_TARGET_ENVIRONMENT === "production"
+                  ? "http://spot/"
+                  : "http://spot/";
+          // ? "http://localhost:8100/"
+          // : "http://localhost:8100/";
   const uiSiteMap: string[][] = [
     ["ecdc-bridgehead-test1", "Test1"]
   ];
 
-  // VITE_TARGET_ENVIRONMENT should be set by the ci pipeline
-  const backendUrl = (import.meta.env.VITE_TARGET_ENVIRONMENT === "production")
-          ? "http://spot"
-          : "http://spot"
-          //         ? "http://localhost:8100"
-          //         : "http://localhost:8100"
+  const genderHeaders: Map<string, string> = new Map<string, string>()
+          .set("male", "male")
+          .set("female", "female")
+          .set("other", "other")
+          .set("unknown", "unknown");
 
   const backendConfig = {
     // url: (import.meta.env.PROD) ? backendUrl : "http://localhost:8100",
@@ -65,12 +71,6 @@
   };
 
   const barChartBackgroundColors: string[] = ["#4dc9f6","#3da4c7"];
-
-  const genderHeaders: Map<string, string> = new Map<string, string>()
-    .set("male", "male")
-    .set("female", "female")
-    .set("other", "other")
-    .set("unknown", "unknown");
 </script>
 
 
@@ -101,7 +101,7 @@
   </div>
   <div class="grid">
     <div class="catalogue">
-      <h2>Search tree</h2>
+      <h2>Search Tree</h2>
       <lens-catalogue
         toggleIconUrl="right-arrow-svgrepo-com.svg"
         addIconUrl="long-right-arrow-svgrepo-com.svg"
