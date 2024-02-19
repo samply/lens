@@ -32,6 +32,22 @@ npm start
 
 to start a development server, that will typically be available at [http://localhost:5173](http://localhost:5173). For further available npm scripts, you can review the [package.json](./package.json)
 
+## Style Integration
+
+To import the default stylings, use 
+```css
+@import "path_to_node_modules/@samply/lens/dist/style.css";
+```
+in your main css file.
+
+Web components use "part" instead of "class". Here is how you can overwrite style properties:
+
+```css
+lens-info-button::part(info-button-icon) {
+  width: 20px;
+}
+```
+
 ## Roadmap 
 - On a short term, we plan on publishing the library on [npmjs](https://www.npmjs.com/). We plan to make it available as [@samply/lens](https://www.npmjs.com/package/@samply/lens)
 - After making the library available on npm, we will move the `AppCCP.svelte`, `AppBBMRI.svelte` and `AppGBA.svelte` to their separate repositories that are just using this library.
