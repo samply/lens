@@ -61,9 +61,8 @@ lens-search-bar-multiple::part(lens-searchbar-chip-name) {
 
 lens-search-bar::part(lens-searchbar-chip),
 lens-search-bar-multiple::part(lens-searchbar-chip) {
-  background-color: var(--light-blue);
+  background-color: var(--blue);
   color: var(--white);
-  border: solid 1px var(--lightest-gray);
   border-radius: var(--border-radius-small);
   padding: 2px var(--gap-s) 2px var(--gap-xs);
   display: flex;
@@ -134,7 +133,7 @@ lens-search-bar-multiple::part(lens-searchbar-autocomplete-options-item) {
 lens-search-bar::part(lens-searchbar-autocomplete-options-item-focused),
 lens-search-bar-multiple::part(lens-searchbar-autocomplete-options-item-focused) {
   color: var(--white);
-  background-color: var(--light-blue);
+  background-color: var(--blue);
 }
 
 lens-search-bar::part(autocomplete-options-item-description),
@@ -177,7 +176,6 @@ lens-search-bar-multiple::part(query-delete-button) {
   padding: 0;
   border-radius: 50%;
   box-sizing: content-box;
-  border: solid var(--blue);
   height: calc(var(--font-size-xs) + 6px);
   width: calc(var(--font-size-xs) + 6px);
 }

@@ -44,6 +44,6 @@ lens-result-summary::part(info-button-dialogue) {
     padding: var(--gap-s);
     top: 40px;
     left: 0px;
-    border: solid 1px var(--light-blue);
+    border: solid 1px var(--blue);
     border-radius: var(--border-radius-small);
 }

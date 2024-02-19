@@ -95,6 +95,6 @@ lens-result-table::part(info-button-dialogue) {
     padding: var(--gap-s);
     top: 40px;
     right: 0px;
-    border: solid 1px var(--light-blue);
+    border: solid 1px var(--blue);
     border-radius: var(--border-radius-small);
 }
