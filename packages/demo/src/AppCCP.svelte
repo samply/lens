@@ -57,6 +57,12 @@
         // ["encounter", "Encounter"],
     ];
 
+    // VITE_TARGET_ENVIRONMENT should be set by the ci pipeline
+    const backendUrl =
+        import.meta.env.VITE_TARGET_ENVIRONMENT === "production"
+            ? "https://backend.data.dktk.dkfz.de/prod/"
+            : "https://backend.demo.lens.samply.de/prod/";
+
     const uiSiteMap: string[][] = [
         ["berlin", "Berlin"],
         ["berlin-test", "Berlin"],
@@ -76,11 +82,11 @@
         ["hamburg", "Hamburg"],
     ];
 
-    // VITE_TARGET_ENVIRONMENT should be set by the ci pipeline
-    const backendUrl =
-        import.meta.env.VITE_TARGET_ENVIRONMENT === "production"
-            ? "https://backend.data.dktk.dkfz.de/prod/"
-            : "https://backend.demo.lens.samply.de/prod/";
+    const genderHeaders: Map<string, string> = new Map<string, string>()
+        .set("male", "männlich")
+        .set("female", "weiblich")
+        .set("other", "Divers, Intersexuell")
+        .set("unknown", "unbekannt");
 
     const backendConfig = {
         url: import.meta.env.PROD ? backendUrl : "http://localhost:8080",
@@ -102,12 +108,6 @@
         uiSiteMap: uiSiteMap,
         catalogueKeyToResponseKeyMap: catalogueKeyToResponseKeyMap,
     };
-
-    const genderHeaders: Map<string, string> = new Map<string, string>()
-        .set("male", "männlich")
-        .set("female", "weiblich")
-        .set("other", "Divers, Intersexuell")
-        .set("unknown", "unbekannt");
 
     const barChartBackgroundColors: string[] = ["#4dc9f6", "#3da4c7"];
 
