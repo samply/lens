@@ -1,6 +1,4 @@
 <script lang="ts">
-    import "../../lib";
-
     import {
         dktkDiagnosisMeasure,
         dktkMedicationStatementsMeasure,

@@ -1,8 +1,10 @@
-// import "./fragment-development.css";
-// import App from "./AppFragmentDevelopment.svelte";
+import "@samply/lens";
 
-import "./ccp.css";
-import App from "./AppCCP.svelte";
+import "./fragment-development.css";
+import App from "./AppFragmentDevelopment.svelte";
+
+// import "./ccp.css";
+// import App from "./AppCCP.svelte";
 
 // import App from './AppBBMRI.svelte'
 // import './bbmri.css'

@@ -1,12 +1,4 @@
-@import url('./styles/default/searchbars.css');
-@import url('./styles/default/search-button.css');
-@import url('./styles/default/catalogue.css');
-@import url('./styles/default/results-overview.css');
-@import url('./styles/default/result-table.css');
-@import url('./styles/default/result-chart.css');
-@import url('./styles/default/negotiate-button.css');
-@import url('./styles/default/info-button.css');
-@import url('./styles/default/search-modified-display.css');
+@import "../../../node_modules/@samply/lens/dist/style.css";
 
 @font-face {
   font-family: 'Open Sans';

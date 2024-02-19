@@ -6,6 +6,7 @@
   "module": "dist/lens.js",
   "main": "dist/lens.umd.js",
   "types": "dist/types.d.ts",
+  "styles": "dist/style.css",
   "files": [
     "dist"
   ],
@@ -13,7 +14,8 @@
     ".": {
       "import": "./dist/lens.js",
       "require": "./dist/lens.umd.js",
-      "types": "./dist/types.d.ts"
+      "types": "./dist/types.d.ts",
+      "styles": "./dist/style.css"
     }
   },
   "license": "MIT",
@@ -53,6 +55,7 @@
     "vitest": "^0.34.2"
   },
   "dependencies": {
+    "@samply/lens": "file:samply-lens-0.0.3-0.tgz",
     "chart.js": "^4.4.0",
     "svelte-dnd-action": "^0.9.26",
     "uuid": "^9.0.0"

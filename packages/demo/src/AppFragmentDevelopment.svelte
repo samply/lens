@@ -1,8 +1,5 @@
 <script lang="ts">
-    import "../../lib";
     import type { QueryItem, QueryValue } from "../../lib/src/types/queryData";
-    // import "../../../dist/lib/lens-web-componets";
-    import type { CatalogueText } from "../../lib/src/types/texts";
 
     import {
         dktkDiagnosisMeasure,
