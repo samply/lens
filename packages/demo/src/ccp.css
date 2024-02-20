@@ -1,4 +1,6 @@
-@import "../../../node_modules/@samply/lens/dist/style.css";
+/*comment in for npm package usage*/
+/* @import "../../../node_modules/@samply/lens/dist/style.css"; */
+@import "../../lib/src/styles/index.css";
 
 @font-face {
   font-family: 'Open Sans';
