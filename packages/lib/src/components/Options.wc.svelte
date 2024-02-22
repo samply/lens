@@ -16,9 +16,22 @@
     import { lensOptions } from "../stores/options";
     import { catalogue } from "../stores/catalogue";
     import type { Criteria } from "../types/treeData";
+    import optionsSchema from "../interfaces/options.schema.json";
+    import { parser } from "@exodus/schemasafe";
 
     export let options: object = {};
     export let catalogueData: Criteria[] = [];
+
+    /**
+     * Validate the options against the schema
+     */
+    const parse = parser(optionsSchema, { includeErrors: true });
+    $: {
+        const validJSON = parse(JSON.stringify(options));
+        if (options !== {} && options !== "" && validJSON.errors) {
+            console.error("Lens-Options: ", validJSON.errors);
+        }
+    }
 
     $: $lensOptions = options;
     $: $catalogue = catalogueData;
