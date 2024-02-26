@@ -6,6 +6,7 @@
   "module": "dist/lens.js",
   "main": "dist/lens.umd.js",
   "types": "dist/types.d.ts",
+  "styles": "dist/style.css",
   "files": [
     "dist"
   ],
@@ -13,7 +14,8 @@
     ".": {
       "import": "./dist/lens.js",
       "require": "./dist/lens.umd.js",
-      "types": "./dist/types.d.ts"
+      "types": "./dist/types.d.ts",
+      "styles": "./dist/style.css"
     }
   },
   "license": "MIT",

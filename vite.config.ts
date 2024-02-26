@@ -112,7 +112,7 @@ function concatenateDeclarationFiles(folderPath: string): void {
  * this removes the @samply folder and moves the files to the root of the dist folder
  * @param path the path where the files are located
  */
-async function restructureDirectory(path: string): void {
+function restructureDirectory(path: string): void {
     moveFile(`${path}lens.js`, "./dist/lens.js");
     moveFile(`${path}lens.min.js`, "./dist/lens.min.js");
     moveFile(`${path}lens.umd.js`, "./dist/lens.umd.js");
