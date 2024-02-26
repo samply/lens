@@ -5,6 +5,29 @@
     "description": "A product in the catalog",
     "type": "object",
     "properties": {
+        "iconOptions": {
+            "type": "object",
+            "properties": {
+                "infoUrl": {
+                    "type": "string",
+                    "pattern": "^.+$",
+                    "description": "The icon to use for the info button"
+                },
+                "addUrl": {
+                    "type": "string",
+                    "pattern": "^.+$",
+                    "description": "The icon to use for the add button in the catalogue"
+                },
+                "toggleUrl": {
+                    "type": "string",
+                    "pattern": "^.+$",
+                    "description": "The icon to use for the toggle button in the catalogue"
+                }
+            },
+            "additionalProperties": false,
+            "unevaluatedProperties": false,
+            "required": []
+        },
         "chartOptions": {
             "type": "object",
             "patternProperties": {
@@ -27,11 +50,13 @@
                             "type": "array",
                             "items": {
                                 "type": "string",
-                                "pattern": "^.+$"
+                                "pattern": "^.+$",
+                                "description": "The hint text to display as overlay of the info button"
                             }
                         },
                         "aggregations": {
                             "type": "array",
+                            "description": "add strings of other data keys to include in the chart",
                             "items": {
                                 "type": "string",
                                 "pattern": "^.+$"
@@ -42,7 +67,8 @@
                             "patternProperties": {
                                 "^.+$": {
                                     "type": "string",
-                                    "pattern": "^.+$"
+                                    "pattern": "^.+$",
+                                    "description": "The tooltip to display while hovering over the chart data"
                                 }
                             },
                             "additionalProperties": false,
@@ -69,14 +95,17 @@
                         "properties": {
                             "title": {
                                 "type": "string",
+                                "description": "the title of the column",
                                 "pattern": "^.+$"
                             },
                             "dataKey": {
                                 "type": "string",
+                                "description": "a single key to display in the table",
                                 "pattern": "^.+$"
                             },
                             "aggregatedDataKeys": {
                                 "type": "array",
+                                "description": "an array of keys to aggregate and display in the table as single value",
                                 "items": {
                                     "type": "object",
                                     "properties": {
@@ -134,6 +163,30 @@
                             "dataKey": {
                                 "type": "string",
                                 "pattern": "^.+$"
+                            },
+                            "aggregatedDataKeys": {
+                                "type": "array",
+                                "description": "an array of keys to aggregate and display in the result summary as single value",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "groupCode": {
+                                            "type": "string",
+                                            "pattern": "^.+$"
+                                        },
+                                        "stratifierCode": {
+                                            "type": "string",
+                                            "pattern": "^.+$"
+                                        },
+                                        "stratumCode": {
+                                            "type": "string",
+                                            "pattern": "^.+$"
+                                        }
+                                    },
+                                    "additionalProperties": false,
+                                    "unevaluatedProperties": false,
+                                    "required": []
+                                }
                             }
                         },
                         "additionalProperties": false,
