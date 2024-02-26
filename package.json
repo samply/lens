@@ -56,7 +56,6 @@
   },
   "dependencies": {
     "chart.js": "^4.4.0",
-    "svelte-dnd-action": "^0.9.26",
     "uuid": "^9.0.0"
   },
   "lint-staged": {
