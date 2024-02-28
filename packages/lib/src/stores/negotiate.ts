@@ -243,19 +243,21 @@ async function sendRequestToProjectManager(sendableQuery: SendableQuery, humanRe
     // TODO: should use collectionId
     const negotiationPartners = collections.map(collection => collection.siteId.toLocaleLowerCase()).join(',')
     console.log(negotiationPartners)
+    console.log(encodeURIComponent(returnURL))
 
     const response: Response = await fetch(
-        `${negotiateOptions.negotiatorURL}?explorerIds=${negotiationPartners}&query-format=CQL_DATA&human-readable=${humanReadable}&explorer-url=${returnURL}`,
+        // &explorer-url=${encodeURIComponent(returnURL)}
+        `${negotiateOptions.negotiatorURL}?explorer-ids=${negotiationPartners}&query-format=CQL_DATA&human-readable=${humanReadable}`,
         {
             method: "POST",
             headers: {
-                'Accept': 'application/json; charset=utf-8',
+                'returnAccept': 'application/json; charset=utf-8',
                 'Content-Type': 'application/json',
                 'Authorization': authHeader
                 // NOTE: Workaround then david can't solve the bearer token issue
                 // 'Cookie': 'JSESSIONID=6C0A111CF969B92606A445E8A5E0FB7'
             },
-            body: base64Query,
+            body: "TODO: map CQL to this body in front end",
         }
     );
     return response.json();
