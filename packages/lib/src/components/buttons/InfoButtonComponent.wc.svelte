@@ -16,14 +16,8 @@
     export let showQuery: boolean = false;
     export let infoIconUrl: string | null = null;
 
-    iconStore.update((store) => {
-        if (infoIconUrl) {
-            store.set("info", infoIconUrl);
-        }
-        return store;
-    });
+    $: iconUrl = $iconStore.get("infoUrl");
 
-    $: iconUrl = $iconStore.get("info");
     /**
      * handles the toggling of the tooltip
      */
