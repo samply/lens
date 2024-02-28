@@ -3,18 +3,26 @@
         tag: "lens-info-button",
         props: {
             showQuery: { type: "Boolean" },
+            onlyChildInfo: { type: "Boolean" },
+            queryItem: { type: "Object" },
         },
     }}
 />
 
 <script lang="ts">
+    import { getHumanReadableQuery, buildHumanReadableRecursively } from "../../stores/negotiate";
+    import { returnNestedValues } from "../../helpers/ast-transformer";
+    import type { AstBottomLayerValue } from "../../types/ast";
+    import type { QueryItem } from "../../types/queryData";
     import { iconStore } from "../../stores/icons";
-    import { getHumanReadableQuery } from "../../stores/negotiate";
 
     export let message: string[] = [];
     export let noQueryMessage: string = "Search for all results";
     export let showQuery: boolean = false;
+    
     export let infoIconUrl: string | null = null;
+    export let onlyChildInfo: boolean = false;
+    export let queryItem: QueryItem;
 
     iconStore.update((store) => {
         if (infoIconUrl) {
@@ -33,18 +41,31 @@
         tooltipOpen = false;
     };
 
-    const displayQueryInfo = (): void => {
+    const displayQueryInfo = (queryItem?: AstBottomLayerValue): void => {
         if (showQuery) {
-            message =
-                getHumanReadableQuery().length > 0
-                    ? [getHumanReadableQuery()]
-                    : [noQueryMessage];
+             if (onlyChildInfo) {
+                let childMessage =
+                    buildHumanReadableRecursively(
+                    returnNestedValues(queryItem), "");
+                message = childMessage.length > 0
+                    ? childMessage : noQueryMessage;
+                
+             } else {
+                message =
+                    getHumanReadableQuery().length > 0
+                        ? [getHumanReadableQuery()]
+                        : [noQueryMessage];
+            }
         }
         tooltipOpen = !tooltipOpen;
     };
 </script>
 
-<button part="info-button" on:click={displayQueryInfo} on:focusout={onFocusOut}>
+<button part="info-button" on:click={
+                              onlyChildInfo
+                                  ? displayQueryInfo(queryItem)
+                                  : displayQueryInfo
+                                    } on:focusout={onFocusOut}>
     {#if iconUrl}
         <img part="info-button-icon" src={iconUrl} alt="info icon" />
     {:else}
@@ -52,9 +73,13 @@
     {/if}
     {#if tooltipOpen}
         <div part="info-button-dialogue">
-            {#each message as msg}
-                <div part="info-button-dialogue-message">{msg}</div>
-            {/each}
+            {#if onlyChildInfo}
+                <div part="info-button-dialogue-message">{message}</div>
+            {:else} 
+                 {#each message as msg}
+                    <div part="info-button-dialogue-message">{msg}</div>
+                {/each}
+            {/if}
         </div>
     {/if}
 </button>
