@@ -26,7 +26,7 @@ export const buildAstFromQuery = (queryStore: QueryItem[][]): AstTopLayer => {
  * @param topLayerItem - the next higher layer of the query store. Used to get the key, type and system of the current item
  * @returns AstElement
  */
-const returnNestedValues = (
+export const returnNestedValues = (
     item: queryStoreItem | QueryItem[][],
     operand: "AND" | "OR" | null = null,
     topLayerItem: queryStoreItem | null = null,

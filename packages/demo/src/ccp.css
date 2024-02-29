@@ -259,13 +259,51 @@ footer {
 /**
   Searchbars
 */
+
 lens-search-bar-multiple::part(lens-searchbar-chip) {
   background-color: var(--light-blue);
 }
 
-lens-search-bar-multiple::part(query-delete-button) {
+lens-search-bar-multiple::part(info-button),
+lens-search-bar::part(info-button){
   background-color: var(--light-blue);
   border-color: var(--light-blue);
+  position: relative;
+  padding: 0;
+  border: 0;
+  top: +2px;
+}
+
+lens-search-bar::part(info-button-icon),
+lens-search-bar-multiple::part(info-button-icon) {
+  height: calc(var(--font-size-s) + 8px);
+  width: calc(var(--font-size-s) + 8px);
+  filter: brightness(0) invert(1);
+  box-sizing: content-box;
+  border-radius: 50%;
+}
+
+lens-search-bar::part(info-button-icon):hover,
+lens-search-bar-multiple::part(info-button-icon):hover {
+  filter: invert(38%) sepia(78%) saturate(1321%) hue-rotate(352deg) brightness(92%) contrast(99%);
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+lens-search-bar::part(info-button-dialogue),
+lens-search-bar-multiple::part(info-button-dialogue) {
+  position: absolute;
+  border: none;
+  background-color: var(--white);
+  width: max-content;
+  max-width: 200px;
+  z-index: 100;
+  padding: var(--gap-s);
+  top: calc(var(--gap-m) + 4px);
+  right: -20px;
+  border: solid 1px var(--light-blue);
+  border-radius: var(--border-radius-small);
+  text-align: left;
 }
 
 lens-search-bar-multiple::part(query-delete-button-item) {
@@ -397,4 +435,24 @@ lens-catalogue::part(info-button-icon):hover {
 .catalogue lens-info-button::part(info-button-dialogue) {
   max-width: 300px;
   text-align: left;
+}
+
+lens-info-button::part(info-button-dialogue):hover {background-color: #b8bfb8}
+
+lens-info-button::part(info-button):hover {background-color: #b8bfb8}
+
+lens-info-button::part(info-button):active {
+  background-color: #585958;
+  transform: translateX(1px);
+}
+
+lens-info-button::part(info-button-dialogue):active {
+  background-color: #585958;
+  transform: translateX(1px);
+}
+
+.result-table-hint-text {
+  padding-top: 20px;
+  display: flex;
+  align-items: end;
 }
