@@ -15,11 +15,16 @@
      */
     import { lensOptions } from "../stores/options";
     import { catalogue } from "../stores/catalogue";
+    import { measureStore } from "../stores/measures";
     import type { Criteria } from "../types/treeData";
+    import type { Measure } from "../types/backend";
+    import type { LensOptions } from "../types/options";
 
-    export let options: object = {};
+    export let options: LensOptions = {};
     export let catalogueData: Criteria[] = [];
+    export let measures: Measure[] = [];
 
     $: $lensOptions = options;
     $: $catalogue = catalogueData;
+    $: $measureStore = measures;
 </script>

@@ -6,11 +6,19 @@ export type Measure = {
     cql: string;
 };
 
-export type BackendConfig = {
+export type ResponseStore = Map<string, Site>;
+
+export type SpotOption = {
     url: string;
-    backends: string[];
+    sites: string[];
     uiSiteMap: string[][];
     catalogueKeyToResponseKeyMap: string[][];
 };
-
-export type ResponseStore = Map<string, Site>;
+/**
+ * TODO: implement BlazeOption
+ */
+export type BlazeOption = null;
+export type BackendOptions = {
+    spots: SpotOption[];
+    blazes: BlazeOption[];
+};

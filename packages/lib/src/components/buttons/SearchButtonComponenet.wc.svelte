@@ -20,23 +20,16 @@
         catalogueKeyToResponseKeyMap,
         uiSiteMappingsStore,
     } from "../../stores/mappings";
-    import type { Measure, BackendConfig } from "../../types/backend";
     import { responseStore } from "../../stores/response";
+    import { lensOptions } from "../../stores/options";
+    import type { BackendOptions, SpotOption } from "../../types/backend";
 
     export let title: string = "Search";
-    export let backendConfig: BackendConfig = {
-        url: "http://localhost:8080",
-        backends: ["dktk-test", "mannheim"],
-        uiSiteMap: [
-            ["dktk-test", "DKTK Test"],
-            ["mannheim", "Mannheim"],
-        ],
-        catalogueKeyToResponseKeyMap: [],
-    };
 
     export let disabled: boolean = false;
-    export let measures: Measure[] = [];
-    export let backendMeasures: string = "";
+
+    $: options = $lensOptions?.backends as BackendOptions;
+
     let controller: AbortController;
 
     /**
@@ -45,28 +38,31 @@
      * therefore it's a 2d array of strings which is converted to a map
      */
     $: uiSiteMappingsStore.update((mappings) => {
-        backendConfig.uiSiteMap.forEach((site) => {
-            mappings.set(site[0], site[1]);
+        options?.spots.forEach((spot) => {
+            spot.uiSiteMap.forEach((site) => {
+                mappings.set(site[0], site[1]);
+            });
         });
         return mappings;
     });
 
     $: catalogueKeyToResponseKeyMap.update((mappings) => {
-        backendConfig.catalogueKeyToResponseKeyMap.forEach((mapping) => {
-            mappings.set(mapping[0], mapping[1]);
+        options?.spots.forEach((spot) => {
+            spot.catalogueKeyToResponseKeyMap.forEach((mapping) => {
+                mappings.set(mapping[0], mapping[1]);
+            });
         });
         return mappings;
     });
 
     /**
-     * watches the measures for changes to populate the measureStore
-     */
-    $: measureStore.set(measures);
-
-    /**
      * triggers a request to the backend via the spot class
      */
-    const getResultsFromBackend = async (): void => {
+    const getResultsFromBackend = (): void => {
+        /**
+         * TODO emit event
+         */
+
         if (controller) {
             controller.abort();
         }
@@ -75,22 +71,29 @@
         controller = new AbortController();
 
         const ast = buildAstFromQuery($queryStore);
-        const cql = translateAstToCql(ast, false, backendMeasures);
 
-        const library = buildLibrary(`${cql}`);
-        const measure = buildMeasure(
-            library.url,
-            $measureStore.map((measureItem) => measureItem.measure),
-        );
-        const query = { lang: "cql", lib: library, measure: measure };
+        options.spots.forEach((spot: SpotOption) => {
+            /**
+             * TODO: add backend measures
+             */
+            const cql = translateAstToCql(ast, false, "backend-measures");
 
-        const backend = new Spot(
-            new URL(backendConfig.url),
-            backendConfig.backends,
-        );
+            const library = buildLibrary(`${cql}`);
+            const measure = buildMeasure(
+                library.url,
+                $measureStore.map((measureItem) => measureItem.measure),
+            );
+            const query = { lang: "cql", lib: library, measure: measure };
 
-        backend.send(btoa(decodeURI(JSON.stringify(query))), controller);
+            const backend = new Spot(
+                new URL(spot.url),
+                spot.sites,
+                responseStore,
+            );
+            console.log(backend);
 
+            backend.send(btoa(decodeURI(JSON.stringify(query))), controller);
+        });
         queryModified.set(false);
     };
 </script>

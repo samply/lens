@@ -113,4 +113,12 @@
     export const getAstAPI = (): AstTopLayer => {
         return buildAstFromQuery($queryStore);
     };
+
+    /**
+     * sets the response from the backend
+     * @param response the response from the backend
+     */
+    export const setResponseAPI = (response: ResponseStore): void => {
+        responseStore.set(response);
+    };
 </script>

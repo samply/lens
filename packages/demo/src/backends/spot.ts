@@ -2,8 +2,7 @@
  * TODO: document this class
  */
 
-import type { Writable } from "svelte/store";
-// import { responseStore } from "../stores/response";
+import { responseStore } from "../stores/response";
 import type { ResponseStore } from "../types/backend";
 
 import type { Site, SiteData, Status } from "../types/response";
@@ -24,9 +23,8 @@ export class Spot {
     constructor(
         private url: URL,
         private sites: Array<string>,
-        private responseStore: Writable<ResponseStore> = responseStore,
     ) {
-        this.responseStore.subscribe(
+        responseStore.subscribe(
             (store: ResponseStore) => (this.storeCache = store),
         );
     }
@@ -96,7 +94,7 @@ export class Spot {
                     changes.set(site, { status: status, data: body });
                 });
                 if (changes.size > 0) {
-                    this.responseStore.update(
+                    responseStore.update(
                         (store: ResponseStore): ResponseStore => {
                             changes.forEach((value, key) => {
                                 store.set(key, value);

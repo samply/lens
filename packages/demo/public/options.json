@@ -102,7 +102,7 @@
                 "rna": "RNA",
                 "derivative-other": "Derivat, Andere"
             },
-            "legendMapping":{
+            "legendMapping": {
                 "tissue-ffpe": "Gewebe FFPE",
                 "tissue-frozen": "Gewebe schockgefroren",
                 "tissue-other": "Gewebe, Andere Konservierungsart",
@@ -146,8 +146,7 @@
                         "stratifierCode": "Histlogoies",
                         "stratumCode": "1"
                     },
-                    {
-                    }
+                    {}
                 ]
             }
         ]
@@ -165,5 +164,127 @@
                 "dataKey": "patients"
             }
         ]
+    },
+    "backends": {
+        "spots": [
+            {
+                "url": "http://localhost:8080",
+                "sites": [
+                    "berlin",
+                    "berlin-test",
+                    "bonn",
+                    "dresden",
+                    "essen",
+                    "frankfurt",
+                    "freiburg",
+                    "hannover",
+                    "mainz",
+                    "muenchen-lmu",
+                    "muenchen-tum",
+                    "ulm",
+                    "wuerzburg",
+                    "mannheim",
+                    "dktk-test",
+                    "hamburg"
+                ],
+                "uiSiteMap": [
+                    [
+                        "berlin",
+                        "Berlin"
+                    ],
+                    [
+                        "berlin-test",
+                        "Berlin Test"
+                    ],
+                    [
+                        "bonn",
+                        "Bonn"
+                    ],
+                    [
+                        "dresden",
+                        "Dresden"
+                    ],
+                    [
+                        "essen",
+                        "Essen"
+                    ],
+                    [
+                        "frankfurt",
+                        "Frankfurt"
+                    ],
+                    [
+                        "freiburg",
+                        "Freiburg"
+                    ],
+                    [
+                        "hannover",
+                        "Hannover"
+                    ],
+                    [
+                        "mainz",
+                        "Mainz"
+                    ],
+                    [
+                        "muenchen-lmu",
+                        "München(LMU)"
+                    ],
+                    [
+                        "muenchen-tum",
+                        "München(TUM)"
+                    ],
+                    [
+                        "ulm",
+                        "Ulm"
+                    ],
+                    [
+                        "wuerzburg",
+                        "Würzburg"
+                    ],
+                    [
+                        "mannheim",
+                        "Mannheim"
+                    ],
+                    [
+                        "dktk-test",
+                        "DKTK-Test"
+                    ],
+                    [
+                        "hamburg",
+                        "Hamburg"
+                    ]
+                ],
+                "catalogueKeyToResponseKeyMap": [
+                    [
+                        "gender",
+                        "Gender"
+                    ],
+                    [
+                        "age_at_diagnosis",
+                        "Age"
+                    ],
+                    [
+                        "diagnosis",
+                        "diagnosis"
+                    ],
+                    [
+                        "medicationStatements",
+                        "MedicationType"
+                    ],
+                    [
+                        "sample_kind",
+                        "sample_kind"
+                    ],
+                    [
+                        "therapy_of_tumor",
+                        "ProcedureType"
+                    ],
+                    [
+                        "75186-7",
+                        "75186-7"
+                    ]
+                ]
+            }
+        ],
+        "blazes": []
     }
 }
