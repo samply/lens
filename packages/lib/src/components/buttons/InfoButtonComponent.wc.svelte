@@ -12,7 +12,7 @@
 <script lang="ts">
     import { getHumanReadableQuery, buildHumanReadableRecursively } from "../../stores/negotiate";
     import { returnNestedValues } from "../../helpers/ast-transformer";
-    import type { AstBottomLayerValue } from "../../types/ast";
+    import type { AstElement } from "../../types/ast";
     import type { QueryItem } from "../../types/queryData";
     import { iconStore } from "../../stores/icons";
 
@@ -22,7 +22,7 @@
     
     export let infoIconUrl: string | null = null;
     export let onlyChildInfo: boolean = false;
-    export let queryItem: QueryItem;
+    export let queryItem: QueryItem | undefined = undefined;
 
     iconStore.update((store) => {
         if (infoIconUrl) {
@@ -41,14 +41,14 @@
         tooltipOpen = false;
     };
 
-    const displayQueryInfo = (queryItem?: AstBottomLayerValue): void => {
+    const displayQueryInfo = (queryItem?: QueryItem): void => {
         if (showQuery) {
-             if (onlyChildInfo) {
+             if (onlyChildInfo && queryItem !== undefined) {
                 let childMessage =
                     buildHumanReadableRecursively(
-                    returnNestedValues(queryItem), "");
+                    returnNestedValues(queryItem) as AstElement, "");
                 message = childMessage.length > 0
-                    ? childMessage : noQueryMessage;
+                    ? [childMessage] : [noQueryMessage];
                 
              } else {
                 message =
@@ -73,13 +73,9 @@
     {/if}
     {#if tooltipOpen}
         <div part="info-button-dialogue">
-            {#if onlyChildInfo}
-                <div part="info-button-dialogue-message">{message}</div>
-            {:else} 
-                 {#each message as msg}
-                    <div part="info-button-dialogue-message">{msg}</div>
-                {/each}
-            {/if}
+          {#each message as msg}
+              <div part="info-button-dialogue-message">{msg}</div>
+          {/each}
         </div>
     {/if}
 </button>
