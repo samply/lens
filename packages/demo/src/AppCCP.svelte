@@ -24,15 +24,18 @@
         });
 
     const measures = [
-        dktkPatientsMeasure,
-        dktkDiagnosisMeasure,
-        dktkSpecimenMeasure,
-        dktkProceduresMeasure,
-        dktkMedicationStatementsMeasure,
-        dktkHistologyMeasure,
+        {
+            name: "DKTK",
+            measures: [
+                dktkPatientsMeasure,
+                dktkDiagnosisMeasure,
+                dktkSpecimenMeasure,
+                dktkProceduresMeasure,
+                dktkMedicationStatementsMeasure,
+                dktkHistologyMeasure,
+            ],
+        },
     ];
-
-    const backendMeasures = `DKTK_STRAT_DEF_IN_INITIAL_POPULATION`;
 
     const catalogueText = {
         group: "Group",
@@ -94,7 +97,7 @@
             noQueryMessage="Leere Suchanfrage: Sucht nach allen Ergebnissen."
             showQuery={true}
         />
-        <lens-search-button title="Suchen" {backendMeasures} />
+        <lens-search-button title="Suchen" />
     </div>
     <div class="grid">
         <div class="catalogue">

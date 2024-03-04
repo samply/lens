@@ -22,7 +22,13 @@
     } from "../../stores/mappings";
     import { responseStore } from "../../stores/response";
     import { lensOptions } from "../../stores/options";
-    import type { BackendOptions, SpotOption } from "../../types/backend";
+    import type {
+        BackendOptions,
+        Measure,
+        MeasureItem,
+        MeasureOption,
+        SpotOption,
+    } from "../../types/backend";
 
     export let title: string = "Search";
 
@@ -73,16 +79,30 @@
         const ast = buildAstFromQuery($queryStore);
 
         options.spots.forEach((spot: SpotOption) => {
-            /**
-             * TODO: add backend measures
-             */
-            const cql = translateAstToCql(ast, false, "backend-measures");
+            const name = spot.name;
+            const measureItem: MeasureOption | undefined = $measureStore.find(
+                (measureStoreItem: MeasureOption) =>
+                    spot.name === measureStoreItem.name,
+            );
+
+            if (measureItem === undefined) {
+                throw new Error(
+                    `No measures found for backend ${name}. Please check the measures store.`,
+                );
+            }
+            const measures: Measure[] = measureItem.measures.map(
+                (measureItem: MeasureItem) => measureItem.measure,
+            );
+
+            const cql = translateAstToCql(
+                ast,
+                false,
+                spot.backendMeasures,
+                measureItem.measures,
+            );
 
             const library = buildLibrary(`${cql}`);
-            const measure = buildMeasure(
-                library.url,
-                $measureStore.map((measureItem) => measureItem.measure),
-            );
+            const measure = buildMeasure(library.url, measures);
             const query = { lang: "cql", lib: library, measure: measure };
 
             const backend = new Spot(

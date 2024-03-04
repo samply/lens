@@ -13,17 +13,7 @@ import {
     criterionMap,
 } from "./cqlquery-mappings";
 import { getCriteria } from "../stores/catalogue";
-import type { Measure } from "../types/backend";
-import { measureStore } from "../stores/measures";
-
-/**
- * Get all cql from the project specific measures from the store
- */
-let measuresCql: string[] = [];
-
-measureStore.subscribe((measures: Measure[]) => {
-    measuresCql = measures.map((measure) => measure.cql);
-});
+import type { MeasureItem } from "../types/backend";
 
 let codesystems: string[] = [];
 let criteria: string[];
@@ -32,6 +22,7 @@ export const translateAstToCql = (
     query: AstTopLayer,
     returnOnlySingeltons: boolean = true,
     backendMeasures: string,
+    measures: MeasureItem[],
 ): string => {
     criteria = getCriteria("diagnosis");
 
@@ -66,7 +57,7 @@ export const translateAstToCql = (
         cqlHeader +
         getCodesystems() +
         "context Patient\n" +
-        measuresCql.join("") +
+        measures.map((measureItem: MeasureItem) => measureItem.cql).join("") +
         singletons
     );
 };

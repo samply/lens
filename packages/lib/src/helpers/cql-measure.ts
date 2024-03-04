@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
+import type { Measure } from "../types/backend";
 
 type BuildLibraryReturn = {
     resourceType: string;
@@ -57,12 +58,12 @@ type BuildMeasureReturn = {
             code: string;
         }[];
     };
-    group: object[];
+    group: Measure[];
 };
 
 export const buildMeasure = (
     libraryUrl: string,
-    measures: object[],
+    measures: Measure[],
 ): BuildMeasureReturn => {
     const measureId = uuidv4();
     return {
