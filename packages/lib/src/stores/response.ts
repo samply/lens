@@ -4,6 +4,31 @@ import type { ResponseStore } from "../types/backend";
 
 export const responseStore = writable<ResponseStore>(new Map<string, Site>());
 
+export const updateResponseStore = (response: ResponseStore): void => {
+    let store: ResponseStore;
+    responseStore.subscribe((s: ResponseStore) => (store = s));
+
+    const changes = new Map<string, Site>();
+
+    response.forEach((value, key) => {
+        if (store.get(key)?.status === response.get(key)?.status) {
+            return;
+        }
+        changes.set(key, value);
+    });
+
+    if (changes.size === 0) {
+        return;
+    }
+
+    responseStore.update((store: ResponseStore): ResponseStore => {
+        changes.forEach((value, key) => {
+            store.set(key, value);
+        });
+        return store;
+    });
+};
+
 /**
  * @param store - the response store
  * @param code - the code to search for

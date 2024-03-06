@@ -6,8 +6,8 @@
 
 <!-- This component offers an api to pass and get data from the stores -->
 <script lang="ts">
-    import { catalogue } from "../stores/catalogue";
-    import { responseStore } from "../stores/response";
+    import { catalogue, getCriteria } from "../stores/catalogue";
+    import { responseStore, updateResponseStore } from "../stores/response";
     import {
         addStratifier,
         queryStore,
@@ -37,7 +37,7 @@
     interface addStratifierToQueryAPIParams {
         label: string;
         catalogueGroupCode: string;
-        groupRange?: string;
+        groupRange?: number;
         queryGroupIndex?: number;
     }
 
@@ -115,10 +115,19 @@
     };
 
     /**
-     * sets the response from the backend
+     * sets the response from the backend if any changes in status are detected
      * @param response the response from the backend
      */
-    export const setResponseAPI = (response: ResponseStore): void => {
-        responseStore.set(response);
+    export const updateResponseStoreAPI = (response: ResponseStore): void => {
+        updateResponseStore(response);
+    };
+
+    /**
+     * returns the catalogue to the library user
+     * @param category the category name (e.g. "diagnosis")
+     * @returns array of strings containing the bottom level items' keys
+     */
+    export const getCriteriaAPI = (category: string): string[] => {
+        return getCriteria(category);
     };
 </script>

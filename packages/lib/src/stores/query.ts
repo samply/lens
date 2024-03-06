@@ -216,13 +216,12 @@ export const addStratifier = ({
     catalogue,
     catalogueGroupCode,
     queryGroupIndex = 0,
-    groupRange,
-}): void => {
+    groupRange = 1,
+}: AddStratifierParams): void => {
     let queryItem: QueryItem;
-    console.log(catalogue);
     catalogue.forEach((parentCategory: Category) => {
         if ("childCategories" in parentCategory) {
-            parentCategory.childCategories.forEach(
+            parentCategory.childCategories?.forEach(
                 (childCategorie: Category) => {
                     if (
                         childCategorie.key === catalogueGroupCode &&

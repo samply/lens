@@ -1,4 +1,5 @@
 <script lang="ts">
+    import DataPasser from "../../lib/src/components/DataPasser.wc.svelte";
     import type { QueryItem, QueryValue } from "../../lib/src/types/queryData";
 
     import {
@@ -124,7 +125,7 @@
 
     let queryStore: QueryItem[][] = [];
 
-    let dataPasser: HTMLElement;
+    let dataPasser: DataPasser;
 
     const getQuery = (): void => {
         console.log(dataPasser, dataPasser.getQueryAPI());
@@ -139,7 +140,7 @@
         console.log(dataPasser, dataPasser.getAstAPI());
     };
 
-    const removeItem = (queryObject): void => {
+    const removeItem = (queryObject: QueryItem): void => {
         dataPasser.removeItemFromQuyeryAPI({ queryObject });
         getQuery();
     };

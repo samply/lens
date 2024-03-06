@@ -1,4 +1,6 @@
 <script lang="ts">
+    import type { MeasureItem, QueryEvent } from "../../../dist/types";
+
     import {
         dktkDiagnosisMeasure,
         dktkMedicationStatementsMeasure,
@@ -7,6 +9,11 @@
         dktkSpecimenMeasure,
         dktkHistologyMeasure,
     } from "./measures";
+
+    import { buildLibrary } from "./backends/cql-measure";
+    import { translateAstToCql } from "./backends/ast-to-cql-translator";
+    import { buildMeasure } from "./backends/cql-measure";
+    import { Spot } from "./backends/spot";
 
     let mockCatalogueData = "";
     let libraryOptions = "";
@@ -72,6 +79,62 @@
         "medicationStatements",
         "Sys. T",
     );
+
+    import type { LensDataPasser } from "../../lib/src/types/DataPasser";
+    let dataPasser: LensDataPasser;
+
+    window.addEventListener("emit-lens-query", (e) => {
+        const event = e as QueryEvent;
+        const { ast, updateResponse, abortController } = event.detail;
+
+        const measureItems = [
+            dktkPatientsMeasure,
+            dktkDiagnosisMeasure,
+            dktkSpecimenMeasure,
+            dktkProceduresMeasure,
+            dktkMedicationStatementsMeasure,
+            dktkHistologyMeasure,
+        ] as MeasureItem[];
+
+        const criteria = dataPasser.getCriteriaAPI("diagnosis");
+
+        const cql = translateAstToCql(
+            ast,
+            false,
+            "DKTK_STRAT_DEF_IN_INITIAL_POPULATION",
+            measureItems,
+            criteria,
+        );
+
+        const library = buildLibrary(`${cql}`);
+        const measure = buildMeasure(library.url, measures);
+        const query = { lang: "cql", lib: library, measure: measure };
+
+        const backend = new Spot(new URL("http://localhost:8080"), [
+            "berlin",
+            "berlin-test",
+            "bonn",
+            "dresden",
+            "essen",
+            "frankfurt",
+            "freiburg",
+            "hannover",
+            "mainz",
+            "muenchen-lmu",
+            "muenchen-tum",
+            "ulm",
+            "wuerzburg",
+            "mannheim",
+            "dktk-test",
+            "hamburg",
+        ]);
+
+        backend.send(
+            btoa(decodeURI(JSON.stringify(query))),
+            updateResponse,
+            abortController,
+        );
+    });
 </script>
 
 <header>
@@ -240,3 +303,4 @@
     catalogueData={mockCatalogueData}
     {measures}
 />
+<lens-data-passer bind:this={dataPasser} />

@@ -20,7 +20,7 @@
         catalogueKeyToResponseKeyMap,
         uiSiteMappingsStore,
     } from "../../stores/mappings";
-    import { responseStore } from "../../stores/response";
+    import { responseStore, updateResponseStore } from "../../stores/response";
     import { lensOptions } from "../../stores/options";
     import type {
         BackendOptions,
@@ -29,6 +29,8 @@
         MeasureOption,
         SpotOption,
     } from "../../types/backend";
+    import type { AstTopLayer } from "../../types/ast";
+    import type { Site } from "../../types/response";
 
     export let title: string = "Search";
 
@@ -62,13 +64,12 @@
     });
 
     /**
-     * triggers a request to the backend via the spot class
+     * Triggers a request to the backend.
+     * Multiple spots and blazes can be configured in lens options.
+     * Emits the ast and the updateResponseStore function to the project
+     * for running the query on other backends as well.
      */
     const getResultsFromBackend = (): void => {
-        /**
-         * TODO emit event
-         */
-
         if (controller) {
             controller.abort();
         }
@@ -105,16 +106,38 @@
             const measure = buildMeasure(library.url, measures);
             const query = { lang: "cql", lib: library, measure: measure };
 
-            const backend = new Spot(
-                new URL(spot.url),
-                spot.sites,
-                responseStore,
-            );
-            console.log(backend);
+            const backend = new Spot(new URL(spot.url), spot.sites);
 
-            backend.send(btoa(decodeURI(JSON.stringify(query))), controller);
+            backend.send(
+                btoa(decodeURI(JSON.stringify(query))),
+                updateResponseStore,
+                controller,
+            );
         });
+        emitEvent(ast);
         queryModified.set(false);
+    };
+
+    interface QueryEvent extends Event {
+        detail: {
+            ast: AstTopLayer;
+            updateResponse: (response: Map<string, Site>) => void;
+            abortController?: AbortController;
+        };
+    }
+    /**
+     * Emits the ast and the updateResponseStore function to the project
+     * @param ast the ast to be emitted
+     */
+    const emitEvent = (ast: AstTopLayer): void => {
+        const event: QueryEvent = new CustomEvent("emit-lens-query", {
+            detail: {
+                ast: ast,
+                updateResponse: updateResponseStore,
+                abortController: controller,
+            },
+        });
+        window.dispatchEvent(event);
     };
 </script>
 

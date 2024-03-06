@@ -3,6 +3,15 @@ export type Stratum = {
     population?: number;
 };
 
+export type BeamResult = {
+    body: string;
+    from: string;
+    metadata: string;
+    status: Status;
+    task: string;
+    to: string[];
+};
+
 export type Status = "claimed" | "succeeded" | "tempfailed" | "permfailed";
 
 export type Site = {

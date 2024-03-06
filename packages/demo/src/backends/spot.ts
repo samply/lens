@@ -2,39 +2,33 @@
  * TODO: document this class
  */
 
-import { responseStore } from "../stores/response";
-import type { ResponseStore } from "../types/backend";
-
-import type { Site, SiteData, Status } from "../types/response";
-
-type BeamResult = {
-    body: string;
-    from: string;
-    metadata: string;
-    status: Status;
-    task: string;
-    to: string[];
-};
+import type {
+    Site,
+    SiteData,
+    Status,
+    BeamResult,
+    ResponseStore,
+} from "../../../../dist/types";
 
 export class Spot {
-    private storeCache!: ResponseStore;
     private currentTask!: string;
 
     constructor(
         private url: URL,
         private sites: Array<string>,
-    ) {
-        responseStore.subscribe(
-            (store: ResponseStore) => (this.storeCache = store),
-        );
-    }
+    ) {}
 
     /**
      * sends the query to beam and updates the store with the results
      * @param query the query as base64 encoded string
+     * @param updateResponseStore the function to update the response store
      * @param controller the abort controller to cancel the request
      */
-    async send(query: string, controller?: AbortController): Promise<void> {
+    async send(
+        query: string,
+        updateResponseStore: (response: ResponseStore) => void,
+        controller?: AbortController,
+    ): Promise<void> {
         try {
             const beamTaskResponse = await fetch(
                 `${this.url}tasks?sites=${this.sites.toString()}`,
@@ -88,21 +82,10 @@ export class Spot {
                             ? JSON.parse(atob(response.body))
                             : null;
 
-                    // if the site is already in the store and the status is claimed, don't update the store
-                    if (this.storeCache.get(site)?.status === status) return;
-
                     changes.set(site, { status: status, data: body });
                 });
-                if (changes.size > 0) {
-                    responseStore.update(
-                        (store: ResponseStore): ResponseStore => {
-                            changes.forEach((value, key) => {
-                                store.set(key, value);
-                            });
-                            return store;
-                        },
-                    );
-                }
+
+                updateResponseStore(changes);
 
                 responseCount = beamResponseData.length;
                 const realResponseCount = beamResponseData.filter(

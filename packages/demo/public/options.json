@@ -173,7 +173,6 @@
                 "url": "http://localhost:8080",
                 "sites": [
                     "berlin",
-                    "berlin-test",
                     "bonn",
                     "dresden",
                     "essen",
@@ -253,6 +252,50 @@
                     [
                         "hamburg",
                         "Hamburg"
+                    ]
+                ],
+                "catalogueKeyToResponseKeyMap": [
+                    [
+                        "gender",
+                        "Gender"
+                    ],
+                    [
+                        "age_at_diagnosis",
+                        "Age"
+                    ],
+                    [
+                        "diagnosis",
+                        "diagnosis"
+                    ],
+                    [
+                        "medicationStatements",
+                        "MedicationType"
+                    ],
+                    [
+                        "sample_kind",
+                        "sample_kind"
+                    ],
+                    [
+                        "therapy_of_tumor",
+                        "ProcedureType"
+                    ],
+                    [
+                        "75186-7",
+                        "75186-7"
+                    ]
+                ]
+            },
+            {
+                "name": "DKTK",
+                "backendMeasures": "DKTK_STRAT_DEF_IN_INITIAL_POPULATION",
+                "url": "http://localhost:8080",
+                "sites": [
+                    "berlin-test"
+                ],
+                "uiSiteMap": [
+                    [
+                        "berlin-test",
+                        "Berlin Test"
                     ]
                 ],
                 "catalogueKeyToResponseKeyMap": [
