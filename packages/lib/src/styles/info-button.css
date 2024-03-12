@@ -4,7 +4,7 @@ lens-info-button::part(info-button) {
     height: 100%;
     width: 38px;
     background-color: var(--white);
-    border: solid 1px var(--light-blue);
+    border: solid 1px var(--blue);
     border-radius: var(--border-radius-small);
 }
 
@@ -22,6 +22,6 @@ lens-info-button::part(info-button-dialogue) {
     padding: var(--gap-s);
     top: 40px;
     right: 0px;
-    border: solid 1px var(--light-blue);
+    border: solid 1px var(--blue);
     border-radius: var(--border-radius-small);
 }

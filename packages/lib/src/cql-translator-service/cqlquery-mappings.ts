@@ -191,11 +191,13 @@ export const cqltemplate = new Map<string, string>([
         "uiccstadium",
         "(exists ([Observation: Code '21908-9' from loinc] O where O.value.coding.code contains '{{C}}')) or (exists ([Observation: Code '21902-2' from loinc] O where O.value.coding.code contains '{{C}}'))",
     ],
+    ["histology", "exists from [Observation: Code '59847-4' from loinc] O\n"],
 ]);
 
 export const criterionMap = new Map<string, { type: string; alias?: string[] }>(
     [
         ["gender", { type: "gender" }],
+        ["histology", { type: "histology", alias: ["loinc"] }],
         ["diagnosis", { type: "conditionValue", alias: ["icd10"] }],
         ["bodySite", { type: "conditionBodySite", alias: ["bodySite"] }],
         [

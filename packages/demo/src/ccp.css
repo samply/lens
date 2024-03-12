@@ -1,12 +1,6 @@
-@import url('./styles/default/searchbars.css');
-@import url('./styles/default/search-button.css');
-@import url('./styles/default/catalogue.css');
-@import url('./styles/default/results-overview.css');
-@import url('./styles/default/result-table.css');
-@import url('./styles/default/result-chart.css');
-@import url('./styles/default/negotiate-button.css');
-@import url('./styles/default/info-button.css');
-@import url('./styles/default/search-modified-display.css');
+/*comment in for npm package usage*/
+/* @import "../../../node_modules/@samply/lens/dist/style.css"; */
+@import "../../lib/src/styles/index.css";
 
 @font-face {
   font-family: 'Open Sans';
@@ -22,7 +16,7 @@
   --light-gray: #dee2e6;
   --lightest-gray: #efefef;
   --dark-gray: #323232;
-  --blue: #00489c;
+  --blue: #007bff;
   --light-blue: #007bff;
   --lightest-blue: #adc7f3;
   --dark-blue: #002d80;
@@ -91,6 +85,7 @@ header {
 .logo-dkfz {
   justify-self: end;
 }
+
 .logo-dkfz img {
   height: 30px;
 }
@@ -134,7 +129,7 @@ footer {
   border: solid 1px var(--lightest-gray);
   background-color: var(--white);
   grid-row: 1/-1;
-  overflow-y: scroll; 
+  overflow-y: scroll;
   height: 100vh;
   position: sticky;
   top: 40px;
@@ -178,7 +173,7 @@ footer {
 
 }
 
-.chart-age-distribution{
+.chart-age-distribution {
   grid-column: span 2;
 }
 
@@ -192,7 +187,8 @@ footer {
   .charts {
     grid-template-columns: repeat(3, 1fr);
   }
-  .chart-age-distribution{
+
+  .chart-age-distribution {
     grid-row: 3/4;
     grid-column: 2/4;
   }
@@ -223,7 +219,7 @@ footer {
   .charts {
     margin-left: 0px;
   }
-  
+
 }
 
 
@@ -249,6 +245,13 @@ footer {
   text-align: right;
 }
 
+
+.result-table-hint-text {
+  padding-top: 20px;
+  display: flex;
+  align-items: end;
+}
+
 /**
 * Overrides
 */
@@ -256,16 +259,57 @@ footer {
 /**
   Searchbars
 */
+
 lens-search-bar-multiple::part(lens-searchbar-chip) {
   background-color: var(--light-blue);
 }
-lens-search-bar-multiple::part(query-delete-button) {
+
+lens-search-bar-multiple::part(info-button),
+lens-search-bar::part(info-button){
   background-color: var(--light-blue);
   border-color: var(--light-blue);
+  position: relative;
+  padding: 0;
+  border: 0;
+  top: +2px;
 }
+
+lens-search-bar::part(info-button-icon),
+lens-search-bar-multiple::part(info-button-icon) {
+  height: calc(var(--font-size-s) + 8px);
+  width: calc(var(--font-size-s) + 8px);
+  filter: brightness(0) invert(1);
+  box-sizing: content-box;
+  border-radius: 50%;
+}
+
+lens-search-bar::part(info-button-icon):hover,
+lens-search-bar-multiple::part(info-button-icon):hover {
+  filter: invert(38%) sepia(78%) saturate(1321%) hue-rotate(352deg) brightness(92%) contrast(99%);
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+lens-search-bar::part(info-button-dialogue),
+lens-search-bar-multiple::part(info-button-dialogue) {
+  position: absolute;
+  border: none;
+  background-color: var(--white);
+  width: max-content;
+  max-width: 200px;
+  z-index: 100;
+  padding: var(--gap-s);
+  top: calc(var(--gap-m) + 4px);
+  right: -20px;
+  border: solid 1px var(--light-blue);
+  border-radius: var(--border-radius-small);
+  text-align: left;
+}
+
 lens-search-bar-multiple::part(query-delete-button-item) {
   border-color: var(--white);
 }
+
 lens-search-bar-multiple::part(query-delete-button-group) {
   background-color: var(--white);
   border-color: var(--white);
@@ -275,7 +319,9 @@ lens-search-button::part(lens-search-button) {
   background-color: var(--light-blue);
 }
 
-lens-search-button::part(lens-search-button):hover {background-color: #006adb}
+lens-search-button::part(lens-search-button):hover {
+  background-color: #006adb
+}
 
 lens-search-button::part(lens-search-button):active {
   background-color: #003d7e;
@@ -293,9 +339,11 @@ lens-catalogue::part(lens-catalogue) {
 lens-catalogue::part(autocomplete-formfield-input):focus {
   border-color: var(--light-blue);
 }
+
 lens-catalogue::part(query-add-button) {
   background-color: var(--light-blue);
 }
+
 lens-catalogue::part(number-input-formfield):focus {
   border-color: var(--light-blue);
   outline: none;
@@ -315,9 +363,9 @@ lens-catalogue::part(number-input-formfield) {
   text-align: center;
   font-size: var(--font-size-s);
   -webkit-appearance: textfield;
-  -moz-appearance:    textfield;
-  appearance:         textfield !important;
- 
+  -moz-appearance: textfield;
+  appearance: textfield !important;
+
 }
 
 lens-catalogue::part(number-input-formfield):focus {
@@ -327,8 +375,8 @@ lens-catalogue::part(number-input-formfield):focus {
 
 lens-catalogue::part(number-input-formfield)::-webkit-outer-spin-button,
 lens-catalogue::part(number-input-formfield)::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 lens-catalogue::part(data-tree-element-toggle-icon) {
@@ -366,7 +414,16 @@ lens-info-button::part(info-button-icon) {
   width: 21px;
 }
 
-.catalogue lens-info-button::part(info-button){
+lens-info-button::part(info-button-icon):hover,
+lens-result-summary::part(info-button-icon):hover,
+lens-result-table::part(info-button-icon):hover,
+lens-chart::part(info-button-icon):hover,
+lens-catalogue::part(info-button-icon):hover {
+  transform: scale(1.1);
+}
+
+
+.catalogue lens-info-button::part(info-button) {
   height: 38px;
   padding: 0;
   top: var(--gap-xs);
@@ -375,7 +432,7 @@ lens-info-button::part(info-button-icon) {
   position: absolute;
 }
 
-.catalogue lens-info-button::part(info-button-dialogue){
+.catalogue lens-info-button::part(info-button-dialogue) {
   max-width: 300px;
   text-align: left;
 }
@@ -396,6 +453,6 @@ lens-info-button::part(info-button-dialogue):active {
 
 .result-table-hint-text {
   padding-top: 20px;
- display: flex;
- align-items: end;
+  display: flex;
+  align-items: end;
 }
