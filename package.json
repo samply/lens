@@ -36,7 +36,7 @@
     "@tsconfig/svelte": "^5.0.0",
     "@typescript-eslint/eslint-plugin": "^6.20.0",
     "@typescript-eslint/parser": "^6.20.0",
-    "eslint": "^8.56.0",
+    "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-jsdoc": "^48.0.6",
     "eslint-plugin-svelte": "^2.35.1",
@@ -59,9 +59,10 @@
     "uuid": "^9.0.0"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,svelte}": [
-      "prettier --write",
-      "eslint --fix"
+    "*.svelte": "eslint ./packages",
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
     ]
   }
 }
