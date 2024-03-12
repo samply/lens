@@ -29,6 +29,7 @@
     "lint": "lint-staged",
     "prepublishOnly": "npm run build -s",
     "security:check": "npm audit --omit=dev --audit-level high",
+    "prepare": "husky install",
     "version": "npm version -m \"build: release version %s\""
   },
   "devDependencies": {
@@ -59,8 +60,8 @@
     "uuid": "^9.0.0"
   },
   "lint-staged": {
-    "*.svelte": "eslint ./packages",
-    "*.{js,jsx,ts,tsx}": [
+  
+    "*.{js,jsx,ts,tsx,svelte}": [
       "eslint --fix",
       "prettier --write"
     ]
