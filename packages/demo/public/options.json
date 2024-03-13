@@ -1,4 +1,7 @@
 {
+    "iconOptions": {
+        "infoUrl": "info-circle-svgrepo-com.svg"
+    },
     "chartOptions": {
         "patients": {
             "legendMapping": {

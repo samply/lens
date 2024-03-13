@@ -15,11 +15,31 @@
      */
     import { lensOptions } from "../stores/options";
     import { catalogue } from "../stores/catalogue";
+    import { iconStore } from "../stores/icons";
     import type { Criteria } from "../types/treeData";
 
     export let options: object = {};
     export let catalogueData: Criteria[] = [];
 
+    const updateIconStore = (options) => {
+      iconStore.update((store) => {
+        if (typeof options === "object" &&
+            "iconOptions" in options) {
+                
+          if (typeof options.iconOptions === "object" &&
+              options.iconOptions) {
+          
+            if ("infoUrl" in options.iconOptions &&
+                typeof options.iconOptions["infoUrl"] === "string") {
+        
+               store.set("infoUrl", options.iconOptions.infoUrl); 
+        }}}
+
+         return store;
+      });
+    }
+
     $: $lensOptions = options;
+    $: updateIconStore(options);
     $: $catalogue = catalogueData;
 </script>

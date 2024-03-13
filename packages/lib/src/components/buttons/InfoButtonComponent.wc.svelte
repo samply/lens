@@ -24,14 +24,8 @@
     export let onlyChildInfo: boolean = false;
     export let queryItem: QueryItem | undefined = undefined;
 
-    iconStore.update((store) => {
-        if (infoIconUrl) {
-            store.set("info", infoIconUrl);
-        }
-        return store;
-    });
+    $: iconUrl = $iconStore.get("infoUrl");
 
-    $: iconUrl = $iconStore.get("info");
     /**
      * handles the toggling of the tooltip
      */
