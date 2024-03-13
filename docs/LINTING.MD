@@ -1,11 +1,15 @@
 # Liniting
 
-## Installing
+## Install
 
+```
 npm install --dev
+```
 
-## runing
+## Run
 
+```
 npm run lint
+```
 
-Note this will only lint staged files, so don't forget to add with git add
+Note: this will only lint staged files, so don't forget to add with git add
