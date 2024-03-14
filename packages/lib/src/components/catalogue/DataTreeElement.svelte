@@ -3,6 +3,7 @@
     import DataTreeElement from "./DataTreeElement.svelte";
     import NumberInputComponent from "./NumberInputComponent.svelte";
     import AutocompleteComponent from "./AutoCompleteComponent.svelte";
+    import StringComponent from "./StringComponent.svelte";
     import SingleSelectComponent from "./SingleSelectComponent.svelte";
     import { v4 as uuidv4 } from "uuid";
     import { activeNumberInputs, openTreeNodes } from "../../stores/catalogue";
@@ -182,6 +183,8 @@
                     />
                 {:else if "fieldType" in element && element.fieldType === "autocomplete"}
                     <AutocompleteComponent {element} />
+                {:else if "fieldType" in element && element.fieldType === "string"}
+                    <StringComponent {element} />
                 {:else if "fieldType" in element && element.fieldType === "number"}
                     {#each numberInput.values as numberInputValues (numberInputValues.queryBindId)}
                         <NumberInputComponent

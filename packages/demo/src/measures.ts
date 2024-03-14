@@ -790,7 +790,7 @@ export const dktkPatientsMeasure = {
           coding: [
             {
               system:
-                'http://terminology.hl7.org/CodeSystem/measure-population',
+                  'http://terminology.hl7.org/CodeSystem/measure-population',
               code: 'initial-population',
             },
           ],
@@ -1071,3 +1071,116 @@ export const dktkHistologyMeasure = {
   DKTK_STRAT_HISTOLOGY_STRATIFIER
 `,
 };
+
+export const ehds2PatientsMeasure = {
+  key: 'patients',
+  measure: {
+    code: {
+      text: 'patients',
+    },
+    population: [
+      {
+        code: {
+          coding: [
+            {
+              system:
+                  'http://terminology.hl7.org/CodeSystem/measure-population',
+              code: 'initial-population',
+            },
+          ],
+        },
+        criteria: {
+          language: 'text/cql-identifier',
+          expression: 'InInitialPopulation',
+        },
+      },
+    ],
+    stratifier: [
+      {
+        code: {
+          text: 'Gender',
+        },
+        criteria: {
+          language: 'text/cql',
+          expression: 'Gender',
+        },
+      },
+      {
+        code: {
+          text: 'HospitalUnitType',
+        },
+        criteria: {
+          language: 'text/cql',
+          expression: 'HospitalUnitType',
+        },
+      },
+    ],
+  },
+  cql: `
+
+EHDS2_STRAT_GENDER_STRATIFIER
+
+EHDS2_STRAT_AGE_CLASS_STRATIFIER
+
+EHDS2_STRAT_HOSPITAL_UNIT_TYPE_CLASS_STRATIFIER
+
+EHDS2_STRAT_HOSPITAL_ID_CLASS_STRATIFIER
+
+`,
+};
+// EHDS2_STRAT_GENDER_STRATIFIER
+// define Gender:
+//     if (Patient.gender is null) then 'unknown' else Patient.gender
+
+export const ehds2ObservationMeasure = {
+  key: "observations",
+  measure: {
+    code: {
+      "text": "observations"
+    },
+    population: [
+      {
+        code: {
+          coding: [
+            {
+              system: "http://terminology.hl7.org/CodeSystem/measure-population",
+              code: "initial-population"
+            }
+          ]
+        },
+        criteria: {
+          language: "text/cql-identifier",
+          expression: "Observation"
+        }
+      }
+    ],
+    stratifier: [
+      {
+        code: {
+          text: "Antibiotic"
+        },
+        criteria: {
+          language: "text/cql",
+          expression: "Antibiotic"
+        }
+      }
+    ]
+  },
+  cql:
+      `
+
+EHDS2_STRAT_DEF_OBSERVATION
+`
+}
+// EHDS2_STRAT_DEF_OBSERVATION
+// define Observation:
+//     if InInitialPopulation then [Observation] else {} as List<Observation>
+
+//EHDS2_STRAT_ANTIBIOTIC_STRATIFIER
+// define function Antibiotic(observation FHIR.Observation):
+// case FHIRHelpers.ToCode(observation.value.coding.where(system = 'https://ecdc.amr/antibiotic-codes').first())
+// when Code 'MEM' from Antibiotic then 'MEM'
+// when null  then 'Unknown'
+// else 'Unknown'
+// end
+

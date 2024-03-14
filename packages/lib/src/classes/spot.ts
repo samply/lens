@@ -66,6 +66,9 @@ export class Spot {
                 let status: Status = response.status
                 let body: SiteData = (status === "succeeded") ? JSON.parse(atob(response.body)) : null;
 
+                console.log(`send: status: ${status}`)
+                console.log(`send: response.body: ${atob(response.body)}`)
+
                 responseStore.update((store: ResponseStore): ResponseStore => {
                     store.set(site, { status: status, data: body })
                     return store;
@@ -87,6 +90,7 @@ export class Spot {
             if (err.name === "AbortError") {
                 console.log(`Aborting request ${this.currentTask}`)
             } else {
+                console.log(`General error`)
                 console.error(err)
             }
         }

@@ -32,6 +32,96 @@
                         "description": "Unknown"
                     }
                 ]
+            },
+            {
+                "key": "age_of_patient",
+                "name": "Patient age",
+                "fieldType": "number",
+                "type": "BETWEEN",
+                "system": "",
+                "criteria": []
+            },
+            {
+                "key": "hospital_unit_type",
+                "name": "Hospital unit type",
+                "system": "",
+                "fieldType": "single-select",
+                "type": "EQUALS",
+                "criteria": [
+                    {
+                        "key": "ED",
+                        "name": "Emergency Department",
+                        "description": "Emergency Department"
+                    },
+                    {
+                        "key": "ICU",
+                        "name": "Intensive Care Unit",
+                        "description": "Intensive Care Unit"
+                    },
+                    {
+                        "key": "INFECT",
+                        "name": "Infectious Disease Ward",
+                        "description": "Infectious Disease Ward"
+                    },
+                    {
+                        "key": "INTMED",
+                        "name": "Internal Medicine",
+                        "description": "Internal Medicine"
+                    },
+                    {
+                        "key": "O",
+                        "name": "Other",
+                        "description": "Other"
+                    },
+                    {
+                        "key": "OBGYN",
+                        "name": "Obstetrics/Gynecology",
+                        "description": "Obstetrics/Gynecology"
+                    },
+                    {
+                        "key": "ONCOL",
+                        "name": "Haematology/Oncology",
+                        "description": "Haematology/Oncology"
+                    },
+                    {
+                        "key": "PEDS",
+                        "name": "Pediatrics/neonatal",
+                        "description": "Pediatrics/neonatal"
+                    },
+                    {
+                        "key": "PEDSICU",
+                        "name": "Pediatrics/neonatal ICU",
+                        "description": "Pediatrics/neonatal ICU"
+                    },
+                    {
+                        "key": "PHC ",
+                        "name": "Primary Health Care",
+                        "description": "Primary Health Care"
+                    },
+                    {
+                        "key": "SURG",
+                        "name": "Surgery",
+                        "description": "Surgery"
+                    },
+                    {
+                        "key": "UNK",
+                        "name": "Unknown",
+                        "description": "Unknown"
+                    },
+                    {
+                        "key": "URO",
+                        "name": "Urology Ward",
+                        "description": "Urology Ward"
+                    }
+                ]
+            },
+            {
+                "key": "hospital_id",
+                "name": "Hospital ID",
+                "fieldType": "string",
+                "type": "EQUALS",
+                "system": "",
+                "criteria": []
             }
         ]
     }

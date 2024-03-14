@@ -2,7 +2,8 @@
   import "../../lib";
   import type { CatalogueText } from "../../lib/src/types/texts";
   import {
-    dktkPatientsMeasure
+    ehds2PatientsMeasure,
+    ehds2ObservationMeasure,
   } from "./measures";
 
   let mockCatalogueData = "";
@@ -21,18 +22,19 @@
     });
 
   const measures = [
-    dktkPatientsMeasure
+    ehds2PatientsMeasure,
+    // ehds2ObservationMeasure,
   ];
 
-  const backendMeasures = `DKTK_STRAT_DEF_IN_INITIAL_POPULATION`;
+  const backendMeasures = `EHDS2_STRAT_DEF_IN_INITIAL_POPULATION`;
 
   const catalogueText: CatalogueText = {
     group: "Group",
     collapseButtonTitle: "Collapse Tree",
     expandButtonTitle: "Expand Tree",
     numberInput: {
-      labelFrom: "von",
-      labelTo: "bis",
+      labelFrom: "from",
+      labelTo: "to",
     },
   };
 
@@ -40,16 +42,22 @@
 
   const catalogueKeyToResponseKeyMap = [
     ["gender", "Gender"],
-    ["age_at_diagnosis", "Age"]
+    ["age_of_patient", "Age"],
+    ["hospital_unit_type", "Unit"],
+    ["hospital_id", "HospitalId"]
   ];
 
   // VITE_TARGET_ENVIRONMENT should be set by the ci pipeline
   const backendUrl =
           import.meta.env.VITE_TARGET_ENVIRONMENT === "production"
-                  ? "http://spot/"
-                  : "http://spot/";
-          // ? "http://localhost:8100/"
-          // : "http://localhost:8100/";
+  // ? "https://spot.example.org/" // Production
+  // : "https://spot.example.org/"; // Demo
+  //         ? "https://spot/"
+  //         : "https://spot/";
+  //                 ? "http://spot/"
+  //                 : "http://spot/";
+          ? "http://lens/"
+          : "http://lens/";
   const uiSiteMap: string[][] = [
     ["ecdc-bridgehead-test1", "Test1"]
   ];
@@ -61,8 +69,10 @@
           .set("unknown", "unknown");
 
   const backendConfig = {
-    // url: (import.meta.env.PROD) ? backendUrl : "http://localhost:8100",
-    url: (import.meta.env.PROD) ? backendUrl : "http://spot",
+    // url: (import.meta.env.PROD) ? backendUrl : "http://spot",
+    url: (import.meta.env.PROD) ? backendUrl : "http://lens",
+    // url: (import.meta.env.PROD) ? backendUrl : "https://spot",
+    // url: (import.meta.env.PROD) ? backendUrl : "https://spot.example.org", // Test
     backends: [
       "ecdc-bridgehead-test1"
     ],

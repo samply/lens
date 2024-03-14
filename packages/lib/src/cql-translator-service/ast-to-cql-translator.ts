@@ -33,6 +33,8 @@ export const translateAstToCql = (
     returnOnlySingeltons: boolean = true,
     backendMeasures: string,
 ): string => {
+    console.log(`translateAstToCql: backendMeasures: ${backendMeasures}`)
+
     criteria = getCriteria("diagnosis");
 
     /**
@@ -57,6 +59,8 @@ export const translateAstToCql = (
     if (query.children.length == 0) {
         singletons += "\ntrue";
     }
+
+    console.log(`translateAstToCql: singletons: ${singletons}`)
 
     if (returnOnlySingeltons) {
         return singletons;
@@ -114,8 +118,13 @@ const getSingleton = (criterion: AstBottomLayerValue): string => {
 
     const myCriterion = criterionMap.get(criterion.key);
 
+    console.log(`getSingleton: myCriterion: ${myCriterion}`)
+
     if (myCriterion) {
         const myCQL = cqltemplate.get(myCriterion.type);
+
+        console.log(`getSingleton: myCQL: ${myCQL}`)
+
         if (myCQL) {
             switch (myCriterion.type) {
                 case "gender":
@@ -139,6 +148,11 @@ const getSingleton = (criterion: AstBottomLayerValue): string => {
                 case "observationMolecularMarkerSeqRefNCBI":
                 case "observationMolecularMarkerEnsemblID":
                 case "department":
+
+                // Used by ECDC/EHDS2
+                case "patientHospitalUnitType":
+                case "patientHospitalId":
+
                 case "TNMp":
                 case "TNMc": {
                     if (typeof criterion.value === "string") {
@@ -243,9 +257,24 @@ const getSingleton = (criterion: AstBottomLayerValue): string => {
                     );
                     break;
                 }
+
+                // Used by ECDC/EHDS2
+                case "patientRangeAge": {
+                    expression += substituteRangeCQLExpression(
+                        criterion,
+                        myCriterion,
+                        "condition",
+                        "Age",
+                        myCQL,
+                    );
+                    break;
+                }
             }
         }
     }
+
+    console.log(`getSingleton: expression: ${expression}`)
+
     return expression;
 };
 

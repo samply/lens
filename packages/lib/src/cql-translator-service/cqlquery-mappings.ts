@@ -192,6 +192,22 @@ export const cqltemplate = new Map<string, string>([
         "(exists ([Observation: Code '21908-9' from loinc] O where O.value.coding.code contains '{{C}}')) or (exists ([Observation: Code '21902-2' from loinc] O where O.value.coding.code contains '{{C}}'))",
     ],
     ["histology", "exists from [Observation: Code '59847-4' from loinc] O\n"],
+
+    [
+        // Used by ECDC/EHDS2
+        "patientRangeAge",
+        "AgeInYears between {{D1}} and {{D2}}"
+    ],
+    [
+        // Used by ECDC/EHDS2
+        "patientHospitalUnitType",
+        "HospitalUnitType = '{{C}}'"
+    ],
+    [
+        // Used by ECDC/EHDS2
+        "patientHospitalId",
+        "HospitalId = '{{C}}'"
+    ]
 ]);
 
 export const criterionMap = new Map<string, { type: string; alias?: string[] }>(
@@ -309,5 +325,10 @@ export const criterionMap = new Map<string, { type: string; alias?: string[] }>(
         ["75186-7", { type: "observation", alias: ["loinc", "vitalstatuscs"] }], //Vitalstatus
         //["Organization", {type: "Organization"}],
         ["Organization", { type: "department" }],
+
+        // Used by ECDC/EHDS2
+        ["age_of_patient", { type: "patientRangeAge" }],
+        ["hospital_unit_type", { type: "patientHospitalUnitType" }],
+        ["hospital_id", { type: "patientHospitalId" }]
     ],
 );
