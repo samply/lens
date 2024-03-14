@@ -16,6 +16,7 @@
     import { translateAstToCql } from "../../cql-translator-service/ast-to-cql-translator";
     import { buildLibrary, buildMeasure } from "../../helpers/cql-measure";
     import { Spot } from "../../classes/spot";
+    import { Blaze } from "../../classes/blaze";
     import {
         catalogueKeyToResponseKeyMap,
         uiSiteMappingsStore,
@@ -24,6 +25,7 @@
     import { lensOptions } from "../../stores/options";
     import type {
         BackendOptions,
+        BlazeOption,
         Measure,
         MeasureItem,
         MeasureOption,
@@ -57,6 +59,11 @@
     $: catalogueKeyToResponseKeyMap.update((mappings) => {
         options?.spots.forEach((spot) => {
             spot.catalogueKeyToResponseKeyMap.forEach((mapping) => {
+                mappings.set(mapping[0], mapping[1]);
+            });
+        });
+        options?.blazes.forEach((blaze: BlazeOption) => {
+            blaze.catalogueKeyToResponseKeyMap.forEach((mapping) => {
                 mappings.set(mapping[0], mapping[1]);
             });
         });
@@ -114,7 +121,43 @@
                 controller,
             );
         });
+
+        options.blazes.forEach((blaze: BlazeOption) => {
+            const {
+                name,
+                url,
+                backendMeasures,
+            }: { name: string; url: string; backendMeasures: string } = blaze;
+
+            const measureItem: MeasureOption | undefined = $measureStore.find(
+                (measureStoreItem: MeasureOption) =>
+                    name === measureStoreItem.name,
+            );
+
+            if (measureItem === undefined) {
+                throw new Error(
+                    `No measures found for backend ${name}. Please check the measures store.`,
+                );
+            }
+
+            const measures: Measure[] = measureItem.measures.map(
+                (measureItem: MeasureItem) => measureItem.measure,
+            );
+
+            const cql = translateAstToCql(
+                ast,
+                false,
+                backendMeasures,
+                measureItem.measures,
+            );
+
+            const backend = new Blaze(new URL(url), name, updateResponseStore);
+
+            backend.send(cql, controller, measures);
+        });
+
         emitEvent(ast);
+
         queryModified.set(false);
     };
 

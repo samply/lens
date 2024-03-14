@@ -65,7 +65,15 @@ export type SpotOption = {
 /**
  * TODO: implement BlazeOption
  */
-export type BlazeOption = null;
+export type BlazeOption = {
+    name: string;
+    url: string;
+    auth?: string;
+    backendMeasures: string;
+    uiSiteMap: string[][];
+    catalogueKeyToResponseKeyMap: string[][];
+};
+
 export type BackendOptions = {
     spots: SpotOption[];
     blazes: BlazeOption[];

@@ -1,18 +1,12 @@
 import { buildLibrary, buildMeasure } from "../helpers/cql-measure";
-import { responseStore } from "../stores/response";
-import type { Site } from "../types/response";
-import { measureStore } from "../stores/measures";
-
-let measureDefinitions;
-
-measureStore.subscribe((store) => {
-    measureDefinitions = store.map((measure) => measure.measure);
-});
+import type { Site, SiteData } from "../types/response";
+import type { Measure, ResponseStore } from "../types/backend";
 
 export class Blaze {
     constructor(
         private url: URL,
         private name: string,
+        private updateResponse: (response: ResponseStore) => void,
         private auth: string = "",
     ) {}
 
@@ -20,13 +14,21 @@ export class Blaze {
      * sends the query to beam and updates the store with the results
      * @param cql the query as cql string
      * @param controller the abort controller to cancel the request
+     * @param measureDefinitions the measure definitions to send to blaze
      */
-    async send(cql: string, controller?: AbortController): Promise<void> {
+    async send(
+        cql: string,
+        controller: AbortController,
+        measureDefinitions: Measure[],
+    ): Promise<void> {
         try {
-            responseStore.update((store) => {
-                store.set(this.name, { status: "claimed", data: null });
-                return store;
-            });
+            let response: ResponseStore = new Map<string, Site>().set(
+                this.name,
+                { status: "claimed", data: {} as SiteData },
+            );
+
+            this.updateResponse(response);
+
             const libraryResponse = await fetch(
                 new URL(`${this.url}/Library`),
                 {
@@ -80,15 +82,15 @@ export class Blaze {
                 );
             }
             const blazeResponse: Site = await dataResponse.json();
-            responseStore.update((store) => {
-                store.set(this.name, {
-                    status: "succeeded",
-                    data: blazeResponse,
-                });
-                return store;
+
+            response = new Map<string, Site>().set(this.name, {
+                status: "succeeded",
+                data: blazeResponse.data,
             });
+
+            this.updateResponse(response);
         } catch (err) {
-            if (err.name === "AbortError") {
+            if (err instanceof Error && err.name === "AbortError") {
                 console.log(`Aborting former blaze request.`);
             } else {
                 console.error(err);
@@ -101,9 +103,11 @@ export class Blaze {
         console.debug(
             `${message}. Received error ${response.status} with message ${errorMessage}`,
         );
-        responseStore.update((store) => {
-            store.set(this.name, { status: "permfailed", data: null });
-            return store;
-        });
+
+        const failedResponse: ResponseStore = new Map<string, Site>().set(
+            this.name,
+            { status: "permfailed", data: null },
+        );
+        this.updateResponse(failedResponse);
     }
 }
