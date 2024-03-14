@@ -42,9 +42,10 @@
 
   const catalogueKeyToResponseKeyMap = [
     ["gender", "Gender"],
-    ["age_of_patient", "Age"],
-    ["hospital_unit_type", "Unit"],
-    ["hospital_id", "HospitalId"]
+    ["age_class", "AgeClass"],
+    ["hospital_unit_type", "HospitalUnitType"],
+    ["hospital_id", "HospitalId"],
+    ["laboratory_code", "LaboratoryCode"]
   ];
 
   // VITE_TARGET_ENVIRONMENT should be set by the ci pipeline
@@ -128,12 +129,52 @@
       </div>
       <div class="chart-wrapper">
         <lens-chart
-          title="Gender"
-          catalogueGroupCode="gender"
-          chartType="bar"
-          xAxisTitle="Gender signifier"
-          yAxisTitle="Number of patients"
-          backgroundColor={JSON.stringify(barChartBackgroundColors)}
+                title="Gender"
+                catalogueGroupCode="gender"
+                chartType="bar"
+                xAxisTitle="Gender signifier"
+                yAxisTitle="Number of patients"
+                backgroundColor={JSON.stringify(barChartBackgroundColors)}
+        />
+      </div>
+      <div class="chart-wrapper">
+        <lens-chart
+                title="Age"
+                catalogueGroupCode="age_class"
+                chartType="bar"
+                xAxisTitle="Age ranges"
+                yAxisTitle="Number of patients"
+                backgroundColor={JSON.stringify(barChartBackgroundColors)}
+        />
+      </div>
+      <div class="chart-wrapper">
+        <lens-chart
+                title="Hospital Unit Type"
+                catalogueGroupCode="hospital_unit_type"
+                chartType="bar"
+                xAxisTitle="Unit type"
+                yAxisTitle="Number of patients"
+                backgroundColor={JSON.stringify(barChartBackgroundColors)}
+        />
+      </div>
+      <div class="chart-wrapper chart-age-distribution">
+        <lens-chart
+                title="Hospital ID"
+                catalogueGroupCode="hospital_id"
+                chartType="bar"
+                xAxisTitle="ID"
+                yAxisTitle="Number of patients"
+                backgroundColor={JSON.stringify(barChartBackgroundColors)}
+        />
+      </div>
+      <div class="chart-wrapper chart-age-distribution">
+        <lens-chart
+                title="Laboratory code"
+                catalogueGroupCode="laboratory_code"
+                chartType="bar"
+                xAxisTitle="Code"
+                yAxisTitle="Number of patients"
+                backgroundColor={JSON.stringify(barChartBackgroundColors)}
         />
       </div>
     </div>

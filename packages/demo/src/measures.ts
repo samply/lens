@@ -1107,11 +1107,38 @@ export const ehds2PatientsMeasure = {
       },
       {
         code: {
+          text: 'AgeClass',
+        },
+        criteria: {
+          language: 'text/cql',
+          expression: 'AgeClass',
+        },
+      },
+      {
+        code: {
           text: 'HospitalUnitType',
         },
         criteria: {
           language: 'text/cql',
           expression: 'HospitalUnitType',
+        },
+      },
+      {
+        code: {
+          text: 'HospitalId',
+        },
+        criteria: {
+          language: 'text/cql',
+          expression: 'HospitalId',
+        },
+      },
+      {
+        code: {
+          text: 'LaboratoryCode',
+        },
+        criteria: {
+          language: 'text/cql',
+          expression: 'LaboratoryCode',
         },
       },
     ],
