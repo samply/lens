@@ -8,13 +8,13 @@
         dktkHistologyMeasure,
     } from "./measures";
 
-    let mockCatalogueData = "";
+    let catalogueData = "";
     let libraryOptions = "";
 
     fetch("catalogues/catalogue-dktk.json")
         .then((response) => response.text())
         .then((data) => {
-            mockCatalogueData = data;
+            catalogueData = data;
         });
 
     fetch("options.json")
@@ -137,7 +137,7 @@
 <main>
     <div class="search">
         <lens-search-bar
-            treeData={mockCatalogueData}
+            treeData={catalogueData}
             noMatchesFoundMessage={"keine Ergebnisse gefunden"}
         />
         <lens-info-button
@@ -166,7 +166,7 @@
                 toggleIconUrl="right-arrow-svgrepo-com.svg"
                 addIconUrl="long-right-arrow-svgrepo-com.svg"
                 infoIconUrl="info-circle-svgrepo-com.svg"
-                treeData={mockCatalogueData}
+                treeData={catalogueData}
                 texts={catalogueText}
                 toggle={{ collapsable: false, open: catalogueopen }}
             />
@@ -278,14 +278,20 @@
 </main>
 
 <footer>
-    <a class="user-agreement" href="http">Nutzervereinbarung</a>
-    <a class="email" href="mailto:CCP@dkfz.de">CCP@dkfz.de</a>
-    <div class="copyright">
-        <span>&#169; 2023</span>
-        <a href="https://dktk.dkfz.de/en/clinical-platform/about-ccp"
-            >Clinical Comunication Platform (CCP)</a
-        >
-    </div>
+    <a
+        class="ccp"
+        href="https://dktk.dkfz.de/klinische-plattformen/ueber-die-ccp/about-ccp"
+    >
+        Clinical Communication Platform (CCP)
+    </a>
+    <a class="email" href="mailto:CCP@dkfz.de">Kontakt</a>
+    <a class="user-agreement" href="http" download="nutzervereinbarung"
+        >Nutzungsvereinbarung</a
+    >
+    <a class="privacy-policy" href="http" download="datenschutzerklaerung"
+        >Datenschutz</a
+    >
+    <a class="imprint" href="http">Impressum</a>
 </footer>
 
-<lens-options options={libraryOptions} catalogueData={mockCatalogueData} />
+<lens-options options={libraryOptions} {catalogueData} />
