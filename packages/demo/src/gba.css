@@ -1,9 +1,9 @@
-@import url('./styles/default/searchbars.css');
-@import url('./styles/default/search-button.css');
-@import url('./styles/default/catalogue.css');
-@import url('./styles/default/results-overview.css');
-@import url('./styles/default/result-table.css');
-@import url('./styles/default/result-chart.css');
+@import url('../../lib/src/styles/searchbars.css');
+@import url('../../lib/src/styles/search-button.css');
+@import url('../../lib/src/styles/catalogue.css');
+@import url('../../lib/src/styles/results-overview.css');
+@import url('../../lib/src/styles/result-table.css');
+@import url('../../lib/src/styles/result-chart.css');
 
 :root {
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;

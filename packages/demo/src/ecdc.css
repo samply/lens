@@ -1,12 +1,12 @@
-@import url('./styles/default/searchbars.css');
-@import url('./styles/default/search-button.css');
-@import url('./styles/default/catalogue.css');
-@import url('./styles/default/results-overview.css');
-@import url('./styles/default/result-table.css');
-@import url('./styles/default/result-chart.css');
-@import url('./styles/default/negotiate-button.css');
-@import url('./styles/default/info-button.css');
-@import url('./styles/default/search-modified-display.css');
+@import url('../../lib/src/styles/searchbars.css');
+@import url('../../lib/src/styles/search-button.css');
+@import url('../../lib/src/styles/catalogue.css');
+@import url('../../lib/src/styles/results-overview.css');
+@import url('../../lib/src/styles/result-table.css');
+@import url('../../lib/src/styles/result-chart.css');
+@import url('../../lib/src/styles/negotiate-button.css');
+@import url('../../lib/src/styles/info-button.css');
+@import url('../../lib/src/styles/search-modified-display.css');
 
 /*
 @font-face {
