@@ -1,4 +1,14 @@
 <script lang="ts">
+    /**
+     * This component is part of the query tree.
+     *
+     * It allows a user to enter an arbitrary string without any kind of checking.
+     *
+     * It is needed for the EHDS2 pilot project.
+     *
+     * It has been copied and pasted from AutoCompleteComponent and probably contains
+     * dead code that could be deleted or simplified. TODO: write own CSS.
+     */
     import type { Category, Criteria } from "../../types/treeData";
     import { v4 as uuidv4 } from "uuid";
     import { addItemToQuery, queryStore } from "../../stores/query";
@@ -41,27 +51,6 @@
     let inputValue: string = "";
 
     /**
-     * watches the input value and updates the input options
-     */
-    $: inputOptions = criteria.filter((item: Criteria) => {
-        const clearedInputValue = inputValue
-            .replace(/^[0-9]*:/g, "")
-            .toLocaleLowerCase();
-
-        return (
-            item.name.toLowerCase().includes(clearedInputValue) ||
-            item.key.toLowerCase().includes(clearedInputValue) ||
-            item.description?.toLowerCase().includes(clearedInputValue)
-            /**
-             * FIX ME:
-             * should only take names. This needs a catalogue fix
-             */
-            // item.key.toLocaleLowerCase().includes(clearedInputValue) ||
-            // item.criterion.key.toLowerCase().includes(clearedInputValue) ||
-        );
-    });
-
-    /**
      * list of options that allready have been chosen and should be displayed beneath the autocomplete input
      * chosenOptions are constructed from the query store and has no duplicates
      * if an option is put into the store from anywhere it will update
@@ -95,11 +84,6 @@
             })
             .flat();
     };
-
-    // /**
-    //  * keeps track of the focused item
-    //  */
-    // let focusedItemIndex: number = -1;
 
     let activeDomElement: HTMLElement;
 
@@ -143,7 +127,6 @@
         };
 
         inputValue = "";
-        // focusedItemIndex = 0;
 
         addItemToQuery(queryItem, indexOfChosenStore);
     };

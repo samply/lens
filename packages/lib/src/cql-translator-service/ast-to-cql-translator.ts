@@ -152,6 +152,7 @@ const getSingleton = (criterion: AstBottomLayerValue): string => {
                 // Used by ECDC/EHDS2
                 case "patientHospitalUnitType":
                 case "patientHospitalId":
+                case "patientLaboratoryCode":
 
                 case "TNMp":
                 case "TNMc": {

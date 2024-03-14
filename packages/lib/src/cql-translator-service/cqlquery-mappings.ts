@@ -207,6 +207,11 @@ export const cqltemplate = new Map<string, string>([
         // Used by ECDC/EHDS2
         "patientHospitalId",
         "HospitalId = '{{C}}'"
+    ],
+    [
+        // Used by ECDC/EHDS2
+        "patientLaboratoryCode",
+        "LaboratoryCode = '{{C}}'"
     ]
 ]);
 
@@ -329,6 +334,7 @@ export const criterionMap = new Map<string, { type: string; alias?: string[] }>(
         // Used by ECDC/EHDS2
         ["age_of_patient", { type: "patientRangeAge" }],
         ["hospital_unit_type", { type: "patientHospitalUnitType" }],
-        ["hospital_id", { type: "patientHospitalId" }]
+        ["hospital_id", { type: "patientHospitalId" }],
+        ["laboratory_code", { type: "patientLaboratoryCode" }]
     ],
 );

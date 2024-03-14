@@ -122,6 +122,14 @@
                 "type": "EQUALS",
                 "system": "",
                 "criteria": []
+            },
+            {
+                "key": "laboratory_code",
+                "name": "Laboratory code",
+                "fieldType": "string",
+                "type": "EQUALS",
+                "system": "",
+                "criteria": []
             }
         ]
     }
