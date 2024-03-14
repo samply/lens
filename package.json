@@ -1,11 +1,12 @@
 {
   "name": "@samply/lens",
   "description": "A web component library for clinical data search and visualisation",
-  "version": "0.0.3-0",
+  "version": "0.0.3",
   "type": "module",
   "module": "dist/lens.js",
   "main": "dist/lens.umd.js",
   "types": "dist/types.d.ts",
+  "styles": "dist/style.css",
   "files": [
     "dist"
   ],
@@ -13,7 +14,8 @@
     ".": {
       "import": "./dist/lens.js",
       "require": "./dist/lens.umd.js",
-      "types": "./dist/types.d.ts"
+      "types": "./dist/types.d.ts",
+      "styles": "./dist/style.css"
     }
   },
   "license": "MIT",
@@ -54,7 +56,6 @@
   },
   "dependencies": {
     "chart.js": "^4.4.0",
-    "svelte-dnd-action": "^0.9.26",
     "uuid": "^9.0.0"
   },
   "lint-staged": {

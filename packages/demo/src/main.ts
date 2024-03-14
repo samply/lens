@@ -1,3 +1,10 @@
+/**
+ * comment in for npm package usage
+ */
+// import "@samply/lens";
+
+import "../../lib";
+
 // import "./fragment-development.css";
 // import App from "./AppFragmentDevelopment.svelte";
 

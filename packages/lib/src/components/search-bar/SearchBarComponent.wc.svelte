@@ -19,6 +19,7 @@
     import type { AutoCompleteItem, QueryItem } from "../../types/queryData";
     import { v4 as uuidv4 } from "uuid";
     import StoreDeleteButtonComponent from "../buttons/StoreDeleteButtonComponent.svelte";
+    import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
     import { addPercentageSignToCriteria } from "../../helpers/object-formaters";
     import { catalogue } from "../../stores/catalogue";
 
@@ -320,6 +321,17 @@
                     {#each queryItem.values as value (value.queryBindId)}
                         <span part="lens-searchbar-chip-item">
                             <span>{value.name}</span>
+                            <span part="lens-searchbar-chip-info-span">
+                                &nbsp;
+                                <InfoButtonComponent
+                                    showQuery={true}
+                                    onlyChildInfo={true}
+                                    queryItem={{ 
+                                        ...queryItem, 
+                                        values: [value],
+                                    }}
+                                />
+                            </span>
                             {#if queryItem.values.length > 1}
                                 <StoreDeleteButtonComponent
                                     itemToDelete={{
