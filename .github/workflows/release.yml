@@ -21,7 +21,7 @@ jobs:
       - name: "Build @samply/lens"
         run: npm run build
       - name: "Publish @samply/lens"
-        run: cd dist/lib/ && npm publish --access public
+        run: cd dist && npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
@@ -58,9 +58,10 @@ jobs:
           commit_message: 'docs: added changelog for ${{ github.ref_name }} [skip ci]'
           file_pattern: CHANGELOG.md
 
-      - name: Sync Develop
-        run: |
-          git checkout main;
-          git checkout --track origin/develop;
-          git merge --ff-only main;
-          git push;
+      - name: "Create PR for syncing back changelog"
+        uses: peter-evans/create-pull-request@v6
+        with:
+          title: "Sync develop with main"
+          body: "For easy synchronisation of main with develop, triggered by the [release workflow](./.github/workflows/release.yml). Automated changes by [create-pull-request](https://github.com/peter-evans/create-pull-request) GitHub action."
+          branch: "automated-pr/sync-main-to-develop"
+          base: "develop"
