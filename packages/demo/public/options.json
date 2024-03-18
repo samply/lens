@@ -85,7 +85,7 @@
             ],
             "tooltips": {
                 "tissue-ffpe": "Gewebe FFPE",
-                "tissue-frozen": "Gewebe schockgefroren",
+                "frozen-tissue": "Gewebe schockgefroren",
                 "tissue-other": "Gewebe, Andere Konservierungsart",
                 "whole-blood": "Vollblut",
                 "blood-serum": "Serum",
@@ -107,7 +107,7 @@
             },
             "legendMapping":{
                 "tissue-ffpe": "Gewebe FFPE",
-                "tissue-frozen": "Gewebe schockgefroren",
+                "frozen-tissue": "Gewebe schockgefroren",
                 "tissue-other": "Gewebe, Andere Konservierungsart",
                 "whole-blood": "Vollblut",
                 "blood-serum": "Serum",

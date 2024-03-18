@@ -267,7 +267,7 @@
                     yAxisTitle="Probenanzahl"
                     accumulatedValues={JSON.stringify([
                         {
-                            name: "Gewebe Schockgefroren",
+                            name: "frozen-tissue",
                             values: [
                                 "tissue-frozen",
                                 "tissue-ffpe",

@@ -178,6 +178,7 @@
     const accumulateValues = (
         responseStore: ResponseStore,
         valuesToAccumulate: string[],
+        catalogueGroupCode: string,
     ): number => {
         let aggregatedData = 0;
 
@@ -185,10 +186,10 @@
             aggregatedData += getAggregatedPopulationForStratumCode(
                 responseStore,
                 value,
-                "sample_kind",
+                catalogueGroupCode,
             );
         });
-
+        console.log(aggregatedData);
         return aggregatedData;
     };
 
@@ -263,14 +264,30 @@
             });
         }
 
+        /**
+         * if accumulated values are set, accumulate the values of the given stratum codes and adds them to the chart
+         * e.g. {name: "frozen-tissue", values: ["tissue-frozen","tissue-ffpe"]}
+         * will remove the values from the chart and add their accumulated value to "frozen-tissue"
+         */
         if (accumulatedValues !== undefined && accumulatedValues.length > 0) {
             accumulatedValues.forEach((valueToAccumulate) => {
                 const aggregationCount: number = accumulateValues(
                     responseStore,
                     valueToAccumulate.values,
+                    catalogueGroupCode,
                 );
+
                 combinedSubGroupData.data.push(aggregationCount);
                 combinedSubGroupData.labels.push(valueToAccumulate.name);
+
+                for (let i = 0; i < combinedSubGroupData.labels.length; i++) {
+                    const element: string = combinedSubGroupData.labels[i];
+                    if (valueToAccumulate.values.includes(element)) {
+                        combinedSubGroupData.labels.splice(i, 1);
+                        combinedSubGroupData.data.splice(i, 1);
+                        i--;
+                    }
+                }
             });
         }
 
