@@ -7,6 +7,7 @@
             backgroundHoverColor: { type: "Array" },
             perSite: { type: "Boolean" },
             groupRange: { type: "Number" },
+            accumulatedValues: { type: "Array" },
         },
     }}
 />
@@ -52,6 +53,9 @@
     export let filterRegex: string = "";
     export let groupingLabel: string = "";
     export let viewScales: boolean = chartType !== "pie" ? true : false;
+    export let accumulatedValues:
+        | { name: string; values: string[] }[]
+        | undefined = undefined;
 
     let options: ChartOption;
     $: options =
@@ -171,6 +175,23 @@
         },
     };
 
+    const accumulateValues = (
+        responseStore: ResponseStore,
+        valuesToAccumulate: string[],
+    ): number => {
+        let aggregatedData = 0;
+
+        valuesToAccumulate.forEach((value: string) => {
+            aggregatedData += getAggregatedPopulationForStratumCode(
+                responseStore,
+                value,
+                "sample_kind",
+            );
+        });
+
+        return aggregatedData;
+    };
+
     /**
      * gets the aggregated population for a given stratum code
      * @param responseStore - the response store
@@ -239,6 +260,17 @@
                 );
                 combinedSubGroupData.data.push(aggregationCount);
                 combinedSubGroupData.labels.push(aggregation);
+            });
+        }
+
+        if (accumulatedValues !== undefined && accumulatedValues.length > 0) {
+            accumulatedValues.forEach((valueToAccumulate) => {
+                const aggregationCount: number = accumulateValues(
+                    responseStore,
+                    valueToAccumulate.values,
+                );
+                combinedSubGroupData.data.push(aggregationCount);
+                combinedSubGroupData.labels.push(valueToAccumulate.name);
             });
         }
 
@@ -384,7 +416,11 @@
          * will be aggregated in groups if a divider is set
          * eg. 'C30', 'C31.1', 'C31.2' -> 'C31' when divider is '.'
          */
-        let chartData = getChartDataSets(responseStore, chartLabels);
+        let chartData: ChartDataSets = getChartDataSets(
+            responseStore,
+            chartLabels,
+        );
+
         chart.data.datasets = chartData.data;
         chartLabels = chartData.labels;
 
