@@ -141,7 +141,6 @@
             noMatchesFoundMessage={"keine Ergebnisse gefunden"}
         />
         <lens-info-button
-            infoIconUrl="info-circle-svgrepo-com.svg"
             noQueryMessage="Leere Suchanfrage: Sucht nach allen Ergebnissen."
             showQuery={true}
         />
@@ -156,7 +155,6 @@
         <div class="catalogue">
             <h2>Suchkriterien</h2>
             <lens-info-button
-                infoIconUrl="info-circle-svgrepo-com.svg"
                 message={[
                     `Bei Patienten mit mehreren onkologischen Diagnosen, können sich ausgewählte Suchkriterien nicht nur auf eine Erkrankung beziehen, sondern auch auf Weitere.`,
                     `Innerhalb einer Kategorie werden verschiedene Ausprägungen mit einer „Oder-Verknüpfung“ gesucht; bei der Suche über mehrere Kategorien mit einer „Und-Verknüpfung“.`,
