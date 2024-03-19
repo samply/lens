@@ -257,8 +257,7 @@ async function sendRequestToProjectManager(sendableQuery: SendableQuery, humanRe
     const returnURL: string = `${window.location.protocol}//${window.location.host}/?query=${base64Query}`;
 
     console.log(collections)
-    // TODO: should use collectionId
-    const negotiationPartners = collections.map(collection => collection.siteId.toLocaleLowerCase()).join(',')
+    const negotiationPartners = collections.map(collection => collection.collectionId.toLocaleLowerCase()).join(',')
     console.log(negotiationPartners)
     console.log(encodeURIComponent(returnURL))
 
