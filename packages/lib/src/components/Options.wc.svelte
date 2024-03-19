@@ -17,27 +17,30 @@
     import { catalogue } from "../stores/catalogue";
     import { iconStore } from "../stores/icons";
     import type { Criteria } from "../types/treeData";
+    import type { LensOptions } from "../types/options";
 
-    export let options: object = {};
+    export let options: LensOptions = {};
     export let catalogueData: Criteria[] = [];
 
-    const updateIconStore = (options) => {
-      iconStore.update((store) => {
-        if (typeof options === "object" &&
-            "iconOptions" in options) {
-                
-          if (typeof options.iconOptions === "object" &&
-              options.iconOptions) {
-          
-            if ("infoUrl" in options.iconOptions &&
-                typeof options.iconOptions["infoUrl"] === "string") {
-        
-               store.set("infoUrl", options.iconOptions.infoUrl); 
-        }}}
+    const updateIconStore = (options: LensOptions): void => {
+        iconStore.update((store) => {
+            if (typeof options === "object" && "iconOptions" in options) {
+                if (
+                    typeof options.iconOptions === "object" &&
+                    options.iconOptions
+                ) {
+                    if (
+                        "infoUrl" in options.iconOptions &&
+                        typeof options.iconOptions["infoUrl"] === "string"
+                    ) {
+                        store.set("infoUrl", options.iconOptions.infoUrl);
+                    }
+                }
+            }
 
-         return store;
-      });
-    }
+            return store;
+        });
+    };
 
     $: $lensOptions = options;
     $: updateIconStore(options);
