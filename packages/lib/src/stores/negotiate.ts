@@ -252,9 +252,13 @@ async function sendRequestToNegotiator(sendableQuery: SendableQuery, humanReadab
 async function sendRequestToProjectManager(sendableQuery: SendableQuery, humanReadable: string, collections: Collection[], queryBase64String: string): Promise<any> {
 
 
-    let base64Query: string = btoa(JSON.stringify(sendableQuery.query))
+    const base64Query: string = btoa(JSON.stringify(sendableQuery.query))
+    const queryParam: string = (base64Query != "") ?
+        `?query=${base64Query}` : ""
 
-    const returnURL: string = `${window.location.protocol}//${window.location.host}/?query=${base64Query}`;
+    const returnURL: string = `${window.location.protocol}//${window.location.host}/${queryParam}`;
+    console.log(returnURL)
+
 
     console.log(collections)
     const negotiationPartners = collections.map(collection => collection.collectionId.toLocaleLowerCase()).join(',')
@@ -262,8 +266,7 @@ async function sendRequestToProjectManager(sendableQuery: SendableQuery, humanRe
     console.log(encodeURIComponent(returnURL))
 
     const response: Response = await fetch(
-        // &explorer-url=${encodeURIComponent(returnURL)}
-        `${negotiateOptions.negotiatorURL}?explorer-ids=${negotiationPartners}&query-format=CQL_DATA&human-readable=${humanReadable}`,
+        `${negotiateOptions.negotiatorURL}?explorer-ids=${negotiationPartners}&query-format=CQL_DATA&human-readable=${humanReadable}&explorer-url=${encodeURIComponent(returnURL)}`,
         {
             method: "POST",
             headers: {
