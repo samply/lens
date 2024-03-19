@@ -283,15 +283,14 @@
         Clinical Communication Platform (CCP)
     </a>
     <a class="email" href="mailto:CCP@dkfz.de">Kontakt</a>
-    <a
-        class="user-agreement"
-        href="https://www.dkfz.de/de/impressum.html"
-        download="nutzervereinbarung">Nutzungsvereinbarung</a
+    <a class="user-agreement" href="http" download="nutzervereinbarung"
+        >Nutzungsvereinbarung</a
     >
     <a class="privacy-policy" href="http" download="datenschutzerklaerung"
         >Datenschutz</a
     >
-    <a class="imprint" href="http">Impressum</a>
+    <a class="imprint" href="https://www.dkfz.de/de/impressum.html">Impressum</a
+    >
 </footer>
 
 <lens-options options={libraryOptions} {catalogueData} />
