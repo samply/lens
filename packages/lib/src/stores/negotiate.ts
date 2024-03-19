@@ -138,7 +138,7 @@ export const getCollections = (sitesToNegotiate: string[]): Collection[] => {
 
         // TODO: Why is site id mapped to Uppercase?
         if (siteCollectionMap.has(site) && siteCollectionMap.get(site) !== '') {
-            collectionId = siteCollectionMap[site]
+            collectionId = siteCollectionMap.get(site)
         }
 
         const siteId: string = site.split(':collection:')[0]
