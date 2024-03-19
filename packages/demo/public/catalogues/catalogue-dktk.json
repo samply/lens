@@ -20181,6 +20181,18 @@
                                 {
                                     "value": "histology",
                                     "name": "tumor-tissue-ffpe"
+                                },
+                                {
+                                    "value": "sample_kind",
+                                    "name": "tissue-ffpe"
+                                },
+                                {
+                                    "value": "sample_kind",
+                                    "name": "normal-tissue-ffpe"
+                                },
+                                {
+                                    "value": "sample_kind",
+                                    "name": "other-tissue-ffpe"
                                 }
                             ]
                         ]
@@ -20188,7 +20200,27 @@
                     {
                         "key": "tumor-tissue-frozen",
                         "name": "Gewebe schockgefroren",
-                        "description": "Tumorgewebe (Kryo/Frisch)"
+                        "description": "Tumorgewebe (Kryo/Frisch)",
+                        "aggregatedValue": [
+                            [
+                                {
+                                    "value": "sample_kind",
+                                    "name": "tissue-frozen"
+                                },
+                                {
+                                    "value": "sample_kind",
+                                    "name": "tumor-tissue-frozen"
+                                },
+                                {
+                                    "value": "sample_kind",
+                                    "name": "normal-tissue-frozen"
+                                },
+                                {
+                                    "value": "sample_kind",
+                                    "name": "other-tissue-frozen"
+                                }
+                            ]
+                        ]
                     },
                     {
                         "key": "tissue-other",
