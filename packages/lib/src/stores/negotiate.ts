@@ -4,18 +4,35 @@ import type { QueryItem } from "../types/queryData";
 import { buildAstFromQuery } from "../helpers/ast-transformer";
 import type { AstElement, AstTopLayer } from "../types/ast";
 import { lensOptions } from "./options";
-import { responseStore } from "./response";
 import { v4 as uuidv4 } from 'uuid';
 import type { Collection } from "../types/collection";
 import type { SendableQuery } from "../types/queryData";
 import { authStore } from "./auth";
+import { translateAstToCql } from "../cql-translator-service/ast-to-cql-translator";
+import { buildLibrary, buildMeasure } from "../helpers/cql-measure";
+import type { Measure } from "../types/backend";
+import { measureStore } from "./measures";
 
 export const negotiateStore = writable<string[]>([]);
 
 let authHeader: string = "";
+let currentQuery: QueryItem[][] = [[]];
+// NOTE:
+// This is currently hard coded, as this configuration can not be replicated for this class easily (compare with variable in searchbutton)
+// With the merge of the multiple backends branch, an option for that will be already introduced.
+let backendMeasures: string = "DKTK_STRAT_DEF_IN_INITIAL_POPULATION";
+let currentMeasures: Measure[] = [];
 
 authStore.subscribe((value) => {
     authHeader=value;
+})
+
+queryStore.subscribe(query =>{
+    currentQuery=query;
+});
+
+measureStore.subscribe(measures => {
+    currentMeasures=measures;
 })
 
 
@@ -254,11 +271,22 @@ async function sendRequestToProjectManager(sendableQuery: SendableQuery, humanRe
                 'returnAccept': 'application/json; charset=utf-8',
                 'Content-Type': 'application/json',
                 'Authorization': authHeader
-                // NOTE: Workaround then david can't solve the bearer token issue
-                // 'Cookie': 'JSESSIONID=6C0A111CF969B92606A445E8A5E0FB7'
             },
-            body: "TODO: map CQL to this body in front end",
+            body: getCql()
         }
     );
     return response.json();
+}
+
+function getCql(): string {
+    // NOTE: $ only works within svelte components
+    const ast = buildAstFromQuery(currentQuery);
+    const cql = translateAstToCql(ast, false, backendMeasures);
+
+    const library = buildLibrary(`${cql}`)
+    const measure = buildMeasure(library.url, currentMeasures.map(measureItem => measureItem.measure))
+    const query = {lang: "cql", lib: library, measure: measure};
+
+    console.log(btoa(decodeURI(JSON.stringify(query))))
+    return btoa(decodeURI(JSON.stringify(query)));
 }
