@@ -28,6 +28,10 @@
             {
                 "title": "N Isolates (distinct)",
                 "dataKey": "patients"
+            },
+            {
+                "title": "Rows",
+                "dataKey": "observations"
             }
         ]
     }

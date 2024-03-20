@@ -136,19 +136,11 @@
      * @param event - the keyboard event
      */
     const handleKeyDown = (event: KeyboardEvent): void => {
-        console.log(`handleKeyDown: entered`)
-        console.log(`handleKeyDown: inputValue: ${inputValue}`)
-
         if (event.key === "Enter") {
-            console.log(`handleKeyDown: return key pressed`)
             event.preventDefault();
-            console.log(`handleKeyDown: set datavalue`)
             let datavalue: Criteria = {key: inputValue, name: inputValue, description: inputValue}
-            console.log(`handleKeyDown: datavalue declared`)
-            console.log(`handleKeyDown: datavalue: ${datavalue}`)
             addInputValueToStore(datavalue);
         }
-        console.log(`handleKeyDown: finished`)
     };
 
     /**

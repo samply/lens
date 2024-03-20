@@ -23,7 +23,7 @@
 
   const measures = [
     ehds2PatientsMeasure,
-    // ehds2ObservationMeasure,
+    ehds2ObservationMeasure,
   ];
 
   const backendMeasures = `EHDS2_STRAT_DEF_IN_INITIAL_POPULATION`;

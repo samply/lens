@@ -1162,37 +1162,37 @@ EHDS2_STRAT_LABORATORY_CODE_CLASS_STRATIFIER
 //     if (Patient.gender is null) then 'unknown' else Patient.gender
 
 export const ehds2ObservationMeasure = {
-  key: "observations",
+  key: 'observations',
   measure: {
     code: {
-      "text": "observations"
+      'text': 'observations'
     },
     population: [
       {
         code: {
           coding: [
             {
-              system: "http://terminology.hl7.org/CodeSystem/measure-population",
-              code: "initial-population"
+              system: 'http://terminology.hl7.org/CodeSystem/measure-population',
+              code: 'initial-population'
             }
           ]
         },
         criteria: {
-          language: "text/cql-identifier",
-          expression: "Observation"
+          language: 'text/cql-identifier',
+          expression: 'ObservationExists'
         }
       }
     ],
     stratifier: [
       {
         code: {
-          text: "Antibiotic"
+          text: 'PathogenCode',
         },
         criteria: {
-          language: "text/cql",
-          expression: "Antibiotic"
-        }
-      }
+          language: 'text/cql',
+          expression: 'PathogenCode',
+        },
+      },
     ]
   },
   cql:
