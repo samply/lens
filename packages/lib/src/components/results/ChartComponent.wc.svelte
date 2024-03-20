@@ -184,7 +184,6 @@
                 catalogueGroupCode,
             );
         });
-        console.log(aggregatedData);
         return aggregatedData;
     };
 
