@@ -83,6 +83,18 @@
             "hintText": [
                 "Verteilung der Probentypen die mit den identifizierten Patienten verbunden sind."
             ],
+            "accumulatedValues": [
+                {
+                    "name": "frozen-tissue",
+                    "values": [
+                        "tissue-frozen",
+                        "tissue-ffpe",
+                        "tumor-tissue-ffpe",
+                        "normal-tissue-ffpe",
+                        "other-tissue-ffpe"
+                    ]
+                }
+            ],
             "tooltips": {
                 "tissue-ffpe": "Gewebe FFPE",
                 "frozen-tissue": "Gewebe schockgefroren",

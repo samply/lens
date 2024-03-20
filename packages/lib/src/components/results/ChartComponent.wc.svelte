@@ -7,7 +7,6 @@
             backgroundHoverColor: { type: "Array" },
             perSite: { type: "Boolean" },
             groupRange: { type: "Number" },
-            accumulatedValues: { type: "Array" },
         },
     }}
 />
@@ -53,10 +52,6 @@
     export let filterRegex: string = "";
     export let groupingLabel: string = "";
     export let viewScales: boolean = chartType !== "pie" ? true : false;
-    export let accumulatedValues:
-        | { name: string; values: string[] }[]
-        | undefined = undefined;
-
     let options: ChartOption;
     $: options =
         ($lensOptions?.chartOptions &&
@@ -269,8 +264,11 @@
          * e.g. {name: "frozen-tissue", values: ["tissue-frozen","tissue-ffpe"]}
          * will remove the values from the chart and add their accumulated value to "frozen-tissue"
          */
-        if (accumulatedValues !== undefined && accumulatedValues.length > 0) {
-            accumulatedValues.forEach((valueToAccumulate) => {
+        if (
+            options.accumulatedValues !== undefined &&
+            options.accumulatedValues.length > 0
+        ) {
+            options.accumulatedValues.forEach((valueToAccumulate) => {
                 const aggregationCount: number = accumulateValues(
                     responseStore,
                     valueToAccumulate.values,

@@ -265,18 +265,6 @@
                     chartType="bar"
                     xAxisTitle="Probentypen"
                     yAxisTitle="Probenanzahl"
-                    accumulatedValues={JSON.stringify([
-                        {
-                            name: "frozen-tissue",
-                            values: [
-                                "tissue-frozen",
-                                "tissue-ffpe",
-                                "tumor-tissue-ffpe",
-                                "normal-tissue-ffpe",
-                                "other-tissue-ffpe",
-                            ],
-                        },
-                    ])}
                     filterRegex="^(?!(tissue-other|buffy-coat|peripheral-blood-cells|dried-whole-blood|swab|ascites|stool-faeces|saliva|liquid-other|derivative-other))"
                     backgroundColor={JSON.stringify(barChartBackgroundColors)}
                 >
