@@ -28,3 +28,4 @@ TODO
 .env
 docker-compose.override.yml
 *.priv.pem
+traefik.yaml

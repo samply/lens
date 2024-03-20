@@ -64,6 +64,9 @@ export class Spot {
 
             const eventSource = new EventSource(
                 `${this.url.toString()}beam/${this.currentTask}?wait_count=${this.sites.length}`,
+                {
+                    withCredentials: true,
+                },
             );
             eventSource.addEventListener("new_result", (message) => {
                 const response: BeamResult = JSON.parse(message.data);
