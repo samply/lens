@@ -19,8 +19,7 @@ services:
       - "default"
 
   spot:
-    # NOTE: This will be replaced by https://github.com/samply/spot soon.
-    image: samply/rustyspot:refactor-evenMore
+    image: samply/rustyspot:main
     ports:
       - 8080:8080
     environment:
