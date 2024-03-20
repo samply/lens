@@ -27,3 +27,4 @@ TODO
 # Deployment Files
 .env
 docker-compose.override.yml
+*.priv.pem
