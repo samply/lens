@@ -69,6 +69,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.services.spot.loadbalancer.server.port=8080"
       - "traefik.http.middlewares.corsheaders.headers.accesscontrolallowmethods=GET,OPTIONS,POST"
+      - "traefik.http.middlewares.corsheaders.headers.accesscontrolallowheaders=content-type"
       - "traefik.http.middlewares.corsheaders.headers.accesscontrolalloworiginlist=https://${GUI_HOST}"
       - "traefik.http.middlewares.corsheaders.headers.accesscontrolallowcredentials=true"
       - "traefik.http.middlewares.corsheaders.headers.accesscontrolmaxage=-1"
