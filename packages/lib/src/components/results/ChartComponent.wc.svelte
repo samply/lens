@@ -52,7 +52,6 @@
     export let filterRegex: string = "";
     export let groupingLabel: string = "";
     export let viewScales: boolean = chartType !== "pie" ? true : false;
-
     let options: ChartOption;
     $: options =
         ($lensOptions?.chartOptions &&
@@ -171,6 +170,23 @@
         },
     };
 
+    const accumulateValues = (
+        responseStore: ResponseStore,
+        valuesToAccumulate: string[],
+        catalogueGroupCode: string,
+    ): number => {
+        let aggregatedData = 0;
+
+        valuesToAccumulate.forEach((value: string) => {
+            aggregatedData += getAggregatedPopulationForStratumCode(
+                responseStore,
+                value,
+                catalogueGroupCode,
+            );
+        });
+        return aggregatedData;
+    };
+
     /**
      * gets the aggregated population for a given stratum code
      * @param responseStore - the response store
@@ -239,6 +255,36 @@
                 );
                 combinedSubGroupData.data.push(aggregationCount);
                 combinedSubGroupData.labels.push(aggregation);
+            });
+        }
+
+        /**
+         * if accumulated values are set, accumulate the values of the given stratum codes and adds them to the chart
+         * e.g. {name: "frozen-tissue", values: ["tissue-frozen","tissue-ffpe"]}
+         * will remove the values from the chart and add their accumulated value to "frozen-tissue"
+         */
+        if (
+            options.accumulatedValues !== undefined &&
+            options.accumulatedValues.length > 0
+        ) {
+            options.accumulatedValues.forEach((valueToAccumulate) => {
+                const aggregationCount: number = accumulateValues(
+                    responseStore,
+                    valueToAccumulate.values,
+                    catalogueGroupCode,
+                );
+
+                combinedSubGroupData.data.push(aggregationCount);
+                combinedSubGroupData.labels.push(valueToAccumulate.name);
+
+                for (let i = 0; i < combinedSubGroupData.labels.length; i++) {
+                    const element: string = combinedSubGroupData.labels[i];
+                    if (valueToAccumulate.values.includes(element)) {
+                        combinedSubGroupData.labels.splice(i, 1);
+                        combinedSubGroupData.data.splice(i, 1);
+                        i--;
+                    }
+                }
             });
         }
 
@@ -384,7 +430,11 @@
          * will be aggregated in groups if a divider is set
          * eg. 'C30', 'C31.1', 'C31.2' -> 'C31' when divider is '.'
          */
-        let chartData = getChartDataSets(responseStore, chartLabels);
+        let chartData: ChartDataSets = getChartDataSets(
+            responseStore,
+            chartLabels,
+        );
+
         chart.data.datasets = chartData.data;
         chartLabels = chartData.labels;
 

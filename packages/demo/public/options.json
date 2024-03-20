@@ -83,9 +83,29 @@
             "hintText": [
                 "Verteilung der Probentypen die mit den identifizierten Patienten verbunden sind."
             ],
+            "accumulatedValues": [
+                {
+                    "name": "ffpe-tissue",
+                    "values": [
+                        "tissue-ffpe",
+                        "tumor-tissue-ffpe",
+                        "normal-tissue-ffpe",
+                        "other-tissue-ffpe"
+                    ]
+                },
+                {
+                    "name": "frozen-tissue",
+                    "values": [
+                        "tissue-frozen",
+                        "tumor-tissue-frozen",
+                        "normal-tissue-frozen",
+                        "other-tissue-frozen"
+                    ]
+                }
+            ],
             "tooltips": {
-                "tissue-ffpe": "Gewebe FFPE",
-                "tissue-frozen": "Gewebe schockgefroren",
+                "ffpe-tissue": "Gewebe FFPE",
+                "frozen-tissue": "Gewebe schockgefroren",
                 "tissue-other": "Gewebe, Andere Konservierungsart",
                 "whole-blood": "Vollblut",
                 "blood-serum": "Serum",
@@ -106,8 +126,8 @@
                 "derivative-other": "Derivat, Andere"
             },
             "legendMapping":{
-                "tissue-ffpe": "Gewebe FFPE",
-                "tissue-frozen": "Gewebe schockgefroren",
+                "ffpe-tissue": "Gewebe FFPE",
+                "frozen-tissue": "Gewebe schockgefroren",
                 "tissue-other": "Gewebe, Andere Konservierungsart",
                 "whole-blood": "Vollblut",
                 "blood-serum": "Serum",
