@@ -45,7 +45,8 @@
     ["age_class", "AgeClass"],
     ["hospital_unit_type", "HospitalUnitType"],
     ["hospital_id", "HospitalId"],
-    ["laboratory_code", "LaboratoryCode"]
+    ["laboratory_code", "LaboratoryCode"],
+    ["pathogen_code", "PathogenCode"]
   ];
 
   // VITE_TARGET_ENVIRONMENT should be set by the ci pipeline
@@ -147,16 +148,6 @@
                 backgroundColor={JSON.stringify(barChartBackgroundColors)}
         />
       </div>
-      <div class="chart-wrapper">
-        <lens-chart
-                title="Hospital Unit Type"
-                catalogueGroupCode="hospital_unit_type"
-                chartType="bar"
-                xAxisTitle="Unit type"
-                yAxisTitle="Number of patients"
-                backgroundColor={JSON.stringify(barChartBackgroundColors)}
-        />
-      </div>
       <div class="chart-wrapper chart-age-distribution">
         <lens-chart
                 title="Hospital ID"
@@ -176,6 +167,26 @@
                 yAxisTitle="Number of patients"
                 backgroundColor={JSON.stringify(barChartBackgroundColors)}
         />
+        <div class="chart-wrapper">
+          <lens-chart
+                  title="Hospital Unit Type"
+                  catalogueGroupCode="hospital_unit_type"
+                  chartType="bar"
+                  xAxisTitle="Unit type"
+                  yAxisTitle="Number of patients"
+                  backgroundColor={JSON.stringify(barChartBackgroundColors)}
+          />
+        </div>
+        <div class="chart-wrapper">
+          <lens-chart
+                  title="Pathogen Code"
+                  catalogueGroupCode="pathogen_code"
+                  chartType="bar"
+                  xAxisTitle="Code"
+                  yAxisTitle="Number of patients"
+                  backgroundColor={JSON.stringify(barChartBackgroundColors)}
+          />
+        </div>
       </div>
     </div>
   </div>

@@ -42,6 +42,22 @@
                 "criteria": []
             },
             {
+                "key": "hospital_id",
+                "name": "Hospital ID",
+                "fieldType": "string",
+                "type": "EQUALS",
+                "system": "",
+                "criteria": []
+            },
+            {
+                "key": "laboratory_code",
+                "name": "Laboratory code",
+                "fieldType": "string",
+                "type": "EQUALS",
+                "system": "",
+                "criteria": []
+            },
+            {
                 "key": "hospital_unit_type",
                 "name": "Hospital unit type",
                 "system": "",
@@ -114,22 +130,61 @@
                         "description": "Urology Ward"
                     }
                 ]
-            },
+            }
+        ]
+    },
+    {
+        "key": "observation",
+        "name": "Isolate AMR [Group]",
+        "childCategories": [
             {
-                "key": "hospital_id",
-                "name": "Hospital ID",
-                "fieldType": "string",
-                "type": "EQUALS",
+                "key": "pathogen_code",
+                "name": "Pathogen code",
                 "system": "",
-                "criteria": []
-            },
-            {
-                "key": "laboratory_code",
-                "name": "Laboratory code",
-                "fieldType": "string",
+                "fieldType": "single-select",
                 "type": "EQUALS",
-                "system": "",
-                "criteria": []
+                "criteria": [
+                    {
+                        "key": "ACISPP",
+                        "name": "Acinetobacter spp",
+                        "description": "Acinetobacter spp"
+                    },
+                    {
+                        "key": "ENCFAE",
+                        "name": "Enterococcus faecalis",
+                        "description": "Enterococcus faecalis"
+                    },
+                    {
+                        "key": "ENCFAI",
+                        "name": "Enterococcus faecium",
+                        "description": "Enterococcus faecium"
+                    },
+                    {
+                        "key": "ESCCOL",
+                        "name": "Escherichia coli",
+                        "description": "Escherichia coli"
+                    },
+                    {
+                        "key": "KLEPNE",
+                        "name": "Klebsiella pneumoniae",
+                        "description": "Klebsiella pneumoniae"
+                    },
+                    {
+                        "key": "PSEAER",
+                        "name": "Pseudomonas aeruginosa",
+                        "description": "Pseudomonas aeruginosa"
+                    },
+                    {
+                        "key": "STAAUR",
+                        "name": "Staphylococcus aureus",
+                        "description": "Staphylococcus aureus"
+                    },
+                    {
+                        "key": "STRPNE",
+                        "name": "Streptococcus pneumoniae",
+                        "description": "Streptococcus pneumoniae"
+                    }
+                ]
             }
         ]
     }

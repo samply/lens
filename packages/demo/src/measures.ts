@@ -1167,6 +1167,12 @@ export const ehds2ObservationMeasure = {
     code: {
       'text': 'observations'
     },
+    extension: [
+      {
+        url: 'http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis',
+        valueCode: 'Observation',
+      },
+    ],
     population: [
       {
         code: {
@@ -1179,7 +1185,7 @@ export const ehds2ObservationMeasure = {
         },
         criteria: {
           language: 'text/cql-identifier',
-          expression: 'ObservationExists'
+          expression: 'ObservationList'
         }
       }
     ],

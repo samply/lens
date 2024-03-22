@@ -153,6 +153,7 @@ const getSingleton = (criterion: AstBottomLayerValue): string => {
                 case "patientHospitalUnitType":
                 case "patientHospitalId":
                 case "patientLaboratoryCode":
+                case "observationPathogenCode":
 
                 case "TNMp":
                 case "TNMc": {
