@@ -4730,7 +4730,7 @@
                                     [
                                         {
                                             "value": "diagnosis",
-                                            "name": "C91.0"
+                                            "name": "C91.0%"
                                         }
                                     ],
                                     [
@@ -4789,7 +4789,7 @@
                                     [
                                         {
                                             "value": "diagnosis",
-                                            "name": "C91.8"
+                                            "name": "C91.8%"
                                         }
                                     ],
                                     [
@@ -4821,17 +4821,17 @@
                             },
                             {
                                 "key": "urn:dktk:code:114:2",
-                                "name": "Lymphatische Leukämie: Prolymphozytenleukämie",
+                                "name": "Lymphatische Leukämie: Prolymphozytäre Leukämie",
                                 "description": "",
                                 "aggregatedValue": [
                                     [
                                         {
                                             "value": "diagnosis",
-                                            "name": "C91.3"
+                                            "name": "C91.3%"
                                         },
                                         {
                                             "value": "diagnosis",
-                                            "name": "C91.6"
+                                            "name": "C91.6%"
                                         }
                                     ],
                                     [
@@ -4894,7 +4894,7 @@
                                     [
                                         {
                                             "value": "diagnosis",
-                                            "name": "C95.0"
+                                            "name": "C95.0%"
                                         }
                                     ],
                                     [
@@ -4938,39 +4938,39 @@
                                     [
                                         {
                                             "value": "diagnosis",
-                                            "name": "C92.0"
+                                            "name": "C92.0%"
                                         },
                                         {
                                             "value": "diagnosis",
-                                            "name": "C92.5"
+                                            "name": "C92.5%"
                                         },
                                         {
                                             "value": "diagnosis",
-                                            "name": "C92.6"
+                                            "name": "C92.6%"
                                         },
                                         {
                                             "value": "diagnosis",
-                                            "name": "C92.8"
+                                            "name": "C92.8%"
                                         },
                                         {
                                             "value": "diagnosis",
-                                            "name": "C92.9"
+                                            "name": "C92.9%"
                                         },
                                         {
                                             "value": "diagnosis",
-                                            "name": "C93.0"
+                                            "name": "C93.0%"
                                         },
                                         {
                                             "value": "diagnosis",
-                                            "name": "C94.0"
+                                            "name": "C94.0%"
                                         },
                                         {
                                             "value": "diagnosis",
-                                            "name": "C94.2"
+                                            "name": "C94.2%"
                                         },
                                         {
                                             "value": "diagnosis",
-                                            "name": "C94.7"
+                                            "name": "C94.7%"
                                         }
                                     ],
                                     [
@@ -5047,13 +5047,13 @@
                             },
                             {
                                 "key": "urn:dktk:code:117:2",
-                                "name": "Myeloische Leukämie: Akute Promyelozytenleukämie",
+                                "name": "Myeloische Leukämie: Akute Promyelozyten-Leukämie (PCL)",
                                 "description": "",
                                 "aggregatedValue": [
                                     [
                                         {
                                             "value": "diagnosis",
-                                            "name": "C92.4"
+                                            "name": "C92.4%"
                                         }
                                     ],
                                     [
@@ -5072,11 +5072,11 @@
                                     [
                                         {
                                             "value": "diagnosis",
-                                            "name": "C92.1"
+                                            "name": "C92.1%"
                                         },
                                         {
                                             "value": "diagnosis",
-                                            "name": "C92.2"
+                                            "name": "C92.2%"
                                         }
                                     ],
                                     [
@@ -5225,15 +5225,15 @@
                                         },
                                         {
                                             "value": "diagnosis",
-                                            "name": "C92.0"
+                                            "name": "C92.0%"
                                         },
                                         {
                                             "value": "diagnosis",
-                                            "name": "C93.1"
+                                            "name": "C93.1%"
                                         },
                                         {
                                             "value": "diagnosis",
-                                            "name": "C93.3"
+                                            "name": "C93.3%"
                                         }
                                     ],
                                     [
@@ -5349,7 +5349,7 @@
                                     [
                                         {
                                             "value": "diagnosis",
-                                            "name": "C94.7"
+                                            "name": "C94.7%"
                                         }
                                     ],
                                     [
@@ -5656,7 +5656,7 @@
                                     [
                                         {
                                             "value": "diagnosis",
-                                            "name": "C91.4"
+                                            "name": "C91.4%"
                                         }
                                     ],
                                     [
@@ -5831,7 +5831,7 @@
                                         },
                                         {
                                             "value": "diagnosis",
-                                            "name": "C94.3"
+                                            "name": "C94.3%"
                                         }
                                     ],
                                     [
@@ -9000,6 +9000,11 @@
                         "description": "Extranodales Marginalzonen-B-Zell-Lymphom des Mukosa-assoziierten lymphatischen Gewebes [MALT-Lymphom]: Ohne Angabe einer kompletten Remission"
                     },
                     {
+                        "key": "C88.4",
+                        "name": "C88.4",
+                        "description": "Extranodales Marginalzonen-B-Zell-Lymphom des Mukosa-assoziierten lymphatischen Gewebes [MALT-Lymphom]"
+                    },
+                    {
                         "key": "C88.31",
                         "name": "C88.31",
                         "description": "Immunproliferative Dünndarmkrankheit: In kompletter Remission"
@@ -9010,6 +9015,11 @@
                         "description": "Immunproliferative Dünndarmkrankheit: Ohne Angabe einer kompletten Remission"
                     },
                     {
+                        "key": "C88.0",
+                        "name": "C88.0",
+                        "description": "Makroglobulinämie Waldenström"
+                    },
+                    {
                         "key": "C88.01",
                         "name": "C88.01",
                         "description": "Makroglobulinämie Waldenström: In kompletter Remission"
@@ -9018,6 +9028,21 @@
                         "key": "C88.00",
                         "name": "C88.00",
                         "description": "Makroglobulinämie Waldenström: Ohne Angabe einer kompletten Remission"
+                    },
+                    {
+                        "key": "C88.1",
+                        "name": "C88.1",
+                        "description": "Nodulär-sklerosierendes (klassisches) Hodgkin-Lymphom"
+                    },
+                    {
+                        "key": "C88.2",
+                        "name": "C88.2",
+                        "description": "Sonstige Schwerkettenkrankheit"
+                    },
+                    {
+                        "key": "C88.3",
+                        "name": "C88.3",
+                        "description": "Immunproliferative Dünndarmkrankheit"
                     },
                     {
                         "key": "C88.21",
@@ -9033,6 +9058,11 @@
                         "key": "C88.71",
                         "name": "C88.71",
                         "description": "Sonstige bösartige immunproliferative Krankheiten: In kompletter Remission"
+                    },
+                    {
+                        "key": "C88.7",
+                        "name": "C88.7",
+                        "description": "Sonstige bösartige immunproliferative Krankheiten"
                     },
                     {
                         "key": "C88.70",
@@ -14449,7 +14479,7 @@
                     {
                         "key": "C88.9",
                         "name": "C88.9",
-                        "description": ""
+                        "description": "Bösartige immunproliferative Krankheit, nicht näher bezeichnet"
                     },
                     {
                         "key": "C90.0",
