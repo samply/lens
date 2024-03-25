@@ -212,7 +212,7 @@
         </div>
         <div class="chart-wrapper">
           <lens-chart
-                  title="SIR Code"
+                  title="Data source"
                   catalogueGroupCode="data_source"
                   chartType="bar"
                   xAxisTitle="Code"
