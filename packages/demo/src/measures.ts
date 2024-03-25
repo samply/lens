@@ -1196,6 +1196,33 @@ export const ehds2ObservationMeasure = {
           expression: 'PathogenCode',
         },
       },
+      {
+        code: {
+          text: 'AntibioticCode',
+        },
+        criteria: {
+          language: 'text/cql',
+          expression: 'AntibioticCode',
+        },
+      },
+      {
+        code: {
+          text: 'SirCode',
+        },
+        criteria: {
+          language: 'text/cql',
+          expression: 'SirCode',
+        },
+      },
+      {
+        code: {
+          text: 'DataSource',
+        },
+        criteria: {
+          language: 'text/cql',
+          expression: 'DataSource',
+        },
+      },
     ]
   },
   cql:

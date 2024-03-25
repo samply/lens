@@ -46,7 +46,10 @@
     ["hospital_unit_type", "HospitalUnitType"],
     ["hospital_id", "HospitalId"],
     ["laboratory_code", "LaboratoryCode"],
-    ["pathogen_code", "PathogenCode"]
+    ["pathogen_code", "PathogenCode"],
+    ["antibiotic_code", "AntibioticCode"],
+    ["sir_code", "SirCode"],
+    ["data_source", "DataSource"],
   ];
 
   // VITE_TARGET_ENVIRONMENT should be set by the ci pipeline
@@ -181,6 +184,36 @@
           <lens-chart
                   title="Pathogen Code"
                   catalogueGroupCode="pathogen_code"
+                  chartType="bar"
+                  xAxisTitle="Code"
+                  yAxisTitle="Number of patients"
+                  backgroundColor={JSON.stringify(barChartBackgroundColors)}
+          />
+        </div>
+        <div class="chart-wrapper">
+          <lens-chart
+                  title="Antibiotic Code"
+                  catalogueGroupCode="antibiotic_code"
+                  chartType="bar"
+                  xAxisTitle="Code"
+                  yAxisTitle="Number of patients"
+                  backgroundColor={JSON.stringify(barChartBackgroundColors)}
+          />
+        </div>
+        <div class="chart-wrapper">
+          <lens-chart
+                  title="SIR Code"
+                  catalogueGroupCode="sir_code"
+                  chartType="bar"
+                  xAxisTitle="Code"
+                  yAxisTitle="Number of patients"
+                  backgroundColor={JSON.stringify(barChartBackgroundColors)}
+          />
+        </div>
+        <div class="chart-wrapper">
+          <lens-chart
+                  title="SIR Code"
+                  catalogueGroupCode="data_source"
                   chartType="bar"
                   xAxisTitle="Code"
                   yAxisTitle="Number of patients"

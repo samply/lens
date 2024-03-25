@@ -185,6 +185,292 @@
                         "description": "Streptococcus pneumoniae"
                     }
                 ]
+            },
+            {
+                "key": "antibiotic_code",
+                "name": "Antibiotic code",
+                "system": "",
+                "fieldType": "single-select",
+                "type": "EQUALS",
+                "criteria": [
+                    {
+                        "key": "AMC",
+                        "name": "Amoxicillin clavulanic acid",
+                        "description": "Amoxicillin clavulanic acid"
+                    },
+                    {
+                        "key": "AMK",
+                        "name": "Amikacin",
+                        "description": "Amikacin"
+                    },
+                    {
+                        "key": "AMP",
+                        "name": "Ampicillin",
+                        "description": "Ampicillin"
+                    },
+                    {
+                        "key": "AMX",
+                        "name": "Amoxicillin",
+                        "description": "Amoxicillin"
+                    },
+                    {
+                        "key": "ATM",
+                        "name": "Aztreonam",
+                        "description": "Aztreonam"
+                    },
+                    {
+                        "key": "AZM",
+                        "name": "Azithromycin",
+                        "description": "Azithromycin"
+                    },
+                    {
+                        "key": "CAZ",
+                        "name": "Ceftazidime",
+                        "description": "Ceftazidime"
+                    },
+                    {
+                        "key": "CIP",
+                        "name": "Ciprofloxacin",
+                        "description": "Ciprofloxacin"
+                    },
+                    {
+                        "key": "CLO",
+                        "name": "Cloxacillin",
+                        "description": "Cloxacillin"
+                    },
+                    {
+                        "key": "CLR",
+                        "name": "Clarithromycin",
+                        "description": "Clarithromycin"
+                    },
+                    {
+                        "key": "COL",
+                        "name": "Colistin",
+                        "description": "Colistin"
+                    },
+                    {
+                        "key": "CRO",
+                        "name": "Ceftriaxone",
+                        "description": "Ceftriaxone"
+                    },
+                    {
+                        "key": "CTX",
+                        "name": "Cefotaxime",
+                        "description": "Cefotaxime"
+                    },
+                    {
+                        "key": "CZA",
+                        "name": "Ceftazidime-avibactam",
+                        "description": "Ceftazidime-avibactam"
+                    },
+                    {
+                        "key": "DAP",
+                        "name": "Daptomycin",
+                        "description": "Daptomycin"
+                    },
+                    {
+                        "key": "DIC",
+                        "name": "Dicloxacillin",
+                        "description": "Dicloxacillin"
+                    },
+                    {
+                        "key": "DOR",
+                        "name": "Doripenem",
+                        "description": "Doripenem"
+                    },
+                    {
+                        "key": "ERY",
+                        "name": "Erythromycin",
+                        "description": "Erythromycin"
+                    },
+                    {
+                        "key": "ETP",
+                        "name": "Ertapenem",
+                        "description": "Ertapenem"
+                    },
+                    {
+                        "key": "FEP",
+                        "name": "Cefepime",
+                        "description": "Cefepime"
+                    },
+                    {
+                        "key": "FLC",
+                        "name": "Flucloxacillin",
+                        "description": "Flucloxacillin"
+                    },
+                    {
+                        "key": "FOS",
+                        "name": "Fosfomycin",
+                        "description": "Fosfomycin"
+                    },
+                    {
+                        "key": "FOX",
+                        "name": "Cefoxitin",
+                        "description": "Cefoxitin"
+                    },
+                    {
+                        "key": "GEH",
+                        "name": "Gentamicin-High",
+                        "description": "Gentamicin-High"
+                    },
+                    {
+                        "key": "GEN",
+                        "name": "Gentamicin",
+                        "description": "Gentamicin"
+                    },
+                    {
+                        "key": "IPM",
+                        "name": "Imipenem",
+                        "description": "Imipenem"
+                    },
+                    {
+                        "key": "LNZ",
+                        "name": "Linezolid",
+                        "description": "Linezolid"
+                    },
+                    {
+                        "key": "LVX",
+                        "name": "Levofloxacin",
+                        "description": "Levofloxacin"
+                    },
+                    {
+                        "key": "MEC",
+                        "name": "Mecillinam",
+                        "description": "Mecillinam"
+                    },
+                    {
+                        "key": "MEM",
+                        "name": "Meropenem",
+                        "description": "Meropenem"
+                    },
+                    {
+                        "key": "MET",
+                        "name": "Methicillin",
+                        "description": "Methicillin"
+                    },
+                    {
+                        "key": "MFX",
+                        "name": "Moxifloxacin",
+                        "description": "Moxifloxacin"
+                    },
+                    {
+                        "key": "NAL",
+                        "name": "Nalidixic acid",
+                        "description": "Nalidixic acid"
+                    },
+                    {
+                        "key": "NET",
+                        "name": "Netilmicin",
+                        "description": "Netilmicin"
+                    },
+                    {
+                        "key": "NIT",
+                        "name": "Nitrofurantoin",
+                        "description": "Nitrofurantoin"
+                    },
+                    {
+                        "key": "NOR",
+                        "name": "Norfloxacin",
+                        "description": "Norfloxacin"
+                    },
+                    {
+                        "key": "OFX",
+                        "name": "Ofloxacin",
+                        "description": "Ofloxacin"
+                    },
+                    {
+                        "key": "OXA",
+                        "name": "Oxacillin",
+                        "description": "Oxacillin"
+                    },
+                    {
+                        "key": "PEN",
+                        "name": "Penicillin",
+                        "description": "Penicillin"
+                    },
+                    {
+                        "key": "PIP",
+                        "name": "Piperacillin",
+                        "description": "Piperacillin"
+                    },
+                    {
+                        "key": "POL",
+                        "name": "Polymixin B",
+                        "description": "Polymixin B"
+                    },
+                    {
+                        "key": "RIF",
+                        "name": "Rifampin",
+                        "description": "Rifampin"
+                    },
+                    {
+                        "key": "SXT",
+                        "name": "Trimethoprim-sulfamethoxazole",
+                        "description": "Trimethoprim-sulfamethoxazole"
+                    },
+                    {
+                        "key": "TEC",
+                        "name": "Teicoplanin",
+                        "description": "Teicoplanin"
+                    },
+                    {
+                        "key": "TEM",
+                        "name": "Temocillin",
+                        "description": "Temocillin"
+                    },
+                    {
+                        "key": "TGC",
+                        "name": "Tigecycline",
+                        "description": "Tigecycline"
+                    },
+                    {
+                        "key": "TOB",
+                        "name": "Tobramycin",
+                        "description": "Tobramycin"
+                    },
+                    {
+                        "key": "TZP",
+                        "name": "Piperacillin/Tazobactam",
+                        "description": "Piperacillin/Tazobactam"
+                    },
+                    {
+                        "key": "VAN",
+                        "name": "Vancomycin",
+                        "description": "Vancomycin"
+                    }
+                ]
+            },
+            {
+                "key": "sir_code",
+                "name": "SIR code",
+                "system": "",
+                "fieldType": "single-select",
+                "type": "EQUALS",
+                "criteria": [
+                    {
+                        "key": "I",
+                        "name": "Susceptible, increased exposure",
+                        "description": "Susceptible, increased exposure"
+                    },
+                    {
+                        "key": "R",
+                        "name": "Resistant",
+                        "description": "Resistant"
+                    },
+                    {
+                        "key": "S",
+                        "name": "Susceptible, standard dosing regimen",
+                        "description": "Susceptible, standard dosing regimen"
+                    }
+                ]
+            },
+            {
+                "key": "data_source",
+                "name": "Data source",
+                "fieldType": "string",
+                "type": "EQUALS",
+                "system": "",
+                "criteria": []
             }
         ]
     }
