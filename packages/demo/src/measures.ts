@@ -1157,9 +1157,6 @@ EHDS2_STRAT_LABORATORY_CODE_CLASS_STRATIFIER
 
 `,
 };
-// EHDS2_STRAT_GENDER_STRATIFIER
-// define Gender:
-//     if (Patient.gender is null) then 'unknown' else Patient.gender
 
 export const ehds2ObservationMeasure = {
   key: 'observations',
@@ -1167,12 +1164,14 @@ export const ehds2ObservationMeasure = {
     code: {
       'text': 'observations'
     },
+/*
     extension: [
       {
         url: 'http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis',
         valueCode: 'Observation',
       },
     ],
+*/
     population: [
       {
         code: {
@@ -1185,18 +1184,18 @@ export const ehds2ObservationMeasure = {
         },
         criteria: {
           language: 'text/cql-identifier',
-          expression: 'ObservationList'
+          expression: 'ObservationExists'
         }
       }
     ],
     stratifier: [
       {
         code: {
-          text: 'PathogenCode',
+          text: 'PathogenCodeFunction',
         },
         criteria: {
           language: 'text/cql',
-          expression: 'PathogenCode',
+          expression: 'PathogenCodeFunction',
         },
       },
     ]
@@ -1207,15 +1206,4 @@ export const ehds2ObservationMeasure = {
 EHDS2_STRAT_DEF_OBSERVATION
 `
 }
-// EHDS2_STRAT_DEF_OBSERVATION
-// define Observation:
-//     if InInitialPopulation then [Observation] else {} as List<Observation>
-
-//EHDS2_STRAT_ANTIBIOTIC_STRATIFIER
-// define function Antibiotic(observation FHIR.Observation):
-// case FHIRHelpers.ToCode(observation.value.coding.where(system = 'https://ecdc.amr/antibiotic-codes').first())
-// when Code 'MEM' from Antibiotic then 'MEM'
-// when null  then 'Unknown'
-// else 'Unknown'
-// end
 
