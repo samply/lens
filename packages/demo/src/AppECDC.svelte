@@ -23,7 +23,7 @@
 
   const measures = [
     ehds2PatientsMeasure,
-    ehds2ObservationMeasure,
+    //ehds2ObservationMeasure,
   ];
 
   const backendMeasures = `EHDS2_STRAT_DEF_IN_INITIAL_POPULATION`;
@@ -58,10 +58,13 @@
   //         : "https://spot/";
   //                 ? "http://spot/"
   //                 : "http://spot/";
-          ? "http://lens/"
-          : "http://lens/";
+//          ? "http://lens/"
+  //        : "http://lens/";
+                  ? "https://ehds2-lens.swedencentral.cloudapp.azure.com/backend/"
+                  : "https://ehds2-lens.swedencentral.cloudapp.azure.com/backend/";
+
   const uiSiteMap: string[][] = [
-    ["ecdc-bridgehead-test1", "Test1"]
+    ["testse", "Test1"]
   ];
 
   const genderHeaders: Map<string, string> = new Map<string, string>()
@@ -72,11 +75,12 @@
 
   const backendConfig = {
     // url: (import.meta.env.PROD) ? backendUrl : "http://spot",
-    url: (import.meta.env.PROD) ? backendUrl : "http://lens",
+    //url: (import.meta.env.PROD) ? backendUrl : "http://lens",
+    url: (import.meta.env.PROD) ? backendUrl : "https://ehds2-lens.swedencentral.cloudapp.azure.com/backend/",
     // url: (import.meta.env.PROD) ? backendUrl : "https://spot",
     // url: (import.meta.env.PROD) ? backendUrl : "https://spot.example.org", // Test
     backends: [
-      "ecdc-bridgehead-test1"
+      "testse"
     ],
     uiSiteMap: uiSiteMap,
     catalogueKeyToResponseKeyMap: catalogueKeyToResponseKeyMap,
