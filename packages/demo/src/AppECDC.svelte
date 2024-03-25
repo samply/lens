@@ -23,7 +23,7 @@
 
   const measures = [
     ehds2PatientsMeasure,
-    //ehds2ObservationMeasure,
+    ehds2ObservationMeasure,
   ];
 
   const backendMeasures = `EHDS2_STRAT_DEF_IN_INITIAL_POPULATION`;
@@ -46,7 +46,7 @@
     ["hospital_unit_type", "HospitalUnitType"],
     ["hospital_id", "HospitalId"],
     ["laboratory_code", "LaboratoryCode"],
-    ["pathogen_code", "PathogenCodeFunction"]
+    ["pathogen_code", "PathogenCode"]
   ];
 
   // VITE_TARGET_ENVIRONMENT should be set by the ci pipeline

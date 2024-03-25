@@ -216,7 +216,7 @@ export const cqltemplate = new Map<string, string>([
     [
         // Used by ECDC/EHDS2
         "observationPathogenCode",
-        "PathogenCodeIdentifier = '{{C}}'"
+        "ExistsPathogenCode('{{C}}')"
     ]
 ]);
 
