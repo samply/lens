@@ -1223,6 +1223,42 @@ export const ehds2ObservationMeasure = {
           expression: 'DataSource',
         },
       },
+      {
+        code: {
+          text: 'IsolateId',
+        },
+        criteria: {
+          language: 'text/cql',
+          expression: 'IsolateId',
+        },
+      },
+      {
+        code: {
+          text: 'PatientType',
+        },
+        criteria: {
+          language: 'text/cql',
+          expression: 'PatientType',
+        },
+      },
+      {
+        code: {
+          text: 'ReferenceGuidelinesSir',
+        },
+        criteria: {
+          language: 'text/cql',
+          expression: 'ReferenceGuidelinesSir',
+        },
+      },
+      {
+        code: {
+          text: 'ReportingCountry',
+        },
+        criteria: {
+          language: 'text/cql',
+          expression: 'ReportingCountry',
+        },
+      },
     ]
   },
   cql:

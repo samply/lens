@@ -232,6 +232,26 @@ export const cqltemplate = new Map<string, string>([
         // Used by ECDC/EHDS2
         "observationDataSource",
         "ExistsDataSource('{{C}}')"
+    ],
+    [
+        // Used by ECDC/EHDS2
+        "observationIsolateId",
+        "ExistsIsolateId('{{C}}')"
+    ],
+    [
+        // Used by ECDC/EHDS2
+        "observationPatientType",
+        "ExistsPatientType('{{C}}')"
+    ],
+    [
+        // Used by ECDC/EHDS2
+        "observationReferenceGuidelinesSir",
+        "ExistsReferenceGuidelinesSir('{{C}}')"
+    ],
+    [
+        // Used by ECDC/EHDS2
+        "observationReportingCountry",
+        "ExistsReportingCountry('{{C}}')"
     ]
 ]);
 
@@ -360,5 +380,9 @@ export const criterionMap = new Map<string, { type: string; alias?: string[] }>(
         ["antibiotic_code", { type: "observationAntibioticCode" }],
         ["sir_code", { type: "observationSirCode" }],
         ["data_source", { type: "observationDataSource" }],
+        ["isolate_id", { type: "observationIsolateId" }],
+        ["patient_type", { type: "observationPatientType" }],
+        ["reference_guidelines_sir", { type: "observationReferenceGuidelinesSir" }],
+        ["reporting_country", { type: "observationReportingCountry" }],
     ],
 );

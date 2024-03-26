@@ -50,6 +50,10 @@
     ["antibiotic_code", "AntibioticCode"],
     ["sir_code", "SirCode"],
     ["data_source", "DataSource"],
+    ["isolate_id", "IsolateId"],
+    ["patient_type", "PatientType"],
+    ["reference_guidelines_sir", "ReferenceGuidelinesSir"],
+    ["reporting_country", "ReportingCountry"],
   ];
 
   // VITE_TARGET_ENVIRONMENT should be set by the ci pipeline
@@ -216,6 +220,46 @@
                   catalogueGroupCode="data_source"
                   chartType="bar"
                   xAxisTitle="Code"
+                  yAxisTitle="Number of patients"
+                  backgroundColor={JSON.stringify(barChartBackgroundColors)}
+          />
+        </div>
+        <div class="chart-wrapper">
+          <lens-chart
+                  title="Isolate ID"
+                  catalogueGroupCode="isolate_id"
+                  chartType="bar"
+                  xAxisTitle="ID"
+                  yAxisTitle="Number of patients"
+                  backgroundColor={JSON.stringify(barChartBackgroundColors)}
+          />
+        </div>
+        <div class="chart-wrapper">
+          <lens-chart
+                  title="Patient type"
+                  catalogueGroupCode="patient_type"
+                  chartType="bar"
+                  xAxisTitle="Type"
+                  yAxisTitle="Number of patients"
+                  backgroundColor={JSON.stringify(barChartBackgroundColors)}
+          />
+        </div>
+        <div class="chart-wrapper">
+          <lens-chart
+                  title="Reference guidelines SIR"
+                  catalogueGroupCode="reference_guidelines_sir"
+                  chartType="bar"
+                  xAxisTitle="Guidelines"
+                  yAxisTitle="Number of patients"
+                  backgroundColor={JSON.stringify(barChartBackgroundColors)}
+          />
+        </div>
+        <div class="chart-wrapper chart-age-distribution">
+          <lens-chart
+                  title="Reporting country"
+                  catalogueGroupCode="reporting_country"
+                  chartType="bar"
+                  xAxisTitle="Country"
                   yAxisTitle="Number of patients"
                   backgroundColor={JSON.stringify(barChartBackgroundColors)}
           />
