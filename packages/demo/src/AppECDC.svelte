@@ -2,7 +2,7 @@
   import "../../lib";
   import type { CatalogueText } from "../../lib/src/types/texts";
   import {
-    ehds2PatientsMeasure,
+    ehds2PatientMeasure,
     ehds2ObservationMeasure,
   } from "./measures";
 
@@ -22,11 +22,11 @@
     });
 
   const measures = [
-    ehds2PatientsMeasure,
-    //ehds2ObservationMeasure,
+    ehds2PatientMeasure,
+    ehds2ObservationMeasure,
   ];
 
-  const backendMeasures = `EHDS2_STRAT_DEF_IN_INITIAL_POPULATION`;
+  const backendMeasures = `EHDS2_IN_INITIAL_POPULATION`;
 
   const catalogueText: CatalogueText = {
     group: "Group",
@@ -46,15 +46,21 @@
     ["hospital_unit_type", "HospitalUnitType"],
     ["hospital_id", "HospitalId"],
     ["laboratory_code", "LaboratoryCode"],
-    ["pathogen_code", "PathogenCode"]
+    ["pathogen_code", "PathogenCode"],
+    ["antibiotic_code", "AntibioticCode"],
+    ["sir_code", "SirCode"],
+    ["data_source", "DataSource"],
+    ["isolate_id", "IsolateId"],
+    ["patient_type", "PatientType"],
+    ["reference_guidelines_sir", "ReferenceGuidelinesSir"],
+    ["reporting_country", "ReportingCountry"],
   ];
 
   // VITE_TARGET_ENVIRONMENT should be set by the ci pipeline
   const backendUrl =
           import.meta.env.VITE_TARGET_ENVIRONMENT === "production"
-                  ? "https://ehds2-lens.swedencentral.cloudapp.azure.com/backend/"
-                  : "https://ehds2-lens.swedencentral.cloudapp.azure.com/backend/";
-
+          ? "https://ehds2-lens.swedencentral.cloudapp.azure.com/backend/"
+          : "https://ehds2-lens.swedencentral.cloudapp.azure.com/backend/";
   const uiSiteMap: string[][] = [
     ["testse", "Test1"]
   ];
@@ -175,6 +181,76 @@
                   catalogueGroupCode="pathogen_code"
                   chartType="bar"
                   xAxisTitle="Code"
+                  yAxisTitle="Number of patients"
+                  backgroundColor={JSON.stringify(barChartBackgroundColors)}
+          />
+        </div>
+        <div class="chart-wrapper">
+          <lens-chart
+                  title="Antibiotic Code"
+                  catalogueGroupCode="antibiotic_code"
+                  chartType="bar"
+                  xAxisTitle="Code"
+                  yAxisTitle="Number of patients"
+                  backgroundColor={JSON.stringify(barChartBackgroundColors)}
+          />
+        </div>
+        <div class="chart-wrapper">
+          <lens-chart
+                  title="SIR Code"
+                  catalogueGroupCode="sir_code"
+                  chartType="bar"
+                  xAxisTitle="Code"
+                  yAxisTitle="Number of patients"
+                  backgroundColor={JSON.stringify(barChartBackgroundColors)}
+          />
+        </div>
+        <div class="chart-wrapper">
+          <lens-chart
+                  title="Data source"
+                  catalogueGroupCode="data_source"
+                  chartType="bar"
+                  xAxisTitle="Code"
+                  yAxisTitle="Number of patients"
+                  backgroundColor={JSON.stringify(barChartBackgroundColors)}
+          />
+        </div>
+        <div class="chart-wrapper">
+          <lens-chart
+                  title="Isolate ID"
+                  catalogueGroupCode="isolate_id"
+                  chartType="bar"
+                  xAxisTitle="ID"
+                  yAxisTitle="Number of patients"
+                  backgroundColor={JSON.stringify(barChartBackgroundColors)}
+          />
+        </div>
+        <div class="chart-wrapper">
+          <lens-chart
+                  title="Patient type"
+                  catalogueGroupCode="patient_type"
+                  chartType="bar"
+                  xAxisTitle="Type"
+                  yAxisTitle="Number of patients"
+                  backgroundColor={JSON.stringify(barChartBackgroundColors)}
+          />
+        </div>
+        <div class="chart-wrapper">
+          <lens-chart
+                  title="Reference guidelines SIR"
+                  catalogueGroupCode="reference_guidelines_sir"
+                  chartType="bar"
+                  xAxisTitle="Guidelines"
+                  yAxisTitle="Number of patients"
+                  backgroundColor={JSON.stringify(barChartBackgroundColors)}
+          />
+        </div>
+        <div class="chart-wrapper chart-age-distribution">
+          <lens-chart
+                  title="Reporting country"
+                  catalogueGroupCode="reporting_country"
+                  chartType="bar"
+                  xAxisTitle="Country"
                   yAxisTitle="Number of patients"
                   backgroundColor={JSON.stringify(barChartBackgroundColors)}
           />
