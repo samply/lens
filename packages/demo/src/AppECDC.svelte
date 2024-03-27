@@ -59,12 +59,6 @@
   // VITE_TARGET_ENVIRONMENT should be set by the ci pipeline
   const backendUrl =
           import.meta.env.VITE_TARGET_ENVIRONMENT === "production"
-  // ? "https://spot.example.org/" // Production
-  // : "https://spot.example.org/"; // Demo
-  //         ? "https://spot/"
-  //         : "https://spot/";
-  //                 ? "http://spot/"
-  //                 : "http://spot/";
           ? "http://lens/"
           : "http://lens/";
   const uiSiteMap: string[][] = [
@@ -78,10 +72,7 @@
           .set("unknown", "unknown");
 
   const backendConfig = {
-    // url: (import.meta.env.PROD) ? backendUrl : "http://spot",
     url: (import.meta.env.PROD) ? backendUrl : "http://lens",
-    // url: (import.meta.env.PROD) ? backendUrl : "https://spot",
-    // url: (import.meta.env.PROD) ? backendUrl : "https://spot.example.org", // Test
     backends: [
       "ecdc-bridgehead-test1"
     ],
