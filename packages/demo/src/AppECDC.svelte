@@ -2,7 +2,7 @@
   import "../../lib";
   import type { CatalogueText } from "../../lib/src/types/texts";
   import {
-    ehds2PatientsMeasure,
+    ehds2PatientMeasure,
     ehds2ObservationMeasure,
   } from "./measures";
 
@@ -22,11 +22,11 @@
     });
 
   const measures = [
-    ehds2PatientsMeasure,
+    ehds2PatientMeasure,
     ehds2ObservationMeasure,
   ];
 
-  const backendMeasures = `EHDS2_STRAT_DEF_IN_INITIAL_POPULATION`;
+  const backendMeasures = `EHDS2_IN_INITIAL_POPULATION`;
 
   const catalogueText: CatalogueText = {
     group: "Group",

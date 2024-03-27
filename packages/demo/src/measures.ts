@@ -1072,7 +1072,7 @@ export const dktkHistologyMeasure = {
 `,
 };
 
-export const ehds2PatientsMeasure = {
+export const ehds2PatientMeasure = {
   key: 'patients',
   measure: {
     code: {
@@ -1145,19 +1145,14 @@ export const ehds2PatientsMeasure = {
   },
   cql: `
 
-EHDS2_STRAT_GENDER_STRATIFIER
+EHDS2_UTIL
 
-EHDS2_STRAT_AGE_CLASS_STRATIFIER
-
-EHDS2_STRAT_HOSPITAL_UNIT_TYPE_CLASS_STRATIFIER
-
-EHDS2_STRAT_HOSPITAL_ID_CLASS_STRATIFIER
-
-EHDS2_STRAT_LABORATORY_CODE_CLASS_STRATIFIER
+EHDS2_PATIENT
 
 `,
 };
 
+// The CQL in this measure depends on function(s) defined in EHDS2_UTIL
 export const ehds2ObservationMeasure = {
   key: 'observations',
   measure: {
@@ -1264,7 +1259,7 @@ export const ehds2ObservationMeasure = {
   cql:
       `
       
-EHDS2_STRAT_DEF_OBSERVATION
+EHDS2_OBSERVATION
 
 `
 }
