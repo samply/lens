@@ -225,8 +225,8 @@ footer {
 
 
 footer {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  display: flex;
+  justify-content: center;
   padding: var(--gap-s);
   background-color: var(--white);
   border-radius: var(--border-radius-small);
@@ -236,15 +236,16 @@ footer {
   bottom: 0;
 }
 
-.email {
-  justify-self: center;
+footer a {
+  color: var(--blue);
+  padding: 0 var(--gap-xs);
+  border-right: solid 1px var(--blue);
+
 }
 
-.copyright {
-  justify-self: end;
-  text-align: right;
+.imprint {
+  border-right: none;
 }
-
 
 .result-table-hint-text {
   padding-top: 20px;
