@@ -77,8 +77,6 @@
         const ast = buildAstFromQuery($queryStore);
         const cql = translateAstToCql(ast, false, backendMeasures);
 
-        console.log(`getResultsFromBackend: cql: ${cql}`)
-
         const library = buildLibrary(`${cql}`);
         const measure = buildMeasure(
             library.url,
