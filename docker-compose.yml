@@ -10,7 +10,7 @@ services:
       - --entrypoints.web.http.redirections.entrypoint.scheme=https
       - --providers.docker=true
       - --providers.docker.exposedbydefault=false
-      - --providers.file.directory=/conf/
+      # - --providers.file.directory=/conf/
       - --accesslog=true
     ports:
       - "80:80"
@@ -59,6 +59,8 @@ services:
 
   spot:
     image: docker.verbis.dkfz.de/ccp-private/central-spot
+    ports:
+      - 8080:8080
     environment:
       BEAM_SECRET: "${LOCAL_BEAM_SECRET}"
       BEAM_URL: http://beam-proxy:8081
@@ -107,15 +109,28 @@ services:
     command: sh -c "sleep 60 && /app/run.sh"
     profiles: ["development"]
 
-  # project-manager:
-  #   image: project-manager
-  #   labels:
-  #     - "traefik.enable=true"
-  #     - "traefik.http.routers.project-manager.tls=true"
-  #     - "traefik.http.routers.project-manager.rule=Host(`${GUI_HOST}`) && PathPrefix(`/project-manager/`)"
-  #     - "traefik.http.middlewares.project-manager-strip.stripprefix.prefixes=/project-manager"
-  #     - "traefik.http.routers.project-manager.middlewares=project-manager-strip"
-  #     - "traefik.http.services.project-manager.loadbalancer.server.port=8097"
+  project-manager:
+    image: samply/project-manager:develop
+    ports:
+      - 8097:8097
+    environment:
+      OIDC_CLIENT_ID: ${PROJECT_MANAGER_OAUTH_CLIENT_ID}
+      OIDC_CLIENT_SECRET: ${PROJECT_MANAGER_OAUTH_CLIENT_SECRET}
+      OIDC_REALM: ${PROJECT_MANAGER_OAUTH_CLIENT_REALM}
+      OIDC_URL: ${PROJECT_MANAGER_OAUTH_ISSUER_URL}
+    env_file:
+      - env/project-manager.env
+    volumes:
+      - "./templates:/templates"
+      - "./documents:/documents"
+      - "./public-documents:/public-documents"
+
+  project-manager-db:
+    image: postgres:alpine
+    environment:
+      POSTGRES_DB: dev
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: dev
 
 secrets:
   proxy.pem:
