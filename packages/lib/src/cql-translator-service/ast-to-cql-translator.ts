@@ -168,6 +168,9 @@ const getSingleton = (criterion: AstBottomLayerValue): string => {
                                 const expandedValues = criteria.filter(
                                     (value) => value.startsWith(mykey),
                                 );
+                                expandedValues.push(
+                                    criterion.value.slice(0, 5),
+                                );
                                 expression += getSingleton({
                                     key: criterion.key,
                                     type: criterion.type,
