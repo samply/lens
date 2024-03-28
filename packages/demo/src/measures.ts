@@ -1072,6 +1072,17 @@ export const dktkHistologyMeasure = {
 `,
 };
 
+// For Patient resources in EHDS2/ECDC.
+//
+// Defines the measures, which are used for constructing stratifiers, plus the CQL, which
+// does the actual queries. The CQL is actually packed into templates in Focus, all that
+// appears here are the template names as placeholders.
+//
+// The "expression" attributes in the measure definition refer to CQL variables, which
+// supply the values that are used to fill the measure reports.
+//
+// InInitialPopulation is a boolean variable, and will supply "true" for every patient that matches
+// the query. "Gender", etc., are variables that supply a single value for a single patient.
 export const ehds2PatientMeasure = {
   key: 'patients',
   measure: {
@@ -1152,6 +1163,20 @@ EHDS2_PATIENT
 `,
 };
 
+// For Observation resources in EHDS2/ECDC.
+//
+// Defines the measures, which are used for constructing stratifiers, plus the CQL, which
+// does the actual queries. The CQL is actually packed into templates in Focus, all that
+// appears here are the template names as placeholders.
+//
+// The "expression" attributes in the measure definition refer to CQL functions and variables, which
+// supply the values that are used to fill the measure reports.
+//
+// Note the usage of the cqfm-populationBasis extension. This changes the way that measures
+// are built. "ObservationList" is a variable that supplies a list of Observation resources, which are counted.
+// "PathogenCode", etc., are functions that take an Observation as an argument and return a
+// single string value.
+//
 // The CQL in this measure depends on function(s) defined in EHDS2_UTIL
 export const ehds2ObservationMeasure = {
   key: 'observations',

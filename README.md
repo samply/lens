@@ -56,6 +56,63 @@ lens-info-button::part(info-button-icon) {
 ## Build With 
 - [Svelte](https://svelte.dev/)
 
+## Changes made for EHDS2/ECDC
+
+This project is intended to give priveleged researchers the ability to search multiple national nodes for information pertaining to the prevalence of antiobiotic resistant pathogens in European hospitals. It provides searches for relevant terms in the simplified data model used in this project, which only knows about Patients and Observations. There is a [FHIR profile](https://simplifier.net/hd-eu-ecdc-amr-uc/~resources?category=Profile) for this model.
+
+The GUI is called the "AMR Explorer". The biggest customization is the inclusion of a new category for string entry, relized in the component, see:
+
+```
+packages/lib/src/components/catalogue/StringComponent.svelte
+packages/lib/src/components/catalogue/DataTreeElement.svelte
+packages/lib/src/types/treeData.ts
+```
+
+Other GUI customizations include colors (CSS) and icons, see:
+
+```
+packages/demo/src/ecdc.css
+packages/demo/public/ECDC_logo.svg.png
+packages/demo/public/favicon-ecdc.png
+```
+
+The HTML needed to be repurposed from its original DKTK implementation:
+
+```
+packages/demo/index.html
+```
+
+The communication with Spot (Rust) was not working, it was necessary to revert to older code to get this going:
+
+```
+packages/lib/src/classes/spot.ts
+```
+
+The GUI configuration is described in:
+
+```
+packages/demo/src/AppECDC.svelte
+packages/demo/public/catalogues/catalogue-ecdc.json
+```
+
+FHIR measure and CQL definitions can be found in:
+
+```
+packages/demo/src/measures.ts
+```
+
+Search for ehds2PatientMeasure and ehds2ObservationMeasure. All of the CQL has been outsourced to Focus. However, you can see CQL function and variable names defined in these templates in measures.ts and ast-to-cql-translator.ts.
+
+The following files have been changed to add the new queries that are specific to Ecdc:
+
+```
+packages/lib/src/cql-translator-service/ast-to-cql-translator.ts
+packages/lib/src/cql-translator-service/cqlquery-mappings.ts
+
+```
+
+In general, where there are features that are specific to this project, there will also be a comment mentioning EHDS2 and/or ECDC.
+
 ## License
 
 Copyright 2019 - 2023 The Samply Community
