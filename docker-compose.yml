@@ -63,6 +63,7 @@ services:
       BEAM_PROXY_URL: http://beam-proxy:8081
       BEAM_APP_ID: "focus.${LOCAL_BEAM_ID}.${BROKER_HOST}"
       CORS_ORIGIN: "https://${GUI_HOST}"
+      CATALOGUE_URL: "${CATALOGUE_URL}"
     depends_on:
       - "beam-proxy"
     labels:
