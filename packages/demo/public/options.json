@@ -28,7 +28,7 @@
                 "male": "Männlich",
                 "female": "Weiblich",
                 "unknown": "Unbekannt",
-                "other": "Divers / intersexuell"
+                "other": "Divers"
             }
         },
         "diagnosis": {
