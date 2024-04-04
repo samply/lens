@@ -89,7 +89,7 @@
         .set("unknown", "unbekannt");
 
     const backendConfig = {
-        url: import.meta.env.PROD ? backendUrl : "http://localhost:8080",
+        url: import.meta.env.PROD ? backendUrl : "http://localhost:8055",
         backends: [
             "mannheim",
             "freiburg",
