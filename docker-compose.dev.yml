@@ -23,9 +23,9 @@ services:
     ports:
       - 8080:8080
     environment:
-      BEAM_SECRET: "${LOCAL_BEAM_SECRET}"
+      BEAM_SECRET: "${LOCAL_BEAM_SECRET_SPOT}"
       BEAM_PROXY_URL: http://beam-proxy:8081
-      BEAM_APP_ID: "focus.${LOCAL_BEAM_ID}.${BROKER_HOST}"
+      BEAM_APP_ID: "spot.${LOCAL_BEAM_ID}.${BROKER_HOST}"
     depends_on:
       - "beam-proxy"
     profiles:
@@ -36,7 +36,7 @@ services:
     environment:
       BROKER_URL: https://${BROKER_HOST}
       PROXY_ID: ${LOCAL_BEAM_ID}.${BROKER_HOST}
-      APP_focus_KEY: ${LOCAL_BEAM_SECRET}
+      APP_spot_KEY: ${LOCAL_BEAM_SECRET_SPOT}
       PRIVKEY_FILE: /run/secrets/proxy.pem
       ALL_PROXY: ${http_proxy}
     secrets:
