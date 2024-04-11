@@ -113,11 +113,11 @@ services:
     image: samply/project-manager:develop
     ports:
       - 8097:8097
-    environment:
-      OIDC_CLIENT_ID: ${PROJECT_MANAGER_OAUTH_CLIENT_ID}
-      OIDC_CLIENT_SECRET: ${PROJECT_MANAGER_OAUTH_CLIENT_SECRET}
-      OIDC_REALM: ${PROJECT_MANAGER_OAUTH_CLIENT_REALM}
-      OIDC_URL: ${PROJECT_MANAGER_OAUTH_ISSUER_URL}
+    # environment:
+    #   OIDC_CLIENT_ID: ${PROJECT_MANAGER_OAUTH_CLIENT_ID}
+    #   OIDC_CLIENT_SECRET: ${PROJECT_MANAGER_OAUTH_CLIENT_SECRET}
+    #   OIDC_REALM: ${PROJECT_MANAGER_OAUTH_CLIENT_REALM}
+    #   OIDC_URL: ${PROJECT_MANAGER_OAUTH_ISSUER_URL}
     env_file:
       - env/project-manager.env
     volumes:
