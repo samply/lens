@@ -4,8 +4,11 @@
         removeItemFromQuery,
         removeValueFromQuery,
     } from "../../stores/query";
+    import { iconStore } from "../../stores/icons";
     import type { QueryItem } from "../../types/queryData";
     export let itemToDelete: { type: string; index: number; item?: QueryItem };
+
+    $: deleteUrl = $iconStore.get("deleteUrl");
 
     const { type, index, item } = itemToDelete;
 
@@ -34,5 +37,11 @@
 
 <button
     part="query-delete-button query-delete-button-{type}"
-    on:click={deleteItem}>&#x2715;</button
+    on:click={deleteItem}
 >
+    {#if deleteUrl}
+        <img part="delete-button-icon" src={deleteUrl} alt="delete icon" />
+    {:else}
+        &#x2715;
+    {/if}
+</button>

@@ -35,6 +35,12 @@
                     ) {
                         store.set("infoUrl", options.iconOptions.infoUrl);
                     }
+                    if (
+                        "deleteUrl" in options.iconOptions &&
+                        typeof options.iconOptions["deleteUrl"] === "string"
+                    ) {
+                        store.set("deleteUrl", options.iconOptions.deleteUrl);
+                    }
                 }
             }
 

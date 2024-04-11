@@ -1,5 +1,6 @@
 {
     "iconOptions": {
+        "deleteUrl": "delete_icon.svg",
         "infoUrl": "info-circle-svgrepo-com.svg"
     },
     "chartOptions": {

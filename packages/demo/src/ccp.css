@@ -307,6 +307,13 @@ lens-search-bar-multiple::part(info-button-dialogue) {
   text-align: left;
 }
 
+lens-search-bar::part(delete-button-icon), 
+lens-search-bar-multiple::part(delete-button-icon) {
+  filter: brightness(0) saturate(100%) invert(12%) sepia(100%) saturate(5657%) hue-rotate(357deg) brightness(90%) contrast(128%);
+  transform: translate(-1px, -1px);
+  width: 21px;
+}
+
 lens-search-bar-multiple::part(query-delete-button-item) {
   border-color: var(--white);
 }
