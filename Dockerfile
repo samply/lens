@@ -1,4 +1,5 @@
 FROM node:lts as build
+#FROM node:18 as build
 ARG TARGET_ENVIRONMENT="staging"
 WORKDIR /usr/src/app
 RUN sh -c '[ -z "$http_proxy" ] || ( npm config set proxy $http_proxy; npm config set https-proxy $http_proxy )'
