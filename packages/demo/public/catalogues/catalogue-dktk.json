@@ -22,8 +22,8 @@
                     },
                     {
                         "key": "other",
-                        "name": "Divers / intersexuell",
-                        "description": "Divers / intersexuell"
+                        "name": "Divers",
+                        "description": "Divers"
                     },
                     {
                         "key": "unknown",
@@ -7285,6 +7285,21 @@
                         "description": "Bösartige Neubildungen als Primärtumoren an mehreren Lokalisationen"
                     },
                     {
+                        "key": "C91.1",
+                        "name": "C91.1",
+                        "description": "Chronische lymphatische Leukämie vom B-Zell-Typ [CLL]"
+                    },
+                    {
+                        "key": "C92.1",
+                        "name": "C92.1",
+                        "description": "Chronische myeloische Leukämie [CML], BCR/ABL-positiv"
+                    },
+                    {
+                        "key": "C93.1",
+                        "name": "C93.1",
+                        "description": "Chronische myelomonozytäre Leukämie"
+                    },
+                    {
                         "key": "C34.9",
                         "name": "C34.9",
                         "description": "Bösartige Neubildung: Bronchus oder Lunge, nicht näher bezeichnet"
@@ -14532,11 +14547,6 @@
                         "description": "Akute lymphatische Leukämie [ALL]: In kompletter Remission"
                     },
                     {
-                        "key": "C91.1",
-                        "name": "C91.1",
-                        "description": ""
-                    },
-                    {
                         "key": "C91.10",
                         "name": "C91.10",
                         "description": "Chronische lymphatische Leukämie vom B-Zell-Typ [CLL]: Ohne Angabe einer kompletten Remission"
@@ -14580,6 +14590,11 @@
                         "key": "C92.01",
                         "name": "C92.01",
                         "description": "Akute myeloblastische Leukämie [AML]: In kompletter Remission"
+                    },
+                    {
+                        "key": "C91.1",
+                        "name": "C91.1",
+                        "description": ""
                     },
                     {
                         "key": "C92.1",

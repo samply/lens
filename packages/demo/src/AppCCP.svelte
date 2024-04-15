@@ -85,11 +85,11 @@
     const genderHeaders: Map<string, string> = new Map<string, string>()
         .set("male", "männlich")
         .set("female", "weiblich")
-        .set("other", "Divers, Intersexuell")
+        .set("other", "Divers")
         .set("unknown", "unbekannt");
 
     const backendConfig = {
-        url: import.meta.env.PROD ? backendUrl : "http://localhost:8080",
+        url: import.meta.env.PROD ? backendUrl : "http://localhost:8055",
         backends: [
             "mannheim",
             "freiburg",

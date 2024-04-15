@@ -28,7 +28,7 @@
                 "male": "Männlich",
                 "female": "Weiblich",
                 "unknown": "Unbekannt",
-                "other": "Divers / intersexuell"
+                "other": "Divers"
             }
         },
         "diagnosis": {
@@ -166,7 +166,7 @@
                         "groupCode": "specimen"
                     },
                     {
-                        "stratifierCode": "Histlogoies",
+                        "stratifierCode": "Histologies",
                         "stratumCode": "1"
                     },
                     {
