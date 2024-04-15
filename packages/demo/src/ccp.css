@@ -318,8 +318,19 @@ lens-search-bar::part(delete-button-icon-group),
 lens-search-bar-multiple::part(delete-button-icon) {
   filter: invert(41%) sepia(43%) saturate(4610%) hue-rotate(357deg) brightness(96%) contrast(90%);
   transform: translate(0px, 2px);
+}
+
+lens-search-bar::part(delete-button-icon),
+lens-search-bar-multiple::part(delete-button-icon-value) {
+  transform: translate(-1px, -1px);
   width: 20px;
 }
+
+lens-search-bar::part(delete-button-icon):hover,
+lens-search-bar-multiple::part(delete-button-icon-value):hover {
+  filter: invert(38%) sepia(78%) saturate(1321%) hue-rotate(352deg) brightness(92%) contrast(99%);
+}
+
 
 lens-search-button::part(lens-search-button) {
   background-color: var(--light-blue);
