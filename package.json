@@ -1,7 +1,7 @@
 {
   "name": "@samply/lens",
   "description": "A web component library for clinical data search and visualisation",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "type": "module",
   "module": "dist/lens.js",
   "main": "dist/lens.umd.js",
@@ -10,6 +10,13 @@
   "files": [
     "dist"
   ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/samply/lens.git"
+  },
   "exports": {
     ".": {
       "import": "./dist/lens.js",
