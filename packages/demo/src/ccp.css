@@ -307,20 +307,18 @@ lens-search-bar-multiple::part(info-button-dialogue) {
   text-align: left;
 }
 
-lens-search-bar::part(delete-button-icon), 
-lens-search-bar-multiple::part(delete-button-icon) {
-  filter: brightness(0) saturate(100%) invert(12%) sepia(100%) saturate(5657%) hue-rotate(357deg) brightness(90%) contrast(128%);
+lens-search-bar::part(delete-button-icon-item), 
+lens-search-bar-multiple::part(delete-button-icon-item) {
+  filter: invert(41%) sepia(43%) saturate(4610%) hue-rotate(357deg) brightness(96%) contrast(90%);
   transform: translate(-1px, -1px);
-  width: 21px;
+  width: 20px;
 }
 
-lens-search-bar-multiple::part(query-delete-button-item) {
-  border-color: var(--white);
-}
-
-lens-search-bar-multiple::part(query-delete-button-group) {
-  background-color: var(--white);
-  border-color: var(--white);
+lens-search-bar::part(delete-button-icon-group), 
+lens-search-bar-multiple::part(delete-button-icon) {
+  filter: invert(41%) sepia(43%) saturate(4610%) hue-rotate(357deg) brightness(96%) contrast(90%);
+  transform: translate(0px, 2px);
+  width: 20px;
 }
 
 lens-search-button::part(lens-search-button) {
@@ -333,7 +331,6 @@ lens-search-button::part(lens-search-button):hover {
 
 lens-search-button::part(lens-search-button):active {
   background-color: #003d7e;
-  transform: translateX(1px);
 }
 
 /**

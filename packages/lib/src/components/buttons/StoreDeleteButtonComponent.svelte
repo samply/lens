@@ -40,7 +40,11 @@
     on:click={deleteItem}
 >
     {#if deleteUrl}
-        <img part="delete-button-icon" src={deleteUrl} alt="delete icon" />
+        <img
+            part="delete-button-icon delete-button-icon-{type}"
+            src={deleteUrl}
+            alt="delete icon"
+        />
     {:else}
         &#x2715;
     {/if}
