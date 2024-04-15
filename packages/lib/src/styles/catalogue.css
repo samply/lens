@@ -52,6 +52,17 @@ lens-catalogue::part(data-tree-element-toggle-icon) {
   transition: all 0.1s ease-in-out;
 }
 
+lens-catalogue::part(add-all-options-button) {
+  background-color: var(--button-background-color);
+  border-radius: var(--border-radius-small);
+  color: var(--button-color);
+  position: relative;
+  padding: 3px 8px;
+  cursor: pointer;
+  border: none;
+  left: +15px;
+}
+
 lens-catalogue::part(data-tree-element-toggle-icon-open) {
   transform: rotate(0deg);
 }
