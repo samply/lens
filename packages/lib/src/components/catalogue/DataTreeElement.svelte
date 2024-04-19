@@ -1,4 +1,6 @@
 <script lang="ts">
+    console.log("DataTreeElement: do imports");
+
     import type { Category } from "../../types/treeData";
     import DataTreeElement from "./DataTreeElement.svelte";
     import NumberInputComponent from "./NumberInputComponent.svelte";
@@ -11,6 +13,8 @@
     import { iconStore } from "../../stores/icons";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
 
+    console.log("DataTreeElement: starting");
+
     export let element: Category;
     const subCategoryName: string | null =
         "subCategoryName" in element &&
@@ -18,10 +22,15 @@
         element.subCategoryName !== null
             ? element.subCategoryName
             : null;
+
+    console.log("DataTreeElement: subCategoryName {}", subCategoryName);
+
     /**
      * defines the layer of the element in the tree
      */
     export let layer: number = 1;
+
+    console.log("DataTreeElement: layer {}", layer);
 
     /**
      * defines if the subcategorys are open, iterates over the whole tree
@@ -48,6 +57,8 @@
             open = $openTreeNodes.get(element.key) ? true : false;
         }
     }
+
+    console.log("DataTreeElement: open {}", open);
 
     /**
      * adds and removes the subcategorys from the open tree nodes store
@@ -101,17 +112,23 @@
         (item) => item.key === element.key,
     );
 
+    console.log("DataTreeElement: numberInput {}", numberInput);
+
     /**
      * adds the number input to the store if it is not already in the store
      * @param store
      * @returns updated store
      */
     activeNumberInputs.update((store: QueryItem[]): QueryItem[] => {
+        console.log("DataTreeElement.activeNumberInputs.update: entered");
+        if ("fieldType" in element) {console.log("DataTreeElement.activeNumberInputs.update: element.fieldType {}", element.fieldType);}
+
         if (
             "fieldType" in element &&
             element.fieldType === "number" &&
             !store.find((item) => item.key === element.key)
         ) {
+            console.log("DataTreeElement.activeNumberInputs.update: looks like we have a number element");
             return [
                 ...store,
                 {
@@ -132,6 +149,8 @@
         }
         return store;
     });
+
+    console.log("DataTreeElement: finished");
 </script>
 
 <div part="data-tree-element">

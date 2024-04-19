@@ -1,4 +1,6 @@
 <script lang="ts">
+    console.log("NumberInputComponent: entered");
+
     import { queryStore } from "../../stores/query";
     import type { QueryItem, QueryValue } from "../../types/queryData";
     import { catalogueTextStore } from "../../stores/texts";
@@ -7,14 +9,23 @@
 
     export let queryItem: QueryItem;
 
+    console.log("NumberInputComponent: queryItem: " + queryItem);
+
+    // `queryBindId` is a unique identifier for the query.
     const queryBindId = queryItem.values[0].queryBindId;
     const value = queryItem.values[0].value as { min: number; max: number };
+
+    console.log("NumberInputComponent: queryBindId: " + queryBindId);
+    console.log("NumberInputComponent: value: " + value);
 
     /**
      * defines and handles the number inputs
      */
     let from: number | null = value.min;
     let to: number | null = value.max;
+
+    console.log("NumberInputComponent: from: " + from);
+    console.log("NumberInputComponent: to: " + to);
 
     /**
      * build the proper name for the query value
@@ -27,6 +38,8 @@
         if (from < to) return ` ${from} - ${to}`;
         return "invalid";
     };
+
+    console.log("NumberInputComponent: transformName: " + transformName);
 
     /**
      * update all groups in the query store when from or to changes
@@ -65,6 +78,8 @@
         });
     };
 
+    console.log("NumberInputComponent: updateStores: " + updateStores);
+
     $: updateStores(from, to);
 
     /**
@@ -81,6 +96,8 @@
             },
         ],
     };
+
+    console.log("NumberInputComponent: queryItem: " + queryItem);
 </script>
 
 <div part="criterion-wrapper number-input-wrapper">

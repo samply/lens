@@ -11,6 +11,8 @@
 />
 
 <script lang="ts">
+    console.log("Catalogue.wc: do imports");
+
     import { catalogueTextStore } from "../../stores/texts";
     import { catalogue } from "../../stores/catalogue";
     import type { ToggleAttribute } from "../../types/helpers";
@@ -75,6 +77,8 @@
             labelTo: texts.numberInput?.labelTo || "to",
         },
     };
+
+    console.log("Catalogue.wc: finished");
 </script>
 
 <div part="lens-catalogue">

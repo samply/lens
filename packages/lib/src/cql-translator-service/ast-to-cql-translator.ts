@@ -116,9 +116,13 @@ const getSingleton = (criterion: AstBottomLayerValue): string => {
         criterion.key = criterion.value as string;
     }
 
+    console.log(`getSingleton: criterion.value: {}`, criterion.value)
+
     const myCriterion = criterionMap.get(criterion.key);
 
     console.log(`getSingleton: myCriterion: ${myCriterion}`)
+    console.log(`getSingleton: myCriterion.type: {}`, myCriterion.type)
+    console.log(`getSingleton: myCriterion.alias: {}`, myCriterion.alias)
 
     if (myCriterion) {
         const myCQL = cqltemplate.get(myCriterion.type);
