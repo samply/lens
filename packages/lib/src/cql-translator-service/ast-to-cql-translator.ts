@@ -268,8 +268,8 @@ const getSingleton = (criterion: AstBottomLayerValue): string => {
                 }
 
                 // Used by ECDC/EHDS2
-                case "patientRangeAge": {
-                    expression += substituteRangeCQLExpression(
+                case "patientAge": {
+                    expression += substituteEcdcRangeCQLExpression(
                         criterion,
                         myCriterion,
                         "condition",
@@ -282,7 +282,7 @@ const getSingleton = (criterion: AstBottomLayerValue): string => {
         }
     }
 
-    console.log(`getSingleton: expression: ${expression}`)
+    console.log(`getSingleton: expression: {}`, expression)
 
     return expression;
 };
@@ -332,6 +332,56 @@ const substituteRangeCQLExpression = (
                 input.min,
                 input.max,
             );
+    } else {
+        return substituteCQLExpression(
+            criterion.key,
+            myCriterion.alias,
+            rangeCQL,
+            "",
+            input.min,
+            input.max,
+        );
+    }
+    return "";
+};
+
+const substituteEcdcRangeCQLExpression = (
+    criterion: AstBottomLayerValue,
+    myCriterion: { type: string; alias?: string[] },
+    criterionPrefix: string,
+    criterionSuffix: string,
+    rangeCQL: string,
+): string => {
+    const input = criterion.value as { min: number; max: number };
+    if (input === null) {
+        console.warn(
+            `Throwing away a ${criterionPrefix}Range${criterionSuffix} criterion, as it is not of type {min: number, max: number}!`,
+        );
+        return "";
+    }
+    if (input.min === 0 && input.max === 0) {
+        console.warn(
+            `Throwing away a ${criterionPrefix}Range${criterionSuffix} criterion, as both dates are undefined!`,
+        );
+        return "";
+    } else if (input.min === 0) {
+        return substituteCQLExpression(
+            criterion.key,
+            myCriterion.alias,
+            rangeCQL,
+            "",
+            input.min,
+            input.max,
+        );
+    } else if (input.max === 0) {
+        return substituteCQLExpression(
+            criterion.key,
+            myCriterion.alias,
+            rangeCQL,
+            "",
+            input.min,
+            1000000000, // As big as possible, but less than CQL's max
+        );
     } else {
         return substituteCQLExpression(
             criterion.key,

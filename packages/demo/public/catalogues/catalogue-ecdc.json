@@ -34,7 +34,7 @@
                 ]
             },
             {
-                "key": "age_of_patient",
+                "key": "age",
                 "name": "Patient age",
                 "fieldType": "number",
                 "type": "BETWEEN",

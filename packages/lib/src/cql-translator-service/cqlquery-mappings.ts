@@ -195,7 +195,7 @@ export const cqltemplate = new Map<string, string>([
 
     [
         // Used by ECDC/EHDS2
-        "patientRangeAge",
+        "patientAge",
         "AgeInYears between {{D1}} and {{D2}}"
     ],
     [
@@ -372,7 +372,7 @@ export const criterionMap = new Map<string, { type: string; alias?: string[] }>(
         ["Organization", { type: "department" }],
 
         // Used by ECDC/EHDS2
-        ["age_of_patient", { type: "patientRangeAge" }],
+        ["age", { type: "patientAge" }],
         ["hospital_unit_type", { type: "patientHospitalUnitType" }],
         ["hospital_id", { type: "patientHospitalId" }],
         ["laboratory_code", { type: "patientLaboratoryCode" }],

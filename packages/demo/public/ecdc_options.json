@@ -13,7 +13,7 @@
                 "other": "Other"
             }
         },
-        "age_of_patient": {
+        "age": {
             "hintText": [
                 "By patients with multiple diagnoses, results may be shown that lie outside the search criteria. "
             ]
