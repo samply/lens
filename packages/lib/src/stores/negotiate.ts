@@ -115,12 +115,20 @@ export const getHumanReadableQuery = (): string => {
 let negotiateOptions: any = {}
 const siteCollectionMap: Map<string,string> = new Map()
 
+const urlParams: URLSearchParams = new URLSearchParams(window.location.search);
+const collectionParams: string | null = urlParams.get("collections");
+
 lensOptions.subscribe((options: any) => {
     if (!options) return
 
     negotiateOptions = options.negotiateOptions
     options.negotiateOptions.siteMapping.forEach(({ site, collection }) => {
         siteCollectionMap.set(site, collection)
+        if (collectionParams !== null && collectionParams.split(',').includes(collection)) {
+            negotiateStore.update((value) => {
+                return [...value, site]
+            })
+        }
     })
 })
 
@@ -134,11 +142,11 @@ export const getCollections = (sitesToNegotiate: string[]): Collection[] => {
     let siteCollections: Collection[] = []
 
     sitesToNegotiate.forEach((site: string) => {
-        let collectionId: string = "couldn't map site in search UI"
+        let collectionId: string = ""
 
         // TODO: Why is site id mapped to Uppercase?
         if (siteCollectionMap.has(site) && siteCollectionMap.get(site) !== '') {
-            collectionId = siteCollectionMap.get(site)
+            collectionId = siteCollectionMap.get(site) || ""
         }
 
         const siteId: string = site.split(':collection:')[0]
@@ -165,17 +173,20 @@ export const getCollections = (sitesToNegotiate: string[]): Collection[] => {
         //         })
         //     )
 
-        siteCollections.push({
-            siteId,
-            site,
-            collectionId,
-            /**
-             * TODO: add the local redirect uri here
-             */
-            localRedirectUri: 'some uri'
-        })
+        if(collectionId !== "") {
+            siteCollections.push({
+                siteId,
+                site,
+                collectionId,
+                /**
+                 * TODO: add the local redirect uri here
+                 */
+                localRedirectUri: 'some uri'
+            })
+        }
     })
 
+    console.log('getCollections -> return siteCollections', siteCollections);
     return siteCollections
 }
 
@@ -186,9 +197,11 @@ export const getCollections = (sitesToNegotiate: string[]): Collection[] => {
  * redirects to negotiator
  * @param sitesToNegotiate the sites to negotiate with
 */
-export const negotiate = async (sitesToNegotiate: string[], queryBase64String: string) => {
+export const negotiate = async (sitesToNegotiate: string[]) => {
 
-    let sendableQuery: SendableQuery
+    //TODO: get auth token here
+
+    let sendableQuery!: SendableQuery
     queryStore.subscribe((value: QueryItem[][]) => {
         const uuid = uuidv4()
         sendableQuery = {
@@ -197,13 +210,19 @@ export const negotiate = async (sitesToNegotiate: string[], queryBase64String: s
         }
     })
 
-    let humanReadable: string = getHumanReadableQuery();
-    let collections: Collection[] = getCollections(sitesToNegotiate)
+    const queryBase64String: string = btoa(JSON.stringify(sendableQuery.query))
+    const humanReadable: string = getHumanReadableQuery();
+    const collections: Collection[] = getCollections(sitesToNegotiate)
     // TODO: Implement proper configuration option for the switch between negotiator and project manager
     let negotiatorResponse = (false)
         ? await sendRequestToNegotiator(sendableQuery, humanReadable, collections, queryBase64String)
         : await sendRequestToProjectManager(sendableQuery, humanReadable, collections, queryBase64String)
-    window.location.href = negotiatorResponse.redirect_uri.toString()
+
+    const indexOfQuestionMark = negotiatorResponse.redirect_uri.toString().indexOf('?')
+    const subpage = "/project-view"
+    const negotiationURI = negotiatorResponse.redirect_uri.toString().slice(0, indexOfQuestionMark) +  `${subpage}` + negotiatorResponse.redirect_uri.toString().slice(indexOfQuestionMark)
+
+    window.location.href = negotiationURI
 }
 
 
@@ -251,22 +270,18 @@ async function sendRequestToNegotiator(sendableQuery: SendableQuery, humanReadab
  * */
 async function sendRequestToProjectManager(sendableQuery: SendableQuery, humanReadable: string, collections: Collection[], queryBase64String: string): Promise<any> {
 
-
-    const base64Query: string = btoa(JSON.stringify(sendableQuery.query))
-    const queryParam: string = (base64Query != "") ?
-        `?query=${base64Query}` : ""
-
-    const returnURL: string = `${window.location.protocol}//${window.location.host}/${queryParam}`;
-    console.log(returnURL)
-
-
-    console.log(collections)
+    const queryParam: string = (queryBase64String != "") ?
+        `&query=${queryBase64String}` : ""
+        
     const negotiationPartners = collections.map(collection => collection.collectionId.toLocaleLowerCase()).join(',')
-    console.log(negotiationPartners)
-    console.log(encodeURIComponent(returnURL))
+    const returnURL: string = `${window.location.protocol}//${window.location.host}/?collections=${negotiationPartners}${queryParam}`;
+    const urlParams: URLSearchParams = new URLSearchParams(window.location.search);
+    const projectCode: string | null = urlParams.get("project-code");
+    const projectCodeParam: string = projectCode ? `&project-code=${projectCode}` : "";
+    const negotiateUrl = projectCode ? negotiateOptions.editProjectUrl : negotiateOptions.newProjectUrl;
 
     const response: Response = await fetch(
-        `${negotiateOptions.negotiatorURL}?explorer-ids=${negotiationPartners}&query-format=CQL_DATA&human-readable=${humanReadable}&explorer-url=${encodeURIComponent(returnURL)}`,
+        `${negotiateUrl}?explorer-ids=${negotiationPartners}&query-format=CQL_DATA&human-readable=${humanReadable}&explorer-url=${encodeURIComponent(returnURL)}${projectCodeParam}`,
         {
             method: "POST",
             headers: {
@@ -276,8 +291,17 @@ async function sendRequestToProjectManager(sendableQuery: SendableQuery, humanRe
             },
             body: getCql()
         }
-    );
-    return response.json();
+    ).then(response => response.json());    
+
+    /**
+     * replace query-code with project-code
+     * TODO: remove when backend bug is fixed
+     */
+    if (response.redirect_uri) {
+        response.redirect_uri = response.redirect_uri.replace('query-code', 'project-code');
+    }
+
+    return response;
 }
 
 function getCql(): string {
@@ -289,6 +313,5 @@ function getCql(): string {
     const measure = buildMeasure(library.url, currentMeasures.map(measureItem => measureItem.measure))
     const query = {lang: "cql", lib: library, measure: measure};
 
-    console.log(btoa(decodeURI(JSON.stringify(query))))
     return btoa(decodeURI(JSON.stringify(query)));
 }

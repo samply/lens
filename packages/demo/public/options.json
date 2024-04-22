@@ -120,7 +120,8 @@
         ]
     },
     "negotiateOptions": {
-        "negotiatorURL": "http://localhost:8097/create-query-and-design-project",
+        "newProjectUrl": "http://localhost:8097/create-query-and-design-project",
+        "editProjectUrl": "http://localhost:8097/edit-project",
         "siteMapping": [
             {
                 "site": "Dresden",

@@ -109,7 +109,6 @@
             );
         }
     };
-    $: console.log($responseStore);
 
     /**
      * sort tableRowData alphanumerically by the given column

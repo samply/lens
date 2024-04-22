@@ -16,7 +16,7 @@ export const queryBase64Store = writable<string>("");
  * when the url has a query as base64 string, this will be parsed and the queryStore will be updated
  */
 const urlParams: URLSearchParams = new URLSearchParams(window.location.search);
-const queryParam: string = urlParams.get("query");
+const queryParam: string | null = urlParams.get("query");
 
 if (queryParam !== null) {
     const queryParamDecoded: QueryItem[][] = JSON.parse(atob(queryParam));
