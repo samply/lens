@@ -1,4 +1,6 @@
 <script lang="ts">
+    console.log("DateRangeComponentUsingNumberType: before import");
+
     import { queryStore } from "../../stores/query";
     import type { QueryItem, QueryValue } from "../../types/queryData";
     import { catalogueTextStore } from "../../stores/texts";
@@ -7,15 +9,23 @@
 
     export let queryItem: QueryItem;
 
+    console.log("DateRangeComponentUsingNumberType: queryItem: " + queryItem);
+
     // `queryBindId` is a unique identifier for the query.
     const queryBindId = queryItem.values[0].queryBindId;
     const value = queryItem.values[0].value as { min: number; max: number };
+
+    console.log("DateRangeComponentUsingNumberType: queryBindId: " + queryBindId);
+    console.log("DateRangeComponentUsingNumberType: value: " + value);
 
     /**
      * defines and handles the number inputs
      */
     let from: number | null = value.min;
     let to: number | null = value.max;
+
+    console.log("DateRangeComponentUsingNumberType: from: " + from);
+    console.log("DateRangeComponentUsingNumberType: to: " + to);
 
     /**
      * build the proper name for the query value
@@ -29,6 +39,8 @@
         return "invalid";
     };
 
+    console.log("DateRangeComponentUsingNumberType: transformName: " + transformName);
+
     /**
      * update all groups in the query store when from or to changes
      * update values in the activeNumberInputs store
@@ -37,6 +49,9 @@
      */
 
     const updateStores = (from: number, to: number): void => {
+        console.log("DateRangeComponentUsingNumberType.updateStores: from: " + from);
+        console.log("DateRangeComponentUsingNumberType.updateStores: to: " + to);
+
         queryStore.update((store: QueryItem[][]): QueryItem[][] => {
             store.forEach((queryGroup: QueryItem[]) => {
                 queryGroup.forEach((item: QueryItem) => {
@@ -66,6 +81,8 @@
         });
     };
 
+    console.log("DateRangeComponentUsingNumberType: updateStores: " + updateStores);
+
     $: updateStores(from, to);
 
     /**
@@ -82,6 +99,8 @@
             },
         ],
     };
+
+    console.log("DateRangeComponentUsingNumberType: queryItem: " + queryItem);
 </script>
 
 <div part="criterion-wrapper number-input-wrapper">
@@ -94,7 +113,7 @@
                 <input
                     part="number-input-formfield number-input-formfield-from
                         {to && from > to ? ' formfield-error' : ''}"
-                    type="number"
+                    type="date"
                     bind:value={from}
                     min="0"
                 />
@@ -107,7 +126,7 @@
                 <input
                     part="number-input-formfield number-input-formfield-from
                         {to && from > to ? ' formfield-error' : ''}"
-                    type="number"
+                    type="date"
                     bind:value={to}
                     min="0"
                 />

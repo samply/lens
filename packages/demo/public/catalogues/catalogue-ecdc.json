@@ -816,7 +816,16 @@
                         "description": "Kosovo"
                     }
                 ]
+            },
+            {
+                "key": "date_valid_from",
+                "name": "Date valid from",
+                "fieldType": "date-range",
+                "type": "BETWEEN",
+                "system": "",
+                "criteria": []
             }
+
         ]
     }
 ]

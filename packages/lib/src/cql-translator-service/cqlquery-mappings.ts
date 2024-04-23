@@ -252,6 +252,11 @@ export const cqltemplate = new Map<string, string>([
         // Used by ECDC/EHDS2
         "observationReportingCountry",
         "ExistsReportingCountry('{{C}}')"
+    ],
+    [
+        // Used by ECDC/EHDS2
+        "observationDateValidFrom",
+        "exists from [Observation] O where ToDate(O.effective as dateTime) in Interval[@{{D1}}, @{{D2}}]"
     ]
 ]);
 
@@ -384,5 +389,6 @@ export const criterionMap = new Map<string, { type: string; alias?: string[] }>(
         ["patient_type", { type: "observationPatientType" }],
         ["reference_guidelines_sir", { type: "observationReferenceGuidelinesSir" }],
         ["reporting_country", { type: "observationReportingCountry" }],
+        ["date_valid_from", { type: "observationDateValidFrom" }],
     ],
 );

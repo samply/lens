@@ -1,19 +1,16 @@
 <script lang="ts">
-    console.log("DataTreeElement: do imports");
-
     import type { Category } from "../../types/treeData";
     import DataTreeElement from "./DataTreeElement.svelte";
     import NumberInputComponent from "./NumberInputComponent.svelte";
     import AutocompleteComponent from "./AutoCompleteComponent.svelte";
     import StringComponent from "./StringComponent.svelte";
     import SingleSelectComponent from "./SingleSelectComponent.svelte";
+    import DateRangeComponent from "./DateRangeComponent.svelte";
     import { v4 as uuidv4 } from "uuid";
     import { activeNumberInputs, openTreeNodes } from "../../stores/catalogue";
     import type { QueryItem } from "../../types/queryData";
     import { iconStore } from "../../stores/icons";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
-
-    console.log("DataTreeElement: starting");
 
     export let element: Category;
     const subCategoryName: string | null =
@@ -23,14 +20,10 @@
             ? element.subCategoryName
             : null;
 
-    console.log("DataTreeElement: subCategoryName {}", subCategoryName);
-
     /**
      * defines the layer of the element in the tree
      */
     export let layer: number = 1;
-
-    console.log("DataTreeElement: layer {}", layer);
 
     /**
      * defines if the subcategorys are open, iterates over the whole tree
@@ -57,8 +50,6 @@
             open = $openTreeNodes.get(element.key) ? true : false;
         }
     }
-
-    console.log("DataTreeElement: open {}", open);
 
     /**
      * adds and removes the subcategorys from the open tree nodes store
@@ -112,23 +103,17 @@
         (item) => item.key === element.key,
     );
 
-    console.log("DataTreeElement: numberInput {}", numberInput);
-
     /**
      * adds the number input to the store if it is not already in the store
      * @param store
      * @returns updated store
      */
     activeNumberInputs.update((store: QueryItem[]): QueryItem[] => {
-        console.log("DataTreeElement.activeNumberInputs.update: entered");
-        if ("fieldType" in element) {console.log("DataTreeElement.activeNumberInputs.update: element.fieldType {}", element.fieldType);}
-
         if (
             "fieldType" in element &&
-            element.fieldType === "number" &&
+            (element.fieldType === "number" || element.fieldType === "date-range") &&
             !store.find((item) => item.key === element.key)
         ) {
-            console.log("DataTreeElement.activeNumberInputs.update: looks like we have a number element");
             return [
                 ...store,
                 {
@@ -149,8 +134,6 @@
         }
         return store;
     });
-
-    console.log("DataTreeElement: finished");
 </script>
 
 <div part="data-tree-element">
@@ -204,13 +187,22 @@
                     <AutocompleteComponent {element} />
                 {:else if "fieldType" in element && element.fieldType === "string"}
                     <StringComponent {element} />
-                {:else if "fieldType" in element && element.fieldType === "number"}
+                {:else if "fieldType" in element && element.fieldType === "date-range"}
                     {#each numberInput.values as numberInputValues (numberInputValues.queryBindId)}
-                        <NumberInputComponent
-                            queryItem={{
+                        <DateRangeComponent
+                                queryItem={{
                                 ...numberInput,
                                 values: [numberInputValues],
                             }}
+                        />
+                    {/each}
+                {:else if "fieldType" in element && element.fieldType === "number"}
+                    {#each numberInput.values as numberInputValues (numberInputValues.queryBindId)}
+                        <NumberInputComponent
+                                queryItem={{
+                                        ...numberInput,
+                                        values: [numberInputValues],
+                                    }}
                         />
                     {/each}
                 {/if}

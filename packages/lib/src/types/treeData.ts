@@ -10,7 +10,7 @@ export type Category = {
     key: string;
     name: string;
     system?: string;
-    fieldType: 'single-select' | 'autocomplete' | 'number' | 'string';
+    fieldType: 'single-select' | 'autocomplete' | 'number' | 'string' | 'date-range';
     type: 'EQUALS' | 'BETWEEN';
     criteria: | Criteria[];
     description?: string;
