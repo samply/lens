@@ -19017,52 +19017,173 @@
                             {
                                 "key": "(sn)(mol+)",
                                 "name": "(sn)(mol+)",
-                                "description": "(sn)(mol+)"
+                                "description": "(sn)(mol+)",
+                                "aggregatedValue": [
+                                    [
+                                        {
+                                            "value": "21906-3",
+                                            "name": "(sn)(mol+)"
+                                        },
+                                        {
+                                            "value": "21900-6",
+                                            "name": "(sn)(mol+)"
+                                        }
+                                    ]
+                                ]
                             },
                             {
                                 "key": "(sn)(mol-)",
                                 "name": "(sn)(mol-)",
-                                "description": "(sn)(mol-)"
+                                "description": "(sn)(mol-)",
+                                "aggregatedValue": [
+                                    [
+                                        {
+                                            "value": "21906-3",
+                                            "name": "(sn)(mol-)"
+                                        },
+                                        {
+                                            "value": "21900-6",
+                                            "name": "(sn)(mol-)"
+                                        }
+                                    ]
+                                ]
                             },
                             {
                                 "key": "(sn)(i+)",
                                 "name": "(sn)(i+)",
-                                "description": "(sn)(i+)"
+                                "description": "(sn)(i+)",
+                                "aggregatedValue": [
+                                    [
+                                        {
+                                            "value": "21906-3",
+                                            "name": "(sn)(i+)"
+                                        },
+                                        {
+                                            "value": "21900-6",
+                                            "name": "(sn)(i+)"
+                                        }
+                                    ]
+                                ]
                             },
                             {
                                 "key": "(sn)(i-)",
                                 "name": "(sn)(i-)",
-                                "description": "(sn)(i-)"
+                                "description": "(sn)(i-)",
+                                "aggregatedValue": [
+                                    [
+                                        {
+                                            "value": "21906-3",
+                                            "name": "(sn)(i-)"
+                                        },
+                                        {
+                                            "value": "21900-6",
+                                            "name": "(sn)(i-)"
+                                        }
+                                    ]
+                                ]
                             },
                             {
                                 "key": "(mol+)",
                                 "name": "(mol+)",
-                                "description": "(mol+)"
+                                "description": "(mol+)",
+                                "aggregatedValue": [
+                                    [
+                                        {
+                                            "value": "21906-3",
+                                            "name": "(mol+)"
+                                        },
+                                        {
+                                            "value": "21900-6",
+                                            "name": "(mol+)"
+                                        }
+                                    ]
+                                ]
                             },
                             {
                                 "key": "(mol-)",
                                 "name": "(mol-)",
-                                "description": "(mol-)"
+                                "description": "(mol-)",
+                                "aggregatedValue": [
+                                    [
+                                        {
+                                            "value": "21906-3",
+                                            "name": "(mol-)"
+                                        },
+                                        {
+                                            "value": "21900-6",
+                                            "name": "(mol-)"
+                                        }
+                                    ]
+                                ]
                             },
                             {
                                 "key": "(i+)",
                                 "name": "(i+)",
-                                "description": "(i+)"
+                                "description": "(i+)",
+                                "aggregatedValue": [
+                                    [
+                                        {
+                                            "value": "21906-3",
+                                            "name": "(i+)"
+                                        },
+                                        {
+                                            "value": "21900-6",
+                                            "name": "(i+)"
+                                        }
+                                    ]
+                                ]
                             },
                             {
                                 "key": "(i-)",
                                 "name": "(i-)",
-                                "description": "(i-)"
+                                "description": "(i-)",
+                                "aggregatedValue": [
+                                    [
+                                        {
+                                            "value": "21906-3",
+                                            "name": "(i-)"
+                                        },
+                                        {
+                                            "value": "21900-6",
+                                            "name": "(i-)"
+                                        }
+                                    ]
+                                ]
                             },
                             {
                                 "key": "X",
                                 "name": "X",
-                                "description": "X"
+                                "description": "X",
+                                "aggregatedValue": [
+                                    [
+                                        {
+                                            "value": "21906-3",
+                                            "name": "X"
+                                        },
+                                        {
+                                            "value": "21900-6",
+                                            "name": "X"
+                                        }
+                                    ]
+                                ]
                             },
                             {
                                 "key": "X(sn)",
                                 "name": "X(sn)",
                                 "description": "X(sn)"
+                                ,
+                                "aggregatedValue": [
+                                    [
+                                        {
+                                            "value": "21906-3",
+                                            "name": "X(sn)"
+                                        },
+                                        {
+                                            "value": "21900-6",
+                                            "name": "X(sn)"
+                                        }
+                                    ]
+                                ]
                             },
                             {
                                 "key": "0",
@@ -19084,7 +19205,19 @@
                             {
                                 "key": "0(sn)",
                                 "name": "0(sn)",
-                                "description": "0(sn)"
+                                "description": "0(sn)",
+                                "aggregatedValue": [
+                                    [
+                                        {
+                                            "value": "21906-3",
+                                            "name": "0(sn)"
+                                        },
+                                        {
+                                            "value": "21900-6",
+                                            "name": "0(sn)"
+                                        }
+                                    ]
+                                ]
                             },
                             {
                                 "key": "0(i+)",
@@ -19604,11 +19737,11 @@
                                 "aggregatedValue": [
                                     [
                                         {
-                                            "value": "59479-6",
+                                            "value": "42030-7",
                                             "name": "m"
                                         },
                                         {
-                                            "value": "59479-6",
+                                            "value": "42030-7",
                                             "name": "m"
                                         }
                                     ]
@@ -19625,7 +19758,7 @@
                                             "name": "2"
                                         },
                                         {
-                                            "value": "59479-6",
+                                            "value": "42030-7",
                                             "name": "2"
                                         }
                                     ]
@@ -19638,11 +19771,11 @@
                                 "aggregatedValue": [
                                     [
                                         {
-                                            "value": "59479-6",
+                                            "value": "42030-7",
                                             "name": "3"
                                         },
                                         {
-                                            "value": "59479-6",
+                                            "value": "42030-7",
                                             "name": "3"
                                         }
                                     ]
@@ -19655,11 +19788,11 @@
                                 "aggregatedValue": [
                                     [
                                         {
-                                            "value": "59479-6",
+                                            "value": "42030-7",
                                             "name": "4"
                                         },
                                         {
-                                            "value": "59479-6",
+                                            "value": "42030-7",
                                             "name": "4"
                                         }
                                     ]
@@ -19672,11 +19805,11 @@
                                 "aggregatedValue": [
                                     [
                                         {
-                                            "value": "59479-6",
+                                            "value": "42030-7",
                                             "name": "5"
                                         },
                                         {
-                                            "value": "59479-6",
+                                            "value": "42030-7",
                                             "name": "5"
                                         }
                                     ]
@@ -19689,11 +19822,11 @@
                                 "aggregatedValue": [
                                     [
                                         {
-                                            "value": "59479-6",
+                                            "value": "42030-7",
                                             "name": "6"
                                         },
                                         {
-                                            "value": "59479-6",
+                                            "value": "42030-7",
                                             "name": "6"
                                         }
                                     ]
@@ -19706,11 +19839,11 @@
                                 "aggregatedValue": [
                                     [
                                         {
-                                            "value": "59479-6",
+                                            "value": "42030-7",
                                             "name": "7"
                                         },
                                         {
-                                            "value": "59479-6",
+                                            "value": "42030-7",
                                             "name": "7"
                                         }
                                     ]
@@ -19723,11 +19856,11 @@
                                 "aggregatedValue": [
                                     [
                                         {
-                                            "value": "59479-6",
+                                            "value": "42030-7",
                                             "name": "8"
                                         },
                                         {
-                                            "value": "59479-6",
+                                            "value": "42030-7",
                                             "name": "8"
                                         }
                                     ]
@@ -19740,11 +19873,11 @@
                                 "aggregatedValue": [
                                     [
                                         {
-                                            "value": "59479-6",
+                                            "value": "42030-7",
                                             "name": "9"
                                         },
                                         {
-                                            "value": "59479-6",
+                                            "value": "42030-7",
                                             "name": "9"
                                         }
                                     ]
@@ -19766,11 +19899,11 @@
                                 "aggregatedValue": [
                                     [
                                         {
-                                            "value": "21983-2",
+                                            "value": "59479-6",
                                             "name": "y"
                                         },
                                         {
-                                            "value": "21983-2",
+                                            "value": "59479-6",
                                             "name": "y"
                                         }
                                     ]
