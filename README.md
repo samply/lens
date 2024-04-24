@@ -32,6 +32,16 @@ npm start
 
 to start a development server, that will typically be available at [http://localhost:5173](http://localhost:5173). For further available npm scripts, you can review the [package.json](./package.json)
 
+### Building the Library locally
+If you want to make changes to the lens library while integrating those changes directly in the local development version of your application, you need to tell npm to make lens locally available. For this use-case, we prepared to npm scripts:
+
+1) Run `npm run watch`, to start building the library on changes
+2) Open a second terminal
+3) Run `npm run link` which will make the library available locally
+4) In your own applications repository run `npm link @samply/lens`
+
+To controll that the linking of the local version worked, run `npm ls | grep lens` in your applications repository and verify that it refers to your local lens repository.
+
 ## Style Integration
 
 To import the default stylings, use 

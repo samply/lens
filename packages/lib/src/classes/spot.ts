@@ -2,8 +2,9 @@
  * TODO: document this class
  */
 
-import type { Site, SiteData, Status, BeamResult } from "../types/response";
+import type { SiteData, Status, BeamResult } from "../types/response";
 import type { ResponseStore } from "../types/backend";
+import { responseStore } from "../stores/response";
 
 export class Spot {
     private currentTask!: string;
@@ -22,16 +23,24 @@ export class Spot {
     async send(
         query: string,
         updateResponse: (response: ResponseStore) => void,
-        controller?: AbortController,
+        controller: AbortController,
     ): Promise<void> {
         try {
+            this.currentTask = crypto.randomUUID();
             const beamTaskResponse = await fetch(
-                `${this.url}tasks?sites=${this.sites.toString()}`,
+                `${this.url}beam?sites=${this.sites.toString()}`,
                 {
                     method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
                     credentials: import.meta.env.PROD ? "include" : "omit",
-                    body: query,
-                    signal: controller?.signal,
+                    body: JSON.stringify({
+                        id: this.currentTask,
+                        sites: this.sites,
+                        query: query,
+                    }),
+                    signal: controller.signal,
                 },
             );
             if (!beamTaskResponse.ok) {
@@ -41,60 +50,46 @@ export class Spot {
                 );
                 throw new Error(`Unable to create new beam task.`);
             }
-            this.currentTask = (await beamTaskResponse.json()).id;
 
-            let responseCount: number = 0;
+            console.info(`Created new Beam Task with id ${this.currentTask}`);
 
-            do {
-                const beamResponses: Response = await fetch(
-                    `${this.url}tasks/${this.currentTask}?wait_count=${responseCount + 1}`,
-                    {
-                        credentials: import.meta.env.PROD ? "include" : "omit",
-                        signal: controller?.signal,
-                    },
-                );
+            const eventSource = new EventSource(
+                `${this.url.toString()}beam/${this.currentTask}?wait_count=${this.sites.length}`,
+                {
+                    withCredentials: true,
+                },
+            );
+            eventSource.addEventListener("new_result", (message) => {
+                const response: BeamResult = JSON.parse(message.data);
+                console.log("response", response);
+                if (response.task !== this.currentTask) return;
+                const site: string = response.from.split(".")[1];
+                const status: Status = response.status;
+                const body: SiteData =
+                    status === "succeeded"
+                        ? JSON.parse(atob(response.body))
+                        : null;
 
-                if (!beamResponses.ok) {
-                    const error: string = await beamResponses.text();
-                    console.debug(
-                        `Received ${beamResponses.status} with message ${error}`,
-                    );
-                    throw new Error(
-                        `Error then retrieving responses from Beam. Abborting requests ...`,
-                    );
-                }
-
-                const beamResponseData: Array<BeamResult> =
-                    await beamResponses.json();
-
-                const changes = new Map<string, Site>();
-                beamResponseData.forEach((response: BeamResult) => {
-                    if (response.task !== this.currentTask) return;
-                    const site: string = response.from.split(".")[1];
-                    const status: Status = response.status;
-                    const body: SiteData =
-                        status === "succeeded"
-                            ? JSON.parse(atob(response.body))
-                            : null;
-
-                    changes.set(site, { status: status, data: body });
+                // updateResponse(changes);
+                responseStore.update((store: ResponseStore): ResponseStore => {
+                    store.set(site, { status: status, data: body });
+                    return store;
                 });
+            });
 
-                updateResponse(changes);
+            // read error events from beam
+            eventSource.addEventListener("error", (message) => {
+                console.error(`Beam returned error ${message}`);
+                eventSource.close();
+            });
 
-                responseCount = beamResponseData.length;
-                const realResponseCount = beamResponseData.filter(
-                    (response) => response.status !== "claimed",
-                ).length;
-
-                if (
-                    (beamResponses.status !== 200 &&
-                        beamResponses.status !== 206) ||
-                    realResponseCount === this.sites.length
-                ) {
-                    break;
-                }
-            } while (true);
+            // event source in javascript throws an error then the event source is closed by backend
+            eventSource.onerror = () => {
+                console.info(
+                    `Querying results from sites for task ${this.currentTask} finished.`,
+                );
+                eventSource.close();
+            };
         } catch (err) {
             if (err instanceof Error && err.name === "AbortError") {
                 console.log(`Aborting request ${this.currentTask}`);

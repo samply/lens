@@ -4,6 +4,10 @@ import type { ResponseStore } from "../types/backend";
 
 export const responseStore = writable<ResponseStore>(new Map<string, Site>());
 
+/**
+ * updates the response store with a given response
+ * @param response - the response to update the store with
+ */
 export const updateResponseStore = (response: ResponseStore): void => {
     let store: ResponseStore;
     responseStore.subscribe((s: ResponseStore) => (store = s));

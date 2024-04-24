@@ -16,15 +16,38 @@
     import { lensOptions } from "../stores/options";
     import { catalogue } from "../stores/catalogue";
     import { measureStore } from "../stores/measures";
+    import { iconStore } from "../stores/icons";
     import type { Criteria } from "../types/treeData";
     import type { MeasureStore } from "../types/backend";
+    import type { Criteria } from "../types/treeData";
     import type { LensOptions } from "../types/options";
 
     export let options: LensOptions = {};
     export let catalogueData: Criteria[] = [];
     export let measures: MeasureStore = {} as MeasureStore;
 
+    const updateIconStore = (options: LensOptions): void => {
+        iconStore.update((store) => {
+            if (typeof options === "object" && "iconOptions" in options) {
+                if (
+                    typeof options.iconOptions === "object" &&
+                    options.iconOptions
+                ) {
+                    if (
+                        "infoUrl" in options.iconOptions &&
+                        typeof options.iconOptions["infoUrl"] === "string"
+                    ) {
+                        store.set("infoUrl", options.iconOptions.infoUrl);
+                    }
+                }
+            }
+
+            return store;
+        });
+    };
+
     $: $lensOptions = options;
+    $: updateIconStore(options);
     $: $catalogue = catalogueData;
     $: $measureStore = measures;
 </script>

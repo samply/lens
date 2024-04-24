@@ -1,0 +1,58 @@
+name: Bug Report
+description: Report a bug to improve Lens
+title: "[Bug]: "
+body:
+  - type: textarea 
+    id: summary
+    attributes:
+      label: General Summary
+      description: Please provide a general summary of the problem
+      placeholder: e.g. "The main issue is that..."
+    validations:
+      required: true
+  - type: textarea 
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: Explain the behavior expected
+      placeholder: e.g. "The feature should do a, then b when you click c."
+    validations:
+      required: true
+  - type: textarea 
+    id: current
+    attributes:
+      label: Current Behavior
+      description: Explain what the actual behavior is
+      placeholder: e.g. "The feature actually does x, y and shows error z."
+    validations:
+      required: true
+  - type: textarea
+    id: possible_solution
+    attributes:
+      label: Possible Solution
+      description: Suggest a possible fix for the bug
+    validations:
+      required: false
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: Explain how to reproduce the problem
+      placeholder: e.g. "1. The first step to reproduce this error is to access the members area..."
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context (Environment)
+      description: Provide context on the setting and environment
+      placeholder: e.g. "This bug happened on a Windows 10 PC running the newest Google Chrome."
+    validations:
+      required: false 
+  - type: textarea
+    id: description
+    attributes:
+      label: Detailed Description
+      description: Please provide a more detailed description
+    validations:
+      required: false 
