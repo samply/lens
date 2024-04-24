@@ -282,6 +282,16 @@ const getSingleton = (criterion: AstBottomLayerValue): string => {
                     );
                     break;
                 }
+                case "observationDateUsedForStatistics": {
+                    expression += substituteSimpleRangeCQLExpression(
+                        criterion,
+                        "Date used for statistics",
+                        myCQL,
+                        '0001-01-01', //  CQL's min date
+                        '9999-12-31' //  CQL's max date
+                    );
+                    break;
+                }
             }
         }
     }

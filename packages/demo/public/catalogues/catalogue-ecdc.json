@@ -824,6 +824,14 @@
                 "type": "BETWEEN",
                 "system": "",
                 "criteria": []
+            },
+            {
+                "key": "date_used_for_statistics",
+                "name": "Date used for statistics",
+                "fieldType": "date-range",
+                "type": "BETWEEN",
+                "system": "",
+                "criteria": []
             }
 
         ]

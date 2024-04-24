@@ -54,7 +54,8 @@
     ["patient_type", "PatientType"],
     ["reference_guidelines_sir", "ReferenceGuidelinesSir"],
     ["reporting_country", "ReportingCountry"],
-    ["date_valid_from", "DateValidFrom"]
+    ["date_valid_from", "DateValidFrom"],
+    ["date_used_for_statistics", "DateUsedForStatistics"]
   ];
 
   // VITE_TARGET_ENVIRONMENT should be set by the ci pipeline
