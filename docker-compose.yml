@@ -6,8 +6,6 @@ services:
     command:
       - --entrypoints.web.address=:80
       - --entrypoints.websecure.address=:443
-      - --entrypoints.web.http.redirections.entrypoint.to=websecure
-      - --entrypoints.web.http.redirections.entrypoint.scheme=https
       - --providers.docker=true
       - --providers.docker.exposedbydefault=false
       # - --providers.file.directory=/conf/
@@ -45,7 +43,7 @@ services:
       - "traefik.http.middlewares.traefik-forward-auth.forwardauth.address=http://traefik-forward-auth:4180"
       - "traefik.http.middlewares.traefik-forward-auth.forwardauth.authResponseHeaders=X-Forwarded-User"
       - "traefik.http.services.traefik-forward-auth.loadbalancer.server.port=4180"
-      - "traefik.http.routers.oauth2.rule=(Host(`${GUI_HOST}`) || Host(`backend.${GUI_HOST}`)) && PathPrefix(`/oauth2/`)"
+      - "traefik.http.routers.oauth2.rule=Host(`${GUI_HOST}`) && PathPrefix(`/oauth2/`)"
       - "traefik.http.routers.oauth2.tls=true"
 
   lens-web-components:
@@ -58,56 +56,67 @@ services:
       - "traefik.http.routers.lens.middlewares=traefik-forward-auth"
 
   spot:
-    image: docker.verbis.dkfz.de/ccp-private/central-spot
-    ports:
-      - 8080:8080
+    image: samply/rustyspot:main
     environment:
-      BEAM_SECRET: "${LOCAL_BEAM_SECRET}"
-      BEAM_URL: http://beam-proxy:8081
-      BEAM_PROXY_ID: ${LOCAL_BEAM_ID}
-      BEAM_BROKER_ID: ${BROKER_HOST}
-      # TODO: Implement Switch between spot and focus
-      BEAM_APP_ID: "focus"
+      HTTP_PROXY: ${http_proxy}
+      HTTPS_PROXY: ${https_proxy}
+      NO_PROXY: beam-proxy, prism
+      BEAM_SECRET: "${LOCAL_BEAM_SECRET_SPOT}"
+      BEAM_PROXY_URL: http://beam-proxy:8081
+      BEAM_APP_ID: "spot.${LOCAL_BEAM_ID}.${BROKER_HOST}"
+      CORS_ORIGIN: "https://${GUI_HOST}"
+      CATALOGUE_URL: "${CATALOGUE_URL}"
+      BIND_ADDR: 0.0.0.0:8055
+      PRISM_URL: http://prism:8066
     depends_on:
       - "beam-proxy"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.services.spot.loadbalancer.server.port=8080"
+      - "traefik.http.services.spot.loadbalancer.server.port=8055"
       - "traefik.http.middlewares.corsheaders.headers.accesscontrolallowmethods=GET,OPTIONS,POST"
+      - "traefik.http.middlewares.corsheaders.headers.accesscontrolallowheaders=content-type"
       - "traefik.http.middlewares.corsheaders.headers.accesscontrolalloworiginlist=https://${GUI_HOST}"
       - "traefik.http.middlewares.corsheaders.headers.accesscontrolallowcredentials=true"
       - "traefik.http.middlewares.corsheaders.headers.accesscontrolmaxage=-1"
-      - "traefik.http.routers.spot.rule=Host(`backend.${GUI_HOST}`)"
+      - "traefik.http.routers.spot.rule=Host(`backend.${GUI_HOST}`) && PathPrefix(`/prod`)"
+      - "traefik.http.middlewares.stripprefix_spot_prod.stripprefix.prefixes=/prod"
       - "traefik.http.routers.spot.tls=true"
-      - "traefik.http.routers.spot.middlewares=corsheaders,traefik-forward-auth"
+      - "traefik.http.routers.spot.middlewares=corsheaders,traefik-forward-auth,stripprefix_spot_prod"
 
   beam-proxy:
     image: docker.verbis.dkfz.de/cache/samply/beam-proxy:develop
     environment:
       BROKER_URL: https://${BROKER_HOST}
       PROXY_ID: ${LOCAL_BEAM_ID}.${BROKER_HOST}
-      # TODO: Same for focus here
-      APP_focus_KEY: ${LOCAL_BEAM_SECRET}
+      APP_spot_KEY: ${LOCAL_BEAM_SECRET_SPOT}
+      APP_prism_KEY: ${LOCAL_BEAM_SECRET_PRISM}
       PRIVKEY_FILE: /run/secrets/proxy.pem
       ALL_PROXY: ${http_proxy}
     secrets:
       - proxy.pem
       - root.crt.pem
 
-  ## Only use this for test purposes
-  blaze:
-    image: samply/blaze:develop
-    ports:
-     - "8082:8080"
-    profiles: ["development"]
-
-  test-data-loader:
-    image: samply/test-data-loader
+  prism:
+    image: samply/prism:main
     environment:
-      FHIR_STORE_URL: "http://blaze:8080/fhir"
-      PATIENT_COUNT: "2000"
-    command: sh -c "sleep 60 && /app/run.sh"
-    profiles: ["development"]
+      # TODO: Autogenerate this
+      API_KEY: "${LOCAL_BEAM_SECRET_PRISM}"
+      BEAM_PROXY_URL: http://beam-proxy:8081
+      BEAM_APP_ID_LONG: prism.${LOCAL_BEAM_ID}.${BROKER_HOST}
+      CORS_ORIGIN: "https://${GUI_HOST}"
+      SITES: ${SITES}
+      PROJECT: ${PROJECT}
+      BIND_ADDR: 0.0.0.0:8066
+      RUST_LOG: "debug,hyper=info"
+    depends_on:
+      - "beam-proxy"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.prism.loadbalancer.server.port=8066"
+      - "traefik.http.routers.prism.rule=Host(`${GUI_HOST}`) && PathPrefix(`/prism`)"
+      - "traefik.http.routers.prism.tls=true"
+      - "traefik.http.middlewares.prism-stripprefix.stripprefix.prefixes=/prism"
+      - "traefik.http.routers.prism.middlewares=corsheaders,traefik-forward-auth,prism-stripprefix"
 
   project-manager:
     image: samply/project-manager:develop

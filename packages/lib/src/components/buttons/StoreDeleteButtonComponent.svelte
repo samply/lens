@@ -13,7 +13,7 @@
      * deletes the given item from the query
      * can be a group, item or value
      */
-    const deleteItem = () => {
+    const deleteItem = (): void => {
         if (type === "group") {
             queryStore.update((query) => {
                 query = query.filter((group, i) => i !== index);
@@ -34,4 +34,5 @@
 
 <button
     part="query-delete-button query-delete-button-{type}"
-    on:click={deleteItem}>&#x2715;</button>
+    on:click={deleteItem}>&#x2715;</button
+>

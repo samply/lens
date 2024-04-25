@@ -3,8 +3,8 @@
 */
 
 lens-catalogue::part(lens-catalogue-toggle-button) {
-  background-color: var(--green);
-  color: var(--white);
+  background-color: var(--button-background-color);
+  color: var(--button-color);
   border: none;
   border-radius: var(--border-radius-small);
   padding: var(--gap-xs) var(--gap-s);
@@ -17,34 +17,24 @@ lens-catalogue::part(lens-catalogue-toggle-button) {
 }
 
 lens-catalogue::part(lens-catalogue-toggle-button):hover {
-  background-color: var(--light-green);
+  background-color: var(--button-background-color-hover);
 }
 
 lens-catalogue::part(toggle-button-open-icon) {
   transform: rotate(180deg);
 }
 
-
 lens-catalogue::part(data-tree-element) {
   position: relative;
 }
 
 lens-catalogue::part(data-tree-element-name) {
-  font-size: var(--font-size-m);
-  color: var(--dark-gray);
-  margin-bottom: 10px;
-  border: none;
-  background-color: unset;
-  cursor: pointer;
   font-family: var(--font-family);
-}
-
-lens-catalogue::part(data-tree-element-name) {
+  color: var(--font-color);
   padding-left: var(--gap-s);
   padding-right: 0;
   font-size: var(--font-size-m);
-  color: var(--dark-gray);
-  margin-bottom: 10px;
+  margin-bottom: var(--gap-xs);
   border: none;
   background-color: unset;
   cursor: pointer;
@@ -62,6 +52,17 @@ lens-catalogue::part(data-tree-element-toggle-icon) {
   transition: all 0.1s ease-in-out;
 }
 
+lens-catalogue::part(add-all-options-button) {
+  background-color: var(--button-background-color);
+  border-radius: var(--border-radius-small);
+  color: var(--button-color);
+  position: relative;
+  padding: 3px 8px;
+  cursor: pointer;
+  border: none;
+  left: +15px;
+}
+
 lens-catalogue::part(data-tree-element-toggle-icon-open) {
   transform: rotate(0deg);
 }
@@ -75,7 +76,7 @@ lens-catalogue::part(info-button) {
 }
 
 lens-catalogue::part(info-button-icon) {
-  bottom: var(--gap-xxs);
+  bottom: 5px;
   width: 16px;
   height: 16px;
 }
@@ -149,8 +150,8 @@ lens-catalogue::part(criterion-section-groups) {
   */
 
 lens-catalogue::part(query-add-button) {
-  background-color: var(--blue);
-  color: var(--white);
+  background-color: var(--button-background-color);
+  color: var(--button-color);
   border: none;
   border-radius: var(--border-radius-small);
   font-size: var(--font-size-m);
@@ -204,43 +205,6 @@ lens-catalogue::part(number-input-add) {
   margin-top: var(--gap-s);
 }
 
-lens-catalogue::part(number-input-add-button) {
-  background-color: var(--green);
-  color: var(--white);
-  border: none;
-  border-radius: var(--border-radius-small);
-  padding: 0;
-  font-size: var(--font-size-m);
-  cursor: pointer;
-  height: 20px;
-  line-height: 22px;
-  width: 100px;
-}
-
-lens-catalogue::part(number-input-add-button):hover {
-  background-color: var(--light-green);
-}
-
-lens-catalogue::part(number-input-delete-button) {
-  background-color: var(--orange);
-  color: var(--white);
-  border: none;
-  border-radius: var(--border-radius-small);
-  padding: 0;
-  font-size: var(--font-size-m);
-  cursor: pointer;
-  height: 20px;
-  line-height: 22px;
-  width: 20px;
-}
-
-lens-catalogue::part(number-input-delete-button):hover {
-  background-color: var(--light-orange);
-}
-
-
-
-
 /**
   * Autocomplete
   */
@@ -267,14 +231,14 @@ lens-catalogue::part(autocomplete-formfield-input):focus {
 }
 
 lens-catalogue::part(autocomplete-options) {
+  box-sizing: border-box;
   z-index: 1;
   list-style-type: none;
   padding: 0;
   margin: 0;
-  border: solid 1px var(--light-blue);
+  border: solid 1px var(--blue);
   border-top: none;
-  width: calc(100% - 2*var(--gap-s) - 2px);
-  /* padding of container plus borders */
+  width: 100%;
   position: absolute;
   background-color: white;
   color: black;
@@ -286,24 +250,25 @@ lens-catalogue::part(autocomplete-options) {
 
 
 lens-catalogue::part(autocomplete-options-item) {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-xs);
   cursor: pointer;
   padding: var(--gap-xs);
 }
 
 lens-catalogue::part(autocomplete-options-item-focused) {
   color: var(--white);
-  background-color: var(--light-blue);
+  background-color: var(--blue);
 }
 
 lens-catalogue::part(autocomplete-options-item-description) {
-  padding-top: var(--gap-xxs);
   font-size: var(--font-size-xs);
   color: var(--blue);
 }
 
 lens-catalogue::part(autocomplete-options-item-description-focused) {
   color: var(--white);
-  padding-top: var(--gap-xxs);
   font-size: var(--font-size-xs);
 }
 
@@ -316,10 +281,10 @@ lens-catalogue::part(criterion-autocomplete-tooltip) {
   bottom: var(--font-size-m);
   left: 45px;
   padding: var(--gap-xs);
-  background-color: var(--lightest-gray);
+  background-color: var(--white);
   border-radius: var(--border-radius-small);
   border-bottom-left-radius: 0;
-  border: solid 1px var(--green);
+  border: solid 1px var(--blue);
 }
 
 lens-catalogue::part(formfield-error) {

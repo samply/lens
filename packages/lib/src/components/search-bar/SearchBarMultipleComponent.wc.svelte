@@ -10,20 +10,12 @@
 />
 
 <script lang="ts">
-    import type { Category } from "../../types/treeData";
     import { queryStore } from "../../stores/query";
     import SearchBarComponent from "./SearchBarComponent.wc.svelte";
     import type { QueryItem } from "../../types/queryData";
 
-    /**
-     * props
-     * @param treeData takes a Category tree to build the autocomplete items from
-     * @param noMatchesFoundMessage takes a string to display when no matches are found
-     */
-    export let treeData: Category[] = [];
     export let noMatchesFoundMessage: string = "No matches found";
     export let placeholderText: string = "Type to filter conditions";
-    export let chips: boolean = true;
 
     /**
      * Adds a new search bar to the query store
@@ -37,10 +29,10 @@
 </script>
 
 <div part="lens-searchbar-multiple">
-    {#each $queryStore as queryGroup, index}
+    <!-- eslint-disable-next-line @typescript-eslint/no-unused-vars -->
+    {#each $queryStore as _, index}
         <div part="search-bar-wrapper">
             <SearchBarComponent
-                {treeData}
                 {noMatchesFoundMessage}
                 {placeholderText}
                 {index}

@@ -1,4 +1,16 @@
 {
   "extends": "@tsconfig/svelte/tsconfig.json",
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ],
+  "compilerOptions": {
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "declarationDir": "dist/",
+    "strict": true,
+    "noImplicitAny": true,
+  },
+  
 }

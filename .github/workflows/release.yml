@@ -1,0 +1,67 @@
+name: "Samply.Lens Github Workflow"
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout Code"
+        uses: actions/checkout@v3
+      - name: "Setup NodeJS with cache (if available)"
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'npm'
+      - name: "Download dependencies"
+        run: npm ci
+      - name: "Build @samply/lens"
+        run: npm run build
+      - name: "Publish @samply/lens"
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+
+  release:
+    needs: build-and-publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout Code"
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: "Update CHANGELOG"
+        id: changelog
+        uses: requarks/changelog-action@v1
+        with:
+          token: ${{ github.token }}
+          tag: ${{ github.ref_name }}
+
+      - name: "Create Release"
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true
+          draft: false
+          makeLatest: true
+          name: ${{ github.ref_name }}
+          body: ${{ steps.changelog.outputs.changes }}
+          token: ${{ github.token }}
+
+      - name: "Commit CHANGELOG.md"
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          branch: main
+          commit_message: 'docs: added changelog for ${{ github.ref_name }} [skip ci]'
+          file_pattern: CHANGELOG.md
+
+      - name: "Create PR for syncing back changelog"
+        uses: peter-evans/create-pull-request@v6
+        with:
+          title: "Sync develop with main"
+          body: "For easy synchronisation of main with develop, triggered by the [release workflow](./.github/workflows/release.yml). Automated changes by [create-pull-request](https://github.com/peter-evans/create-pull-request) GitHub action."
+          branch: "automated-pr/sync-main-to-develop"
+          base: "develop"

@@ -10,6 +10,7 @@
     import { negotiateStore } from "../../stores/negotiate";
     import {
         getSitePopulationForCode,
+        getSitePopulationForStratumCode,
         responseStore,
     } from "../../stores/response";
     import TableItemComponent from "./TableItemComponent.svelte";
@@ -17,23 +18,31 @@
     import type { HeaderData } from "../../types/biobanks";
     import type { Site } from "../../types/response";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
+    import type { ResponseStore } from "../../types/backend";
 
     export let title: string = "";
+
+    let claimedText: string;
+    $: claimedText =
+        (($lensOptions?.tableOptions &&
+            $lensOptions.tableOptions?.claimedText &&
+            $lensOptions.tableOptions.claimedText) as string) ||
+        "Processing...";
 
     /**
      * data-types for the table
      * can be set via options component
      */
-    let options: any;
-    $: options = ($lensOptions?.tableOptions && $lensOptions?.tableOptions) || {
-        headerData: [{ title: "", dataKey: "" }],
+    let options: { headerData: HeaderData[] };
+    $: options = (($lensOptions?.tableOptions && $lensOptions.tableOptions) as {
+        headerData: HeaderData[];
+    }) || {
+        headerData: [{ title: "", dataKey: "", aggregatedDataKeys: [] }],
     };
 
-    $: options?.headerData?.forEach(
-        (header: HeaderData, index: number): void => {
-            header.ascending = true;
-        }
-    );
+    $: options?.headerData?.forEach((header: HeaderData): void => {
+        header.ascending = true;
+    });
 
     /**
      * watches the responseStore for changes to update the table
@@ -41,25 +50,67 @@
     type TableRowData = (string | number)[][];
     let tableRowData: TableRowData = [];
 
-    const buildTableRowData = (responseStore): void => {
+    const buildTableRowData = (responseStore: ResponseStore): void => {
         tableRowData = [];
 
         responseStore.forEach((value: Site, key: string): void => {
-            if (value.status !== "succeeded") return;
+            if (!["claimed", "succeeded"].includes(value.status)) return;
 
             let tableRow: (string | number)[] = [];
 
+            /**
+             * builds the table items for each row
+             * the first item is the name of the collection
+             * the following items are the population for each data type (single or aggregated)
+             */
             options.headerData.forEach(
                 (header: HeaderData, index: number): void => {
                     if (index === 0) {
-                        const name = $uiSiteMappingsStore.get(key);
+                        const name: string | undefined =
+                            $uiSiteMappingsStore.get(key);
+                        if (name === undefined) return;
                         tableRow.push(name);
-                    } else {
-                        tableRow.push(
-                            getSitePopulationForCode(value.data, header.dataKey)
-                        );
+                        return;
                     }
-                }
+
+                    if (value.status === "claimed") {
+                        tableRow.push(claimedText);
+                        return;
+                    }
+
+                    if (header.dataKey) {
+                        tableRow.push(
+                            getSitePopulationForCode(
+                                value.data,
+                                header.dataKey,
+                            ),
+                        );
+                        return;
+                    }
+
+                    let aggregatedPopulation: number = 0;
+
+                    header.aggregatedDataKeys?.forEach((dataKey) => {
+                        if (dataKey.groupCode) {
+                            aggregatedPopulation += getSitePopulationForCode(
+                                value.data,
+                                dataKey.groupCode,
+                            );
+                        } else if (
+                            dataKey.stratifierCode &&
+                            dataKey.stratumCode
+                        ) {
+                            aggregatedPopulation +=
+                                getSitePopulationForStratumCode(
+                                    value.data,
+                                    dataKey.stratumCode,
+                                    dataKey.stratifierCode,
+                                );
+                        }
+                    });
+
+                    tableRow.push(aggregatedPopulation);
+                },
             );
 
             tableRowData = [...tableRowData, tableRow];
@@ -70,7 +121,7 @@
     $: tableRowData = sortTable(
         sortColumnIndex,
         options.headerData[sortColumnIndex].ascending,
-        tableRowData
+        tableRowData,
     );
 
     /**
@@ -83,29 +134,26 @@
 
     $: pageItems = tableRowData.slice(
         (activePage - 1) * pageSize,
-        activePage * pageSize
+        activePage * pageSize,
     );
 
     /**
      * watches the negotiateStore for changes to check or uncheck the checkbox
-     * @param biobank: the biobank to check
-     * @returns boolean
      */
-
+    let allChecked: boolean = false;
     $: allChecked =
         $negotiateStore.length === tableRowData.length &&
         tableRowData.length !== 0;
 
     /**
      * checks or unchecks all biobanks
-     * @returns void
      */
     const checkAllBiobanks = (): void => {
         if (allChecked) {
             $negotiateStore = [];
         } else {
             $negotiateStore = tableRowData.map(
-                (tableRow: (string | number)[]) => tableRow[0] as string
+                (tableRow: (string | number)[]) => tableRow[0] as string,
             );
         }
     };
@@ -118,16 +166,17 @@
 
     /**
      * sorts the tableRowData by the given column
-     * @param column column to sort
-     * @param ascending order of the sort, changes after every click but not on incoming responses
-     * @param tableRowData as an argument to make the function reactive and prevent race conditions with incoming responses
-     * @param changeAscending if true, the order of the sort will change after every click
+     * @param column - column to sort
+     * @param ascending - order of the sort, changes after every click but not on incoming responses
+     * @param tableRowData - as an argument to make the function reactive and prevent race conditions with incoming responses
+     * @param changeAscending - if true, the order of the sort will change after every click
+     * @returns the sorted tableRowData
      */
     const sortTable = (
         column: number,
         ascending: boolean = true,
         tableRowData: TableRowData,
-        changeAscending: boolean = false
+        changeAscending: boolean = false,
     ): TableRowData => {
         /**
          * sets the index of the column to sort, so that further incoming responses don't mess up the sorting
@@ -169,7 +218,7 @@
                     part="table-header-cell table-header-datatype"
                     on:click={() =>
                         sortTable(index, header.ascending, tableRowData, true)}
-                    >
+                >
                     {header.title}
                     {#if header.hintText}
                         <InfoButtonComponent message={header.hintText} />
@@ -184,10 +233,11 @@
         {/each}
     </tbody>
 </table>
-<slot name="above-pagination"/>
+<slot name="above-pagination" />
 <div part="table-pagination">
     <button
-        part="table-pagination-button pagination-pagination-previous"
+        part="table-pagination-button pagination-pagination-previous 
+                {activePage === 1 ? 'pagination-button-disabled' : ''}"
         disabled={activePage === 1}
         on:click={() => {
             activePage = activePage - 1;
@@ -195,11 +245,16 @@
     >
     <div part="table-pagination-pagenumber">{activePage}</div>
     <button
-    part="table-pagination-button pagination-pagination-next"
-    disabled={activePage === Math.ceil(tableRowData.length / pageSize)}
-    on:click={() => {
-        activePage = activePage + 1;
-    }}>&#8594;</button
+        part="table-pagination-button pagination-pagination-next
+            {activePage === Math.ceil(tableRowData.length / pageSize) ||
+        pageItems.length === 0
+            ? 'pagination-button-disabled'
+            : ''}"
+        disabled={activePage === Math.ceil(tableRowData.length / pageSize) ||
+            pageItems.length === 0}
+        on:click={() => {
+            activePage = activePage + 1;
+        }}>&#8594;</button
     >
 </div>
-<slot name="beneath-pagination"/>
+<slot name="beneath-pagination" />

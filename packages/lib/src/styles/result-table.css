@@ -54,10 +54,20 @@ lens-result-table {
   }
   
   lens-result-table::part(table-pagination-button) {
-    border: solid 1px var(--gray);
+    border: solid 1px var(--blue);
     background: var(--white);
     border-radius: var(--border-radius-small);
     padding: var(--gap-xxs) var(--gap-s);
+    cursor: pointer;
+  }
+  
+  
+  lens-result-table::part(pagination-button-disabled) {
+    border: solid 1px var(--light-gray);
+    background: var(--white);
+    border-radius: var(--border-radius-small);
+    padding: var(--gap-xxs) var(--gap-s);
+    cursor: auto;
   }
   
   lens-result-table::part(info-button) {
@@ -85,6 +95,6 @@ lens-result-table::part(info-button-dialogue) {
     padding: var(--gap-s);
     top: 40px;
     right: 0px;
-    border: solid 1px var(--light-blue);
+    border: solid 1px var(--blue);
     border-radius: var(--border-radius-small);
 }

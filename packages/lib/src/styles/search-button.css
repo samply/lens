@@ -3,7 +3,7 @@
 */
 
 lens-search-button::part(lens-search-button) {
-    color: var(--white);
+    color: var(--button-color);
     border: none;
     border-radius: var(--border-radius-small);
     padding: var(--gap-xs) var(--gap-s);
@@ -41,7 +41,7 @@ lens-search-button::part(lens-search-button-title) {
 */
 
 lens-search-bar-multiple::part(lens-search-button) {
-    color: var(--white);
+    color: var(--button-color);
     border: none;
     border-radius: var(--border-radius-small);
     padding: var(--gap-xs) var(--gap-s);

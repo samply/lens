@@ -1,0 +1,49 @@
+
+/**
+* result summary
+*/
+
+lens-result-summary {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-gap: var(--gap-xl);
+    grid-column: 1/-1;
+    align-items: center;
+  }
+  
+  lens-result-summary::part(result-summary-content) {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 10px
+  }
+
+  lens-result-summary::part(info-button) {
+    position: relative;
+    cursor: pointer;
+    height: 100%;
+    border: none;
+    background-color: var(--white);
+    border-radius: var(--border-radius-small);
+}
+  lens-result-summary::part(info-button-icon) {
+    width: 16px;
+}
+
+lens-result-summary::part(info-button-title) {
+    font-family: var(--font-family);
+}
+
+lens-result-summary::part(info-button-dialogue) {
+    position: absolute;
+    border: none;
+    background-color: var(--white);
+    width: max-content;
+    max-width: 30vw;
+    z-index: 100;
+    padding: var(--gap-s);
+    top: 40px;
+    left: 0px;
+    border: solid 1px var(--blue);
+    border-radius: var(--border-radius-small);
+}
