@@ -26,11 +26,15 @@
                 "dataKey": "site"
             },
             {
-                "title": "N Rows",
+                "title": "Rows",
                 "dataKey": "observations"
             },
             {
-                "title": "N Isolates (distinct)",
+                "title": "Isolates",
+                "dataKey": "specimens"
+            },
+            {
+                "title": "Patients",
                 "dataKey": "patients"
             }
         ]

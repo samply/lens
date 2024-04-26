@@ -1289,3 +1289,54 @@ EHDS2_OBSERVATION
 `
 }
 
+// For Specimen resources in EHDS2/ECDC.
+//
+// The CQL in this measure depends on function(s) defined in EHDS2_UTIL
+export const ehds2SpecimenMeasure = {
+  key: 'specimens',
+  measure: {
+    code: {
+      'text': 'specimens'
+    },
+    extension: [
+      {
+        url: 'http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis',
+        valueCode: 'Specimen',
+      },
+    ],
+    population: [
+      {
+        code: {
+          coding: [
+            {
+              system: 'http://terminology.hl7.org/CodeSystem/measure-population',
+              code: 'initial-population'
+            }
+          ]
+        },
+        criteria: {
+          language: 'text/cql-identifier',
+          expression: 'SpecimenList'
+        }
+      }
+    ],
+    stratifier: [
+      {
+        code: {
+          text: 'SpecimenIsolateId',
+        },
+        criteria: {
+          language: 'text/cql',
+          expression: 'SpecimenIsolateId',
+        },
+      },
+    ]
+  },
+  cql:
+      `
+      
+EHDS2_SPECIMEN
+
+`
+}
+

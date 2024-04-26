@@ -4,6 +4,7 @@
   import {
     ehds2PatientMeasure,
     ehds2ObservationMeasure,
+    ehds2SpecimenMeasure,
   } from "./measures";
 
   let mockCatalogueData = "";
@@ -24,6 +25,7 @@
   const measures = [
     ehds2PatientMeasure,
     ehds2ObservationMeasure,
+    ehds2SpecimenMeasure
   ];
 
   const backendMeasures = `EHDS2_IN_INITIAL_POPULATION`;
@@ -50,7 +52,8 @@
     ["antibiotic_code", "AntibioticCode"],
     ["sir_code", "SirCode"],
     ["data_source", "DataSource"],
-    ["isolate_id", "IsolateId"],
+    //["isolate_id", "IsolateId"], // From Observation
+    ["isolate_id", "SpecimenIsolateId"], // From Specimen
     ["patient_type", "PatientType"],
     ["reference_guidelines_sir", "ReferenceGuidelinesSir"],
     ["reporting_country", "ReportingCountry"],
@@ -183,7 +186,7 @@
                   catalogueGroupCode="pathogen_code"
                   chartType="bar"
                   xAxisTitle="Code"
-                  yAxisTitle="Number of patients"
+                  yAxisTitle="Number of observations"
                   backgroundColor={JSON.stringify(barChartBackgroundColors)}
           />
         </div>
@@ -193,7 +196,7 @@
                   catalogueGroupCode="antibiotic_code"
                   chartType="bar"
                   xAxisTitle="Code"
-                  yAxisTitle="Number of patients"
+                  yAxisTitle="Number of observations"
                   backgroundColor={JSON.stringify(barChartBackgroundColors)}
           />
         </div>
@@ -203,7 +206,7 @@
                   catalogueGroupCode="sir_code"
                   chartType="bar"
                   xAxisTitle="Code"
-                  yAxisTitle="Number of patients"
+                  yAxisTitle="Number of observations"
                   backgroundColor={JSON.stringify(barChartBackgroundColors)}
           />
         </div>
@@ -213,7 +216,7 @@
                   catalogueGroupCode="data_source"
                   chartType="bar"
                   xAxisTitle="Code"
-                  yAxisTitle="Number of patients"
+                  yAxisTitle="Number of observations"
                   backgroundColor={JSON.stringify(barChartBackgroundColors)}
           />
         </div>
@@ -223,7 +226,7 @@
                   catalogueGroupCode="isolate_id"
                   chartType="bar"
                   xAxisTitle="ID"
-                  yAxisTitle="Number of patients"
+                  yAxisTitle="Number of isolates"
                   backgroundColor={JSON.stringify(barChartBackgroundColors)}
           />
         </div>
@@ -233,7 +236,7 @@
                   catalogueGroupCode="patient_type"
                   chartType="bar"
                   xAxisTitle="Type"
-                  yAxisTitle="Number of patients"
+                  yAxisTitle="Number of observations"
                   backgroundColor={JSON.stringify(barChartBackgroundColors)}
           />
         </div>
@@ -243,7 +246,7 @@
                   catalogueGroupCode="reference_guidelines_sir"
                   chartType="bar"
                   xAxisTitle="Guidelines"
-                  yAxisTitle="Number of patients"
+                  yAxisTitle="Number of observations"
                   backgroundColor={JSON.stringify(barChartBackgroundColors)}
           />
         </div>
@@ -253,7 +256,7 @@
                   catalogueGroupCode="reporting_country"
                   chartType="bar"
                   xAxisTitle="Country"
-                  yAxisTitle="Number of patients"
+                  yAxisTitle="Number of observations"
                   backgroundColor={JSON.stringify(barChartBackgroundColors)}
           />
         </div>
