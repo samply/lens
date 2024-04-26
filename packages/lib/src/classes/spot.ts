@@ -1,7 +1,7 @@
 import { responseStore } from "../stores/response"
 import type { ResponseStore } from "../types/backend";
 
-import type { SiteData, Status } from "../types/response"
+import type { SiteData, Status } from "../types/response";
 
 type BeamResult = {
     body: string,
