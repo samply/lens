@@ -181,7 +181,7 @@
                   catalogueGroupCode="pathogen_code"
                   chartType="bar"
                   xAxisTitle="Code"
-                  yAxisTitle="Number of patients"
+                  yAxisTitle="Number of observations"
                   backgroundColor={JSON.stringify(barChartBackgroundColors)}
           />
         </div>
@@ -191,7 +191,7 @@
                   catalogueGroupCode="antibiotic_code"
                   chartType="bar"
                   xAxisTitle="Code"
-                  yAxisTitle="Number of patients"
+                  yAxisTitle="Number of observations"
                   backgroundColor={JSON.stringify(barChartBackgroundColors)}
           />
         </div>
@@ -201,7 +201,7 @@
                   catalogueGroupCode="sir_code"
                   chartType="bar"
                   xAxisTitle="Code"
-                  yAxisTitle="Number of patients"
+                  yAxisTitle="Number of observations"
                   backgroundColor={JSON.stringify(barChartBackgroundColors)}
           />
         </div>
@@ -211,7 +211,7 @@
                   catalogueGroupCode="data_source"
                   chartType="bar"
                   xAxisTitle="Code"
-                  yAxisTitle="Number of patients"
+                  yAxisTitle="Number of observations"
                   backgroundColor={JSON.stringify(barChartBackgroundColors)}
           />
         </div>
@@ -221,7 +221,7 @@
                   catalogueGroupCode="isolate_id"
                   chartType="bar"
                   xAxisTitle="ID"
-                  yAxisTitle="Number of patients"
+                  yAxisTitle="Number of observations"
                   backgroundColor={JSON.stringify(barChartBackgroundColors)}
           />
         </div>
@@ -231,7 +231,7 @@
                   catalogueGroupCode="patient_type"
                   chartType="bar"
                   xAxisTitle="Type"
-                  yAxisTitle="Number of patients"
+                  yAxisTitle="Number of observations"
                   backgroundColor={JSON.stringify(barChartBackgroundColors)}
           />
         </div>
@@ -241,7 +241,7 @@
                   catalogueGroupCode="reference_guidelines_sir"
                   chartType="bar"
                   xAxisTitle="Guidelines"
-                  yAxisTitle="Number of patients"
+                  yAxisTitle="Number of observations"
                   backgroundColor={JSON.stringify(barChartBackgroundColors)}
           />
         </div>
@@ -251,7 +251,7 @@
                   catalogueGroupCode="reporting_country"
                   chartType="bar"
                   xAxisTitle="Country"
-                  yAxisTitle="Number of patients"
+                  yAxisTitle="Number of observations"
                   backgroundColor={JSON.stringify(barChartBackgroundColors)}
           />
         </div>
