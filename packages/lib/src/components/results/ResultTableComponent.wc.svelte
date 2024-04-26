@@ -22,6 +22,13 @@
 
     export let title: string = "";
 
+    let claimedText: string;
+    $: claimedText =
+        (($lensOptions?.tableOptions &&
+            $lensOptions.tableOptions?.claimedText &&
+            $lensOptions.tableOptions.claimedText) as string) ||
+        "Processing...";
+
     /**
      * data-types for the table
      * can be set via options component
@@ -47,7 +54,7 @@
         tableRowData = [];
 
         responseStore.forEach((value: Site, key: string): void => {
-            if (value.status !== "succeeded") return;
+            if (!["claimed", "succeeded"].includes(value.status)) return;
 
             let tableRow: (string | number)[] = [];
 
@@ -65,6 +72,12 @@
                         tableRow.push(name);
                         return;
                     }
+
+                    if (value.status === "claimed") {
+                        tableRow.push(claimedText);
+                        return;
+                    }
+
                     if (header.dataKey) {
                         tableRow.push(
                             getSitePopulationForCode(

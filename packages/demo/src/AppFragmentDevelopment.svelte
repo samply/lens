@@ -103,7 +103,7 @@
     //   ];
 
     const backendConfig = {
-        url: "http://localhost:8080",
+        url: "http://localhost:8055",
         backends: [
             "mannheim",
             "freiburg",
