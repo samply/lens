@@ -110,8 +110,11 @@ const getSingleton = (criterion: AstBottomLayerValue): string => {
         if (myCQL) {
             switch (myCriterion.type) {
                 case "gender":
+                case "BBMRI_gender":
                 case "histology":
                 case "conditionValue":
+                case "BBMRI_conditionValue":
+                case "BBMRI_conditionSampleDiagnosis":
                 case "conditionBodySite":
                 case "conditionLocalization":
                 case "observation":
@@ -122,6 +125,8 @@ const getSingleton = (criterion: AstBottomLayerValue): string => {
                 case "procedureResidualstatus":
                 case "medicationStatement":
                 case "specimen":
+                case "BBMRI_specimen":
+                case "BBMRI_hasSpecimen":
                 case "hasSpecimen":
                 case "Organization":
                 case "observationMolecularMarkerName":
@@ -134,11 +139,33 @@ const getSingleton = (criterion: AstBottomLayerValue): string => {
                 case "TNMc": {
                     if (typeof criterion.value === "string") {
                         // TODO: Check if we really need to do this or we can somehow tell cql to do that expansion it self
-                        if (criterion.value.slice(-1) === "%") {
+                        if (
+                            criterion.value.slice(-1) === "%" &&
+                            criterion.value.length == 5
+                        ) {
                             const mykey = criterion.value.slice(0, -2);
                             if (criteria != undefined) {
                                 const expandedValues = criteria.filter(
                                     (value) => value.startsWith(mykey),
+                                );
+                                expression += getSingleton({
+                                    key: criterion.key,
+                                    type: criterion.type,
+                                    system: criterion.system,
+                                    value: expandedValues,
+                                });
+                            }
+                        } else if (
+                            criterion.value.slice(-1) === "%" &&
+                            criterion.value.length == 6
+                        ) {
+                            const mykey = criterion.value.slice(0, -1);
+                            if (criteria != undefined) {
+                                const expandedValues = criteria.filter(
+                                    (value) => value.startsWith(mykey),
+                                );
+                                expandedValues.push(
+                                    criterion.value.slice(0, 5),
                                 );
                                 expression += getSingleton({
                                     key: criterion.key,

@@ -4,7 +4,6 @@
 
 import type { SiteData, Status, BeamResult } from "../types/response";
 import type { ResponseStore } from "../types/backend";
-import { responseStore } from "../stores/response";
 
 export class Spot {
     private currentTask!: string;
@@ -53,6 +52,9 @@ export class Spot {
 
             console.info(`Created new Beam Task with id ${this.currentTask}`);
 
+            /**
+             * Listenes to the new_result event from beam and updates the response store
+             */
             const eventSource = new EventSource(
                 `${this.url.toString()}beam/${this.currentTask}?wait_count=${this.sites.length}`,
                 {
@@ -61,7 +63,6 @@ export class Spot {
             );
             eventSource.addEventListener("new_result", (message) => {
                 const response: BeamResult = JSON.parse(message.data);
-                console.log("response", response);
                 if (response.task !== this.currentTask) return;
                 const site: string = response.from.split(".")[1];
                 const status: Status = response.status;
@@ -70,11 +71,11 @@ export class Spot {
                         ? JSON.parse(atob(response.body))
                         : null;
 
-                // updateResponse(changes);
-                responseStore.update((store: ResponseStore): ResponseStore => {
-                    store.set(site, { status: status, data: body });
-                    return store;
+                const parsedResponse: ResponseStore = new Map().set(site, {
+                    status: status,
+                    data: body,
                 });
+                updateResponse(parsedResponse);
             });
 
             // read error events from beam

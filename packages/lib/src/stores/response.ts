@@ -66,9 +66,9 @@ export const getSitePopulationForCode = (
     code: string,
 ): number => {
     let population: number = 0;
-    if (!site) return population;
+    if (!site || !site.group) return population;
 
-    site.group.forEach((group) => {
+    site?.group?.forEach((group) => {
         if (group.code.text === code) {
             population += group.population[0].count;
         }
@@ -134,7 +134,7 @@ export const getSitePopulationForStratumCode = (
     stratumCode: string,
     stratifier: string,
 ): number => {
-    if (!site) return 0;
+    if (!site || !site.group) return 0;
 
     let population: number = 0;
 
@@ -193,7 +193,7 @@ export const getSiteStratifierCodesForGroupCode = (
     site: SiteData,
     code: string,
 ): string[] => {
-    if (!site) return [""];
+    if (!site || !site.group) return [""];
     const codes: string[] = [];
 
     site.group.forEach((groupItem) => {

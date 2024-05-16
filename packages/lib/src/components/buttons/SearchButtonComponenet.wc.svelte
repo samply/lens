@@ -40,7 +40,7 @@
 
     $: options = $lensOptions?.backends as BackendOptions;
 
-    let controller: AbortController;
+    let controller: AbortController = new AbortController();
 
     /**
      * watches the backendConfig for changes to populate the uiSiteMappingsStore with a map

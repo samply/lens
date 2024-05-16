@@ -44,6 +44,9 @@
         },
     ];
 
+    /**
+     * move to config file
+     */
     const catalogueText = {
         group: "Group",
         collapseButtonTitle: "Collapse Tree",
