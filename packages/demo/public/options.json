@@ -1,6 +1,9 @@
 {
     "iconOptions": {
-        "infoUrl": "info-circle-svgrepo-com.svg"
+        "infoUrl": "info-circle-svgrepo-com.svg",
+        "selectAll": {
+            "text": "Add all"
+        }
     },
     "chartOptions": {
         "patients": {
