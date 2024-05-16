@@ -1,6 +1,4 @@
 <script lang="ts">
-    import "../../lib";
-
     import {
         dktkDiagnosisMeasure,
         dktkMedicationStatementsMeasure,
@@ -10,13 +8,13 @@
         dktkHistologyMeasure,
     } from "./measures";
 
-    let mockCatalogueData = "";
+    let catalogueData = "";
     let libraryOptions = "";
 
     fetch("catalogues/catalogue-dktk.json")
         .then((response) => response.text())
         .then((data) => {
-            mockCatalogueData = data;
+            catalogueData = data;
         });
 
     fetch("options.json")
@@ -87,11 +85,11 @@
     const genderHeaders: Map<string, string> = new Map<string, string>()
         .set("male", "männlich")
         .set("female", "weiblich")
-        .set("other", "Divers, Intersexuell")
+        .set("other", "Divers")
         .set("unknown", "unbekannt");
 
     const backendConfig = {
-        url: import.meta.env.PROD ? backendUrl : "http://localhost:8080",
+        url: import.meta.env.PROD ? backendUrl : "http://localhost:8055",
         backends: [
             "mannheim",
             "freiburg",
@@ -139,11 +137,10 @@
 <main>
     <div class="search">
         <lens-search-bar
-            treeData={mockCatalogueData}
+            treeData={catalogueData}
             noMatchesFoundMessage={"keine Ergebnisse gefunden"}
         />
         <lens-info-button
-            infoIconUrl="info-circle-svgrepo-com.svg"
             noQueryMessage="Leere Suchanfrage: Sucht nach allen Ergebnissen."
             showQuery={true}
         />
@@ -158,7 +155,6 @@
         <div class="catalogue">
             <h2>Suchkriterien</h2>
             <lens-info-button
-                infoIconUrl="info-circle-svgrepo-com.svg"
                 message={[
                     `Bei Patienten mit mehreren onkologischen Diagnosen, können sich ausgewählte Suchkriterien nicht nur auf eine Erkrankung beziehen, sondern auch auf Weitere.`,
                     `Innerhalb einer Kategorie werden verschiedene Ausprägungen mit einer „Oder-Verknüpfung“ gesucht; bei der Suche über mehrere Kategorien mit einer „Und-Verknüpfung“.`,
@@ -168,7 +164,7 @@
                 toggleIconUrl="right-arrow-svgrepo-com.svg"
                 addIconUrl="long-right-arrow-svgrepo-com.svg"
                 infoIconUrl="info-circle-svgrepo-com.svg"
-                treeData={mockCatalogueData}
+                treeData={catalogueData}
                 texts={catalogueText}
                 toggle={{ collapsable: false, open: catalogueopen }}
             />
@@ -280,14 +276,25 @@
 </main>
 
 <footer>
-    <a class="user-agreement" href="http">Nutzervereinbarung</a>
-    <a class="email" href="mailto:CCP@dkfz.de">CCP@dkfz.de</a>
-    <div class="copyright">
-        <span>&#169; 2023</span>
-        <a href="https://dktk.dkfz.de/en/clinical-platform/about-ccp"
-            >Clinical Comunication Platform (CCP)</a
-        >
-    </div>
+    <a
+        class="ccp"
+        href="https://dktk.dkfz.de/klinische-plattformen/ueber-die-ccp/about-ccp"
+    >
+        Clinical Communication Platform (CCP)
+    </a>
+    <a class="email" href="mailto:CCP@dkfz.de">Kontakt</a>
+    <a
+        class="user-agreement"
+        href="https://hub.dkfz.de/s/d3Nnr5jKMagpBm3"
+        download="nutzervereinbarung">Nutzungsvereinbarung</a
+    >
+    <a
+        class="privacy-policy"
+        href="https://hub.dkfz.de/s/M8Ldxd5GsfrQG9S"
+        download="datenschutzerklaerung">Datenschutz</a
+    >
+    <a class="imprint" href="https://www.dkfz.de/de/impressum.html">Impressum</a
+    >
 </footer>
 
-<lens-options options={libraryOptions} catalogueData={mockCatalogueData} />
+<lens-options options={libraryOptions} {catalogueData} />

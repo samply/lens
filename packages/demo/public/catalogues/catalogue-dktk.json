@@ -22,8 +22,8 @@
                     },
                     {
                         "key": "other",
-                        "name": "Divers / intersexuell",
-                        "description": "Divers / intersexuell"
+                        "name": "Divers",
+                        "description": "Divers"
                     },
                     {
                         "key": "unknown",
@@ -4730,7 +4730,7 @@
                                     [
                                         {
                                             "value": "diagnosis",
-                                            "name": "C91.0"
+                                            "name": "C91.0%"
                                         }
                                     ],
                                     [
@@ -4789,7 +4789,7 @@
                                     [
                                         {
                                             "value": "diagnosis",
-                                            "name": "C91.8"
+                                            "name": "C91.8%"
                                         }
                                     ],
                                     [
@@ -4808,7 +4808,7 @@
                                     [
                                         {
                                             "value": "diagnosis",
-                                            "name": "C91.1"
+                                            "name": "C91.1%"
                                         }
                                     ],
                                     [
@@ -4821,17 +4821,17 @@
                             },
                             {
                                 "key": "urn:dktk:code:114:2",
-                                "name": "Lymphatische Leukämie: Prolymphozytenleukämie",
+                                "name": "Lymphatische Leukämie: Prolymphozytäre Leukämie",
                                 "description": "",
                                 "aggregatedValue": [
                                     [
                                         {
                                             "value": "diagnosis",
-                                            "name": "C91.3"
+                                            "name": "C91.3%"
                                         },
                                         {
                                             "value": "diagnosis",
-                                            "name": "C91.6"
+                                            "name": "C91.6%"
                                         }
                                     ],
                                     [
@@ -4894,7 +4894,7 @@
                                     [
                                         {
                                             "value": "diagnosis",
-                                            "name": "C95.0"
+                                            "name": "C95.0%"
                                         }
                                     ],
                                     [
@@ -4938,39 +4938,39 @@
                                     [
                                         {
                                             "value": "diagnosis",
-                                            "name": "C92.0"
+                                            "name": "C92.0%"
                                         },
                                         {
                                             "value": "diagnosis",
-                                            "name": "C92.5"
+                                            "name": "C92.5%"
                                         },
                                         {
                                             "value": "diagnosis",
-                                            "name": "C92.6"
+                                            "name": "C92.6%"
                                         },
                                         {
                                             "value": "diagnosis",
-                                            "name": "C92.8"
+                                            "name": "C92.8%"
                                         },
                                         {
                                             "value": "diagnosis",
-                                            "name": "C92.9"
+                                            "name": "C92.9%"
                                         },
                                         {
                                             "value": "diagnosis",
-                                            "name": "C93.0"
+                                            "name": "C93.0%"
                                         },
                                         {
                                             "value": "diagnosis",
-                                            "name": "C94.0"
+                                            "name": "C94.0%"
                                         },
                                         {
                                             "value": "diagnosis",
-                                            "name": "C94.2"
+                                            "name": "C94.2%"
                                         },
                                         {
                                             "value": "diagnosis",
-                                            "name": "C94.7"
+                                            "name": "C94.7%"
                                         }
                                     ],
                                     [
@@ -5047,13 +5047,13 @@
                             },
                             {
                                 "key": "urn:dktk:code:117:2",
-                                "name": "Myeloische Leukämie: Akute Promyelozytenleukämie",
+                                "name": "Myeloische Leukämie: Akute Promyelozyten-Leukämie (PCL)",
                                 "description": "",
                                 "aggregatedValue": [
                                     [
                                         {
                                             "value": "diagnosis",
-                                            "name": "C92.4"
+                                            "name": "C92.4%"
                                         }
                                     ],
                                     [
@@ -5072,11 +5072,11 @@
                                     [
                                         {
                                             "value": "diagnosis",
-                                            "name": "C92.1"
+                                            "name": "C92.1%"
                                         },
                                         {
                                             "value": "diagnosis",
-                                            "name": "C92.2"
+                                            "name": "C92.2%"
                                         }
                                     ],
                                     [
@@ -5225,15 +5225,15 @@
                                         },
                                         {
                                             "value": "diagnosis",
-                                            "name": "C92.0"
+                                            "name": "C92.0%"
                                         },
                                         {
                                             "value": "diagnosis",
-                                            "name": "C93.1"
+                                            "name": "C93.1%"
                                         },
                                         {
                                             "value": "diagnosis",
-                                            "name": "C93.3"
+                                            "name": "C93.3%"
                                         }
                                     ],
                                     [
@@ -5349,7 +5349,7 @@
                                     [
                                         {
                                             "value": "diagnosis",
-                                            "name": "C94.7"
+                                            "name": "C94.7%"
                                         }
                                     ],
                                     [
@@ -5656,7 +5656,7 @@
                                     [
                                         {
                                             "value": "diagnosis",
-                                            "name": "C91.4"
+                                            "name": "C91.4%"
                                         }
                                     ],
                                     [
@@ -5831,7 +5831,7 @@
                                         },
                                         {
                                             "value": "diagnosis",
-                                            "name": "C94.3"
+                                            "name": "C94.3%"
                                         }
                                     ],
                                     [
@@ -7283,6 +7283,21 @@
                         "key": "C97",
                         "name": "C97",
                         "description": "Bösartige Neubildungen als Primärtumoren an mehreren Lokalisationen"
+                    },
+                    {
+                        "key": "C91.1",
+                        "name": "C91.1",
+                        "description": "Chronische lymphatische Leukämie vom B-Zell-Typ [CLL]"
+                    },
+                    {
+                        "key": "C92.1",
+                        "name": "C92.1",
+                        "description": "Chronische myeloische Leukämie [CML], BCR/ABL-positiv"
+                    },
+                    {
+                        "key": "C93.1",
+                        "name": "C93.1",
+                        "description": "Chronische myelomonozytäre Leukämie"
                     },
                     {
                         "key": "C34.9",
@@ -9000,6 +9015,11 @@
                         "description": "Extranodales Marginalzonen-B-Zell-Lymphom des Mukosa-assoziierten lymphatischen Gewebes [MALT-Lymphom]: Ohne Angabe einer kompletten Remission"
                     },
                     {
+                        "key": "C88.4",
+                        "name": "C88.4",
+                        "description": "Extranodales Marginalzonen-B-Zell-Lymphom des Mukosa-assoziierten lymphatischen Gewebes [MALT-Lymphom]"
+                    },
+                    {
                         "key": "C88.31",
                         "name": "C88.31",
                         "description": "Immunproliferative Dünndarmkrankheit: In kompletter Remission"
@@ -9010,6 +9030,11 @@
                         "description": "Immunproliferative Dünndarmkrankheit: Ohne Angabe einer kompletten Remission"
                     },
                     {
+                        "key": "C88.0",
+                        "name": "C88.0",
+                        "description": "Makroglobulinämie Waldenström"
+                    },
+                    {
                         "key": "C88.01",
                         "name": "C88.01",
                         "description": "Makroglobulinämie Waldenström: In kompletter Remission"
@@ -9018,6 +9043,21 @@
                         "key": "C88.00",
                         "name": "C88.00",
                         "description": "Makroglobulinämie Waldenström: Ohne Angabe einer kompletten Remission"
+                    },
+                    {
+                        "key": "C88.1",
+                        "name": "C88.1",
+                        "description": "Nodulär-sklerosierendes (klassisches) Hodgkin-Lymphom"
+                    },
+                    {
+                        "key": "C88.2",
+                        "name": "C88.2",
+                        "description": "Sonstige Schwerkettenkrankheit"
+                    },
+                    {
+                        "key": "C88.3",
+                        "name": "C88.3",
+                        "description": "Immunproliferative Dünndarmkrankheit"
                     },
                     {
                         "key": "C88.21",
@@ -9033,6 +9073,11 @@
                         "key": "C88.71",
                         "name": "C88.71",
                         "description": "Sonstige bösartige immunproliferative Krankheiten: In kompletter Remission"
+                    },
+                    {
+                        "key": "C88.7",
+                        "name": "C88.7",
+                        "description": "Sonstige bösartige immunproliferative Krankheiten"
                     },
                     {
                         "key": "C88.70",
@@ -14449,7 +14494,7 @@
                     {
                         "key": "C88.9",
                         "name": "C88.9",
-                        "description": ""
+                        "description": "Bösartige immunproliferative Krankheit, nicht näher bezeichnet"
                     },
                     {
                         "key": "C90.0",
@@ -14502,11 +14547,6 @@
                         "description": "Akute lymphatische Leukämie [ALL]: In kompletter Remission"
                     },
                     {
-                        "key": "C91.1",
-                        "name": "C91.1",
-                        "description": ""
-                    },
-                    {
                         "key": "C91.10",
                         "name": "C91.10",
                         "description": "Chronische lymphatische Leukämie vom B-Zell-Typ [CLL]: Ohne Angabe einer kompletten Remission"
@@ -14550,6 +14590,11 @@
                         "key": "C92.01",
                         "name": "C92.01",
                         "description": "Akute myeloblastische Leukämie [AML]: In kompletter Remission"
+                    },
+                    {
+                        "key": "C91.1",
+                        "name": "C91.1",
+                        "description": ""
                     },
                     {
                         "key": "C92.1",
@@ -18972,52 +19017,173 @@
                             {
                                 "key": "(sn)(mol+)",
                                 "name": "(sn)(mol+)",
-                                "description": "(sn)(mol+)"
+                                "description": "(sn)(mol+)",
+                                "aggregatedValue": [
+                                    [
+                                        {
+                                            "value": "21906-3",
+                                            "name": "(sn)(mol+)"
+                                        },
+                                        {
+                                            "value": "21900-6",
+                                            "name": "(sn)(mol+)"
+                                        }
+                                    ]
+                                ]
                             },
                             {
                                 "key": "(sn)(mol-)",
                                 "name": "(sn)(mol-)",
-                                "description": "(sn)(mol-)"
+                                "description": "(sn)(mol-)",
+                                "aggregatedValue": [
+                                    [
+                                        {
+                                            "value": "21906-3",
+                                            "name": "(sn)(mol-)"
+                                        },
+                                        {
+                                            "value": "21900-6",
+                                            "name": "(sn)(mol-)"
+                                        }
+                                    ]
+                                ]
                             },
                             {
                                 "key": "(sn)(i+)",
                                 "name": "(sn)(i+)",
-                                "description": "(sn)(i+)"
+                                "description": "(sn)(i+)",
+                                "aggregatedValue": [
+                                    [
+                                        {
+                                            "value": "21906-3",
+                                            "name": "(sn)(i+)"
+                                        },
+                                        {
+                                            "value": "21900-6",
+                                            "name": "(sn)(i+)"
+                                        }
+                                    ]
+                                ]
                             },
                             {
                                 "key": "(sn)(i-)",
                                 "name": "(sn)(i-)",
-                                "description": "(sn)(i-)"
+                                "description": "(sn)(i-)",
+                                "aggregatedValue": [
+                                    [
+                                        {
+                                            "value": "21906-3",
+                                            "name": "(sn)(i-)"
+                                        },
+                                        {
+                                            "value": "21900-6",
+                                            "name": "(sn)(i-)"
+                                        }
+                                    ]
+                                ]
                             },
                             {
                                 "key": "(mol+)",
                                 "name": "(mol+)",
-                                "description": "(mol+)"
+                                "description": "(mol+)",
+                                "aggregatedValue": [
+                                    [
+                                        {
+                                            "value": "21906-3",
+                                            "name": "(mol+)"
+                                        },
+                                        {
+                                            "value": "21900-6",
+                                            "name": "(mol+)"
+                                        }
+                                    ]
+                                ]
                             },
                             {
                                 "key": "(mol-)",
                                 "name": "(mol-)",
-                                "description": "(mol-)"
+                                "description": "(mol-)",
+                                "aggregatedValue": [
+                                    [
+                                        {
+                                            "value": "21906-3",
+                                            "name": "(mol-)"
+                                        },
+                                        {
+                                            "value": "21900-6",
+                                            "name": "(mol-)"
+                                        }
+                                    ]
+                                ]
                             },
                             {
                                 "key": "(i+)",
                                 "name": "(i+)",
-                                "description": "(i+)"
+                                "description": "(i+)",
+                                "aggregatedValue": [
+                                    [
+                                        {
+                                            "value": "21906-3",
+                                            "name": "(i+)"
+                                        },
+                                        {
+                                            "value": "21900-6",
+                                            "name": "(i+)"
+                                        }
+                                    ]
+                                ]
                             },
                             {
                                 "key": "(i-)",
                                 "name": "(i-)",
-                                "description": "(i-)"
+                                "description": "(i-)",
+                                "aggregatedValue": [
+                                    [
+                                        {
+                                            "value": "21906-3",
+                                            "name": "(i-)"
+                                        },
+                                        {
+                                            "value": "21900-6",
+                                            "name": "(i-)"
+                                        }
+                                    ]
+                                ]
                             },
                             {
                                 "key": "X",
                                 "name": "X",
-                                "description": "X"
+                                "description": "X",
+                                "aggregatedValue": [
+                                    [
+                                        {
+                                            "value": "21906-3",
+                                            "name": "X"
+                                        },
+                                        {
+                                            "value": "21900-6",
+                                            "name": "X"
+                                        }
+                                    ]
+                                ]
                             },
                             {
                                 "key": "X(sn)",
                                 "name": "X(sn)",
                                 "description": "X(sn)"
+                                ,
+                                "aggregatedValue": [
+                                    [
+                                        {
+                                            "value": "21906-3",
+                                            "name": "X(sn)"
+                                        },
+                                        {
+                                            "value": "21900-6",
+                                            "name": "X(sn)"
+                                        }
+                                    ]
+                                ]
                             },
                             {
                                 "key": "0",
@@ -19039,7 +19205,19 @@
                             {
                                 "key": "0(sn)",
                                 "name": "0(sn)",
-                                "description": "0(sn)"
+                                "description": "0(sn)",
+                                "aggregatedValue": [
+                                    [
+                                        {
+                                            "value": "21906-3",
+                                            "name": "0(sn)"
+                                        },
+                                        {
+                                            "value": "21900-6",
+                                            "name": "0(sn)"
+                                        }
+                                    ]
+                                ]
                             },
                             {
                                 "key": "0(i+)",
@@ -19559,11 +19737,11 @@
                                 "aggregatedValue": [
                                     [
                                         {
-                                            "value": "59479-6",
+                                            "value": "42030-7",
                                             "name": "m"
                                         },
                                         {
-                                            "value": "59479-6",
+                                            "value": "42030-7",
                                             "name": "m"
                                         }
                                     ]
@@ -19580,7 +19758,7 @@
                                             "name": "2"
                                         },
                                         {
-                                            "value": "59479-6",
+                                            "value": "42030-7",
                                             "name": "2"
                                         }
                                     ]
@@ -19593,11 +19771,11 @@
                                 "aggregatedValue": [
                                     [
                                         {
-                                            "value": "59479-6",
+                                            "value": "42030-7",
                                             "name": "3"
                                         },
                                         {
-                                            "value": "59479-6",
+                                            "value": "42030-7",
                                             "name": "3"
                                         }
                                     ]
@@ -19610,11 +19788,11 @@
                                 "aggregatedValue": [
                                     [
                                         {
-                                            "value": "59479-6",
+                                            "value": "42030-7",
                                             "name": "4"
                                         },
                                         {
-                                            "value": "59479-6",
+                                            "value": "42030-7",
                                             "name": "4"
                                         }
                                     ]
@@ -19627,11 +19805,11 @@
                                 "aggregatedValue": [
                                     [
                                         {
-                                            "value": "59479-6",
+                                            "value": "42030-7",
                                             "name": "5"
                                         },
                                         {
-                                            "value": "59479-6",
+                                            "value": "42030-7",
                                             "name": "5"
                                         }
                                     ]
@@ -19644,11 +19822,11 @@
                                 "aggregatedValue": [
                                     [
                                         {
-                                            "value": "59479-6",
+                                            "value": "42030-7",
                                             "name": "6"
                                         },
                                         {
-                                            "value": "59479-6",
+                                            "value": "42030-7",
                                             "name": "6"
                                         }
                                     ]
@@ -19661,11 +19839,11 @@
                                 "aggregatedValue": [
                                     [
                                         {
-                                            "value": "59479-6",
+                                            "value": "42030-7",
                                             "name": "7"
                                         },
                                         {
-                                            "value": "59479-6",
+                                            "value": "42030-7",
                                             "name": "7"
                                         }
                                     ]
@@ -19678,11 +19856,11 @@
                                 "aggregatedValue": [
                                     [
                                         {
-                                            "value": "59479-6",
+                                            "value": "42030-7",
                                             "name": "8"
                                         },
                                         {
-                                            "value": "59479-6",
+                                            "value": "42030-7",
                                             "name": "8"
                                         }
                                     ]
@@ -19695,11 +19873,11 @@
                                 "aggregatedValue": [
                                     [
                                         {
-                                            "value": "59479-6",
+                                            "value": "42030-7",
                                             "name": "9"
                                         },
                                         {
-                                            "value": "59479-6",
+                                            "value": "42030-7",
                                             "name": "9"
                                         }
                                     ]
@@ -19721,11 +19899,11 @@
                                 "aggregatedValue": [
                                     [
                                         {
-                                            "value": "21983-2",
+                                            "value": "59479-6",
                                             "name": "y"
                                         },
                                         {
-                                            "value": "21983-2",
+                                            "value": "59479-6",
                                             "name": "y"
                                         }
                                     ]
@@ -20181,6 +20359,18 @@
                                 {
                                     "value": "histology",
                                     "name": "tumor-tissue-ffpe"
+                                },
+                                {
+                                    "value": "sample_kind",
+                                    "name": "tissue-ffpe"
+                                },
+                                {
+                                    "value": "sample_kind",
+                                    "name": "normal-tissue-ffpe"
+                                },
+                                {
+                                    "value": "sample_kind",
+                                    "name": "other-tissue-ffpe"
                                 }
                             ]
                         ]
@@ -20188,7 +20378,27 @@
                     {
                         "key": "tumor-tissue-frozen",
                         "name": "Gewebe schockgefroren",
-                        "description": "Tumorgewebe (Kryo/Frisch)"
+                        "description": "Tumorgewebe (Kryo/Frisch)",
+                        "aggregatedValue": [
+                            [
+                                {
+                                    "value": "sample_kind",
+                                    "name": "tissue-frozen"
+                                },
+                                {
+                                    "value": "sample_kind",
+                                    "name": "tumor-tissue-frozen"
+                                },
+                                {
+                                    "value": "sample_kind",
+                                    "name": "normal-tissue-frozen"
+                                },
+                                {
+                                    "value": "sample_kind",
+                                    "name": "other-tissue-frozen"
+                                }
+                            ]
+                        ]
                     },
                     {
                         "key": "tissue-other",

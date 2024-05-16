@@ -39,7 +39,7 @@ export const getHumanReadableQuery = (): string => {
  * @param humanReadableQuery string to append to
  * @returns a human readable query string
  */
-const buildHumanReadableRecursively = (
+export const buildHumanReadableRecursively = (
     queryLayer: AstElement,
     humanReadableQuery: string,
 ): string => {

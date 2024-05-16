@@ -15,6 +15,7 @@
      */
     import { lensOptions } from "../stores/options";
     import { catalogue } from "../stores/catalogue";
+    import { iconStore } from "../stores/icons";
     import type { Criteria } from "../types/treeData";
     import optionsSchema from "../interfaces/options.schema.json";
     import catalogueSchema from "../interfaces/catalogue.schema.json";
@@ -53,4 +54,44 @@
             console.error("Lens-Options: ", validJSON.errors);
         }
     }
+
+    const updateIconStore = (options: LensOptions): void => {
+        iconStore.update((store) => {
+            if (typeof options === "object" && "iconOptions" in options) {
+                if (
+                    typeof options.iconOptions === "object" &&
+                    options.iconOptions
+                ) {
+                    if (
+                        "infoUrl" in options.iconOptions &&
+                        typeof options.iconOptions["infoUrl"] === "string"
+                    ) {
+                        store.set("infoUrl", options.iconOptions.infoUrl);
+                    }
+                    if (
+                        "selectAll" in options.iconOptions &&
+                        typeof options.iconOptions["selectAll"] === "object" &&
+                        options.iconOptions.selectAll
+                    ) {
+                        // Allow for future possibility of iconUrl instead of text
+                        if (
+                            "text" in options.iconOptions.selectAll &&
+                            typeof options.iconOptions.selectAll["text"] ===
+                                "string"
+                        )
+                            store.set(
+                                "selectAllText",
+                                options.iconOptions.selectAll.text,
+                            );
+                    }
+                }
+            }
+
+            return store;
+        });
+    };
+
+    $: $lensOptions = options;
+    $: updateIconStore(options);
+    $: $catalogue = catalogueData;
 </script>
