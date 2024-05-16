@@ -38,7 +38,10 @@
         if (validJSON.valid === true) {
             $lensOptions = options;
         } else if (typeof options === "object") {
-            console.error("Lens-Options: ", validJSON.errors);
+            console.error(
+                "Lens-Options are not conform with the JSON schema",
+                validJSON.errors,
+            );
         }
     }
 
@@ -51,7 +54,10 @@
         if (validJSON.valid === true) {
             $catalogue = catalogueData;
         } else if (typeof catalogueData === "object") {
-            console.error("Lens-Options: ", validJSON.errors);
+            console.error(
+                "Catalogue is not conform with the JSON schema",
+                validJSON.errors,
+            );
         }
     }
 

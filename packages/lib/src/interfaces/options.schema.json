@@ -12,15 +12,23 @@
                     "pattern": "^.+$",
                     "description": "The icon to use for the info button"
                 },
-                "addUrl": {
+                "deleteUrl": {
                     "type": "string",
                     "pattern": "^.+$",
-                    "description": "The icon to use for the add button in the catalogue"
+                    "description": "The icon to use for the info button"
                 },
-                "toggleUrl": {
-                    "type": "string",
-                    "pattern": "^.+$",
-                    "description": "The icon to use for the toggle button in the catalogue"
+                "selectAll": {
+                    "type": "object",
+                    "properties": {
+                        "text": {
+                            "type": "string",
+                            "pattern": "^.+$",
+                            "description": "The text to display for the select all button"
+                        }
+                    },
+                    "additionalProperties": false,
+                    "unevaluatedProperties": false,
+                    "required": []
                 }
             },
             "additionalProperties": false,
@@ -59,6 +67,31 @@
                             "items": {
                                 "type": "string",
                                 "pattern": "^.+$"
+                            }
+                        },
+                        "accumulatedValues": {
+                            "type": "array",
+                            "description": "aggregate values of other data keys to include in the chart",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "pattern": "^.+$",
+                                        "description": "The name to be displayed in the chart"
+                                    },
+                                    "values": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "pattern": "^.+$",
+                                            "description": "The data key to be aggregated"
+                                        }
+                                    }
+                                },
+                                "additionalProperties": false,
+                                "unevaluatedProperties": false,
+                                "required": []
                             }
                         },
                         "tooltips": {
@@ -133,6 +166,11 @@
                             "title"
                         ]
                     }
+                },
+                "claimedText": {
+                    "type": "string",
+                    "pattern": "^.+$",
+                    "description": "The text to be displayed when query is being executed"
                 }
             },
             "additionalProperties": false,
