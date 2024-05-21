@@ -1034,11 +1034,11 @@ export const dktkHistologyMeasure = {
         stratifier: [
             {
                 code: {
-                    text: "Histlogoies",
+                    text: "Histologies",
                 },
                 criteria: {
                     language: "text/cql-identifier",
-                    expression: "Histlogoy",
+                    expression: "Histology",
                 },
             },
         ],

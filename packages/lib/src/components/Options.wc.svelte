@@ -41,6 +41,22 @@
                     ) {
                         store.set("deleteUrl", options.iconOptions.deleteUrl);
                     }
+                    if (
+                        "selectAll" in options.iconOptions &&
+                        typeof options.iconOptions["selectAll"] === "object" &&
+                        options.iconOptions.selectAll
+                    ) {
+                        // Allow for future possibility of iconUrl instead of text
+                        if (
+                            "text" in options.iconOptions.selectAll &&
+                            typeof options.iconOptions.selectAll["text"] ===
+                                "string"
+                        )
+                            store.set(
+                                "selectAllText",
+                                options.iconOptions.selectAll.text,
+                            );
+                    }
                 }
             }
 
