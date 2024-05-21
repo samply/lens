@@ -128,8 +128,11 @@ const getSingleton = (criterion: AstBottomLayerValue): string => {
         if (myCQL) {
             switch (myCriterion.type) {
                 case "gender":
+                case "BBMRI_gender":
                 case "histology":
                 case "conditionValue":
+                case "BBMRI_conditionValue":
+                case "BBMRI_conditionSampleDiagnosis":
                 case "conditionBodySite":
                 case "conditionLocalization":
                 case "observation":
@@ -140,6 +143,8 @@ const getSingleton = (criterion: AstBottomLayerValue): string => {
                 case "procedureResidualstatus":
                 case "medicationStatement":
                 case "specimen":
+                case "BBMRI_specimen":
+                case "BBMRI_hasSpecimen":
                 case "hasSpecimen":
                 case "Organization":
                 case "observationMolecularMarkerName":
