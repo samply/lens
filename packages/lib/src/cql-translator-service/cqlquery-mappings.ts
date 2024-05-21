@@ -63,6 +63,21 @@ export const alias = new Map<string, string>([
         "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMmSymbolCS",
     ],
     ["molecularMarker", "http://www.genenames.org"],
+
+    ["BBMRI_icd10", "http://hl7.org/fhir/sid/icd-10"],
+    ["BBMRI_icd10gm", "http://fhir.de/CodeSystem/dimdi/icd-10-gm"],
+    [
+        "BBMRI_SampleMaterialType",
+        "https://fhir.bbmri.de/CodeSystem/SampleMaterialType",
+    ], //specimentype
+    [
+        "BBMRI_StorageTemperature",
+        "https://fhir.bbmri.de/CodeSystem/StorageTemperature",
+    ],
+    [
+        "BBMRI_SmokingStatus",
+        "http://hl7.org/fhir/uv/ips/ValueSet/current-smoking-status-uv-ips",
+    ],
 ]);
 
 export const cqltemplate = new Map<string, string>([
@@ -264,6 +279,69 @@ export const cqltemplate = new Map<string, string>([
         "observationDateUsedForStatistics",
         "exists from [Observation] O where ToDate(O.issued) in Interval[@{{D1}}, @{{D2}}]"
     ]
+
+    ["BBMRI_gender", "Patient.gender"],
+    [
+        "BBMRI_conditionSampleDiagnosis",
+        "((exists[Condition: Code '{{C}}' from {{A1}}]) or (exists[Condition: Code '{{C}}' from {{A2}}])) or (exists from [Specimen] S where (S.extension.where(url='https://fhir.bbmri.de/StructureDefinition/SampleDiagnosis').value.coding.code contains '{{C}}'))",
+    ],
+    ["BBMRI_conditionValue", "exists [Condition: Code '{{C}}' from {{A1}}]"],
+    [
+        "BBMRI_conditionRangeDate",
+        "exists from [Condition] C\nwhere FHIRHelpers.ToDateTime(C.onset) between {{D1}} and {{D2}}",
+    ],
+    [
+        "BBMRI_conditionRangeAge",
+        "exists from [Condition] C\nwhere AgeInYearsAt(FHIRHelpers.ToDateTime(C.onset)) between Ceiling({{D1}}) and Ceiling({{D2}})",
+    ],
+    ["BBMRI_age", "AgeInYears() between Ceiling({{D1}}) and Ceiling({{D2}})"],
+    [
+        "BBMRI_observation",
+        "exists from [Observation: Code '{{K}}' from {{A1}}] O\nwhere O.value.coding.code contains '{{C}}'",
+    ],
+    [
+        "BBMRI_observationSmoker",
+        "exists from [Observation: Code '72166-2' from {{A1}}] O\nwhere O.value.coding.code contains '{{C}}'",
+    ],
+    [
+        "BBMRI_observationRange",
+        "exists from [Observation: Code '{{K}}' from {{A1}}] O\nwhere O.value between {{D1}} and {{D2}}",
+    ],
+    [
+        "BBMRI_observationBodyWeight",
+        "exists from [Observation: Code '29463-7' from {{A1}}] O\nwhere ((O.value as Quantity) < {{D1}} 'kg' and (O.value as Quantity) > {{D2}} 'kg')",
+    ],
+    [
+        "BBMRI_observationBMI",
+        "exists from [Observation: Code '39156-5' from {{A1}}] O\nwhere ((O.value as Quantity) < {{D1}} 'kg/m2' and (O.value as Quantity) > {{D2}} 'kg/m2')",
+    ],
+    ["BBMRI_hasSpecimen", "exists [Specimen]"],
+    ["BBMRI_specimen", "exists [Specimen: Code '{{C}}' from {{A1}}]"],
+    ["BBMRI_retrieveSpecimenByType", "(S.type.coding.code contains '{{C}}')"],
+    [
+        "BBMRI_retrieveSpecimenByTemperature",
+        "(S.extension.where(url='https://fhir.bbmri.de/StructureDefinition/StorageTemperature').value.coding.code contains '{{C}}')",
+    ],
+    [
+        "BBMRI_retrieveSpecimenBySamplingDate",
+        "(FHIRHelpers.ToDateTime(S.collection.collected) between {{D1}} and {{D2}})",
+    ],
+    [
+        "BBMRI_retrieveSpecimenByFastingStatus",
+        "(S.collection.fastingStatus.coding.code contains '{{C}}')",
+    ],
+    [
+        "BBMRI_samplingDate",
+        "exists from [Specimen] S\nwhere FHIRHelpers.ToDateTime(S.collection.collected) between {{D1}} and {{D2}}",
+    ],
+    [
+        "BBMRI_fastingStatus",
+        "exists from [Specimen] S\nwhere S.collection.fastingStatus.coding.code contains '{{C}}'",
+    ],
+    [
+        "BBMRI_storageTemperature",
+        "exists from [Specimen] S where (S.extension.where(url='https://fhir.bbmri.de/StructureDefinition/StorageTemperature').value.coding contains Code '{{C}}' from {{A1}})",
+    ],
 ]);
 
 export const criterionMap = new Map<string, { type: string; alias?: string[] }>(
@@ -397,5 +475,43 @@ export const criterionMap = new Map<string, { type: string; alias?: string[] }>(
         ["reporting_country", { type: "observationReportingCountry" }],
         ["date_valid_from", { type: "observationDateValidFrom" }],
         ["date_used_for_statistics", { type: "observationDateUsedForStatistics" }],
+
+        ["BBMRI_gender", { type: "BBMRI_gender" }],
+        [
+            "BBMRI_diagnosis",
+            {
+                type: "BBMRI_conditionSampleDiagnosis",
+                alias: ["BBMRI_icd10", "BBMRI_icd10gm"],
+            },
+        ],
+        [
+            "BBMRI_body_weight",
+            { type: "BBMRI_observationBodyWeight", alias: ["loinc"] },
+        ], //Body weight
+        ["BBMRI_bmi", { type: "BBMRI_observationBMI", alias: ["loinc"] }], //BMI
+        [
+            "BBMRI_smoking_status",
+            { type: "BBMRI_observationSmoker", alias: ["loinc"] },
+        ], //Smoking habit
+        ["BBMRI_donor_age", { type: "BBMRI_age" }],
+        ["BBMRI_date_of_diagnosis", { type: "BBMRI_conditionRangeDate" }],
+        [
+            "BBMRI_sample_kind",
+            { type: "BBMRI_specimen", alias: ["BBMRI_SampleMaterialType"] },
+        ],
+        [
+            "BBMRI_storage_temperature",
+            {
+                type: "BBMRI_storageTemperature",
+                alias: ["BBMRI_StorageTemperature"],
+            },
+        ],
+        ["BBMRI_pat_with_samples", { type: "BBMRI_hasSpecimen" }],
+        ["BBMRI_diagnosis_age_donor", { type: "BBMRI_conditionRangeAge" }],
+        [
+            "BBMRI_fasting_status",
+            { type: "BBMRI_fastingStatus", alias: ["loinc"] },
+        ],
+        ["BBMRI_sampling_date", { type: "BBMRI_samplingDate" }],
     ],
 );

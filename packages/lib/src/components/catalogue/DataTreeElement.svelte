@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { addItemToQuery, activeQueryGroupIndex } from "../../stores/query";
     import type { Category } from "../../types/treeData";
     import DataTreeElement from "./DataTreeElement.svelte";
     import NumberInputComponent from "./NumberInputComponent.svelte";
@@ -40,7 +41,6 @@
      * watches the open tree nodes store to update the open state of the subcategorys
      */
     let open: boolean = false;
-
     $: {
         if (subCategoryName) {
             open = $openTreeNodes
@@ -96,6 +96,13 @@
         });
     };
 
+    let finalParent: boolean =
+        !("childCategories" in element) &&
+        (!("fieldType" in element) ||
+            ("fieldType" in element &&
+                typeof element.fieldType === "string" &&
+                element.fieldType == "single-select"));
+
     /**
      * watches the number input store to update the number input components
      */
@@ -134,6 +141,32 @@
         }
         return store;
     });
+
+    $: selectAllText = $iconStore.get("selectAllText");
+
+    const selectAllOptions = (): void => {
+        if (!("criteria" in element)) return;
+
+        element.criteria.forEach((criterion) => {
+            const queryItem: QueryItem = {
+                id: uuidv4(),
+                key: element.key,
+                name: element.name,
+                system: "system" in element ? element.system : "",
+                type: "type" in element ? element.type : "",
+                values: [
+                    {
+                        name: criterion.name,
+                        value: criterion.aggregatedValue
+                            ? criterion.aggregatedValue
+                            : criterion.key,
+                        queryBindId: uuidv4(),
+                    },
+                ],
+            };
+            addItemToQuery(queryItem, $activeQueryGroupIndex);
+        });
+    };
 </script>
 
 <div part="data-tree-element">
@@ -161,6 +194,12 @@
     </button>
     {#if element.infoButtonText}
         <InfoButtonComponent message={element.infoButtonText} />
+    {/if}
+
+    {#if finalParent && open}
+        <button part="add-all-options-button" on:click={selectAllOptions}>
+            {selectAllText ? selectAllText : "Add all"}
+        </button>
     {/if}
 
     {#if open}

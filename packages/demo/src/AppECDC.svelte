@@ -64,10 +64,10 @@
   // VITE_TARGET_ENVIRONMENT should be set by the ci pipeline
   const backendUrl =
           import.meta.env.VITE_TARGET_ENVIRONMENT === "production"
-          ? "http://lens/"
-          : "http://lens/";
+          ? "https://ehds2-lens.swedencentral.cloudapp.azure.com/backend/"
+          : "https://ehds2-lens.swedencentral.cloudapp.azure.com/backend/";
   const uiSiteMap: string[][] = [
-    ["ecdc-bridgehead-test1", "Test1"]
+    ["testse", "Test1"]
   ];
 
   const genderHeaders: Map<string, string> = new Map<string, string>()
@@ -77,9 +77,9 @@
           .set("unknown", "unknown");
 
   const backendConfig = {
-    url: (import.meta.env.PROD) ? backendUrl : "http://lens",
+    url: (import.meta.env.PROD) ? backendUrl : "https://ehds2-lens.swedencentral.cloudapp.azure.com/backend/",
     backends: [
-      "ecdc-bridgehead-test1"
+      "testse"
     ],
     uiSiteMap: uiSiteMap,
     catalogueKeyToResponseKeyMap: catalogueKeyToResponseKeyMap,
