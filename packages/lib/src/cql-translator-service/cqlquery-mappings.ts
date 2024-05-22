@@ -211,63 +211,63 @@ export const cqltemplate = new Map<string, string>([
     [
         // Used by ECDC/EHDS2
         "patientRangeAge",
-        "AgeInYears between {{D1}} and {{D2}}"
+        "AgeInYears between {{D1}} and {{D2}}",
     ],
     [
         // Used by ECDC/EHDS2
         "patientHospitalUnitType",
-        "HospitalUnitType = '{{C}}'"
+        "HospitalUnitType = '{{C}}'",
     ],
     [
         // Used by ECDC/EHDS2
         "patientHospitalId",
-        "HospitalId = '{{C}}'"
+        "HospitalId = '{{C}}'",
     ],
     [
         // Used by ECDC/EHDS2
         "patientLaboratoryCode",
-        "LaboratoryCode = '{{C}}'"
+        "LaboratoryCode = '{{C}}'",
     ],
     [
         // Used by ECDC/EHDS2
         "observationPathogenCode",
-        "ExistsPathogenCode('{{C}}')"
+        "ExistsPathogenCode('{{C}}')",
     ],
     [
         // Used by ECDC/EHDS2
         "observationAntibioticCode",
-        "ExistsAntibioticCode('{{C}}')"
+        "ExistsAntibioticCode('{{C}}')",
     ],
     [
         // Used by ECDC/EHDS2
         "observationSirCode",
-        "ExistsSirCode('{{C}}')"
+        "ExistsSirCode('{{C}}')",
     ],
     [
         // Used by ECDC/EHDS2
         "observationDataSource",
-        "ExistsDataSource('{{C}}')"
+        "ExistsDataSource('{{C}}')",
     ],
     [
         // Used by ECDC/EHDS2
         "observationIsolateId",
-        "ExistsIsolateId('{{C}}')"
+        "ExistsIsolateId('{{C}}')",
     ],
     [
         // Used by ECDC/EHDS2
         "observationPatientType",
-        "ExistsPatientType('{{C}}')"
+        "ExistsPatientType('{{C}}')",
     ],
     [
         // Used by ECDC/EHDS2
         "observationReferenceGuidelinesSir",
-        "ExistsReferenceGuidelinesSir('{{C}}')"
+        "ExistsReferenceGuidelinesSir('{{C}}')",
     ],
     [
         // Used by ECDC/EHDS2
         "observationReportingCountry",
-        "ExistsReportingCountry('{{C}}')"
-    ]
+        "ExistsReportingCountry('{{C}}')",
+    ],
 
     ["BBMRI_gender", "Patient.gender"],
     [
@@ -460,7 +460,10 @@ export const criterionMap = new Map<string, { type: string; alias?: string[] }>(
         ["data_source", { type: "observationDataSource" }],
         ["isolate_id", { type: "observationIsolateId" }],
         ["patient_type", { type: "observationPatientType" }],
-        ["reference_guidelines_sir", { type: "observationReferenceGuidelinesSir" }],
+        [
+            "reference_guidelines_sir",
+            { type: "observationReferenceGuidelinesSir" },
+        ],
         ["reporting_country", { type: "observationReportingCountry" }],
 
         ["BBMRI_gender", { type: "BBMRI_gender" }],
