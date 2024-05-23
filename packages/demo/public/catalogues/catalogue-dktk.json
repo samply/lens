@@ -2481,6 +2481,19 @@
                         "type": "EQUALS",
                         "criteria": [
                             {
+                                "key": "urn:dktk:code:65:2",
+                                "name": "Neuroendokriner Tumor (NET) - Grad I",
+                                "description": "",
+                                "aggregatedValue": [
+                                    [
+                                        {
+                                            "value": "59847-4",
+                                            "name": "8240/3"
+                                        }
+                                    ]
+                                ]
+                            },
+                            {
                                 "key": "urn:dktk:code:66:2",
                                 "name": "Neuroendokriner Tumor (NET) - Grad II",
                                 "description": "",
@@ -2510,19 +2523,6 @@
                                         {
                                             "value": "59847-4",
                                             "name": "8246/3"
-                                        }
-                                    ]
-                                ]
-                            },
-                            {
-                                "key": "urn:dktk:code:65:2",
-                                "name": "Neuroendokriner Tumor (NET) - Grad I",
-                                "description": "",
-                                "aggregatedValue": [
-                                    [
-                                        {
-                                            "value": "59847-4",
-                                            "name": "8240/3"
                                         }
                                     ]
                                 ]
