@@ -62,7 +62,9 @@
           ? "https://ehds2-lens.swedencentral.cloudapp.azure.com/backend/"
           : "https://ehds2-lens.swedencentral.cloudapp.azure.com/backend/";
   const uiSiteMap: string[][] = [
-    ["testse", "Test1"]
+    ["testse", "Test1"],
+    ["belgium", "Belgium"],
+    ["hr-ciph", "Croatia"]
   ];
 
   const genderHeaders: Map<string, string> = new Map<string, string>()
@@ -74,7 +76,9 @@
   const backendConfig = {
     url: (import.meta.env.PROD) ? backendUrl : "https://ehds2-lens.swedencentral.cloudapp.azure.com/backend/",
     backends: [
-      "testse"
+      "testse",
+      "belgium",
+      "hr-ciph"
     ],
     uiSiteMap: uiSiteMap,
     catalogueKeyToResponseKeyMap: catalogueKeyToResponseKeyMap,
