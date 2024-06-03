@@ -6,6 +6,8 @@ COPY package.json package-lock.json ./
 RUN npm install
 COPY ./vite.config.ts ./vite.demo.config.ts ./extensions.json ./tsconfig.json ./tsconfig.node.json ./
 COPY ./packages ./packages
+COPY ./options_tester.cjs ./options_tester.cjs
+
 RUN VITE_TARGET_ENVIRONMENT=${TARGET_ENVIRONMENT} npm run build
 RUN VITE_TARGET_ENVIRONMENT=${TARGET_ENVIRONMENT} npm run build:demo
 

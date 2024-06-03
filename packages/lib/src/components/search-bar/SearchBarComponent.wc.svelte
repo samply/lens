@@ -326,8 +326,8 @@
                                 <InfoButtonComponent
                                     showQuery={true}
                                     onlyChildInfo={true}
-                                    queryItem={{ 
-                                        ...queryItem, 
+                                    queryItem={{
+                                        ...queryItem,
                                         values: [value],
                                     }}
                                 />
