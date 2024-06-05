@@ -286,7 +286,7 @@
     <a class="email" href="mailto:CCP@dkfz.de">Kontakt</a>
     <a
         class="user-agreement"
-        href="https://hub.dkfz.de/s/d3Nnr5jKMagpBm3"
+        href="https://hub.dkfz.de/s/xcGZHda8LHd6yGS"
         download="nutzervereinbarung"
         target="_blank">Nutzungsvereinbarung</a
     >
