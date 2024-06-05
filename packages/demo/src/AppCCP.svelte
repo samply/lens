@@ -58,10 +58,10 @@
     ];
 
     // VITE_TARGET_ENVIRONMENT should be set by the ci pipeline
-    const backendUrl =
-        import.meta.env.VITE_TARGET_ENVIRONMENT === "production"
-            ? "https://backend.data.dktk.dkfz.de/prod/"
-            : "https://backend.demo.lens.samply.de/prod/";
+    // const backendUrl =
+    //     import.meta.env.VITE_TARGET_ENVIRONMENT === "production"
+    //         ? "https://backend.data.dktk.dkfz.de/prod/"
+    //         : "https://backend.demo.lens.samply.de/prod/";
 
     const uiSiteMap: string[][] = [
         ["berlin", "Berlin"],
@@ -89,7 +89,8 @@
         .set("unknown", "unbekannt");
 
     const backendConfig = {
-        url: import.meta.env.PROD ? backendUrl : "http://localhost:8055",
+        // url: import.meta.env.PROD ? backendUrl : "http://localhost:8055",
+        url: "http://localhost:8055",
         backends: [
             "mannheim",
             "freiburg",

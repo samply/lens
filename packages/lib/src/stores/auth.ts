@@ -6,95 +6,86 @@ import { writable } from "svelte/store";
 
 export const authStore = writable<string>("");
 
+let refreshToken = "";
+const refreshTokenTimeInSeconds = 60; // 5 minutes
+
 fetchAccessToken();
 
 /**
  * Fetches the access token from the backend service
  */
 export async function fetchAccessToken(): Promise<void> {
-    const response = await fetch(`/oauth2/auth`, {
-        method: "GET",
-        credentials: "include",
-    });
+    // const res = await fetch(`/oauth2/auth`, {
+    //     method: "GET",
+    //     credentials: "include",
+    // });
 
-    const temporaryToken = response.headers.get("Authorization");
+    // const temporaryToken = res.headers.get("Authorization");
+    // const token = temporaryToken ? temporaryToken.split(" ")[1] : "";
+    // console.log(token);
 
-    if (!temporaryToken) {
-        console.error("No temporary token found in response headers");
-        return;
-    }
-    console.log("temporaryToken", temporaryToken);
-    exchangeCodeForToken(temporaryToken);
-}
+    // authStore.set(token);
 
-// Placeholder values, replace these with your actual configurations
-const clientId = "bridgehead-test-private";
-const clientSecret = "mmDjwfaoLeTzdRUeGZRDEIaYXgY3zL6r";
-// const redirectUri = window.location.origin
-const tokenEndpoint =
-    "https://login.verbis.dkfz.de/realms/test-realm-01/protocol/openid-connect/auth";
-const refreshTokenTimeInSeconds = 300; // 5 minutes
-
-let accessToken = "";
-let refreshToken = "";
-
-/**
- * exchanges the temporary code received from the OAuth2 provider for an access token
- * @param code the temporary code received from the OAuth2 provider
- */
-async function exchangeCodeForToken(code: string): Promise<void> {
-    const requestBody = new URLSearchParams();
-    requestBody.append("grant_type", "refresh_token");
-    requestBody.append("client_id", clientId);
-    // requestBody.append('redirect_uri', redirectUri);
-    requestBody.append("code", code);
-
-    try {
-        const response = await fetch(tokenEndpoint, {
+    const response = await fetch(
+        `https://login.verbis.dkfz.de/realms/test-realm-01/protocol/openid-connect/token`,
+        {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
             },
-            body: requestBody,
+            body: new URLSearchParams({
+                grant_type: "client_credentials",
+                client_id: "bridgehead-test-private",
+                client_secret: "mmDjwfaoLeTzdRUeGZRDEIaYXgY3zL6r",
+            }),
+            credentials: "include",
+        },
+    );
+
+    if (response.ok) {
+        const data = await response.json();
+        console.log("fetchAccesstoken", data);
+        authStore.set(data.access_token);
+        refreshToken = data.refresh_token;
+
+        authStore.subscribe((value) => {
+            console.log(value);
         });
-
-        const responseData = await response.json();
-        accessToken = responseData.access_token;
-        refreshToken = responseData.refresh_token;
-
-        console.log("refreshToken", refreshToken);
-        console.log("accessToken", accessToken);
-        startTokenRefreshTimer();
-    } catch (error) {
-        console.error("Token exchange failed:", error);
+    } else {
+        console.error("Failed to fetch access token");
     }
+    startTokenRefreshTimer();
 }
 
 /**
  * Function to refresh the access token using the refresh token
  */
 async function refreshAccessToken(): Promise<void> {
-    const requestBody = new URLSearchParams();
-    requestBody.append("grant_type", "refresh_token");
-    requestBody.append("client_id", clientId);
-    requestBody.append("client_secret", clientSecret);
-    requestBody.append("refresh_token", refreshToken);
-
-    try {
-        const response = await fetch(tokenEndpoint, {
+    const response = await fetch(
+        `https://login.verbis.dkfz.de/realms/test-realm-01/protocol/openid-connect/token`,
+        {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
             },
-            body: requestBody,
-        });
+            body: new URLSearchParams({
+                grant_type: "refresh_token",
+                client_id: "bridgehead-test-private",
+                client_secret: "mmDjwfaoLeTzdRUeGZRDEIaYXgY3zL6r",
+                refresh_token: refreshToken,
+            }),
+            credentials: "include",
+        },
+    );
 
-        const responseData = await response.json();
-        accessToken = responseData.access_token;
-        startTokenRefreshTimer();
-        console.log("Token refreshed");
-    } catch (error) {
-        console.error("Token refresh failed:", error);
+    if (response.ok) {
+        const data = await response.json();
+        console.log("refreshAccesstoken", data);
+        console.log(response);
+        authStore.set(data.access_token);
+        refreshToken = data.refresh_token;
+    } else {
+        console.error("Failed to refresh access token");
     }
 }
 
