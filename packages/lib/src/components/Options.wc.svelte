@@ -17,7 +17,6 @@
     import { catalogue } from "../stores/catalogue";
     import { measureStore } from "../stores/measures";
     import { iconStore } from "../stores/icons";
-    import type { Criteria } from "../types/treeData";
     import type { MeasureStore } from "../types/backend";
     import type { Criteria } from "../types/treeData";
     import type { LensOptions } from "../types/options";

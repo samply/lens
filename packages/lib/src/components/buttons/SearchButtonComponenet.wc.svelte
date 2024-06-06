@@ -57,12 +57,12 @@
     });
 
     $: catalogueKeyToResponseKeyMap.update((mappings) => {
-        options?.spots.forEach((spot) => {
+        options?.spots?.forEach((spot) => {
             spot.catalogueKeyToResponseKeyMap.forEach((mapping) => {
                 mappings.set(mapping[0], mapping[1]);
             });
         });
-        options?.blazes.forEach((blaze: BlazeOption) => {
+        options?.blazes?.forEach((blaze: BlazeOption) => {
             blaze.catalogueKeyToResponseKeyMap.forEach((mapping) => {
                 mappings.set(mapping[0], mapping[1]);
             });
@@ -86,7 +86,7 @@
 
         const ast = buildAstFromQuery($queryStore);
 
-        options.spots.forEach((spot: SpotOption) => {
+        options?.spots?.forEach((spot: SpotOption) => {
             const name = spot.name;
             const measureItem: MeasureOption | undefined = $measureStore.find(
                 (measureStoreItem: MeasureOption) =>
@@ -122,7 +122,7 @@
             );
         });
 
-        options.blazes.forEach((blaze: BlazeOption) => {
+        options?.blazes?.forEach((blaze: BlazeOption) => {
             const {
                 name,
                 url,

@@ -3,6 +3,7 @@
     import type {
         CatalogueText,
         MeasureItem,
+        Measure,
         QueryEvent,
         QueryItem,
         QueryValue,
@@ -50,6 +51,7 @@
             ],
         },
     ];
+    console.log("dktkDiagnosisMeasure", dktkDiagnosisMeasure);
 
     /**
      * move to config file
@@ -98,7 +100,7 @@
         const event = e as QueryEvent;
         const { ast, updateResponse, abortController } = event.detail;
 
-        const measureItems = [
+        const measureItems: MeasureItem[] = [
             dktkPatientsMeasure,
             dktkDiagnosisMeasure,
             dktkSpecimenMeasure,
@@ -107,8 +109,13 @@
             dktkHistologyMeasure,
         ] as MeasureItem[];
 
+        const measures: Measure[] = measureItems.map(
+            (measureItem: MeasureItem) => measureItem.measure,
+        );
+
         const criteria = dataPasser.getCriteriaAPI("diagnosis");
 
+        console.log("app cql translation", measureItems);
         const cql = translateAstToCql(
             ast,
             false,
@@ -116,6 +123,7 @@
             measureItems,
             criteria,
         );
+        console.log("app build meausre", measures);
 
         const library = buildLibrary(`${cql}`);
         const measure = buildMeasure(library.url, measures);
