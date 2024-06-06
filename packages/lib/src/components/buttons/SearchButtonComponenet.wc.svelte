@@ -164,6 +164,11 @@
         queryModified.set(false);
     };
 
+    /**
+     * Sends the ast to a custom backend
+     * @param ast the ast to be sent to the backend
+     * @param url the url of the backend
+     */
     const customBackendCallWithAst = (ast: AstTopLayer, url: string): void => {
         fetch(url, {
             method: "POST",
