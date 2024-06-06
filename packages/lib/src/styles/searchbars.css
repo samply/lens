@@ -250,7 +250,7 @@ lens-search-bar-multiple::part(query-delete-button-item) {
   position: absolute;
   top: -6px;
   right: -10px;
-  border: solid 2px var(--white);
+  border: solid 1px var(--white);
 }
 
 lens-search-bar::part(query-delete-button-group),
