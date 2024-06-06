@@ -52,7 +52,6 @@
         ["antibiotic_code", "AntibioticCode"],
         ["sir_code", "SirCode"],
         ["data_source", "DataSource"],
-        //["isolate_id", "IsolateId"], // From Observation
         ["isolate_id", "SpecimenIsolateId"], // From Specimen
         ["patient_type", "PatientType"],
         ["reference_guidelines_sir", "ReferenceGuidelinesSir"],
