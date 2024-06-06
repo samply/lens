@@ -1,7 +1,11 @@
 <script lang="ts">
     import "../../lib";
     import type { CatalogueText } from "../../lib/src/types/texts";
-    import { ehds2PatientMeasure, ehds2ObservationMeasure } from "./measures";
+    import {
+        ehds2PatientMeasure,
+        ehds2ObservationMeasure,
+        ehds2SpecimenMeasure,
+    } from "./measures";
 
     let mockCatalogueData = "";
     let libraryOptions = "";
@@ -18,7 +22,11 @@
             libraryOptions = data;
         });
 
-    const measures = [ehds2PatientMeasure, ehds2ObservationMeasure];
+    const measures = [
+        ehds2PatientMeasure,
+        ehds2ObservationMeasure,
+        ehds2SpecimenMeasure,
+    ];
 
     const backendMeasures = `EHDS2_IN_INITIAL_POPULATION`;
 
@@ -44,10 +52,12 @@
         ["antibiotic_code", "AntibioticCode"],
         ["sir_code", "SirCode"],
         ["data_source", "DataSource"],
-        ["isolate_id", "IsolateId"],
+        ["isolate_id", "SpecimenIsolateId"], // From Specimen
         ["patient_type", "PatientType"],
         ["reference_guidelines_sir", "ReferenceGuidelinesSir"],
         ["reporting_country", "ReportingCountry"],
+        ["date_valid_from", "DateValidFrom"],
+        ["date_used_for_statistics", "DateUsedForStatistics"],
     ];
 
     // VITE_TARGET_ENVIRONMENT should be set by the ci pipeline
@@ -219,7 +229,7 @@
                         catalogueGroupCode="isolate_id"
                         chartType="bar"
                         xAxisTitle="ID"
-                        yAxisTitle="Number of observations"
+                        yAxisTitle="Number of isolates"
                         backgroundColor={JSON.stringify(
                             barChartBackgroundColors,
                         )}

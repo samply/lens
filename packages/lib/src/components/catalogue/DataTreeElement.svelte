@@ -6,6 +6,7 @@
     import AutocompleteComponent from "./AutoCompleteComponent.svelte";
     import StringComponent from "./StringComponent.svelte";
     import SingleSelectComponent from "./SingleSelectComponent.svelte";
+    import DateRangeComponent from "./DateRangeComponent.svelte";
     import { v4 as uuidv4 } from "uuid";
     import { activeNumberInputs, openTreeNodes } from "../../stores/catalogue";
     import type { QueryItem } from "../../types/queryData";
@@ -19,6 +20,7 @@
         element.subCategoryName !== null
             ? element.subCategoryName
             : null;
+
     /**
      * defines the layer of the element in the tree
      */
@@ -116,7 +118,7 @@
     activeNumberInputs.update((store: QueryItem[]): QueryItem[] => {
         if (
             "fieldType" in element &&
-            element.fieldType === "number" &&
+            (element.fieldType === "number" || element.fieldType === "date-range") &&
             !store.find((item) => item.key === element.key)
         ) {
             return [
@@ -224,13 +226,22 @@
                     <AutocompleteComponent {element} />
                 {:else if "fieldType" in element && element.fieldType === "string"}
                     <StringComponent {element} />
-                {:else if "fieldType" in element && element.fieldType === "number"}
+                {:else if "fieldType" in element && element.fieldType === "date-range"}
                     {#each numberInput.values as numberInputValues (numberInputValues.queryBindId)}
-                        <NumberInputComponent
-                            queryItem={{
+                        <DateRangeComponent
+                                queryItem={{
                                 ...numberInput,
                                 values: [numberInputValues],
                             }}
+                        />
+                    {/each}
+                {:else if "fieldType" in element && element.fieldType === "number"}
+                    {#each numberInput.values as numberInputValues (numberInputValues.queryBindId)}
+                        <NumberInputComponent
+                                queryItem={{
+                                        ...numberInput,
+                                        values: [numberInputValues],
+                                    }}
                         />
                     {/each}
                 {/if}

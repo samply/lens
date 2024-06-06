@@ -33,8 +33,6 @@ export const translateAstToCql = (
     returnOnlySingeltons: boolean = true,
     backendMeasures: string,
 ): string => {
-    console.log(`translateAstToCql: backendMeasures: ${backendMeasures}`)
-
     criteria = getCriteria("diagnosis");
 
     /**
@@ -59,8 +57,6 @@ export const translateAstToCql = (
     if (query.children.length == 0) {
         singletons += "\ntrue";
     }
-
-    console.log(`translateAstToCql: singletons: ${singletons}`)
 
     if (returnOnlySingeltons) {
         return singletons;
@@ -117,8 +113,6 @@ const getSingleton = (criterion: AstBottomLayerValue): string => {
     }
 
     const myCriterion = criterionMap.get(criterion.key);
-
-    console.log(`getSingleton: myCriterion: ${myCriterion}`)
 
     if (myCriterion) {
         const myCQL = cqltemplate.get(myCriterion.type);
@@ -295,21 +289,39 @@ const getSingleton = (criterion: AstBottomLayerValue): string => {
                 }
 
                 // Used by ECDC/EHDS2
-                case "patientRangeAge": {
-                    expression += substituteRangeCQLExpression(
+                case "patientAge": {
+                    expression += substituteSimpleRangeCQLExpression(
                         criterion,
-                        myCriterion,
-                        "condition",
                         "Age",
                         myCQL,
+                        0,
+                        1000000000 // Approximately CQL's max int
+                    );
+                    break;
+                }
+                case "observationDateValidFrom": {
+                    expression += substituteSimpleRangeCQLExpression(
+                        criterion,
+                        "Date valid from",
+                        myCQL,
+                        '0001-01-01', //  CQL's min date
+                        '9999-12-31' //  CQL's max date
+                    );
+                    break;
+                }
+                case "observationDateUsedForStatistics": {
+                    expression += substituteSimpleRangeCQLExpression(
+                        criterion,
+                        "Date used for statistics",
+                        myCQL,
+                        '0001-01-01', //  CQL's min date
+                        '9999-12-31' //  CQL's max date
                     );
                     break;
                 }
             }
         }
     }
-
-    console.log(`getSingleton: expression: ${expression}`)
 
     return expression;
 };
@@ -372,6 +384,59 @@ const substituteRangeCQLExpression = (
     return "";
 };
 
+/**
+ * Substitutes {{D1}} and {{D2}} with min and max values in a CQL expression.
+ *
+ * Performs some checking of the data and deals with edge cases, e.g. when the user
+ * has specified only a minimum value.
+ *
+ * @param criterion Holds the user-selected min and max values.
+ * @param criterionPrefix The name of the attribute for which a range is being defined.
+ * @param rangeCQL A CQL expression containing {{D1}} and {{D2}} wildcards.
+ * @param defaultMin The default minimum value.
+ * @param defaultMax The default maximum value.
+ * @returns The substituted CQL expression, where {{D1}} and {{D2}} have been replaced by real values.
+ */
+const substituteSimpleRangeCQLExpression = (
+    criterion: AstBottomLayerValue,
+    criterionPrefix: string,
+    rangeCQL: string,
+    defaultMin: any,
+    defaultMax: any,
+): string => {
+    const input = criterion.value as { min: any; max: any };
+    if (input === null) {
+        const errorMessage = `substituteNumericRangeCQLExpression: Throwing away a ${criterionPrefix} range criterion, as it is not of type {min: any, max: any}!`
+        console.warn(errorMessage);
+        throw new Error(errorMessage);
+    }
+    if (input.min === 0 && input.max === 0) {
+        return substituteSimpleCQLExpression(
+            rangeCQL,
+            defaultMin,
+            defaultMin,
+        );
+    } else if (input.min === 0) {
+        return substituteSimpleCQLExpression(
+            rangeCQL,
+            defaultMin,
+            input.max,
+        );
+    } else if (input.max === 0) {
+        return substituteSimpleCQLExpression(
+            rangeCQL,
+            input.min,
+            defaultMax,
+        );
+    } else {
+        return substituteSimpleCQLExpression(
+            rangeCQL,
+            input.min,
+            input.max,
+        );
+    }
+};
+
 const substituteCQLExpression = (
     key: string,
     alias: string[] | undefined,
@@ -403,6 +468,30 @@ const substituteCQLExpression = (
             codesystems.push(systemExpression);
         }
     }
+    if (min || min === 0) {
+        cqlString = cqlString.replace(new RegExp("{{D1}}"), min.toString());
+    }
+    if (max || max === 0) {
+        cqlString = cqlString.replace(new RegExp("{{D2}}"), max.toString());
+    }
+    return cqlString;
+};
+
+/**
+ * Substitutes {{D1}} and {{D2}} with min and max values in a CQL expression.
+ *
+ * @param cql A CQL expression containing {{D1}} and {{D2}} wildcards.
+ * @param min The minimum value.
+ * @param max The maximum value.
+ * @returns The substituted CQL expression, where {{D1}} and {{D2}} have been replaced by the min and max values.
+ */
+const substituteSimpleCQLExpression = (
+    cql: string,
+    min: any,
+    max: any,
+): string => {
+    let cqlString = cql;
+
     if (min || min === 0) {
         cqlString = cqlString.replace(new RegExp("{{D1}}"), min.toString());
     }

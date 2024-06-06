@@ -210,7 +210,7 @@ export const cqltemplate = new Map<string, string>([
 
     [
         // Used by ECDC/EHDS2
-        "patientRangeAge",
+        "patientAge",
         "AgeInYears between {{D1}} and {{D2}}",
     ],
     [
@@ -251,7 +251,7 @@ export const cqltemplate = new Map<string, string>([
     [
         // Used by ECDC/EHDS2
         "observationIsolateId",
-        "ExistsIsolateId('{{C}}')",
+        "ExistsSpecimenIsolateId('{{C}}')", // From Specimen
     ],
     [
         // Used by ECDC/EHDS2
@@ -267,6 +267,16 @@ export const cqltemplate = new Map<string, string>([
         // Used by ECDC/EHDS2
         "observationReportingCountry",
         "ExistsReportingCountry('{{C}}')",
+    ],
+    [
+        // Used by ECDC/EHDS2
+        "observationDateValidFrom",
+        "exists from [Observation] O where ToDate(O.effective as dateTime) in Interval[@{{D1}}, @{{D2}}]",
+    ],
+    [
+        // Used by ECDC/EHDS2
+        "observationDateUsedForStatistics",
+        "exists from [Observation] O where ToDate(O.issued) in Interval[@{{D1}}, @{{D2}}]",
     ],
 
     ["BBMRI_gender", "Patient.gender"],
@@ -450,7 +460,7 @@ export const criterionMap = new Map<string, { type: string; alias?: string[] }>(
         ["Organization", { type: "department" }],
 
         // Used by ECDC/EHDS2
-        ["age_of_patient", { type: "patientRangeAge" }],
+        ["age", { type: "patientAge" }],
         ["hospital_unit_type", { type: "patientHospitalUnitType" }],
         ["hospital_id", { type: "patientHospitalId" }],
         ["laboratory_code", { type: "patientLaboratoryCode" }],
@@ -465,6 +475,11 @@ export const criterionMap = new Map<string, { type: string; alias?: string[] }>(
             { type: "observationReferenceGuidelinesSir" },
         ],
         ["reporting_country", { type: "observationReportingCountry" }],
+        ["date_valid_from", { type: "observationDateValidFrom" }],
+        [
+            "date_used_for_statistics",
+            { type: "observationDateUsedForStatistics" },
+        ],
 
         ["BBMRI_gender", { type: "BBMRI_gender" }],
         [

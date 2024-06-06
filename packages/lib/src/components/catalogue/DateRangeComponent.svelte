@@ -37,6 +37,9 @@
      */
 
     const updateStores = (from: number, to: number): void => {
+        console.log("DateRangeComponentUsingNumberType.updateStores: from: " + from);
+        console.log("DateRangeComponentUsingNumberType.updateStores: to: " + to);
+
         queryStore.update((store: QueryItem[][]): QueryItem[][] => {
             store.forEach((queryGroup: QueryItem[]) => {
                 queryGroup.forEach((item: QueryItem) => {
@@ -94,7 +97,7 @@
                 <input
                     part="number-input-formfield number-input-formfield-from
                         {to && from > to ? ' formfield-error' : ''}"
-                    type="number"
+                    type="date"
                     bind:value={from}
                     min="0"
                 />
@@ -107,7 +110,7 @@
                 <input
                     part="number-input-formfield number-input-formfield-from
                         {to && from > to ? ' formfield-error' : ''}"
-                    type="number"
+                    type="date"
                     bind:value={to}
                     min="0"
                 />
