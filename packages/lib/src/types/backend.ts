@@ -75,8 +75,9 @@ export type BlazeOption = {
 };
 
 export type BackendOptions = {
-    spots: SpotOption[];
-    blazes: BlazeOption[];
+    spots?: SpotOption[];
+    blazes?: BlazeOption[];
+    customAstBackends?: string[];
 };
 
 export interface QueryEvent extends Event {

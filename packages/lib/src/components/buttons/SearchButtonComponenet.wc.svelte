@@ -156,9 +156,29 @@
             backend.send(cql, controller, measures);
         });
 
+        options?.customAstBackends?.forEach((customAstBackendUrl: string) => {
+            customBackendCallWithAst(ast, customAstBackendUrl);
+        });
         emitEvent(ast);
 
         queryModified.set(false);
+    };
+
+    const customBackendCallWithAst = (ast: AstTopLayer, url: string): void => {
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(ast),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                updateResponseStore(data);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
     };
 
     interface QueryEvent extends Event {
