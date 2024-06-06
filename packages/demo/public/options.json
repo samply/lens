@@ -5,6 +5,24 @@
             "text": "Add all"
         }
     },
+    "siteMappings": {
+        "berlin": "Berlin",
+        "berlin-test": "Berlin",
+        "bonn": "Bonn",
+        "dresden": "Dresden",
+        "essen": "Essen",
+        "frankfurt": "Frankfurt",
+        "freiburg": "Freiburg",
+        "hannover": "Hannover",
+        "mainz": "Mainz",
+        "muenchen-lmu": "München(LMU)",
+        "muenchen-tum": "München(TUM)",
+        "ulm": "Ulm",
+        "wuerzburg": "Würzburg",
+        "mannheim": "Mannheim",
+        "dktk-test": "DKTK-Test",
+        "hamburg": "Hamburg"
+    },
     "chartOptions": {
         "patients": {
             "legendMapping": {
@@ -171,8 +189,7 @@
                     {
                         "stratifierCode": "Histologies",
                         "stratumCode": "1"
-                    },
-                    {}
+                    }
                 ]
             }
         ],

@@ -17,10 +17,7 @@
     import { buildLibrary, buildMeasure } from "../../helpers/cql-measure";
     import { Spot } from "../../classes/spot";
     import { Blaze } from "../../classes/blaze";
-    import {
-        catalogueKeyToResponseKeyMap,
-        uiSiteMappingsStore,
-    } from "../../stores/mappings";
+    import { catalogueKeyToResponseKeyMap } from "../../stores/mappings";
     import { responseStore, updateResponseStore } from "../../stores/response";
     import { lensOptions } from "../../stores/options";
     import type {
@@ -41,20 +38,6 @@
     $: options = $lensOptions?.backends as BackendOptions;
 
     let controller: AbortController = new AbortController();
-
-    /**
-     * watches the backendConfig for changes to populate the uiSiteMappingsStore with a map
-     * web components' props are json, meaning that Maps are not supported
-     * therefore it's a 2d array of strings which is converted to a map
-     */
-    $: uiSiteMappingsStore.update((mappings) => {
-        options?.spots.forEach((spot) => {
-            spot.uiSiteMap.forEach((site) => {
-                mappings.set(site[0], site[1]);
-            });
-        });
-        return mappings;
-    });
 
     $: catalogueKeyToResponseKeyMap.update((mappings) => {
         options?.spots?.forEach((spot) => {
