@@ -51,7 +51,6 @@
             ],
         },
     ];
-    console.log("dktkDiagnosisMeasure", dktkDiagnosisMeasure);
 
     /**
      * move to config file

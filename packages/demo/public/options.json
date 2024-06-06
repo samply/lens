@@ -211,6 +211,9 @@
         ]
     },
     "backends": {
+        "customBackends": [
+            "someUrl"
+        ],
         "spots": [
             {
                 "name": "DKTK",
@@ -231,72 +234,6 @@
                     "mannheim",
                     "dktk-test",
                     "hamburg"
-                ],
-                "uiSiteMap": [
-                    [
-                        "berlin",
-                        "Berlin"
-                    ],
-                    [
-                        "berlin-test",
-                        "Berlin Test"
-                    ],
-                    [
-                        "bonn",
-                        "Bonn"
-                    ],
-                    [
-                        "dresden",
-                        "Dresden"
-                    ],
-                    [
-                        "essen",
-                        "Essen"
-                    ],
-                    [
-                        "frankfurt",
-                        "Frankfurt"
-                    ],
-                    [
-                        "freiburg",
-                        "Freiburg"
-                    ],
-                    [
-                        "hannover",
-                        "Hannover"
-                    ],
-                    [
-                        "mainz",
-                        "Mainz"
-                    ],
-                    [
-                        "muenchen-lmu",
-                        "München(LMU)"
-                    ],
-                    [
-                        "muenchen-tum",
-                        "München(TUM)"
-                    ],
-                    [
-                        "ulm",
-                        "Ulm"
-                    ],
-                    [
-                        "wuerzburg",
-                        "Würzburg"
-                    ],
-                    [
-                        "mannheim",
-                        "Mannheim"
-                    ],
-                    [
-                        "dktk-test",
-                        "DKTK-Test"
-                    ],
-                    [
-                        "hamburg",
-                        "Hamburg"
-                    ]
                 ],
                 "catalogueKeyToResponseKeyMap": [
                     [
@@ -335,12 +272,6 @@
                 "name": "DKTK",
                 "backendMeasures": "DKTK_STRAT_DEF_IN_INITIAL_POPULATION",
                 "url": "http://localhost:8080",
-                "uiSiteMap": [
-                    [
-                        "blaze1",
-                        "Blaze 1"
-                    ]
-                ],
                 "catalogueKeyToResponseKeyMap": [
                     [
                         "gender",

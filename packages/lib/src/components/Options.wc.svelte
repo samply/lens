@@ -116,8 +116,6 @@
      */
     $: uiSiteMappingsStore.update((mappings) => {
         if (!options?.siteMappings) return mappings;
-        console.log("options", options);
-        console.log(Object.entries(options?.siteMappings));
         Object.entries(options?.siteMappings)?.forEach((site) => {
             mappings.set(site[0], site[1]);
         });
