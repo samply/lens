@@ -1,6 +1,9 @@
 <script lang="ts">
-    import type { MeasureItem, QueryEvent } from "../../../dist/types";
-
+    import type {
+        MeasureGroup,
+        MeasureItem,
+        LensDataPasser,
+    } from "../../../dist/types";
     import {
         dktkDiagnosisMeasure,
         dktkMedicationStatementsMeasure,
@@ -9,11 +12,6 @@
         dktkSpecimenMeasure,
         dktkHistologyMeasure,
     } from "./measures";
-
-    import { buildLibrary } from "./backends/cql-measure";
-    import { translateAstToCql } from "./backends/ast-to-cql-translator";
-    import { buildMeasure } from "./backends/cql-measure";
-    import { Spot } from "./backends/spot";
 
     let catalogueData = "";
     let libraryOptions = "";
@@ -24,22 +22,28 @@
             catalogueData = data;
         });
 
-    fetch("options.json")
+    // VITE_TARGET_ENVIRONMENT should be set by the ci pipeline
+    const optionsFilePath =
+        import.meta.env.VITE_TARGET_ENVIRONMENT === "production"
+            ? "options-ccp-prod.json"
+            : "options-ccp-demo.json";
+
+    fetch(optionsFilePath)
         .then((response) => response.json())
         .then((data) => {
             libraryOptions = data;
         });
 
-    const measures = [
+    const measures: MeasureGroup[] = [
         {
             name: "DKTK",
             measures: [
-                dktkPatientsMeasure,
-                dktkDiagnosisMeasure,
-                dktkSpecimenMeasure,
-                dktkProceduresMeasure,
-                dktkMedicationStatementsMeasure,
-                dktkHistologyMeasure,
+                dktkPatientsMeasure as MeasureItem,
+                dktkDiagnosisMeasure as MeasureItem,
+                dktkSpecimenMeasure as MeasureItem,
+                dktkProceduresMeasure as MeasureItem,
+                dktkMedicationStatementsMeasure as MeasureItem,
+                dktkHistologyMeasure as MeasureItem,
             ],
         },
     ];
@@ -59,16 +63,10 @@
 
     let catalogueopen = false;
 
-    // // VITE_TARGET_ENVIRONMENT should be set by the ci pipeline
-    // const backendUrl =
-    //     import.meta.env.VITE_TARGET_ENVIRONMENT === "production"
-    //         ? "https://backend.data.dktk.dkfz.de/prod/"
-    //         : "https://backend.demo.lens.samply.de/prod/";
-
     const genderHeaders: Map<string, string> = new Map<string, string>()
         .set("male", "männlich")
         .set("female", "weiblich")
-        .set("other", "Divers")
+        .set("other", "divers")
         .set("unknown", "unbekannt");
 
     const barChartBackgroundColors: string[] = ["#4dc9f6", "#3da4c7"];
@@ -83,61 +81,7 @@
         "Sys. T",
     );
 
-    import type { LensDataPasser } from "../../lib/src/types/DataPasser";
     let dataPasser: LensDataPasser;
-
-    window.addEventListener("emit-lens-query", (e) => {
-        const event = e as QueryEvent;
-        const { ast, updateResponse, abortController } = event.detail;
-
-        const measureItems = [
-            dktkPatientsMeasure,
-            dktkDiagnosisMeasure,
-            dktkSpecimenMeasure,
-            dktkProceduresMeasure,
-            dktkMedicationStatementsMeasure,
-            dktkHistologyMeasure,
-        ] as MeasureItem[];
-
-        const criteria = dataPasser.getCriteriaAPI("diagnosis");
-
-        const cql = translateAstToCql(
-            ast,
-            false,
-            "DKTK_STRAT_DEF_IN_INITIAL_POPULATION",
-            measureItems,
-            criteria,
-        );
-
-        const library = buildLibrary(`${cql}`);
-        const measure = buildMeasure(library.url, measures);
-        const query = { lang: "cql", lib: library, measure: measure };
-
-        const backend = new Spot(new URL("http://localhost:8080"), [
-            "berlin",
-            "berlin-test",
-            "bonn",
-            "dresden",
-            "essen",
-            "frankfurt",
-            "freiburg",
-            "hannover",
-            "mainz",
-            "muenchen-lmu",
-            "muenchen-tum",
-            "ulm",
-            "wuerzburg",
-            "mannheim",
-            "dktk-test",
-            "hamburg",
-        ]);
-
-        backend.send(
-            btoa(decodeURI(JSON.stringify(query))),
-            updateResponse,
-            abortController,
-        );
-    });
 </script>
 
 <header>

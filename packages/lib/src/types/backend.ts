@@ -1,6 +1,11 @@
 import type { AstTopLayer } from "./ast";
 import type { Site } from "./response";
 
+export type MeasureGroup = {
+    name: string;
+    measures: MeasureItem[];
+};
+
 export type MeasureItem = {
     key: string;
     measure: Measure;
@@ -84,6 +89,6 @@ export interface QueryEvent extends Event {
     detail: {
         ast: AstTopLayer;
         updateResponse: (response: Map<string, Site>) => void;
-        abortController?: AbortController;
+        abortController: AbortController;
     };
 }

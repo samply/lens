@@ -1,5 +1,4 @@
 <script lang="ts">
-    import DataPasser from "../../lib/src/components/DataPasser.wc.svelte";
     import type {
         CatalogueText,
         MeasureItem,
@@ -7,6 +6,7 @@
         QueryEvent,
         QueryItem,
         QueryValue,
+        LensDataPasser,
     } from "../../../dist/types";
 
     import {
@@ -32,7 +32,7 @@
             catalogueData = data;
         });
 
-    fetch("options.json")
+    fetch("options-dev.json")
         .then((response) => response.json())
         .then((data) => {
             libraryOptions = data;
@@ -69,7 +69,7 @@
 
     let queryStore: QueryItem[][] = [];
 
-    let dataPasser: DataPasser;
+    let dataPasser: LensDataPasser;
 
     const getQuery = (): void => {
         console.log(dataPasser, dataPasser.getQueryAPI());

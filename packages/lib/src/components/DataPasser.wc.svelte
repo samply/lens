@@ -15,9 +15,14 @@
         removeValueFromQuery,
     } from "../stores/query";
     import { buildAstFromQuery } from "../helpers/ast-transformer";
-    import type { QueryItem, QueryValue } from "../types/queryData";
+    import type { QueryItem } from "../types/queryData";
     import type { ResponseStore } from "../types/backend";
     import type { AstTopLayer } from "../types/ast";
+    import type {
+        AddStratifierToQueryAPIParams,
+        RemoveItemFromQuyeryAPIParams,
+        RemoveValueFromQueryAPIParams,
+    } from "../types/dataPasser";
 
     /**
      * Getters
@@ -81,12 +86,7 @@
         catalogueGroupCode,
         groupRange,
         queryGroupIndex,
-    }: {
-        label: string;
-        catalogueGroupCode: string;
-        groupRange?: number;
-        queryGroupIndex?: number;
-    }): void => {
+    }: AddStratifierToQueryAPIParams): void => {
         addStratifier({
             label,
             catalogueGroupCode,
@@ -105,10 +105,7 @@
     export const removeItemFromQuyeryAPI = ({
         queryObject,
         queryGroupIndex = 0,
-    }: {
-        queryObject: QueryItem;
-        queryGroupIndex?: number;
-    }): void => {
+    }: RemoveItemFromQuyeryAPIParams): void => {
         removeItemFromQuery(queryObject, queryGroupIndex);
     };
 
@@ -119,15 +116,12 @@
      * @param params.value the value that should be removed
      * @param params.queryGroupIndex the index of the query group where the value should be removed
      */
+
     export const removeValueFromQueryAPI = ({
         queryItem,
         value,
         queryGroupIndex = 0,
-    }: {
-        queryItem: QueryItem;
-        value: QueryValue;
-        queryGroupIndex?: number;
-    }): void => {
+    }: RemoveValueFromQueryAPIParams): void => {
         const queryObject = {
             ...queryItem,
             values: [value],
