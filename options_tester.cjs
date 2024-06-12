@@ -5,16 +5,16 @@ const __importDefault = (this && this.__importDefault) || function (mod) {
 
 console.log(
     "Checking Lens options for ",
-    import.meta.env.VITE_TARGET_ENVIRONMENT,
+    process.env.VITE_TARGET_ENVIRONMENT,
 );
 
 let optionsPath = "";
-if (import.meta.env.VITE_TARGET_ENVIRONMENT === "production") {
-    optionsPath = prodOptions;
-} else if (import.meta.env.VITE_TARGET_ENVIRONMENT === "staging") {
-    optionsPath = demoOptions;
+if (process.env.VITE_TARGET_ENVIRONMENT === "production") {
+    optionsPath = "./packages/demo/public/options-ccp-prod.json";
+} else if (process.env.VITE_TARGET_ENVIRONMENT === "staging") {
+    optionsPath = "./packages/demo/public/options-ccp-demo.json";
 } else {
-    optionsPath = devOptions;
+    optionsPath = "./packages/demo/public/options-dev.json";
 }
 
 Object.defineProperty(exports, "__esModule", { value: true });
