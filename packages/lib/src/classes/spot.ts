@@ -2,7 +2,7 @@
  * TODO: document this class
  */
 
-import type { SiteData, Status, BeamResult } from "../types/response";
+import type { SiteData, Status } from "../types/response";
 import type { ResponseStore } from "../types/backend";
 
 export class Spot {

@@ -1,5 +1,7 @@
 import type { AstTopLayer } from "./ast";
+import type { BlazeOption } from "./blaze";
 import type { Site } from "./response";
+import type { SpotOption } from "./spot";
 
 export type MeasureGroup = {
     name: string;
@@ -58,24 +60,6 @@ export type MeasureOption = {
 export type MeasureStore = MeasureOption[];
 
 export type ResponseStore = Map<string, Site>;
-
-export type SpotOption = {
-    name: string;
-    backendMeasures: string;
-    url: string;
-    sites: string[];
-    uiSiteMap: string[][];
-    catalogueKeyToResponseKeyMap: string[][];
-};
-
-export type BlazeOption = {
-    name: string;
-    url: string;
-    auth?: string;
-    backendMeasures: string;
-    uiSiteMap: string[][];
-    catalogueKeyToResponseKeyMap: string[][];
-};
 
 export type BackendOptions = {
     spots?: SpotOption[];
