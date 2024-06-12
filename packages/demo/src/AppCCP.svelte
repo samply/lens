@@ -23,10 +23,16 @@
         });
 
     // VITE_TARGET_ENVIRONMENT should be set by the ci pipeline
-    const optionsFilePath =
-        import.meta.env.VITE_TARGET_ENVIRONMENT === "production"
-            ? "options-ccp-prod.json"
-            : "options-ccp-demo.json";
+    let optionsFilePath: string = "";
+
+    if (import.meta.env.VITE_TARGET_ENVIRONMENT === "production") {
+        optionsFilePath = "options-ccp-prod.json";
+    } else if (import.meta.env.VITE_TARGET_ENVIRONMENT === "staging") {
+        optionsFilePath = "options-ccp-demo.json";
+    }
+
+    // comment in for development
+    // optionsFilePath = "options-dev.json";
 
     fetch(optionsFilePath)
         .then((response) => response.json())
