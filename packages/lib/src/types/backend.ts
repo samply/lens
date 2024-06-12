@@ -67,9 +67,7 @@ export type SpotOption = {
     uiSiteMap: string[][];
     catalogueKeyToResponseKeyMap: string[][];
 };
-/**
- * TODO: implement BlazeOption
- */
+
 export type BlazeOption = {
     name: string;
     url: string;
