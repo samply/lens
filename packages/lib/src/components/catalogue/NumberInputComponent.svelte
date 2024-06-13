@@ -31,9 +31,9 @@
                 ? element.max
                 : null;
 
-        if (min && from <= min) {
+        if (min !== null && from <= min) {
             from = min;
-        } else if (max && from >= max) {
+        } else if (max !== null && from >= max) {
             from = max;
         }
     };
@@ -54,9 +54,9 @@
                 ? element.max
                 : null;
 
-        if (min && to <= min) {
+        if (min !== null && to <= min) {
             to = min;
-        } else if (max && to >= max) {
+        } else if (max !== null && to >= max) {
             to = max;
         }
     };
