@@ -53,6 +53,12 @@
                         "BETWEEN"
                     ]
                 },
+                "min": {
+                    "type": "number"
+                },
+                "max": {
+                    "type": "number"
+                },
                 "childCategories": {
                     "$ref": "#/$defs/childCategories"
                 },
