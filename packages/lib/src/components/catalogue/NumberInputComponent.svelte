@@ -4,17 +4,62 @@
     import { catalogueTextStore } from "../../stores/texts";
     import QueryAddButtonComponent from "./QueryAddButtonComponent.svelte";
     import { activeNumberInputs } from "../../stores/catalogue";
+    import type { Category } from "../../types/treeData";
 
     export let queryItem: QueryItem;
+    export let element: Category;
 
     const queryBindId = queryItem.values[0].queryBindId;
     const value = queryItem.values[0].value as { min: number; max: number };
 
-    /**
-     * defines and handles the number inputs
-     */
     let from: number | null = value.min;
     let to: number | null = value.max;
+
+    /**
+     * handles the "from" input field
+     * when the catalogue element has min or max values, they are used on focus out if the input is out of bounds
+     */
+    const handleInputFrom = (): void => {
+        if (from === null) return;
+
+        let min: number | null =
+            "min" in element && typeof element.min === "number"
+                ? element.min
+                : null;
+        let max: number | null =
+            "max" in element && typeof element.max === "number"
+                ? element.max
+                : null;
+
+        if (min && from <= min) {
+            from = min;
+        } else if (max && from >= max) {
+            from = max;
+        }
+    };
+
+    /**
+     * handles the "to" input field
+     * when the catalogue element has min or max values, they are used on focus out if the input is out of bounds
+     */
+    const handleInputTo = (): void => {
+        if (to === null) return;
+
+        let min: number | null =
+            "min" in element && typeof element.min === "number"
+                ? element.min
+                : null;
+        let max: number | null =
+            "max" in element && typeof element.max === "number"
+                ? element.max
+                : null;
+
+        if (min && to <= min) {
+            to = min;
+        } else if (max && to >= max) {
+            to = max;
+        }
+    };
 
     /**
      * build the proper name for the query value
@@ -95,7 +140,7 @@
                         {to && from > to ? ' formfield-error' : ''}"
                     type="number"
                     bind:value={from}
-                    min="0"
+                    on:focusout={handleInputFrom}
                 />
             </label>
 
@@ -108,7 +153,7 @@
                         {to && from > to ? ' formfield-error' : ''}"
                     type="number"
                     bind:value={to}
-                    min="0"
+                    on:focusout={handleInputTo}
                 />
             </label>
         </div>
