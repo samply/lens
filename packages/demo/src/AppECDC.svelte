@@ -5,6 +5,8 @@
         ehds2PatientMeasure,
         ehds2ObservationMeasure,
         ehds2SpecimenMeasure,
+        ehds2LaboratoryMeasure,
+        ehds2HospitalMeasure,
     } from "./measures";
 
     let mockCatalogueData = "";
@@ -26,6 +28,8 @@
         ehds2PatientMeasure,
         ehds2ObservationMeasure,
         ehds2SpecimenMeasure,
+        ehds2LaboratoryMeasure,
+        ehds2HospitalMeasure,
     ];
 
     const backendMeasures = `EHDS2_IN_INITIAL_POPULATION`;
@@ -65,7 +69,9 @@
         import.meta.env.VITE_TARGET_ENVIRONMENT === "production"
             ? "http://lens/"
             : "http://lens/";
-    const uiSiteMap: string[][] = [["ecdc-bridgehead-test1", "Test1"]];
+    const uiSiteMap: string[][] = [
+        ["ecdc-bridgehead-test1", "Heidelberg-DKFZ"],
+    ];
 
     const backendConfig = {
         url: import.meta.env.PROD ? backendUrl : "http://lens",

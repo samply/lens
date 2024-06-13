@@ -18,18 +18,13 @@
 
 :root {
   --white: #ffffff;
-  /*--ghost-white: #f8f8ff;*/
   --ghost-white: #ffffff; /* Taken from ECDC CSS */
   --black: #000000;
-  /*--gray: #a7a7a7;*/
   --gray: #7cbdc1; /* Taken from ECDC CSS */
   --light-gray: #dee2e6;
-  /*--lightest-gray: #efefef;*/
   --lightest-gray: #ffffff; /* Taken from ECDC CSS */
   --dark-gray: #323232;
-  /*--blue: #00489c;*/
   --blue: #333333; /* Taken from ECDC CSS */
-  /*--light-blue: #007bff;*/
   --light-blue: #4f841a; /* Taken from ECDC CSS */
   --lightest-blue: #adc7f3;
   --dark-blue: #002d80;
@@ -60,13 +55,11 @@
   --font-size-xl: 24px;
   --font-size-xxl: 32px;
 
-  /*--font-family: 'Open Sans', sans-serif;*/
-  /*--font-family: "MetaPro", Georgia, "Times New Roman", Times, serif; !* Taken from ECDC CSS *!*/
   --font-family: "Roboto", sans-serif; /* Taken from ECDC CSS */
 }
 
 /**
-* Demo
+* ECDC
 */
 
 * {

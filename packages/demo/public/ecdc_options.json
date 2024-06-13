@@ -36,6 +36,14 @@
             {
                 "title": "Patients",
                 "dataKey": "patients"
+            },
+            {
+                "title": "Labs",
+                "dataKey": "laboratories"
+            },
+            {
+                "title": "Hospitals",
+                "dataKey": "hospitals"
             }
         ]
     }

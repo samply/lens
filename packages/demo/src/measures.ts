@@ -1060,77 +1060,76 @@ export const dktkHistologyMeasure = {
 // InInitialPopulation is a boolean variable, and will supply "true" for every patient that matches
 // the query. "Gender", etc., are variables that supply a single value for a single patient.
 export const ehds2PatientMeasure = {
-  key: 'patients',
-  measure: {
-    code: {
-      text: 'patients',
-    },
-    population: [
-      {
+    key: "patients",
+    measure: {
         code: {
-          coding: [
+            text: "patients",
+        },
+        population: [
             {
-              system:
-                  'http://terminology.hl7.org/CodeSystem/measure-population',
-              code: 'initial-population',
+                code: {
+                    coding: [
+                        {
+                            system: "http://terminology.hl7.org/CodeSystem/measure-population",
+                            code: "initial-population",
+                        },
+                    ],
+                },
+                criteria: {
+                    language: "text/cql-identifier",
+                    expression: "InInitialPopulation",
+                },
             },
-          ],
-        },
-        criteria: {
-          language: 'text/cql-identifier',
-          expression: 'InInitialPopulation',
-        },
-      },
-    ],
-    stratifier: [
-      {
-        code: {
-          text: 'Gender',
-        },
-        criteria: {
-          language: 'text/cql',
-          expression: 'Gender',
-        },
-      },
-      {
-        code: {
-          text: 'AgeClass',
-        },
-        criteria: {
-          language: 'text/cql',
-          expression: 'AgeClass',
-        },
-      },
-      {
-        code: {
-          text: 'HospitalUnitType',
-        },
-        criteria: {
-          language: 'text/cql',
-          expression: 'HospitalUnitType',
-        },
-      },
-      {
-        code: {
-          text: 'HospitalId',
-        },
-        criteria: {
-          language: 'text/cql',
-          expression: 'HospitalId',
-        },
-      },
-      {
-        code: {
-          text: 'LaboratoryCode',
-        },
-        criteria: {
-          language: 'text/cql',
-          expression: 'LaboratoryCode',
-        },
-      },
-    ],
-  },
-  cql: `
+        ],
+        stratifier: [
+            {
+                code: {
+                    text: "Gender",
+                },
+                criteria: {
+                    language: "text/cql",
+                    expression: "Gender",
+                },
+            },
+            {
+                code: {
+                    text: "AgeClass",
+                },
+                criteria: {
+                    language: "text/cql",
+                    expression: "AgeClass",
+                },
+            },
+            {
+                code: {
+                    text: "HospitalUnitType",
+                },
+                criteria: {
+                    language: "text/cql",
+                    expression: "HospitalUnitType",
+                },
+            },
+            {
+                code: {
+                    text: "HospitalId",
+                },
+                criteria: {
+                    language: "text/cql",
+                    expression: "HospitalId",
+                },
+            },
+            {
+                code: {
+                    text: "LaboratoryCode",
+                },
+                criteria: {
+                    language: "text/cql",
+                    expression: "LaboratoryCode",
+                },
+            },
+        ],
+    },
+    cql: `
 
 EHDS2_UTIL
 
@@ -1155,164 +1154,267 @@ EHDS2_PATIENT
 //
 // The CQL in this measure depends on function(s) defined in EHDS2_UTIL
 export const ehds2ObservationMeasure = {
-  key: 'observations',
-  measure: {
-    code: {
-      'text': 'observations'
-    },
-    extension: [
-      {
-        url: 'http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis',
-        valueCode: 'Observation',
-      },
-    ],
-    population: [
-      {
+    key: "observations",
+    measure: {
         code: {
-          coding: [
+            text: "observations",
+        },
+        extension: [
             {
-              system: 'http://terminology.hl7.org/CodeSystem/measure-population',
-              code: 'initial-population'
-            }
-          ]
-        },
-        criteria: {
-          language: 'text/cql-identifier',
-          expression: 'ObservationList'
-        }
-      }
-    ],
-    stratifier: [
-      {
-        code: {
-          text: 'PathogenCode',
-        },
-        criteria: {
-          language: 'text/cql',
-          expression: 'PathogenCode',
-        },
-      },
-      {
-        code: {
-          text: 'AntibioticCode',
-        },
-        criteria: {
-          language: 'text/cql',
-          expression: 'AntibioticCode',
-        },
-      },
-      {
-        code: {
-          text: 'SirCode',
-        },
-        criteria: {
-          language: 'text/cql',
-          expression: 'SirCode',
-        },
-      },
-      {
-        code: {
-          text: 'DataSource',
-        },
-        criteria: {
-          language: 'text/cql',
-          expression: 'DataSource',
-        },
-      },
-      {
-        code: {
-          text: 'IsolateId',
-        },
-        criteria: {
-          language: 'text/cql',
-          expression: 'IsolateId',
-        },
-      },
-      {
-        code: {
-          text: 'PatientType',
-        },
-        criteria: {
-          language: 'text/cql',
-          expression: 'PatientType',
-        },
-      },
-      {
-        code: {
-          text: 'ReferenceGuidelinesSir',
-        },
-        criteria: {
-          language: 'text/cql',
-          expression: 'ReferenceGuidelinesSir',
-        },
-      },
-      {
-        code: {
-          text: 'ReportingCountry',
-        },
-        criteria: {
-          language: 'text/cql',
-          expression: 'ReportingCountry',
-        },
-      },
-    ]
-  },
-  cql:
-      `
+                url: "http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis",
+                valueCode: "Observation",
+            },
+        ],
+        population: [
+            {
+                code: {
+                    coding: [
+                        {
+                            system: "http://terminology.hl7.org/CodeSystem/measure-population",
+                            code: "initial-population",
+                        },
+                    ],
+                },
+                criteria: {
+                    language: "text/cql-identifier",
+                    expression: "ObservationList",
+                },
+            },
+        ],
+        stratifier: [
+            {
+                code: {
+                    text: "PathogenCode",
+                },
+                criteria: {
+                    language: "text/cql",
+                    expression: "PathogenCode",
+                },
+            },
+            {
+                code: {
+                    text: "AntibioticCode",
+                },
+                criteria: {
+                    language: "text/cql",
+                    expression: "AntibioticCode",
+                },
+            },
+            {
+                code: {
+                    text: "SirCode",
+                },
+                criteria: {
+                    language: "text/cql",
+                    expression: "SirCode",
+                },
+            },
+            {
+                code: {
+                    text: "DataSource",
+                },
+                criteria: {
+                    language: "text/cql",
+                    expression: "DataSource",
+                },
+            },
+            {
+                code: {
+                    text: "IsolateId",
+                },
+                criteria: {
+                    language: "text/cql",
+                    expression: "IsolateId",
+                },
+            },
+            {
+                code: {
+                    text: "PatientType",
+                },
+                criteria: {
+                    language: "text/cql",
+                    expression: "PatientType",
+                },
+            },
+            {
+                code: {
+                    text: "ReferenceGuidelinesSir",
+                },
+                criteria: {
+                    language: "text/cql",
+                    expression: "ReferenceGuidelinesSir",
+                },
+            },
+            {
+                code: {
+                    text: "ReportingCountry",
+                },
+                criteria: {
+                    language: "text/cql",
+                    expression: "ReportingCountry",
+                },
+            },
+        ],
+    },
+    cql: `
       
 EHDS2_OBSERVATION
 
-`
-}
+`,
+};
 
 // For Specimen resources in EHDS2/ECDC.
 //
 // The CQL in this measure depends on function(s) defined in EHDS2_UTIL
 export const ehds2SpecimenMeasure = {
-  key: 'specimens',
-  measure: {
-    code: {
-      'text': 'specimens'
-    },
-    extension: [
-      {
-        url: 'http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis',
-        valueCode: 'Specimen',
-      },
-    ],
-    population: [
-      {
+    key: "specimens",
+    measure: {
         code: {
-          coding: [
+            text: "specimens",
+        },
+        extension: [
             {
-              system: 'http://terminology.hl7.org/CodeSystem/measure-population',
-              code: 'initial-population'
-            }
-          ]
-        },
-        criteria: {
-          language: 'text/cql-identifier',
-          expression: 'SpecimenList'
-        }
-      }
-    ],
-    stratifier: [
-      {
-        code: {
-          text: 'SpecimenIsolateId',
-        },
-        criteria: {
-          language: 'text/cql',
-          expression: 'SpecimenIsolateId',
-        },
-      },
-    ]
-  },
-  cql:
-      `
+                url: "http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis",
+                valueCode: "Specimen",
+            },
+        ],
+        population: [
+            {
+                code: {
+                    coding: [
+                        {
+                            system: "http://terminology.hl7.org/CodeSystem/measure-population",
+                            code: "initial-population",
+                        },
+                    ],
+                },
+                criteria: {
+                    language: "text/cql-identifier",
+                    expression: "SpecimenList",
+                },
+            },
+        ],
+        stratifier: [
+            {
+                code: {
+                    text: "SpecimenIsolateId",
+                },
+                criteria: {
+                    language: "text/cql",
+                    expression: "SpecimenIsolateId",
+                },
+            },
+        ],
+    },
+    cql: `
       
 EHDS2_SPECIMEN
 
-`
-}
+`,
+};
 
+// EHDS2/ECDC uses CareTeam resources to represent laboratories, because cqfm-populationBasis
+// needs to have the subject attribute to calculate the population, and CareTeam just happens
+// to have that attribute.
+//
+// The CQL in this measure depends on function(s) defined in EHDS2_UTIL
+export const ehds2LaboratoryMeasure = {
+    key: "laboratories",
+    measure: {
+        code: {
+            text: "laboratories",
+        },
+        extension: [
+            {
+                url: "http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis",
+                valueCode: "CareTeam",
+            },
+        ],
+        population: [
+            {
+                code: {
+                    coding: [
+                        {
+                            system: "http://terminology.hl7.org/CodeSystem/measure-population",
+                            code: "initial-population",
+                        },
+                    ],
+                },
+                criteria: {
+                    language: "text/cql-identifier",
+                    expression: "LaboratoryList",
+                },
+            },
+        ],
+        stratifier: [
+            // Dummy stratifier, not used, but expected by cqfm-populationBasis
+            {
+                code: {
+                    text: "LaboratoryId",
+                },
+                criteria: {
+                    language: "text/cql",
+                    expression: "LaboratoryId",
+                },
+            },
+        ],
+    },
+    cql: `
+      
+EHDS2_LABORATORY
+
+`,
+};
+
+// EHDS2/ECDC uses CareTeam resources to represent hospitals, because cqfm-populationBasis
+// needs to have the subject attribute to calculate the population, and CareTeam just happens
+// to have that attribute.
+//
+// The CQL in this measure depends on function(s) defined in EHDS2_UTIL
+export const ehds2HospitalMeasure = {
+    key: "hospitals",
+    measure: {
+        code: {
+            text: "hospitals",
+        },
+        extension: [
+            {
+                url: "http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis",
+                valueCode: "CareTeam",
+            },
+        ],
+        population: [
+            {
+                code: {
+                    coding: [
+                        {
+                            system: "http://terminology.hl7.org/CodeSystem/measure-population",
+                            code: "initial-population",
+                        },
+                    ],
+                },
+                criteria: {
+                    language: "text/cql-identifier",
+                    expression: "HospitalList",
+                },
+            },
+        ],
+        stratifier: [
+            // Dummy stratifier, not used, but expected by cqfm-populationBasis
+            {
+                code: {
+                    text: "HospitalId",
+                },
+                criteria: {
+                    language: "text/cql",
+                    expression: "HospitalId",
+                },
+            },
+        ],
+    },
+    cql: `
+      
+EHDS2_HOSPITAL
+
+`,
+};

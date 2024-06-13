@@ -251,7 +251,6 @@ export const cqltemplate = new Map<string, string>([
     [
         // Used by ECDC/EHDS2
         "observationIsolateId",
-        //"ExistsIsolateId('{{C}}')" // From Observation
         "ExistsSpecimenIsolateId('{{C}}')", // From Specimen
     ],
     [
