@@ -352,6 +352,11 @@ lens-catalogue::part(lens-catalogue) {
   padding-left: 8px;
 }
 
+lens-catalogue::part(autocomplete-formfield-input) {
+  border: solid 1px var(--dark-gray);
+  border-radius: 0;
+}
+
 lens-catalogue::part(autocomplete-formfield-input):focus {
   border-color: var(--light-blue);
 }
