@@ -44,6 +44,10 @@
             {
                 "title": "Hospitals",
                 "dataKey": "hospitals"
+            },
+            {
+                "title": "Refguides",
+                "dataKey": "refguides"
             }
         ]
     }

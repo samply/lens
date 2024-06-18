@@ -57,6 +57,7 @@
             if (!["claimed", "succeeded"].includes(value.status)) return;
 
             let tableRow: (string | number)[] = [];
+            let patientCount: number | null = null; // Needed by EHDS2/ECDC
 
             /**
              * builds the table items for each row
@@ -79,12 +80,32 @@
                     }
 
                     if (header.dataKey) {
-                        tableRow.push(
-                            getSitePopulationForCode(
-                                value.data,
-                                header.dataKey,
-                            ),
+                        let population = getSitePopulationForCode(
+                            value.data,
+                            header.dataKey,
                         );
+
+                        // Store the patient count or divide by population if the header is
+                        // "Labs", "Hospitals", or "Refguides".
+                        // Needed by EHDS2/ECDC
+                        if (header.title === "Patients") {
+                            patientCount = population;
+                        } else if (
+                            patientCount !== null &&
+                            ["Labs", "Hospitals", "Refguides"].includes(
+                                header.title,
+                            )
+                        ) {
+                            if (patientCount === 0 || population === 0) {
+                                population = 0;
+                            } else {
+                                population = Math.ceil(
+                                    population / patientCount,
+                                );
+                            }
+                        }
+
+                        tableRow.push(population);
                         return;
                     }
 
@@ -236,7 +257,7 @@
 <slot name="above-pagination" />
 <div part="table-pagination">
     <button
-        part="table-pagination-button pagination-pagination-previous 
+        part="table-pagination-button pagination-pagination-previous
                 {activePage === 1 ? 'pagination-button-disabled' : ''}"
         disabled={activePage === 1}
         on:click={() => {

@@ -7,6 +7,7 @@
         ehds2SpecimenMeasure,
         ehds2LaboratoryMeasure,
         ehds2HospitalMeasure,
+        ehds2RefguideMeasure,
     } from "./measures";
 
     let mockCatalogueData = "";
@@ -30,6 +31,7 @@
         ehds2SpecimenMeasure,
         ehds2LaboratoryMeasure,
         ehds2HospitalMeasure,
+        ehds2RefguideMeasure,
     ];
 
     const backendMeasures = `EHDS2_IN_INITIAL_POPULATION`;

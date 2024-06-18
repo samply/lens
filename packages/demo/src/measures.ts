@@ -1418,3 +1418,56 @@ EHDS2_HOSPITAL
 
 `,
 };
+
+// EHDS2/ECDC uses CareTeam resources to represent reference guides, because cqfm-populationBasis
+// needs to have the subject attribute to calculate the population, and CareTeam just happens
+// to have that attribute.
+//
+// The CQL in this measure depends on function(s) defined in EHDS2_UTIL
+export const ehds2RefguideMeasure = {
+    key: "refguides",
+    measure: {
+        code: {
+            text: "refguides",
+        },
+        extension: [
+            {
+                url: "http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis",
+                valueCode: "CareTeam",
+            },
+        ],
+        population: [
+            {
+                code: {
+                    coding: [
+                        {
+                            system: "http://terminology.hl7.org/CodeSystem/measure-population",
+                            code: "initial-population",
+                        },
+                    ],
+                },
+                criteria: {
+                    language: "text/cql-identifier",
+                    expression: "RefguideList",
+                },
+            },
+        ],
+        stratifier: [
+            // Dummy stratifier, not used, but expected by cqfm-populationBasis
+            {
+                code: {
+                    text: "RefguideId",
+                },
+                criteria: {
+                    language: "text/cql",
+                    expression: "RefguideId",
+                },
+            },
+        ],
+    },
+    cql: `
+      
+EHDS2_REFGUIDE
+
+`,
+};
