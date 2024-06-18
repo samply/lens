@@ -252,9 +252,6 @@ footer {
   background-color: var(--white);
   border-radius: var(--border-radius-small);
   border: solid 1px var(--lightest-gray);
-  /* position: sticky;
-  position: -webkit-sticky;
-  bottom: 0; */
 }
 
 footer a {
