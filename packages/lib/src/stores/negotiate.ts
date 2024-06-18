@@ -197,7 +197,6 @@ export const getCollections = (sitesToNegotiate: string[]): Collection[] => {
         }
     });
 
-    console.log("getCollections -> return siteCollections", siteCollections);
     return siteCollections;
 };
 
@@ -209,7 +208,7 @@ export const getCollections = (sitesToNegotiate: string[]): Collection[] => {
  */
 export const negotiate = async (sitesToNegotiate: string[]): void => {
     //TODO: get auth token here
-
+    console.log("enter negotiate");
     let sendableQuery!: SendableQuery;
     queryStore.subscribe((value: QueryItem[][]) => {
         const uuid = uuidv4();
@@ -323,31 +322,36 @@ async function sendRequestToProjectManager(
         ? negotiateOptions.editProjectUrl
         : negotiateOptions.newProjectUrl;
 
-    const response: Response & { redirect_uri: string } = await fetch(
-        `${negotiateUrl}?explorer-ids=${negotiationPartners}&query-format=CQL_DATA&human-readable=${humanReadable}&explorer-url=${encodeURIComponent(returnURL)}${projectCodeParam}`,
-        {
-            method: "POST",
-            headers: {
-                returnAccept: "application/json; charset=utf-8",
-                "Content-Type": "application/json",
-                Authorization: authHeader,
+    let response!: Response & { redirect_uri: string };
+    try {
+        response = await fetch(
+            `${negotiateUrl}?explorer-ids=${negotiationPartners}&query-format=CQL_DATA&human-readable=${humanReadable}&explorer-url=${encodeURIComponent(returnURL)}${projectCodeParam}`,
+            {
+                method: "POST",
+                headers: {
+                    returnAccept: "application/json; charset=utf-8",
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + authHeader,
+                },
+                body: getCql(),
             },
-            body: getCql(),
-        },
-    ).then((response) => response.json());
+        ).then((response) => response.json());
 
-    /**
-     * replace query-code with project-code
-     * TODO: remove when backend bug is fixed
-     */
-    if (response.redirect_uri) {
-        response.redirect_uri = response.redirect_uri.replace(
-            "query-code",
-            "project-code",
-        );
+        /**
+         * replace query-code with project-code
+         * TODO: remove when backend bug is fixed
+         */
+        if (response?.redirect_uri) {
+            response.redirect_uri = response.redirect_uri.replace(
+                "query-code",
+                "project-code",
+            );
+        }
+
+        return response;
+    } catch (error) {
+        console.log("error", error);
     }
-
-    return response;
 }
 
 /**

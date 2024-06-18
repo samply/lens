@@ -44,13 +44,8 @@ export async function fetchAccessToken(): Promise<void> {
 
     if (response.ok) {
         const data = await response.json();
-        console.log("fetchAccesstoken", data);
         authStore.set(data.access_token);
         refreshToken = data.refresh_token;
-
-        authStore.subscribe((value) => {
-            console.log(value);
-        });
     } else {
         console.error("Failed to fetch access token");
     }
@@ -80,8 +75,6 @@ async function refreshAccessToken(): Promise<void> {
 
     if (response.ok) {
         const data = await response.json();
-        console.log("refreshAccesstoken", data);
-        console.log(response);
         authStore.set(data.access_token);
         refreshToken = data.refresh_token;
     } else {
