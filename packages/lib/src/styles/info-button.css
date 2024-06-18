@@ -13,6 +13,7 @@ lens-info-button::part(info-button-title) {
 }
 
 lens-info-button::part(info-button-dialogue) {
+    cursor: auto;
     position: absolute;
     border: none;
     background-color: var(--white);
