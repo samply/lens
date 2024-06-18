@@ -69,6 +69,14 @@ button {
 }
 
 header {
+  background-color: var(--ghost-white);
+  position: sticky;
+  top: 0px;
+  z-index: 1;
+  padding: var(--gap-xs);
+}
+
+.header-wrapper {
   background-color: var(--white);
   padding: var(--gap-xs);
   display: grid;
@@ -76,6 +84,7 @@ header {
   grid-template-columns: 1fr 1fr 1fr;
   border-radius: var(--border-radius-small);
   border: solid 1px var(--lightest-gray);
+  
 }
 
 .logo img {
@@ -98,22 +107,26 @@ header h1 {
   margin: 0;
 }
 
-main>div,
-header,
+/* .grid,
 footer {
   margin: var(--gap-xs);
-}
+} */
 
 .search {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto auto;
-  grid-gap: var(--gap-s);
-  padding: var(--gap-xxs) 0;
+  padding: var(--gap-xs) var(--gap-xs) var(--gap-s);
   background-color: var(--ghost-white);
   position: sticky;
   position: -webkit-sticky;
-  top: 0;
+  top: 86px;
   z-index: 1;
+}
+
+.search-wrapper {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-gap: var(--gap-s);
+  /* padding: var(--gap-xxs) 0; */
+  background-color: var(--ghost-white);
 }
 
 .grid {
@@ -121,18 +134,25 @@ footer {
   display: grid;
   grid-template-columns: 400px 1fr;
   grid-gap: var(--gap-m);
+  padding: 0 var(--gap-xs) var(--gap-xs);
 }
 
-.catalogue {
-  padding: var(--gap-s);
-  border-radius: var(--border-radius-small);
+.catalogue-wrapper {
+  background-color: var(--white);
   border: solid 1px var(--lightest-gray);
+  border-radius: var(--border-radius-small);
+  }
+  
+  .catalogue {
+  border-radius: var(--border-radius-small);
+  padding: var(--gap-s);
   background-color: var(--white);
   grid-row: 1/-1;
   overflow-y: scroll;
-  height: 100vh;
+  height: calc(100vh - 226px);
   position: sticky;
-  top: 40px;
+  top: 153px;
+  
 }
 
 .catalogue h2 {
@@ -148,6 +168,7 @@ footer {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: var(--gap-xs);
+  grid-column: 2/3;
 }
 
 
@@ -231,9 +252,9 @@ footer {
   background-color: var(--white);
   border-radius: var(--border-radius-small);
   border: solid 1px var(--lightest-gray);
-  position: sticky;
+  /* position: sticky;
   position: -webkit-sticky;
-  bottom: 0;
+  bottom: 0; */
 }
 
 footer a {
