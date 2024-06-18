@@ -114,7 +114,6 @@
 
         const criteria = dataPasser.getCriteriaAPI("diagnosis");
 
-        console.log("app cql translation", measureItems);
         const cql = translateAstToCql(
             ast,
             false,
@@ -122,7 +121,6 @@
             measureItems,
             criteria,
         );
-        console.log("app build meausre", measures);
 
         const library = buildLibrary(`${cql}`);
         const measure = buildMeasure(library.url, measures);
