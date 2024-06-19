@@ -252,7 +252,7 @@
                     chartType="bar"
                     headers={therapyHeaders}
                     xAxisTitle="Art der Therapie"
-                    yAxisTitle="Anzahl der Therapien"
+                    yAxisTitle="Anzahl der Therapieeinträge"
                     backgroundColor={JSON.stringify(barChartBackgroundColors)}
                 />
             </div>
@@ -262,7 +262,7 @@
                     catalogueGroupCode="medicationStatements"
                     chartType="bar"
                     xAxisTitle="Art der Therapie"
-                    yAxisTitle="Anzahl der Therapien"
+                    yAxisTitle="Anzahl der Therapieeinträge"
                     backgroundColor={JSON.stringify(barChartBackgroundColors)}
                 />
             </div>
