@@ -37,7 +37,8 @@
         tooltipOpen = false;
     };
 
-    const displayQueryInfo = (queryItem?: QueryItem): void => {
+    const displayQueryInfo = (e: MouseEvent, queryItem?: QueryItem): void => {
+        const target: HTMLElement = e.target as HTMLElement;
         if (showQuery) {
             if (onlyChildInfo && queryItem !== undefined) {
                 let childMessage = buildHumanReadableRecursively(
@@ -53,13 +54,19 @@
                         : [noQueryMessage];
             }
         }
-        tooltipOpen = !tooltipOpen;
+        if (
+            target.getAttribute("part") !== "info-button-dialogue" &&
+            target.getAttribute("part") !== "info-button-dialogue-message"
+        ) {
+            tooltipOpen = !tooltipOpen;
+        }
     };
 </script>
 
 <button
     part="info-button"
-    on:click={onlyChildInfo ? displayQueryInfo(queryItem) : displayQueryInfo}
+    on:click={(e) =>
+        onlyChildInfo ? displayQueryInfo(e, queryItem) : displayQueryInfo(e)}
     on:focusout={onFocusOut}
 >
     {#if iconUrl}
@@ -68,9 +75,14 @@
         <span part="info-button-icon"> &#9432; </span>
     {/if}
     {#if tooltipOpen}
-        <div part="info-button-dialogue">
+        <div part="info-button-dialogue" style="user-select: text;">
             {#each message as msg}
-                <div part="info-button-dialogue-message">{msg}</div>
+                <div
+                    part="info-button-dialogue-message"
+                    style="user-select: text;"
+                >
+                    {msg}
+                </div>
             {/each}
         </div>
     {/if}

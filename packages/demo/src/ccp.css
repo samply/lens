@@ -453,20 +453,6 @@ lens-catalogue::part(info-button-icon):hover {
   text-align: left;
 }
 
-lens-info-button::part(info-button-dialogue):hover {background-color: #b8bfb8}
-
-lens-info-button::part(info-button):hover {background-color: #b8bfb8}
-
-lens-info-button::part(info-button):active {
-  background-color: #585958;
-  transform: translateX(1px);
-}
-
-lens-info-button::part(info-button-dialogue):active {
-  background-color: #585958;
-  transform: translateX(1px);
-}
-
 .result-table-hint-text {
   padding-top: 20px;
   display: flex;
