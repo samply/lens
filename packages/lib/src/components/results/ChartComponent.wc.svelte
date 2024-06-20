@@ -205,7 +205,7 @@
 
                 if (site === undefined || site.data === null) return 0;
 
-                let data = site.data.group.find(
+                let data = site?.data?.group?.find(
                     (groupItem) => groupItem.code.text === catalogueGroupCode,
                 );
                 return data?.population[0]?.count || 0;

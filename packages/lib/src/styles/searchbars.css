@@ -167,6 +167,51 @@ lens-search-bar-multiple::part(lens-searchbar-add-button) {
   margin-left: var(--gap-xs);
 }
 
+/**
+* Lens Search Bar Info Button
+*/
+
+lens-search-bar-multiple::part(info-button),
+lens-search-bar::part(info-button){
+  background-color: var(--blue);
+  border-color: var(--blue);
+  position: relative;
+  padding: 0;
+  border: 0;
+  top: +2px;
+}
+
+lens-search-bar::part(info-button-icon),
+lens-search-bar-multiple::part(info-button-icon) {
+  height: calc(var(--font-size-s) + 8px);
+  width: calc(var(--font-size-s) + 8px);
+  filter: brightness(0) invert(1);
+  box-sizing: content-box;
+  border-radius: 50%;
+}
+
+lens-search-bar::part(info-button-icon):hover,
+lens-search-bar-multiple::part(info-button-icon):hover {
+  cursor: pointer;
+}
+
+lens-search-bar::part(info-button-dialogue),
+lens-search-bar-multiple::part(info-button-dialogue) {
+  position: absolute;
+  border: none;
+  background-color: var(--white);
+  width: max-content;
+  max-width: 200px;
+  z-index: 100;
+  padding: var(--gap-s);
+  top: calc(var(--gap-m) + 4px);
+  right: -20px;
+  border: solid 1px var(--light-blue);
+  border-radius: var(--border-radius-small);
+  text-align: left;
+}
+
+
 
 /**
 * delete buttons in searchbar and chips
@@ -187,6 +232,7 @@ lens-search-bar-multiple::part(query-delete-button) {
 lens-search-bar::part(query-delete-button):hover,
 lens-search-bar-multiple::part(query-delete-button):hover {
   border: solid 1px var(--orange);
+  color: var(--orange)
 }
 
 lens-search-bar::part(query-delete-button-value),
@@ -194,7 +240,7 @@ lens-search-bar-multiple::part(query-delete-button-value) {
   font-size: var(--font-size-xxs);
   color: var(--white);
   margin: 0 var(--gap-xs) 0 var(--gap-xxs);
-  background-color: var(--light-blue);
+  background-color: var(--blue);
   border: var(--white) 1px solid;
 }
 
@@ -204,7 +250,7 @@ lens-search-bar-multiple::part(query-delete-button-item) {
   position: absolute;
   top: -6px;
   right: -10px;
-  border: solid 2px var(--white);
+  border: solid 1px var(--white);
 }
 
 lens-search-bar::part(query-delete-button-group),
@@ -225,4 +271,9 @@ lens-search-bar-multiple::part(query-delete-button-group) {
 lens-search-bar-multiple::part(lens-search-button) {
   margin-left: auto;
   margin-right: 45px;
+}
+
+lens-search-bar::part(info-button-dialogue),
+lens-search-bar-multiple::part(info-button-dialogue) {
+  left: 0px;
 }

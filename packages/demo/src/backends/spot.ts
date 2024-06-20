@@ -2,8 +2,12 @@
  * TODO: document this class
  */
 
-import type { SiteData, Status } from "../types/response";
-import type { ResponseStore } from "../types/backend";
+import type {
+    ResponseStore,
+    SiteData,
+    Status,
+    BeamResult,
+} from "../../../../dist/types";
 
 export class Spot {
     private currentTask!: string;
@@ -52,15 +56,16 @@ export class Spot {
 
             console.info(`Created new Beam Task with id ${this.currentTask}`);
 
-            /**
-             * Listenes to the new_result event from beam and updates the response store
-             */
             const eventSource = new EventSource(
                 `${this.url.toString()}beam/${this.currentTask}?wait_count=${this.sites.length}`,
                 {
                     withCredentials: true,
                 },
             );
+
+            /**
+             * Listenes to the new_result event from beam and updates the response store
+             */
             eventSource.addEventListener("new_result", (message) => {
                 const response: BeamResult = JSON.parse(message.data);
                 if (response.task !== this.currentTask) return;

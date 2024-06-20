@@ -5,6 +5,35 @@ import type { ResponseStore } from "../types/backend";
 export const responseStore = writable<ResponseStore>(new Map<string, Site>());
 
 /**
+ * updates the response store with a given response
+ * @param response - the response to update the store with
+ */
+export const updateResponseStore = (response: ResponseStore): void => {
+    let store: ResponseStore;
+    responseStore.subscribe((s: ResponseStore) => (store = s));
+
+    const changes = new Map<string, Site>();
+
+    response.forEach((value, key) => {
+        if (store.get(key)?.status === response.get(key)?.status) {
+            return;
+        }
+        changes.set(key, value);
+    });
+
+    if (changes.size === 0) {
+        return;
+    }
+
+    responseStore.update((store: ResponseStore): ResponseStore => {
+        changes.forEach((value, key) => {
+            store.set(key, value);
+        });
+        return store;
+    });
+};
+
+/**
  * @param store - the response store
  * @param code - the code to search for
  * @returns the aggregated population count for a given code
@@ -37,9 +66,9 @@ export const getSitePopulationForCode = (
     code: string,
 ): number => {
     let population: number = 0;
-    if (!site) return population;
+    if (!site || !site.group) return population;
 
-    site.group.forEach((group) => {
+    site?.group?.forEach((group) => {
         if (group.code.text === code) {
             population += group.population[0].count;
         }
@@ -105,7 +134,7 @@ export const getSitePopulationForStratumCode = (
     stratumCode: string,
     stratifier: string,
 ): number => {
-    if (!site) return 0;
+    if (!site || !site.group) return 0;
 
     let population: number = 0;
 
@@ -164,7 +193,7 @@ export const getSiteStratifierCodesForGroupCode = (
     site: SiteData,
     code: string,
 ): string[] => {
-    if (!site) return [""];
+    if (!site || !site.group) return [""];
     const codes: string[] = [];
 
     site.group.forEach((groupItem) => {

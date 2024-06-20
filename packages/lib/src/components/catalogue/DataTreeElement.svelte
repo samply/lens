@@ -224,6 +224,7 @@
                 {:else if "fieldType" in element && element.fieldType === "number"}
                     {#each numberInput.values as numberInputValues (numberInputValues.queryBindId)}
                         <NumberInputComponent
+                            {element}
                             queryItem={{
                                 ...numberInput,
                                 values: [numberInputValues],

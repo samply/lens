@@ -1,0 +1,136 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Search Parameter Catalogue",
+    "description": "A catalogue of search parameters",
+    "type": "array",
+    "items": {
+        "$ref": "#/$defs/categoryItem"
+    },
+    "$defs": {
+        "childCategories": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/categoryItem"
+            }
+        },
+        "categoryItem": {
+            "type": "object",
+            "properties": {
+                "key": {
+                    "type": "string",
+                    "pattern": "^.+$"
+                },
+                "name": {
+                    "type": "string",
+                    "pattern": "^.+$"
+                },
+                "subCategoryName": {
+                    "type": "string",
+                    "pattern": "^.+$"
+                },
+                "infoButtonText": {
+                    "type": "array",
+                    "description": "The text to display in the info button",
+                    "items": {
+                        "type": "string",
+                        "pattern": "^.*$"
+                    }
+                },
+                "system": {
+                    "type": "string",
+                    "pattern": "^.*$"
+                },
+                "fieldType": {
+                    "enum": [
+                        "single-select",
+                        "number",
+                        "autocomplete"
+                    ]
+                },
+                "type": {
+                    "enum": [
+                        "EQUALS",
+                        "BETWEEN"
+                    ]
+                },
+                "min": {
+                    "type": "number"
+                },
+                "max": {
+                    "type": "number"
+                },
+                "childCategories": {
+                    "$ref": "#/$defs/childCategories"
+                },
+                "criteria": {
+                    "$ref": "#/$defs/criteria"
+                }
+            },
+            "additionalProperties": false,
+            "unevaluatedProperties": false,
+            "required": [
+                "key",
+                "name"
+            ]
+        },
+        "criteria": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "key": {
+                        "type": "string",
+                        "pattern": "^.+$"
+                    },
+                    "name": {
+                        "type": "string",
+                        "pattern": "^.+$"
+                    },
+                    "description": {
+                        "type": "string",
+                        "pattern": "^.*$"
+                    },
+                    "infoButtonText": {
+                        "type": "array",
+                        "description": "The text to display in the info button",
+                        "items": {
+                            "type": "string",
+                            "pattern": "^.+$"
+                        }
+                    },
+                    "aggregatedValue": {
+                        "type": "array",
+                        "items": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "value": {
+                                        "type": "string",
+                                        "pattern": "^.+$"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "pattern": "^.+$"
+                                    }
+                                },
+                                "additionalProperties": false,
+                                "unevaluatedProperties": false,
+                                "required": [
+                                    "value",
+                                    "name"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "additionalProperties": false,
+                "unevaluatedProperties": false,
+                "required": [
+                    "key",
+                    "name"
+                ]
+            }
+        }
+    }
+}

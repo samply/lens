@@ -6,14 +6,13 @@ import type {
     AstBottomLayerValue,
     AstElement,
     AstTopLayer,
-} from "../types/ast";
+    MeasureItem,
+} from "../../../../dist/types";
 import {
     alias as aliasMap,
     cqltemplate,
     criterionMap,
 } from "./cqlquery-mappings";
-import { getCriteria } from "../stores/catalogue";
-import type { MeasureItem } from "../types/backend";
 
 let codesystems: string[] = [];
 let criteria: string[];
@@ -23,8 +22,9 @@ export const translateAstToCql = (
     returnOnlySingeltons: boolean = true,
     backendMeasures: string,
     measures: MeasureItem[],
+    criterionList: string[],
 ): string => {
-    criteria = getCriteria("diagnosis");
+    criteria = criterionList;
 
     /**
      * DISCUSS: why is this even an array?
