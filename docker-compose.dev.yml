@@ -25,7 +25,7 @@ services:
     environment:
       RUST_LOG: "info"
       CORS_ORIGIN: http://localhost:5173
-      BEAM_SECRET: "${LOCAL_BEAM_SECRET_FOCUS}"
+      BEAM_SECRET: "${LOCAL_BEAM_SECRET_SPOT}"
       BEAM_PROXY_URL: http://beam-proxy:8081
       BEAM_APP_ID: "focus.${LOCAL_BEAM_ID}.${BROKER_HOST}"
     depends_on:
@@ -38,7 +38,7 @@ services:
     environment:
       BROKER_URL: https://${BROKER_HOST}
       PROXY_ID: ${LOCAL_BEAM_ID}.${BROKER_HOST}
-      APP_focus_KEY: ${LOCAL_BEAM_SECRET_FOCUS}
+      APP_spot_KEY: ${LOCAL_BEAM_SECRET_SPOT}
       PRIVKEY_FILE: /run/secrets/proxy.pem
       ALL_PROXY: ${http_proxy}
     secrets:
