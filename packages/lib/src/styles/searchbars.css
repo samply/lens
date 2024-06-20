@@ -272,3 +272,8 @@ lens-search-bar-multiple::part(lens-search-button) {
   margin-left: auto;
   margin-right: 45px;
 }
+
+lens-search-bar::part(info-button-dialogue),
+lens-search-bar-multiple::part(info-button-dialogue) {
+  left: 0px;
+}

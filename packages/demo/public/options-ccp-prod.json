@@ -71,6 +71,9 @@
             ]
         },
         "therapy_of_tumor": {
+            "hintText": [
+                "Bei Patienten mit mehreren onkologischen Diagnosen werden auch Einträge angezeigt, die ggfs. nicht den ausgewählten Suchkriterien entsprechen."
+            ],
             "aggregations": [
                 "medicationStatements"
             ],
@@ -82,7 +85,7 @@
         },
         "medicationStatements": {
             "hintText": [
-                "Art der systemischen oder abwartenden Therapie (ADT Basisdatensatz Versionen 2014, 2021)"
+                "Angezeigt wird die Art der systemischen oder abwartenden Therapie (ADT Basisdatensatz Versionen 2014, 2021). Bei Patienten mit mehreren onkologischen Diagnosen werden auch Einträge angezeigt, die ggfs. nicht den ausgewählten Suchkriterien entsprechen. "
             ],
             "tooltips": {
                 "CH": "Chemotherapie",

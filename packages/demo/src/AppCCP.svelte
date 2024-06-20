@@ -88,28 +88,32 @@
 </script>
 
 <header>
-    <div class="logo">
-        <img src="../dktk.svg" alt="Logo des DKTK" />
-    </div>
-    <h1>CCP Explorer</h1>
-    <div class="logo logo-dkfz">
-        <img
-            src="../Deutsches_Krebsforschungszentrum_Logo.svg"
-            alt="Logo des DKTK"
-        />
+    <div class="header-wrapper">
+        <div class="logo">
+            <img src="../dktk.svg" alt="Logo des DKTK" />
+        </div>
+        <h1>CCP Explorer</h1>
+        <div class="logo logo-dkfz">
+            <img
+                src="../Deutsches_Krebsforschungszentrum_Logo.svg"
+                alt="Logo des DKTK"
+            />
+        </div>
     </div>
 </header>
 <main>
     <div class="search">
-        <lens-search-bar
-            treeData={catalogueData}
-            noMatchesFoundMessage={"keine Ergebnisse gefunden"}
-        />
-        <lens-info-button
-            noQueryMessage="Leere Suchanfrage: Sucht nach allen Ergebnissen."
-            showQuery={true}
-        />
-        <lens-search-button title="Suchen" />
+        <div class="search-wrapper">
+            <lens-search-bar
+                treeData={catalogueData}
+                noMatchesFoundMessage={"keine Ergebnisse gefunden"}
+            />
+            <lens-info-button
+                noQueryMessage="Leere Suchanfrage: Sucht nach allen Ergebnissen."
+                showQuery={true}
+            />
+            <lens-search-button title="Suchen" />
+        </div>
     </div>
     <div class="grid">
         <div class="catalogue">
@@ -125,9 +129,35 @@
                 addIconUrl="long-right-arrow-svgrepo-com.svg"
                 infoIconUrl="info-circle-svgrepo-com.svg"
                 treeData={catalogueData}
-                texts={catalogueText}
-                toggle={{ collapsable: false, open: catalogueopen }}
+                noMatchesFoundMessage={"keine Ergebnisse gefunden"}
             />
+            <lens-info-button
+                noQueryMessage="Leere Suchanfrage: Sucht nach allen Ergebnissen."
+                showQuery={true}
+            />
+            <lens-search-button title="Suchen" {measures} />
+        </div>
+    </div>
+
+    <div class="grid">
+        <div class="catalogue-wrapper">
+            <div class="catalogue">
+                <h2>Suchkriterien</h2>
+                <lens-info-button
+                    message={[
+                        `Bei Patienten mit mehreren onkologischen Diagnosen, können sich ausgewählte Suchkriterien nicht nur auf eine Erkrankung beziehen, sondern auch auf Weitere.`,
+                        `Innerhalb einer Kategorie werden verschiedene Ausprägungen mit einer „Oder-Verknüpfung“ gesucht; bei der Suche über mehrere Kategorien mit einer „Und-Verknüpfung“.`,
+                    ]}
+                />
+                <lens-catalogue
+                    toggleIconUrl="right-arrow-svgrepo-com.svg"
+                    addIconUrl="long-right-arrow-svgrepo-com.svg"
+                    infoIconUrl="info-circle-svgrepo-com.svg"
+                    treeData={catalogueData}
+                    texts={catalogueText}
+                    toggle={{ collapsable: false, open: catalogueopen }}
+                />
+            </div>
         </div>
         <div class="charts">
             <div class="chart-wrapper result-summary">
@@ -205,7 +235,7 @@
                     chartType="bar"
                     headers={therapyHeaders}
                     xAxisTitle="Art der Therapie"
-                    yAxisTitle="Anzahl der Therapien"
+                    yAxisTitle="Anzahl der Therapieeinträge"
                     backgroundColor={JSON.stringify(barChartBackgroundColors)}
                 />
             </div>
@@ -215,7 +245,7 @@
                     catalogueGroupCode="medicationStatements"
                     chartType="bar"
                     xAxisTitle="Art der Therapie"
-                    yAxisTitle="Anzahl der Therapien"
+                    yAxisTitle="Anzahl der Therapieeinträge"
                     backgroundColor={JSON.stringify(barChartBackgroundColors)}
                 />
             </div>
