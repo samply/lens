@@ -105,7 +105,6 @@
     <div class="search">
         <div class="search-wrapper">
             <lens-search-bar
-                treeData={catalogueData}
                 noMatchesFoundMessage={"keine Ergebnisse gefunden"}
             />
             <lens-info-button
@@ -113,29 +112,6 @@
                 showQuery={true}
             />
             <lens-search-button title="Suchen" />
-        </div>
-    </div>
-    <div class="grid">
-        <div class="catalogue">
-            <h2>Suchkriterien</h2>
-            <lens-info-button
-                message={[
-                    `Bei Patienten mit mehreren onkologischen Diagnosen, können sich ausgewählte Suchkriterien nicht nur auf eine Erkrankung beziehen, sondern auch auf Weitere.`,
-                    `Innerhalb einer Kategorie werden verschiedene Ausprägungen mit einer „Oder-Verknüpfung“ gesucht; bei der Suche über mehrere Kategorien mit einer „Und-Verknüpfung“.`,
-                ]}
-            />
-            <lens-catalogue
-                toggleIconUrl="right-arrow-svgrepo-com.svg"
-                addIconUrl="long-right-arrow-svgrepo-com.svg"
-                infoIconUrl="info-circle-svgrepo-com.svg"
-                treeData={catalogueData}
-                noMatchesFoundMessage={"keine Ergebnisse gefunden"}
-            />
-            <lens-info-button
-                noQueryMessage="Leere Suchanfrage: Sucht nach allen Ergebnissen."
-                showQuery={true}
-            />
-            <lens-search-button title="Suchen" {measures} />
         </div>
     </div>
 
@@ -151,11 +127,9 @@
                 />
                 <lens-catalogue
                     toggleIconUrl="right-arrow-svgrepo-com.svg"
-                    addIconUrl="long-right-arrow-svgrepo-com.svg"
-                    infoIconUrl="info-circle-svgrepo-com.svg"
-                    treeData={catalogueData}
                     texts={catalogueText}
                     toggle={{ collapsable: false, open: catalogueopen }}
+                    addIconUrl="long-right-arrow-svgrepo-com.svg"
                 />
             </div>
         </div>
