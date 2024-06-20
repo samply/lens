@@ -1,9 +1,5 @@
 version: '3.8'
 # TODO: BBMRI expects Traefik to already exist
-
-volumes:
-  request-log:
-
 services:
   traefik:
     image: traefik:latest
@@ -76,9 +72,9 @@ services:
       BIND_ADDR: 0.0.0.0:8055
       PRISM_URL: http://prism:8066
       RUST_LOG: "info"
-      LOG_FILE: "/requests.log"
+      LOG_FILE: /requests.log
     volumes:
-      - request-log:/requests.log
+      - ./requests.log:/requests.log
 
     depends_on:
       - "beam-proxy"
