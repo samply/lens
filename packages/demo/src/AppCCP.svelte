@@ -1,4 +1,9 @@
 <script lang="ts">
+    import type {
+        MeasureGroup,
+        MeasureItem,
+        LensDataPasser,
+    } from "../../../dist/types";
     import {
         dktkDiagnosisMeasure,
         dktkMedicationStatementsMeasure,
@@ -17,23 +22,38 @@
             catalogueData = data;
         });
 
-    fetch("options.json")
+    // VITE_TARGET_ENVIRONMENT should be set by the ci pipeline
+    let optionsFilePath: string = "options-dev.json";
+
+    if (import.meta.env.VITE_TARGET_ENVIRONMENT === "production") {
+        optionsFilePath = "options-ccp-prod.json";
+    } else if (import.meta.env.VITE_TARGET_ENVIRONMENT === "staging") {
+        optionsFilePath = "options-ccp-demo.json";
+    }
+
+    fetch(optionsFilePath)
         .then((response) => response.json())
         .then((data) => {
             libraryOptions = data;
         });
 
-    const measures = [
-        dktkPatientsMeasure,
-        dktkDiagnosisMeasure,
-        dktkSpecimenMeasure,
-        dktkProceduresMeasure,
-        dktkMedicationStatementsMeasure,
-        dktkHistologyMeasure,
+    const measures: MeasureGroup[] = [
+        {
+            name: "DKTK",
+            measures: [
+                dktkPatientsMeasure as MeasureItem,
+                dktkDiagnosisMeasure as MeasureItem,
+                dktkSpecimenMeasure as MeasureItem,
+                dktkProceduresMeasure as MeasureItem,
+                dktkMedicationStatementsMeasure as MeasureItem,
+                dktkHistologyMeasure as MeasureItem,
+            ],
+        },
     ];
 
-    const backendMeasures = `DKTK_STRAT_DEF_IN_INITIAL_POPULATION`;
-
+    /**
+     * move to config file
+     */
     const catalogueText = {
         group: "Group",
         collapseButtonTitle: "Collapse Tree",
@@ -46,68 +66,11 @@
 
     let catalogueopen = false;
 
-    const catalogueKeyToResponseKeyMap = [
-        ["gender", "Gender"],
-        ["age_at_diagnosis", "Age"],
-        ["diagnosis", "diagnosis"],
-        ["medicationStatements", "MedicationType"],
-        ["sample_kind", "sample_kind"],
-        ["therapy_of_tumor", "ProcedureType"],
-        ["75186-7", "75186-7"],
-        // ["encounter", "Encounter"],
-    ];
-
-    // VITE_TARGET_ENVIRONMENT should be set by the ci pipeline
-    const backendUrl =
-        import.meta.env.VITE_TARGET_ENVIRONMENT === "production"
-            ? "https://backend.data.dktk.dkfz.de/prod/"
-            : "https://backend.demo.lens.samply.de/prod/";
-
-    const uiSiteMap: string[][] = [
-        ["berlin", "Berlin"],
-        ["berlin-test", "Berlin"],
-        ["bonn", "Bonn"],
-        ["dresden", "Dresden"],
-        ["essen", "Essen"],
-        ["frankfurt", "Frankfurt"],
-        ["freiburg", "Freiburg"],
-        ["hannover", "Hannover"],
-        ["mainz", "Mainz"],
-        ["muenchen-lmu", "München(LMU)"],
-        ["muenchen-tum", "München(TUM)"],
-        ["ulm", "Ulm"],
-        ["wuerzburg", "Würzburg"],
-        ["mannheim", "Mannheim"],
-        ["dktk-test", "DKTK-Test"],
-        ["hamburg", "Hamburg"],
-    ];
-
     const genderHeaders: Map<string, string> = new Map<string, string>()
         .set("male", "männlich")
         .set("female", "weiblich")
-        .set("other", "Divers")
+        .set("other", "divers")
         .set("unknown", "unbekannt");
-
-    const backendConfig = {
-        url: import.meta.env.PROD ? backendUrl : "http://localhost:8055",
-        backends: [
-            "mannheim",
-            "freiburg",
-            "muenchen-tum",
-            "hamburg",
-            "frankfurt",
-            "berlin-test",
-            "dresden",
-            "mainz",
-            "muenchen-lmu",
-            "essen",
-            "ulm",
-            "wuerzburg",
-            "hannover",
-        ],
-        uiSiteMap: uiSiteMap,
-        catalogueKeyToResponseKeyMap: catalogueKeyToResponseKeyMap,
-    };
 
     const barChartBackgroundColors: string[] = ["#4dc9f6", "#3da4c7"];
 
@@ -120,6 +83,8 @@
         "medicationStatements",
         "Sys. T",
     );
+
+    let dataPasser: LensDataPasser;
 </script>
 
 <header>
@@ -147,12 +112,30 @@
                 noQueryMessage="Leere Suchanfrage: Sucht nach allen Ergebnissen."
                 showQuery={true}
             />
-            <lens-search-button
-                title="Suchen"
-                {measures}
-                backendConfig={JSON.stringify(backendConfig)}
-                {backendMeasures}
+            <lens-search-button title="Suchen" />
+        </div>
+    </div>
+    <div class="grid">
+        <div class="catalogue">
+            <h2>Suchkriterien</h2>
+            <lens-info-button
+                message={[
+                    `Bei Patienten mit mehreren onkologischen Diagnosen, können sich ausgewählte Suchkriterien nicht nur auf eine Erkrankung beziehen, sondern auch auf Weitere.`,
+                    `Innerhalb einer Kategorie werden verschiedene Ausprägungen mit einer „Oder-Verknüpfung“ gesucht; bei der Suche über mehrere Kategorien mit einer „Und-Verknüpfung“.`,
+                ]}
             />
+            <lens-catalogue
+                toggleIconUrl="right-arrow-svgrepo-com.svg"
+                addIconUrl="long-right-arrow-svgrepo-com.svg"
+                infoIconUrl="info-circle-svgrepo-com.svg"
+                treeData={catalogueData}
+                noMatchesFoundMessage={"keine Ergebnisse gefunden"}
+            />
+            <lens-info-button
+                noQueryMessage="Leere Suchanfrage: Sucht nach allen Ergebnissen."
+                showQuery={true}
+            />
+            <lens-search-button title="Suchen" {measures} />
         </div>
     </div>
 
@@ -310,4 +293,5 @@
     >
 </footer>
 
-<lens-options options={libraryOptions} {catalogueData} />
+<lens-options options={libraryOptions} {catalogueData} {measures} />
+<lens-data-passer bind:this={dataPasser} />

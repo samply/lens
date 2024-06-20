@@ -1,5 +1,13 @@
 <script lang="ts">
-    import type { QueryItem, QueryValue } from "../../lib/src/types/queryData";
+    import type {
+        CatalogueText,
+        MeasureItem,
+        Measure,
+        QueryEvent,
+        QueryItem,
+        QueryValue,
+        LensDataPasser,
+    } from "../../../dist/types";
 
     import {
         dktkDiagnosisMeasure,
@@ -10,32 +18,43 @@
         dktkHistologyMeasure,
     } from "./measures";
 
-    let mockCatalogueData = "";
+    import { buildLibrary } from "./backends/cql-measure";
+    import { translateAstToCql } from "./backends/ast-to-cql-translator";
+    import { buildMeasure } from "./backends/cql-measure";
+    import { Spot } from "./backends/spot";
+
+    let catalogueData = "";
     let libraryOptions = "";
 
     fetch("catalogues/catalogue-dktk.json")
         .then((response) => response.text())
         .then((data) => {
-            mockCatalogueData = data;
+            catalogueData = data;
         });
 
-    fetch("options.json")
+    fetch("options-dev.json")
         .then((response) => response.json())
         .then((data) => {
             libraryOptions = data;
         });
 
     const measures = [
-        dktkPatientsMeasure,
-        dktkDiagnosisMeasure,
-        dktkSpecimenMeasure,
-        dktkProceduresMeasure,
-        dktkMedicationStatementsMeasure,
-        dktkHistologyMeasure,
+        {
+            name: "DKTK",
+            measures: [
+                dktkPatientsMeasure,
+                dktkDiagnosisMeasure,
+                dktkSpecimenMeasure,
+                dktkProceduresMeasure,
+                dktkMedicationStatementsMeasure,
+                dktkHistologyMeasure,
+            ],
+        },
     ];
 
-    const backendMeasures = `DKTK_STRAT_DEF_IN_INITIAL_POPULATION`;
-
+    /**
+     * move to config file
+     */
     const catalogueText: CatalogueText = {
         group: "Group",
         collapseButtonTitle: "Collapse Tree",
@@ -48,83 +67,9 @@
 
     let catalogueopen = false;
 
-    const catalogueKeyToResponseKeyMap = [
-        ["gender", "Gender"],
-        ["age_at_diagnosis", "Age"],
-        ["diagnosis", "diagnosis"],
-        ["medicationStatements", "MedicationType"],
-        ["sample_kind", "sample_kind"],
-        ["therapy_of_tumor", "ProcedureType"],
-        ["75186-7", "75186-7"],
-        // ["encounter", "Encounter"],
-    ];
-
-    const uiSiteMap: string[][] = [
-        ["berlin", "Berlin"],
-        ["berlin-test", "Berlin"],
-        ["bonn", "Bonn"],
-        ["dresden", "Dresden"],
-        ["essen", "Essen"],
-        ["frankfurt", "Frankfurt"],
-        ["freiburg", "Freiburg"],
-        ["hannover", "Hannover"],
-        ["mainz", "Mainz"],
-        ["muenchen-lmu", "München(LMU],"],
-        ["muenchen-tum", "München(TUM],"],
-        ["ulm", "Ulm"],
-        ["wuerzburg", "Würzburg"],
-        ["mannheim", "Mannheim"],
-        ["dktk-test", "DKTK-Test"],
-        ["hamburg", "Hamburg"],
-    ];
-
-    //   bbmri sites
-    //   const siteToDefaultCollectionId: string[][] = [
-    //     ["dresden", "bbmri-eric:ID:DE_BBD:collection:DILB"],
-    //     ["frankfurt", "bbmri-eric:ID:DE_iBDF:collection:UCT"],
-    //     ["berlin", "bbmri-eric:ID:DE_ZeBanC:collection:Onoloy"],
-    //     ["wuerzburg", "bbmri-eric:ID:DE_ibdw:collection:bc"],
-    //     ["brno", "bbmri-eric:ID:CZ_MMCI:collection:LTS"],
-    //     ["aachen", "bbmri-eric:ID:DE_RWTHCBMB:collection:RWTHCBMB_BC"],
-    //     ["leipzig", "bbmri-eric:ID:DE_LMB:collection:LIFE_ADULT"],
-    //     ["muenchen-hmgu", "bbmri-eric:ID:DE_Helmholtz-MuenchenBiobank:collection:DE_KORA"],
-    //     ["Pilsen", "bbmri-eric:ID:CZ_CUNI_PILS:collection:serum_plasma"],
-    //     ["regensburg", "bbmri-eric:ID:DE_ZBR:collection:Tissue"],
-    //     ["heidelberg", "bbmri-eric:ID:DE_BMBH:collection:Lungenbiobank"],
-    //     ["luebeck", "bbmri-eric:ID:DE_ICBL:collection:ICBL"],
-    //     ["augsburg", "bbmri-eric:ID:DE_ACBB:collection:TISSUE"],
-    //     ["mannheim", "bbmri-eric:ID:DE_BioPsy:collection:Main_collecion"],
-    //     ["marburg", "bbmri-eric:ID:DE_CBBMR:collection:main"],
-    //     ["goettingen", "bbmri-eric:ID:DE_UMGB:collection:UMG-startegy"],
-    //     ["hannover", "bbmri-eric:ID:DE_HUB:collection:ProBase"],
-    //     ["olomouc", "bbmri-eric:ID:CZ_UPOL_LF:collection:all_samples"],
-    //     ["prague-ffm", "bbmri-eric:ID:CZ_CUNI_PILS:collection:serum_plasma"],
-    //     ["prague-ior", "bbmri-eric:ID:CZ_CUNI_LF1:collection:all_samples"],
-    //   ];
-
-    const backendConfig = {
-        url: "http://localhost:8055",
-        backends: [
-            "mannheim",
-            "freiburg",
-            "muenchen-tum",
-            "hamburg",
-            "frankfurt",
-            "berlin",
-            "dresden",
-            "mainz",
-            "muenchen-lmu",
-            "essen",
-            "ulm",
-            "wuerzburg",
-        ],
-        uiSiteMap: uiSiteMap,
-        catalogueKeyToResponseKeyMap: catalogueKeyToResponseKeyMap,
-    };
-
     let queryStore: QueryItem[][] = [];
 
-    let dataPasser: HTMLElement;
+    let dataPasser: LensDataPasser;
 
     const getQuery = (): void => {
         console.log(dataPasser, dataPasser.getQueryAPI());
@@ -139,7 +84,7 @@
         console.log(dataPasser, dataPasser.getAstAPI());
     };
 
-    const removeItem = (queryObject): void => {
+    const removeItem = (queryObject: QueryItem): void => {
         dataPasser.removeItemFromQuyeryAPI({ queryObject });
         getQuery();
     };
@@ -149,6 +94,61 @@
         dataPasser.removeValueFromQueryAPI({ queryItem, value });
         getQuery();
     };
+
+    window.addEventListener("emit-lens-query", (e) => {
+        const event = e as QueryEvent;
+        const { ast, updateResponse, abortController } = event.detail;
+
+        const measureItems: MeasureItem[] = [
+            dktkPatientsMeasure,
+            dktkDiagnosisMeasure,
+            dktkSpecimenMeasure,
+            dktkProceduresMeasure,
+            dktkMedicationStatementsMeasure,
+            dktkHistologyMeasure,
+        ] as MeasureItem[];
+
+        const measures: Measure[] = measureItems.map(
+            (measureItem: MeasureItem) => measureItem.measure,
+        );
+
+        const criteria = dataPasser.getCriteriaAPI("diagnosis");
+
+        const cql = translateAstToCql(
+            ast,
+            false,
+            "DKTK_STRAT_DEF_IN_INITIAL_POPULATION",
+            measureItems,
+            criteria,
+        );
+
+        const library = buildLibrary(`${cql}`);
+        const measure = buildMeasure(library.url, measures);
+        const query = { lang: "cql", lib: library, measure: measure };
+
+        const backend = new Spot(new URL("http://localhost:8055"), [
+            "berlin",
+            "dresden",
+            "essen",
+            "frankfurt",
+            "freiburg",
+            "hannover",
+            "mainz",
+            "muenchen-lmu",
+            "muenchen-tum",
+            "ulm",
+            "wuerzburg",
+            "mannheim",
+            "dktk-test",
+            "hamburg",
+        ]);
+
+        backend.send(
+            btoa(decodeURI(JSON.stringify(query))),
+            updateResponse,
+            abortController,
+        );
+    });
 </script>
 
 <main>
@@ -193,11 +193,7 @@
 
     <h2>Search Button</h2>
     <div class="componentBox">
-        <lens-search-button
-            {measures}
-            backendConfig={JSON.stringify(backendConfig)}
-            {backendMeasures}
-        />
+        <lens-search-button />
     </div>
 
     <h2>Result Summary Bar</h2>
@@ -207,7 +203,7 @@
 
     <h2>Result Table</h2>
     <div class="componentBox">
-        <lens-result-table pageSize="3" title="Responding sites" />
+        <lens-result-table pageSize="10" title="Responding sites" />
     </div>
 
     <h2>Result Pie Chart</h2>
@@ -242,4 +238,5 @@
     </div>
 </main>
 
-<lens-options options={libraryOptions} catalogueData={mockCatalogueData} />
+<lens-options options={libraryOptions} {catalogueData} {measures} />
+<lens-data-passer bind:this={dataPasser} />

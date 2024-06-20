@@ -35,6 +35,18 @@
             "unevaluatedProperties": false,
             "required": []
         },
+        "siteMappings":{
+            "type": "object",
+            "patternProperties": {
+                "^.+$": {
+                    "type": "string",
+                    "pattern": "^.+$"
+                }
+            },
+            "additionalProperties": false,
+            "unevaluatedProperties": false,
+            "required": []
+        },
         "chartOptions": {
             "type": "object",
             "patternProperties": {
@@ -229,6 +241,104 @@
                         "additionalProperties": false,
                         "unevaluatedProperties": false,
                         "required": []
+                    }
+                }
+            },
+            "additionalProperties": false,
+            "unevaluatedProperties": false,
+            "required": []
+        },
+        "backends": {
+            "type": "object",
+            "properties": {
+                "customBackends": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "pattern": "^.+$",
+                        "description": "The URL of the custom backend"
+                    }
+                },
+                "spots": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "pattern": "^.+$",
+                                "description": "The name of the spot"
+                            },
+                            "backendMeasures": {
+                                "type": "string",
+                                "pattern": "^.+$",
+                                "description": "The measures of the spot"
+                            },
+                            "url": {
+                                "type": "string",
+                                "pattern": "^.+$",
+                                "description": "The URL of the spot"
+                            },
+                            "sites": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string",
+                                    "pattern": "^.+$",
+                                    "description": "The sites of the spot"
+                                }
+                            },
+                            "catalogueKeyToResponseKeyMap": {
+                                "type": "array",
+                                "items": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "pattern": "^.+$",
+                                        "description": "The mapping of the catalogue key to the response key"
+                                    }
+                                }
+                            }
+                        },
+                        "additionalProperties": false,
+                        "unevaluatedProperties": false,
+                        "required": ["name", "backendMeasures", "url", "sites"]
+                    }
+                },
+                "blazes": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "pattern": "^.+$",
+                                "description": "The name of the blaze"
+                            },
+                            "backendMeasures": {
+                                "type": "string",
+                                "pattern": "^.+$",
+                                "description": "The measures of the blaze"
+                            },
+                            "url": {
+                                "type": "string",
+                                "pattern": "^.+$",
+                                "description": "The URL of the blaze"
+                            },
+                            "catalogueKeyToResponseKeyMap": {
+                                "type": "array",
+                                "items": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "pattern": "^.+$",
+                                        "description": "The mapping of the catalogue key to the response key"
+                                    }
+                                }
+                            }
+                        },
+                        "additionalProperties": false,
+                        "unevaluatedProperties": false,
+                        "required": ["name", "backendMeasures", "url"]
                     }
                 }
             },

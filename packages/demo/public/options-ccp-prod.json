@@ -6,6 +6,24 @@
             "text": "Add all"
         }
     },
+    "siteMappings": {
+        "berlin": "Berlin",
+        "berlin-test": "Berlin",
+        "bonn": "Bonn",
+        "dresden": "Dresden",
+        "essen": "Essen",
+        "frankfurt": "Frankfurt",
+        "freiburg": "Freiburg",
+        "hannover": "Hannover",
+        "mainz": "Mainz",
+        "muenchen-lmu": "München(LMU)",
+        "muenchen-tum": "München(TUM)",
+        "ulm": "Ulm",
+        "wuerzburg": "Würzburg",
+        "mannheim": "Mannheim",
+        "dktk-test": "DKTK-Test",
+        "hamburg": "Hamburg"
+    },
     "chartOptions": {
         "patients": {
             "legendMapping": {
@@ -192,6 +210,61 @@
             {
                 "title": "Patienten",
                 "dataKey": "patients"
+            }
+        ]
+    },
+    "backends": {
+        "spots": [
+            {
+                "name": "DKTK",
+                "backendMeasures": "DKTK_STRAT_DEF_IN_INITIAL_POPULATION",
+                "url": "https://backend.data.dktk.dkfz.de/prod/",
+                "sites": [
+                    "berlin",
+                    "dresden",
+                    "essen",
+                    "frankfurt",
+                    "freiburg",
+                    "hannover",
+                    "mainz",
+                    "muenchen-lmu",
+                    "muenchen-tum",
+                    "ulm",
+                    "wuerzburg",
+                    "mannheim",
+                    "dktk-test",
+                    "hamburg"
+                ],
+                "catalogueKeyToResponseKeyMap": [
+                    [
+                        "gender",
+                        "Gender"
+                    ],
+                    [
+                        "age_at_diagnosis",
+                        "Age"
+                    ],
+                    [
+                        "diagnosis",
+                        "diagnosis"
+                    ],
+                    [
+                        "medicationStatements",
+                        "MedicationType"
+                    ],
+                    [
+                        "sample_kind",
+                        "sample_kind"
+                    ],
+                    [
+                        "therapy_of_tumor",
+                        "ProcedureType"
+                    ],
+                    [
+                        "75186-7",
+                        "75186-7"
+                    ]
+                ]
             }
         ]
     }

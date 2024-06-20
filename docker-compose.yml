@@ -55,6 +55,8 @@ services:
 
   spot:
     image: samply/rustyspot:main
+    ports:
+      - "8055:8055"
     environment:
       HTTP_PROXY: ${http_proxy}
       HTTPS_PROXY: ${https_proxy}
