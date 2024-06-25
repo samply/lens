@@ -240,10 +240,14 @@
 </main>
 
 <footer>
-    <a class="ccp" href="www.dktk.dkfz.de/ccp" target="_blank">
+    <a
+        class="known-issues"
+        href="https://hub.dkfz.de/s/iP6A7zJzAQya3iC"
+        target="_blank"
+    >
         Known Issues
     </a>
-    <a class="ccp" href="https://hub.dkfz.de/s/iP6A7zJzAQya3iC" target="_blank">
+    <a class="ccp" href="https://dktk.dkfz.de/ccp" target="_blank">
         Clinical Communication Platform (CCP)
     </a>
     <a class="email" href="mailto:CCP@dkfz.de">Kontakt</a>
