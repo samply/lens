@@ -152,9 +152,9 @@
             <div class="chart-wrapper result-table">
                 <lens-result-table pageSize="10">
                     <div slot="above-pagination" class="result-table-hint-text">
-                        * Umfasst Gewebe- und flüssige Proben. Die Anzahl der
-                        FFPE-Proben (Schätzung) entspricht der Zahl der
-                        Diagnosen.
+                        * Die Anzahl der möglichen vorhandenen FFPE-Proben aus
+                        der Pathologie beruht auf der Menge der gezählten
+                        Histologien.
                     </div>
                 </lens-result-table>
             </div>
@@ -240,17 +240,16 @@
 </main>
 
 <footer>
-    <a
-        class="ccp"
-        href="https://dktk.dkfz.de/klinische-plattformen/ueber-die-ccp/about-ccp"
-        target="_blank"
-    >
+    <a class="ccp" href="www.dktk.dkfz.de/ccp" target="_blank">
+        Known Issues
+    </a>
+    <a class="ccp" href="https://hub.dkfz.de/s/iP6A7zJzAQya3iC" target="_blank">
         Clinical Communication Platform (CCP)
     </a>
     <a class="email" href="mailto:CCP@dkfz.de">Kontakt</a>
     <a
         class="user-agreement"
-        href="https://hub.dkfz.de/s/xcGZHda8LHd6yGS"
+        href=" https://hub.dkfz.de/s/MPCg2kK23LH8Yii"
         download="nutzervereinbarung"
         target="_blank">Nutzungsvereinbarung</a
     >

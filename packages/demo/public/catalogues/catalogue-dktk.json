@@ -20195,6 +20195,7 @@
     {
         "key": "biosamples",
         "name": "Bioproben",
+        "infoButtonText": ["Auf Auswahl dieser Parameter hin, erhalten Sie die Anzahl ALLER Proben, die mit dem Patienten übereinstimmen."],
         "childCategories": [
             {
                 "key": "sample_kind",
