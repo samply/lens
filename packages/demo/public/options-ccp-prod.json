@@ -27,7 +27,6 @@
     "chartOptions": {
         "patients": {
             "legendMapping": {
-                "berlin": "Berlin",
                 "berlin-test": "Berlin",
                 "bonn": "Bonn",
                 "dresden": "Dresden",
@@ -41,7 +40,6 @@
                 "ulm": "Ulm",
                 "wuerzburg": "Würzburg",
                 "mannheim": "Mannheim",
-                "dktk-test": "DKTK-Test",
                 "hamburg": "Hamburg"
             }
         },
@@ -220,7 +218,7 @@
                 "backendMeasures": "DKTK_STRAT_DEF_IN_INITIAL_POPULATION",
                 "url": "https://backend.data.dktk.dkfz.de/prod/",
                 "sites": [
-                    "berlin",
+                    "berlin-test",
                     "dresden",
                     "essen",
                     "frankfurt",
@@ -232,7 +230,6 @@
                     "ulm",
                     "wuerzburg",
                     "mannheim",
-                    "dktk-test",
                     "hamburg"
                 ],
                 "catalogueKeyToResponseKeyMap": [

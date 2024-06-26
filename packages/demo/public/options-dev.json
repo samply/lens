@@ -7,7 +7,6 @@
         }
     },
     "siteMappings": {
-        "berlin": "Berlin",
         "berlin-test": "Berlin",
         "bonn": "Bonn",
         "dresden": "Dresden",
@@ -71,6 +70,9 @@
             ]
         },
         "therapy_of_tumor": {
+            "hintText": [
+                "Bei Patienten mit mehreren onkologischen Diagnosen werden auch Einträge angezeigt, die ggfs. nicht den ausgewählten Suchkriterien entsprechen."
+            ],
             "aggregations": [
                 "medicationStatements"
             ],
@@ -220,7 +222,7 @@
                 "backendMeasures": "DKTK_STRAT_DEF_IN_INITIAL_POPULATION",
                 "url": "http://localhost:8055",
                 "sites": [
-                    "berlin",
+                    "berlin-test",
                     "dresden",
                     "essen",
                     "frankfurt",
@@ -232,7 +234,6 @@
                     "ulm",
                     "wuerzburg",
                     "mannheim",
-                    "dktk-test",
                     "hamburg"
                 ],
                 "catalogueKeyToResponseKeyMap": [
