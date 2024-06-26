@@ -247,6 +247,11 @@
     >
         Known Issues
     </a>
+    <a
+        href="https://dktk.dkfz.de/forschung/Plattformen-und-Technologie-Netzwerke/klinische-plattformen/ccp-faq"
+        class="faq"
+        target="_blank">FAQ</a
+    >
     <a class="ccp" href="https://dktk.dkfz.de/ccp" target="_blank">
         Clinical Communication Platform (CCP)
     </a>
