@@ -1448,7 +1448,7 @@ export const ehds2RefguideMeasure = {
                 },
                 criteria: {
                     language: "text/cql-identifier",
-                    expression: "RefguideList",
+                    expression: "FirstRefguidesByName",
                 },
             },
         ],
