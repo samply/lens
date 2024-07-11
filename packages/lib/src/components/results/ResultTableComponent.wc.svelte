@@ -11,6 +11,7 @@
     import {
         getSitePopulationForCode,
         getSitePopulationForStratumCode,
+        getSitePopulationForStratifier,
         responseStore,
     } from "../../stores/response";
     import TableItemComponent from "./TableItemComponent.svelte";
@@ -96,16 +97,21 @@
                                 value.data,
                                 dataKey.groupCode,
                             );
-                        } else if (
-                            dataKey.stratifierCode &&
-                            dataKey.stratumCode
-                        ) {
-                            aggregatedPopulation +=
-                                getSitePopulationForStratumCode(
-                                    value.data,
-                                    dataKey.stratumCode,
-                                    dataKey.stratifierCode,
-                                );
+                        } else if (dataKey.stratifierCode) {
+                            if (dataKey.stratumCode) {
+                                aggregatedPopulation +=
+                                    getSitePopulationForStratumCode(
+                                        value.data,
+                                        dataKey.stratumCode,
+                                        dataKey.stratifierCode,
+                                    );
+                            } else {
+                                aggregatedPopulation +=
+                                    getSitePopulationForStratifier(
+                                        value.data,
+                                        dataKey.stratifierCode,
+                                    );
+                            }
                         }
                     });
 

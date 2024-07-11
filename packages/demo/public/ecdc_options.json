@@ -39,15 +39,27 @@
             },
             {
                 "title": "Labs",
-                "dataKey": "laboratories"
+                "aggregatedDataKeys": [
+                    {
+                        "stratifierCode": "LaboratoryCode"
+                    }
+                ]
             },
             {
                 "title": "Hospitals",
-                "dataKey": "hospitals"
+                "aggregatedDataKeys": [
+                    {
+                        "stratifierCode": "HospitalId"
+                    }
+                ]
             },
             {
                 "title": "Refguides",
-                "dataKey": "refguides"
+                "aggregatedDataKeys": [
+                    {
+                        "stratifierCode": "ReferenceGuidelinesSir"
+                    }
+                ]
             }
         ]
     }
