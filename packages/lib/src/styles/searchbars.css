@@ -193,6 +193,7 @@ lens-search-bar-multiple::part(info-button-icon) {
 lens-search-bar::part(info-button-icon):hover,
 lens-search-bar-multiple::part(info-button-icon):hover {
   cursor: pointer;
+  filter: invert(41%) sepia(43%) saturate(4610%) hue-rotate(357deg) brightness(96%) contrast(90%);
 }
 
 lens-search-bar::part(info-button-dialogue),
@@ -242,6 +243,7 @@ lens-search-bar-multiple::part(query-delete-button-value) {
   margin: 0 var(--gap-xs) 0 var(--gap-xxs);
   background-color: var(--blue);
   border: var(--white) 1px solid;
+  transform: translatey(-1px);
 }
 
 lens-search-bar::part(query-delete-button-item),
@@ -260,6 +262,31 @@ lens-search-bar-multiple::part(query-delete-button-group) {
   width: calc(var(--font-size-s) + 10px);
   background-color: var(--white);
   border: solid 1px var(--white);
+}
+
+lens-search-bar::part(delete-button-icon-item), 
+lens-search-bar-multiple::part(delete-button-icon-item) {
+  filter: invert(41%) sepia(43%) saturate(4610%) hue-rotate(357deg) brightness(96%) contrast(90%);
+  transform: translate(-1px, -1px);
+  width: 20px;
+}
+
+lens-search-bar::part(delete-button-icon-group), 
+lens-search-bar-multiple::part(delete-button-icon-group) {
+  filter: invert(41%) sepia(43%) saturate(4610%) hue-rotate(357deg) brightness(96%) contrast(90%);
+  transform: translate(0px, 2px);
+  width: 20px;
+}
+
+lens-search-bar::part(delete-button-icon-value),
+lens-search-bar-multiple::part(delete-button-icon-value) {
+  transform: translate(-1px, -1px);
+  width: 20px;
+}
+
+lens-search-bar::part(delete-button-icon):hover,
+lens-search-bar-multiple::part(delete-button-icon-value):hover {
+  filter: invert(38%) sepia(78%) saturate(1321%) hue-rotate(352deg) brightness(92%) contrast(99%);
 }
 
 

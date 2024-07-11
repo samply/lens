@@ -46,6 +46,7 @@
     "@commitlint/config-conventional": "^19.1.0",
     "@sveltejs/vite-plugin-svelte": "^2.5.3",
     "@tsconfig/svelte": "^5.0.0",
+    "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^6.20.0",
     "@typescript-eslint/parser": "^6.20.0",
     "eslint": "^8.57.0",

@@ -71,6 +71,7 @@ const resolveOperation = (operation: AstElement): string => {
 
     "children" in operation &&
         operation.children.forEach((element: AstElement, index) => {
+            if (element === null) return;
             if ("children" in element) {
                 expression += resolveOperation(element);
             }
