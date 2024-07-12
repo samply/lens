@@ -172,7 +172,7 @@ footer {
 }
 
 .result-table {
-  grid-column: span 2;
+  grid-column: span 3;
 }
 
 .chart-diagnosis {
@@ -183,6 +183,14 @@ footer {
 
 .chart-age-distribution{
   grid-column: span 2;
+}
+
+.chart-double-width{
+  grid-column: span 2;
+}
+
+.chart-quadruple-width{
+  grid-column: span 4;
 }
 
 .sample-information-text {
@@ -226,7 +234,6 @@ footer {
   .charts {
     margin-left: 0px;
   }
-  
 }
 
 

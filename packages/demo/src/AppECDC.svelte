@@ -118,7 +118,7 @@
         </div>
         <div class="charts">
             <div class="chart-wrapper result-table">
-                <lens-result-table pageSize="10"> </lens-result-table>
+                <lens-result-table> </lens-result-table>
             </div>
             <div class="chart-wrapper">
                 <lens-chart
@@ -140,7 +140,7 @@
                     backgroundColor={JSON.stringify(barChartBackgroundColors)}
                 />
             </div>
-            <div class="chart-wrapper chart-age-distribution">
+            <div class="chart-wrapper chart-double-width">
                 <lens-chart
                     title="Hospital ID"
                     catalogueGroupCode="hospital_id"
@@ -150,7 +150,7 @@
                     backgroundColor={JSON.stringify(barChartBackgroundColors)}
                 />
             </div>
-            <div class="chart-wrapper chart-age-distribution">
+            <div class="chart-wrapper chart-double-width">
                 <lens-chart
                     title="Laboratory code"
                     catalogueGroupCode="laboratory_code"
@@ -159,114 +159,114 @@
                     yAxisTitle="Number of patients"
                     backgroundColor={JSON.stringify(barChartBackgroundColors)}
                 />
-                <div class="chart-wrapper">
-                    <lens-chart
-                        title="Hospital Unit Type"
-                        catalogueGroupCode="hospital_unit_type"
-                        chartType="bar"
-                        xAxisTitle="Unit type"
-                        yAxisTitle="Number of patients"
-                        backgroundColor={JSON.stringify(
-                            barChartBackgroundColors,
-                        )}
-                    />
-                </div>
-                <div class="chart-wrapper">
-                    <lens-chart
-                        title="Pathogen Code"
-                        catalogueGroupCode="pathogen_code"
-                        chartType="bar"
-                        xAxisTitle="Code"
-                        yAxisTitle="Number of observations"
-                        backgroundColor={JSON.stringify(
-                            barChartBackgroundColors,
-                        )}
-                    />
-                </div>
-                <div class="chart-wrapper">
-                    <lens-chart
-                        title="Antibiotic Code"
-                        catalogueGroupCode="antibiotic_code"
-                        chartType="bar"
-                        xAxisTitle="Code"
-                        yAxisTitle="Number of observations"
-                        backgroundColor={JSON.stringify(
-                            barChartBackgroundColors,
-                        )}
-                    />
-                </div>
-                <div class="chart-wrapper">
-                    <lens-chart
-                        title="SIR Code"
-                        catalogueGroupCode="sir_code"
-                        chartType="bar"
-                        xAxisTitle="Code"
-                        yAxisTitle="Number of observations"
-                        backgroundColor={JSON.stringify(
-                            barChartBackgroundColors,
-                        )}
-                    />
-                </div>
-                <div class="chart-wrapper">
-                    <lens-chart
-                        title="Data source"
-                        catalogueGroupCode="data_source"
-                        chartType="bar"
-                        xAxisTitle="Code"
-                        yAxisTitle="Number of observations"
-                        backgroundColor={JSON.stringify(
-                            barChartBackgroundColors,
-                        )}
-                    />
-                </div>
-                <div class="chart-wrapper">
-                    <lens-chart
-                        title="Isolate ID"
-                        catalogueGroupCode="isolate_id"
-                        chartType="bar"
-                        xAxisTitle="ID"
-                        yAxisTitle="Number of isolates"
-                        backgroundColor={JSON.stringify(
-                            barChartBackgroundColors,
-                        )}
-                    />
-                </div>
-                <div class="chart-wrapper">
-                    <lens-chart
-                        title="Patient type"
-                        catalogueGroupCode="patient_type"
-                        chartType="bar"
-                        xAxisTitle="Type"
-                        yAxisTitle="Number of observations"
-                        backgroundColor={JSON.stringify(
-                            barChartBackgroundColors,
-                        )}
-                    />
-                </div>
-                <div class="chart-wrapper">
-                    <lens-chart
-                        title="Reference guidelines SIR"
-                        catalogueGroupCode="reference_guidelines_sir"
-                        chartType="bar"
-                        xAxisTitle="Guidelines"
-                        yAxisTitle="Number of observations"
-                        backgroundColor={JSON.stringify(
-                            barChartBackgroundColors,
-                        )}
-                    />
-                </div>
-                <div class="chart-wrapper chart-age-distribution">
-                    <lens-chart
-                        title="Reporting country"
-                        catalogueGroupCode="reporting_country"
-                        chartType="bar"
-                        xAxisTitle="Country"
-                        yAxisTitle="Number of observations"
-                        backgroundColor={JSON.stringify(
-                            barChartBackgroundColors,
-                        )}
-                    />
-                </div>
+            </div>
+            <div class="chart-wrapper">
+                <lens-chart
+                    title="Hospital Unit Type"
+                    catalogueGroupCode="hospital_unit_type"
+                    chartType="bar"
+                    xAxisTitle="Unit type"
+                    yAxisTitle="Number of patients"
+                    backgroundColor={JSON.stringify(
+                        barChartBackgroundColors,
+                    )}
+                />
+            </div>
+            <div class="chart-wrapper">
+                <lens-chart
+                    title="Pathogen Code"
+                    catalogueGroupCode="pathogen_code"
+                    chartType="bar"
+                    xAxisTitle="Code"
+                    yAxisTitle="Number of observations"
+                    backgroundColor={JSON.stringify(
+                        barChartBackgroundColors,
+                    )}
+                />
+            </div>
+            <div class="chart-wrapper chart-double-width">
+                <lens-chart
+                    title="Antibiotic Code"
+                    catalogueGroupCode="antibiotic_code"
+                    chartType="bar"
+                    xAxisTitle="Code"
+                    yAxisTitle="Number of observations"
+                    backgroundColor={JSON.stringify(
+                        barChartBackgroundColors,
+                    )}
+                />
+            </div>
+            <div class="chart-wrapper">
+                <lens-chart
+                    title="SIR Code"
+                    catalogueGroupCode="sir_code"
+                    chartType="bar"
+                    xAxisTitle="Code"
+                    yAxisTitle="Number of observations"
+                    backgroundColor={JSON.stringify(
+                        barChartBackgroundColors,
+                    )}
+                />
+            </div>
+            <div class="chart-wrapper">
+                <lens-chart
+                    title="Data source"
+                    catalogueGroupCode="data_source"
+                    chartType="bar"
+                    xAxisTitle="Code"
+                    yAxisTitle="Number of observations"
+                    backgroundColor={JSON.stringify(
+                        barChartBackgroundColors,
+                    )}
+                />
+            </div>
+            <div class="chart-wrapper chart-quadruple-width">
+                <lens-chart
+                    title="Isolate ID"
+                    catalogueGroupCode="isolate_id"
+                    chartType="bar"
+                    xAxisTitle="ID"
+                    yAxisTitle="Number of isolates"
+                    backgroundColor={JSON.stringify(
+                        barChartBackgroundColors,
+                    )}
+                />
+            </div>
+            <div class="chart-wrapper">
+                <lens-chart
+                    title="Patient type"
+                    catalogueGroupCode="patient_type"
+                    chartType="bar"
+                    xAxisTitle="Type"
+                    yAxisTitle="Number of observations"
+                    backgroundColor={JSON.stringify(
+                        barChartBackgroundColors,
+                    )}
+                />
+            </div>
+            <div class="chart-wrapper">
+                <lens-chart
+                    title="Reference guidelines SIR"
+                    catalogueGroupCode="reference_guidelines_sir"
+                    chartType="bar"
+                    xAxisTitle="Guidelines"
+                    yAxisTitle="Number of observations"
+                    backgroundColor={JSON.stringify(
+                        barChartBackgroundColors,
+                    )}
+                />
+            </div>
+            <div class="chart-wrapper">
+                <lens-chart
+                    title="Reporting country"
+                    catalogueGroupCode="reporting_country"
+                    chartType="bar"
+                    xAxisTitle="Country"
+                    yAxisTitle="Number of observations"
+                    backgroundColor={JSON.stringify(
+                        barChartBackgroundColors,
+                    )}
+                />
             </div>
         </div>
     </div>
