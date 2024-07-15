@@ -114,7 +114,6 @@
             <lens-search-button title="Suchen" />
         </div>
     </div>
-
     <div class="grid">
         <div class="catalogue-wrapper">
             <div class="catalogue">
@@ -187,7 +186,7 @@
                     catalogueGroupCode="age_at_diagnosis"
                     chartType="bar"
                     groupRange={10}
-                    filterRegex="^(1*[12]*[0-9])"
+                    filterRegex="^(([0-9][0-9]$)|(1[0-2]0))"
                     xAxisTitle="Alter"
                     yAxisTitle="Anzahl der Primärdiagnosen"
                     backgroundColor={JSON.stringify(barChartBackgroundColors)}
