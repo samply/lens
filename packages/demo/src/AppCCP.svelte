@@ -186,7 +186,7 @@
                     catalogueGroupCode="age_at_diagnosis"
                     chartType="bar"
                     groupRange={10}
-                    filterRegex="^(([0-9][0-9]$)|(1[0-2]0))"
+                    filterRegex="^(([0-9]?[0-9]$)|(1[0-2]0))"
                     xAxisTitle="Alter"
                     yAxisTitle="Anzahl der Primärdiagnosen"
                     backgroundColor={JSON.stringify(barChartBackgroundColors)}
