@@ -7126,7 +7126,7 @@
                 "fieldType": "number",
                 "type": "BETWEEN",
                 "min": 0,
-                "max": 150,
+                "max": 130,
                 "criteria": []
             },
             {
