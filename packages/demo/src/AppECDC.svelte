@@ -6,6 +6,8 @@
         ehds2ObservationMeasure,
         ehds2SpecimenMeasure,
     } from "./measures";
+    import html2canvas from "html2canvas";
+    import jsPDF from "jspdf";
 
     let mockCatalogueData = "";
     let libraryOptions = "";
@@ -58,6 +60,10 @@
         ["reporting_country", "ReportingCountry"],
         ["date_valid_from", "DateValidFrom"],
         ["date_used_for_statistics", "DateUsedForStatistics"],
+        ["year_date_used_for_statistics", "YearDateUsedForStatistics"],
+        ["year_month_date_used_for_statistics", "YearMonthDateUsedForStatistics"],
+        ["year_date_valid_from", "YearDateValidFrom"],
+        ["year_month_date_valid_from", "YearMonthDateValidFrom"],
     ];
 
     // VITE_TARGET_ENVIRONMENT should be set by the ci pipeline
@@ -77,6 +83,36 @@
     };
 
     const barChartBackgroundColors: string[] = ["#4dc9f6", "#3da4c7"];
+
+    async function generatePDF() {
+        const element = document.querySelector('main');
+        if (element) {
+            const canvas = await html2canvas(element, { useCORS: true });
+            const imgData = canvas.toDataURL('image/png');
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            const imgProps = pdf.getImageProperties(imgData);
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+            const totalPages = Math.ceil(pdfHeight / pdf.internal.pageSize.getHeight());
+
+            for (let i = 0; i < totalPages; i++) {
+                if (i > 0) {
+                    pdf.addPage();
+                }
+                pdf.addImage(
+                    imgData,
+                    'PNG',
+                    0,
+                    -i * pdf.internal.pageSize.getHeight(),
+                    pdfWidth,
+                    pdfHeight
+                );
+            }
+
+            pdf.save('document.pdf');
+        }
+    }
 </script>
 
 <header>
@@ -103,6 +139,7 @@
             backendConfig={JSON.stringify(backendConfig)}
             {backendMeasures}
         />
+        <button on:click={generatePDF}>Download/PDF</button>
     </div>
     <div class="grid">
         <div class="catalogue">
@@ -264,6 +301,54 @@
                     xAxisTitle="Country"
                     yAxisTitle="Number of observations"
                     backgroundColor={JSON.stringify(
+                        barChartBackgroundColors,
+                    )}
+                />
+            </div>
+            <div class="chart-wrapper">
+                <lens-chart
+                        title="Date used for statistics (year)"
+                        catalogueGroupCode="year_date_used_for_statistics"
+                        chartType="bar"
+                        xAxisTitle="Year"
+                        yAxisTitle="Number of observations"
+                        backgroundColor={JSON.stringify(
+                        barChartBackgroundColors,
+                    )}
+                />
+            </div>
+            <div class="chart-wrapper">
+                <lens-chart
+                        title="Date used for statistics (year-month)"
+                        catalogueGroupCode="year_month_date_used_for_statistics"
+                        chartType="bar"
+                        xAxisTitle="Year-Month"
+                        yAxisTitle="Number of observations"
+                        backgroundColor={JSON.stringify(
+                        barChartBackgroundColors,
+                    )}
+                />
+            </div>
+            <div class="chart-wrapper">
+                <lens-chart
+                        title="Date valid from (year)"
+                        catalogueGroupCode="year_date_valid_from"
+                        chartType="bar"
+                        xAxisTitle="Year"
+                        yAxisTitle="Number of observations"
+                        backgroundColor={JSON.stringify(
+                        barChartBackgroundColors,
+                    )}
+                />
+            </div>
+            <div class="chart-wrapper">
+                <lens-chart
+                        title="Date valid from (year-month)"
+                        catalogueGroupCode="year_month_date_valid_from"
+                        chartType="bar"
+                        xAxisTitle="Year-Month"
+                        yAxisTitle="Number of observations"
+                        backgroundColor={JSON.stringify(
                         barChartBackgroundColors,
                     )}
                 />

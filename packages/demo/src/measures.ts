@@ -1254,6 +1254,42 @@ export const ehds2ObservationMeasure = {
                     expression: "ReportingCountry",
                 },
             },
+            {
+                code: {
+                    text: "YearDateUsedForStatistics",
+                },
+                criteria: {
+                    language: "text/cql",
+                    expression: "YearDateUsedForStatistics",
+                },
+            },
+            {
+                code: {
+                    text: "YearMonthDateUsedForStatistics",
+                },
+                criteria: {
+                    language: "text/cql",
+                    expression: "YearMonthDateUsedForStatistics",
+                },
+            },
+            {
+                code: {
+                    text: "YearDateValidFrom",
+                },
+                criteria: {
+                    language: "text/cql",
+                    expression: "YearDateValidFrom",
+                },
+            },
+            {
+                code: {
+                    text: "YearMonthDateValidFrom",
+                },
+                criteria: {
+                    language: "text/cql",
+                    expression: "YearMonthDateValidFrom",
+                },
+            },
         ],
     },
     cql: `

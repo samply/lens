@@ -207,6 +207,7 @@
     };
 </script>
 
+<div>
 <h4 part="result-table-title">{title}</h4>
 <table part="result-table">
     <thead part="table-header">
@@ -264,3 +265,4 @@
     >
 </div>
 <slot name="beneath-pagination" />
+</div>
