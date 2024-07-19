@@ -127,6 +127,33 @@ export const getSitePopulationForStratumCode = (
 };
 
 /**
+ * @param site - data of the responding site
+ * @param stratifier - the stratifier code to define where the stratumCode should be searched
+ * @returns the number of elements in the stratifier for a given site
+ */
+export const getSitePopulationForStratifier = (
+    site: SiteData,
+    stratifier: string,
+): number => {
+    if (!site) return 0;
+
+    let population: number = 0;
+
+    site.group.forEach((group) => {
+        group.stratifier.forEach((stratifierItem) => {
+            if (stratifierItem.code[0].text !== stratifier) return;
+            stratifierItem.stratum?.forEach((stratumItem) => {
+                if (stratumItem.population !== undefined) {
+                    population++;
+                }
+            });
+        });
+    });
+
+    return population;
+};
+
+/**
  * @param store - the response store
  * @param code - the code to search for
  * @returns the stratifier codes for a given group code

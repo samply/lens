@@ -18,18 +18,13 @@
 
 :root {
   --white: #ffffff;
-  /*--ghost-white: #f8f8ff;*/
   --ghost-white: #ffffff; /* Taken from ECDC CSS */
   --black: #000000;
-  /*--gray: #a7a7a7;*/
   --gray: #7cbdc1; /* Taken from ECDC CSS */
   --light-gray: #dee2e6;
-  /*--lightest-gray: #efefef;*/
   --lightest-gray: #ffffff; /* Taken from ECDC CSS */
   --dark-gray: #323232;
-  /*--blue: #00489c;*/
   --blue: #333333; /* Taken from ECDC CSS */
-  /*--light-blue: #007bff;*/
   --light-blue: #4f841a; /* Taken from ECDC CSS */
   --lightest-blue: #adc7f3;
   --dark-blue: #002d80;
@@ -60,13 +55,11 @@
   --font-size-xl: 24px;
   --font-size-xxl: 32px;
 
-  /*--font-family: 'Open Sans', sans-serif;*/
-  /*--font-family: "MetaPro", Georgia, "Times New Roman", Times, serif; !* Taken from ECDC CSS *!*/
   --font-family: "Roboto", sans-serif; /* Taken from ECDC CSS */
 }
 
 /**
-* Demo
+* ECDC
 */
 
 * {
@@ -174,68 +167,22 @@ footer {
   display: grid;
 }
 
-.result-summary {
-  grid-column: 1/-1;
-}
-
 .result-table {
+  grid-column: span 4;
+}
+
+.chart-double-width{
   grid-column: span 2;
 }
 
-.chart-diagnosis {
-  grid-row: span 2;
-  grid-column: 1/2;
-
-}
-
-.chart-age-distribution{
-  grid-column: span 2;
+.chart-quadruple-width{
+  grid-column: span 4;
 }
 
 .sample-information-text {
   font-size: var(--font-size-xxs);
 
 }
-
-
-@media screen and (max-width: 1200px) {
-  .charts {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  .chart-age-distribution{
-    grid-row: 3/4;
-    grid-column: 2/4;
-  }
-}
-
-
-
-
-@media screen and (max-width: 1023px) {
-
-  .grid {
-    display: grid;
-    grid-gap: var(--gap-m);
-  }
-
-  .catalogue {
-    position: static;
-    max-width: 100% !important;
-    width: 100%;
-    flex-direction: column;
-    height: auto;
-  }
-
-  .catalogue button {
-    display: none;
-  }
-
-  .charts {
-    margin-left: 0px;
-  }
-  
-}
-
 
 
 footer {

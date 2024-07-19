@@ -2,7 +2,7 @@
 lens-result-table {
     background-color: var(--white);
     display: grid;
-    grid-template-rows: auto auto 1fr auto auto;
+  /*grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));*/
   }
   
   lens-result-table::part(result-table-title) {
@@ -26,10 +26,10 @@ lens-result-table {
   lens-result-table::part(table-header-row) {
     text-align: left;
   }
-  
+
+  /* Apply styling to individual table header cells */
   lens-result-table::part(table-header-cell) {
     padding-bottom: var(--gap-xs);
-    width: 32%;
   }
 
   lens-result-table::part(table-header-cell-checkbox) {

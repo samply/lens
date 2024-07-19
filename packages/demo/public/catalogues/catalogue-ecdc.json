@@ -1,5 +1,314 @@
 [
     {
+        "key": "overall",
+        "name": "Overall [Group]",
+        "childCategories": [
+            {
+                "key": "data_source",
+                "name": "Data source",
+                "fieldType": "string",
+                "type": "EQUALS",
+                "system": "",
+                "criteria": []
+            },
+            {
+                "key": "reporting_country",
+                "name": "Reporting country",
+                "system": "",
+                "fieldType": "single-select",
+                "type": "EQUALS",
+                "criteria": [
+                    {
+                        "key": "AL",
+                        "name": "Albania",
+                        "description": "Albania"
+                    },
+                    {
+                        "key": "AM",
+                        "name": "Armenia",
+                        "description": "Armenia"
+                    },
+                    {
+                        "key": "AT",
+                        "name": "Austria",
+                        "description": "Austria"
+                    },
+                    {
+                        "key": "AZ",
+                        "name": "Azerbaijan",
+                        "description": "Azerbaijan"
+                    },
+                    {
+                        "key": "BA",
+                        "name": "Bosnia and Herzegovina",
+                        "description": "Bosnia and Herzegovina"
+                    },
+                    {
+                        "key": "BE",
+                        "name": "Belgium",
+                        "description": "Belgium"
+                    },
+                    {
+                        "key": "BG",
+                        "name": "Bulgaria",
+                        "description": "Bulgaria"
+                    },
+                    {
+                        "key": "BY",
+                        "name": "Belarus",
+                        "description": "Belarus"
+                    },
+                    {
+                        "key": "CH",
+                        "name": "Switzerland",
+                        "description": "Switzerland"
+                    },
+                    {
+                        "key": "CY",
+                        "name": "Cyprus",
+                        "description": "Cyprus"
+                    },
+                    {
+                        "key": "CZ",
+                        "name": "Czechia",
+                        "description": "Czechia"
+                    },
+                    {
+                        "key": "DE",
+                        "name": "Germany",
+                        "description": "Germany"
+                    },
+                    {
+                        "key": "DK",
+                        "name": "Denmark",
+                        "description": "Denmark"
+                    },
+                    {
+                        "key": "EE",
+                        "name": "Estonia",
+                        "description": "Estonia"
+                    },
+                    {
+                        "key": "EL",
+                        "name": "Greece",
+                        "description": "Greece"
+                    },
+                    {
+                        "key": "ES",
+                        "name": "Spain",
+                        "description": "Spain"
+                    },
+                    {
+                        "key": "FI",
+                        "name": "Finland",
+                        "description": "Finland"
+                    },
+                    {
+                        "key": "FR",
+                        "name": "France",
+                        "description": "France"
+                    },
+                    {
+                        "key": "GE",
+                        "name": "Georgia",
+                        "description": "Georgia"
+                    },
+                    {
+                        "key": "HR",
+                        "name": "Croatia",
+                        "description": "Croatia"
+                    },
+                    {
+                        "key": "HU",
+                        "name": "Hungary",
+                        "description": "Hungary"
+                    },
+                    {
+                        "key": "IE",
+                        "name": "Ireland",
+                        "description": "Ireland"
+                    },
+                    {
+                        "key": "IL",
+                        "name": "Israel",
+                        "description": "Israel"
+                    },
+                    {
+                        "key": "IS",
+                        "name": "Iceland",
+                        "description": "Iceland"
+                    },
+                    {
+                        "key": "IT",
+                        "name": "Italy",
+                        "description": "Italy"
+                    },
+                    {
+                        "key": "KG",
+                        "name": "Kyrgyzstan",
+                        "description": "Kyrgyzstan"
+                    },
+                    {
+                        "key": "KZ",
+                        "name": "Kazakhstan",
+                        "description": "Kazakhstan"
+                    },
+                    {
+                        "key": "LI",
+                        "name": "Liechtenstein",
+                        "description": "Liechtenstein"
+                    },
+                    {
+                        "key": "LT",
+                        "name": "Lithuania",
+                        "description": "Lithuania"
+                    },
+                    {
+                        "key": "LU",
+                        "name": "Luxembourg",
+                        "description": "Luxembourg"
+                    },
+                    {
+                        "key": "LV",
+                        "name": "Latvia",
+                        "description": "Latvia"
+                    },
+                    {
+                        "key": "MC",
+                        "name": "Monaco",
+                        "description": "Monaco"
+                    },
+                    {
+                        "key": "MD",
+                        "name": "Moldova, Republic of",
+                        "description": "Moldova, Republic of"
+                    },
+                    {
+                        "key": "ME",
+                        "name": "Montenegro",
+                        "description": "Montenegro"
+                    },
+                    {
+                        "key": "MK",
+                        "name": "Republic of North Macedonia",
+                        "description": "Republic of North Macedonia"
+                    },
+                    {
+                        "key": "MT",
+                        "name": "Malta",
+                        "description": "Malta"
+                    },
+                    {
+                        "key": "NL",
+                        "name": "Netherlands",
+                        "description": "Netherlands"
+                    },
+                    {
+                        "key": "NO",
+                        "name": "Norway",
+                        "description": "Norway"
+                    },
+                    {
+                        "key": "PL",
+                        "name": "Poland",
+                        "description": "Poland"
+                    },
+                    {
+                        "key": "PT",
+                        "name": "Portugal",
+                        "description": "Portugal"
+                    },
+                    {
+                        "key": "RO",
+                        "name": "Romania",
+                        "description": "Romania"
+                    },
+                    {
+                        "key": "RS",
+                        "name": "Serbia",
+                        "description": "Serbia"
+                    },
+                    {
+                        "key": "RU",
+                        "name": "Russian Federation",
+                        "description": "Russian Federation"
+                    },
+                    {
+                        "key": "SE",
+                        "name": "Sweden",
+                        "description": "Sweden"
+                    },
+                    {
+                        "key": "SI",
+                        "name": "Slovenia",
+                        "description": "Slovenia"
+                    },
+                    {
+                        "key": "SK",
+                        "name": "Slovakia",
+                        "description": "Slovakia"
+                    },
+                    {
+                        "key": "SM",
+                        "name": "San Marino",
+                        "description": "San Marino"
+                    },
+                    {
+                        "key": "TJ",
+                        "name": "Tajikistan",
+                        "description": "Tajikistan"
+                    },
+                    {
+                        "key": "TM",
+                        "name": "Turkmenistan",
+                        "description": "Turkmenistan"
+                    },
+                    {
+                        "key": "TR",
+                        "name": "Turkey",
+                        "description": "Turkey"
+                    },
+                    {
+                        "key": "UA",
+                        "name": "Ukraine",
+                        "description": "Ukraine"
+                    },
+                    {
+                        "key": "UK",
+                        "name": "United Kingdom",
+                        "description": "United Kingdom"
+                    },
+                    {
+                        "key": "UZ",
+                        "name": "Uzbekistan",
+                        "description": "Uzbekistan"
+                    },
+                    {
+                        "key": "XK",
+                        "name": "Kosovo",
+                        "description": "Kosovo"
+                    }
+                ]
+            },
+            {
+                "key": "date_used_for_statistics",
+                "name": "Date used for statistics",
+                "fieldType": "date-range",
+                "type": "BETWEEN",
+                "system": "",
+                "criteria": []
+            },
+            {
+                "key": "date_valid_from",
+                "name": "Date valid from",
+                "fieldType": "date-range",
+                "type": "BETWEEN",
+                "system": "",
+                "criteria": []
+            }
+        ]
+    },
+    {
         "key": "patient",
         "name": "Epidemiology (Patient) [Group]",
         "childCategories": [
@@ -465,14 +774,6 @@
                 ]
             },
             {
-                "key": "data_source",
-                "name": "Data source",
-                "fieldType": "string",
-                "type": "EQUALS",
-                "system": "",
-                "criteria": []
-            },
-            {
                 "key": "isolate_id",
                 "name": "Isolate ID",
                 "fieldType": "string",
@@ -537,301 +838,6 @@
                         "description": "Other"
                     }
                 ]
-            },
-            {
-                "key": "reporting_country",
-                "name": "Reporting country",
-                "system": "",
-                "fieldType": "single-select",
-                "type": "EQUALS",
-                "criteria": [
-                    {
-                        "key": "AL",
-                        "name": "Albania",
-                        "description": "Albania"
-                    },
-                    {
-                        "key": "AM",
-                        "name": "Armenia",
-                        "description": "Armenia"
-                    },
-                    {
-                        "key": "AT",
-                        "name": "Austria",
-                        "description": "Austria"
-                    },
-                    {
-                        "key": "AZ",
-                        "name": "Azerbaijan",
-                        "description": "Azerbaijan"
-                    },
-                    {
-                        "key": "BA",
-                        "name": "Bosnia and Herzegovina",
-                        "description": "Bosnia and Herzegovina"
-                    },
-                    {
-                        "key": "BE",
-                        "name": "Belgium",
-                        "description": "Belgium"
-                    },
-                    {
-                        "key": "BG",
-                        "name": "Bulgaria",
-                        "description": "Bulgaria"
-                    },
-                    {
-                        "key": "BY",
-                        "name": "Belarus",
-                        "description": "Belarus"
-                    },
-                    {
-                        "key": "CH",
-                        "name": "Switzerland",
-                        "description": "Switzerland"
-                    },
-                    {
-                        "key": "CY",
-                        "name": "Cyprus",
-                        "description": "Cyprus"
-                    },
-                    {
-                        "key": "CZ",
-                        "name": "Czechia",
-                        "description": "Czechia"
-                    },
-                    {
-                        "key": "DE",
-                        "name": "Germany",
-                        "description": "Germany"
-                    },
-                    {
-                        "key": "DK",
-                        "name": "Denmark",
-                        "description": "Denmark"
-                    },
-                    {
-                        "key": "EE",
-                        "name": "Estonia",
-                        "description": "Estonia"
-                    },
-                    {
-                        "key": "EL",
-                        "name": "Greece",
-                        "description": "Greece"
-                    },
-                    {
-                        "key": "ES",
-                        "name": "Spain",
-                        "description": "Spain"
-                    },
-                    {
-                        "key": "FI",
-                        "name": "Finland",
-                        "description": "Finland"
-                    },
-                    {
-                        "key": "FR",
-                        "name": "France",
-                        "description": "France"
-                    },
-                    {
-                        "key": "GE",
-                        "name": "Georgia",
-                        "description": "Georgia"
-                    },
-                    {
-                        "key": "HR",
-                        "name": "Croatia",
-                        "description": "Croatia"
-                    },
-                    {
-                        "key": "HU",
-                        "name": "Hungary",
-                        "description": "Hungary"
-                    },
-                    {
-                        "key": "IE",
-                        "name": "Ireland",
-                        "description": "Ireland"
-                    },
-                    {
-                        "key": "IL",
-                        "name": "Israel",
-                        "description": "Israel"
-                    },
-                    {
-                        "key": "IS",
-                        "name": "Iceland",
-                        "description": "Iceland"
-                    },
-                    {
-                        "key": "IT",
-                        "name": "Italy",
-                        "description": "Italy"
-                    },
-                    {
-                        "key": "KG",
-                        "name": "Kyrgyzstan",
-                        "description": "Kyrgyzstan"
-                    },
-                    {
-                        "key": "KZ",
-                        "name": "Kazakhstan",
-                        "description": "Kazakhstan"
-                    },
-                    {
-                        "key": "LI",
-                        "name": "Liechtenstein",
-                        "description": "Liechtenstein"
-                    },
-                    {
-                        "key": "LT",
-                        "name": "Lithuania",
-                        "description": "Lithuania"
-                    },
-                    {
-                        "key": "LU",
-                        "name": "Luxembourg",
-                        "description": "Luxembourg"
-                    },
-                    {
-                        "key": "LV",
-                        "name": "Latvia",
-                        "description": "Latvia"
-                    },
-                    {
-                        "key": "MC",
-                        "name": "Monaco",
-                        "description": "Monaco"
-                    },
-                    {
-                        "key": "MD",
-                        "name": "Moldova, Republic of",
-                        "description": "Moldova, Republic of"
-                    },
-                    {
-                        "key": "ME",
-                        "name": "Montenegro",
-                        "description": "Montenegro"
-                    },
-                    {
-                        "key": "MK",
-                        "name": "Republic of North Macedonia",
-                        "description": "Republic of North Macedonia"
-                    },
-                    {
-                        "key": "MT",
-                        "name": "Malta",
-                        "description": "Malta"
-                    },
-                    {
-                        "key": "NL",
-                        "name": "Netherlands",
-                        "description": "Netherlands"
-                    },
-                    {
-                        "key": "NO",
-                        "name": "Norway",
-                        "description": "Norway"
-                    },
-                    {
-                        "key": "PL",
-                        "name": "Poland",
-                        "description": "Poland"
-                    },
-                    {
-                        "key": "PT",
-                        "name": "Portugal",
-                        "description": "Portugal"
-                    },
-                    {
-                        "key": "RO",
-                        "name": "Romania",
-                        "description": "Romania"
-                    },
-                    {
-                        "key": "RS",
-                        "name": "Serbia",
-                        "description": "Serbia"
-                    },
-                    {
-                        "key": "RU",
-                        "name": "Russian Federation",
-                        "description": "Russian Federation"
-                    },
-                    {
-                        "key": "SE",
-                        "name": "Sweden",
-                        "description": "Sweden"
-                    },
-                    {
-                        "key": "SI",
-                        "name": "Slovenia",
-                        "description": "Slovenia"
-                    },
-                    {
-                        "key": "SK",
-                        "name": "Slovakia",
-                        "description": "Slovakia"
-                    },
-                    {
-                        "key": "SM",
-                        "name": "San Marino",
-                        "description": "San Marino"
-                    },
-                    {
-                        "key": "TJ",
-                        "name": "Tajikistan",
-                        "description": "Tajikistan"
-                    },
-                    {
-                        "key": "TM",
-                        "name": "Turkmenistan",
-                        "description": "Turkmenistan"
-                    },
-                    {
-                        "key": "TR",
-                        "name": "Turkey",
-                        "description": "Turkey"
-                    },
-                    {
-                        "key": "UA",
-                        "name": "Ukraine",
-                        "description": "Ukraine"
-                    },
-                    {
-                        "key": "UK",
-                        "name": "United Kingdom",
-                        "description": "United Kingdom"
-                    },
-                    {
-                        "key": "UZ",
-                        "name": "Uzbekistan",
-                        "description": "Uzbekistan"
-                    },
-                    {
-                        "key": "XK",
-                        "name": "Kosovo",
-                        "description": "Kosovo"
-                    }
-                ]
-            },
-            {
-                "key": "date_valid_from",
-                "name": "Date valid from",
-                "fieldType": "date-range",
-                "type": "BETWEEN",
-                "system": "",
-                "criteria": []
-            },
-            {
-                "key": "date_used_for_statistics",
-                "name": "Date used for statistics",
-                "fieldType": "date-range",
-                "type": "BETWEEN",
-                "system": "",
-                "criteria": []
             }
 
         ]

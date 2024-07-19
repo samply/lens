@@ -36,6 +36,30 @@
             {
                 "title": "Patients",
                 "dataKey": "patients"
+            },
+            {
+                "title": "Labs",
+                "aggregatedDataKeys": [
+                    {
+                        "stratifierCode": "LaboratoryCode"
+                    }
+                ]
+            },
+            {
+                "title": "Hospitals",
+                "aggregatedDataKeys": [
+                    {
+                        "stratifierCode": "HospitalId"
+                    }
+                ]
+            },
+            {
+                "title": "Refguides",
+                "aggregatedDataKeys": [
+                    {
+                        "stratifierCode": "ReferenceGuidelinesSir"
+                    }
+                ]
             }
         ]
     }
