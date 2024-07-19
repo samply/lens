@@ -84,35 +84,114 @@
 
     const barChartBackgroundColors: string[] = ["#4dc9f6", "#3da4c7"];
 
+    /**
+     * Generate a PDF from the current page.
+     *
+     * This function captures the content inside the `<div class="main">` element,
+     * adds a centered title at the top, and saves the PDF with a filename
+     * containing the current date in the format `YYYY-MM-DD`.
+     */
     async function generatePDF() {
-        const element = document.querySelector('main');
-        if (element) {
-            const canvas = await html2canvas(element, { useCORS: true });
-            const imgData = canvas.toDataURL('image/png');
-            const pdf = new jsPDF('p', 'mm', 'a4');
-            const imgProps = pdf.getImageProperties(imgData);
-            const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        const elementName = 'main';
+        const element = document.querySelector(elementName); // choose DOM element to print
+        if (!element) {
+            console.error("Element " + elementName + " not found.");
+            return;
+        }
 
-            const totalPages = Math.ceil(pdfHeight / pdf.internal.pageSize.getHeight());
+        // Capture the current date
+        const today = new Date();
+        const formattedDate = today.toISOString().slice(0, 10);
 
-            for (let i = 0; i < totalPages; i++) {
-                if (i > 0) {
-                    pdf.addPage();
-                }
-                pdf.addImage(
-                    imgData,
-                    'PNG',
-                    0,
-                    -i * pdf.internal.pageSize.getHeight(),
-                    pdfWidth,
-                    pdfHeight
-                );
+        // Generate the canvas
+        const canvas = await createCanvasFromElement(element);
+        const imgData = canvas.toDataURL('image/png');
+
+        // Initialize PDF document
+        const pdf = new jsPDF('p', 'mm', 'a4');
+
+        // Calculate dimensions
+        const { pdfWidth, pdfHeight, imgHeight } = calculateDimensions(pdf, imgData);
+
+        // Add a centered title to the PDF
+        const contentYStart = addTitleToPDF(pdf, formattedDate);
+
+        // Add the image to the PDF
+        addImageToPDF(pdf, imgData, pdfWidth, imgHeight, contentYStart, pdfHeight);
+
+        // Save the PDF with the formatted date in the filename
+        pdf.save(`AMRReport-${formattedDate}.pdf`);
+    }
+
+    /**
+     * Create a canvas from a specified element.
+     * @param {HTMLElement} element - The HTML element to render to a canvas.
+     * @returns {Promise<HTMLCanvasElement>} The generated canvas.
+     */
+    function createCanvasFromElement(element: HTMLElement): Promise<HTMLCanvasElement> {
+        return html2canvas(element, { useCORS: true });
+    }
+
+    /**
+     * Calculate dimensions for the PDF and image.
+     * @param {jsPDF} pdf - The jsPDF instance.
+     * @param {string} imgData - The image data URL.
+     * @returns {object} - The calculated dimensions.
+     */
+    function calculateDimensions(pdf: jsPDF, imgData: string) {
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+        const imgProps = pdf.getImageProperties(imgData);
+        const imgHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        return { pdfWidth, pdfHeight, imgHeight };
+    }
+
+    /**
+     * Add a centered title to the PDF.
+     * @param {jsPDF} pdf - The jsPDF instance.
+     * @param {string} formattedDate - The formatted date string.
+     * @returns {number} - The Y position where the content starts.
+     */
+    function addTitleToPDF(pdf: jsPDF, formattedDate: string): number {
+        const titleText = `AMR Report for ${formattedDate}`;
+        const titleMargin = 10;
+        const titleFontSize = 14;
+
+        pdf.setFontSize(titleFontSize);
+        const textWidth = pdf.getStringUnitWidth(titleText) * pdf.getFontSize() / pdf.internal.scaleFactor;
+        const xOffset = (pdf.internal.pageSize.getWidth() - textWidth) / 2;
+        pdf.text(titleText, xOffset, titleMargin + titleFontSize / 2);
+
+        return titleMargin + titleFontSize + 5; // Return the Y position for content
+    }
+
+    /**
+     * Add an image to the PDF document.
+     * @param {jsPDF} pdf - The jsPDF instance.
+     * @param {string} imgData - The image data URL.
+     * @param {number} pdfWidth - The width of the PDF page.
+     * @param {number} imgHeight - The height of the image.
+     * @param {number} contentYStart - The Y position to start the content.
+     * @param {number} pdfHeight - The height of the PDF page.
+     */
+    function addImageToPDF(pdf: jsPDF, imgData: string, pdfWidth: number, imgHeight: number, contentYStart: number, pdfHeight: number) {
+        const totalPages = Math.ceil((imgHeight + contentYStart) / pdfHeight);
+
+        for (let i = 0; i < totalPages; i++) {
+            if (i > 0) {
+                pdf.addPage();
             }
-
-            pdf.save('document.pdf');
+            pdf.addImage(
+                imgData,
+                'PNG',
+                0,
+                contentYStart - i * pdfHeight,
+                pdfWidth,
+                imgHeight
+            );
         }
     }
+
 </script>
 
 <header>
@@ -139,7 +218,7 @@
             backendConfig={JSON.stringify(backendConfig)}
             {backendMeasures}
         />
-        <button on:click={generatePDF}>Download/PDF</button>
+        <button on:click={generatePDF}>Generate Report</button>
     </div>
     <div class="grid">
         <div class="catalogue">
@@ -307,7 +386,7 @@
             </div>
             <div class="chart-wrapper">
                 <lens-chart
-                        title="Date used for statistics (year)"
+                        title="Date used for statistics"
                         catalogueGroupCode="year_date_used_for_statistics"
                         chartType="bar"
                         xAxisTitle="Year"
@@ -319,7 +398,7 @@
             </div>
             <div class="chart-wrapper">
                 <lens-chart
-                        title="Date used for statistics (year-month)"
+                        title="Date used for statistics"
                         catalogueGroupCode="year_month_date_used_for_statistics"
                         chartType="bar"
                         xAxisTitle="Year-Month"
@@ -331,7 +410,7 @@
             </div>
             <div class="chart-wrapper">
                 <lens-chart
-                        title="Date valid from (year)"
+                        title="Date valid from"
                         catalogueGroupCode="year_date_valid_from"
                         chartType="bar"
                         xAxisTitle="Year"
@@ -343,7 +422,7 @@
             </div>
             <div class="chart-wrapper">
                 <lens-chart
-                        title="Date valid from (year-month)"
+                        title="Date valid from"
                         catalogueGroupCode="year_month_date_valid_from"
                         chartType="bar"
                         xAxisTitle="Year-Month"
