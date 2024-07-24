@@ -87,40 +87,88 @@
     /**
      * Generate a PDF from the current page.
      *
-     * This function captures the content inside the `<div class="main">` element,
+     * This function captures the content inside selected elements of the DOM,
      * adds a centered title at the top, and saves the PDF with a filename
      * containing the current date in the format `YYYY-MM-DD`.
      */
     async function generatePDF() {
-        const elementName = 'main';
+        // Capture the current date
+        const today = new Date();
+        const formattedDate = today.toISOString().slice(0, 10);
+
+        // Initialize PDF document
+        const pdf = new jsPDF('p', 'mm', 'a4');
+
+        // Add a centered title to the PDF
+        let contentYStart = addTitleToPDF(pdf, formattedDate);
+
+        console.info("mockCatalogueData: " + mockCatalogueData);
+
+        // Add selected elements from DOM to PDF
+        if (isSearchBarFilled()) {
+            // Only add search bar if it contains something.
+            contentYStart = await addElementToPDF(pdf, 'lens-search-bar', contentYStart);
+        }
+        await addElementToPDF(pdf, '.charts', contentYStart);
+
+        // Save the PDF to file
+        pdf.save(`AMRReport-${formattedDate}.pdf`);
+    }
+
+    /**
+     * Checks if the search bar is filled by determining whether any elements
+     * with the part attribute 'lens-searchbar-chips' exist within the shadow
+     * root of the 'lens-search-bar' element.
+     *
+     * @returns {boolean} - Returns true if elements with 'lens-searchbar-chips'
+     *                      are found within the shadow root, indicating that the
+     *                      search bar is filled; otherwise, returns false.
+     *
+     */
+    // N.B. this isn't a nice way to do things, because it means knowing the structure of
+    // the lens search bar shadow DOM.
+    function isSearchBarFilled() {
+        // Get the shadow host element
+        const shadowHost = document.querySelector('lens-search-bar');
+
+        // Access the shadow root (assuming it's open)
+        const shadowRoot = shadowHost ? shadowHost.shadowRoot : null;
+
+        // Check if the shadow root is available
+        if (shadowRoot) {
+            const chips = shadowRoot.querySelector('div[part="lens-searchbar-chips"]')
+            // Query inside the shadow root
+            return chips != null;
+        }
+
+        return false;
+    }
+
+    /**
+     * Add an element to the PDF document at a given Y position.
+     * @param pdf
+     * @param elementName
+     * @param contentYStart
+     * @returns new contentYStart
+     */
+    async function addElementToPDF(pdf: jsPDF, elementName: string, contentYStart: number) {
         const element = document.querySelector(elementName); // choose DOM element to print
         if (!element) {
             console.error("Element " + elementName + " not found.");
             return;
         }
 
-        // Capture the current date
-        const today = new Date();
-        const formattedDate = today.toISOString().slice(0, 10);
-
         // Generate the canvas
         const canvas = await createCanvasFromElement(element);
         const imgData = canvas.toDataURL('image/png');
 
-        // Initialize PDF document
-        const pdf = new jsPDF('p', 'mm', 'a4');
-
         // Calculate dimensions
         const { pdfWidth, pdfHeight, imgHeight } = calculateDimensions(pdf, imgData);
-
-        // Add a centered title to the PDF
-        const contentYStart = addTitleToPDF(pdf, formattedDate);
 
         // Add the image to the PDF
         addImageToPDF(pdf, imgData, pdfWidth, imgHeight, contentYStart, pdfHeight);
 
-        // Save the PDF with the formatted date in the filename
-        pdf.save(`AMRReport-${formattedDate}.pdf`);
+        return contentYStart + imgHeight;
     }
 
     /**
