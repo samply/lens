@@ -1,4 +1,9 @@
 <script lang="ts">
+    import type {
+        MeasureGroup,
+        MeasureItem,
+        LensDataPasser,
+    } from "../../../dist/types";
     import {
         dktkDiagnosisMeasure,
         dktkMedicationStatementsMeasure,
@@ -17,23 +22,38 @@
             catalogueData = data;
         });
 
-    fetch("options.json")
+    // VITE_TARGET_ENVIRONMENT should be set by the ci pipeline
+    let optionsFilePath: string = "options-dev.json";
+
+    if (import.meta.env.VITE_TARGET_ENVIRONMENT === "production") {
+        optionsFilePath = "options-ccp-prod.json";
+    } else if (import.meta.env.VITE_TARGET_ENVIRONMENT === "staging") {
+        optionsFilePath = "options-ccp-demo.json";
+    }
+
+    fetch(optionsFilePath)
         .then((response) => response.json())
         .then((data) => {
             libraryOptions = data;
         });
 
-    const measures = [
-        dktkPatientsMeasure,
-        dktkDiagnosisMeasure,
-        dktkSpecimenMeasure,
-        dktkProceduresMeasure,
-        dktkMedicationStatementsMeasure,
-        dktkHistologyMeasure,
+    const measures: MeasureGroup[] = [
+        {
+            name: "DKTK",
+            measures: [
+                dktkPatientsMeasure as MeasureItem,
+                dktkDiagnosisMeasure as MeasureItem,
+                dktkSpecimenMeasure as MeasureItem,
+                dktkProceduresMeasure as MeasureItem,
+                dktkMedicationStatementsMeasure as MeasureItem,
+                dktkHistologyMeasure as MeasureItem,
+            ],
+        },
     ];
 
-    const backendMeasures = `DKTK_STRAT_DEF_IN_INITIAL_POPULATION`;
-
+    /**
+     * move to config file
+     */
     const catalogueText = {
         group: "Group",
         collapseButtonTitle: "Collapse Tree",
@@ -46,68 +66,11 @@
 
     let catalogueopen = false;
 
-    const catalogueKeyToResponseKeyMap = [
-        ["gender", "Gender"],
-        ["age_at_diagnosis", "Age"],
-        ["diagnosis", "diagnosis"],
-        ["medicationStatements", "MedicationType"],
-        ["sample_kind", "sample_kind"],
-        ["therapy_of_tumor", "ProcedureType"],
-        ["75186-7", "75186-7"],
-        // ["encounter", "Encounter"],
-    ];
-
-    // VITE_TARGET_ENVIRONMENT should be set by the ci pipeline
-    const backendUrl =
-        import.meta.env.VITE_TARGET_ENVIRONMENT === "production"
-            ? "https://backend.data.dktk.dkfz.de/prod/"
-            : "https://backend.demo.lens.samply.de/prod/";
-
-    const uiSiteMap: string[][] = [
-        ["berlin", "Berlin"],
-        ["berlin-test", "Berlin"],
-        ["bonn", "Bonn"],
-        ["dresden", "Dresden"],
-        ["essen", "Essen"],
-        ["frankfurt", "Frankfurt"],
-        ["freiburg", "Freiburg"],
-        ["hannover", "Hannover"],
-        ["mainz", "Mainz"],
-        ["muenchen-lmu", "München(LMU)"],
-        ["muenchen-tum", "München(TUM)"],
-        ["ulm", "Ulm"],
-        ["wuerzburg", "Würzburg"],
-        ["mannheim", "Mannheim"],
-        ["dktk-test", "DKTK-Test"],
-        ["hamburg", "Hamburg"],
-    ];
-
     const genderHeaders: Map<string, string> = new Map<string, string>()
         .set("male", "männlich")
         .set("female", "weiblich")
-        .set("other", "Divers")
+        .set("other", "divers")
         .set("unknown", "unbekannt");
-
-    const backendConfig = {
-        url: import.meta.env.PROD ? backendUrl : "http://localhost:8055",
-        backends: [
-            "mannheim",
-            "freiburg",
-            "muenchen-tum",
-            "hamburg",
-            "frankfurt",
-            "berlin-test",
-            "dresden",
-            "mainz",
-            "muenchen-lmu",
-            "essen",
-            "ulm",
-            "wuerzburg",
-            "hannover",
-        ],
-        uiSiteMap: uiSiteMap,
-        catalogueKeyToResponseKeyMap: catalogueKeyToResponseKeyMap,
-    };
 
     const barChartBackgroundColors: string[] = ["#4dc9f6", "#3da4c7"];
 
@@ -120,54 +83,55 @@
         "medicationStatements",
         "Sys. T",
     );
+
+    let dataPasser: LensDataPasser;
 </script>
 
 <header>
-    <div class="logo">
-        <img src="../dktk.svg" alt="Logo des DKTK" />
-    </div>
-    <h1>CCP Explorer</h1>
-    <div class="logo logo-dkfz">
-        <img
-            src="../Deutsches_Krebsforschungszentrum_Logo.svg"
-            alt="Logo des DKTK"
-        />
+    <div class="header-wrapper">
+        <div class="logo">
+            <img src="../dktk.svg" alt="Logo des DKTK" />
+        </div>
+        <h1>CCP Explorer</h1>
+        <div class="logo logo-dkfz">
+            <img
+                src="../Deutsches_Krebsforschungszentrum_Logo.svg"
+                alt="Logo des DKTK"
+            />
+        </div>
     </div>
 </header>
 <main>
     <div class="search">
-        <lens-search-bar
-            treeData={catalogueData}
-            noMatchesFoundMessage={"keine Ergebnisse gefunden"}
-        />
-        <lens-info-button
-            noQueryMessage="Leere Suchanfrage: Sucht nach allen Ergebnissen."
-            showQuery={true}
-        />
-        <lens-search-button
-            title="Suchen"
-            {measures}
-            backendConfig={JSON.stringify(backendConfig)}
-            {backendMeasures}
-        />
-    </div>
-    <div class="grid">
-        <div class="catalogue">
-            <h2>Suchkriterien</h2>
+        <div class="search-wrapper">
+            <lens-search-bar
+                noMatchesFoundMessage={"keine Ergebnisse gefunden"}
+            />
             <lens-info-button
-                message={[
-                    `Bei Patienten mit mehreren onkologischen Diagnosen, können sich ausgewählte Suchkriterien nicht nur auf eine Erkrankung beziehen, sondern auch auf Weitere.`,
-                    `Innerhalb einer Kategorie werden verschiedene Ausprägungen mit einer „Oder-Verknüpfung“ gesucht; bei der Suche über mehrere Kategorien mit einer „Und-Verknüpfung“.`,
-                ]}
+                noQueryMessage="Leere Suchanfrage: Sucht nach allen Ergebnissen."
+                showQuery={true}
             />
-            <lens-catalogue
-                toggleIconUrl="right-arrow-svgrepo-com.svg"
-                addIconUrl="long-right-arrow-svgrepo-com.svg"
-                infoIconUrl="info-circle-svgrepo-com.svg"
-                treeData={catalogueData}
-                texts={catalogueText}
-                toggle={{ collapsable: false, open: catalogueopen }}
-            />
+            <lens-search-button title="Suchen" />
+        </div>
+    </div>
+
+    <div class="grid">
+        <div class="catalogue-wrapper">
+            <div class="catalogue">
+                <h2>Suchkriterien</h2>
+                <lens-info-button
+                    message={[
+                        `Bei Patienten mit mehreren onkologischen Diagnosen, können sich ausgewählte Suchkriterien nicht nur auf eine Erkrankung beziehen, sondern auch auf Weitere.`,
+                        `Innerhalb einer Kategorie werden verschiedene Ausprägungen mit einer „Oder-Verknüpfung“ gesucht; bei der Suche über mehrere Kategorien mit einer „Und-Verknüpfung“.`,
+                    ]}
+                />
+                <lens-catalogue
+                    toggleIconUrl="right-arrow-svgrepo-com.svg"
+                    texts={catalogueText}
+                    toggle={{ collapsable: false, open: catalogueopen }}
+                    addIconUrl="long-right-arrow-svgrepo-com.svg"
+                />
+            </div>
         </div>
         <div class="charts">
             <div class="chart-wrapper result-summary">
@@ -188,9 +152,9 @@
             <div class="chart-wrapper result-table">
                 <lens-result-table pageSize="10">
                     <div slot="above-pagination" class="result-table-hint-text">
-                        * Umfasst Gewebe- und flüssige Proben. Die Anzahl der
-                        FFPE-Proben (Schätzung) entspricht der Zahl der
-                        Diagnosen.
+                        * Die Anzahl der möglichen vorhandenen FFPE-Proben aus
+                        der Pathologie beruht auf der Menge der gezählten
+                        Histologien.
                     </div>
                 </lens-result-table>
             </div>
@@ -245,7 +209,7 @@
                     chartType="bar"
                     headers={therapyHeaders}
                     xAxisTitle="Art der Therapie"
-                    yAxisTitle="Anzahl der Therapien"
+                    yAxisTitle="Anzahl der Therapieeinträge"
                     backgroundColor={JSON.stringify(barChartBackgroundColors)}
                 />
             </div>
@@ -255,7 +219,7 @@
                     catalogueGroupCode="medicationStatements"
                     chartType="bar"
                     xAxisTitle="Art der Therapie"
-                    yAxisTitle="Anzahl der Therapien"
+                    yAxisTitle="Anzahl der Therapieeinträge"
                     backgroundColor={JSON.stringify(barChartBackgroundColors)}
                 />
             </div>
@@ -277,16 +241,24 @@
 
 <footer>
     <a
-        class="ccp"
-        href="https://dktk.dkfz.de/klinische-plattformen/ueber-die-ccp/about-ccp"
+        class="known-issues"
+        href="https://hub.dkfz.de/s/iP6A7zJzAQya3iC"
         target="_blank"
     >
+        Known Issues
+    </a>
+    <a
+        href="https://dktk.dkfz.de/forschung/Plattformen-und-Technologie-Netzwerke/klinische-plattformen/ccp-faq"
+        class="faq"
+        target="_blank">FAQ</a
+    >
+    <a class="ccp" href="https://dktk.dkfz.de/ccp" target="_blank">
         Clinical Communication Platform (CCP)
     </a>
     <a class="email" href="mailto:CCP@dkfz.de">Kontakt</a>
     <a
         class="user-agreement"
-        href="https://hub.dkfz.de/s/xcGZHda8LHd6yGS"
+        href="https://hub.dkfz.de/s/MPCg2kK23LH8Yii"
         download="nutzervereinbarung"
         target="_blank">Nutzungsvereinbarung</a
     >
@@ -303,4 +275,5 @@
     >
 </footer>
 
-<lens-options options={libraryOptions} {catalogueData} />
+<lens-options options={libraryOptions} {catalogueData} {measures} />
+<lens-data-passer bind:this={dataPasser} />

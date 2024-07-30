@@ -36,10 +36,13 @@ services:
       # For some reason, login.verbis.dkfz.de does not have a "groups" scope but this comes automatically through a
       # scope called microprofile-jwt. Remove the following line once we have a "groups" scope.
       - OAUTH2_PROXY_SCOPE=openid profile email
+      # Pass Authorization Header and some user information to spot
+      - OAUTH2_PROXY_SET_AUTHORIZATION_HEADER=true
+      - OAUTH2_PROXY_SET_XAUTHREQUEST=true
     labels:
       - "traefik.enable=true"
       - "traefik.http.middlewares.traefik-forward-auth.forwardauth.address=http://traefik-forward-auth:4180"
-      - "traefik.http.middlewares.traefik-forward-auth.forwardauth.authResponseHeaders=X-Forwarded-User"
+      - "traefik.http.middlewares.traefik-forward-auth.forwardauth.authResponseHeaders=Authorization, X-Forwarded-User, X-Auth-Request-User, X-Auth-Request-Email"
       - "traefik.http.services.traefik-forward-auth.loadbalancer.server.port=4180"
       - "traefik.http.routers.oauth2.rule=Host(`${GUI_HOST}`) && PathPrefix(`/oauth2/`)"
       - "traefik.http.routers.oauth2.tls=true"
@@ -55,6 +58,8 @@ services:
 
   spot:
     image: samply/rustyspot:main
+    ports:
+      - "8055:8055"
     environment:
       HTTP_PROXY: ${http_proxy}
       HTTPS_PROXY: ${https_proxy}
@@ -66,6 +71,11 @@ services:
       CATALOGUE_URL: "${CATALOGUE_URL}"
       BIND_ADDR: 0.0.0.0:8055
       PRISM_URL: http://prism:8066
+      RUST_LOG: "info"
+      LOG_FILE: /requests.log
+    volumes:
+      - ./requests.log:/requests.log
+
     depends_on:
       - "beam-proxy"
     labels:

@@ -21,11 +21,13 @@ services:
   spot:
     image: samply/rustyspot:main
     ports:
-      - 8080:8080
+      - 8055:8055
     environment:
+      RUST_LOG: "info"
+      CORS_ORIGIN: http://localhost:5173
       BEAM_SECRET: "${LOCAL_BEAM_SECRET_SPOT}"
       BEAM_PROXY_URL: http://beam-proxy:8081
-      BEAM_APP_ID: "spot.${LOCAL_BEAM_ID}.${BROKER_HOST}"
+      BEAM_APP_ID: "focus.${LOCAL_BEAM_ID}.${BROKER_HOST}"
     depends_on:
       - "beam-proxy"
     profiles:
