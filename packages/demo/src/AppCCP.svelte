@@ -279,21 +279,27 @@
     <a
         class="ccp"
         href="https://dktk.dkfz.de/klinische-plattformen/ueber-die-ccp/about-ccp"
+        target="_blank"
     >
         Clinical Communication Platform (CCP)
     </a>
     <a class="email" href="mailto:CCP@dkfz.de">Kontakt</a>
     <a
         class="user-agreement"
-        href="https://hub.dkfz.de/s/d3Nnr5jKMagpBm3"
-        download="nutzervereinbarung">Nutzungsvereinbarung</a
+        href="https://hub.dkfz.de/s/xcGZHda8LHd6yGS"
+        download="nutzervereinbarung"
+        target="_blank">Nutzungsvereinbarung</a
     >
     <a
         class="privacy-policy"
         href="https://hub.dkfz.de/s/M8Ldxd5GsfrQG9S"
-        download="datenschutzerklaerung">Datenschutz</a
+        download="datenschutzerklaerung"
+        target="_blank">Datenschutz</a
     >
-    <a class="imprint" href="https://www.dkfz.de/de/impressum.html">Impressum</a
+    <a
+        class="imprint"
+        href="https://www.dkfz.de/de/impressum.html"
+        target="_blank">Impressum</a
     >
 </footer>
 

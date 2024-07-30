@@ -2481,6 +2481,19 @@
                         "type": "EQUALS",
                         "criteria": [
                             {
+                                "key": "urn:dktk:code:65:2",
+                                "name": "Neuroendokriner Tumor (NET) - Grad I",
+                                "description": "",
+                                "aggregatedValue": [
+                                    [
+                                        {
+                                            "value": "59847-4",
+                                            "name": "8240/3"
+                                        }
+                                    ]
+                                ]
+                            },
+                            {
                                 "key": "urn:dktk:code:66:2",
                                 "name": "Neuroendokriner Tumor (NET) - Grad II",
                                 "description": "",
@@ -2510,25 +2523,6 @@
                                         {
                                             "value": "59847-4",
                                             "name": "8246/3"
-                                        }
-                                    ]
-                                ]
-                            },
-                            {
-                                "key": "urn:dktk:code:65:2",
-                                "name": "Neuroendokriner Tumor (NET) - Grad I",
-                                "description": "",
-                                "aggregatedValue": [
-                                    [
-                                        {
-                                            "value": "diagnosis",
-                                            "name": "C%"
-                                        }
-                                    ],
-                                    [
-                                        {
-                                            "value": "59847-4",
-                                            "name": "8240/3"
                                         }
                                     ]
                                 ]
@@ -6153,12 +6147,6 @@
                                 "aggregatedValue": [
                                     [
                                         {
-                                            "value": "diagnosis",
-                                            "name": "C%"
-                                        }
-                                    ],
-                                    [
-                                        {
                                             "value": "59847-4",
                                             "name": "8850/3"
                                         },
@@ -6184,12 +6172,6 @@
                                 "aggregatedValue": [
                                     [
                                         {
-                                            "value": "diagnosis",
-                                            "name": "D%"
-                                        }
-                                    ],
-                                    [
-                                        {
                                             "value": "59847-4",
                                             "name": "8850/1"
                                         }
@@ -6201,12 +6183,6 @@
                                 "name": "Fibroblastisches Weichteilsarkom",
                                 "description": "",
                                 "aggregatedValue": [
-                                    [
-                                        {
-                                            "value": "diagnosis",
-                                            "name": "C%"
-                                        }
-                                    ],
                                     [
                                         {
                                             "value": "59847-4",
@@ -6244,12 +6220,6 @@
                                 "name": "Fibrobl. Weichteilsarkom - unsicheren Verhaltens",
                                 "description": "",
                                 "aggregatedValue": [
-                                    [
-                                        {
-                                            "value": "diagnosis",
-                                            "name": "D%"
-                                        }
-                                    ],
                                     [
                                         {
                                             "value": "59847-4",
@@ -6297,12 +6267,6 @@
                                 "aggregatedValue": [
                                     [
                                         {
-                                            "value": "diagnosis",
-                                            "name": "C%"
-                                        }
-                                    ],
-                                    [
-                                        {
                                             "value": "59847-4",
                                             "name": "9252/3"
                                         }
@@ -6314,12 +6278,6 @@
                                 "name": "Fibrohistioz. Weichteilsarkom - unsicheren Verhaltens",
                                 "description": "",
                                 "aggregatedValue": [
-                                    [
-                                        {
-                                            "value": "diagnosis",
-                                            "name": "D%"
-                                        }
-                                    ],
                                     [
                                         {
                                             "value": "59847-4",
@@ -6343,12 +6301,6 @@
                                 "aggregatedValue": [
                                     [
                                         {
-                                            "value": "diagnosis",
-                                            "name": "C%"
-                                        }
-                                    ],
-                                    [
-                                        {
                                             "value": "59847-4",
                                             "name": "8890/3"
                                         }
@@ -6362,12 +6314,6 @@
                                 "aggregatedValue": [
                                     [
                                         {
-                                            "value": "diagnosis",
-                                            "name": "C%"
-                                        }
-                                    ],
-                                    [
-                                        {
                                             "value": "59847-4",
                                             "name": "8711/3"
                                         }
@@ -6379,12 +6325,6 @@
                                 "name": "Perizyt. Weichteilsarkom - unsicheren Verhaltens",
                                 "description": "",
                                 "aggregatedValue": [
-                                    [
-                                        {
-                                            "value": "diagnosis",
-                                            "name": "D%"
-                                        }
-                                    ],
                                     [
                                         {
                                             "value": "59847-4",
@@ -6402,12 +6342,6 @@
                                 "name": "Skelettmuskuläres Weichteilsarkom/Rhabdomyosarkom",
                                 "description": "",
                                 "aggregatedValue": [
-                                    [
-                                        {
-                                            "value": "diagnosis",
-                                            "name": "C%"
-                                        }
-                                    ],
                                     [
                                         {
                                             "value": "59847-4",
@@ -6443,12 +6377,6 @@
                                 "aggregatedValue": [
                                     [
                                         {
-                                            "value": "diagnosis",
-                                            "name": "C%"
-                                        }
-                                    ],
-                                    [
-                                        {
                                             "value": "59847-4",
                                             "name": "9040/3"
                                         },
@@ -6468,12 +6396,6 @@
                                 "name": "Vaskuläres Weichteilsarkom",
                                 "description": "",
                                 "aggregatedValue": [
-                                    [
-                                        {
-                                            "value": "diagnosis",
-                                            "name": "C%"
-                                        }
-                                    ],
                                     [
                                         {
                                             "value": "59847-4",
@@ -6536,12 +6458,6 @@
                                 "aggregatedValue": [
                                     [
                                         {
-                                            "value": "diagnosis",
-                                            "name": "D%"
-                                        }
-                                    ],
-                                    [
-                                        {
                                             "value": "59847-4",
                                             "name": "9130/1"
                                         },
@@ -6563,12 +6479,6 @@
                                 "aggregatedValue": [
                                     [
                                         {
-                                            "value": "diagnosis",
-                                            "name": "D%"
-                                        }
-                                    ],
-                                    [
-                                        {
                                             "value": "59847-4",
                                             "name": "9560/1"
                                         }
@@ -6580,12 +6490,6 @@
                                 "name": "Sonstiges Weichteilsarkom (unklare Differenzierung)",
                                 "description": "",
                                 "aggregatedValue": [
-                                    [
-                                        {
-                                            "value": "diagnosis",
-                                            "name": "C%"
-                                        }
-                                    ],
                                     [
                                         {
                                             "value": "59847-4",
@@ -6649,12 +6553,6 @@
                                 "aggregatedValue": [
                                     [
                                         {
-                                            "value": "diagnosis",
-                                            "name": "D%"
-                                        }
-                                    ],
-                                    [
-                                        {
                                             "value": "59847-4",
                                             "name": "8802/1"
                                         },
@@ -6687,12 +6585,6 @@
                                 "name": "Undifferenzierter/unklassifizierter Tumor",
                                 "description": "",
                                 "aggregatedValue": [
-                                    [
-                                        {
-                                            "value": "diagnosis",
-                                            "name": "C%"
-                                        }
-                                    ],
                                     [
                                         {
                                             "value": "59847-4",
@@ -7080,12 +6972,6 @@
                                 "aggregatedValue": [
                                     [
                                         {
-                                            "value": "diagnosis",
-                                            "name": "C%"
-                                        }
-                                    ],
-                                    [
-                                        {
                                             "value": "59847-4",
                                             "name": "9100/3"
                                         }
@@ -7097,12 +6983,6 @@
                                 "name": "Germinom",
                                 "description": "",
                                 "aggregatedValue": [
-                                    [
-                                        {
-                                            "value": "diagnosis",
-                                            "name": "C%"
-                                        }
-                                    ],
                                     [
                                         {
                                             "value": "59847-4",
@@ -7138,12 +7018,6 @@
                                 "aggregatedValue": [
                                     [
                                         {
-                                            "value": "diagnosis",
-                                            "name": "C%"
-                                        }
-                                    ],
-                                    [
-                                        {
                                             "value": "59847-4",
                                             "name": "9070/3"
                                         },
@@ -7161,12 +7035,6 @@
                                 "aggregatedValue": [
                                     [
                                         {
-                                            "value": "diagnosis",
-                                            "name": "C%"
-                                        }
-                                    ],
-                                    [
-                                        {
                                             "value": "59847-4",
                                             "name": "9071/3"
                                         }
@@ -7178,12 +7046,6 @@
                                 "name": "Teratom",
                                 "description": "",
                                 "aggregatedValue": [
-                                    [
-                                        {
-                                            "value": "diagnosis",
-                                            "name": "C%"
-                                        }
-                                    ],
                                     [
                                         {
                                             "value": "59847-4",
@@ -7217,12 +7079,6 @@
                                 "name": "Weiterer Keimzelltumor",
                                 "description": "",
                                 "aggregatedValue": [
-                                    [
-                                        {
-                                            "value": "diagnosis",
-                                            "name": "C%"
-                                        }
-                                    ],
                                     [
                                         {
                                             "value": "59847-4",
@@ -7259,6 +7115,8 @@
                 "system": "",
                 "fieldType": "number",
                 "type": "BETWEEN",
+                "min": 1900,
+                "max": 2040,
                 "criteria": []
             },
             {
@@ -7267,6 +7125,8 @@
                 "system": "",
                 "fieldType": "number",
                 "type": "BETWEEN",
+                "min": 0,
+                "max": 150,
                 "criteria": []
             },
             {
