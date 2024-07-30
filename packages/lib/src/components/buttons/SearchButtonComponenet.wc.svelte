@@ -60,6 +60,8 @@
      * for running the query on other backends as well.
      */
     const getResultsFromBackend = (): void => {
+        console.info(`getResultsFromBackend: entered`);
+
         if (controller) {
             controller.abort();
         }
@@ -69,12 +71,18 @@
 
         const ast = buildAstFromQuery($queryStore);
 
+        console.info(`getResultsFromBackend: options1`);
+
         options?.spots?.forEach((spot: SpotOption) => {
+            console.info(`getResultsFromBackend: entered options1`);
+
             const name = spot.name;
             const measureItem: MeasureOption | undefined = $measureStore.find(
                 (measureStoreItem: MeasureOption) =>
                     spot.name === measureStoreItem.name,
             );
+
+            console.info(`getResultsFromBackend: measureItem undef?`);
 
             if (measureItem === undefined) {
                 throw new Error(
@@ -84,6 +92,8 @@
             const measures: Measure[] = measureItem.measures.map(
                 (measureItem: MeasureItem) => measureItem.measure,
             );
+
+            console.info(`getResultsFromBackend: translateAstToCql`);
 
             const cql = translateAstToCql(
                 ast,
@@ -96,7 +106,11 @@
             const measure = buildMeasure(library.url, measures);
             const query = { lang: "cql", lib: library, measure: measure };
 
+            console.info(`getResultsFromBackend: backend`);
+
             const backend = new Spot(new URL(spot.url), spot.sites);
+
+            console.info(`getResultsFromBackend: send1`);
 
             backend.send(
                 btoa(decodeURI(JSON.stringify(query))),
@@ -104,6 +118,8 @@
                 controller,
             );
         });
+
+        console.info(`getResultsFromBackend: options2`);
 
         options?.blazes?.forEach((blaze: BlazeOption) => {
             const {
@@ -136,13 +152,19 @@
 
             const backend = new Blaze(new URL(url), name, updateResponseStore);
 
+            console.info(`getResultsFromBackend: send1`);
+
             backend.send(cql, controller, measures);
         });
+
+        console.info(`getResultsFromBackend: options3`);
 
         options?.customAstBackends?.forEach((customAstBackendUrl: string) => {
             customBackendCallWithAst(ast, customAstBackendUrl);
         });
         emitEvent(ast);
+
+        console.info(`getResultsFromBackend: queryModified`);
 
         queryModified.set(false);
     };
