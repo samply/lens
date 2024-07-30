@@ -44,7 +44,9 @@
                     "enum": [
                         "single-select",
                         "number",
-                        "autocomplete"
+                        "autocomplete",
+                        "string",
+                        "date-range"
                     ]
                 },
                 "type": {
