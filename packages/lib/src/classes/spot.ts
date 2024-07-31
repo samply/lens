@@ -27,7 +27,7 @@ export class Spot {
         console.info(`send: entered`);
         try {
             console.info(`Do a crypto.randomUUID()`);
-            this.currentTask = crypto.randomUUID();
+            this.currentTask = this.randomUUID();
             const beamTaskResponse = await fetch(
                 `${this.url}beam?sites=${this.sites.toString()}`,
                 {
@@ -102,5 +102,55 @@ export class Spot {
             }
         }
         console.info(`send: finished`);
+    }
+
+    /**
+     * Generates a random UUID (Universally Unique Identifier) using the built-in `crypto.randomUUID()` function if available,
+     * or falls back to a simple pseudo-random algorithm if the function is not available.
+     *
+     * @returns A string representing the generated UUID.
+     */
+    randomUUID(): string {
+        // Check if the built-in `crypto.randomUUID()` function is available
+        if (crypto.randomUUID && crypto.randomUUID.bind(crypto)) {
+            return crypto.randomUUID();
+        } else {
+            // Fall back to a home-grown function if `crypto.randomUUID()` is not available
+            return this.generatePseudoRandomUuid();
+        }
+    }
+
+    /**
+     * Generates a UUID (Universally Unique Identifier) using a pseudo-random algorithm.
+     *
+     * @returns A string representing the generated UUID.
+     */
+    generatePseudoRandomUuid(): string {
+        // Define the characters to be used in the UUID
+        const chars = '0123456789abcdef'.split('');
+
+        // Array to store the UUID components
+        const uuid = [];
+
+        // Pseudo-random number generator function
+        const rnd = Math.random;
+
+        // Set specific positions in the UUID array to fixed values
+        uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-'; // Section separator
+        uuid[14] = '4'; // Version 4
+
+        // Generate the remaining components of the UUID
+        for (let i = 0; i < 36; i++) {
+            if (!uuid[i]) {
+                // Generate a random value (ranging from 0 to 15)
+                const r = 0 | rnd() * 16;
+
+                // Set the UUID component based on the random value
+                uuid[i] = chars[(i === 19) ? (r & 0x3) | 0x8 : r & 0xf];
+            }
+        }
+
+        // Join the UUID components and return the result
+        return uuid.join('');
     }
 }

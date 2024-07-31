@@ -1,0 +1,123 @@
+{
+    "iconOptions": {
+        "deleteUrl": "delete_icon.svg",
+        "infoUrl": "info-circle-svgrepo-com.svg",
+        "selectAll": {
+            "text": "Add all"
+        }
+    },
+    "siteMappings": {
+        "ecdc-bridgehead-test1": "Heidelberg-DKFZ"
+    },
+    "chartOptions": {
+        "patients": {
+            "legendMapping": {
+                "ecdc-bridgehead-test1": "Test1"
+            }
+        },
+        "gender": {
+            "legendMapping": {
+                "male": "Male",
+                "female": "Female",
+                "unknown": "Unknown",
+                "other": "Other"
+            }
+        },
+        "age": {
+            "hintText": [
+                "By patients with multiple diagnoses, results may be shown that lie outside the search criteria. "
+            ]
+        }
+    },
+    "tableOptions": {
+        "headerData": [
+            {
+                "title": "Node",
+                "dataKey": "site"
+            },
+            {
+                "title": "Rows",
+                "dataKey": "observations"
+            },
+            {
+                "title": "Isolates",
+                "dataKey": "specimens"
+            },
+            {
+                "title": "Patients",
+                "dataKey": "patients"
+            },
+            {
+                "title": "Labs",
+                "aggregatedDataKeys": [
+                    {
+                        "stratifierCode": "LaboratoryCode"
+                    }
+                ]
+            },
+            {
+                "title": "Hospitals",
+                "aggregatedDataKeys": [
+                    {
+                        "stratifierCode": "HospitalId"
+                    }
+                ]
+            },
+            {
+                "title": "Refguides",
+                "aggregatedDataKeys": [
+                    {
+                        "stratifierCode": "ReferenceGuidelinesSir"
+                    }
+                ]
+            }
+        ]
+    },
+    "resultSummaryOptions": {
+        "title": "Results",
+        "infoButtonText": "Results",
+        "dataTypes": [
+            {
+                "title": "Sites",
+                "dataKey": "collections"
+            },
+            {
+                "title": "Patients",
+                "dataKey": "patients"
+            }
+        ]
+    },
+    "backends": {
+        "spots": [
+            {
+                "name": "ECDC",
+                "backendMeasures": "EHDS2_IN_INITIAL_POPULATION",
+                "url": "http://lens",
+                "sites": [
+                    "ecdc-bridgehead-test1"
+                ],
+                "catalogueKeyToResponseKeyMap": [
+                    ["gender", "Gender"],
+                    ["age_class", "AgeClass"],
+                    ["hospital_unit_type", "HospitalUnitType"],
+                    ["hospital_id", "HospitalId"],
+                    ["laboratory_code", "LaboratoryCode"],
+                    ["pathogen_code", "PathogenCode"],
+                    ["antibiotic_code", "AntibioticCode"],
+                    ["sir_code", "SirCode"],
+                    ["data_source", "DataSource"],
+                    ["isolate_id", "SpecimenIsolateId"],
+                    ["patient_type", "PatientType"],
+                    ["reference_guidelines_sir", "ReferenceGuidelinesSir"],
+                    ["reporting_country", "ReportingCountry"],
+                    ["date_valid_from", "DateValidFrom"],
+                    ["date_used_for_statistics", "DateUsedForStatistics"],
+                    ["year_date_used_for_statistics", "YearDateUsedForStatistics"],
+                    ["year_month_date_used_for_statistics", "YearMonthDateUsedForStatistics"],
+                    ["year_date_valid_from", "YearDateValidFrom"],
+                    ["year_month_date_valid_from", "YearMonthDateValidFrom"]
+                ]
+            }
+        ]
+    }
+}
