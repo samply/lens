@@ -7,7 +7,7 @@
         }
     },
     "siteMappings": {
-        "berlin": "Berlin",
+        "berlin": "Berlin (OBDS)",
         "berlin-test": "Berlin",
         "bonn": "Bonn",
         "dresden": "Dresden",
@@ -218,6 +218,7 @@
                 "backendMeasures": "DKTK_STRAT_DEF_IN_INITIAL_POPULATION",
                 "url": "https://backend.demo.lens.samply.de/prod/",
                 "sites": [
+                    "berlin",
                     "berlin-test",
                     "dresden",
                     "essen",
