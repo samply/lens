@@ -7,7 +7,9 @@
         }
     },
     "siteMappings": {
-        "ecdc-bridgehead-test1": "Heidelberg-DKFZ"
+        "testse": "Sweden",
+        "belgium": "Belgium",
+        "hr-ciph": "Croatia"
     },
     "chartOptions": {
         "patients": {
@@ -92,9 +94,11 @@
             {
                 "name": "ECDC",
                 "backendMeasures": "EHDS2_IN_INITIAL_POPULATION",
-                "url": "http://lens",
+                "url": "https://ehds2-lens.swedencentral.cloudapp.azure.com/backend/",
                 "sites": [
-                    "ecdc-bridgehead-test1"
+                    "testse",
+                    "belgium",
+                    "hr-ciph"
                 ],
                 "catalogueKeyToResponseKeyMap": [
                     ["gender", "Gender"],
