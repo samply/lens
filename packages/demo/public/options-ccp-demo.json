@@ -1,14 +1,32 @@
 {
     "iconOptions": {
+        "deleteUrl": "delete_icon.svg",
         "infoUrl": "info-circle-svgrepo-com.svg",
         "selectAll": {
             "text": "Add all"
         }
     },
+    "siteMappings": {
+        "berlin": "Berlin",
+        "berlin-test": "Berlin",
+        "bonn": "Bonn",
+        "dresden": "Dresden",
+        "essen": "Essen",
+        "frankfurt": "Frankfurt",
+        "freiburg": "Freiburg",
+        "hannover": "Hannover",
+        "mainz": "Mainz",
+        "muenchen-lmu": "München(LMU)",
+        "muenchen-tum": "München(TUM)",
+        "ulm": "Ulm",
+        "wuerzburg": "Würzburg",
+        "mannheim": "Mannheim",
+        "dktk-test": "DKTK-Test",
+        "hamburg": "Hamburg"
+    },
     "chartOptions": {
         "patients": {
             "legendMapping": {
-                "berlin": "Berlin",
                 "berlin-test": "Berlin",
                 "bonn": "Bonn",
                 "dresden": "Dresden",
@@ -22,7 +40,6 @@
                 "ulm": "Ulm",
                 "wuerzburg": "Würzburg",
                 "mannheim": "Mannheim",
-                "dktk-test": "DKTK-Test",
                 "hamburg": "Hamburg"
             }
         },
@@ -52,6 +69,9 @@
             ]
         },
         "therapy_of_tumor": {
+            "hintText": [
+                "Bei Patienten mit mehreren onkologischen Diagnosen werden auch Einträge angezeigt, die ggfs. nicht den ausgewählten Suchkriterien entsprechen."
+            ],
             "aggregations": [
                 "medicationStatements"
             ],
@@ -171,8 +191,6 @@
                     {
                         "stratifierCode": "Histologies",
                         "stratumCode": "1"
-                    },
-                    {
                     }
                 ]
             }
@@ -190,6 +208,60 @@
             {
                 "title": "Patienten",
                 "dataKey": "patients"
+            }
+        ]
+    },
+    "backends": {
+        "spots": [
+            {
+                "name": "DKTK",
+                "backendMeasures": "DKTK_STRAT_DEF_IN_INITIAL_POPULATION",
+                "url": "https://backend.demo.lens.samply.de/prod/",
+                "sites": [
+                    "berlin-test",
+                    "dresden",
+                    "essen",
+                    "frankfurt",
+                    "freiburg",
+                    "hannover",
+                    "mainz",
+                    "muenchen-lmu",
+                    "muenchen-tum",
+                    "ulm",
+                    "wuerzburg",
+                    "mannheim",
+                    "hamburg"
+                ],
+                "catalogueKeyToResponseKeyMap": [
+                    [
+                        "gender",
+                        "Gender"
+                    ],
+                    [
+                        "age_at_diagnosis",
+                        "Age"
+                    ],
+                    [
+                        "diagnosis",
+                        "diagnosis"
+                    ],
+                    [
+                        "medicationStatements",
+                        "MedicationType"
+                    ],
+                    [
+                        "sample_kind",
+                        "sample_kind"
+                    ],
+                    [
+                        "therapy_of_tumor",
+                        "ProcedureType"
+                    ],
+                    [
+                        "75186-7",
+                        "75186-7"
+                    ]
+                ]
             }
         ]
     }

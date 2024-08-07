@@ -35,6 +35,7 @@ lens-chart::part(info-button-icon) {
   height: 16px;
 }
 lens-chart::part(info-button-dialogue) {
+    cursor: auto;
     position: absolute;
     border: none;
     background-color: var(--white);

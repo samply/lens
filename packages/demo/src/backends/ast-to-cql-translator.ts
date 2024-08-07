@@ -6,14 +6,13 @@ import type {
     AstBottomLayerValue,
     AstElement,
     AstTopLayer,
-} from "../types/ast";
+    MeasureItem,
+} from "../../../../dist/types";
 import {
     alias as aliasMap,
     cqltemplate,
     criterionMap,
 } from "./cqlquery-mappings";
-import { getCriteria } from "../stores/catalogue";
-import type { MeasureItem } from "../types/backend";
 
 let codesystems: string[] = [];
 let criteria: string[];
@@ -23,8 +22,9 @@ export const translateAstToCql = (
     returnOnlySingeltons: boolean = true,
     backendMeasures: string,
     measures: MeasureItem[],
+    criterionList: string[],
 ): string => {
-    criteria = getCriteria("diagnosis");
+    criteria = criterionList;
 
     /**
      * DISCUSS: why is this even an array?
@@ -71,7 +71,6 @@ const resolveOperation = (operation: AstElement): string => {
 
     "children" in operation &&
         operation.children.forEach((element: AstElement, index) => {
-            if (element === null) return;
             if ("children" in element) {
                 expression += resolveOperation(element);
             }
@@ -108,9 +107,6 @@ const getSingleton = (criterion: AstBottomLayerValue): string => {
 
     if (myCriterion) {
         const myCQL = cqltemplate.get(myCriterion.type);
-
-        console.log(`getSingleton: myCQL: ${myCQL}`)
-
         if (myCQL) {
             switch (myCriterion.type) {
                 case "gender":
@@ -139,20 +135,6 @@ const getSingleton = (criterion: AstBottomLayerValue): string => {
                 case "observationMolecularMarkerSeqRefNCBI":
                 case "observationMolecularMarkerEnsemblID":
                 case "department":
-
-                // Used by ECDC/EHDS2
-                case "patientHospitalUnitType":
-                case "patientHospitalId":
-                case "patientLaboratoryCode":
-                case "observationPathogenCode":
-                case "observationAntibioticCode":
-                case "observationSirCode":
-                case "observationDataSource":
-                case "observationIsolateId":
-                case "observationPatientType":
-                case "observationReferenceGuidelinesSir":
-                case "observationReportingCountry":
-
                 case "TNMp":
                 case "TNMc": {
                     if (typeof criterion.value === "string") {
@@ -279,42 +261,9 @@ const getSingleton = (criterion: AstBottomLayerValue): string => {
                     );
                     break;
                 }
-
-                // Used by ECDC/EHDS2
-                case "patientAge": {
-                    expression += substituteSimpleRangeCQLExpression(
-                        criterion,
-                        "Age",
-                        myCQL,
-                        0,
-                        1000000000 // Approximately CQL's max int
-                    );
-                    break;
-                }
-                case "observationDateValidFrom": {
-                    expression += substituteSimpleRangeCQLExpression(
-                        criterion,
-                        "Date valid from",
-                        myCQL,
-                        '0001-01-01', //  CQL's min date
-                        '9999-12-31' //  CQL's max date
-                    );
-                    break;
-                }
-                case "observationDateUsedForStatistics": {
-                    expression += substituteSimpleRangeCQLExpression(
-                        criterion,
-                        "Date used for statistics",
-                        myCQL,
-                        '0001-01-01', //  CQL's min date
-                        '9999-12-31' //  CQL's max date
-                    );
-                    break;
-                }
             }
         }
     }
-
     return expression;
 };
 
@@ -376,59 +325,6 @@ const substituteRangeCQLExpression = (
     return "";
 };
 
-/**
- * Substitutes {{D1}} and {{D2}} with min and max values in a CQL expression.
- *
- * Performs some checking of the data and deals with edge cases, e.g. when the user
- * has specified only a minimum value.
- *
- * @param criterion Holds the user-selected min and max values.
- * @param criterionPrefix The name of the attribute for which a range is being defined.
- * @param rangeCQL A CQL expression containing {{D1}} and {{D2}} wildcards.
- * @param defaultMin The default minimum value.
- * @param defaultMax The default maximum value.
- * @returns The substituted CQL expression, where {{D1}} and {{D2}} have been replaced by real values.
- */
-const substituteSimpleRangeCQLExpression = (
-    criterion: AstBottomLayerValue,
-    criterionPrefix: string,
-    rangeCQL: string,
-    defaultMin: any,
-    defaultMax: any,
-): string => {
-    const input = criterion.value as { min: any; max: any };
-    if (input === null) {
-        const errorMessage = `substituteNumericRangeCQLExpression: Throwing away a ${criterionPrefix} range criterion, as it is not of type {min: any, max: any}!`
-        console.warn(errorMessage);
-        throw new Error(errorMessage);
-    }
-    if (input.min === 0 && input.max === 0) {
-        return substituteSimpleCQLExpression(
-            rangeCQL,
-            defaultMin,
-            defaultMin,
-        );
-    } else if (input.min === 0) {
-        return substituteSimpleCQLExpression(
-            rangeCQL,
-            defaultMin,
-            input.max,
-        );
-    } else if (input.max === 0) {
-        return substituteSimpleCQLExpression(
-            rangeCQL,
-            input.min,
-            defaultMax,
-        );
-    } else {
-        return substituteSimpleCQLExpression(
-            rangeCQL,
-            input.min,
-            input.max,
-        );
-    }
-};
-
 const substituteCQLExpression = (
     key: string,
     alias: string[] | undefined,
@@ -460,30 +356,6 @@ const substituteCQLExpression = (
             codesystems.push(systemExpression);
         }
     }
-    if (min || min === 0) {
-        cqlString = cqlString.replace(new RegExp("{{D1}}"), min.toString());
-    }
-    if (max || max === 0) {
-        cqlString = cqlString.replace(new RegExp("{{D2}}"), max.toString());
-    }
-    return cqlString;
-};
-
-/**
- * Substitutes {{D1}} and {{D2}} with min and max values in a CQL expression.
- *
- * @param cql A CQL expression containing {{D1}} and {{D2}} wildcards.
- * @param min The minimum value.
- * @param max The maximum value.
- * @returns The substituted CQL expression, where {{D1}} and {{D2}} have been replaced by the min and max values.
- */
-const substituteSimpleCQLExpression = (
-    cql: string,
-    min: any,
-    max: any,
-): string => {
-    let cqlString = cql;
-
     if (min || min === 0) {
         cqlString = cqlString.replace(new RegExp("{{D1}}"), min.toString());
     }

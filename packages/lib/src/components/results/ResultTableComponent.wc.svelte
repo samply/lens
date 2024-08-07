@@ -25,10 +25,7 @@
 
     let claimedText: string;
     $: claimedText =
-        (($lensOptions?.tableOptions &&
-            $lensOptions.tableOptions?.claimedText &&
-            $lensOptions.tableOptions.claimedText) as string) ||
-        "Processing...";
+        ($lensOptions?.tableOptions?.claimedText as string) || "Processing...";
 
     /**
      * data-types for the table

@@ -10,7 +10,11 @@
 
 <script lang="ts">
     import { writable } from "svelte/store";
-    import type { Category, Criteria } from "../../types/treeData";
+    import type {
+        AggregatedValue,
+        Category,
+        Criteria,
+    } from "../../types/treeData";
     import {
         addItemToQuery,
         queryStore,
@@ -28,7 +32,6 @@
      * @param treeData takes a Category tree to build the autocomplete items from
      * @param noMatchesFoundMessage takes a string to display when no matches are found
      */
-    export let treeData: Category[] = [];
     export let noMatchesFoundMessage: string = "No matches found";
     export let placeholderText: string = "Type to filter conditions";
     export let index: number = 0;
@@ -39,7 +42,6 @@
      * Initialize the catalogue store with the given tree data
      * watch for changes from other components
      */
-    $: $catalogue = treeData;
 
     /**
      * handles the focus state of the input element
@@ -182,13 +184,14 @@
             id: uuidv4(),
             name: inputItem.name,
             key: inputItem.key,
-            type: "type" in inputItem && inputItem.type,
-            system: "system" in inputItem && inputItem.system,
+            type: "type" in inputItem ? inputItem.type : "",
+            system: "system" in inputItem ? inputItem.system : "",
             values: [
                 {
                     value:
                         "aggregatedValue" in inputItem.criterion
-                            ? inputItem.criterion.aggregatedValue
+                            ? (inputItem.criterion
+                                  .aggregatedValue as AggregatedValue[][])
                             : inputItem.criterion.key,
                     name: inputItem.criterion.name,
                     description: inputItem.criterion.description,
@@ -326,8 +329,8 @@
                                 <InfoButtonComponent
                                     showQuery={true}
                                     onlyChildInfo={true}
-                                    queryItem={{ 
-                                        ...queryItem, 
+                                    queryItem={{
+                                        ...queryItem,
                                         values: [value],
                                     }}
                                 />

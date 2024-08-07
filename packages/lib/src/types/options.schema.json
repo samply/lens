@@ -1,0 +1,353 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Lens Options",
+    "description": "The options for the lens",
+    "type": "object",
+    "properties": {
+        "iconOptions": {
+            "type": "object",
+            "properties": {
+                "infoUrl": {
+                    "type": "string",
+                    "pattern": "^.+$",
+                    "description": "The icon to use for the info button"
+                },
+                "deleteUrl": {
+                    "type": "string",
+                    "pattern": "^.+$",
+                    "description": "The icon to use for the info button"
+                },
+                "selectAll": {
+                    "type": "object",
+                    "properties": {
+                        "text": {
+                            "type": "string",
+                            "pattern": "^.+$",
+                            "description": "The text to display for the select all button"
+                        }
+                    },
+                    "additionalProperties": false,
+                    "unevaluatedProperties": false,
+                    "required": []
+                }
+            },
+            "additionalProperties": false,
+            "unevaluatedProperties": false,
+            "required": []
+        },
+        "siteMappings":{
+            "type": "object",
+            "patternProperties": {
+                "^.+$": {
+                    "type": "string",
+                    "pattern": "^.+$"
+                }
+            },
+            "additionalProperties": false,
+            "unevaluatedProperties": false,
+            "required": []
+        },
+        "chartOptions": {
+            "type": "object",
+            "patternProperties": {
+                "^.+$": {
+                    "type": "object",
+                    "properties": {
+                        "legendMapping": {
+                            "type": "object",
+                            "patternProperties": {
+                                "^.+$": {
+                                    "type": "string",
+                                    "pattern": "^.+$"
+                                }
+                            },
+                            "additionalProperties": false,
+                            "unevaluatedProperties": false,
+                            "required": []
+                        },
+                        "hintText": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "pattern": "^.+$",
+                                "description": "The hint text to display as overlay of the info button"
+                            }
+                        },
+                        "aggregations": {
+                            "type": "array",
+                            "description": "add strings of other data keys to include in the chart",
+                            "items": {
+                                "type": "string",
+                                "pattern": "^.+$"
+                            }
+                        },
+                        "accumulatedValues": {
+                            "type": "array",
+                            "description": "aggregate values of other data keys to include in the chart",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "pattern": "^.+$",
+                                        "description": "The name to be displayed in the chart"
+                                    },
+                                    "values": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "pattern": "^.+$",
+                                            "description": "The data key to be aggregated"
+                                        }
+                                    }
+                                },
+                                "additionalProperties": false,
+                                "unevaluatedProperties": false,
+                                "required": []
+                            }
+                        },
+                        "tooltips": {
+                            "type": "object",
+                            "patternProperties": {
+                                "^.+$": {
+                                    "type": "string",
+                                    "pattern": "^.+$",
+                                    "description": "The tooltip to display while hovering over the chart data"
+                                }
+                            },
+                            "additionalProperties": false,
+                            "unevaluatedProperties": false,
+                            "required": []
+                        }
+                    },
+                    "additionalProperties": false,
+                    "unevaluatedProperties": false,
+                    "required": []
+                }
+            },
+            "additionalProperties": false,
+            "unevaluatedProperties": false,
+            "required": []
+        },
+        "tableOptions": {
+            "type": "object",
+            "properties": {
+                "headerData": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "title": {
+                                "type": "string",
+                                "description": "the title of the column",
+                                "pattern": "^.+$"
+                            },
+                            "dataKey": {
+                                "type": "string",
+                                "description": "a single key to display in the table",
+                                "pattern": "^.+$"
+                            },
+                            "aggregatedDataKeys": {
+                                "type": "array",
+                                "description": "an array of keys to aggregate and display in the table as single value",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "groupCode": {
+                                            "type": "string",
+                                            "pattern": "^.+$"
+                                        },
+                                        "stratifierCode": {
+                                            "type": "string",
+                                            "pattern": "^.+$"
+                                        },
+                                        "stratumCode": {
+                                            "type": "string",
+                                            "pattern": "^.+$"
+                                        }
+                                    },
+                                    "additionalProperties": false,
+                                    "unevaluatedProperties": false,
+                                    "required": []
+                                }
+                            }
+                        },
+                        "additionalProperties": false,
+                        "unevaluatedProperties": false,
+                        "required": [
+                            "title"
+                        ]
+                    }
+                },
+                "claimedText": {
+                    "type": "string",
+                    "pattern": "^.+$",
+                    "description": "The text to be displayed when query is being executed"
+                }
+            },
+            "additionalProperties": false,
+            "unevaluatedProperties": false,
+            "required": ["headerData"]
+        },
+        "resultSummaryOptions": {
+            "type": "object",
+            "properties": {
+                "title": {
+                    "type": "string",
+                    "pattern": "^.+$"
+                },
+                "infoButtonText": {
+                    "type": "string",
+                    "pattern": "^.+$"
+                },
+                "dataTypes": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "title": {
+                                "type": "string",
+                                "pattern": "^.+$"
+                            },
+                            "dataKey": {
+                                "type": "string",
+                                "pattern": "^.+$"
+                            },
+                            "aggregatedDataKeys": {
+                                "type": "array",
+                                "description": "an array of keys to aggregate and display in the result summary as single value",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "groupCode": {
+                                            "type": "string",
+                                            "pattern": "^.+$"
+                                        },
+                                        "stratifierCode": {
+                                            "type": "string",
+                                            "pattern": "^.+$"
+                                        },
+                                        "stratumCode": {
+                                            "type": "string",
+                                            "pattern": "^.+$"
+                                        }
+                                    },
+                                    "additionalProperties": false,
+                                    "unevaluatedProperties": false,
+                                    "required": []
+                                }
+                            }
+                        },
+                        "additionalProperties": false,
+                        "unevaluatedProperties": false,
+                        "required": []
+                    }
+                }
+            },
+            "additionalProperties": false,
+            "unevaluatedProperties": false,
+            "required": []
+        },
+        "backends": {
+            "type": "object",
+            "properties": {
+                "customBackends": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "pattern": "^.+$",
+                        "description": "The URL of the custom backend"
+                    }
+                },
+                "spots": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "pattern": "^.+$",
+                                "description": "The name of the spot"
+                            },
+                            "backendMeasures": {
+                                "type": "string",
+                                "pattern": "^.+$",
+                                "description": "The measures of the spot"
+                            },
+                            "url": {
+                                "type": "string",
+                                "pattern": "^.+$",
+                                "description": "The URL of the spot"
+                            },
+                            "sites": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string",
+                                    "pattern": "^.+$",
+                                    "description": "The sites of the spot"
+                                }
+                            },
+                            "catalogueKeyToResponseKeyMap": {
+                                "type": "array",
+                                "items": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "pattern": "^.+$",
+                                        "description": "The mapping of the catalogue key to the response key"
+                                    }
+                                }
+                            }
+                        },
+                        "additionalProperties": false,
+                        "unevaluatedProperties": false,
+                        "required": ["name", "backendMeasures", "url", "sites"]
+                    }
+                },
+                "blazes": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "pattern": "^.+$",
+                                "description": "The name of the blaze"
+                            },
+                            "backendMeasures": {
+                                "type": "string",
+                                "pattern": "^.+$",
+                                "description": "The measures of the blaze"
+                            },
+                            "url": {
+                                "type": "string",
+                                "pattern": "^.+$",
+                                "description": "The URL of the blaze"
+                            },
+                            "catalogueKeyToResponseKeyMap": {
+                                "type": "array",
+                                "items": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "pattern": "^.+$",
+                                        "description": "The mapping of the catalogue key to the response key"
+                                    }
+                                }
+                            }
+                        },
+                        "additionalProperties": false,
+                        "unevaluatedProperties": false,
+                        "required": ["name", "backendMeasures", "url"]
+                    }
+                }
+            },
+            "additionalProperties": false,
+            "unevaluatedProperties": false,
+            "required": []
+        }
+    },
+    "additionalProperties": false,
+    "unevaluatedProperties": false,
+    "required": []
+}

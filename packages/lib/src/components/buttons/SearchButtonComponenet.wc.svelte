@@ -16,57 +16,52 @@
     import { translateAstToCql } from "../../cql-translator-service/ast-to-cql-translator";
     import { buildLibrary, buildMeasure } from "../../helpers/cql-measure";
     import { Spot } from "../../classes/spot";
-    import {
-        catalogueKeyToResponseKeyMap,
-        uiSiteMappingsStore,
-    } from "../../stores/mappings";
-    import type { Measure, BackendConfig } from "../../types/backend";
-    import { responseStore } from "../../stores/response";
+    import { Blaze } from "../../classes/blaze";
+    import { catalogueKeyToResponseKeyMap } from "../../stores/mappings";
+    import { responseStore, updateResponseStore } from "../../stores/response";
+    import { lensOptions } from "../../stores/options";
+    import type {
+        BackendOptions,
+        BlazeOption,
+        Measure,
+        MeasureItem,
+        MeasureOption,
+        SpotOption,
+    } from "../../types/backend";
+    import type { AstTopLayer } from "../../types/ast";
+    import type { Site } from "../../types/response";
 
     export let title: string = "Search";
-    export let backendConfig: BackendConfig = {
-        url: "http://localhost:8080",
-        backends: ["dktk-test", "mannheim"],
-        uiSiteMap: [
-            ["dktk-test", "DKTK Test"],
-            ["mannheim", "Mannheim"],
-        ],
-        catalogueKeyToResponseKeyMap: [],
-    };
 
     export let disabled: boolean = false;
-    export let measures: Measure[] = [];
-    export let backendMeasures: string = "";
-    let controller: AbortController;
 
-    /**
-     * watches the backendConfig for changes to populate the uiSiteMappingsStore with a map
-     * web components' props are json, meaning that Maps are not supported
-     * therefore it's a 2d array of strings which is converted to a map
-     */
-    $: uiSiteMappingsStore.update((mappings) => {
-        backendConfig.uiSiteMap.forEach((site) => {
-            mappings.set(site[0], site[1]);
-        });
-        return mappings;
-    });
+    $: options = $lensOptions?.backends as BackendOptions;
+
+    let controller: AbortController = new AbortController();
 
     $: catalogueKeyToResponseKeyMap.update((mappings) => {
-        backendConfig.catalogueKeyToResponseKeyMap.forEach((mapping) => {
-            mappings.set(mapping[0], mapping[1]);
+        options?.spots?.forEach((spot) => {
+            spot.catalogueKeyToResponseKeyMap.forEach((mapping) => {
+                mappings.set(mapping[0], mapping[1]);
+            });
+        });
+        options?.blazes?.forEach((blaze: BlazeOption) => {
+            blaze.catalogueKeyToResponseKeyMap.forEach((mapping) => {
+                mappings.set(mapping[0], mapping[1]);
+            });
         });
         return mappings;
     });
 
     /**
-     * watches the measures for changes to populate the measureStore
+     * Triggers a request to the backend.
+     * Multiple spots and blazes can be configured in lens options.
+     * Emits the ast and the updateResponseStore function to the project
+     * for running the query on other backends as well.
      */
-    $: measureStore.set(measures);
+    const getResultsFromBackend = (): void => {
+        console.info(`getResultsFromBackend: entered`);
 
-    /**
-     * triggers a request to the backend via the spot class
-     */
-    const getResultsFromBackend = async (): void => {
         if (controller) {
             controller.abort();
         }
@@ -75,23 +70,147 @@
         controller = new AbortController();
 
         const ast = buildAstFromQuery($queryStore);
-        const cql = translateAstToCql(ast, false, backendMeasures);
 
-        const library = buildLibrary(`${cql}`);
-        const measure = buildMeasure(
-            library.url,
-            $measureStore.map((measureItem) => measureItem.measure),
-        );
-        const query = { lang: "cql", lib: library, measure: measure };
+        console.info(`getResultsFromBackend: options1`);
 
-        const backend = new Spot(
-            new URL(backendConfig.url),
-            backendConfig.backends,
-        );
+        options?.spots?.forEach((spot: SpotOption) => {
+            console.info(`getResultsFromBackend: entered options1`);
 
-        backend.send(btoa(decodeURI(JSON.stringify(query))), controller);
+            const name = spot.name;
+            const measureItem: MeasureOption | undefined = $measureStore.find(
+                (measureStoreItem: MeasureOption) =>
+                    spot.name === measureStoreItem.name,
+            );
+
+            console.info(`getResultsFromBackend: measureItem undef?`);
+
+            if (measureItem === undefined) {
+                throw new Error(
+                    `No measures found for backend ${name}. Please check the measures store.`,
+                );
+            }
+            const measures: Measure[] = measureItem.measures.map(
+                (measureItem: MeasureItem) => measureItem.measure,
+            );
+
+            console.info(`getResultsFromBackend: translateAstToCql`);
+
+            const cql = translateAstToCql(
+                ast,
+                false,
+                spot.backendMeasures,
+                measureItem.measures,
+            );
+
+            const library = buildLibrary(`${cql}`);
+            const measure = buildMeasure(library.url, measures);
+            const query = { lang: "cql", lib: library, measure: measure };
+
+            console.info(`getResultsFromBackend: backend`);
+
+            const backend = new Spot(new URL(spot.url), spot.sites);
+
+            console.info(`getResultsFromBackend: send1`);
+
+            backend.send(
+                btoa(decodeURI(JSON.stringify(query))),
+                updateResponseStore,
+                controller,
+            );
+        });
+
+        console.info(`getResultsFromBackend: options2`);
+
+        options?.blazes?.forEach((blaze: BlazeOption) => {
+            const {
+                name,
+                url,
+                backendMeasures,
+            }: { name: string; url: string; backendMeasures: string } = blaze;
+
+            const measureItem: MeasureOption | undefined = $measureStore.find(
+                (measureStoreItem: MeasureOption) =>
+                    name === measureStoreItem.name,
+            );
+
+            if (measureItem === undefined) {
+                throw new Error(
+                    `No measures found for backend ${name}. Please check the measures store.`,
+                );
+            }
+
+            const measures: Measure[] = measureItem.measures.map(
+                (measureItem: MeasureItem) => measureItem.measure,
+            );
+
+            const cql = translateAstToCql(
+                ast,
+                false,
+                backendMeasures,
+                measureItem.measures,
+            );
+
+            const backend = new Blaze(new URL(url), name, updateResponseStore);
+
+            console.info(`getResultsFromBackend: send1`);
+
+            backend.send(cql, controller, measures);
+        });
+
+        console.info(`getResultsFromBackend: options3`);
+
+        options?.customAstBackends?.forEach((customAstBackendUrl: string) => {
+            customBackendCallWithAst(ast, customAstBackendUrl);
+        });
+        emitEvent(ast);
+
+        console.info(`getResultsFromBackend: queryModified`);
 
         queryModified.set(false);
+    };
+
+    /**
+     * Sends the ast to a custom backend
+     * @param ast the ast to be sent to the backend
+     * @param url the url of the backend
+     */
+    const customBackendCallWithAst = (ast: AstTopLayer, url: string): void => {
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(ast),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                updateResponseStore(data);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    };
+
+    interface QueryEvent extends Event {
+        detail: {
+            ast: AstTopLayer;
+            updateResponse: (response: Map<string, Site>) => void;
+            abortController?: AbortController;
+        };
+    }
+    /**
+     * Emits the ast and the updateResponseStore function to the project
+     * @param ast the ast to be emitted
+     */
+    const emitEvent = (ast: AstTopLayer): void => {
+        const event: QueryEvent = new CustomEvent("emit-lens-query", {
+            detail: {
+                ast: ast,
+                updateResponse: updateResponseStore,
+                abortController: controller,
+            },
+        });
+        window.dispatchEvent(event);
     };
 </script>
 

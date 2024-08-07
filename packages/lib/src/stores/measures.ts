@@ -1,9 +1,9 @@
-import { writable } from 'svelte/store';    
-import type { Measure } from '../types/backend';
+import { writable } from "svelte/store";
+import type { MeasureStore } from "../types/backend";
 
 /**
- * Store to hold the measures 
+ * Store to hold the measures
  * populated by the search button
  */
 
-export const measureStore = writable<Measure[]>([]);
+export const measureStore = writable<MeasureStore>();

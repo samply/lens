@@ -1,0 +1,268 @@
+{
+    "iconOptions": {
+        "deleteUrl": "delete_icon.svg",
+        "infoUrl": "info-circle-svgrepo-com.svg",
+        "selectAll": {
+            "text": "Add all"
+        }
+    },
+    "siteMappings": {
+        "berlin": "Berlin",
+        "berlin-test": "Berlin",
+        "bonn": "Bonn",
+        "dresden": "Dresden",
+        "essen": "Essen",
+        "frankfurt": "Frankfurt",
+        "freiburg": "Freiburg",
+        "hannover": "Hannover",
+        "mainz": "Mainz",
+        "muenchen-lmu": "München(LMU)",
+        "muenchen-tum": "München(TUM)",
+        "ulm": "Ulm",
+        "wuerzburg": "Würzburg",
+        "mannheim": "Mannheim",
+        "dktk-test": "DKTK-Test",
+        "hamburg": "Hamburg"
+    },
+    "chartOptions": {
+        "patients": {
+            "legendMapping": {
+                "berlin-test": "Berlin",
+                "bonn": "Bonn",
+                "dresden": "Dresden",
+                "essen": "Essen",
+                "frankfurt": "Frankfurt",
+                "freiburg": "Freiburg",
+                "hannover": "Hannover",
+                "mainz": "Mainz",
+                "muenchen-lmu": "München(LMU)",
+                "muenchen-tum": "München(TUM)",
+                "ulm": "Ulm",
+                "wuerzburg": "Würzburg",
+                "mannheim": "Mannheim",
+                "hamburg": "Hamburg"
+            }
+        },
+        "gender": {
+            "legendMapping": {
+                "male": "Männlich",
+                "female": "Weiblich",
+                "unknown": "Unbekannt",
+                "other": "Divers"
+            }
+        },
+        "diagnosis": {
+            "hintText": [
+                "Bei Patienten mit mehreren onkologischen Diagnosen werden auch Einträge angezeigt, die ggfs. nicht den ausgewählten Suchkriterien entsprechen."
+            ]
+        },
+        "age_at_diagnosis": {
+            "hintText": [
+                "Bei Patienten mit mehreren Erstdiagnosen werden auch Einträge angezeigt, die ggfs. außerhalb der Suchkriterien liegen. "
+            ]
+        },
+        "75186-7": {
+            "hintText": [
+                "\"verstorben\": ein Todesdatum ist dokumentiert oder das aktuelle Lebensalter ist größer 123 Jahre.",
+                "\"lebend\": wird angenommen, wenn kein Todesdatum dokumentiert ist oder das aktuelle Lebensalter nicht 123 Jahre überschritten hat.",
+                "\"unbekannt\": kein Geburtsdatum oder Todesdatum bekannt."
+            ]
+        },
+        "therapy_of_tumor": {
+            "hintText": [
+                "Bei Patienten mit mehreren onkologischen Diagnosen werden auch Einträge angezeigt, die ggfs. nicht den ausgewählten Suchkriterien entsprechen."
+            ],
+            "aggregations": [
+                "medicationStatements"
+            ],
+            "tooltips": {
+                "OP": "Operationen",
+                "ST": "Strahlentherapien",
+                "medicationStatements": "Systemische Therapien"
+            }
+        },
+        "medicationStatements": {
+            "hintText": [
+                "Angezeigt wird die Art der systemischen oder abwartenden Therapie (ADT Basisdatensatz Versionen 2014, 2021). Bei Patienten mit mehreren onkologischen Diagnosen werden auch Einträge angezeigt, die ggfs. nicht den ausgewählten Suchkriterien entsprechen. "
+            ],
+            "tooltips": {
+                "CH": "Chemotherapie",
+                "HO": "Hormontherapie",
+                "IM": "Immun-/Antikörpertherapie",
+                "KM": "Knochenmarktransplantation",
+                "ZS": "zielgerichtete Substanzen",
+                "CI": "Chemo- + Immun-/Antikörpertherapie",
+                "CZ": "Chemotherapie + zielgerichtete Substanzen",
+                "CIZ": "Chemo- + Immun-/Antikörpertherapie + zielgerichtete Substanzen",
+                "IZ": "Immun-/Antikörpertherapie + zielgerichtete Substanzen",
+                "SZ": "Stammzelltransplantation (inklusive Knochenmarktransplantation)",
+                "AS": "Active Surveillance",
+                "WS": "Wait and see",
+                "WW": "Watchful Waiting",
+                "SO": "Sonstiges"
+            }
+        },
+        "sample_kind": {
+            "hintText": [
+                "Verteilung der Probentypen die mit den identifizierten Patienten verbunden sind."
+            ],
+            "accumulatedValues": [
+                {
+                    "name": "ffpe-tissue",
+                    "values": [
+                        "tissue-ffpe",
+                        "tumor-tissue-ffpe",
+                        "normal-tissue-ffpe",
+                        "other-tissue-ffpe"
+                    ]
+                },
+                {
+                    "name": "frozen-tissue",
+                    "values": [
+                        "tissue-frozen",
+                        "tumor-tissue-frozen",
+                        "normal-tissue-frozen",
+                        "other-tissue-frozen"
+                    ]
+                }
+            ],
+            "tooltips": {
+                "ffpe-tissue": "Gewebe FFPE",
+                "frozen-tissue": "Gewebe schockgefroren",
+                "tissue-other": "Gewebe, Andere Konservierungsart",
+                "whole-blood": "Vollblut",
+                "blood-serum": "Serum",
+                "blood-plasma": "Plasma",
+                "buffy-coat": "Buffy Coat",
+                "peripheral-blood-cells": "Periphere mononukleäre Blutzellen (PBMC)",
+                "dried-whole-blood": "Blutkarten",
+                "swab": "Abstrich",
+                "ascites": "Aszites",
+                "stool-faeces": "Stuhl",
+                "urine": "Urin",
+                "csf-liquor": "Liquor",
+                "bone-marrow": "Knochenmark",
+                "saliva": "Speichel",
+                "liquid-other": "Flüssigprobe, Andere",
+                "dna": "DNA",
+                "rna": "RNA",
+                "derivative-other": "Derivat, Andere"
+            },
+            "legendMapping":{
+                "ffpe-tissue": "Gewebe FFPE",
+                "frozen-tissue": "Gewebe schockgefroren",
+                "tissue-other": "Gewebe, Andere Konservierungsart",
+                "whole-blood": "Vollblut",
+                "blood-serum": "Serum",
+                "blood-plasma": "Plasma",
+                "buffy-coat": "Buffy Coat",
+                "peripheral-blood-cells": "Periphere mononukleäre Blutzellen (PBMC)",
+                "dried-whole-blood": "Blutkarten",
+                "swab": "Abstrich",
+                "ascites": "Aszites",
+                "stool-faeces": "Stuhl",
+                "urine": "Urin",
+                "csf-liquor": "Liquor",
+                "bone-marrow": "Knochenmark",
+                "saliva": "Speichel",
+                "liquid-other": "Flüssigprobe, Andere",
+                "dna": "DNA",
+                "rna": "RNA",
+                "derivative-other": "Derivat, Andere"
+            }
+        }
+    },
+    "tableOptions": {
+        "headerData": [
+            {
+                "title": "Standorte",
+                "dataKey": "site"
+            },
+            {
+                "title": "Patienten",
+                "dataKey": "patients"
+            },
+            {
+                "title": "Bioproben*",
+                "aggregatedDataKeys": [
+                    {
+                        "groupCode": "specimen"
+                    },
+                    {
+                        "stratifierCode": "Histologies",
+                        "stratumCode": "1"
+                    }
+                ]
+            }
+        ],
+        "claimedText": "Processing..."
+    },
+    "resultSummaryOptions": {
+        "title": "Ergebnisse",
+        "infoButtonText": "Um eine Re-Identifizierung zu erschweren, werden Standortergebnisse modifiziert und auf Zehnerstellen gerundet. Meldet ein Standort keinen Treffer, wird für diesen null angezeigt.",
+        "dataTypes": [
+            {
+                "title": "Standorte",
+                "dataKey": "collections"
+            },
+            {
+                "title": "Patienten",
+                "dataKey": "patients"
+            }
+        ]
+    },
+    "backends": {
+        "spots": [
+            {
+                "name": "DKTK",
+                "backendMeasures": "DKTK_STRAT_DEF_IN_INITIAL_POPULATION",
+                "url": "https://backend.data.dktk.dkfz.de/prod/",
+                "sites": [
+                    "berlin-test",
+                    "dresden",
+                    "essen",
+                    "frankfurt",
+                    "freiburg",
+                    "hannover",
+                    "mainz",
+                    "muenchen-lmu",
+                    "muenchen-tum",
+                    "ulm",
+                    "wuerzburg",
+                    "mannheim",
+                    "hamburg"
+                ],
+                "catalogueKeyToResponseKeyMap": [
+                    [
+                        "gender",
+                        "Gender"
+                    ],
+                    [
+                        "age_at_diagnosis",
+                        "Age"
+                    ],
+                    [
+                        "diagnosis",
+                        "diagnosis"
+                    ],
+                    [
+                        "medicationStatements",
+                        "MedicationType"
+                    ],
+                    [
+                        "sample_kind",
+                        "sample_kind"
+                    ],
+                    [
+                        "therapy_of_tumor",
+                        "ProcedureType"
+                    ],
+                    [
+                        "75186-7",
+                        "75186-7"
+                    ]
+                ]
+            }
+        ]
+    }
+}
