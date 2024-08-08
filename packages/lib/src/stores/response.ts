@@ -29,6 +29,7 @@ export const updateResponseStore = (response: ResponseStore): void => {
         changes.forEach((value, key) => {
             store.set(key, value);
         });
+
         return store;
     });
 };

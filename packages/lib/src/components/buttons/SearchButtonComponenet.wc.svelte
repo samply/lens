@@ -117,6 +117,8 @@
                 updateResponseStore,
                 controller,
             );
+
+            console.info(`getResultsFromBackend: sent1`);
         });
 
         console.info(`getResultsFromBackend: options2`);

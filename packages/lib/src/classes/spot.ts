@@ -24,9 +24,7 @@ export class Spot {
         updateResponse: (response: ResponseStore) => void,
         controller: AbortController,
     ): Promise<void> {
-        console.info(`send: entered`);
         try {
-            console.info(`Do a crypto.randomUUID()`);
             this.currentTask = this.randomUUID();
             const beamTaskResponse = await fetch(
                 `${this.url}beam?sites=${this.sites.toString()}`,
@@ -44,7 +42,6 @@ export class Spot {
                     signal: controller.signal,
                 },
             );
-            console.info(`We got a Beam response`);
             if (!beamTaskResponse.ok) {
                 const error = await beamTaskResponse.text();
                 console.debug(
@@ -53,7 +50,7 @@ export class Spot {
                 throw new Error(`Unable to create new beam task.`);
             }
 
-            console.info(`Created new Beam Task with id ${this.currentTask}`);
+            console.info(`send: Created new Beam Task with id ${this.currentTask}`);
 
             /**
              * Listenes to the new_result event from beam and updates the response store
@@ -74,16 +71,37 @@ export class Spot {
                         ? JSON.parse(atob(response.body))
                         : null;
 
+                console.log(`send: addEventListener: site: ${site}`)
+                console.log(`send: addEventListener: status: ${status}`)
+                console.log(`send: addEventListener: response.body: ${atob(response.body)}`)
+
                 const parsedResponse: ResponseStore = new Map().set(site, {
                     status: status,
                     data: body,
                 });
+
                 updateResponse(parsedResponse);
             });
 
             // read error events from beam
             eventSource.addEventListener("error", (message) => {
-                console.error(`Beam returned error ${message}`);
+                console.log("send: eventSource.url: " + eventSource.url)
+                // Check if the event has a data property
+                if (message.data) {
+                    console.error(`Beam returned error: ${message.data}`);
+                } else if (message.target && message.target.readyState !== undefined) {
+                    // If the EventSource is in a closed state
+                    if (message.target.readyState === EventSource.CLOSED) {
+                        console.error("Beam connection was closed unexpectedly");
+                    } else if (message.target.readyState === EventSource.CONNECTING) {
+                            console.error("Beam is reconnecting");
+                    } else {
+                        console.error(`Beam returned an unknown error event`);
+                    }
+                } else {
+                    // Fallback for other types of events
+                    console.error(`Beam returned error: ${JSON.stringify(message)}`);
+                }
                 eventSource.close();
             });
 
@@ -92,16 +110,17 @@ export class Spot {
                 console.info(
                     `Querying results from sites for task ${this.currentTask} finished.`,
                 );
+
                 eventSource.close();
             };
         } catch (err) {
+            console.log(`send: we got some kind of error`)
             if (err instanceof Error && err.name === "AbortError") {
                 console.log(`Aborting request ${this.currentTask}`);
             } else {
                 console.error(err);
             }
         }
-        console.info(`send: finished`);
     }
 
     /**
@@ -152,5 +171,31 @@ export class Spot {
 
         // Join the UUID components and return the result
         return uuid.join('');
+    }
+
+    printEventSourceState(prefix: string, eventSource: EventSource) {
+        if (!eventSource) {
+            console.log(prefix + "EventSource is not provided or initialized.");
+            return;
+        }
+
+        if (eventSource.readyState === undefined) {
+            console.log(prefix + "EventSource is not initialized or has been removed.");
+            return;
+        }
+
+        switch (eventSource.readyState) {
+            case EventSource.CONNECTING:
+                console.log(prefix + "printEventSourceState: EventSource is trying to reconnect...");
+                break;
+            case EventSource.OPEN:
+                console.log(prefix + "printEventSourceState: EventSource is open.");
+                break;
+            case EventSource.CLOSED:
+                console.log(prefix + "printEventSourceState: EventSource connection is closed.");
+                break;
+            default:
+                console.log(prefix + "printEventSourceState: Unknown EventSource state.");
+        }
     }
 }
