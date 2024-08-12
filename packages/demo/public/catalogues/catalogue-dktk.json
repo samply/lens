@@ -20354,5 +20354,56 @@
                 ]
             }
         ]
+    },
+    {
+        "key": "project",
+        "name": "Forschungsprojekte",
+        "infoButtonText": ["Projekt-Übersicht"],
+        "childCategories": [
+            {
+                "key": "pseudo_projects",
+                "name": "Projektname",
+                "fieldType": "single-select",
+                "type": "EQUALS",
+                "system": "",
+                "criteria": [
+                    {
+                        "key": "DKTK000002089",
+                        "name": "EXLIQUID",
+                        "description": ""
+                    },
+                    {
+                        "key": "DKTK000001985",
+                        "name": "RiskY-AML",
+                        "description": ""
+                    },
+                    {
+                        "key": "DKTK000001986",
+                        "name": "MASTER-Programm",
+                        "description": ""
+                    },
+                    {
+                        "key": "DKTK000001950",
+                        "name": "IRCC",
+                        "description": ""
+                    },
+                    {
+                        "key": "DKTK000001951",
+                        "name": "ARMANI",
+                        "description": ""
+                    },
+                    {
+                        "key": "DKTK999999999",
+                        "name": "Testprojekt",
+                        "description": ""
+                    },
+                    {
+                        "key": "DKTK000000791",
+                        "name": "ReKo",
+                        "description": ""
+                    }
+                ]
+            }
+        ]
     }
 ]
