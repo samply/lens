@@ -208,6 +208,11 @@
             {
                 "title": "Patienten",
                 "dataKey": "patients"
+            },
+            {
+                "title": "Bioproben",
+                "dataKey": "bioproben"
+
             }
         ]
     },
