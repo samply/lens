@@ -84,7 +84,7 @@ export const cqltemplate = new Map<string, string>([
     ["gender", "Patient.gender = '{{C}}'"],
     [
         "pseudo_projects",
-        "  exists ( Patient.extension E where E.url = 'http://dktk.dkfz.de/fhir/Projects/{{C}}')",
+        "  exists ( Patient.extension E where E.url = 'http://dktk.dkfz.de/fhir/projects/{{C}}')",
     ],
     ["conditionValue", "exists [Condition: Code '{{C}}' from {{A1}}]"],
     [
