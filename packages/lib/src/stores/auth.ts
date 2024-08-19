@@ -8,6 +8,7 @@ export const authStore = writable<string>("");
 
 let refreshToken = "";
 const refreshTokenTimeInSeconds = 60; // 5 minutes
+// let accessToken = "";
 
 fetchAccessToken();
 
@@ -15,16 +16,16 @@ fetchAccessToken();
  * Fetches the access token from the backend service
  */
 export async function fetchAccessToken(): Promise<void> {
-    // const res = await fetch(`/oauth2/auth`, {
-    //     method: "GET",
-    //     credentials: "include",
-    // });
+    const res = await fetch(`/oauth2/auth`, {
+        method: "GET",
+        credentials: "include",
+    });
 
-    // const temporaryToken = res.headers.get("Authorization");
-    // const token = temporaryToken ? temporaryToken.split(" ")[1] : "";
-    // console.log(token);
+    const temporaryToken = res.headers.get("Authorization");
+    const token = temporaryToken ? temporaryToken.split(" ")[1] : "";
+    console.log(token);
 
-    // authStore.set(token);
+    authStore.set(token);
 
     const response = await fetch(
         `https://login.verbis.dkfz.de/realms/test-realm-01/protocol/openid-connect/token`,
@@ -34,9 +35,11 @@ export async function fetchAccessToken(): Promise<void> {
                 "Content-Type": "application/x-www-form-urlencoded",
             },
             body: new URLSearchParams({
-                grant_type: "client_credentials",
-                client_id: "bridgehead-test-private",
-                client_secret: "mmDjwfaoLeTzdRUeGZRDEIaYXgY3zL6r",
+                grant_type: "authorization_code",
+                code: token,
+                redirect_uri: "https://localhost",
+                client_id: "lens-test-2",
+                client_secret: "e8ii0fDLJq6iHUeUEtDckZVRyWwCV0La",
             }),
             credentials: "include",
         },
@@ -44,8 +47,10 @@ export async function fetchAccessToken(): Promise<void> {
 
     if (response.ok) {
         const data = await response.json();
-        authStore.set(data.access_token);
+        // authStore.set(data.access_token);
         refreshToken = data.refresh_token;
+        console.log(data.access_token);
+        console.log(data.refresh_token);
     } else {
         console.error("Failed to fetch access token");
     }
@@ -65,8 +70,8 @@ async function refreshAccessToken(): Promise<void> {
             },
             body: new URLSearchParams({
                 grant_type: "refresh_token",
-                client_id: "bridgehead-test-private",
-                client_secret: "mmDjwfaoLeTzdRUeGZRDEIaYXgY3zL6r",
+                client_id: "lens-test-2",
+                client_secret: "e8ii0fDLJq6iHUeUEtDckZVRyWwCV0La",
                 refresh_token: refreshToken,
             }),
             credentials: "include",
