@@ -22,7 +22,7 @@ export const activeNumberInputs = writable<QueryItem[]>([]);
  * @returns array of strings containing the bottom level items' keys
  */
 export const getCriteria = (category: string): string[] => {
-    let bottomLevelItems;
+    let bottomLevelItems: string[] = [];
 
     catalogue.subscribe((catalogue) => {
         bottomLevelItems = getBottomLevelItems(catalogue, category);
