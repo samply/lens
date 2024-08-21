@@ -3,7 +3,8 @@
         "deleteUrl": "delete_icon.svg",
         "infoUrl": "info-circle-svgrepo-com.svg",
         "selectAll": {
-            "text": "Add all"
+            "text": "Alle Hinzufügen"
+
         }
     },
     "siteMappings": {
