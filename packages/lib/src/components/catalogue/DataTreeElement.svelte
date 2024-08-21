@@ -215,10 +215,7 @@
         {:else}
             <div part="data-tree-element-last-child-options">
                 {#if "fieldType" in element && element.fieldType === "single-select"}
-                    <SingleSelectComponent
-                        {element}
-                        subgrouping={subCategoryName ? true : false}
-                    />
+                    <SingleSelectComponent {element} />
                 {:else if "fieldType" in element && element.fieldType === "autocomplete"}
                     <AutocompleteComponent {element} />
                 {:else if "fieldType" in element && element.fieldType === "number"}
