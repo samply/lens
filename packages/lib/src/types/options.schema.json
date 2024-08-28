@@ -47,6 +47,17 @@
             "unevaluatedProperties": false,
             "required": []
         },
+        "catalogueKeyToResponseKeyMap": {
+            "type": "array",
+            "items": {
+                "type": "array",
+                "items": {
+                    "type": "string",
+                    "pattern": "^.+$",
+                    "description": "The mapping of the catalogue key to the response key"
+                }
+            }
+        },
         "chartOptions": {
             "type": "object",
             "patternProperties": {
@@ -286,17 +297,6 @@
                                     "pattern": "^.+$",
                                     "description": "The sites of the spot"
                                 }
-                            },
-                            "catalogueKeyToResponseKeyMap": {
-                                "type": "array",
-                                "items": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "string",
-                                        "pattern": "^.+$",
-                                        "description": "The mapping of the catalogue key to the response key"
-                                    }
-                                }
                             }
                         },
                         "additionalProperties": false,
@@ -323,17 +323,6 @@
                                 "type": "string",
                                 "pattern": "^.+$",
                                 "description": "The URL of the blaze"
-                            },
-                            "catalogueKeyToResponseKeyMap": {
-                                "type": "array",
-                                "items": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "string",
-                                        "pattern": "^.+$",
-                                        "description": "The mapping of the catalogue key to the response key"
-                                    }
-                                }
                             }
                         },
                         "additionalProperties": false,

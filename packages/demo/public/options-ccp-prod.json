@@ -25,6 +25,36 @@
         "dktk-test": "DKTK-Test",
         "hamburg": "Hamburg"
     },
+    "catalogueKeyToResponseKeyMap": [
+        [
+            "gender",
+            "Gender"
+        ],
+        [
+            "age_at_diagnosis",
+            "Age"
+        ],
+        [
+            "diagnosis",
+            "diagnosis"
+        ],
+        [
+            "medicationStatements",
+            "MedicationType"
+        ],
+        [
+            "sample_kind",
+            "sample_kind"
+        ],
+        [
+            "therapy_of_tumor",
+            "ProcedureType"
+        ],
+        [
+            "75186-7",
+            "75186-7"
+        ]
+    ],
     "chartOptions": {
         "patients": {
             "legendMapping": {

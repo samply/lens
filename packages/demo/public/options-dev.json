@@ -23,6 +23,36 @@
         "dktk-test": "DKTK-Test",
         "hamburg": "Hamburg"
     },
+    "catalogueKeyToResponseKeyMap": [
+        [
+            "gender",
+            "Gender"
+        ],
+        [
+            "age_at_diagnosis",
+            "Age"
+        ],
+        [
+            "diagnosis",
+            "diagnosis"
+        ],
+        [
+            "medicationStatements",
+            "MedicationType"
+        ],
+        [
+            "sample_kind",
+            "sample_kind"
+        ],
+        [
+            "therapy_of_tumor",
+            "ProcedureType"
+        ],
+        [
+            "75186-7",
+            "75186-7"
+        ]
+    ],
     "chartOptions": {
         "patients": {
             "legendMapping": {
@@ -149,7 +179,7 @@
                 "rna": "RNA",
                 "derivative-other": "Derivat, Andere"
             },
-            "legendMapping":{
+            "legendMapping": {
                 "ffpe-tissue": "Gewebe FFPE",
                 "frozen-tissue": "Gewebe schockgefroren",
                 "tissue-other": "Gewebe, Andere Konservierungsart",
@@ -239,36 +269,6 @@
                     "wuerzburg",
                     "mannheim",
                     "hamburg"
-                ],
-                "catalogueKeyToResponseKeyMap": [
-                    [
-                        "gender",
-                        "Gender"
-                    ],
-                    [
-                        "age_at_diagnosis",
-                        "Age"
-                    ],
-                    [
-                        "diagnosis",
-                        "diagnosis"
-                    ],
-                    [
-                        "medicationStatements",
-                        "MedicationType"
-                    ],
-                    [
-                        "sample_kind",
-                        "sample_kind"
-                    ],
-                    [
-                        "therapy_of_tumor",
-                        "ProcedureType"
-                    ],
-                    [
-                        "75186-7",
-                        "75186-7"
-                    ]
                 ]
             }
         ],
@@ -276,37 +276,7 @@
             {
                 "name": "DKTK",
                 "backendMeasures": "DKTK_STRAT_DEF_IN_INITIAL_POPULATION",
-                "url": "http://localhost:8080",
-                "catalogueKeyToResponseKeyMap": [
-                    [
-                        "gender",
-                        "Gender"
-                    ],
-                    [
-                        "age_at_diagnosis",
-                        "Age"
-                    ],
-                    [
-                        "diagnosis",
-                        "diagnosis"
-                    ],
-                    [
-                        "medicationStatements",
-                        "MedicationType"
-                    ],
-                    [
-                        "sample_kind",
-                        "sample_kind"
-                    ],
-                    [
-                        "therapy_of_tumor",
-                        "ProcedureType"
-                    ],
-                    [
-                        "75186-7",
-                        "75186-7"
-                    ]
-                ]
+                "url": "http://localhost:8080"
             }
         ]
     }
