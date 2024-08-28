@@ -128,10 +128,8 @@
 
     $: catalogueKeyToResponseKeyMap.update((mappings) => {
         if (!options?.catalogueKeyToResponseKeyMap) return mappings;
-        console.log(options.catalogueKeyToResponseKeyMap);
 
         options.catalogueKeyToResponseKeyMap.forEach((mapping) => {
-            console.log(mapping);
             mappings.set(mapping[0], mapping[1]);
         });
         return mappings;
