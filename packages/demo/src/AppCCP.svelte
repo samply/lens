@@ -138,6 +138,7 @@
                 <lens-search-modified-display
                     >Diagramme repräsentieren nicht mehr die aktuelle Suche!</lens-search-modified-display
                 >
+                <lens-negotiator-button />
             </div>
             <div class="chart-wrapper">
                 <lens-chart
