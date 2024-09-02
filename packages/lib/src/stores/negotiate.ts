@@ -9,18 +9,15 @@ import type { Collection } from "../types/collection";
 import type { SendableQuery } from "../types/queryData";
 import { translateAstToCql } from "../cql-translator-service/ast-to-cql-translator";
 import { buildLibrary, buildMeasure } from "../helpers/cql-measure";
-import type { Measure } from "../types/backend";
+import type { MeasureStore } from "../types/backend";
 import { measureStore } from "./measures";
 import type { LensOptions } from "../types/options";
 
 export const negotiateStore = writable<string[]>([]);
 
 let currentQuery: QueryItem[][] = [[]];
-// NOTE:
-// This is currently hard coded, as this configuration can not be replicated for this class easily (compare with variable in searchbutton)
-// With the merge of the multiple backends branch, an option for that will be already introduced.
-const backendMeasures: string = "DKTK_STRAT_DEF_IN_INITIAL_POPULATION";
-let currentMeasures: Measure[] = [];
+
+let currentMeasures: MeasureStore = [];
 
 queryStore.subscribe((query) => {
     currentQuery = query;

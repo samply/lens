@@ -279,5 +279,92 @@
                 "url": "http://localhost:8080"
             }
         ]
+    },
+    "negotiateOptions": {
+        "newProjectUrl": "http://localhost:8097/create-query-and-design-project",
+        "editProjectUrl": "http://localhost:8097/edit-project",
+        "siteMapping": [
+            {
+                "site": "Dresden",
+                "collection": "dresden"
+            },
+            {
+                "site": "Frankfurt",
+                "collection": "bbmri-eric:ID:DE_iBDF:collection:UCT"
+            },
+            {
+                "site": "Berlin",
+                "collection": "bbmri-eric:ID:DE_ZeBanC:collection:Onoloy"
+            },
+            {
+                "site": "Würzburg",
+                "collection": "bbmri-eric:ID:DE_ibdw:collection:bc"
+            },
+            {
+                "site": "Brno",
+                "collection": "bbmri-eric:ID:CZ_MMCI:collection:LTS"
+            },
+            {
+                "site": "Aachen",
+                "collection": "bbmri-eric:ID:DE_RWTHCBMB:collection:RWTHCBMB_BC"
+            },
+            {
+                "site": "Leipzig",
+                "collection": "bbmri-eric:ID:DE_LMB:collection:LIFE_ADULT"
+            },
+            {
+                "site": "München (HMGU)",
+                "collection": "bbmri-eric:ID:DE_Helmholtz-MuenchenBiobank:collection:DE_KORA"
+            },
+            {
+                "site": "Pilsen",
+                "collection": "bbmri-eric:ID:CZ_CUNI_PILS:collection:serum_plasma"
+            },
+            {
+                "site": "Regensburg",
+                "collection": "bbmri-eric:ID:DE_ZBR:collection:Tissue"
+            },
+            {
+                "site": "Heidelberg",
+                "collection": "bbmri-eric:ID:DE_BMBH:collection:Lungenbiobank"
+            },
+            {
+                "site": "Lübeck",
+                "collection": "bbmri-eric:ID:DE_ICBL:collection:ICBL"
+            },
+            {
+                "site": "Augsburg",
+                "collection": "bbmri-eric:ID:DE_ACBB:collection:TISSUE"
+            },
+            {
+                "site": "Mannheim",
+                "collection": "bbmri-eric:ID:DE_BioPsy:collection:Main_collecion"
+            },
+            {
+                "site": "Marburg",
+                "collection": "bbmri-eric:ID:DE_CBBMR:collection:main"
+            },
+            {
+                "site": "Göttingen",
+                "collection": "bbmri-eric:ID:DE_UMGB:collection:UMG-startegy"
+            },
+            {
+                "site": "Hanover",
+                "collection": "bbmri-eric:ID:DE_HUB:collection:ProBase"
+            },
+            {
+                "site": "Olomouc",
+                "collection": "bbmri-eric:ID:CZ_UPOL_LF:collection:all_samples"
+            },
+            {
+                "site": "Prague (FFM)",
+                "collection": "bbmri-eric:ID:CZ_CUNI_PILS:collection:serum_plasma"
+            },
+            {
+                "site": "Prague (IOR)",
+                "collection": "bbmri-eric:ID:CZ_CUNI_LF1:collection"
+            }
+
+        ]
     }
 }

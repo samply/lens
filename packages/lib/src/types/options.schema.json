@@ -334,6 +334,44 @@
             "additionalProperties": false,
             "unevaluatedProperties": false,
             "required": []
+        },
+        "negotiateOptions": {
+            "type": "object",
+            "properties": {
+                "newProjectUrl": {
+                    "type": "string",
+                    "pattern": "^.+$",
+                    "description": "The measures of the blaze"
+                },
+                "editProjectUrl": {
+                    "type": "string",
+                    "pattern": "^.+$",
+                    "description": "The measures of the blaze"
+                },
+                "siteMapping": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "site": {
+                                "type": "string",
+                                "pattern": "^.+$"
+                            },
+                            "collection": {
+                                "type": "string",
+                                "pattern": "^.+$"
+                            }
+                        },
+                        "additionalProperties": false,
+                        "unevaluatedProperties": false,
+                        "required": ["site", "collection"]                    
+                    }
+                }
+            },
+            "additionalProperties": false,
+            "unevaluatedProperties": false,
+            "required": ["newProjectUrl", "editProjectUrl", "siteMapping"]
+            
         }
     },
     "additionalProperties": false,
