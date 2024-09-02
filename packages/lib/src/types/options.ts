@@ -1,6 +1,7 @@
 export type LensOptions = {
     [key: string]: unknown;
     chartOptions?: ChartOptions;
+    catalogueKeyToResponseKeyMap?: string[][];
 };
 
 export type ChartOptions = {

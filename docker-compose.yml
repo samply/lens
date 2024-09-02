@@ -58,6 +58,7 @@ services:
 
   spot:
     image: samply/rustyspot:main
+    platform: linux/amd64
     ports:
       - "8055:8055"
     environment:
@@ -93,6 +94,7 @@ services:
 
   beam-proxy:
     image: docker.verbis.dkfz.de/cache/samply/beam-proxy:develop
+    platform: linux/amd64
     environment:
       BROKER_URL: https://${BROKER_HOST}
       PROXY_ID: ${LOCAL_BEAM_ID}.${BROKER_HOST}
