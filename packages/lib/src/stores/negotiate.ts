@@ -120,6 +120,11 @@ const collectionParams: string | null = urlParams.get("collections");
 lensOptions.subscribe((options: LensOptions) => {
     if (!options) return;
 
+    /**
+     * TODO: implement multiple collections per site
+     * need to know how multiple collections are returned from the backend
+     */
+
     negotiateOptions = options.negotiateOptions as NegotiateOptions;
     negotiateOptions?.siteMapping?.forEach(
         ({ site, collection }: { site: string; collection: string }) => {
@@ -152,28 +157,6 @@ export const getCollections = (sitesToNegotiate: string[]): Collection[] => {
         }
 
         const siteId: string = site.split(":collection:")[0];
-
-        /**
-         * Create Collection object with stratifier coming from response store
-         *
-         * seems to need only stratifier 'custodian', why?
-         */
-
-        // if (custodianStartifier != undefined) {
-        //     siteCollections = siteCollections.concat(
-        //       custodianStartifier.stratum
-        //         .filter(stratum => {
-        //           return stratum.key != null && stratum.key.indexOf(siteId) > -1
-        //         })
-        //         .map(stratum => {
-        //           return new Collection(
-        //             siteId,
-        //             site,
-        //             stratum.key,
-        //             localRedirectUri
-        //           )
-        //         })
-        //     )
 
         if (collectionId !== "") {
             siteCollections.push({

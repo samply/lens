@@ -51,7 +51,7 @@ services:
       - "traefik.http.routers.oauth2.tls=true"
 
   lens-web-components:
-    image: lens-web-components
+    image: samply/lens:main
     build: .
     labels:
       - "traefik.enable=true"
