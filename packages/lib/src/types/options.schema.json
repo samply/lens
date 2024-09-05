@@ -338,6 +338,11 @@
         "negotiateOptions": {
             "type": "object",
             "properties": {
+                "negotiateApp": {
+                    "type": "string",
+                    "pattern": "^.+$",
+                    "description": "The URL of the negotiate app"
+                },
                 "newProjectUrl": {
                     "type": "string",
                     "pattern": "^.+$",

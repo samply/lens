@@ -106,11 +106,13 @@ export const getHumanReadableQuery = (): string => {
  * sets all options needed for the negotiator
  */
 type NegotiateOptions = {
+    negotiateApp: "negotiator" | "project-manager";
     siteMapping: { site: string; collection: string }[];
-    negotiatorURL: string;
     newProjectUrl: string;
     editProjectUrl: string;
 };
+
+type NegotiatorResponse = Response & { url?: string; redirect_uri?: string };
 
 let negotiateOptions: NegotiateOptions;
 const siteCollectionMap: Map<string, string> = new Map();
@@ -181,8 +183,9 @@ export const getCollections = (sitesToNegotiate: string[]): Collection[] => {
  * @param sitesToNegotiate the sites to negotiate with
  */
 export const negotiate = async (sitesToNegotiate: string[]): Promise<void> => {
-    //TODO: get auth token here
     console.log("enter negotiate");
+    console.log("currentMeasures", currentMeasures);
+
     let sendableQuery!: SendableQuery;
     queryStore.subscribe((value: QueryItem[][]) => {
         const uuid = uuidv4();
@@ -196,7 +199,7 @@ export const negotiate = async (sitesToNegotiate: string[]): Promise<void> => {
     const humanReadable: string = getHumanReadableQuery();
     const collections: Collection[] = getCollections(sitesToNegotiate);
     // TODO: Implement proper configuration option for the switch between negotiator and project manager
-    const negotiatorResponse = false
+    const negotiatorResponse = true
         ? await sendRequestToNegotiator(
               sendableQuery,
               humanReadable,
@@ -210,24 +213,48 @@ export const negotiate = async (sitesToNegotiate: string[]): Promise<void> => {
               queryBase64String,
           );
 
-    const indexOfQuestionMark: number = negotiatorResponse.redirect_uri
-        .toString()
-        .indexOf("?");
+    console.log(negotiatorResponse);
 
-    if (!negotiatorResponse.redirect_uri) {
-        console.error("Negotiator response does not contain redirect uri");
-        return;
+    /**
+     * handle redirect to project manager url
+     */
+    if (negotiateOptions.negotiateApp === "project-manager") {
+        // project manager
+
+        if (!negotiatorResponse.redirect_uri) {
+            console.error("Negotiator response does not contain redirect uri");
+            return;
+        }
+
+        const indexOfQuestionMark: number = negotiatorResponse.redirect_uri
+            .toString()
+            .indexOf("?");
+
+        const subpage = "/project-view";
+        const negotiationURI =
+            negotiatorResponse.redirect_uri
+                .toString()
+                .slice(0, indexOfQuestionMark) +
+            `${subpage}` +
+            negotiatorResponse.redirect_uri
+                .toString()
+                .slice(indexOfQuestionMark);
+
+        window.location.href = negotiationURI;
     }
 
-    const subpage = "/project-view";
-    const negotiationURI =
-        negotiatorResponse.redirect_uri
-            .toString()
-            .slice(0, indexOfQuestionMark) +
-        `${subpage}` +
-        negotiatorResponse.redirect_uri.toString().slice(indexOfQuestionMark);
+    /**
+     * handle redirect to negotiator url
+     */
+    if (negotiateOptions.negotiateApp === "negotiator") {
+        // negotiator
+        if (!negotiatorResponse.url) {
+            console.error("Negotiator response does not contain redirect uri");
+            return;
+        }
 
-    window.location.href = negotiationURI;
+        window.location.href = `https://negotiator.bbmri-eric.eu/requests/${sendableQuery.id}`;
+    }
 };
 
 /**
@@ -243,31 +270,39 @@ async function sendRequestToNegotiator(
     humanReadable: string,
     collections: Collection[],
     queryBase64String: string,
-): Promise<Response & { redirect_uri: string }> {
+): Promise<NegotiatorResponse> {
     const base64Query: string = btoa(JSON.stringify(sendableQuery.query));
 
     const returnURL: string = `${window.location.protocol}//${window.location.host}/?nToken=${sendableQuery.id}&query=${base64Query}`;
 
-    const response: Response & { redirect_uri: string } = (await fetch(
-        `${negotiateOptions.negotiatorURL}?nToken=${sendableQuery.id}`,
-        {
-            method: "POST",
-            headers: {
-                Accept: "application/json; charset=utf-8",
-                "Content-Type": "application/json",
-                Authorization:
-                    "Basic YmJtcmktZGlyZWN0b3J5Omw5RFJLVUROcTBTbDAySXhaUGQ2",
+    let response!: Response;
+
+    try {
+        response = await fetch(
+            `${negotiateOptions.newProjectUrl}?nToken=${sendableQuery.id}`,
+            {
+                method: "POST",
+                headers: {
+                    Accept: "application/json; charset=utf-8",
+                    "Content-Type": "application/json",
+                    Authorization:
+                        "Basic YmJtcmktZGlyZWN0b3J5Omw5RFJLVUROcTBTbDAySXhaUGQ2",
+                },
+                body: JSON.stringify({
+                    humanReadable: humanReadable,
+                    URL: returnURL,
+                    collections: collections,
+                    nToken: sendableQuery.id,
+                    query: queryBase64String,
+                }),
             },
-            body: JSON.stringify({
-                humanReadable: humanReadable,
-                URL: returnURL,
-                collections: collections,
-                nToken: sendableQuery.id,
-                query: queryBase64String,
-            }),
-        },
-    )) as Response & { redirect_uri: string };
-    return response;
+        );
+
+        return response as NegotiatorResponse;
+    } catch (error) {
+        console.log("error", error);
+        return new Response() as NegotiatorResponse;
+    }
 }
 
 /**
@@ -283,7 +318,7 @@ async function sendRequestToProjectManager(
     humanReadable: string,
     collections: Collection[],
     queryBase64String: string,
-): Promise<Response & { redirect_uri: string }> {
+): Promise<NegotiatorResponse> {
     /**
      * get temporary token from oauth2
      */
@@ -322,7 +357,7 @@ async function sendRequestToProjectManager(
         ? negotiateOptions.editProjectUrl
         : negotiateOptions.newProjectUrl;
 
-    let response!: Response & { redirect_uri: string };
+    let response!: NegotiatorResponse;
 
     /**
      * send request to project manager
@@ -355,7 +390,7 @@ async function sendRequestToProjectManager(
         return response;
     } catch (error) {
         console.log("error", error);
-        return new Response() as Response & { redirect_uri: string };
+        return new Response() as NegotiatorResponse;
     }
 }
 
@@ -363,14 +398,27 @@ async function sendRequestToProjectManager(
  * @returns a base64 encoded CQL query
  */
 function getCql(): string {
-    // NOTE: $ only works within svelte components
     const ast = buildAstFromQuery(currentQuery);
-    const cql = translateAstToCql(ast, false, backendMeasures);
+
+    /**
+     * TODO:
+     * For now backenMeasures is hardcoded because
+     * this function only needed for dktk project manager so far.
+     * Change if needed for negotiator.
+     *
+     * should be configurable via options other than spot/blaze, so custom backends can be used
+     */
+    const cql = translateAstToCql(
+        ast,
+        false,
+        "DKTK_STRAT_DEF_IN_INITIAL_POPULATION",
+        currentMeasures[0].measures,
+    );
 
     const library = buildLibrary(`${cql}`);
     const measure = buildMeasure(
         library.url,
-        currentMeasures.map((measureItem) => measureItem.measure),
+        currentMeasures[0].measures.map((measureItem) => measureItem.measure),
     );
     const query = { lang: "cql", lib: library, measure: measure };
 

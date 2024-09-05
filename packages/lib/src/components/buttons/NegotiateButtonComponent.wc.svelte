@@ -1,6 +1,6 @@
 <svelte:options
     customElement={{
-        tag: "lens-negotiator-button",
+        tag: "lens-negotiate-button",
     }}
 />
 

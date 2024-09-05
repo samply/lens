@@ -76,7 +76,7 @@ services:
       CATALOGUE_URL: "${CATALOGUE_URL}"
       BIND_ADDR: 0.0.0.0:8055
       PRISM_URL: http://prism:8066
-      RUST_LOG: "info"
+      # RUST_LOG: "info"
       LOG_FILE: /requests.log
     volumes:
       - ./requests.log:/requests.log

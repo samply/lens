@@ -150,7 +150,7 @@
                     >Diagramme repräsentieren nicht mehr die aktuelle Suche!</lens-search-modified-display
                 >
                 <!-- TODO: comment in when backend is ready -->
-                <!-- <lens-negotiator-button /> -->
+                <!-- <lens-negotiate-button /> -->
             </div>
             <div class="chart-wrapper">
                 <lens-chart

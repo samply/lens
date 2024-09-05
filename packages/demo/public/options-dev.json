@@ -281,6 +281,7 @@
         ]
     },
     "negotiateOptions": {
+        "negotiateApp": "project-manager",
         "newProjectUrl": "http://localhost:8097/create-query-and-design-project",
         "editProjectUrl": "http://localhost:8097/edit-project",
         "siteMapping": [
