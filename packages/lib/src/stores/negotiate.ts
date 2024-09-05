@@ -285,8 +285,7 @@ async function sendRequestToNegotiator(
                 headers: {
                     Accept: "application/json; charset=utf-8",
                     "Content-Type": "application/json",
-                    Authorization:
-                        "Basic YmJtcmktZGlyZWN0b3J5Omw5RFJLVUROcTBTbDAySXhaUGQ2",
+                    Authorization: "TODO: insert auth here",
                 },
                 body: JSON.stringify({
                     humanReadable: humanReadable,
