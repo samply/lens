@@ -29,3 +29,5 @@ TODO
 docker-compose.override.yml
 *.priv.pem
 traefik.yaml
+
+project-manager.env
