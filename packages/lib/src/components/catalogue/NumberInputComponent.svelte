@@ -1,19 +1,13 @@
 <script lang="ts">
-    import { queryStore } from "../../stores/query";
-    import type { QueryItem, QueryValue } from "../../types/queryData";
     import { catalogueTextStore } from "../../stores/texts";
     import QueryAddButtonComponent from "./QueryAddButtonComponent.svelte";
-    import { activeNumberInputs } from "../../stores/catalogue";
     import type { Category } from "../../types/treeData";
+    import { v4 as uuidv4 } from "uuid";
 
-    export let queryItem: QueryItem;
     export let element: Category;
 
-    const queryBindId = queryItem.values[0].queryBindId;
-    const value = queryItem.values[0].value as { min: number; max: number };
-
-    let from: number | null = value.min;
-    let to: number | null = value.max;
+    let from: number | null = element.min || 0;
+    let to: number | null = element.max || 0;
 
     /**
      * handles the "from" input field
@@ -74,55 +68,18 @@
     };
 
     /**
-     * update all groups in the query store when from or to changes
-     * update values in the activeNumberInputs store
-     * @param from
-     * @param to
-     */
-
-    const updateStores = (from: number, to: number): void => {
-        queryStore.update((store: QueryItem[][]): QueryItem[][] => {
-            store.forEach((queryGroup: QueryItem[]) => {
-                queryGroup.forEach((item: QueryItem) => {
-                    item.values.forEach((queryValue: QueryValue) => {
-                        if (queryValue.queryBindId === queryBindId) {
-                            queryValue.name = transformName();
-                            queryValue.value = { min: from, max: to };
-                        }
-                    });
-                });
-            });
-            return store;
-        });
-
-        activeNumberInputs.update((store: QueryItem[]): QueryItem[] => {
-            store.forEach((item: QueryItem) => {
-                if (item.key === queryItem.key) {
-                    item.values.forEach((queryValue: QueryValue) => {
-                        if (queryValue.queryBindId === queryBindId) {
-                            queryValue.name = transformName();
-                            queryValue.value = { min: from, max: to };
-                        }
-                    });
-                }
-            });
-            return store;
-        });
-    };
-
-    $: updateStores(from, to);
-
-    /**
-     * when some parts of the element change, the values are watched
-     * and the QuerySelectComponent is passed thoes new values
+     * build the query item each time the values change
      */
     $: queryItem = {
-        ...queryItem,
+        id: uuidv4(),
+        key: element.key,
+        name: element.name,
+        type: "type" in element && element.type,
         values: [
             {
                 name: transformName(),
                 value: { min: from, max: to },
-                queryBindId: queryBindId,
+                queryBindId: uuidv4(),
             },
         ],
     };
@@ -149,7 +106,7 @@
             >
                 {$catalogueTextStore.numberInput.labelTo}
                 <input
-                    part="number-input-formfield number-input-formfield-from
+                    part="number-input-formfield number-input-formfield-to
                         {to && from > to ? ' formfield-error' : ''}"
                     type="number"
                     bind:value={to}
