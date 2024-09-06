@@ -47,6 +47,28 @@ services:
     profiles:
       - "beam"
 
+  project-manager:
+    image: samply/project-manager:develop
+    ports:
+      - 8097:8097
+    env_file:
+      - env/project-manager.env
+    volumes:
+      - "./templates:/templates"
+      - "./documents:/documents"
+      - "./public-documents:/public-documents"
+    profiles:
+      - "project-manager"
+
+  project-manager-db:
+    image: postgres:alpine
+    environment:
+      POSTGRES_DB: dev
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: dev
+    profiles:
+      - "project-manager"
+
 secrets:
   proxy.pem:
     file: /etc/lens/pki/${LOCAL_BEAM_ID}.priv.pem
