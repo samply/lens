@@ -23,7 +23,10 @@
     import catalogueSchema from "../types/catalogue.schema.json";
     import { parser } from "@exodus/schemasafe";
     import type { LensOptions } from "../types/options";
-    import { uiSiteMappingsStore } from "../stores/mappings";
+    import {
+        catalogueKeyToResponseKeyMap,
+        uiSiteMappingsStore,
+    } from "../stores/mappings";
 
     export let options: LensOptions = {};
     export let catalogueData: Criteria[] = [];
@@ -120,6 +123,15 @@
             mappings.set(site[0], site[1]);
         });
 
+        return mappings;
+    });
+
+    $: catalogueKeyToResponseKeyMap.update((mappings) => {
+        if (!options?.catalogueKeyToResponseKeyMap) return mappings;
+
+        options.catalogueKeyToResponseKeyMap.forEach((mapping) => {
+            mappings.set(mapping[0], mapping[1]);
+        });
         return mappings;
     });
 

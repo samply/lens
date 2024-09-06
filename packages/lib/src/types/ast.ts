@@ -14,5 +14,5 @@ export type AstBottomLayerValue = {
         | boolean
         | Array<string>
         | { min: number; max: number }
-        | { min: Date | undefined; max: Date | undefined };
+        | { min: string; max: string }; // for dates
 };

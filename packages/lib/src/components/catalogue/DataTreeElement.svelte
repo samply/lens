@@ -6,10 +6,11 @@
     import AutocompleteComponent from "./AutoCompleteComponent.svelte";
     import SingleSelectComponent from "./SingleSelectComponent.svelte";
     import { v4 as uuidv4 } from "uuid";
-    import { activeNumberInputs, openTreeNodes } from "../../stores/catalogue";
+    import { openTreeNodes } from "../../stores/catalogue";
     import type { QueryItem } from "../../types/queryData";
     import { iconStore } from "../../stores/icons";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
+    import DatePickerComponent from "./DatePickerComponent.svelte";
 
     export let element: Category;
     const subCategoryName: string | null =
@@ -100,45 +101,6 @@
                 typeof element.fieldType === "string" &&
                 element.fieldType == "single-select"));
 
-    /**
-     * watches the number input store to update the number input components
-     */
-    $: numberInput = $activeNumberInputs.find(
-        (item) => item.key === element.key,
-    );
-
-    /**
-     * adds the number input to the store if it is not already in the store
-     * @param store
-     * @returns updated store
-     */
-    activeNumberInputs.update((store: QueryItem[]): QueryItem[] => {
-        if (
-            "fieldType" in element &&
-            element.fieldType === "number" &&
-            !store.find((item) => item.key === element.key)
-        ) {
-            return [
-                ...store,
-                {
-                    id: uuidv4(),
-                    key: element.key,
-                    name: element.name,
-                    system: "system" in element ? element.system : "",
-                    type: "type" in element ? element.type : "",
-                    values: [
-                        {
-                            name: "0",
-                            value: { min: 0, max: 0 },
-                            queryBindId: uuidv4(),
-                        },
-                    ],
-                },
-            ];
-        }
-        return store;
-    });
-
     $: selectAllText = $iconStore.get("selectAllText");
 
     const selectAllOptions = (): void => {
@@ -215,22 +177,13 @@
         {:else}
             <div part="data-tree-element-last-child-options">
                 {#if "fieldType" in element && element.fieldType === "single-select"}
-                    <SingleSelectComponent
-                        {element}
-                        subgrouping={subCategoryName ? true : false}
-                    />
+                    <SingleSelectComponent {element} />
                 {:else if "fieldType" in element && element.fieldType === "autocomplete"}
                     <AutocompleteComponent {element} />
                 {:else if "fieldType" in element && element.fieldType === "number"}
-                    {#each numberInput.values as numberInputValues (numberInputValues.queryBindId)}
-                        <NumberInputComponent
-                            {element}
-                            queryItem={{
-                                ...numberInput,
-                                values: [numberInputValues],
-                            }}
-                        />
-                    {/each}
+                    <NumberInputComponent {element} />
+                {:else if "fieldType" in element && element.fieldType === "date"}
+                    <DatePickerComponent {element} />
                 {/if}
             </div>
         {/if}

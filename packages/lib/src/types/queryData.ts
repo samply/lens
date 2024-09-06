@@ -38,3 +38,8 @@ export type queryStoreItem =
     | QueryValue
     | AggregatedValue[]
     | AggregatedValue;
+
+export type SendableQuery = {
+    query: QueryItem[][];
+    id: string;
+};

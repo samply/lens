@@ -3,11 +3,11 @@
         "deleteUrl": "delete_icon.svg",
         "infoUrl": "info-circle-svgrepo-com.svg",
         "selectAll": {
-            "text": "Add all"
+            "text": "Alle Hinzufügen"
         }
     },
     "siteMappings": {
-        "berlin": "Berlin",
+        "berlin": "Berlin (OBDS)",
         "berlin-test": "Berlin",
         "bonn": "Bonn",
         "dresden": "Dresden",
@@ -24,6 +24,36 @@
         "dktk-test": "DKTK-Test",
         "hamburg": "Hamburg"
     },
+    "catalogueKeyToResponseKeyMap": [
+        [
+            "gender",
+            "Gender"
+        ],
+        [
+            "age_at_diagnosis",
+            "Age"
+        ],
+        [
+            "diagnosis",
+            "diagnosis"
+        ],
+        [
+            "medicationStatements",
+            "MedicationType"
+        ],
+        [
+            "sample_kind",
+            "sample_kind"
+        ],
+        [
+            "therapy_of_tumor",
+            "ProcedureType"
+        ],
+        [
+            "75186-7",
+            "75186-7"
+        ]
+    ],
     "chartOptions": {
         "patients": {
             "legendMapping": {
@@ -208,6 +238,11 @@
             {
                 "title": "Patienten",
                 "dataKey": "patients"
+            },
+            {
+                "title": "Bioproben",
+                "dataKey": "bioproben"
+
             }
         ]
     },
@@ -218,6 +253,7 @@
                 "backendMeasures": "DKTK_STRAT_DEF_IN_INITIAL_POPULATION",
                 "url": "https://backend.demo.lens.samply.de/prod/",
                 "sites": [
+                    "berlin",
                     "berlin-test",
                     "dresden",
                     "essen",
@@ -231,36 +267,6 @@
                     "wuerzburg",
                     "mannheim",
                     "hamburg"
-                ],
-                "catalogueKeyToResponseKeyMap": [
-                    [
-                        "gender",
-                        "Gender"
-                    ],
-                    [
-                        "age_at_diagnosis",
-                        "Age"
-                    ],
-                    [
-                        "diagnosis",
-                        "diagnosis"
-                    ],
-                    [
-                        "medicationStatements",
-                        "MedicationType"
-                    ],
-                    [
-                        "sample_kind",
-                        "sample_kind"
-                    ],
-                    [
-                        "therapy_of_tumor",
-                        "ProcedureType"
-                    ],
-                    [
-                        "75186-7",
-                        "75186-7"
-                    ]
                 ]
             }
         ]

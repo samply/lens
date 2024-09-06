@@ -111,6 +111,7 @@ const getSingleton = (criterion: AstBottomLayerValue): string => {
         if (myCQL) {
             switch (myCriterion.type) {
                 case "gender":
+                case "pseudo_projects":
                 case "BBMRI_gender":
                 case "histology":
                 case "conditionValue":

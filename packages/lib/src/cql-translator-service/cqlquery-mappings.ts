@@ -82,6 +82,10 @@ export const alias = new Map<string, string>([
 
 export const cqltemplate = new Map<string, string>([
     ["gender", "Patient.gender = '{{C}}'"],
+    [
+        "pseudo_projects",
+        "  exists ( Patient.extension E where E.url = 'http://dktk.dkfz.de/fhir/projects/{{C}}')",
+    ],
     ["conditionValue", "exists [Condition: Code '{{C}}' from {{A1}}]"],
     [
         "conditionBodySite",
@@ -275,6 +279,7 @@ export const cqltemplate = new Map<string, string>([
 export const criterionMap = new Map<string, { type: string; alias?: string[] }>(
     [
         ["gender", { type: "gender" }],
+        ["pseudo_projects", { type: "pseudo_projects" }],
         ["histology", { type: "histology", alias: ["loinc"] }],
         ["diagnosis", { type: "conditionValue", alias: ["icd10"] }],
         ["bodySite", { type: "conditionBodySite", alias: ["bodySite"] }],

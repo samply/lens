@@ -17,17 +17,16 @@
     import { buildLibrary, buildMeasure } from "../../helpers/cql-measure";
     import { Spot } from "../../classes/spot";
     import { Blaze } from "../../classes/blaze";
-    import { catalogueKeyToResponseKeyMap } from "../../stores/mappings";
     import { responseStore, updateResponseStore } from "../../stores/response";
     import { lensOptions } from "../../stores/options";
     import type {
         BackendOptions,
-        BlazeOption,
         Measure,
         MeasureItem,
         MeasureOption,
-        SpotOption,
     } from "../../types/backend";
+    import type { BlazeOption } from "../../types/blaze";
+    import type { SpotOption } from "../../types/spot";
     import type { AstTopLayer } from "../../types/ast";
     import type { Site } from "../../types/response";
 
@@ -38,20 +37,6 @@
     $: options = $lensOptions?.backends as BackendOptions;
 
     let controller: AbortController = new AbortController();
-
-    $: catalogueKeyToResponseKeyMap.update((mappings) => {
-        options?.spots?.forEach((spot) => {
-            spot.catalogueKeyToResponseKeyMap.forEach((mapping) => {
-                mappings.set(mapping[0], mapping[1]);
-            });
-        });
-        options?.blazes?.forEach((blaze: BlazeOption) => {
-            blaze.catalogueKeyToResponseKeyMap.forEach((mapping) => {
-                mappings.set(mapping[0], mapping[1]);
-            });
-        });
-        return mappings;
-    });
 
     /**
      * Triggers a request to the backend.

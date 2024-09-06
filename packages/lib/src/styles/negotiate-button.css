@@ -2,7 +2,7 @@
 * stand alone result button
 */
 
-lens-result-summary::part(lens-negotiate-button) {
+lens-negotiate-button::part(lens-negotiate-button) {
     color: var(--white);
     border: none;
     border-radius: var(--border-radius-small);
@@ -15,14 +15,14 @@ lens-result-summary::part(lens-negotiate-button) {
     font-family: var(--font-family);
 }
 
-lens-result-summary::part(lens-negotiate-button-active) {
+lens-negotiate-button::part(lens-negotiate-button-active) {
     background-color: var(--blue);
 }
 
-lens-result-summary::part(lens-negotiate-button-disabled) {
+lens-negotiate-button::part(lens-negotiate-button-disabled) {
     background-color: var(--gray);
 }
 
-lens-result-summary::part(lens-negotiate-button-active):hover {
+lens-negotiate-button::part(lens-negotiate-button-active):hover {
     background-color: var(--light-blue);
 }

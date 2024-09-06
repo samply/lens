@@ -13,24 +13,35 @@
         dktkHistologyMeasure,
     } from "./measures";
 
-    let catalogueData = "";
-    let libraryOptions = "";
+    let catalogueData: string = "";
+    let libraryOptions: string = "";
+    let catalogueUrl: string = "";
+    let optionsFilePath: string = "";
 
-    fetch("catalogues/catalogue-dktk.json")
+    if (import.meta.env.VITE_TARGET_ENVIRONMENT === "production") {
+        catalogueUrl = "catalogues/catalogue-dktk.json";
+        optionsFilePath = "options.json";
+    } else {
+        catalogueUrl = "catalogues/catalogue-dktk-staging.json";
+        optionsFilePath = "options-ccp-demo.json";
+    }
+
+    /**
+     * VITE_TARGET_ENVIRONMENT is set by the ci pipeline
+     */
+
+    /**
+     * get catalogue file
+     */
+    fetch(catalogueUrl)
         .then((response) => response.text())
         .then((data) => {
             catalogueData = data;
         });
 
-    // VITE_TARGET_ENVIRONMENT should be set by the ci pipeline
-    let optionsFilePath: string = "options-dev.json";
-
-    if (import.meta.env.VITE_TARGET_ENVIRONMENT === "production") {
-        optionsFilePath = "options-ccp-prod.json";
-    } else if (import.meta.env.VITE_TARGET_ENVIRONMENT === "staging") {
-        optionsFilePath = "options-ccp-demo.json";
-    }
-
+    /**
+     * get options file
+     */
     fetch(optionsFilePath)
         .then((response) => response.json())
         .then((data) => {
@@ -52,7 +63,7 @@
     ];
 
     /**
-     * move to config file
+     * TODO: move to config file
      */
     const catalogueText = {
         group: "Group",
@@ -114,7 +125,6 @@
             <lens-search-button title="Suchen" />
         </div>
     </div>
-
     <div class="grid">
         <div class="catalogue-wrapper">
             <div class="catalogue">
@@ -139,6 +149,8 @@
                 <lens-search-modified-display
                     >Diagramme repräsentieren nicht mehr die aktuelle Suche!</lens-search-modified-display
                 >
+                <!-- TODO: comment in when backend is ready -->
+                <!-- <lens-negotiate-button /> -->
             </div>
             <div class="chart-wrapper">
                 <lens-chart
@@ -187,7 +199,7 @@
                     catalogueGroupCode="age_at_diagnosis"
                     chartType="bar"
                     groupRange={10}
-                    filterRegex="^(1*[12]*[0-9])"
+                    filterRegex="^(([0-9]?[0-9]$)|(1[0-2]0))"
                     xAxisTitle="Alter"
                     yAxisTitle="Anzahl der Primärdiagnosen"
                     backgroundColor={JSON.stringify(barChartBackgroundColors)}
