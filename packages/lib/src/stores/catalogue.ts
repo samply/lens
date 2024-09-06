@@ -1,6 +1,5 @@
 import { writable } from "svelte/store";
 import type { Category, TreeNode } from "../types/treeData";
-import type { QueryItem } from "../types/queryData";
 
 /**
  * store to hold the catalogue
@@ -13,8 +12,6 @@ export const catalogue = writable<Category[]>([]);
 export const openTreeNodes = writable<
     Map<string, { key: string; subCategoryNames: string[] | null }>
 >(new Map());
-
-export const activeNumberInputs = writable<QueryItem[]>([]);
 
 /**
  * get the bottom level items of a category

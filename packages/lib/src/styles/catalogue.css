@@ -175,8 +175,6 @@ lens-catalogue::part(criterion-section-values) {
 /**
   * Number Input
   */
-
-
 lens-catalogue::part(criterion-item-number-input) {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -197,6 +195,12 @@ lens-catalogue::part(number-input-formfield) {
   font-size: var(--font-size-s);
 }
 
+lens-catalogue::part(number-input-formfield)::-webkit-inner-spin-button,
+lens-catalogue::part(number-input-formfield)::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 lens-catalogue::part(number-input-formfield):focus {
   border-color: var(--blue);
   outline: none;
@@ -205,6 +209,41 @@ lens-catalogue::part(number-input-formfield):focus {
 lens-catalogue::part(number-input-add) {
   margin-top: var(--gap-s);
 }
+
+
+/**
+  * Date Picker
+  */
+lens-catalogue::part(criterion-item-date-input) {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+}
+
+lens-catalogue::part(date-input-label) {
+  display: flex;
+  align-items: center;
+}
+
+lens-catalogue::part(date-input-formfield) {
+  font-family: var(--font-family);
+  width: 120px;
+  margin-left: var(--gap-xs);
+  border: solid 1px var(--dark-gray);
+  border-top: none;
+  border-radius: var(--border-radius-small);
+  text-align: center;
+  font-size: var(--font-size-s);
+}
+
+lens-catalogue::part(date-input-formfield):focus {
+  border-color: var(--blue);
+  outline: none;
+}
+
+lens-catalogue::part(date-input-add) {
+  margin-top: var(--gap-s);
+}
+
 
 /**
   * Autocomplete
