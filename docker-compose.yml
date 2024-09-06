@@ -8,7 +8,6 @@ services:
       - --entrypoints.websecure.address=:443
       - --providers.docker=true
       - --providers.docker.exposedbydefault=false
-      # - --providers.file.directory=/conf/
       - --accesslog=true
     ports:
       - "80:80"
@@ -65,7 +64,6 @@ services:
     ports:
       - "8055:8055"
     environment:
-      RUST_LOG: "debug,hyper=info"
       HTTP_PROXY: ${http_proxy}
       HTTPS_PROXY: ${https_proxy}
       NO_PROXY: beam-proxy, prism
@@ -76,7 +74,7 @@ services:
       CATALOGUE_URL: "${CATALOGUE_URL}"
       BIND_ADDR: 0.0.0.0:8055
       PRISM_URL: http://prism:8066
-      # RUST_LOG: "info"
+      RUST_LOG: "info"
       LOG_FILE: /requests.log
     volumes:
       - ./requests.log:/requests.log
@@ -131,29 +129,6 @@ services:
       - "traefik.http.routers.prism.tls=true"
       - "traefik.http.middlewares.prism-stripprefix.stripprefix.prefixes=/prism"
       - "traefik.http.routers.prism.middlewares=corsheaders,traefik-forward-auth,prism-stripprefix"
-
-  project-manager:
-    image: samply/project-manager:develop
-    ports:
-      - 8097:8097
-    # environment:
-    #   OIDC_CLIENT_ID: ${PROJECT_MANAGER_OAUTH_CLIENT_ID}
-    #   OIDC_CLIENT_SECRET: ${PROJECT_MANAGER_OAUTH_CLIENT_SECRET}
-    #   OIDC_REALM: ${PROJECT_MANAGER_OAUTH_CLIENT_REALM}
-    #   OIDC_URL: ${PROJECT_MANAGER_OAUTH_ISSUER_URL}
-    env_file:
-      - env/project-manager.env
-    volumes:
-      - "./templates:/templates"
-      - "./documents:/documents"
-      - "./public-documents:/public-documents"
-
-  project-manager-db:
-    image: postgres:alpine
-    environment:
-      POSTGRES_DB: dev
-      POSTGRES_USER: dev
-      POSTGRES_PASSWORD: dev
 
 secrets:
   proxy.pem:
