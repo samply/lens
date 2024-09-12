@@ -1,11 +1,6 @@
 <svelte:options
     customElement={{
         tag: "lens-info-button",
-        props: {
-            showQuery: { type: "Boolean" },
-            onlyChildInfo: { type: "Boolean" },
-            queryItem: { type: "Object" },
-        },
     }}
 />
 

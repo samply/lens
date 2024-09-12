@@ -1,7 +1,6 @@
 <svelte:options
     customElement={{
         tag: "lens-result-table",
-        props: { pageSize: { type: "Number" } },
     }}
 />
 

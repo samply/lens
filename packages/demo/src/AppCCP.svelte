@@ -13,8 +13,10 @@
         dktkHistologyMeasure,
     } from "./measures";
 
-    let catalogueData: string = "";
-    let libraryOptions: string = "";
+    /**
+     * VITE_TARGET_ENVIRONMENT is set by the ci pipeline
+     */
+
     let catalogueUrl: string = "";
     let optionsFilePath: string = "";
 
@@ -27,26 +29,35 @@
     }
 
     /**
-     * VITE_TARGET_ENVIRONMENT is set by the ci pipeline
+     * fetch both catalogue data and options
+     * response needs to be converted to text so that it can be passed to the options component for proper schema validation
+     * @param catalogueUrl the url where to fetch the catalogue.json
+     * @param optionsFilePath the url where to fetch the options.json
+     * @returns a promise that resolves to an object containing the catalogueJSON and optionsJSON
      */
+    const fetchData = async (
+        catalogueUrl: string,
+        optionsFilePath: string,
+    ): Promise<{ catalogueJSON: string; optionsJSON: string }> => {
+        const cataloguePromise: string = await fetch(catalogueUrl).then(
+            (response) => response.text(),
+        );
 
-    /**
-     * get catalogue file
-     */
-    fetch(catalogueUrl)
-        .then((response) => response.text())
-        .then((data) => {
-            catalogueData = data;
-        });
+        const optionsPromise: string = await fetch(optionsFilePath).then(
+            (response) => response.text(),
+        );
 
-    /**
-     * get options file
-     */
-    fetch(optionsFilePath)
-        .then((response) => response.json())
-        .then((data) => {
-            libraryOptions = data;
-        });
+        return Promise.all([cataloguePromise, optionsPromise]).then(
+            ([catalogueJSON, optionsJSON]) => {
+                return { catalogueJSON, optionsJSON };
+            },
+        );
+    };
+
+    const jsonPromises: Promise<{
+        catalogueJSON: string;
+        optionsJSON: string;
+    }> = fetchData(catalogueUrl, optionsFilePath);
 
     const measures: MeasureGroup[] = [
         {
@@ -63,7 +74,7 @@
     ];
 
     /**
-     * TODO: move to config file
+     * TODO: add catalogueText option to config file
      */
     const catalogueText = {
         group: "Group",
@@ -75,7 +86,7 @@
         },
     };
 
-    let catalogueopen = false;
+    let catalogueopen: boolean = false;
 
     const genderHeaders: Map<string, string> = new Map<string, string>()
         .set("male", "männlich")
@@ -190,7 +201,7 @@
                     filterRegex="^[CD].*"
                     xAxisTitle="Anzahl der Diagnosen"
                     yAxisTitle="ICD-10-Codes"
-                    backgroundColor={JSON.stringify(barChartBackgroundColors)}
+                    backgroundColor={barChartBackgroundColors}
                 />
             </div>
             <div class="chart-wrapper chart-age-distribution">
@@ -202,7 +213,7 @@
                     filterRegex="^(([0-9]?[0-9]$)|(1[0-2]0))"
                     xAxisTitle="Alter"
                     yAxisTitle="Anzahl der Primärdiagnosen"
-                    backgroundColor={JSON.stringify(barChartBackgroundColors)}
+                    backgroundColor={barChartBackgroundColors}
                 />
             </div>
             <div class="chart-wrapper">
@@ -222,7 +233,7 @@
                     headers={therapyHeaders}
                     xAxisTitle="Art der Therapie"
                     yAxisTitle="Anzahl der Therapieeinträge"
-                    backgroundColor={JSON.stringify(barChartBackgroundColors)}
+                    backgroundColor={barChartBackgroundColors}
                 />
             </div>
             <div class="chart-wrapper">
@@ -232,7 +243,7 @@
                     chartType="bar"
                     xAxisTitle="Art der Therapie"
                     yAxisTitle="Anzahl der Therapieeinträge"
-                    backgroundColor={JSON.stringify(barChartBackgroundColors)}
+                    backgroundColor={barChartBackgroundColors}
                 />
             </div>
             <div class="chart-wrapper">
@@ -243,7 +254,7 @@
                     xAxisTitle="Probentypen"
                     yAxisTitle="Probenanzahl"
                     filterRegex="^(?!(tissue-other|buffy-coat|peripheral-blood-cells|dried-whole-blood|swab|ascites|stool-faeces|saliva|liquid-other|derivative-other))"
-                    backgroundColor={JSON.stringify(barChartBackgroundColors)}
+                    backgroundColor={barChartBackgroundColors}
                 >
                 </lens-chart>
             </div>
@@ -287,5 +298,12 @@
     >
 </footer>
 
-<lens-options options={libraryOptions} {catalogueData} {measures} />
+{#await jsonPromises}
+    Loading data...
+{:then { optionsJSON, catalogueJSON }}
+    <lens-options {catalogueJSON} {optionsJSON} {measures}></lens-options>
+{:catch someError}
+    System error: {someError.message}
+{/await}
+
 <lens-data-passer bind:this={dataPasser} />
