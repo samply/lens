@@ -241,8 +241,15 @@
             },
             {
                 "title": "Bioproben",
-                "dataKey": "bioproben"
-
+                "aggregatedDataKeys": [
+                    {
+                        "groupCode": "specimen"
+                    },
+                    {
+                        "stratifierCode": "Histologies",
+                        "stratumCode": "1"
+                    }
+                ]
             }
         ]
     },
