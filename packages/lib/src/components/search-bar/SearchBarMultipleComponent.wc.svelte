@@ -1,11 +1,6 @@
 <svelte:options
     customElement={{
         tag: "lens-search-bar-multiple",
-        props: {
-            treeData: { type: "Object" },
-            noMatchesFoundMessage: { type: "String" },
-            chips: { type: "Boolean" },
-        },
     }}
 />
 

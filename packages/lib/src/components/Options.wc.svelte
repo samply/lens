@@ -1,10 +1,6 @@
 <svelte:options
     customElement={{
         tag: "lens-options",
-        props: {
-            options: { type: "Object" },
-            catalogueData: { type: "Object" },
-        },
     }}
 />
 
@@ -21,26 +17,34 @@
     import type { Criteria } from "../types/treeData";
     import optionsSchema from "../types/options.schema.json";
     import catalogueSchema from "../types/catalogue.schema.json";
-    import { parser } from "@exodus/schemasafe";
+    import { parser, type Parse, type ParseResult } from "@exodus/schemasafe";
     import type { LensOptions } from "../types/options";
     import {
         catalogueKeyToResponseKeyMap,
         uiSiteMappingsStore,
     } from "../stores/mappings";
 
-    export let options: LensOptions = {};
-    export let catalogueData: Criteria[] = [];
+    export let optionsJSON: string = "";
+    export let catalogueJSON: string = "";
     export let measures: MeasureStore = {} as MeasureStore;
+
+    /**
+     * transform the JSON strings to objects for validation and further processing
+     */
+    let options: LensOptions = {} as LensOptions;
+    let catalogueData: Criteria[] = [];
+    $: options = JSON.parse(optionsJSON);
+    $: catalogueData = JSON.parse(catalogueJSON);
 
     /**
      * Validate the options against the schema before passing them to the store
      */
     $: {
-        const parse = parser(optionsSchema, {
+        const parse: Parse = parser(optionsSchema, {
             includeErrors: true,
             allErrors: true,
         });
-        const validJSON = parse(JSON.stringify(options));
+        const validJSON: ParseResult = parse(JSON.stringify(options));
         if (validJSON.valid === true) {
             $lensOptions = options;
         } else if (typeof options === "object") {
@@ -52,11 +56,11 @@
     }
 
     $: {
-        const parse = parser(catalogueSchema, {
+        const parse: Parse = parser(catalogueSchema, {
             includeErrors: true,
             allErrors: true,
         });
-        const validJSON = parse(JSON.stringify(catalogueData));
+        const validJSON: ParseResult = parse(JSON.stringify(catalogueData));
         if (validJSON.valid === true) {
             $catalogue = catalogueData;
         } else if (typeof catalogueData === "object") {
