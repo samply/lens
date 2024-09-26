@@ -22,7 +22,7 @@
 
     if (import.meta.env.VITE_TARGET_ENVIRONMENT === "production") {
         catalogueUrl = "catalogues/catalogue-dktk.json";
-        optionsFilePath = "options.json";
+        optionsFilePath = "options-ccp-prod.json";
     } else {
         catalogueUrl = "catalogues/catalogue-dktk-staging.json";
         optionsFilePath = "options-ccp-demo.json";
