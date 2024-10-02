@@ -1,13 +1,6 @@
 <svelte:options
     customElement={{
         tag: "lens-chart",
-        props: {
-            chartData: { type: "Object" },
-            backgroundColor: { type: "Array" },
-            backgroundHoverColor: { type: "Array" },
-            perSite: { type: "Boolean" },
-            groupRange: { type: "Number" },
-        },
     }}
 />
 

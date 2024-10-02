@@ -74,6 +74,14 @@
      */
 
     /**
+     * sets the query store
+     * @param newQuery the new query store
+     */
+    export const setQueryStoreAPI = (newQuery: QueryItem[][]): void => {
+        queryStore.set(newQuery);
+    };
+
+    /**
      * lets the library user add a single stratifier to the query store
      * @param params the parameters for the function
      * @param params.label the value of the stratifier (e.g. "C31")

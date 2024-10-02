@@ -1,11 +1,6 @@
 <svelte:options
     customElement={{
         tag: "lens-search-button",
-        props: {
-            measures: { type: "Object" },
-            disabled: { type: "Boolean" },
-            backendConfig: { type: "Object" },
-        },
     }}
 />
 

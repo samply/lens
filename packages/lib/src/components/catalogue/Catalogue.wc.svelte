@@ -1,12 +1,6 @@
 <svelte:options
     customElement={{
         tag: "lens-catalogue",
-        props: {
-            treeData: { type: "Object" },
-            texts: { type: "Object" },
-            toggle: { type: "Object" },
-            open: { type: "Boolean" },
-        },
     }}
 />
 

@@ -1,9 +1,6 @@
 <svelte:options
     customElement={{
         tag: "lens-result-summary",
-        props: {
-            resultSummaryDataTypes: { type: "Array" },
-        },
     }}
 />
 

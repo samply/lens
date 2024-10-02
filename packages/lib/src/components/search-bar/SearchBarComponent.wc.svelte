@@ -1,10 +1,6 @@
 <svelte:options
     customElement={{
         tag: "lens-search-bar",
-        props: {
-            treeData: { type: "Object" },
-            noMatchesFoundMessage: { type: "String" },
-        },
     }}
 />
 

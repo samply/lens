@@ -17,7 +17,7 @@ export type Category =
           key: string;
           name: string;
           system?: string;
-          fieldType: "single-select" | "autocomplete" | "number";
+          fieldType: "single-select" | "autocomplete" | "number" | "date";
           type: "EQUALS" | "BETWEEN";
           min?: number;
           max?: number;

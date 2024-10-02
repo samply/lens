@@ -95,6 +95,27 @@
         getQuery();
     };
 
+    const setQueryStore = (): void => {
+        const store: QueryItem[][] = [
+            [
+                {
+                    id: "0cf3a74c-77f8-49a0-bef5-16e20d6b361e",
+                    key: "gender",
+                    name: "Geschlecht",
+                    type: "EQUALS",
+                    values: [
+                        {
+                            name: "Männlich",
+                            value: "male",
+                            queryBindId: "1f69dd2d-3c29-40a6-ba83-a966def1cd12",
+                        },
+                    ],
+                },
+            ],
+        ];
+        dataPasser.setQueryStoreAPI(store);
+    };
+
     window.addEventListener("emit-lens-query", (e) => {
         const event = e as QueryEvent;
         const { ast, updateResponse, abortController } = event.detail;
@@ -158,6 +179,7 @@
         <button on:click={() => getQuery()}>Get Query Store</button>
         <button on:click={() => getResponse()}>Get Response Store</button>
         <button on:click={() => getAST()}>Get AST</button>
+        <button on:click={() => setQueryStore()}>Set Query Store</button>
         {#each queryStore as queryStoreGroup}
             <div>
                 {#each queryStoreGroup as queryStoreItem}
