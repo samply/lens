@@ -107,22 +107,8 @@
     );
 
     let dataPasser: LensDataPasser;
-
-    const getQuery = (): void => {
-        console.log("QueryStore:", dataPasser.getQueryAPI());
-    };
-
-    const getAST = (): void => {
-        console.log("AST:", dataPasser.getAstAPI());
-    };
 </script>
 
-<button
-    on:click={() => {
-        getQuery();
-        getAST();
-    }}>query</button
->
 <header>
     <div class="header-wrapper">
         <div class="logo">
