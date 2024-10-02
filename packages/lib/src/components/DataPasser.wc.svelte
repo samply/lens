@@ -75,10 +75,10 @@
 
     /**
      * sets the query store
-     * @param queryStore the new query store
+     * @param newQuery the new query store
      */
-    export const setQueryStoreAPI = (queryStore: QueryItem[][]): void => {
-        queryStore.set(queryStore);
+    export const setQueryStoreAPI = (newQuery: QueryItem[][]): void => {
+        queryStore.set(newQuery);
     };
 
     /**
