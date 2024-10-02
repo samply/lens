@@ -15,10 +15,14 @@
         key: element.key,
         name: element.name,
         type: "type" in element && element.type,
+        system: "system" in element ? element.system : "",
         values: [
             {
                 name: criterion.name,
-                value: 'aggregatedValue' in criterion ? criterion.aggregatedValue : criterion.key,
+                value:
+                    "aggregatedValue" in criterion
+                        ? criterion.aggregatedValue
+                        : criterion.key,
                 queryBindId: queryBindId,
             },
         ],
@@ -30,6 +34,4 @@
         {criterion.name}
     </span>
 </div>
-<QueryAddButtonComponent
-    queryItem={queryItem}
-/>
+<QueryAddButtonComponent {queryItem} />

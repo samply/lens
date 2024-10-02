@@ -139,6 +139,7 @@
             name: element.name,
             key: element.key,
             type: "type" in element && element.type,
+            system: "system" in element ? element.system : "",
             values: [
                 {
                     value: inputItem.key,
