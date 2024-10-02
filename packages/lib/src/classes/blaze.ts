@@ -85,7 +85,7 @@ export class Blaze {
 
             response = new Map<string, Site>().set(this.name, {
                 status: "succeeded",
-                data: blazeResponse.data,
+                data: blazeResponse,
             });
 
             this.updateResponse(response);
