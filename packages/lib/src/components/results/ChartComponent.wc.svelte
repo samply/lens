@@ -436,6 +436,10 @@
         chart.data.datasets = chartData.data;
         chartLabels = chartData.labels;
 
+        if (typeof groupRange == "string") {
+            groupRange = Number(groupRange);
+        }
+
         /**
          * lets the user define a range for the labels when only single values are used eg. '60' -> '60 - 69'
          */
