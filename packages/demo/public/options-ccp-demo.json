@@ -22,6 +22,7 @@
         "wuerzburg": "Würzburg",
         "mannheim": "Mannheim",
         "dktk-test": "DKTK-Test",
+        "dktk-datashield-test": "DKTK Datashield Test",
         "hamburg": "Hamburg"
     },
     "catalogueKeyToResponseKeyMap": [
@@ -70,6 +71,8 @@
                 "ulm": "Ulm",
                 "wuerzburg": "Würzburg",
                 "mannheim": "Mannheim",
+                "dktk-test": "DKTK-Test",
+                "dktk-datashield-test": "DKTK Datashield Test",
                 "hamburg": "Hamburg"
             }
         },
@@ -261,6 +264,7 @@
                 "url": "https://backend.demo.lens.samply.de/prod/",
                 "sites": [
                     "dktk-test",
+                    "dktk-datashield-test",
                     "berlin",
                     "berlin-test",
                     "dresden",
@@ -287,6 +291,10 @@
             {
                 "site": "dktk-test",
                 "collection": "lens-dktk-test"
+            },
+            {
+                "site": "dktk-datashield-test",
+                "collection": "lens-dktk-datashield-test"
             },
             {
                 "site": "Berlin",
