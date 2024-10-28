@@ -365,6 +365,14 @@
                             "collection": {
                                 "type": "string",
                                 "pattern": "^.+$"
+                            },
+                            "name": {
+                                "type": "string",
+                                "pattern": "^.+$"
+                            },
+                            "biobankId": {
+                                "type": "string",
+                                "pattern": "^.+$"
                             }
                         },
                         "additionalProperties": false,
