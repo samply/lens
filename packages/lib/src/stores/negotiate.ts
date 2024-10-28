@@ -53,28 +53,30 @@ export const buildHumanReadableRecursively = (
     }
 
     queryLayer.children.forEach((child: AstElement, index: number): void => {
-        if ("type" in child && "value" in child && "key" in child) {
-            if (typeof child.value === "string") {
-                humanReadableQuery += `(${child.key} ${child.type} ${child.value})`;
+        if (child !== null) {
+            if ("type" in child && "value" in child && "key" in child) {
+                if (typeof child.value === "string") {
+                    humanReadableQuery += `(${child.key} ${child.type} ${child.value})`;
+                }
+                if (
+                    typeof child.value === "object" &&
+                    "min" in child.value &&
+                    "max" in child.value
+                ) {
+                    humanReadableQuery += `(${child.key} ${child.type} ${child.value.min} and ${child.value.max})`;
+                }
             }
-            if (
-                typeof child.value === "object" &&
-                "min" in child.value &&
-                "max" in child.value
-            ) {
-                humanReadableQuery += `(${child.key} ${child.type} ${child.value.min} and ${child.value.max})`;
+
+            humanReadableQuery = buildHumanReadableRecursively(
+                child,
+                humanReadableQuery,
+            );
+
+            if (index === queryLayer.children.length - 1) {
             }
-        }
-
-        humanReadableQuery = buildHumanReadableRecursively(
-            child,
-            humanReadableQuery,
-        );
-
-        if (index === queryLayer.children.length - 1) {
-        }
-        if (index < queryLayer.children.length - 1) {
-            humanReadableQuery += ` ${queryLayer.operand} `;
+            if (index < queryLayer.children.length - 1) {
+                humanReadableQuery += ` ${queryLayer.operand} `;
+            }
         }
     });
 
