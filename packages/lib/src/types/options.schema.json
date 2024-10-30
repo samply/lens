@@ -373,7 +373,7 @@
             },
             "additionalProperties": false,
             "unevaluatedProperties": false,
-            "required": ["newProjectUrl", "editProjectUrl", "siteMapping"]
+            "required": ["newProjectUrl", "siteMapping"]
             
         }
     },
