@@ -5,17 +5,18 @@
 />
 
 <script lang="ts">
-    import { negotiate, negotiateStore } from "../../stores/negotiate";
+    import { datarequestsStore } from "../../stores/datarequests";
+    import { negotiate } from "../../services/bbmriNegotiate.ts";
 
     export let title: string = "Negotiate with biobanks";
 </script>
 
 <button
     part={`lens-negotiate-button lens-negotiate-button-${
-        $negotiateStore.length === 0 ? "disabled" : "active"
+        $datarequestsStore.length === 0 ? "disabled" : "active"
     }`}
-    on:click={() => negotiate($negotiateStore)}
-    disabled={$negotiateStore.length === 0}
+    on:click={() => negotiate($datarequestsStore)}
+    disabled={$datarequestsStore.length === 0}
 >
     <div part="lens-negotiate-button-title">
         {title}

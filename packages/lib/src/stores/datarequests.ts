@@ -33,6 +33,7 @@ export const buildHumanReadableRecursively = (
     }
 
     queryLayer.children.forEach((child: AstElement, index: number): void => {
+        if (child !== null) {
         if ("type" in child && "value" in child && "key" in child) {
             if (typeof child.value === "string") {
                 humanReadableQuery += `(${child.key} ${child.type} ${child.value})`;
@@ -56,6 +57,7 @@ export const buildHumanReadableRecursively = (
         if (index < queryLayer.children.length - 1) {
             humanReadableQuery += ` ${queryLayer.operand} `;
         }
+    }
     });
 
     if (queryLayer.children.length > 1) {
