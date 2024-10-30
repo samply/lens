@@ -33,6 +33,10 @@
     };
 
     const displayQueryInfo = (e: MouseEvent, queryItem?: QueryItem): void => {
+        if (typeof message == "string") {
+            message = message.split(",");
+        }
+
         const target: HTMLElement = e.target as HTMLElement;
         if (showQuery) {
             if (onlyChildInfo && queryItem !== undefined) {
