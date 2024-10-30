@@ -8,7 +8,7 @@
     import {
         getHumanReadableQuery,
         buildHumanReadableRecursively,
-    } from "../../stores/negotiate";
+    } from "../../stores/datarequests";
     import { returnNestedValues } from "../../helpers/ast-transformer";
     import type { AstElement } from "../../types/ast";
     import type { QueryItem } from "../../types/queryData";
@@ -33,6 +33,10 @@
     };
 
     const displayQueryInfo = (e: MouseEvent, queryItem?: QueryItem): void => {
+        if (typeof message == "string") {
+            message = message.split(",");
+        }
+
         const target: HTMLElement = e.target as HTMLElement;
         if (showQuery) {
             if (onlyChildInfo && queryItem !== undefined) {
