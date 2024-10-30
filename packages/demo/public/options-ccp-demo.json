@@ -22,6 +22,7 @@
         "wuerzburg": "Würzburg",
         "mannheim": "Mannheim",
         "dktk-test": "DKTK-Test",
+        "dktk-datashield-test": "DKTK Datashield Test",
         "hamburg": "Hamburg"
     },
     "catalogueKeyToResponseKeyMap": [
@@ -70,6 +71,8 @@
                 "ulm": "Ulm",
                 "wuerzburg": "Würzburg",
                 "mannheim": "Mannheim",
+                "dktk-test": "DKTK-Test",
+                "dktk-datashield-test": "DKTK Datashield Test",
                 "hamburg": "Hamburg"
             }
         },
@@ -260,6 +263,8 @@
                 "backendMeasures": "DKTK_STRAT_DEF_IN_INITIAL_POPULATION",
                 "url": "https://backend.demo.lens.samply.de/prod/",
                 "sites": [
+                    "dktk-test",
+                    "dktk-datashield-test",
                     "berlin",
                     "berlin-test",
                     "dresden",
@@ -275,6 +280,73 @@
                     "mannheim",
                     "hamburg"
                 ]
+            }
+        ]
+    },
+    "negotiateOptions": {
+        "negotiateApp": "project-manager",
+        "newProjectUrl": "https://e260-ccp-req/project-manager/create-query-and-design-project",
+        "editProjectUrl": "https://e260-ccp-req/project-manager/edit-project",
+        "siteMapping": [
+            {
+                "site": "dktk-test",
+                "collection": "lens-dktk-test"
+            },
+            {
+                "site": "dktk-datashield-test",
+                "collection": "lens-dktk-datashield-test"
+            },
+            {
+                "site": "Berlin",
+                "collection": "lens-berlin"
+            },
+            {
+                "site": "Dresden",
+                "collection": "lens-dresden"
+            },
+            {
+                "site": "Essen",
+                "collection": "lens-essen"
+            },
+            {
+                "site": "Frankfurt",
+                "collection": "lens-frankfurt"
+            },
+            {
+                "site": "Freiburg",
+                "collection": "lens-freiburg"
+            },
+            {
+                "site": "Hannover",
+                "collection": "lens-hannover"
+            },
+            {
+                "site": "Mainz",
+                "collection": "lens-mainz"
+            },
+            {
+                "site": "München LMU",
+                "collection": "lens-muenchen-lmu"
+            },
+            {
+                "site": "München TUM",
+                "collection": "lens-muenchen-tum"
+            },
+            {
+                "site": "Ulm",
+                "collection": "lens-ulm"
+            },
+            {
+                "site": "Würzburg",
+                "collection": "lens-wuerzburg"
+            },
+            {
+                "site": "Mannheim",
+                "collection": "lens-mannheim"
+            },
+            {
+                "site": "Hamburg",
+                "collection": "lens-hamburg"
             }
         ]
     }

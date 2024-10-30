@@ -4,6 +4,18 @@ export type LensOptions = {
     catalogueKeyToResponseKeyMap?: string[][];
 };
 
+export type NegotiateOptionsSiteMapping = {
+    site: string;
+    site_id: string;
+    collection_id: string;
+    collection: string;
+};
+
+export type NegotiateOptions = {
+    newProjectUrl: string;
+    siteMappings: NegotiateOptionsSiteMapping[];
+};
+
 export type ChartOptions = {
     [key: string]: ChartOption;
 };

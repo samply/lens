@@ -192,6 +192,11 @@
     ): ChartDataSets => {
         let dataSet: number[];
 
+        // This is bad. For some reason the passed value is a string not a array of strings. With this conversion it does work!
+        if (typeof backgroundColor == "string") {
+            backgroundColor = backgroundColor.split(",");
+        }
+
         if (perSite) {
             dataSet = chartLabels.map((label: string) => {
                 const site: Site | undefined = responseStore.get(label);
@@ -430,6 +435,10 @@
 
         chart.data.datasets = chartData.data;
         chartLabels = chartData.labels;
+
+        if (typeof groupRange == "string") {
+            groupRange = Number(groupRange);
+        }
 
         /**
          * lets the user define a range for the labels when only single values are used eg. '60' -> '60 - 69'
