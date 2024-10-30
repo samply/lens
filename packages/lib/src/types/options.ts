@@ -12,9 +12,7 @@ export type NegotiateOptionsSiteMapping = {
 };
 
 export type NegotiateOptions = {
-    negotiateApp: string;
     newProjectUrl: string;
-    editProjectUrl: string;
     siteMappings: NegotiateOptionsSiteMapping[];
 };
 
