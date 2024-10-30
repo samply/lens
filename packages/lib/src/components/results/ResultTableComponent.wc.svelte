@@ -6,7 +6,7 @@
 
 <script lang="ts">
     import { uiSiteMappingsStore } from "../../stores/mappings";
-    import { negotiateStore } from "../../stores/negotiate";
+    import { datarequestsStore } from "../../stores/datarequests.ts";
     import {
         getSitePopulationForCode,
         getSitePopulationForStratumCode,
@@ -134,11 +134,11 @@
     );
 
     /**
-     * watches the negotiateStore for changes to check or uncheck the checkbox
+     * watches the datarequestsStore for changes to check or uncheck the checkbox
      */
     let allChecked: boolean = false;
     $: allChecked =
-        $negotiateStore.length === tableRowData.length &&
+        $datarequestsStore.length === tableRowData.length &&
         tableRowData.length !== 0;
 
     /**
@@ -146,9 +146,9 @@
      */
     const checkAllBiobanks = (): void => {
         if (allChecked) {
-            $negotiateStore = [];
+            $datarequestsStore = [];
         } else {
-            $negotiateStore = tableRowData.map(
+            $datarequestsStore = tableRowData.map(
                 (tableRow: (string | number)[]) => tableRow[0] as string,
             );
         }

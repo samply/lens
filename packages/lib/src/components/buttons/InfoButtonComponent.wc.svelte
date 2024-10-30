@@ -8,7 +8,7 @@
     import {
         getHumanReadableQuery,
         buildHumanReadableRecursively,
-    } from "../../stores/negotiate";
+    } from "../../stores/datarequests";
     import { returnNestedValues } from "../../helpers/ast-transformer";
     import type { AstElement } from "../../types/ast";
     import type { QueryItem } from "../../types/queryData";
