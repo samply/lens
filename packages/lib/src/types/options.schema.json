@@ -338,17 +338,7 @@
         "negotiateOptions": {
             "type": "object",
             "properties": {
-                "negotiateApp": {
-                    "type": "string",
-                    "pattern": "^.+$",
-                    "description": "The URL of the negotiate app"
-                },
                 "newProjectUrl": {
-                    "type": "string",
-                    "pattern": "^.+$",
-                    "description": "The measures of the blaze"
-                },
-                "editProjectUrl": {
                     "type": "string",
                     "pattern": "^.+$",
                     "description": "The measures of the blaze"
@@ -362,22 +352,22 @@
                                 "type": "string",
                                 "pattern": "^.+$"
                             },
+                            "site_id": {
+                                "type": "string",
+                                "pattern": "^.+$"
+                            },
                             "collection": {
                                 "type": "string",
                                 "pattern": "^.+$"
                             },
-                            "name": {
-                                "type": "string",
-                                "pattern": "^.+$"
-                            },
-                            "biobankId": {
+                            "collection_name": {
                                 "type": "string",
                                 "pattern": "^.+$"
                             }
                         },
                         "additionalProperties": false,
                         "unevaluatedProperties": false,
-                        "required": ["site", "collection"]                    
+                        "required": ["site", "collection", "site_id", "collection_name"]                    
                     }
                 }
             },
