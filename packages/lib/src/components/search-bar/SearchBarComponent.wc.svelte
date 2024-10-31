@@ -20,7 +20,6 @@
     import { v4 as uuidv4 } from "uuid";
     import StoreDeleteButtonComponent from "../buttons/StoreDeleteButtonComponent.svelte";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
-    import { addPercentageSignToCriteria } from "../../helpers/object-formaters";
     import { catalogue } from "../../stores/catalogue";
 
     /**
@@ -92,10 +91,10 @@
                     ),
                 ];
             } else {
-                if ("criteria" in category)
-                    category.criteria = addPercentageSignToCriteria(
-                        category.criteria,
-                    );
+                // if ("criteria" in category)
+                //     category.criteria = addPercentageSignToCriteria(
+                //         category.criteria,
+                //     );
 
                 if (buildDatalistItemFromBottomCategory(category))
                     autoCompleteItems = [
