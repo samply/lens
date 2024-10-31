@@ -9,7 +9,6 @@
     import type { QueryItem, QueryValue } from "../../types/queryData";
     import AutoCompleteCriterionComponent from "./AutoCompleteCriterionComponent.svelte";
     import { onMount } from "svelte";
-    import { addPercentageSignToCriteria } from "../../helpers/object-formaters";
 
     /**
      * mockdata to get from texts store
@@ -28,7 +27,7 @@
         /**
          * adds .% option to find all subgroups
          */
-        criteria = addPercentageSignToCriteria(structuredClone(criteria));
+        // criteria = addPercentageSignToCriteria(structuredClone(criteria));
     });
 
     /**
