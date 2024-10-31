@@ -35,6 +35,18 @@ If you want to make changes to the lens library while integrating those changes 
 
 To controll that the linking of the local version worked, run `npm ls | grep lens` in your applications repository and verify that it refers to your local lens repository.
 
+#### Additional Note for Applications using Vite
+When your depending application is built with vite, you need to ensure to add the following to your vite.config.ts:
+
+``` javascript
+export default defineConfig({
+    // ... 
+	optimizeDeps: {
+		exclude: ['@samply/lens']
+	}
+});
+```
+
 ## Style Integration
 
 To import the default stylings, use 
