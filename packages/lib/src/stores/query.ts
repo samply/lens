@@ -33,6 +33,14 @@ export const activeQueryGroupIndex = writable<number>(0);
 export const queryModified = writable<boolean>(false);
 
 /**
+ * emits an event every time the value of the query store is updated
+ */
+queryStore.subscribe(() => {
+    const event = new CustomEvent("lens-query-updated");
+    window.dispatchEvent(event);
+});
+
+/**
  * Adds an item to the query
  * If the item already exists in the query, the value will be added to the existing item
  * If the item does not exist in the query, a new item will be created
