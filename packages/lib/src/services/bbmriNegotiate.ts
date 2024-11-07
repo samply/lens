@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import type { QueryItem, SendableQuery } from "../types/queryData";
 import type {
     LensOptions,
-    NegotiateOptions,
+    NegotiaterOptions,
     NegotiateOptionsSiteMapping,
 } from "../types/options";
 import { getHumanReadableQuery } from "../stores/datarequests";
@@ -17,7 +17,7 @@ type NegotiatorResponse = Response & {
     status: number;
 };
 
-let negotiateOptions: NegotiateOptions;
+let negotiateOptions: NegotiaterOptions;
 const siteCollectionMap: Map<string, NegotiateOptionsSiteMapping> = new Map();
 
 lensOptions.subscribe((options: LensOptions) => {
@@ -28,7 +28,7 @@ lensOptions.subscribe((options: LensOptions) => {
      * need to know how multiple collections are returned from the backend
      */
 
-    negotiateOptions = options.negotiateOptions as NegotiateOptions;
+    negotiateOptions = options.negotiateOptions as NegotiaterOptions;
     negotiateOptions?.siteMappings?.forEach((site) => {
         siteCollectionMap.set(site.site, site);
     });
@@ -153,7 +153,7 @@ async function sendRequestToNegotiator(
     });
 
     try {
-        response = await fetch(`${negotiateOptions.newProjectUrl}`, {
+        response = await fetch(`${negotiateOptions.url}`, {
             method: "POST",
             headers: {
                 Accept: "application/json; charset=utf-8",

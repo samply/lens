@@ -338,11 +338,39 @@
         "negotiateOptions": {
             "type": "object",
             "properties": {
-                "negotiateApp": {
+                "url": {
                     "type": "string",
                     "pattern": "^.+$",
-                    "description": "The URL of the negotiate app"
+                    "description": "The measures of the blaze"
                 },
+                "siteMappings": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "site": {
+                                "type": "string",
+                                "pattern": "^.+$"
+                            },
+                            "collection": {
+                                "type": "string",
+                                "pattern": "^.+$"
+                            }
+                        },
+                        "additionalProperties": false,
+                        "unevaluatedProperties": false,
+                        "required": ["site", "collection"]                    
+                    }
+                }
+            },
+            "additionalProperties": false,
+            "unevaluatedProperties": false,
+            "required": ["url", "siteMappings"]
+            
+        },
+        "projectmanagerOptions": {
+            "type": "object",
+            "properties": {
                 "newProjectUrl": {
                     "type": "string",
                     "pattern": "^.+$",
@@ -376,7 +404,6 @@
             "additionalProperties": false,
             "unevaluatedProperties": false,
             "required": ["newProjectUrl", "editProjectUrl", "siteMapping"]
-            
         }
     },
     "additionalProperties": false,

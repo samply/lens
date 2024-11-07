@@ -181,7 +181,7 @@
                 "rna": "RNA",
                 "derivative-other": "Derivat, Andere"
             },
-            "legendMapping":{
+            "legendMapping": {
                 "ffpe-tissue": "Gewebe FFPE",
                 "frozen-tissue": "Gewebe schockgefroren",
                 "tissue-other": "Gewebe, Andere Konservierungsart",
@@ -320,6 +320,10 @@
                 "collection": "lens-freiburg"
             },
             {
+                "site": "Hamburg",
+                "collection": "lens-hamburg"
+            },
+            {
                 "site": "Hannover",
                 "collection": "lens-hannover"
             },
@@ -328,7 +332,11 @@
                 "collection": "lens-mainz"
             },
             {
-                "site": "München(LMU)",
+                "site": "Mannheim",
+                "collection": "lens-mannheim"
+            },
+            {
+                "site": "München LMU",
                 "collection": "lens-muenchen-lmu"
             },
             {
@@ -342,14 +350,6 @@
             {
                 "site": "Würzburg",
                 "collection": "lens-wuerzburg"
-            },
-            {
-                "site": "Mannheim",
-                "collection": "lens-mannheim"
-            },
-            {
-                "site": "Hamburg",
-                "collection": "lens-hamburg"
             }
         ]
     }
