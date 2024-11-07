@@ -181,7 +181,7 @@
                 "rna": "RNA",
                 "derivative-other": "Derivat, Andere"
             },
-            "legendMapping":{
+            "legendMapping": {
                 "ffpe-tissue": "Gewebe FFPE",
                 "frozen-tissue": "Gewebe schockgefroren",
                 "tissue-other": "Gewebe, Andere Konservierungsart",
@@ -283,13 +283,12 @@
             }
         ]
     },
-    "negotiateOptions": {
-        "negotiateApp": "project-manager",
-        "newProjectUrl": "https://e260-ccp-req/project-manager/create-query-and-design-project",
-        "editProjectUrl": "https://e260-ccp-req/project-manager/edit-project",
-        "siteMapping": [
+    "projectmanagerOptions": {
+        "newProjectUrl": "https://e260-ccp-req/project-manager-api/create-query-and-design-project",
+        "editProjectUrl": "https://e260-ccp-req/project-manager-api/edit-project",
+        "siteMappings": [
             {
-                "site": "dktk-test",
+                "site": "DKTK-Test",
                 "collection": "lens-dktk-test"
             },
             {
@@ -317,12 +316,20 @@
                 "collection": "lens-freiburg"
             },
             {
+                "site": "Hamburg",
+                "collection": "lens-hamburg"
+            },
+            {
                 "site": "Hannover",
                 "collection": "lens-hannover"
             },
             {
                 "site": "Mainz",
                 "collection": "lens-mainz"
+            },
+            {
+                "site": "Mannheim",
+                "collection": "lens-mannheim"
             },
             {
                 "site": "München LMU",
@@ -339,14 +346,6 @@
             {
                 "site": "Würzburg",
                 "collection": "lens-wuerzburg"
-            },
-            {
-                "site": "Mannheim",
-                "collection": "lens-mannheim"
-            },
-            {
-                "site": "Hamburg",
-                "collection": "lens-hamburg"
             }
         ]
     }

@@ -6,9 +6,9 @@
 
 <script lang="ts">
     import { datarequestsStore } from "../../stores/datarequests";
-    import { negotiate } from "../../services/bbmriNegotiate.ts";
 
     export let title: string = "Negotiate with biobanks";
+    import { negotiate } from "../../services/ccpProjectManager.ts";
 </script>
 
 <button
