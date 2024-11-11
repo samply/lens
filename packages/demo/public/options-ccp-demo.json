@@ -261,7 +261,7 @@
             {
                 "name": "DKTK",
                 "backendMeasures": "DKTK_STRAT_DEF_IN_INITIAL_POPULATION",
-                "url": "http://localhost:8100",
+                "url": "https://backend.demo.lens.samply.de/prod/",
                 "sites": [
                     "dktk-test",
                     "dktk-datashield-test",
