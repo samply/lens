@@ -381,7 +381,7 @@
                     "pattern": "^.+$",
                     "description": "The measures of the blaze"
                 },
-                "siteMapping": {
+                "siteMappings": {
                     "type": "array",
                     "items": {
                         "type": "object",
@@ -403,7 +403,7 @@
             },
             "additionalProperties": false,
             "unevaluatedProperties": false,
-            "required": ["newProjectUrl", "editProjectUrl", "siteMapping"]
+            "required": ["newProjectUrl", "editProjectUrl", "siteMappings"]
         }
     },
     "additionalProperties": false,
