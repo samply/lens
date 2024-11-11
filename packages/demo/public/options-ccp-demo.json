@@ -283,7 +283,6 @@
             }
         ]
     },
-<<<<<<< HEAD
     "projectmanagerOptions": {
         "newProjectUrl": "https://requests.dktk.dkfz.de/project-manager-api/create-query-and-design-project",
         "editProjectUrl": "https://requests.dktk.dkfz.de/project-manager-api/edit-project",
