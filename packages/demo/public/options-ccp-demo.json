@@ -261,7 +261,7 @@
             {
                 "name": "DKTK",
                 "backendMeasures": "DKTK_STRAT_DEF_IN_INITIAL_POPULATION",
-                "url": "https://backend.demo.lens.samply.de/prod/",
+                "url": "http://localhost:8100",
                 "sites": [
                     "dktk-test",
                     "dktk-datashield-test",
@@ -286,9 +286,9 @@
     "projectmanagerOptions": {
         "newProjectUrl": "https://e260-ccp-req/project-manager/create-query-and-design-project",
         "editProjectUrl": "https://e260-ccp-req/project-manager/edit-project",
-        "siteMapping": [
+        "siteMappings": [
             {
-                "site": "dktk-test",
+                "site": "DKTK-Test",
                 "collection": "lens-dktk-test"
             },
             {
@@ -297,6 +297,10 @@
             },
             {
                 "site": "Berlin",
+                "collection": "lens-berlin"
+            },
+            {
+                "site": "Berlin (OBDS)",
                 "collection": "lens-berlin"
             },
             {
@@ -324,11 +328,11 @@
                 "collection": "lens-mainz"
             },
             {
-                "site": "München LMU",
+                "site": "München(LMU)",
                 "collection": "lens-muenchen-lmu"
             },
             {
-                "site": "München TUM",
+                "site": "München(TUM)",
                 "collection": "lens-muenchen-tum"
             },
             {
