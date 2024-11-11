@@ -59,7 +59,9 @@ export const getCollections = (
  * redirects to negotiator
  * @param sitesToNegotiate the sites to negotiate with
  */
-export const negotiate = async (sitesToNegotiate: string[]): Promise<void> => {
+export const bbmrinegotiate = async (
+    sitesToNegotiate: string[],
+): Promise<void> => {
     let sendableQuery!: SendableQuery;
     queryStore.subscribe((value: QueryItem[][]) => {
         const uuid = uuidv4();

@@ -107,19 +107,19 @@ async function sendRequestToProjectManager(
     /**
      * get temporary token from oauth2
      */
-    const temporaryToken: string | null = "";
+    let temporaryToken: string | null = "";
 
-    // try {
-    //     const res = await fetch(`/oauth2/auth`, {
-    //         method: "GET",
-    //         credentials: "include",
-    //     });
+    try {
+        const res = await fetch(`/oauth2/auth`, {
+            method: "GET",
+            credentials: "include",
+        });
 
-    //     temporaryToken = res.headers.get("Authorization");
-    // } catch (error) {
-    //     console.log("error", error);
-    //     return new Response() as Response & { redirect_uri: string };
-    // }
+        temporaryToken = res.headers.get("Authorization");
+    } catch (error) {
+        console.log("error", error);
+        return new Response() as Response & { redirect_uri: string };
+    }
 
     /**
      * build query params
@@ -153,33 +153,24 @@ async function sendRequestToProjectManager(
      */
 
     console.log(
-        `${negotiateUrl}?explorer-ids=${negotiationPartners}&query-format=CQL_DATA&human-readable=${humanReadable}&explorer-url=${encodeURIComponent(returnURL)}${projectCodeParam}`,
+        `${negotiateUrl}?explorer-ids=${negotiationPartners}&query-format=CQL_DATA&explorer-url=${encodeURIComponent(returnURL)}${projectCodeParam}`,
     );
     console.log(getCql());
-    try {
-        response = await fetch(
-            `${negotiateUrl}?explorer-ids=${negotiationPartners}&query-format=CQL_DATA&human-readable=${humanReadable}&explorer-url=${encodeURIComponent(returnURL)}${projectCodeParam}`,
-            {
-                method: "POST",
-                headers: {
-                    returnAccept: "application/json; charset=utf-8",
-                    "Content-Type": "application/json",
-                    Authorization: temporaryToken ? temporaryToken : "",
-                },
-                body: getCql(),
-            },
-        ).then((response) => response.json());
 
-        /**
-         * replace query-code with project-code
-         * TODO: remove when backend bug is fixed
-         */
-        if (response?.redirect_uri) {
-            response.redirect_uri = response.redirect_uri.replace(
-                "query-code",
-                "project-code",
-            );
-        }
+    let pmRequestUrl = `${negotiateUrl}?explorer-ids=${negotiationPartners}&query-format=CQL_DATA&explorer-url=${encodeURIComponent(returnURL)}${projectCodeParam}`;
+    if (humanReadable != "") {
+        pmRequestUrl = pmRequestUrl + `&human-readable=${humanReadable}`;
+    }
+    try {
+        response = await fetch(pmRequestUrl, {
+            method: "POST",
+            headers: {
+                returnAccept: "application/json; charset=utf-8",
+                "Content-Type": "application/json",
+                Authorization: temporaryToken ? temporaryToken : "",
+            },
+            body: getCql(),
+        }).then((response) => response.json());
 
         return response;
     } catch (error) {
