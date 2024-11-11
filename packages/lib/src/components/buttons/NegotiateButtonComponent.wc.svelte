@@ -8,14 +8,27 @@
     import { datarequestsStore } from "../../stores/datarequests";
 
     export let title: string = "Negotiate with biobanks";
+    export let type: string;
     import { negotiate } from "../../services/ccpProjectManager.ts";
+    import { bbmrinegotiate } from "../../services/bbmriNegotiate.ts";
+
+    /**
+     *
+     */
+    function exec(): void {
+        if (type == "bbmri") {
+            bbmrinegotiate($datarequestsStore);
+        } else if (type == "ccp") {
+            negotiate($datarequestsStore);
+        }
+    }
 </script>
 
 <button
     part={`lens-negotiate-button lens-negotiate-button-${
         $datarequestsStore.length === 0 ? "disabled" : "active"
     }`}
-    on:click={() => negotiate($datarequestsStore)}
+    on:click={exec}
     disabled={$datarequestsStore.length === 0}
 >
     <div part="lens-negotiate-button-title">

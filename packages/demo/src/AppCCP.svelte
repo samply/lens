@@ -12,7 +12,6 @@
         dktkSpecimenMeasure,
         dktkHistologyMeasure,
     } from "./measures";
-    import { negotiate } from "../../lib/src/services/ccpProjectManager.ts";
 
     /**
      * VITE_TARGET_ENVIRONMENT is set by the ci pipeline
@@ -159,8 +158,8 @@
             <div class="chart-wrapper result-summary">
                 <lens-result-summary />
                 <lens-negotiate-button
-                    datarequestCallback={negotiate}
-                    title={"Request Data"}
+                    type={"ccp"}
+                    title={"Daten und Proben Anfragen"}
                 ></lens-negotiate-button>
                 <lens-search-modified-display
                     >Diagramme repräsentieren nicht mehr die aktuelle Suche!</lens-search-modified-display
