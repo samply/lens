@@ -283,8 +283,7 @@
             }
         ]
     },
-    "negotiateOptions": {
-        "negotiateApp": "project-manager",
+    "projectmanagerOptions": {
         "newProjectUrl": "https://e260-ccp-req/project-manager/create-query-and-design-project",
         "editProjectUrl": "https://e260-ccp-req/project-manager/edit-project",
         "siteMapping": [

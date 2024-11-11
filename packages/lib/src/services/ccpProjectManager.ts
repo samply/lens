@@ -135,8 +135,6 @@ async function sendRequestToProjectManager(
         window.location.search,
     );
 
-    console.log(negotiateOptions);
-
     const projectCode: string | null = urlParams.get("project-code");
     const projectCodeParam: string = projectCode
         ? `&project-code=${projectCode}`
