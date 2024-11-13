@@ -284,8 +284,8 @@
         ]
     },
     "projectmanagerOptions": {
-        "newProjectUrl": "https://e260-ccp-req/project-manager-api/create-query-and-design-project",
-        "editProjectUrl": "https://e260-ccp-req/project-manager-api/edit-project",
+        "newProjectUrl": "https://requests.dktk.dkfz.de/project-manager-api/create-query-and-design-project",
+        "editProjectUrl": "https://requests.dktk.dkfz.de/project-manager-api/edit-project",
         "siteMappings": [
             {
                 "site": "DKTK-Test",
