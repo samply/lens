@@ -63,21 +63,34 @@ export const translateAstToCql = (
         retrievalCriteria = retrievalCriteria.slice(0, -10);
     } else {
         retrievalCriteria += "[Specimen] S where " + additionalCriteria;
-        //retrievalCriteria += additionalCriteria
         retrievalCriteria = retrievalCriteria.slice(0, -5);
     }
 
     retrievalCriteria = retrievalCriteria += " else {} as List<Specimen>";
+    const specimenMeasure = measures.find(
+        (element) => element.key == "specimen",
+    );
+    if (specimenMeasure?.cql) {
+        specimenMeasure.cql = specimenMeasure?.cql + retrievalCriteria;
+    }
 
     if (query.children.length == 0) {
         singletons += "\ntrue";
     }
 
-    console.log(retrievalCriteria);
-
     if (returnOnlySingeltons) {
         return singletons;
     }
+
+    console.log(
+        cqlHeader +
+            getCodesystems() +
+            "context Patient\n" +
+            measures
+                .map((measureItem: MeasureItem) => measureItem.cql)
+                .join("") +
+            singletons,
+    );
 
     return (
         cqlHeader +
@@ -90,8 +103,6 @@ export const translateAstToCql = (
 
 const processAdditionalCriterion = (query: any): string => {
     let additionalCriteria = "";
-
-    console.log(query);
 
     if (isAstTopLayer(query)) {
         const top: AstTopLayer = query;
@@ -300,11 +311,8 @@ const getSingleton = (criterion: AstBottomLayerValue): string => {
             switch (myCriterion.type) {
                 case "gender":
                 case "pseudo_projects":
-                case "BBMRI_gender":
                 case "histology":
                 case "conditionValue":
-                case "BBMRI_conditionValue":
-                case "BBMRI_conditionSampleDiagnosis":
                 case "conditionBodySite":
                 case "conditionLocalization":
                 case "observation":
