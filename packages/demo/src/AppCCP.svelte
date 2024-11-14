@@ -23,9 +23,12 @@
     if (import.meta.env.VITE_TARGET_ENVIRONMENT === "production") {
         catalogueUrl = "catalogues/catalogue-dktk.json";
         optionsFilePath = "options-ccp-prod.json";
-    } else {
+    } else if (import.meta.env.VITE_TARGET_ENVIRONMENT === "staging") {
         catalogueUrl = "catalogues/catalogue-dktk-staging.json";
         optionsFilePath = "options-ccp-demo.json";
+    } else if (import.meta.env.DEV) {
+        catalogueUrl = "catalogues/catalogue-dktk-staging.json";
+        optionsFilePath = "options-dev.json";
     }
 
     /**

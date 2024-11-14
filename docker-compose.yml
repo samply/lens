@@ -59,7 +59,7 @@ services:
       - "traefik.http.routers.lens.middlewares=traefik-forward-auth"
 
   spot:
-    image: samply/rustyspot:main
+    image: ghcr.io/samply/rustyspot:39pr-
     platform: linux/amd64
     ports:
       - "8055:8055"
@@ -78,7 +78,6 @@ services:
       LOG_FILE: /requests.log
     volumes:
       - ./requests.log:/requests.log
-
     depends_on:
       - "beam-proxy"
     labels:
