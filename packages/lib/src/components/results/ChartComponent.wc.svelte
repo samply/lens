@@ -503,7 +503,6 @@
      * adds stratifier as a search parameter when clicked
      */
     const handleClickOnStratifier = (): void => {
-        console.log("test");
         /**
          * the clicked stratifier
          */
