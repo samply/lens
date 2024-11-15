@@ -30,4 +30,5 @@ export interface LensDataPasser extends HTMLElement {
     removeValueFromQueryAPI(params: RemoveValueFromQueryAPIParams): void;
     updateResponseAPI(params: ResponseStore): void;
     setQueryStoreAPI(params: QueryItem[][]): void;
+    setQueryStoreFromAstAPI(params: QueryItem[][]): void;
 }

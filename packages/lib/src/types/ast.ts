@@ -1,6 +1,10 @@
 export type AstElement = AstTopLayer | AstBottomLayerValue;
+export const isTopLayer = (x: AstElement): x is AstTopLayer => "operand" in x;
+export const isBottomLayer = (x: AstElement): x is AstBottomLayerValue =>
+    "value" in x;
 
 export type AstTopLayer = {
+    key: string;
     operand: "AND" | "OR";
     children: AstElement[];
 };
