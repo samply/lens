@@ -503,6 +503,7 @@
      * adds stratifier as a search parameter when clicked
      */
     const handleClickOnStratifier = (): void => {
+        console.log("test");
         /**
          * the clicked stratifier
          */
@@ -542,7 +543,10 @@
                             } else {
                                 childCategorie.criteria.forEach(
                                     (criterion: Criteria) => {
-                                        if (criterion.key === label) {
+                                        if (
+                                            criterion.key === label ||
+                                            criterion.name === label
+                                        ) {
                                             values[0] = {
                                                 name: criterion.name,
                                                 value: criterion.key,
