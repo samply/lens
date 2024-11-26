@@ -1,0 +1,245 @@
+{
+    "iconOptions": {
+        "deleteUrl": "delete_icon.svg",
+        "infoUrl": "info-circle-svgrepo-com.svg",
+        "selectAll": {
+            "text": "Alle Hinzufügen"
+        }
+    },
+    "siteMappings": {
+        "cce-dkfz": "German Cancer Research Center",
+        "cce-gr": "Gustave Roussy",
+        "cce-ki": "Karolinska Institutet",
+        "cce-vhio": "Vall d’Hebron Instituto de Oncología"
+    },
+    "catalogueKeyToResponseKeyMap": [
+        [
+            "gender",
+            "Gender"
+        ],
+        [
+            "age_at_diagnosis",
+            "Age"
+        ],
+        [
+            "diagnosis",
+            "diagnosis"
+        ],
+        [
+            "medicationStatements",
+            "MedicationType"
+        ],
+        [
+            "sample_kind",
+            "sample_kind"
+        ],
+        [
+            "therapy_of_tumor",
+            "ProcedureType"
+        ],
+        [
+            "75186-7",
+            "75186-7"
+        ]
+    ],
+    "chartOptions": {
+        "patients": {
+            "legendMapping": {
+                "cce-dkfz": "German Cancer Research Center",
+                "cce-gr": "Gustave Roussy",
+                "cce-ki": "Karolinska Institutet",
+                "cce-vhio": "Vall d’Hebron Instituto de Oncología"
+            }
+        },
+        "gender": {
+            "legendMapping": {
+                "male": "male",
+                "female": "female",
+                "unknown": "unknown",
+                "other": "other"
+            }
+        },
+        "diagnosis": {
+            "hintText": [
+                "For patients with several oncological diagnoses, entries are also displayed that may not match the selected search criteria."
+            ]
+        },
+        "age_at_diagnosis": {
+            "hintText": [
+                "For patients with several initial diagnoses, entries are also displayed that may lie outside the search criteria. "
+            ]
+        },
+        "75186-7": {
+            "hintText": [
+                "\"deceased\": a date of death is documented or the current age is greater than 123 years.",
+                "\"alive\": is assumed if no date of death is documented or the current age has not exceeded 123 years.",
+                "\"unknown\": no date of birth or date of death known."
+            ]
+        },
+        "therapy_of_tumor": {
+            "hintText": [
+                "For patients with several oncological diagnoses, entries are also displayed that may not match the selected search criteria."
+            ],
+            "aggregations": [
+                "medicationStatements"
+            ],
+            "tooltips": {
+                "OP": "Operations",
+                "ST": "Radiotherapies",
+                "medicationStatements": "Systemic therapies"
+            }
+        },
+        "medicationStatements": {
+            "hintText": [
+                "Type of systemic therapy"
+            ],
+            "tooltips": {
+                "CH": "Chemotherapy",
+                "HO": "Hormonetherapy",
+                "IM": "Immune/antibody therapy",
+                "KM": "Bone marrow transplantation",
+                "ZS": "Targeted substances",
+                "SZ": "Stem cell transplantation (including bone marrow transplantation)",
+                "AS": "Active Surveillance",
+                "WS": "Wait and see",
+                "WW": "Watchful Waiting",
+                "SO": "Other"
+            }
+        },
+        "sample_kind": {
+            "hintText": [
+                "Distribution of sample types associated with the identified patients."
+            ],
+            "accumulatedValues": [
+                {
+                    "name": "ffpe-tissue",
+                    "values": [
+                        "tissue-ffpe",
+                        "tumor-tissue-ffpe",
+                        "normal-tissue-ffpe",
+                        "other-tissue-ffpe"
+                    ]
+                },
+                {
+                    "name": "frozen-tissue",
+                    "values": [
+                        "tissue-frozen",
+                        "tumor-tissue-frozen",
+                        "normal-tissue-frozen",
+                        "other-tissue-frozen"
+                    ]
+                }
+            ],
+            "tooltips": {
+                "ffpe-tissue": "FFPE tissue",
+                "frozen-tissue": "Frozen tissue",
+                "tissue-other": "Tissue other",
+                "whole-blood": "Whole blood",
+                "blood-serum": "Blood serum",
+                "blood-plasma": "Blood plasma",
+                "buffy-coat": "Buffy coat",
+                "peripheral-blood-cells": "Peripheral blood cells",
+                "dried-whole-blood": "Dried whole blood",
+                "swab": "Swab",
+                "ascites": "Ascites",
+                "stool-faeces": "Stool faeces",
+                "urine": "Urine",
+                "csf-liquor": "Liquor",
+                "bone-marrow": "Bone marrow",
+                "saliva": "Saliva",
+                "liquid-other": "Liquid other",
+                "dna": "DNA",
+                "rna": "RNA",
+                "derivative-other": "Derivative other"
+            },
+            "legendMapping":{
+                "ffpe-tissue": "FFPE tissue",
+                "frozen-tissue": "Frozen tissue",
+                "tissue-other": "Tissue other",
+                "whole-blood": "Whole blood",
+                "blood-serum": "Blood serum",
+                "blood-plasma": "Blood plasma",
+                "buffy-coat": "Buffy coat",
+                "peripheral-blood-cells": "Peripheral blood cells",
+                "dried-whole-blood": "Dried whole blood",
+                "swab": "Swab",
+                "ascites": "Ascites",
+                "stool-faeces": "Stool faeces",
+                "urine": "Urine",
+                "csf-liquor": "Liquor",
+                "bone-marrow": "Bone marrow",
+                "saliva": "Saliva",
+                "liquid-other": "Liquid other",
+                "dna": "DNA",
+                "rna": "RNA",
+                "derivative-other": "Derivative other"
+            }
+        }
+    },
+    "tableOptions": {
+        "headerData": [
+            {
+                "title": "Sites",
+                "dataKey": "site"
+            },
+            {
+                "title": "Patients",
+                "dataKey": "patients"
+            },
+            {
+                "title": "Specimen*",
+                "aggregatedDataKeys": [
+                    {
+                        "groupCode": "specimen"
+                    },
+                    {
+                        "stratifierCode": "Histologies",
+                        "stratumCode": "1"
+                    }
+                ]
+            }
+        ],
+        "claimedText": "Processing..."
+    },
+    "resultSummaryOptions": {
+        "title": "Results",
+        "infoButtonText": "To make re-identification more difficult, location results are modified and rounded to tens. If a location does not report a hit, zero is displayed for this location.",
+        "dataTypes": [
+            {
+                "title": "Sites",
+                "dataKey": "collections"
+            },
+            {
+                "title": "Patients",
+                "dataKey": "patients"
+            },
+            {
+                "title": "Specimen",
+                "aggregatedDataKeys": [
+                    {
+                        "groupCode": "specimen"
+                    },
+                    {
+                        "stratifierCode": "Histologies",
+                        "stratumCode": "1"
+                    }
+                ]
+            }
+        ]
+    },
+    "backends": {
+        "spots": [
+            {
+                "name": "CCE-VDC",
+                "backendMeasures": "DKTK_STRAT_DEF_IN_INITIAL_POPULATION",
+                "url": "http://localhost:8055",
+                "sites": [
+                    "cce-dkfz",
+                    "cce-gr",
+                    "cce-ki",
+                    "cce-vhio"
+                ]
+            }
+        ]
+    }
+}

@@ -9,7 +9,8 @@ import "../../lib";
 // import App from "./AppFragmentDevelopment.svelte";
 
 import "./ccp.css";
-import App from "./AppCCP.svelte";
+// import App from "./AppCCP.svelte";
+import App from "./AppCCE.svelte";
 
 // import App from './AppBBMRI.svelte'
 // import './bbmri.css'
