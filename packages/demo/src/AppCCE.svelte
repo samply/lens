@@ -21,10 +21,10 @@
     let optionsFilePath: string = "";
 
     if (import.meta.env.VITE_TARGET_ENVIRONMENT === "production") {
-        catalogueUrl = "catalogues/catalogue-dktk.json";
+        catalogueUrl = "catalogues/catalogue-cce.json";
         optionsFilePath = "options-cce-prod.json";
     } else {
-        catalogueUrl = "catalogues/catalogue-dktk-staging.json";
+        catalogueUrl = "catalogues/catalogue-cce.json";
         optionsFilePath = "options-cce-demo.json";
     }
 
@@ -101,10 +101,9 @@
         .set("verstorben", "deceased")
         .set("unbekannt", "unknown");
 
-    const therapyHeaders: Map<string, string> = new Map<string, string>().set(
-        "medicationStatements",
-        "Sys. T",
-    );
+    const therapyHeaders: Map<string, string> = new Map<string, string>()
+        .set("medicationStatements", "ST")
+        .set("ST", "RT");
 
     let dataPasser: LensDataPasser;
 </script>
@@ -112,9 +111,12 @@
 <header>
     <div class="header-wrapper">
         <div class="logo">
-            <img src="../dktk.svg" alt="Logo DKFZ" />
+            <img src="../logo-CCE-DKFZ.svg" alt="Logo DKFZ" />
+            <img src="../logo-CCE-GR.jpg" alt="Logo GR" />
+            <img src="../logo-CCE-KI.svg" alt="Logo KI" />
+            <img src="../logo-CCE-VHIO.png" alt="Logo VHIO" />
         </div>
-        <h1>CCP Explorer</h1>
+        <h1>Cancer Core Europe - Virtual Data Centre</h1>
         <div class="logo logo-dkfz">
             <img src="../logo-CCE-DKFZ.svg" alt="Logo DKFZ" />
         </div>
@@ -123,14 +125,12 @@
 <main>
     <div class="search">
         <div class="search-wrapper">
-            <lens-search-bar
-                noMatchesFoundMessage={"keine Ergebnisse gefunden"}
-            />
+            <lens-search-bar noMatchesFoundMessage={"No results found"} />
             <lens-info-button
-                noQueryMessage="Leere Suchanfrage: Sucht nach allen Ergebnissen."
+                noQueryMessage="Empty search query: Searches for all results."
                 showQuery={true}
             />
-            <lens-search-button title="Suchen" />
+            <lens-search-button title="Search" />
         </div>
     </div>
     <div class="grid">
@@ -139,8 +139,8 @@
                 <h2>Suchkriterien</h2>
                 <lens-info-button
                     message={[
-                        `Bei Patienten mit mehreren onkologischen Diagnosen, können sich ausgewählte Suchkriterien nicht nur auf eine Erkrankung beziehen, sondern auch auf Weitere.`,
-                        `Innerhalb einer Kategorie werden verschiedene Ausprägungen mit einer „Oder-Verknüpfung“ gesucht; bei der Suche über mehrere Kategorien mit einer „Und-Verknüpfung“.`,
+                        `For patients with several oncological diagnoses, selected search criteria can refer not only to one disease, but also to others.`,
+                        `Within a category, different characteristics are searched for with an ‘or link’; when searching across several categories with an ‘and link’.`,
                     ]}
                 />
                 <lens-catalogue
@@ -155,12 +155,12 @@
             <div class="chart-wrapper result-summary">
                 <lens-result-summary />
                 <lens-search-modified-display
-                    >Diagramme repräsentieren nicht mehr die aktuelle Suche!</lens-search-modified-display
+                    >Diagrams no longer represent the current search!</lens-search-modified-display
                 >
             </div>
             <div class="chart-wrapper">
                 <lens-chart
-                    title="Patienten pro Standort"
+                    title="Patients per site"
                     catalogueGroupCode="patients"
                     perSite={true}
                     displayLegends={true}
@@ -170,15 +170,15 @@
             <div class="chart-wrapper result-table">
                 <lens-result-table pageSize="10">
                     <div slot="above-pagination" class="result-table-hint-text">
-                        * Die Anzahl der möglichen vorhandenen FFPE-Proben aus
-                        der Pathologie beruht auf der Menge der gezählten
-                        Histologien.
+                        * The number of possible FFPE samples available from the
+                        pathology pathology is based on the number of
+                        histological histologies.
                     </div>
                 </lens-result-table>
             </div>
             <div class="chart-wrapper">
                 <lens-chart
-                    title="Geschlecht"
+                    title="Sex"
                     catalogueGroupCode="gender"
                     chartType="pie"
                     displayLegends={true}
@@ -187,33 +187,33 @@
             </div>
             <div class="chart-wrapper chart-diagnosis">
                 <lens-chart
-                    title="Diagnose"
+                    title="Diagnosis"
                     catalogueGroupCode="diagnosis"
                     chartType="bar"
                     indexAxis="y"
                     groupingDivider="."
                     groupingLabel=".%"
                     filterRegex="^[CD].*"
-                    xAxisTitle="Anzahl der Diagnosen"
+                    xAxisTitle="Number of diagnoses"
                     yAxisTitle="ICD-10-Codes"
                     backgroundColor={barChartBackgroundColors}
                 />
             </div>
             <div class="chart-wrapper chart-age-distribution">
                 <lens-chart
-                    title="Alter bei Erstdiagnose"
+                    title="Age at diagnosis"
                     catalogueGroupCode="age_at_diagnosis"
                     chartType="bar"
                     groupRange={10}
                     filterRegex="^(([0-9]?[0-9]$)|(1[0-2]0))"
-                    xAxisTitle="Alter"
-                    yAxisTitle="Anzahl der Primärdiagnosen"
+                    xAxisTitle="Age"
+                    yAxisTitle="Number of primary diagnoses"
                     backgroundColor={barChartBackgroundColors}
                 />
             </div>
             <div class="chart-wrapper">
                 <lens-chart
-                    title="Vitalstatus"
+                    title="Vital status"
                     catalogueGroupCode="75186-7"
                     chartType="pie"
                     displayLegends={true}
@@ -222,12 +222,12 @@
             </div>
             <div class="chart-wrapper">
                 <lens-chart
-                    title="Therapieart"
+                    title="Therapy type"
                     catalogueGroupCode="therapy_of_tumor"
                     chartType="bar"
                     headers={therapyHeaders}
-                    xAxisTitle="Art der Therapie"
-                    yAxisTitle="Anzahl der Therapieeinträge"
+                    xAxisTitle="Type of therapy"
+                    yAxisTitle="Number of therapies"
                     backgroundColor={barChartBackgroundColors}
                 />
             </div>
@@ -236,18 +236,18 @@
                     title="Systemic therapies"
                     catalogueGroupCode="medicationStatements"
                     chartType="bar"
-                    xAxisTitle="Art der Therapie"
-                    yAxisTitle="Anzahl der Therapieeinträge"
+                    xAxisTitle="Type of therapy"
+                    yAxisTitle="Number of therapiese"
                     backgroundColor={barChartBackgroundColors}
                 />
             </div>
             <div class="chart-wrapper">
                 <lens-chart
-                    title="Proben"
+                    title="Specimen"
                     catalogueGroupCode="sample_kind"
                     chartType="bar"
-                    xAxisTitle="Probentypen"
-                    yAxisTitle="Probenanzahl"
+                    xAxisTitle="Specimen type"
+                    yAxisTitle="Number of specimen"
                     filterRegex="^(?!(tissue-other|buffy-coat|peripheral-blood-cells|dried-whole-blood|swab|ascites|stool-faeces|saliva|liquid-other|derivative-other))"
                     backgroundColor={barChartBackgroundColors}
                 >
@@ -265,32 +265,7 @@
     >
         Known Issues
     </a>
-    <a
-        href="https://dktk.dkfz.de/forschung/Plattformen-und-Technologie-Netzwerke/klinische-plattformen/ccp-faq"
-        class="faq"
-        target="_blank">FAQ</a
-    >
-    <a class="ccp" href="https://dktk.dkfz.de/ccp" target="_blank">
-        Clinical Communication Platform (CCP)
-    </a>
-    <a class="email" href="mailto:CCP@dkfz.de">Kontakt</a>
-    <a
-        class="user-agreement"
-        href="https://hub.dkfz.de/s/MPCg2kK23LH8Yii"
-        download="nutzervereinbarung"
-        target="_blank">Nutzungsvereinbarung</a
-    >
-    <a
-        class="privacy-policy"
-        href="https://hub.dkfz.de/s/M8Ldxd5GsfrQG9S"
-        download="datenschutzerklaerung"
-        target="_blank">Datenschutz</a
-    >
-    <a
-        class="imprint"
-        href="https://www.dkfz.de/de/impressum.html"
-        target="_blank">Impressum</a
-    >
+    <a class="email" href="mailto:CCP@dkfz.de"> Kontakt </a>
 </footer>
 
 {#await jsonPromises}

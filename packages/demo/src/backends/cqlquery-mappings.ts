@@ -7,7 +7,7 @@ export const alias = new Map<string, string>([
     ["lokalisation_icd_o_3", "urn:oid:2.16.840.1.113883.6.43.1"],
     [
         "bodySite",
-        "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SeitenlokalisationCS",
+        "https://www.cancercoreeurope.eu/fhir/core/CodeSystem/SitelocationCS",
     ],
     [
         "Therapieart",
@@ -18,6 +18,10 @@ export const alias = new Map<string, string>([
         "uiccstadiumcs",
         "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/UiccstadiumCS",
     ],
+    // [
+    //     "uiccstagecs",
+    //     "https://www.cancercoreeurope.eu/fhir/core/CodeSystem/UiccstageCS",
+    // ],
     [
         "lokalebeurteilungresidualstatuscs",
         "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/LokaleBeurteilungResidualstatusCS",
@@ -206,6 +210,10 @@ export const cqltemplate = new Map<string, string>([
         "uiccstadium",
         "(exists ([Observation: Code '21908-9' from loinc] O where O.value.coding.code contains '{{C}}')) or (exists ([Observation: Code '21902-2' from loinc] O where O.value.coding.code contains '{{C}}'))",
     ],
+    // [
+    //     "uiccstage",
+    //     "(exists ([Observation: Code '21908-9' from loinc] O where O.value.coding.code contains '{{C}}')) or (exists ([Observation: Code '21902-2' from loinc] O where O.value.coding.code contains '{{C}}'))",
+    // ],
     ["histology", "exists from [Observation: Code '59847-4' from loinc] O\n"],
 
     ["BBMRI_gender", "Patient.gender"],
@@ -308,6 +316,7 @@ export const criterionMap = new Map<string, { type: string; alias?: string[] }>(
         ["age_at_diagnosis", { type: "conditionRangeAge" }],
         ["age_at_primary_diagnosis", { type: "primaryConditionRangeAge" }],
         ["21908-9", { type: "uiccstadium", alias: ["loinc", "uiccstadiumcs"] }],
+        // ["21908-9", { type: "uiccstage", alias: ["loinc", "uiccstagecs"] }],
         ["21905-5", { type: "TNMc", alias: ["loinc", "TNMTCS"] }], //tnm component
         ["21906-3", { type: "TNMc", alias: ["loinc", "TNMNCS"] }], //tnm component
         ["21907-1", { type: "TNMc", alias: ["loinc", "TNMMCS"] }], //tnm component
