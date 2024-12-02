@@ -542,7 +542,10 @@
                             } else {
                                 childCategorie.criteria.forEach(
                                     (criterion: Criteria) => {
-                                        if (criterion.key === label) {
+                                        if (
+                                            criterion.key === label ||
+                                            criterion.name === label
+                                        ) {
                                             values[0] = {
                                                 name: criterion.name,
                                                 value: criterion.key,
