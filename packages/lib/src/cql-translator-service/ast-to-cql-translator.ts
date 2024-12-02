@@ -136,9 +136,7 @@ const getSingleton = (criterion: AstBottomLayerValue): string => {
                 case "observationMolecularMarkerDNAchange":
                 case "observationMolecularMarkerSeqRefNCBI":
                 case "observationMolecularMarkerEnsemblID":
-                case "department":
-                case "TNMp":
-                case "TNMc": {
+                case "department": {
                     if (typeof criterion.value === "string") {
                         // TODO: Check if we really need to do this or we can somehow tell cql to do that expansion it self
                         if (
@@ -219,7 +217,33 @@ const getSingleton = (criterion: AstBottomLayerValue): string => {
 
                     break;
                 }
+                case "TNMp":
+                case "TNMc": {
+                    if (typeof criterion.value === "string") {
+                        expression += "(";
 
+                        expression += substituteCQLExpression(
+                            criterion.key,
+                            myCriterion.alias,
+                            myCQL,
+                            criterion.value as string,
+                        );
+                        expression += ") or (";
+
+                        const myCQL2: string = cqltemplate.get(
+                            myCriterion.type == "TNMc" ? "TNMp" : "TNMc",
+                        );
+
+                        expression += substituteCQLExpression(
+                            criterion.key,
+                            myCriterion.alias,
+                            myCQL2,
+                            criterion.value as string,
+                        );
+                        expression += ")";
+                    }
+                    break;
+                }
                 case "conditionRangeDate": {
                     expression += substituteRangeCQLExpression(
                         criterion,
