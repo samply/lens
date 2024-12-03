@@ -157,9 +157,7 @@ async function sendRequestToProjectManager(
 
     let pmRequestUrl = `${negotiateUrl}?explorer-ids=${negotiationPartners}&query-format=CQL_DATA&explorer-url=${encodeURIComponent(returnURL)}${projectCodeParam}`;
     if (humanReadable != "") {
-        pmRequestUrl =
-            pmRequestUrl +
-            `&human-readable=${Buffer.from(humanReadable, "base64")}`;
+        pmRequestUrl = pmRequestUrl + `&human-readable=${btoa(humanReadable)}`;
     }
     try {
         response = await fetch(pmRequestUrl, {
