@@ -4,7 +4,7 @@ export const isBottomLayer = (x: AstElement): x is AstBottomLayerValue =>
     "value" in x;
 
 export type AstTopLayer = {
-    key: string;
+    key?: string;
     operand: "AND" | "OR";
     children: AstElement[];
 };
