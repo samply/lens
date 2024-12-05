@@ -236,6 +236,7 @@ export interface AddStratifierParams {
     catalogue: Category[];
     queryGroupIndex?: number;
     groupRange?: number;
+    system?: string;
 }
 
 export const addStratifier = ({
@@ -244,6 +245,7 @@ export const addStratifier = ({
     catalogueGroupCode,
     queryGroupIndex = 0,
     groupRange = 1,
+    system = "",
 }: AddStratifierParams): void => {
     let queryItem: QueryItem;
     catalogue.forEach((parentCategory: Category) => {
@@ -287,9 +289,10 @@ export const addStratifier = ({
                             key: childCategorie.key,
                             name: childCategorie.name,
                             system:
-                                "system" in childCategorie
+                                "system" in childCategorie &&
+                                childCategorie.system !== ""
                                     ? childCategorie.system
-                                    : "",
+                                    : system,
                             type:
                                 "type" in childCategorie
                                     ? childCategorie.type
