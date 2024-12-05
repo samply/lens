@@ -5,6 +5,7 @@ import type { QueryItem, QueryValue } from "./queryData";
 export type AddStratifierToQueryAPIParams = {
     label: string;
     catalogueGroupCode: string;
+    parentGroupCode: string;
     groupRange?: number;
     queryGroupIndex?: number;
     system?: string;

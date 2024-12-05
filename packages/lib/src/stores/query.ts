@@ -227,12 +227,14 @@ function findObjectsWithSameName(objectsArray: QueryItem[]): QueryItem[] {
  * @param label the value of the stratifier (e.g. "C31")
  * @param catalogue the catalogue where the stratifier is located
  * @param catalogueGroupCode the code of the group where the stratifier is located (e.g. "diagnosis")
+ * @param parentGroupCode the code of the parent group in which the catalogue is located (e.g. "patient")
  * @param queryGroupIndex the index of the query group where the stratifier should be added
  */
 
 export interface AddStratifierParams {
     label: string;
     catalogueGroupCode: string;
+    parentGroupCode: string;
     catalogue: Category[];
     queryGroupIndex?: number;
     groupRange?: number;
@@ -243,13 +245,17 @@ export const addStratifier = ({
     label,
     catalogue,
     catalogueGroupCode,
+    parentGroupCode = "",
     queryGroupIndex = 0,
     groupRange = 1,
     system = "",
 }: AddStratifierParams): void => {
     let queryItem: QueryItem;
     catalogue.forEach((parentCategory: Category) => {
-        if ("childCategories" in parentCategory) {
+        if (
+            "childCategories" in parentCategory &&
+            (parentGroupCode === "" || parentCategory.key === parentGroupCode)
+        ) {
             parentCategory.childCategories?.forEach(
                 (childCategorie: Category) => {
                     if (
@@ -265,6 +271,19 @@ export const addStratifier = ({
                                     value: {
                                         min: parseInt(label),
                                         max: parseInt(label) + groupRange - 1,
+                                    },
+                                    queryBindId: uuidv4(),
+                                },
+                            ];
+                        } else if (childCategorie.fieldType === "date") {
+                            const lowerDate = label.split(" - ")[0];
+                            const upperDate = label.split(" - ")[1];
+                            values = [
+                                {
+                                    name: `${label}`,
+                                    value: {
+                                        min: Date.parse(lowerDate),
+                                        max: Date.parse(upperDate),
                                     },
                                     queryBindId: uuidv4(),
                                 },

@@ -96,6 +96,7 @@
      * @param params the parameters for the function
      * @param params.label the value of the stratifier (e.g. "C31")
      * @param params.catalogueGroupCode the code of the group where the stratifier is located (e.g. "diagnosis")
+     * @param params.parentGroupCode the code of the group where the catalogue is located (e.g. "patient")
      * @param params.groupRange of the numerical groups in charts
      * @param params.queryGroupIndex the index of the query group where the stratifier should be added
      * @param params.system the system used to describe the datafield in data model (e.g. a fhir system)
@@ -103,6 +104,7 @@
     export const addStratifierToQueryAPI = ({
         label,
         catalogueGroupCode,
+        parentGroupCode,
         groupRange,
         queryGroupIndex,
         system,
@@ -110,6 +112,7 @@
         addStratifier({
             label,
             catalogueGroupCode,
+            parentGroupCode,
             catalogue: $catalogue,
             queryGroupIndex,
             groupRange,
