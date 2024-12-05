@@ -25,7 +25,6 @@ export const buildAstFromQuery = (queryStore: QueryItem[][]): AstTopLayer => {
 
     if (ast.children.length === 1 && ast.children[0] === null) {
         return {
-            key: "",
             operand: "OR",
             children: [],
         };
