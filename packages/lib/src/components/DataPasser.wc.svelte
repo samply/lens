@@ -23,6 +23,7 @@
         RemoveItemFromQuyeryAPIParams,
         RemoveValueFromQueryAPIParams,
     } from "../types/dataPasser";
+    import { buildQueryFromAst } from "../helpers/ast-transformer.ts";
 
     /**
      * Getters
@@ -79,6 +80,15 @@
      */
     export const setQueryStoreAPI = (newQuery: QueryItem[][]): void => {
         queryStore.set(newQuery);
+    };
+
+    /**
+     * sets the query store using the ast representation of a query
+     * @param ast the ast that should be imported
+     */
+    export const setQueryStoreFromAstAPI = (ast: AstTopLayer): void => {
+        let query = buildQueryFromAst(ast);
+        queryStore.set(query);
     };
 
     /**
