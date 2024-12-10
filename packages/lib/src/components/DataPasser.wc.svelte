@@ -86,7 +86,7 @@
      * sets the query store using the ast representation of a query
      * @param ast the ast that should be imported
      */
-    export const setQueryStoreWithAstAPI = (ast: AstTopLayer): void => {
+    export const setQueryStoreFromAstAPI = (ast: AstTopLayer): void => {
         let query = buildQueryFromAst(ast);
         queryStore.set(query);
     };
