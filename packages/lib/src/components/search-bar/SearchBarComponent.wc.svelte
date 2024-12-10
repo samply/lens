@@ -28,6 +28,8 @@
      * @param noMatchesFoundMessage takes a string to display when no matches are found
      */
     export let noMatchesFoundMessage: string = "No matches found";
+    export let typeMoreMessage: string =
+        "Search will start with 3 inserted letters";
     export let placeholderText: string = "Type to filter conditions";
     export let index: number = 0;
 
@@ -368,7 +370,7 @@
             autoCompleteOpen = false;
         }}
     />
-    {#if autoCompleteOpen && inputValue.length > 0}
+    {#if autoCompleteOpen && inputValue.length > 2}
         <ul part="lens-searchbar-autocomplete-options">
             {#if $inputOptions?.length > 0}
                 {#each $inputOptions as inputOption, i}
@@ -431,6 +433,10 @@
             {:else}
                 <li>{noMatchesFoundMessage}</li>
             {/if}
+        </ul>
+    {:else if autoCompleteOpen && inputValue.length > 0 && inputValue.length < 3}
+        <ul part="lens-searchbar-autocomplete-options">
+            <li>{typeMoreMessage}</li>
         </ul>
     {/if}
     <StoreDeleteButtonComponent
