@@ -6,6 +6,9 @@
     } from "../../stores/query";
     import { iconStore } from "../../stores/icons";
     import type { QueryItem } from "../../types/queryData";
+    import { createEventDispatcher } from "svelte";
+
+    const dispatch = createEventDispatcher();
     export let itemToDelete: { type: string; index: number; item?: QueryItem };
 
     $: deleteUrl = $iconStore.get("deleteUrl");
@@ -17,6 +20,8 @@
      * can be a group, item or value
      */
     const deleteItem = (): void => {
+        dispatch("clear-search");
+
         if (type === "group") {
             queryStore.update((query) => {
                 query = query.filter((group, i) => i !== index);
