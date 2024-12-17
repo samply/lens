@@ -434,5 +434,12 @@
             {/if}
         </ul>
     {/if}
-    <StoreDeleteButtonComponent itemToDelete={{ type: "group", index }} />
+    <StoreDeleteButtonComponent
+        itemToDelete={{ type: "group", index }}
+        on:clear-search={() => {
+            inputValue = "";
+            focusedItemIndex = -1;
+            $inputOptions = [];
+        }}
+    />
 </div>
