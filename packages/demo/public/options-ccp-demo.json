@@ -283,13 +283,12 @@
             }
         ]
     },
-    "negotiateOptions": {
-        "negotiateApp": "project-manager",
-        "newProjectUrl": "https://e260-ccp-req/project-manager/create-query-and-design-project",
-        "editProjectUrl": "https://e260-ccp-req/project-manager/edit-project",
-        "siteMapping": [
+    "projectmanagerOptions": {
+        "newProjectUrl": "https://requests.dktk.dkfz.de/project-manager-api/create-query-and-design-project",
+        "editProjectUrl": "https://requests.dktk.dkfz.de/project-manager-api/edit-project",
+        "siteMappings": [
             {
-                "site": "dktk-test",
+                "site": "DKTK-Test",
                 "collection": "lens-dktk-test"
             },
             {
@@ -298,6 +297,10 @@
             },
             {
                 "site": "Berlin",
+                "collection": "lens-berlin"
+            },
+            {
+                "site": "Berlin (OBDS)",
                 "collection": "lens-berlin"
             },
             {
@@ -325,11 +328,11 @@
                 "collection": "lens-mainz"
             },
             {
-                "site": "München LMU",
+                "site": "München(LMU)",
                 "collection": "lens-muenchen-lmu"
             },
             {
-                "site": "München TUM",
+                "site": "München(TUM)",
                 "collection": "lens-muenchen-tum"
             },
             {
