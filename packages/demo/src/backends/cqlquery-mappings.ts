@@ -82,10 +82,6 @@ export const alias = new Map<string, string>([
 
 export const cqltemplate = new Map<string, string>([
     ["gender", "Patient.gender = '{{C}}'"],
-    [
-        "pseudo_projects",
-        "  exists ( Patient.extension E where E.url = 'http://dktk.dkfz.de/fhir/projects/{{C}}')",
-    ],
     ["conditionValue", "exists [Condition: Code '{{C}}' from {{A1}}]"],
     [
         "conditionBodySite",
@@ -211,49 +207,11 @@ export const cqltemplate = new Map<string, string>([
         "(exists ([Observation: Code '21908-9' from loinc] O where O.value.coding.code contains '{{C}}')) or (exists ([Observation: Code '21902-2' from loinc] O where O.value.coding.code contains '{{C}}'))",
     ],
     ["histology", "exists from [Observation: Code '59847-4' from loinc] O\n"],
-
-    ["BBMRI_gender", "Patient.gender"],
-    [
-        "BBMRI_conditionSampleDiagnosis",
-        "((exists[Condition: Code '{{C}}' from {{A1}}]) or (exists[Condition: Code '{{C}}' from {{A2}}])) or (exists from [Specimen] S where (S.extension.where(url='https://fhir.bbmri.de/StructureDefinition/SampleDiagnosis').value.coding.code contains '{{C}}'))",
-    ],
-    ["BBMRI_conditionValue", "exists [Condition: Code '{{C}}' from {{A1}}]"],
-    [
-        "BBMRI_conditionRangeDate",
-        "exists from [Condition] C\nwhere FHIRHelpers.ToDateTime(C.onset) between {{D1}} and {{D2}}",
-    ],
-    [
-        "BBMRI_conditionRangeAge",
-        "exists from [Condition] C\nwhere AgeInYearsAt(FHIRHelpers.ToDateTime(C.onset)) between Ceiling({{D1}}) and Ceiling({{D2}})",
-    ],
-    ["BBMRI_age", "AgeInYears() between Ceiling({{D1}}) and Ceiling({{D2}})"],
-    [
-        "BBMRI_observation",
-        "exists from [Observation: Code '{{K}}' from {{A1}}] O\nwhere O.value.coding.code contains '{{C}}'",
-    ],
-    [
-        "BBMRI_observationSmoker",
-        "exists from [Observation: Code '72166-2' from {{A1}}] O\nwhere O.value.coding.code contains '{{C}}'",
-    ],
-    [
-        "BBMRI_observationRange",
-        "exists from [Observation: Code '{{K}}' from {{A1}}] O\nwhere O.value between {{D1}} and {{D2}}",
-    ],
-    [
-        "BBMRI_observationBodyWeight",
-        "exists from [Observation: Code '29463-7' from {{A1}}] O\nwhere ((O.value as Quantity) < {{D1}} 'kg' and (O.value as Quantity) > {{D2}} 'kg')",
-    ],
-    [
-        "BBMRI_observationBMI",
-        "exists from [Observation: Code '39156-5' from {{A1}}] O\nwhere ((O.value as Quantity) < {{D1}} 'kg/m2' and (O.value as Quantity) > {{D2}} 'kg/m2')",
-    ],
-    ["retrieveSpecimenByType", "(S.type.coding.code contains '{{C}}')"],
 ]);
 
 export const criterionMap = new Map<string, { type: string; alias?: string[] }>(
     [
         ["gender", { type: "gender" }],
-        ["pseudo_projects", { type: "pseudo_projects" }],
         ["histology", { type: "histology", alias: ["loinc"] }],
         ["diagnosis", { type: "conditionValue", alias: ["icd10"] }],
         ["bodySite", { type: "conditionBodySite", alias: ["bodySite"] }],

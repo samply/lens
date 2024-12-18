@@ -1,21 +1,18 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * TODO: Document this file. Move to Project
  */
 
-import {
-    isAstTopLayer,
-    type AstBottomLayerValue,
-    type AstElement,
-    type AstTopLayer,
-} from "../types/ast";
+import type {
+    AstBottomLayerValue,
+    AstElement,
+    AstTopLayer,
+    MeasureItem,
+} from "../../../../dist/types";
 import {
     alias as aliasMap,
     cqltemplate,
     criterionMap,
 } from "./cqlquery-mappings";
-import { getCriteria } from "../stores/catalogue";
-import type { MeasureItem } from "../types/backend";
 
 let codesystems: string[] = [];
 let criteria: string[];
@@ -25,8 +22,9 @@ export const translateAstToCql = (
     returnOnlySingeltons: boolean = true,
     backendMeasures: string,
     measures: MeasureItem[],
+    criterionList: string[],
 ): string => {
-    criteria = getCriteria("diagnosis");
+    criteria = criterionList;
 
     /**
      * DISCUSS: why is this even an array?
@@ -47,33 +45,6 @@ export const translateAstToCql = (
     singletons = backendMeasures;
     singletons += resolveOperation(query);
 
-    let retrievalCriteria: string = "if InInitialPopulation then ";
-
-    const additionalCriteria = processAdditionalCriterion(query);
-    if (
-        additionalCriteria == "" ||
-        additionalCriteria.substring(additionalCriteria.length - 1) == "("
-    ) {
-        retrievalCriteria += "[Specimen]";
-    } else if (
-        additionalCriteria.substring(additionalCriteria.length - 9) ==
-        "intersect"
-    ) {
-        retrievalCriteria += "[Specimen] S where " + additionalCriteria;
-        retrievalCriteria = retrievalCriteria.slice(0, -10);
-    } else {
-        retrievalCriteria += "[Specimen] S where " + additionalCriteria;
-        retrievalCriteria = retrievalCriteria.slice(0, -5);
-    }
-
-    retrievalCriteria = retrievalCriteria += " else {} as List<Specimen>";
-    const specimenMeasure = measures.find(
-        (element) => element.key == "specimen",
-    );
-    if (specimenMeasure?.cql) {
-        specimenMeasure.cql = specimenMeasure?.cql + retrievalCriteria;
-    }
-
     if (query.children.length == 0) {
         singletons += "\ntrue";
     }
@@ -82,16 +53,6 @@ export const translateAstToCql = (
         return singletons;
     }
 
-    console.log(
-        cqlHeader +
-            getCodesystems() +
-            "context Patient\n" +
-            measures
-                .map((measureItem: MeasureItem) => measureItem.cql)
-                .join("") +
-            singletons,
-    );
-
     return (
         cqlHeader +
         getCodesystems() +
@@ -99,166 +60,6 @@ export const translateAstToCql = (
         measures.map((measureItem: MeasureItem) => measureItem.cql).join("") +
         singletons
     );
-};
-
-const processAdditionalCriterion = (query: any): string => {
-    let additionalCriteria = "";
-
-    if (isAstTopLayer(query)) {
-        const top: AstTopLayer = query;
-        top.children.forEach(function (child) {
-            additionalCriteria += processAdditionalCriterion(child);
-        });
-    } else {
-        const buttom: AstBottomLayerValue = query;
-        additionalCriteria += getRetrievalCriterion(buttom);
-    }
-
-    return additionalCriteria;
-};
-
-const getRetrievalCriterion = (criterion: AstBottomLayerValue): string => {
-    let expression: string = "";
-    let myCQL: string = "";
-    const myCriterion = criterionMap.get(criterion.key);
-    if (myCriterion) {
-        switch (myCriterion.type) {
-            case "specimen": {
-                expression += "(";
-                myCQL += cqltemplate.get("retrieveSpecimenByType");
-                if (typeof criterion.value === "string") {
-                    if (criterion.value.slice(-1) === "%") {
-                        const mykey = criterion.value.slice(0, -2);
-                        if (criteria.values != undefined) {
-                            criterion.value = criteria.values
-                                .filter(
-                                    (value) => value.key.indexOf(mykey) != -1,
-                                )
-                                .map((value) => value.key);
-                            getRetrievalCriterion(criterion);
-                        }
-                    } else {
-                        expression +=
-                            substituteCQLExpression(
-                                criterion.key,
-                                myCriterion.alias,
-                                myCQL,
-                                criterion.value as string,
-                            ) + ") and\n";
-                    }
-                }
-                if (criterion.value instanceof Array<string>) {
-                    const values: string[] = [];
-                    criterion.value.forEach((element) => {
-                        values.push(element);
-                    });
-
-                    if (criterion.value.includes("blood-plasma")) {
-                        values.push(
-                            "plasma-edta",
-                            "plasma-citrat",
-                            "plasma-heparin",
-                            "plasma-cell-free",
-                            "plasma-other",
-                            "plasma",
-                        );
-                    }
-                    if (criterion.value.includes("blood-serum")) {
-                        values.push("serum");
-                    }
-                    if (criterion.value.includes("tissue-ffpe")) {
-                        values.push(
-                            "tumor-tissue-ffpe",
-                            "normal-tissue-ffpe",
-                            "other-tissue-ffpe",
-                            "tissue-formalin",
-                        );
-                    }
-                    if (criterion.value.includes("tissue-frozen")) {
-                        values.push(
-                            "tumor-tissue-frozen",
-                            "normal-tissue-frozen",
-                            "other-tissue-frozen",
-                        );
-                    }
-                    if (criterion.value.includes("dna")) {
-                        values.push("cf-dna", "g-dna");
-                    }
-                    if (criterion.value.includes("tissue-other")) {
-                        values.push("tissue-paxgene-or-else", "tissue");
-                    }
-                    if (criterion.value.includes("derivative-other")) {
-                        values.push("derivative");
-                    }
-                    if (criterion.value.includes("liquid-other")) {
-                        values.push("liquid");
-                    }
-
-                    if (values.length === 1) {
-                        expression +=
-                            substituteCQLExpression(
-                                criterion.key,
-                                myCriterion.alias,
-                                myCQL,
-                                values[0],
-                            ) + ") and\n";
-                    } else {
-                        values.forEach((value: string) => {
-                            expression +=
-                                "(" +
-                                substituteCQLExpression(
-                                    criterion.key,
-                                    myCriterion.alias,
-                                    myCQL,
-                                    value,
-                                ) +
-                                ") or\n";
-                        });
-                        expression = expression.slice(0, -4) + ") and\n";
-                    }
-                }
-                break;
-            }
-            case "samplingDate": {
-                expression += "(";
-                myCQL += cqltemplate.get("retrieveSpecimenBySamplingDate");
-
-                let newCQL: string = "";
-                if (
-                    typeof criterion.value == "object" &&
-                    !(criterion.value instanceof Array) &&
-                    (criterion.value.min instanceof Date ||
-                        criterion.value.max instanceof Date)
-                ) {
-                    if (!(criterion.value.min instanceof Date)) {
-                        newCQL = myCQL.replace(
-                            "between {{D1}} and {{D2}}",
-                            "<= {{D2}}",
-                        );
-                    } else if (!(criterion.value.max instanceof Date)) {
-                        newCQL = myCQL.replace(
-                            "between {{D1}} and {{D2}}",
-                            ">= {{D1}}",
-                        );
-                    } else {
-                        newCQL = myCQL;
-                    }
-                    expression +=
-                        substituteCQLExpressionDate(
-                            criterion.key,
-                            myCriterion.alias,
-                            newCQL,
-                            "",
-                            criterion.value.min as Date,
-                            criterion.value.max as Date,
-                        ) + ") and\n";
-                }
-                break;
-            }
-        }
-    }
-
-    return expression;
 };
 
 const resolveOperation = (operation: AstElement): string => {
@@ -270,7 +71,6 @@ const resolveOperation = (operation: AstElement): string => {
 
     "children" in operation &&
         operation.children.forEach((element: AstElement, index) => {
-            if (element === null) return;
             if ("children" in element) {
                 expression += resolveOperation(element);
             }
@@ -310,7 +110,6 @@ const getSingleton = (criterion: AstBottomLayerValue): string => {
         if (myCQL) {
             switch (myCriterion.type) {
                 case "gender":
-                case "pseudo_projects":
                 case "histology":
                 case "conditionValue":
                 case "conditionBodySite":
@@ -330,7 +129,9 @@ const getSingleton = (criterion: AstBottomLayerValue): string => {
                 case "observationMolecularMarkerDNAchange":
                 case "observationMolecularMarkerSeqRefNCBI":
                 case "observationMolecularMarkerEnsemblID":
-                case "department": {
+                case "department":
+                case "TNMp":
+                case "TNMc": {
                     if (typeof criterion.value === "string") {
                         // TODO: Check if we really need to do this or we can somehow tell cql to do that expansion it self
                         if (
@@ -411,33 +212,7 @@ const getSingleton = (criterion: AstBottomLayerValue): string => {
 
                     break;
                 }
-                case "TNMp":
-                case "TNMc": {
-                    if (typeof criterion.value === "string") {
-                        expression += "(";
 
-                        expression += substituteCQLExpression(
-                            criterion.key,
-                            myCriterion.alias,
-                            myCQL,
-                            criterion.value as string,
-                        );
-                        expression += ") or (";
-
-                        const myCQL2: string = cqltemplate.get(
-                            myCriterion.type == "TNMc" ? "TNMp" : "TNMc",
-                        );
-
-                        expression += substituteCQLExpression(
-                            criterion.key,
-                            myCriterion.alias,
-                            myCQL2,
-                            criterion.value as string,
-                        );
-                        expression += ")";
-                    }
-                    break;
-                }
                 case "conditionRangeDate": {
                     expression += substituteRangeCQLExpression(
                         criterion,
