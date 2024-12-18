@@ -79,6 +79,9 @@
     /**
      * initialize the chart
      */
+
+    let noDataAvailable: boolean = false;
+
     let canvas!: HTMLCanvasElement;
 
     let chart: Chart;
@@ -400,7 +403,10 @@
      * @param responseStore - the response store
      */
     const setChartData = (responseStore: ResponseStore): void => {
-        if (responseStore.size === 0) return;
+        if (responseStore.size === 0) {
+            noDataAvailable = true;
+            return;
+        }
 
         let isDataAvailable: boolean = false;
 
@@ -408,7 +414,12 @@
             if (value.status === "succeeded") isDataAvailable = true;
         });
 
-        if (!isDataAvailable) return;
+        if (!isDataAvailable) {
+            noDataAvailable = true;
+            return;
+        }
+
+        noDataAvailable = false;
 
         let chartLabels: string[] = [];
 
@@ -603,6 +614,11 @@
     {#if options.hintText}
         <InfoButtonComponent message={options.hintText} />
     {/if}
+
+    {#if noDataAvailable}
+        <p>No Data Available</p>
+    {/if}
+
     <canvas
         part="chart-canvas"
         bind:this={canvas}
@@ -611,3 +627,12 @@
     />
     <slot />
 </div>
+
+<style>
+    p {
+        position: absolute;
+        top: 45%;
+        font-weight: bold;
+        left: 30%;
+    }
+</style>
