@@ -9,7 +9,7 @@
         dktkMedicationStatementsMeasure,
         dktkPatientsMeasure,
         dktkProceduresMeasure,
-        dktkSpecimenMeasure,
+        dktkSpecificSpecimenMeasure,
         dktkHistologyMeasure,
     } from "./measures";
 
@@ -65,7 +65,7 @@
             measures: [
                 dktkPatientsMeasure as MeasureItem,
                 dktkDiagnosisMeasure as MeasureItem,
-                dktkSpecimenMeasure as MeasureItem,
+                dktkSpecificSpecimenMeasure as MeasureItem,
                 dktkProceduresMeasure as MeasureItem,
                 dktkMedicationStatementsMeasure as MeasureItem,
                 dktkHistologyMeasure as MeasureItem,

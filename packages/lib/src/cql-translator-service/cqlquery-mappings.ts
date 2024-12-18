@@ -247,33 +247,7 @@ export const cqltemplate = new Map<string, string>([
         "BBMRI_observationBMI",
         "exists from [Observation: Code '39156-5' from {{A1}}] O\nwhere ((O.value as Quantity) < {{D1}} 'kg/m2' and (O.value as Quantity) > {{D2}} 'kg/m2')",
     ],
-    ["BBMRI_hasSpecimen", "exists [Specimen]"],
-    ["BBMRI_specimen", "exists [Specimen: Code '{{C}}' from {{A1}}]"],
-    ["BBMRI_retrieveSpecimenByType", "(S.type.coding.code contains '{{C}}')"],
-    [
-        "BBMRI_retrieveSpecimenByTemperature",
-        "(S.extension.where(url='https://fhir.bbmri.de/StructureDefinition/StorageTemperature').value.coding.code contains '{{C}}')",
-    ],
-    [
-        "BBMRI_retrieveSpecimenBySamplingDate",
-        "(FHIRHelpers.ToDateTime(S.collection.collected) between {{D1}} and {{D2}})",
-    ],
-    [
-        "BBMRI_retrieveSpecimenByFastingStatus",
-        "(S.collection.fastingStatus.coding.code contains '{{C}}')",
-    ],
-    [
-        "BBMRI_samplingDate",
-        "exists from [Specimen] S\nwhere FHIRHelpers.ToDateTime(S.collection.collected) between {{D1}} and {{D2}}",
-    ],
-    [
-        "BBMRI_fastingStatus",
-        "exists from [Specimen] S\nwhere S.collection.fastingStatus.coding.code contains '{{C}}'",
-    ],
-    [
-        "BBMRI_storageTemperature",
-        "exists from [Specimen] S where (S.extension.where(url='https://fhir.bbmri.de/StructureDefinition/StorageTemperature').value.coding contains Code '{{C}}' from {{A1}})",
-    ],
+    ["retrieveSpecimenByType", "(S.type.coding.code contains '{{C}}')"],
 ]);
 
 export const criterionMap = new Map<string, { type: string; alias?: string[] }>(
