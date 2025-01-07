@@ -1,7 +1,7 @@
 import { lensOptions } from "../stores/options";
 import type {
     LensOptions,
-    NegotiaterOptions,
+    NegotiatorOptions,
     NegotiateOptionsSiteMapping,
 } from "../types/options";
 import { getHumanReadableQuery } from "../stores/datarequests";
@@ -13,7 +13,7 @@ type NegotiatorResponse = Response & {
     status: number;
 };
 
-let negotiateOptions: NegotiaterOptions;
+let negotiateOptions: NegotiatorOptions;
 const siteCollectionMap: Map<string, NegotiateOptionsSiteMapping> = new Map();
 
 lensOptions.subscribe((options: LensOptions) => {
@@ -24,7 +24,7 @@ lensOptions.subscribe((options: LensOptions) => {
      * need to know how multiple collections are returned from the backend
      */
 
-    negotiateOptions = options.negotiateOptions as NegotiaterOptions;
+    negotiateOptions = options.negotiateOptions as NegotiatorOptions;
     negotiateOptions?.siteMappings?.forEach((site) => {
         siteCollectionMap.set(site.site, site);
     });
@@ -58,15 +58,6 @@ export const getCollections = (
 export const bbmrinegotiate = async (
     sitesToNegotiate: string[],
 ): Promise<void> => {
-    let sendableQuery!: SendableQuery;
-    queryStore.subscribe((value: QueryItem[][]) => {
-        const uuid = uuidv4();
-        sendableQuery = {
-            query: value,
-            id: `${uuid}__search__${uuid}`,
-        };
-    });
-
     const humanReadable: string = getHumanReadableQuery();
     const collections: NegotiateOptionsSiteMapping[] =
         getCollections(sitesToNegotiate);

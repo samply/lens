@@ -2,7 +2,7 @@ export type LensOptions = {
     [key: string]: unknown;
     chartOptions?: ChartOptions;
     catalogueKeyToResponseKeyMap?: string[][];
-    negotiatorOptions?: NegotiaterOptions;
+    negotiatorOptions?: NegotiatorOptions;
     projectmanagerOptions?: ProjectManagerOptions;
 };
 
@@ -18,7 +18,7 @@ export type ProjectManagerOptionsSiteMapping = {
     collection: string;
 };
 
-export type NegotiaterOptions = {
+export type NegotiatorOptions = {
     url: string;
     siteMappings: NegotiateOptionsSiteMapping[];
 };
