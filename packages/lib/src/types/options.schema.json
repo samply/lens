@@ -341,7 +341,7 @@
                 "url": {
                     "type": "string",
                     "pattern": "^.+$",
-                    "description": "The measures of the blaze"
+                    "description": "The URL of the negotiator"
                 },
                 "siteMappings": {
                     "type": "array",
