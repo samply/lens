@@ -1,7 +1,7 @@
 import { lensOptions } from "../stores/options";
 import type {
     LensOptions,
-    NegotiateOptions,
+    NegotiatorOptions,
     NegotiateOptionsSiteMapping,
 } from "../types/options";
 import { getHumanReadableQuery } from "../stores/datarequests";
@@ -13,7 +13,7 @@ type NegotiatorResponse = Response & {
     status: number;
 };
 
-let negotiateOptions: NegotiateOptions;
+let negotiateOptions: NegotiatorOptions;
 const siteCollectionMap: Map<string, NegotiateOptionsSiteMapping> = new Map();
 
 lensOptions.subscribe((options: LensOptions) => {
@@ -24,7 +24,7 @@ lensOptions.subscribe((options: LensOptions) => {
      * need to know how multiple collections are returned from the backend
      */
 
-    negotiateOptions = options.negotiateOptions as NegotiateOptions;
+    negotiateOptions = options.negotiateOptions as NegotiatorOptions;
     negotiateOptions?.siteMappings?.forEach((site) => {
         siteCollectionMap.set(site.site, site);
     });
@@ -55,7 +55,9 @@ export const getCollections = (
  * redirects to negotiator
  * @param sitesToNegotiate the sites to negotiate with
  */
-export const negotiate = async (sitesToNegotiate: string[]): Promise<void> => {
+export const bbmrinegotiate = async (
+    sitesToNegotiate: string[],
+): Promise<void> => {
     const humanReadable: string = getHumanReadableQuery();
     const collections: NegotiateOptionsSiteMapping[] =
         getCollections(sitesToNegotiate);
@@ -135,7 +137,7 @@ async function sendRequestToNegotiator(
     });
 
     try {
-        response = await fetch(`${negotiateOptions.newProjectUrl}`, {
+        response = await fetch(`${negotiateOptions.url}`, {
             method: "POST",
             headers: {
                 Accept: "application/json; charset=utf-8",
