@@ -1,8 +1,4 @@
-import { queryStore } from "../stores/query";
-
 import { lensOptions } from "../stores/options";
-import { v4 as uuidv4 } from "uuid";
-import type { QueryItem, SendableQuery } from "../types/queryData";
 import type {
     LensOptions,
     NegotiaterOptions,
@@ -75,7 +71,6 @@ export const bbmrinegotiate = async (
     const collections: NegotiateOptionsSiteMapping[] =
         getCollections(sitesToNegotiate);
     const negotiatorResponse = await sendRequestToNegotiator(
-        sendableQuery,
         humanReadable,
         collections,
     );
@@ -121,22 +116,18 @@ interface BbmriCollectionResource {
 
 /**
  *
- * @param sendableQuery the query to be sent to the negotiator
  * @param humanReadable a human readable query string to view in the negotiator project
  * @param collections the collections to negotiate with
  * @returns the redirect uri from the negotiator
  */
 async function sendRequestToNegotiator(
-    sendableQuery: SendableQuery,
     humanReadable: string,
     collections: NegotiateOptionsSiteMapping[],
 ): Promise<NegotiatorResponse> {
-    const base64Query: string = btoa(JSON.stringify(sendableQuery.query));
-
     /**
      * handle redirect to negotiator url
      */
-    const returnURL: string = `${window.location.protocol}//${window.location.host}/?nToken=${sendableQuery.id}&query=${base64Query}`;
+    const returnURL: string = `${window.location.protocol}//${window.location.host}`;
 
     let response!: Response;
 

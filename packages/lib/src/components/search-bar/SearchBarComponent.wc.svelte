@@ -20,7 +20,6 @@
     import { v4 as uuidv4 } from "uuid";
     import StoreDeleteButtonComponent from "../buttons/StoreDeleteButtonComponent.svelte";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
-    import { addPercentageSignToCriteria } from "../../helpers/object-formaters";
     import { catalogue } from "../../stores/catalogue";
 
     /**
@@ -29,6 +28,8 @@
      * @param noMatchesFoundMessage takes a string to display when no matches are found
      */
     export let noMatchesFoundMessage: string = "No matches found";
+    export let typeMoreMessage: string =
+        "Search will start with 3 inserted letters";
     export let placeholderText: string = "Type to filter conditions";
     export let index: number = 0;
 
@@ -92,10 +93,10 @@
                     ),
                 ];
             } else {
-                if ("criteria" in category)
-                    category.criteria = addPercentageSignToCriteria(
-                        category.criteria,
-                    );
+                // if ("criteria" in category)
+                //     category.criteria = addPercentageSignToCriteria(
+                //         category.criteria,
+                //     );
 
                 if (buildDatalistItemFromBottomCategory(category))
                     autoCompleteItems = [
@@ -369,7 +370,7 @@
             autoCompleteOpen = false;
         }}
     />
-    {#if autoCompleteOpen && inputValue.length > 0}
+    {#if autoCompleteOpen && inputValue.length > 2}
         <ul part="lens-searchbar-autocomplete-options">
             {#if $inputOptions?.length > 0}
                 {#each $inputOptions as inputOption, i}
@@ -432,6 +433,10 @@
             {:else}
                 <li>{noMatchesFoundMessage}</li>
             {/if}
+        </ul>
+    {:else if autoCompleteOpen && inputValue.length > 0 && inputValue.length < 3}
+        <ul part="lens-searchbar-autocomplete-options">
+            <li>{typeMoreMessage}</li>
         </ul>
     {/if}
     <StoreDeleteButtonComponent itemToDelete={{ type: "group", index }} />

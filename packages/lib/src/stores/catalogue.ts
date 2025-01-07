@@ -1,5 +1,5 @@
 import { writable } from "svelte/store";
-import type { Category, TreeNode } from "../types/treeData";
+import type { Category, Criteria, TreeNode } from "../types/treeData";
 
 /**
  * store to hold the catalogue
@@ -141,4 +141,51 @@ export const getCriteriaNamesFromKey = (
         criteriaNames = ["20", "30", "40", "50"];
     }
     return criteriaNames;
+};
+
+export const getCategoryFromKey = (
+    catalogue: Category[],
+    key: string,
+): Category | undefined => {
+    let category: Category | undefined = undefined;
+
+    if (catalogue.length === 0 || key === "") {
+        return category;
+    }
+
+    catalogue.forEach((catalogueEntry: Category) => {
+        if ("childCategories" in catalogueEntry) {
+            if (catalogueEntry.childCategories != undefined) {
+                const result = getCategoryFromKey(
+                    catalogueEntry.childCategories,
+                    key,
+                );
+                if (result != undefined) category = result;
+            }
+        } else {
+            if (catalogueEntry.key === key) {
+                category = catalogueEntry;
+            }
+        }
+    });
+
+    return category;
+};
+
+export const getCriteriaFromKey = (
+    catalogue: Category[],
+    categoryKey: string,
+    criteriaKey: string,
+): Criteria | undefined => {
+    const category: Category | undefined = getCategoryFromKey(
+        catalogue,
+        categoryKey,
+    );
+    if (category == undefined) return undefined;
+    if ("criteria" in category) {
+        return category.criteria.find(
+            (criteria) => criteria.key === criteriaKey,
+        );
+    }
+    return undefined;
 };
