@@ -26,7 +26,7 @@ npm start
 to start a development server, that will typically be available at [http://localhost:5173](http://localhost:5173). For further available npm scripts, you can review the [package.json](./package.json)
 
 ### Building the Library locally
-If you want to make changes to the lens library while integrating those changes directly in the local development version of your application, you need to tell npm to make lens locally available. For this use-case, we prepared to npm scripts:
+If you want to make changes to the lens library while integrating those changes directly in the local development version of your application, you need to tell npm to make lens locally available. For this use-case, we prepared two npm scripts:
 
 1) Run `npm run watch`, to start building the library on changes
 2) Open a second terminal
@@ -68,7 +68,7 @@ lens-info-button::part(info-button-icon) {
 - [ ] After making the library available on npm, we will move the `AppCCP.svelte`, `AppBBMRI.svelte` and `AppGBA.svelte` to their separate repositories that are just using this library.
 - [ ] On the long term, we plan to stabilize the api and configuration options the library offers and will document them here. 
 
-## Build With 
+## Built With 
 - [Svelte](https://svelte.dev/)
 
 ## License
