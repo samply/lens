@@ -4,6 +4,7 @@
 
 import type { SiteData, Status } from "../types/response";
 import type { ResponseStore } from "../types/backend";
+import type { BeamResult } from "../types/spot";
 
 export class Spot {
     private currentTask!: string;
