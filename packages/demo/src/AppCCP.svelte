@@ -296,6 +296,9 @@
     >
 </footer>
 
+<!-- Toasts use `position: fixed` and thus are removed from the normal document flow -->
+<error-toasts />
+
 {#await jsonPromises}
     Loading data...
 {:then { optionsJSON, catalogueJSON }}
