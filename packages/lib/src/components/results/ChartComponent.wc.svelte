@@ -39,6 +39,7 @@
     export let headers: Map<string, string> = new Map<string, string>();
     export let displayLegends: boolean = false;
     export let chartType: keyof ChartTypeRegistry = "pie";
+    export let scaleType: "logarithmic";
     export let perSite: boolean = false;
     export let groupRange: number = 0;
     export let groupingDivider: string = "";
@@ -124,6 +125,7 @@
             scales: {
                 y: {
                     display: viewScales,
+                    type: scaleType,
                     title: {
                         display: true,
                         text: yAxisTitle,
