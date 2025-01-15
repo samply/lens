@@ -99,7 +99,7 @@ export class Spot {
             } else {
                 console.error(err);
                 // show user-facing error
-                errorChannel.set(`Fehler beim Bearbeiten der Anfrage: ${err}`);
+                errorChannel.set("Fehler beim Bearbeiten der Anfrage");
             }
         }
     }

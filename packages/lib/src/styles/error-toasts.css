@@ -11,7 +11,7 @@ error-toasts::part(flex-container) {
 
 error-toasts::part(toast) {
     border-radius: var(--border-radius-small);
-    background-color: var(--light-orange);
+    background-color: #EF9A9A;
     border: solid 1px var(--red);
     padding: var(--gap-xs);
 }

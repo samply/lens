@@ -5,15 +5,16 @@
 />
 
 <script lang="ts">
+    import { fade } from "svelte/transition";
     import { errorChannel } from "../stores/error-channel";
 
-    let toasts = [];
+    let toasts: { uuid: string; message: string }[] = [];
 
     /**
      * @param message user-facing error message
      */
     function showToast(message: string): void {
-        toasts.push(message);
+        toasts.push({ uuid: crypto.randomUUID(), message });
         toasts = toasts; // update
 
         setTimeout(() => {
@@ -25,12 +26,12 @@
     // subscribe to error channel
     $: if ($errorChannel) {
         showToast($errorChannel);
-        errorChannel.set(null);
+        errorChannel.set("");
     }
 </script>
 
 <div part="flex-container">
-    {#each toasts as toast}
-        <div part="toast">{toast}</div>
+    {#each toasts as toast (toast.uuid)}
+        <div out:fade part="toast">{toast.message}</div>
     {/each}
 </div>
