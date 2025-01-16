@@ -45,8 +45,9 @@ export const getCollections = (
 
     sitesToNegotiate.forEach((site: string) => {
         // TODO: Why is site id mapped to Uppercase?
-        if (siteCollectionMap.has(site) && siteCollectionMap.get(site) !== "") {
-            siteCollections.push(siteCollectionMap.get(site));
+        const siteCollection = siteCollectionMap.get(site);
+        if (siteCollection) {
+            siteCollections.push(siteCollection);
         }
     });
 
