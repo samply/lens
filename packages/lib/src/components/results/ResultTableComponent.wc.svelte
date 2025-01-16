@@ -6,7 +6,7 @@
 
 <script lang="ts">
     import { uiSiteMappingsStore } from "../../stores/mappings";
-    import { datarequestsStore } from "../../stores/datarequests.ts";
+    import { datarequestsStore } from "../../stores/datarequests";
     import {
         getSitePopulationForCode,
         getSitePopulationForStratumCode,

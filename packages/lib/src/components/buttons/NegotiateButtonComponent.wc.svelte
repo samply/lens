@@ -6,7 +6,7 @@
 
 <script lang="ts">
     import { datarequestsStore } from "../../stores/datarequests";
-    import { negotiate } from "../../services/bbmriNegotiate.ts";
+    import { negotiate } from "../../services/bbmriNegotiate";
 
     export let title: string = "Negotiate with biobanks";
 </script>
