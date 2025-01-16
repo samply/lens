@@ -232,7 +232,7 @@ const getSingleton = (criterion: AstBottomLayerValue): string => {
 
                         const myCQL2: string = cqltemplate.get(
                             myCriterion.type == "TNMc" ? "TNMp" : "TNMc",
-                        );
+                        )!;
 
                         expression += substituteCQLExpression(
                             criterion.key,
