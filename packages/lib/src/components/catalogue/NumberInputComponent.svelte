@@ -91,7 +91,7 @@
             <label
                 part="number-input-label number-input-values-label lens-number-input-values-label-from"
             >
-                {$catalogueTextStore.numberInput.labelFrom}
+                {$catalogueTextStore.numberInput?.labelFrom}
                 <input
                     part="number-input-formfield number-input-formfield-from
                         {to && from > to ? ' formfield-error' : ''}"
@@ -104,7 +104,7 @@
             <label
                 part="number-input-label number-input-values-label lens-number-input-values-label-to"
             >
-                {$catalogueTextStore.numberInput.labelTo}
+                {$catalogueTextStore.numberInput?.labelTo}
                 <input
                     part="number-input-formfield number-input-formfield-to
                         {to && from > to ? ' formfield-error' : ''}"

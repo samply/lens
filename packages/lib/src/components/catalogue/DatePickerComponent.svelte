@@ -67,7 +67,7 @@
             <label
                 part="date-input-label date-input-values-label lens-date-input-values-label-from"
             >
-                {$catalogueTextStore.numberInput.labelFrom}
+                {$catalogueTextStore.numberInput?.labelFrom}
                 <input
                     part="date-input-formfield date-input-formfield-from {to &&
                     from > to
@@ -82,7 +82,7 @@
             <label
                 part="date-input-label date-input-values-label lens-date-input-values-label-to"
             >
-                {$catalogueTextStore.numberInput.labelTo}
+                {$catalogueTextStore.numberInput?.labelTo}
                 <input
                     part="date-input-formfield date-input-formfield-to{to &&
                     from > to
