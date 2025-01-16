@@ -1,4 +1,5 @@
 export type LensOptions = {
+    // TODO: remove the index signature and instead properly define all fields and their types
     [key: string]: unknown;
     chartOptions?: ChartOptions;
     catalogueKeyToResponseKeyMap?: string[][];
