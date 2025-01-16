@@ -77,7 +77,7 @@
                     if (header.dataKey) {
                         tableRow.push(
                             getSitePopulationForCode(
-                                value.data,
+                                value.data!,
                                 header.dataKey,
                             ),
                         );
@@ -89,7 +89,7 @@
                     header.aggregatedDataKeys?.forEach((dataKey) => {
                         if (dataKey.groupCode) {
                             aggregatedPopulation += getSitePopulationForCode(
-                                value.data,
+                                value.data!,
                                 dataKey.groupCode,
                             );
                         } else if (
@@ -98,7 +98,7 @@
                         ) {
                             aggregatedPopulation +=
                                 getSitePopulationForStratumCode(
-                                    value.data,
+                                    value.data!,
                                     dataKey.stratumCode,
                                     dataKey.stratifierCode,
                                 );
