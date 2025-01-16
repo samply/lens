@@ -41,9 +41,10 @@
     let open: boolean = false;
     $: {
         if (subCategoryName) {
-            open = $openTreeNodes
-                .get(element.key)
-                .subCategoryNames?.includes(subCategoryName);
+            open =
+                $openTreeNodes
+                    .get(element.key)!
+                    .subCategoryNames?.includes(subCategoryName) || false;
         } else {
             open = $openTreeNodes.get(element.key) ? true : false;
         }

@@ -1,14 +1,15 @@
 <script lang="ts">
-    import type { Category } from "../../types/treeData";
+    import type { CategoryField } from "../../types/treeData";
     import { catalogueTextStore } from "../../stores/texts";
     import QueryAddButtonComponent from "./QueryAddButtonComponent.svelte";
     import type { QueryItem } from "../../types/queryData";
     import { v4 as uuidv4 } from "uuid";
 
-    export let element: Category;
+    export let element: CategoryField;
 
-    let from: string = element.min || "1900-01-01";
-    let to: string = element.max || new Date().toISOString().split("T")[0];
+    let from: string = (element.min as string) || "1900-01-01";
+    let to: string =
+        (element.max as string) || new Date().toISOString().split("T")[0];
 
     /**
      * build the proper name for the query value
@@ -45,13 +46,17 @@
      */
     const handleInputFrom = (): void => {
         if (from === null || from === "" || from === undefined) {
-            from = element.min || new Date().toISOString().split("T")[0];
+            from =
+                (element.min as string) ||
+                new Date().toISOString().split("T")[0];
         }
     };
 
     const handleInputTo = (): void => {
         if (to === null || to === "" || to === undefined) {
-            to = element.max || new Date().toISOString().split("T")[0];
+            to =
+                (element.max as string) ||
+                new Date().toISOString().split("T")[0];
         }
     };
 </script>
