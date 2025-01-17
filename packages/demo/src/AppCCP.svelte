@@ -210,6 +210,7 @@
                     groupRange={10}
                     filterRegex="^(([0-9]?[0-9]$)|(1[0-2]0))"
                     xAxisTitle="Alter"
+                    scaleType="logarithmic"
                     yAxisTitle="Anzahl der Primärdiagnosen"
                     backgroundColor={barChartBackgroundColors}
                 />

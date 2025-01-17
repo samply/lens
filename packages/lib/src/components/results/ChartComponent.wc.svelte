@@ -39,6 +39,7 @@
     export let headers: Map<string, string> = new Map<string, string>();
     export let displayLegends: boolean = false;
     export let chartType: keyof ChartTypeRegistry = "pie";
+    export let scaleType: string = "linear";
     export let perSite: boolean = false;
     export let groupRange: number = 0;
     export let groupingDivider: string = "";
@@ -158,6 +159,7 @@
                                   },
                               }
                             : [],
+                    type: undefined,
                 },
             },
         },
@@ -477,6 +479,11 @@
     }
 
     onMount(() => {
+        if (indexAxis === "y") {
+            initialChartData.options.scales.x.type = scaleType;
+        } else {
+            initialChartData.options.scales.y.type = scaleType;
+        }
         chart = new Chart(canvas, initialChartData);
     });
 
