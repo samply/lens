@@ -74,6 +74,22 @@ export const translateAstToCql = (
         specimenMeasure.cql = specimenMeasure?.cql + retrievalCriteria;
     }
 
+    const histoMeasure = measures.find((element) => element.key == "Histo");
+    if (histoMeasure?.cql) {
+        if (
+            !additionalCriteria.includes("type") ||
+            additionalCriteria.includes("tumor-tissue-ffpe")
+        ) {
+            histoMeasure.cql =
+                histoMeasure.cql +
+                " if histo.code.coding.where(code = '59847-4').code.first() is null then 0 else 1\n";
+        } else {
+            histoMeasure.cql =
+                histoMeasure.cql +
+                " if histo.code.coding.where(code = '59847-4').code.first() is null then 0 else 0\n";
+        }
+    }
+
     if (query.children.length == 0) {
         singletons += "\ntrue";
     }
@@ -81,16 +97,6 @@ export const translateAstToCql = (
     if (returnOnlySingeltons) {
         return singletons;
     }
-
-    console.log(
-        cqlHeader +
-            getCodesystems() +
-            "context Patient\n" +
-            measures
-                .map((measureItem: MeasureItem) => measureItem.cql)
-                .join("") +
-            singletons,
-    );
 
     return (
         cqlHeader +
