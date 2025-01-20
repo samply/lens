@@ -1088,6 +1088,6 @@ export const dktkHistologyMeasure = {
         ],
     },
     cql: `
-  DKTK_STRAT_HISTOLOGY_STRATIFIER
+  DKTK_REPLACE_HISTOLOGY_STRATIFIER
 `,
 };
