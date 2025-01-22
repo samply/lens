@@ -79,6 +79,9 @@
             "items": {
                 "type": "object",
                 "properties": {
+                    "visible": {
+                        "type": "boolean"
+                    },
                     "key": {
                         "type": "string",
                         "pattern": "^.+$"
@@ -90,6 +93,9 @@
                     "description": {
                         "type": "string",
                         "pattern": "^.*$"
+                    },
+                    "subgroup": {
+                        "$ref": "#/$defs/criteria"
                     },
                     "infoButtonText": {
                         "type": "array",

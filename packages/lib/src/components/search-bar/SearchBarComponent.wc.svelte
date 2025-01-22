@@ -51,20 +51,62 @@
      * @param category - a bottom layer of the category tree
      * @returns an item that can be used in the autocomplete list
      */
-    const buildDatalistItemFromBottomCategory = (
+
+    const buildDatalistItemFromBottomCategoryRec = (
         category: Category,
+        criterion: Criteria,
     ): AutoCompleteItem[] => {
         let autoCompleteItems: AutoCompleteItem[] = [];
-        if ("criteria" in category)
-            autoCompleteItems = category.criteria.map(
-                (criterion: Criteria) => ({
+        if ("criteria" in category) {
+            if (criterion.visible == undefined && !criterion.visible) {
+                autoCompleteItems.push({
                     name: category.name,
                     key: category.key,
                     type: category.type,
                     system: category.system,
                     criterion: criterion,
-                }),
-            );
+                });
+            }
+            if (criterion.subgroup != undefined) {
+                criterion.subgroup.forEach((criterion: Criteria) => {
+                    autoCompleteItems = autoCompleteItems.concat(
+                        buildDatalistItemFromBottomCategoryRec(
+                            category,
+                            criterion,
+                        ),
+                    );
+                });
+            }
+        }
+        return autoCompleteItems;
+    };
+
+    const buildDatalistItemFromBottomCategory = (
+        category: Category,
+    ): AutoCompleteItem[] => {
+        let autoCompleteItems: AutoCompleteItem[] = [];
+        if ("criteria" in category)
+            category.criteria.forEach((criterion: Criteria) => {
+                if (criterion.visible == undefined && !criterion.visible) {
+                    autoCompleteItems.push({
+                        name: category.name,
+                        key: category.key,
+                        type: category.type,
+                        system: category.system,
+                        criterion: criterion,
+                    });
+                }
+                if (criterion.subgroup != undefined) {
+                    criterion.subgroup.forEach((criterion: Criteria) => {
+                        autoCompleteItems = autoCompleteItems.concat(
+                            buildDatalistItemFromBottomCategoryRec(
+                                category,
+                                criterion,
+                            ),
+                        );
+                    });
+                }
+            });
         return autoCompleteItems;
     };
 
@@ -93,11 +135,6 @@
                     ),
                 ];
             } else {
-                // if ("criteria" in category)
-                //     category.criteria = addPercentageSignToCriteria(
-                //         category.criteria,
-                //     );
-
                 if (buildDatalistItemFromBottomCategory(category))
                     autoCompleteItems = [
                         ...autoCompleteItems,
