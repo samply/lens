@@ -24,7 +24,7 @@
         catalogueUrl = "catalogues/catalogue-dktk.json";
         optionsFilePath = "options-ccp-prod.json";
     } else {
-        catalogueUrl = "catalogues/catalogue-dktk-with-mol-markers.json";
+        catalogueUrl = "catalogues/catalogue-dktk.json";
         optionsFilePath = "options-ccp-demo.json";
     }
 

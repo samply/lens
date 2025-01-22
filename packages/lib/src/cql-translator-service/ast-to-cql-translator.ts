@@ -14,7 +14,7 @@ import {
     cqltemplate,
     criterionMap,
 } from "./cqlquery-mappings";
-import { getCriteria } from "../stores/catalogue";
+import { getCriteria, resolveAstSubCatagories } from "../stores/catalogue";
 import type { MeasureItem } from "../types/backend";
 
 let codesystems: string[] = [];
@@ -28,14 +28,7 @@ export const translateAstToCql = (
 ): string => {
     criteria = getCriteria("diagnosis");
 
-    /**
-     * DISCUSS: why is this even an array?
-     * in bbmri there is only concatted to the string
-     */
-    codesystems = [
-        // NOTE: We always need loinc, as the Deceased Stratifier is computed with it!!!
-        "codesystem loinc: 'http://loinc.org'",
-    ];
+    codesystems = ["codesystem loinc: 'http://loinc.org'"];
 
     const cqlHeader =
         "library Retrieve\n" +
@@ -45,6 +38,9 @@ export const translateAstToCql = (
 
     let singletons: string = "";
     singletons = backendMeasures;
+
+    query = resolveAstSubCatagories(query);
+
     singletons += resolveOperation(query);
 
     let retrievalCriteria: string = "if InInitialPopulation then ";
