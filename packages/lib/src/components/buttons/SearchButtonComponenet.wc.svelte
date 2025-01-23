@@ -49,13 +49,6 @@
 
         const ast = buildAstFromQuery($queryStore);
 
-        if (ast.children.includes(null)) {
-            alert(
-                "No query entered in one of the queries. You can enter a query or remove the query fields.",
-            );
-            return;
-        }
-
         options?.spots?.forEach((spot: SpotOption) => {
             const name = spot.name;
             const measureItem: MeasureOption | undefined = $measureStore.find(
