@@ -31,7 +31,7 @@
         id: uuidv4(),
         key: element.key,
         name: element.name,
-        type: "type" in element && element.type,
+        type: element.type,
         values: [
             {
                 name: transformName(),
