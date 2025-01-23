@@ -14,7 +14,8 @@ export type QueryValue = {
     name: string;
     value:
         | string
-        | { min: number | string; max: number | string }
+        | { min: number; max: number }
+        | { min: string; max: string }
         | AggregatedValue[][];
     queryBindId: string;
     description?: string;

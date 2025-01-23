@@ -28,16 +28,9 @@ export const buildAstFromQuery = (queryStore: QueryItem[][]): AstTopLayer => {
  */
 export const returnNestedValues = (
     item: queryStoreItem | QueryItem[][],
-    operand: "AND" | "OR" | null = null,
-    topLayerItem: queryStoreItem | null = null,
-): AstElement | null => {
-    /**
-     * prevent endless loop with empty arrays
-     */
-    if (Array.isArray(item) && item.length === 0) {
-        return null;
-    }
-
+    operand?: "AND" | "OR",
+    topLayerItem?: queryStoreItem | QueryItem[][],
+): AstElement => {
     /**
      * sets the operand for the current layer
      * starts with 'OR' from the top layer and switches to the opposite each layer
@@ -86,6 +79,7 @@ export const returnNestedValues = (
      */
     if (
         "value" in item &&
+        topLayerItem !== undefined &&
         "key" in topLayerItem &&
         !Array.isArray(item.value)
     ) {
@@ -109,5 +103,5 @@ export const returnNestedValues = (
         };
     }
 
-    return;
+    throw "This should be unreachable";
 };
