@@ -51,7 +51,7 @@
             $lensOptions?.chartOptions[catalogueGroupCode]) ||
         ({} as ChartOption);
 
-    export let backgroundColor: string[] = [
+    export let backgroundColor: string[] | string = [
         "#4dc9f6",
         "#f67019",
         "#f53794",
