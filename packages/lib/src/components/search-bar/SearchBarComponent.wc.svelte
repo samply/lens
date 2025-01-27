@@ -20,7 +20,6 @@
     import { v4 as uuidv4 } from "uuid";
     import StoreDeleteButtonComponent from "../buttons/StoreDeleteButtonComponent.svelte";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
-    import { addPercentageSignToCriteria } from "../../helpers/object-formaters";
     import { catalogue } from "../../stores/catalogue";
 
     /**
@@ -29,6 +28,8 @@
      * @param noMatchesFoundMessage takes a string to display when no matches are found
      */
     export let noMatchesFoundMessage: string = "No matches found";
+    export let typeMoreMessage: string =
+        "Search will start with 3 inserted letters";
     export let placeholderText: string = "Type to filter conditions";
     export let index: number = 0;
 
@@ -50,20 +51,62 @@
      * @param category - a bottom layer of the category tree
      * @returns an item that can be used in the autocomplete list
      */
-    const buildDatalistItemFromBottomCategory = (
+
+    const buildDatalistItemFromBottomCategoryRec = (
         category: Category,
+        criterion: Criteria,
     ): AutoCompleteItem[] => {
         let autoCompleteItems: AutoCompleteItem[] = [];
-        if ("criteria" in category)
-            autoCompleteItems = category.criteria.map(
-                (criterion: Criteria) => ({
+        if ("criteria" in category) {
+            if (criterion.visible == undefined && !criterion.visible) {
+                autoCompleteItems.push({
                     name: category.name,
                     key: category.key,
                     type: category.type,
                     system: category.system,
                     criterion: criterion,
-                }),
-            );
+                });
+            }
+            if (criterion.subgroup != undefined) {
+                criterion.subgroup.forEach((criterion: Criteria) => {
+                    autoCompleteItems = autoCompleteItems.concat(
+                        buildDatalistItemFromBottomCategoryRec(
+                            category,
+                            criterion,
+                        ),
+                    );
+                });
+            }
+        }
+        return autoCompleteItems;
+    };
+
+    const buildDatalistItemFromBottomCategory = (
+        category: Category,
+    ): AutoCompleteItem[] => {
+        let autoCompleteItems: AutoCompleteItem[] = [];
+        if ("criteria" in category)
+            category.criteria.forEach((criterion: Criteria) => {
+                if (criterion.visible == undefined && !criterion.visible) {
+                    autoCompleteItems.push({
+                        name: category.name,
+                        key: category.key,
+                        type: category.type,
+                        system: category.system,
+                        criterion: criterion,
+                    });
+                }
+                if (criterion.subgroup != undefined) {
+                    criterion.subgroup.forEach((criterion: Criteria) => {
+                        autoCompleteItems = autoCompleteItems.concat(
+                            buildDatalistItemFromBottomCategoryRec(
+                                category,
+                                criterion,
+                            ),
+                        );
+                    });
+                }
+            });
         return autoCompleteItems;
     };
 
@@ -92,11 +135,6 @@
                     ),
                 ];
             } else {
-                if ("criteria" in category)
-                    category.criteria = addPercentageSignToCriteria(
-                        category.criteria,
-                    );
-
                 if (buildDatalistItemFromBottomCategory(category))
                     autoCompleteItems = [
                         ...autoCompleteItems,
@@ -369,7 +407,7 @@
             autoCompleteOpen = false;
         }}
     />
-    {#if autoCompleteOpen && inputValue.length > 0}
+    {#if autoCompleteOpen && inputValue.length > 2}
         <ul part="lens-searchbar-autocomplete-options">
             {#if $inputOptions?.length > 0}
                 {#each $inputOptions as inputOption, i}
@@ -432,6 +470,10 @@
             {:else}
                 <li>{noMatchesFoundMessage}</li>
             {/if}
+        </ul>
+    {:else if autoCompleteOpen && inputValue.length > 0 && inputValue.length < 3}
+        <ul part="lens-searchbar-autocomplete-options">
+            <li>{typeMoreMessage}</li>
         </ul>
     {/if}
     <StoreDeleteButtonComponent itemToDelete={{ type: "group", index }} />

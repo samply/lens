@@ -210,44 +210,7 @@ export const cqltemplate = new Map<string, string>([
         "uiccstadium",
         "(exists ([Observation: Code '21908-9' from loinc] O where O.value.coding.code contains '{{C}}')) or (exists ([Observation: Code '21902-2' from loinc] O where O.value.coding.code contains '{{C}}'))",
     ],
-    ["histology", "exists from [Observation: Code '59847-4' from loinc] O\n"],
-
-    ["BBMRI_gender", "Patient.gender"],
-    [
-        "BBMRI_conditionSampleDiagnosis",
-        "((exists[Condition: Code '{{C}}' from {{A1}}]) or (exists[Condition: Code '{{C}}' from {{A2}}])) or (exists from [Specimen] S where (S.extension.where(url='https://fhir.bbmri.de/StructureDefinition/SampleDiagnosis').value.coding.code contains '{{C}}'))",
-    ],
-    ["BBMRI_conditionValue", "exists [Condition: Code '{{C}}' from {{A1}}]"],
-    [
-        "BBMRI_conditionRangeDate",
-        "exists from [Condition] C\nwhere FHIRHelpers.ToDateTime(C.onset) between {{D1}} and {{D2}}",
-    ],
-    [
-        "BBMRI_conditionRangeAge",
-        "exists from [Condition] C\nwhere AgeInYearsAt(FHIRHelpers.ToDateTime(C.onset)) between Ceiling({{D1}}) and Ceiling({{D2}})",
-    ],
-    ["BBMRI_age", "AgeInYears() between Ceiling({{D1}}) and Ceiling({{D2}})"],
-    [
-        "BBMRI_observation",
-        "exists from [Observation: Code '{{K}}' from {{A1}}] O\nwhere O.value.coding.code contains '{{C}}'",
-    ],
-    [
-        "BBMRI_observationSmoker",
-        "exists from [Observation: Code '72166-2' from {{A1}}] O\nwhere O.value.coding.code contains '{{C}}'",
-    ],
-    [
-        "BBMRI_observationRange",
-        "exists from [Observation: Code '{{K}}' from {{A1}}] O\nwhere O.value between {{D1}} and {{D2}}",
-    ],
-    [
-        "BBMRI_observationBodyWeight",
-        "exists from [Observation: Code '29463-7' from {{A1}}] O\nwhere ((O.value as Quantity) < {{D1}} 'kg' and (O.value as Quantity) > {{D2}} 'kg')",
-    ],
-    [
-        "BBMRI_observationBMI",
-        "exists from [Observation: Code '39156-5' from {{A1}}] O\nwhere ((O.value as Quantity) < {{D1}} 'kg/m2' and (O.value as Quantity) > {{D2}} 'kg/m2')",
-    ],
-    ["retrieveSpecimenByType", "(S.type.coding.code contains '{{C}}')"],
+    ["histology", "exists from [Observation: Code '59847-4' from loinc] O\n"]
 ]);
 
 export const criterionMap = new Map<string, { type: string; alias?: string[] }>(
@@ -366,43 +329,5 @@ export const criterionMap = new Map<string, { type: string; alias?: string[] }>(
         ["75186-7", { type: "observation", alias: ["loinc", "vitalstatuscs"] }], //Vitalstatus
         //["Organization", {type: "Organization"}],
         ["Organization", { type: "department" }],
-
-        ["BBMRI_gender", { type: "BBMRI_gender" }],
-        [
-            "BBMRI_diagnosis",
-            {
-                type: "BBMRI_conditionSampleDiagnosis",
-                alias: ["BBMRI_icd10", "BBMRI_icd10gm"],
-            },
-        ],
-        [
-            "BBMRI_body_weight",
-            { type: "BBMRI_observationBodyWeight", alias: ["loinc"] },
-        ], //Body weight
-        ["BBMRI_bmi", { type: "BBMRI_observationBMI", alias: ["loinc"] }], //BMI
-        [
-            "BBMRI_smoking_status",
-            { type: "BBMRI_observationSmoker", alias: ["loinc"] },
-        ], //Smoking habit
-        ["BBMRI_donor_age", { type: "BBMRI_age" }],
-        ["BBMRI_date_of_diagnosis", { type: "BBMRI_conditionRangeDate" }],
-        [
-            "BBMRI_sample_kind",
-            { type: "BBMRI_specimen", alias: ["BBMRI_SampleMaterialType"] },
-        ],
-        [
-            "BBMRI_storage_temperature",
-            {
-                type: "BBMRI_storageTemperature",
-                alias: ["BBMRI_StorageTemperature"],
-            },
-        ],
-        ["BBMRI_pat_with_samples", { type: "BBMRI_hasSpecimen" }],
-        ["BBMRI_diagnosis_age_donor", { type: "BBMRI_conditionRangeAge" }],
-        [
-            "BBMRI_fasting_status",
-            { type: "BBMRI_fastingStatus", alias: ["loinc"] },
-        ],
-        ["BBMRI_sampling_date", { type: "BBMRI_samplingDate" }],
     ],
 );
