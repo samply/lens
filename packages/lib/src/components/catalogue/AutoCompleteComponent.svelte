@@ -1,7 +1,11 @@
 <script lang="ts">
     import type { Category, Criteria } from "../../types/treeData";
     import { v4 as uuidv4 } from "uuid";
-    import { addItemToQuery, queryStore } from "../../stores/query";
+    import {
+        activeQueryGroupIndex,
+        addItemToQuery,
+        queryStore,
+    } from "../../stores/query";
     import type { QueryItem, QueryValue } from "../../types/queryData";
     import AutoCompleteCriterionComponent from "./AutoCompleteCriterionComponent.svelte";
     import { onMount } from "svelte";
@@ -118,7 +122,7 @@
      */
     const addInputValueToStore = (
         inputItem: Criteria,
-        indexOfChosenStore: number = 0,
+        indexOfChosenStore: number = $activeQueryGroupIndex,
     ): void => {
         /**
          * check if option is allready present in the query store
