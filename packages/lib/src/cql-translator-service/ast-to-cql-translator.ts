@@ -18,7 +18,7 @@ import { getCriteria, resolveAstSubCatagories } from "../stores/catalogue";
 import type { MeasureItem } from "../types/backend";
 
 let codesystems: string[] = [];
-let criteria: string[];
+let criteria: string[] = [];
 
 export const translateAstToCql = (
     query: AstTopLayer,
@@ -26,9 +26,19 @@ export const translateAstToCql = (
     backendMeasures: string,
     measures: MeasureItem[],
 ): string => {
-    criteria = getCriteria("diagnosis");
+    if (criteria.length == 0) {
+        criteria = getCriteria("diagnosis");
+        codesystems = ["codesystem loinc: 'http://loinc.org'"];
+    }
 
-    codesystems = ["codesystem loinc: 'http://loinc.org'"];
+    const localMeasures: MeasureItem[] = [];
+    measures.forEach((x) => {
+        localMeasures.push({
+            key: x.key,
+            measure: undefined,
+            cql: x.cql,
+        });
+    });
 
     const cqlHeader =
         "library Retrieve\n" +
@@ -63,14 +73,16 @@ export const translateAstToCql = (
     }
 
     retrievalCriteria = retrievalCriteria += " else {} as List<Specimen>";
-    const specimenMeasure = measures.find(
+    const specimenMeasure = localMeasures.find(
         (element) => element.key == "specimen",
     );
-    if (specimenMeasure?.cql) {
-        specimenMeasure.cql = specimenMeasure?.cql + retrievalCriteria;
+    if (specimenMeasure?.key) {
+        specimenMeasure.cql = specimenMeasure.cql + retrievalCriteria;
     }
 
-    const histoMeasure = measures.find((element) => element.key == "Histo");
+    const histoMeasure = localMeasures.find(
+        (element) => element.key == "Histo",
+    );
     if (histoMeasure?.cql) {
         if (
             !additionalCriteria.includes("type") ||
@@ -98,7 +110,9 @@ export const translateAstToCql = (
         cqlHeader +
         getCodesystems() +
         "context Patient\n" +
-        measures.map((measureItem: MeasureItem) => measureItem.cql).join("") +
+        localMeasures
+            .map((measureItem: MeasureItem) => measureItem.cql)
+            .join("") +
         singletons
     );
 };
@@ -127,7 +141,7 @@ const getRetrievalCriterion = (criterion: AstBottomLayerValue): string => {
         switch (myCriterion.type) {
             case "specimen": {
                 expression += "(";
-                myCQL += cqltemplate.get("retrieveSpecimenByType");
+                myCQL += cqltemplate.get("specimen");
                 if (typeof criterion.value === "string") {
                     if (criterion.value.slice(-1) === "%") {
                         const mykey = criterion.value.slice(0, -2);
