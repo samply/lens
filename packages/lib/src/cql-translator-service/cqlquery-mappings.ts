@@ -190,6 +190,7 @@ export const cqltemplate = new Map<string, string>([
     ],
     ["hasSpecimen", "exists [Specimen]"],
     ["specimen", "exists [Specimen: Code '{{C}}' from {{A1}}]"],
+    ["retrieveSpecimenByType", "(S.type.coding.code contains '{{C}}')"],
     [
         "TNMc",
         "exists from [Observation: Code '21908-9' from {{A1}}] O\nwhere O.component.where(code.coding contains Code '{{K}}' from {{A1}}).value.coding contains Code '{{C}}' from {{A2}}",
@@ -210,7 +211,7 @@ export const cqltemplate = new Map<string, string>([
         "uiccstadium",
         "(exists ([Observation: Code '21908-9' from loinc] O where O.value.coding.code contains '{{C}}')) or (exists ([Observation: Code '21902-2' from loinc] O where O.value.coding.code contains '{{C}}'))",
     ],
-    ["histology", "exists from [Observation: Code '59847-4' from loinc] O\n"]
+    ["histology", "exists from [Observation: Code '59847-4' from loinc] O\n"],
 ]);
 
 export const criterionMap = new Map<string, { type: string; alias?: string[] }>(

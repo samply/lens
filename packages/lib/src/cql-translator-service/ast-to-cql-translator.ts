@@ -141,7 +141,7 @@ const getRetrievalCriterion = (criterion: AstBottomLayerValue): string => {
         switch (myCriterion.type) {
             case "specimen": {
                 expression += "(";
-                myCQL += cqltemplate.get("specimen");
+                myCQL += cqltemplate.get("retrieveSpecimenByType");
                 if (typeof criterion.value === "string") {
                     if (criterion.value.slice(-1) === "%") {
                         const mykey = criterion.value.slice(0, -2);
