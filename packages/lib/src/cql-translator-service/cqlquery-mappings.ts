@@ -190,6 +190,7 @@ export const cqltemplate = new Map<string, string>([
     ],
     ["hasSpecimen", "exists [Specimen]"],
     ["specimen", "exists [Specimen: Code '{{C}}' from {{A1}}]"],
+    ["retrieveSpecimenByType", "(S.type.coding.code contains '{{C}}')"],
     [
         "TNMc",
         "exists from [Observation: Code '21908-9' from {{A1}}] O\nwhere O.component.where(code.coding contains Code '{{K}}' from {{A1}}).value.coding contains Code '{{C}}' from {{A2}}",

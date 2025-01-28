@@ -273,16 +273,21 @@
                     valueToAccumulate.values,
                     catalogueGroupCode,
                 );
+                if (aggregationCount > 0) {
+                    combinedSubGroupData.data.push(aggregationCount);
+                    combinedSubGroupData.labels.push(valueToAccumulate.name);
 
-                combinedSubGroupData.data.push(aggregationCount);
-                combinedSubGroupData.labels.push(valueToAccumulate.name);
-
-                for (let i = 0; i < combinedSubGroupData.labels.length; i++) {
-                    const element: string = combinedSubGroupData.labels[i];
-                    if (valueToAccumulate.values.includes(element)) {
-                        combinedSubGroupData.labels.splice(i, 1);
-                        combinedSubGroupData.data.splice(i, 1);
-                        i--;
+                    for (
+                        let i = 0;
+                        i < combinedSubGroupData.labels.length;
+                        i++
+                    ) {
+                        const element: string = combinedSubGroupData.labels[i];
+                        if (valueToAccumulate.values.includes(element)) {
+                            combinedSubGroupData.labels.splice(i, 1);
+                            combinedSubGroupData.data.splice(i, 1);
+                            i--;
+                        }
                     }
                 }
             });
