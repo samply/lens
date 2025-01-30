@@ -9,7 +9,6 @@
     import type { QueryItem, QueryValue } from "../../types/queryData";
     import AutoCompleteCriterionComponent from "./AutoCompleteCriterionComponent.svelte";
     import { onMount } from "svelte";
-    import { addPercentageSignToCriteria } from "../../helpers/object-formaters";
 
     /**
      * mockdata to get from texts store
@@ -24,11 +23,31 @@
      */
     let criteria: Criteria[] = "criteria" in element ? element.criteria : [];
 
+    const resolvesubgroup = (criterion: Criteria): Criteria[] => {
+        let subgroups: Criteria[] = [];
+        if (criterion.visible == undefined && !criterion.visible) {
+            subgroups.push(criterion);
+        }
+
+        if (criterion.subgroup != undefined) {
+            criterion.subgroup.forEach((criterion: Criteria) => {
+                subgroups = subgroups.concat(resolvesubgroup(criterion));
+            });
+        }
+        return subgroups;
+    };
+
     onMount(() => {
-        /**
-         * adds .% option to find all subgroups
-         */
-        criteria = addPercentageSignToCriteria(structuredClone(criteria));
+        let subgroups: Criteria[] = [];
+        criteria.forEach((element) => {
+            if (element.subgroup != undefined) {
+                element.subgroup.forEach((criterion: Criteria) => {
+                    subgroups = subgroups.concat(resolvesubgroup(criterion));
+                });
+            }
+        });
+
+        criteria = criteria.concat(subgroups);
     });
 
     /**

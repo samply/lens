@@ -33,6 +33,14 @@ export const activeQueryGroupIndex = writable<number>(0);
 export const queryModified = writable<boolean>(false);
 
 /**
+ * emits an event every time the value of the query store is updated
+ */
+queryStore.subscribe(() => {
+    const event = new CustomEvent("lens-query-updated");
+    window.dispatchEvent(event);
+});
+
+/**
  * Adds an item to the query
  * If the item already exists in the query, the value will be added to the existing item
  * If the item does not exist in the query, a new item will be created
@@ -228,6 +236,7 @@ export interface AddStratifierParams {
     catalogue: Category[];
     queryGroupIndex?: number;
     groupRange?: number;
+    system?: string;
 }
 
 export const addStratifier = ({
@@ -236,6 +245,7 @@ export const addStratifier = ({
     catalogueGroupCode,
     queryGroupIndex = 0,
     groupRange = 1,
+    system = "",
 }: AddStratifierParams): void => {
     let queryItem: QueryItem;
     catalogue.forEach((parentCategory: Category) => {
@@ -279,9 +289,10 @@ export const addStratifier = ({
                             key: childCategorie.key,
                             name: childCategorie.name,
                             system:
-                                "system" in childCategorie
+                                "system" in childCategorie &&
+                                childCategorie.system !== ""
                                     ? childCategorie.system
-                                    : "",
+                                    : system,
                             type:
                                 "type" in childCategorie
                                     ? childCategorie.type
