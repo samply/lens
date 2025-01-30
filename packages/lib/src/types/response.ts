@@ -5,6 +5,7 @@ export type Stratum = {
 
 export type Status = "claimed" | "succeeded" | "tempfailed" | "permfailed";
 
+// TODO: make this a tagged union where e.g. variant "succeeded" has mandatory `data` and variant "permfailed" has no `data`
 export type Site = {
     status: Status;
     data?: SiteData;
