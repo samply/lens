@@ -36,6 +36,25 @@
                         "pattern": "^.*$"
                     }
                 },
+                "infoLink": {
+                    "type": "object",
+                    "properties": {
+                        "link": {
+                            "type": "string",
+                            "pattern": "^.+$"
+                        },
+                        "display": {
+                            "type": "string",
+                            "pattern": "^.+$"
+                        }
+                    },
+                    "additionalProperties": false,
+                    "unevaluatedProperties": false,
+                    "required": [
+                        "link",
+                        "display"
+                    ]
+                },
                 "system": {
                     "type": "string",
                     "pattern": "^.*$"

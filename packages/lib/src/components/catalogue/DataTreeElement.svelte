@@ -155,6 +155,12 @@
         <InfoButtonComponent message={element.infoButtonText} />
     {/if}
 
+    {#if element.infoLink}
+        <a href={element.infoLink.link} target="_blank"
+            >{element.infoLink.display}</a
+        >
+    {/if}
+
     {#if finalParent && open}
         <button part="add-all-options-button" on:click={selectAllOptions}>
             {selectAllText ? selectAllText : "Add all"}

@@ -11,6 +11,12 @@ export type CategoryNode = {
     childCategories?: Category[];
     infoButtonText?: string[];
     subCategoryName?: string;
+    extra?: CategoryExtra;
+};
+
+export type CategoryExtra = {
+    link?: string;
+    display?: string;
 };
 
 export type CatagoryLeaf = {
