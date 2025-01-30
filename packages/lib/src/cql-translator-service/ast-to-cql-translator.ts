@@ -4,7 +4,6 @@
  */
 
 import {
-    isAstTopLayer,
     type AstBottomLayerValue,
     type AstElement,
     type AstTopLayer,
@@ -31,11 +30,10 @@ export const translateAstToCql = (
         codesystems = ["codesystem loinc: 'http://loinc.org'"];
     }
 
-    const localMeasures: MeasureItem[] = [];
+    const localMeasures: { key: string; cql: string }[] = [];
     measures.forEach((x) => {
         localMeasures.push({
             key: x.key,
-            measure: undefined,
             cql: x.cql,
         });
     });
@@ -110,9 +108,7 @@ export const translateAstToCql = (
         cqlHeader +
         getCodesystems() +
         "context Patient\n" +
-        localMeasures
-            .map((measureItem: MeasureItem) => measureItem.cql)
-            .join("") +
+        localMeasures.map((measureItem) => measureItem.cql).join("") +
         singletons
     );
 };
@@ -120,7 +116,7 @@ export const translateAstToCql = (
 const processAdditionalCriterion = (query: any): string => {
     let additionalCriteria = "";
 
-    if (isAstTopLayer(query)) {
+    if (query.nodeType === "branch") {
         const top: AstTopLayer = query;
         top.children.forEach(function (child) {
             additionalCriteria += processAdditionalCriterion(child);
@@ -142,27 +138,15 @@ const getRetrievalCriterion = (criterion: AstBottomLayerValue): string => {
                 expression += "(";
                 myCQL += cqltemplate.get("retrieveSpecimenByType");
                 if (typeof criterion.value === "string") {
-                    if (criterion.value.slice(-1) === "%") {
-                        const mykey = criterion.value.slice(0, -2);
-                        if (criteria.values != undefined) {
-                            criterion.value = criteria.values
-                                .filter(
-                                    (value) => value.key.indexOf(mykey) != -1,
-                                )
-                                .map((value) => value.key);
-                            getRetrievalCriterion(criterion);
-                        }
-                    } else {
-                        expression +=
-                            substituteCQLExpression(
-                                criterion.key,
-                                myCriterion.alias,
-                                myCQL,
-                                criterion.value as string,
-                            ) + ") or\n";
-                    }
+                    expression +=
+                        substituteCQLExpression(
+                            criterion.key,
+                            myCriterion.alias,
+                            myCQL,
+                            criterion.value as string,
+                        ) + ") or\n";
                 }
-                if (criterion.value instanceof Array<string>) {
+                if (Array.isArray(criterion.value)) {
                     const values: string[] = [];
                     criterion.value.forEach((element) => {
                         values.push(element);
@@ -323,6 +307,7 @@ const getSingleton = (criterion: AstBottomLayerValue): string => {
                                     (value) => value.startsWith(mykey),
                                 );
                                 expression += getSingleton({
+                                    nodeType: "leaf",
                                     key: criterion.key,
                                     type: criterion.type,
                                     system: criterion.system,
@@ -342,6 +327,7 @@ const getSingleton = (criterion: AstBottomLayerValue): string => {
                                     criterion.value.slice(0, 5),
                                 );
                                 expression += getSingleton({
+                                    nodeType: "leaf",
                                     key: criterion.key,
                                     type: criterion.type,
                                     system: criterion.system,

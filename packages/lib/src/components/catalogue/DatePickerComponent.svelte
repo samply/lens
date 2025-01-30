@@ -1,11 +1,11 @@
 <script lang="ts">
-    import type { CategoryField } from "../../types/treeData";
+    import type { CategoryLeaf } from "../../types/treeData";
     import { catalogueTextStore } from "../../stores/texts";
     import QueryAddButtonComponent from "./QueryAddButtonComponent.svelte";
     import type { QueryItem } from "../../types/queryData";
     import { v4 as uuidv4 } from "uuid";
 
-    export let element: CategoryField;
+    export let element: CategoryLeaf;
 
     let from: string = (element.min as string) || "1900-01-01";
     let to: string =

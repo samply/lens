@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { CategoryField, Criteria } from "../../types/treeData";
+    import type { CategoryLeaf, Criteria } from "../../types/treeData";
     import { v4 as uuidv4 } from "uuid";
     import {
         activeQueryGroupIndex,
@@ -16,7 +16,7 @@
     let placeholderText: string = "Type to filter conditions";
     let noMatchesFoundMessage: string = "No matches found";
 
-    export let element: CategoryField;
+    export let element: CategoryLeaf;
 
     /**
      * list of criteria
@@ -143,7 +143,7 @@
      */
     const addInputValueToStore = (
         inputItem: Criteria,
-        indexOfChosenStore: number = $activeQueryGroupIndex,
+        indexOfChosenStore: number,
     ): void => {
         /**
          * check if option is allready present in the query store
@@ -205,7 +205,10 @@
         }
         if (event.key === "Enter") {
             event.preventDefault();
-            addInputValueToStore(inputOptions[focusedItemIndex]);
+            addInputValueToStore(
+                inputOptions[focusedItemIndex],
+                $activeQueryGroupIndex,
+            );
         }
     };
 
@@ -214,7 +217,7 @@
      * @param inputOption - the input option to add to the query store
      */
     const selectItemByClick = (inputOption: Criteria): void => {
-        addInputValueToStore(inputOption);
+        addInputValueToStore(inputOption, $activeQueryGroupIndex);
     };
 
     /**

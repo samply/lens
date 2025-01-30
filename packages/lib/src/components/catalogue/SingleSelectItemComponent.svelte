@@ -1,11 +1,11 @@
 <script lang="ts">
     import { v4 as uuidv4 } from "uuid";
-    import type { CategoryField } from "../../types/treeData";
+    import type { CategoryLeaf } from "../../types/treeData";
     import type { Criteria } from "../../types/treeData";
     import QueryAddButtonComponent from "./QueryAddButtonComponent.svelte";
     import type { QueryItem } from "../../types/queryData";
 
-    export let element: CategoryField;
+    export let element: CategoryLeaf;
     export let criterion: Criteria;
 
     const queryBindId: string = uuidv4();

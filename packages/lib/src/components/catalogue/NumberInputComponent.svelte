@@ -1,10 +1,10 @@
 <script lang="ts">
     import { catalogueTextStore } from "../../stores/texts";
     import QueryAddButtonComponent from "./QueryAddButtonComponent.svelte";
-    import type { CategoryField } from "../../types/treeData";
+    import type { CategoryLeaf } from "../../types/treeData";
     import { v4 as uuidv4 } from "uuid";
 
-    export let element: CategoryField;
+    export let element: CategoryLeaf;
 
     let from: number = (element.min as number) || 0;
     let to: number = (element.max as number) || 0;

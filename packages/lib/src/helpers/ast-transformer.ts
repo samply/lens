@@ -7,7 +7,7 @@ import {
     type AstBottomLayerValue,
 } from "../types/ast";
 import type { QueryItem, QueryValue, queryStoreItem } from "../types/queryData";
-import type { AggregatedValue } from "../../../../dist/types";
+import type { AggregatedValue } from "../types/treeData";
 import {
     catalogue,
     getCategoryFromKey,
@@ -25,6 +25,7 @@ export const buildAstFromQuery = (queryStore: QueryItem[][]): AstTopLayer => {
 
     if (ast.children.length === 1 && ast.children[0] === null) {
         return {
+            nodeType: "branch",
             operand: "OR",
             children: [],
         };
@@ -106,16 +107,16 @@ const convertComplexCriteria = (criteria: AstTopLayer): QueryItem => {
     const values = criteria.children.filter((child) => isTopLayer(child));
     const checkedValues: AstTopLayer[] = <AstTopLayer[]>values;
     const convertedValues = convertValues(checkedValues);
-    const criteriaCateogory = getCategoryFromKey(get(catalogue), criteria.key);
+    const criteriaCategory = getCategoryFromKey(get(catalogue), criteria.key!);
     return {
         id: uuidv4(),
-        key: criteria.key,
-        name: criteriaCateogory != undefined ? criteriaCateogory.name : "",
+        key: criteria.key!,
+        name: criteriaCategory != undefined ? criteriaCategory.name : "",
         // NOTE: Assuming hard coding here, proof me wrong
         type: "EQUALS",
         description:
-            criteriaCateogory != undefined && "description" in criteriaCateogory
-                ? criteriaCateogory.description
+            criteriaCategory != undefined && "description" in criteriaCategory
+                ? criteriaCategory.description
                 : "",
         system: "",
         values: convertedValues,
@@ -160,7 +161,7 @@ const convertTopLayerValue = (value: AstTopLayer): QueryValue => {
         .filter((value) => value != undefined);
     return {
         queryBindId: uuidv4(),
-        name: value.key,
+        name: value.key!,
         value: <AggregatedValue[][]>values,
     };
 };
@@ -248,6 +249,7 @@ export const returnNestedValues = (
      */
     if (Array.isArray(item)) {
         return {
+            nodeType: "branch",
             operand: operand,
             children: item.map((value) => {
                 return returnNestedValues(value, operand, item);
@@ -260,6 +262,7 @@ export const returnNestedValues = (
      */
     if ("values" in item && Array.isArray(item.values)) {
         return {
+            nodeType: "branch",
             key: item.key,
             operand: operand,
             children: item.values.map((value) => {
@@ -273,6 +276,7 @@ export const returnNestedValues = (
      */
     if ("value" in item && Array.isArray(item.value)) {
         return {
+            nodeType: "branch",
             key: item.name,
             operand: operand,
             children: item.value.map((value) => {
@@ -291,6 +295,7 @@ export const returnNestedValues = (
         !Array.isArray(item.value)
     ) {
         return {
+            nodeType: "leaf",
             key: topLayerItem.key,
             type: topLayerItem.type,
             system: topLayerItem.system || "",
@@ -303,6 +308,7 @@ export const returnNestedValues = (
      */
     if ("value" in item && typeof item.value === "string") {
         return {
+            nodeType: "leaf",
             key: item.value,
             type: "EQUALS",
             system: "",

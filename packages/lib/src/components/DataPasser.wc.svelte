@@ -23,7 +23,7 @@
         RemoveItemFromQuyeryAPIParams,
         RemoveValueFromQueryAPIParams,
     } from "../types/dataPasser";
-    import { buildQueryFromAst } from "../helpers/ast-transformer.ts";
+    import { buildQueryFromAst } from "../helpers/ast-transformer";
 
     /**
      * Getters
