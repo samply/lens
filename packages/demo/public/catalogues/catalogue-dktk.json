@@ -21761,7 +21761,7 @@
         "key": "biosamples",
         "name": "Bioproben",
         "infoButtonText": [
-            "Auf Auswahl dieser Parameter hin, erhalten Sie die Anzahl ALLER Proben, die mit dem Patienten übereinstimmen."
+            "Auf Auswahl dieser Parameter hin, erhalten Sie die Anzahl der Proben des ausgewählten Probentyps, die mit dem Patienten übereinstimmen."
         ],
         "childCategories": [
             {
