@@ -39,6 +39,7 @@
     export let headers: Map<string, string> = new Map<string, string>();
     export let displayLegends: boolean = false;
     export let chartType: keyof ChartTypeRegistry = "pie";
+    export let scaleType: string = "linear";
     export let perSite: boolean = false;
     export let groupRange: number = 0;
     export let groupingDivider: string = "";
@@ -160,6 +161,7 @@
                                   },
                               }
                             : [],
+                    type: undefined,
                 },
             },
         },
@@ -273,16 +275,21 @@
                     valueToAccumulate.values,
                     catalogueGroupCode,
                 );
+                if (aggregationCount > 0) {
+                    combinedSubGroupData.data.push(aggregationCount);
+                    combinedSubGroupData.labels.push(valueToAccumulate.name);
 
-                combinedSubGroupData.data.push(aggregationCount);
-                combinedSubGroupData.labels.push(valueToAccumulate.name);
-
-                for (let i = 0; i < combinedSubGroupData.labels.length; i++) {
-                    const element: string = combinedSubGroupData.labels[i];
-                    if (valueToAccumulate.values.includes(element)) {
-                        combinedSubGroupData.labels.splice(i, 1);
-                        combinedSubGroupData.data.splice(i, 1);
-                        i--;
+                    for (
+                        let i = 0;
+                        i < combinedSubGroupData.labels.length;
+                        i++
+                    ) {
+                        const element: string = combinedSubGroupData.labels[i];
+                        if (valueToAccumulate.values.includes(element)) {
+                            combinedSubGroupData.labels.splice(i, 1);
+                            combinedSubGroupData.data.splice(i, 1);
+                            i--;
+                        }
                     }
                 }
             });
@@ -479,6 +486,11 @@
     }
 
     onMount(() => {
+        if (indexAxis === "y") {
+            initialChartData.options.scales.x.type = scaleType;
+        } else {
+            initialChartData.options.scales.y.type = scaleType;
+        }
         chart = new Chart(canvas, initialChartData);
     });
 

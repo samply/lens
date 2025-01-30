@@ -913,6 +913,50 @@ DKTK_STRAT_SPECIMEN_STRATIFIER
 `,
 };
 
+export const dktkSpecificSpecimenMeasure = {
+    key: "specimen",
+    measure: {
+        code: {
+            text: "specimen",
+        },
+        extension: [
+            {
+                url: "http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis",
+                valueCode: "Specimen",
+            },
+        ],
+        population: [
+            {
+                code: {
+                    coding: [
+                        {
+                            system: "http://terminology.hl7.org/CodeSystem/measure-population",
+                            code: "initial-population",
+                        },
+                    ],
+                },
+                criteria: {
+                    language: "text/cql-identifier",
+                    expression: "Specimen",
+                },
+            },
+        ],
+        stratifier: [
+            {
+                code: {
+                    text: "sample_kind",
+                },
+                criteria: {
+                    language: "text/cql",
+                    expression: "SampleType",
+                },
+            },
+        ],
+    },
+    cql: `
+DKTK_REPLACE_SPECIMEN_STRATIFIER`,
+};
+
 export const dktkProceduresMeasure = {
     key: "procedures",
     measure: {
@@ -1044,6 +1088,6 @@ export const dktkHistologyMeasure = {
         ],
     },
     cql: `
-  DKTK_STRAT_HISTOLOGY_STRATIFIER
+  DKTK_REPLACE_HISTOLOGY_STRATIFIER
 `,
 };

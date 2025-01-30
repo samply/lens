@@ -3,6 +3,8 @@ export type LensOptions = {
     [key: string]: unknown;
     chartOptions?: ChartOptions;
     catalogueKeyToResponseKeyMap?: string[][];
+    negotiatorOptions?: NegotiatorOptions;
+    projectmanagerOptions?: ProjectManagerOptions;
 };
 
 export type NegotiateOptionsSiteMapping = {
@@ -12,9 +14,20 @@ export type NegotiateOptionsSiteMapping = {
     collection: string;
 };
 
-export type NegotiateOptions = {
-    newProjectUrl: string;
+export type ProjectManagerOptionsSiteMapping = {
+    site: string;
+    collection: string;
+};
+
+export type NegotiatorOptions = {
+    url: string;
     siteMappings: NegotiateOptionsSiteMapping[];
+};
+
+export type ProjectManagerOptions = {
+    newProjectUrl: string;
+    editProjectUrl: string;
+    siteMappings: ProjectManagerOptionsSiteMapping[];
 };
 
 export type ChartOptions = {

@@ -9,7 +9,7 @@
         dktkMedicationStatementsMeasure,
         dktkPatientsMeasure,
         dktkProceduresMeasure,
-        dktkSpecimenMeasure,
+        dktkSpecificSpecimenMeasure,
         dktkHistologyMeasure,
     } from "./measures";
 
@@ -24,7 +24,7 @@
         catalogueUrl = "catalogues/catalogue-dktk.json";
         optionsFilePath = "options-ccp-prod.json";
     } else {
-        catalogueUrl = "catalogues/catalogue-dktk-staging.json";
+        catalogueUrl = "catalogues/catalogue-dktk.json";
         optionsFilePath = "options-ccp-demo.json";
     }
 
@@ -65,7 +65,7 @@
             measures: [
                 dktkPatientsMeasure as MeasureItem,
                 dktkDiagnosisMeasure as MeasureItem,
-                dktkSpecimenMeasure as MeasureItem,
+                dktkSpecificSpecimenMeasure as MeasureItem,
                 dktkProceduresMeasure as MeasureItem,
                 dktkMedicationStatementsMeasure as MeasureItem,
                 dktkHistologyMeasure as MeasureItem,
@@ -157,6 +157,10 @@
         <div class="charts">
             <div class="chart-wrapper result-summary">
                 <lens-result-summary />
+                <lens-negotiate-button
+                    type={"ccp"}
+                    title={"Daten und Proben Anfragen"}
+                ></lens-negotiate-button>
                 <lens-search-modified-display
                     >Diagramme repräsentieren nicht mehr die aktuelle Suche!</lens-search-modified-display
                 >
@@ -210,6 +214,7 @@
                     groupRange={10}
                     filterRegex="^(([0-9]?[0-9]$)|(1[0-2]0))"
                     xAxisTitle="Alter"
+                    scaleType="logarithmic"
                     yAxisTitle="Anzahl der Primärdiagnosen"
                     backgroundColor={barChartBackgroundColors}
                 />

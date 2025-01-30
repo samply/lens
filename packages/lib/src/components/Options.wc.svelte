@@ -24,8 +24,8 @@
         uiSiteMappingsStore,
     } from "../stores/mappings";
 
-    export let optionsJSON: string = "";
-    export let catalogueJSON: string = "";
+    export let optionsJSON: string = "{}";
+    export let catalogueJSON: string = "[]";
     export let measures: MeasureStore = {} as MeasureStore;
 
     /**
