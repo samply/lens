@@ -316,5 +316,5 @@ export const returnNestedValues = (
         };
     }
 
-    throw "This should be unreachable";
+    throw new Error("This should be unreachable");
 };
