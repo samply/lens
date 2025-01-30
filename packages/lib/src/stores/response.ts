@@ -57,7 +57,7 @@ export const getAggregatedPopulation = (
     let population: number = 0;
 
     sites.forEach((site: Site) => {
-        if (!site.data) return;
+        if (site.data === undefined) return;
         population += getSitePopulationForCode(site.data, code);
     });
 
