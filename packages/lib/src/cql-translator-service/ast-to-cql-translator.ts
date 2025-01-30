@@ -236,42 +236,6 @@ const getRetrievalCriterion = (criterion: AstBottomLayerValue): string => {
                 }
                 break;
             }
-            case "samplingDate": {
-                expression += "(";
-                myCQL += cqltemplate.get("retrieveSpecimenBySamplingDate");
-
-                let newCQL: string = "";
-                if (
-                    typeof criterion.value == "object" &&
-                    !(criterion.value instanceof Array) &&
-                    (criterion.value.min instanceof Date ||
-                        criterion.value.max instanceof Date)
-                ) {
-                    if (!(criterion.value.min instanceof Date)) {
-                        newCQL = myCQL.replace(
-                            "between {{D1}} and {{D2}}",
-                            "<= {{D2}}",
-                        );
-                    } else if (!(criterion.value.max instanceof Date)) {
-                        newCQL = myCQL.replace(
-                            "between {{D1}} and {{D2}}",
-                            ">= {{D1}}",
-                        );
-                    } else {
-                        newCQL = myCQL;
-                    }
-                    expression +=
-                        substituteCQLExpressionDate(
-                            criterion.key,
-                            myCriterion.alias,
-                            newCQL,
-                            "",
-                            criterion.value.min as Date,
-                            criterion.value.max as Date,
-                        ) + ") and\n";
-                }
-                break;
-            }
         }
     }
     return expression;
