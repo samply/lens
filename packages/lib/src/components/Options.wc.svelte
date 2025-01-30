@@ -23,6 +23,7 @@
         catalogueKeyToResponseKeyMap,
         uiSiteMappingsStore,
     } from "../stores/mappings";
+    import { errorChannel } from "../stores/error-channel";
 
     export let optionsJSON: string = "{}";
     export let catalogueJSON: string = "[]";
@@ -52,6 +53,10 @@
                 "Lens-Options are not conform with the JSON schema",
                 validJSON.errors,
             );
+            // show user-facing error
+            errorChannel.set(
+                "Die Lens-Optionen sind nicht mit dem JSON-Schema konform",
+            );
         }
     }
 
@@ -67,6 +72,10 @@
             console.error(
                 "Catalogue is not conform with the JSON schema",
                 validJSON.errors,
+            );
+            // show user-facing error
+            errorChannel.set(
+                "Der Catalogue-Parameter ist nicht mit dem JSON-Schema konform",
             );
         }
     }

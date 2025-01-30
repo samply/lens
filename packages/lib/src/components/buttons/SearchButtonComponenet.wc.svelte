@@ -14,6 +14,7 @@
     import { Blaze } from "../../classes/blaze";
     import { responseStore, updateResponseStore } from "../../stores/response";
     import { lensOptions } from "../../stores/options";
+    import { errorChannel } from "../../stores/error-channel";
     import type {
         BackendOptions,
         Measure,
@@ -153,6 +154,7 @@
             })
             .catch((error) => {
                 console.error("Error:", error);
+                errorChannel.set("Fehler beim Bearbeiten der Anfrage"); // show user-facing error
             });
     };
 

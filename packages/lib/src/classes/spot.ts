@@ -83,6 +83,7 @@ export class Spot {
             // read error events from beam
             eventSource.addEventListener("error", (message) => {
                 console.error(`Beam returned error ${message}`);
+                errorChannel.set("Fehler von Beam erhalten"); // show user-facing error
                 eventSource.close();
             });
 
@@ -98,8 +99,7 @@ export class Spot {
                 console.log(`Aborting request ${this.currentTask}`);
             } else {
                 console.error(err);
-                // show user-facing error
-                errorChannel.set("Fehler beim Bearbeiten der Anfrage");
+                errorChannel.set("Fehler beim Bearbeiten der Anfrage"); // show user-facing error
             }
         }
     }
