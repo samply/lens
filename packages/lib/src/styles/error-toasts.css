@@ -1,0 +1,17 @@
+error-toasts::part(flex-container) {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-xs);
+    padding: var(--gap-s);
+}
+
+error-toasts::part(toast) {
+    border-radius: var(--border-radius-small);
+    background-color: #EF9A9A;
+    border: solid 1px var(--red);
+    padding: var(--gap-xs);
+}

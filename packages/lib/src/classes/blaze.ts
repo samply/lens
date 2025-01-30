@@ -81,7 +81,7 @@ export class Blaze {
                     dataResponse,
                 );
             }
-            const blazeResponse: Site = await dataResponse.json();
+            const blazeResponse: SiteData = await dataResponse.json();
 
             response = new Map<string, Site>().set(this.name, {
                 status: "succeeded",
