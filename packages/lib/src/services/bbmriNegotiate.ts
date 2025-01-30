@@ -5,6 +5,7 @@ import type {
     NegotiateOptionsSiteMapping,
 } from "../types/options";
 import { getHumanReadableQuery } from "../stores/datarequests";
+import { errorChannel } from "../stores/error-channel";
 
 type NegotiatorResponse = Response & {
     url?: string;
@@ -73,6 +74,7 @@ export const bbmrinegotiate = async (
                 console.error(
                     "Negotiator response does not contain redirect uri",
                 );
+                errorChannel.set("Die Antwort vom Negotiator ist fehlerhaft"); // show user-facing error
                 return;
             } else {
                 const data = await negotiatorResponse.json();
@@ -156,6 +158,7 @@ async function sendRequestToNegotiator(
         return response as NegotiatorResponse;
     } catch (error) {
         console.error(error);
+        errorChannel.set("Fehler beim Bearbeiten der Anfrage"); // show user-facing error
         return new Response() as NegotiatorResponse;
     }
 }

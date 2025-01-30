@@ -200,7 +200,7 @@
                     indexAxis="y"
                     groupingDivider="."
                     groupingLabel=".%"
-                    filterRegex="^[CD].*"
+                    filterRegex="^(C.{(2, 6)}|D[0-4][0-9].{(0, 4)})"
                     xAxisTitle="Anzahl der Diagnosen"
                     yAxisTitle="ICD-10-Codes"
                     backgroundColor={barChartBackgroundColors}
@@ -214,7 +214,6 @@
                     groupRange={10}
                     filterRegex="^(([0-9]?[0-9]$)|(1[0-2]0))"
                     xAxisTitle="Alter"
-                    scaleType="logarithmic"
                     yAxisTitle="Anzahl der Primärdiagnosen"
                     backgroundColor={barChartBackgroundColors}
                 />

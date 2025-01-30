@@ -69,7 +69,7 @@ export const translateAstToCql = (
         retrievalCriteria = retrievalCriteria.slice(0, -10);
     } else {
         retrievalCriteria += "[Specimen] S where " + additionalCriteria;
-        retrievalCriteria = retrievalCriteria.slice(0, -5);
+        retrievalCriteria = retrievalCriteria.slice(0, -4);
     }
 
     retrievalCriteria = retrievalCriteria += " else {} as List<Specimen>";
@@ -129,7 +129,6 @@ const processAdditionalCriterion = (query: any): string => {
         const buttom: AstBottomLayerValue = query;
         additionalCriteria += getRetrievalCriterion(buttom);
     }
-
     return additionalCriteria;
 };
 
@@ -160,7 +159,7 @@ const getRetrievalCriterion = (criterion: AstBottomLayerValue): string => {
                                 myCriterion.alias,
                                 myCQL,
                                 criterion.value as string,
-                            ) + ") and\n";
+                            ) + ") or\n";
                     }
                 }
                 if (criterion.value instanceof Array<string>) {
@@ -182,8 +181,9 @@ const getRetrievalCriterion = (criterion: AstBottomLayerValue): string => {
                     if (criterion.value.includes("blood-serum")) {
                         values.push("serum");
                     }
-                    if (criterion.value.includes("tissue-ffpe")) {
+                    if (criterion.value.includes("tumor-tissue-ffpe")) {
                         values.push(
+                            "tissue-ffpe",
                             "tumor-tissue-ffpe",
                             "normal-tissue-ffpe",
                             "other-tissue-ffpe",
@@ -193,6 +193,7 @@ const getRetrievalCriterion = (criterion: AstBottomLayerValue): string => {
                     if (criterion.value.includes("tissue-frozen")) {
                         values.push(
                             "tumor-tissue-frozen",
+                            "tissue-frozen",
                             "normal-tissue-frozen",
                             "other-tissue-frozen",
                         );
@@ -230,50 +231,13 @@ const getRetrievalCriterion = (criterion: AstBottomLayerValue): string => {
                                 ) +
                                 ") or\n";
                         });
-                        expression = expression.slice(0, -4) + ") and\n";
+                        expression = expression.slice(0, -4) + ") or\n";
                     }
-                }
-                break;
-            }
-            case "samplingDate": {
-                expression += "(";
-                myCQL += cqltemplate.get("retrieveSpecimenBySamplingDate");
-
-                let newCQL: string = "";
-                if (
-                    typeof criterion.value == "object" &&
-                    !(criterion.value instanceof Array) &&
-                    (criterion.value.min instanceof Date ||
-                        criterion.value.max instanceof Date)
-                ) {
-                    if (!(criterion.value.min instanceof Date)) {
-                        newCQL = myCQL.replace(
-                            "between {{D1}} and {{D2}}",
-                            "<= {{D2}}",
-                        );
-                    } else if (!(criterion.value.max instanceof Date)) {
-                        newCQL = myCQL.replace(
-                            "between {{D1}} and {{D2}}",
-                            ">= {{D1}}",
-                        );
-                    } else {
-                        newCQL = myCQL;
-                    }
-                    expression +=
-                        substituteCQLExpressionDate(
-                            criterion.key,
-                            myCriterion.alias,
-                            newCQL,
-                            "",
-                            criterion.value.min as Date,
-                            criterion.value.max as Date,
-                        ) + ") and\n";
                 }
                 break;
             }
         }
     }
-
     return expression;
 };
 
