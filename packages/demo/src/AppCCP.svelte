@@ -200,7 +200,7 @@
                     indexAxis="y"
                     groupingDivider="."
                     groupingLabel=".%"
-                    filterRegex="^(C.{(2, 6)}|D[0-4][0-9].{(0, 4)})"
+                    filterRegex={"^(C.{2,6}|D[0-4][0-9].{0,4})"}
                     xAxisTitle="Anzahl der Diagnosen"
                     yAxisTitle="ICD-10-Codes"
                     backgroundColor={barChartBackgroundColors}
