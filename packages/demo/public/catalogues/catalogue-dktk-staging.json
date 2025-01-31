@@ -20359,6 +20359,10 @@
         "key": "project",
         "name": "Forschungsprojekte",
         "infoButtonText": ["Projekt-Übersicht"],
+        "infoLink": {
+            "link": "https://hub.dkfz.de/s/EZTqXGcx7mWWapr",
+            "display": "↗Projekt-Übersicht"
+        },
         "childCategories": [
             {
                 "key": "pseudo_projects",
