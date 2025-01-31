@@ -96,7 +96,7 @@ export const translateAstToCql = (
         }
     }
 
-    if (query.children.length == 0) {
+    if (isQueryEmpty(query)) {
         singletons += "\ntrue";
     }
 
@@ -111,6 +111,23 @@ export const translateAstToCql = (
         localMeasures.map((measureItem) => measureItem.cql).join("") +
         singletons
     );
+};
+
+const isQueryEmptyRec = (query: AstElement): boolean => {
+    if (query.nodeType === "leaf") {
+        return false;
+    }
+    if (query.children.length === 0) {
+        return true;
+    }
+    return query.children.every(isQueryEmptyRec);
+};
+
+const isQueryEmpty = (query: AstTopLayer): boolean => {
+    if (query.children.length === 0) {
+        return true;
+    }
+    return query.children.every(isQueryEmptyRec);
 };
 
 const processAdditionalCriterion = (query: any): string => {
