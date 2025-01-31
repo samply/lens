@@ -8387,9 +8387,9 @@
                         ]
                     },
                     {
-                        "key": "C43-C49",
-                        "name": "C43-C49",
-                        "description": "Search for all subgroups of C43,C44,C45,C46,C47,C48,C49",
+                        "key": "C43-C44",
+                        "name": "C43-C44",
+                        "description": "Search for all subgroups of C43,C44", 
                         "subgroup": [
                             {
                                 "key": "C43.%",
@@ -8520,235 +8520,242 @@
                         ]
                     },
                     {
-                        "key": "C45.%",
-                        "name": "C45.%",
-                        "description": "Mesotheliom der Pleura",
+                        "key": "C45-C49",
+                        "name": "C45-C49",
+                        "description": "Search for all subgroups of C45,C46,C47,C48,C49",
                         "subgroup": [
                             {
-                                "visible": false,
-                                "key": "C45",
-                                "name": "C45",
-                                "description": ""
+                                "key": "C45.%",
+                                "name": "C45.%",
+                                "description": "Mesotheliom der Pleura",
+                                "subgroup": [
+                                    {
+                                        "visible": false,
+                                        "key": "C45",
+                                        "name": "C45",
+                                        "description": ""
+                                    },
+                                    {
+                                        "key": "C45.0",
+                                        "name": "C45.0",
+                                        "description": "Mesotheliom der Pleura"
+                                    },
+                                    {
+                                        "key": "C45.2",
+                                        "name": "C45.2",
+                                        "description": "Mesotheliom des Perikards"
+                                    },
+                                    {
+                                        "key": "C45.1",
+                                        "name": "C45.1",
+                                        "description": "Mesotheliom des Peritoneums"
+                                    },
+                                    {
+                                        "key": "C45.7",
+                                        "name": "C45.7",
+                                        "description": "Mesotheliom sonstiger Lokalisationen"
+                                    },
+                                    {
+                                        "key": "C45.9",
+                                        "name": "C45.9",
+                                        "description": "Mesotheliom, nicht näher bezeichnet"
+                                    }
+                                ]
                             },
                             {
-                                "key": "C45.0",
-                                "name": "C45.0",
-                                "description": "Mesotheliom der Pleura"
+                                "key": "C46.%",
+                                "name": "C46.%",
+                                "description": "Kaposi-Sarkom der Haut",
+                                "subgroup": [
+                                    {
+                                        "visible": false,
+                                        "key": "C46",
+                                        "name": "C46",
+                                        "description": ""
+                                    },
+                                    {
+                                        "key": "C46.0",
+                                        "name": "C46.0",
+                                        "description": "Kaposi-Sarkom der Haut"
+                                    },
+                                    {
+                                        "key": "C46.3",
+                                        "name": "C46.3",
+                                        "description": "Kaposi-Sarkom der Lymphknoten"
+                                    },
+                                    {
+                                        "key": "C46.2",
+                                        "name": "C46.2",
+                                        "description": "Kaposi-Sarkom des Gaumens"
+                                    },
+                                    {
+                                        "key": "C46.1",
+                                        "name": "C46.1",
+                                        "description": "Kaposi-Sarkom des Weichteilgewebes"
+                                    },
+                                    {
+                                        "key": "C46.8",
+                                        "name": "C46.8",
+                                        "description": "Kaposi-Sarkom mehrerer Organe"
+                                    },
+                                    {
+                                        "key": "C46.7",
+                                        "name": "C46.7",
+                                        "description": "Kaposi-Sarkom sonstiger Lokalisationen"
+                                    },
+                                    {
+                                        "key": "C46.9",
+                                        "name": "C46.9",
+                                        "description": "Kaposi-Sarkom, nicht näher bezeichnet"
+                                    }
+                                ]
                             },
                             {
-                                "key": "C45.2",
-                                "name": "C45.2",
-                                "description": "Mesotheliom des Perikards"
-                            },
-                            {
-                                "key": "C45.1",
-                                "name": "C45.1",
-                                "description": "Mesotheliom des Peritoneums"
-                            },
-                            {
-                                "key": "C45.7",
-                                "name": "C45.7",
-                                "description": "Mesotheliom sonstiger Lokalisationen"
-                            },
-                            {
-                                "key": "C45.9",
-                                "name": "C45.9",
-                                "description": "Mesotheliom, nicht näher bezeichnet"
-                            }
-                        ]
-                    },
-                    {
-                        "key": "C46.%",
-                        "name": "C46.%",
-                        "description": "Kaposi-Sarkom der Haut",
-                        "subgroup": [
-                            {
-                                "visible": false,
-                                "key": "C46",
-                                "name": "C46",
-                                "description": ""
-                            },
-                            {
-                                "key": "C46.0",
-                                "name": "C46.0",
-                                "description": "Kaposi-Sarkom der Haut"
-                            },
-                            {
-                                "key": "C46.3",
-                                "name": "C46.3",
-                                "description": "Kaposi-Sarkom der Lymphknoten"
-                            },
-                            {
-                                "key": "C46.2",
-                                "name": "C46.2",
-                                "description": "Kaposi-Sarkom des Gaumens"
-                            },
-                            {
-                                "key": "C46.1",
-                                "name": "C46.1",
-                                "description": "Kaposi-Sarkom des Weichteilgewebes"
-                            },
-                            {
-                                "key": "C46.8",
-                                "name": "C46.8",
-                                "description": "Kaposi-Sarkom mehrerer Organe"
-                            },
-                            {
-                                "key": "C46.7",
-                                "name": "C46.7",
-                                "description": "Kaposi-Sarkom sonstiger Lokalisationen"
-                            },
-                            {
-                                "key": "C46.9",
-                                "name": "C46.9",
-                                "description": "Kaposi-Sarkom, nicht näher bezeichnet"
-                            }
-                        ]
-                    },
-                    {
-                        "key": "C47.%",
-                        "name": "C47.%",
-                        "description": "Bösartige Neubildung: Periphere Nerven der oberen Extremität, einschließlich Schulter",
-                        "subgroup": [
-                            {
-                                "visible": false,
-                                "key": "C47",
-                                "name": "C47",
-                                "description": ""
-                            },
-                            {
-                                "key": "C47.1",
-                                "name": "C47.1",
-                                "description": "Bösartige Neubildung: Periphere Nerven der oberen Extremität, einschließlich Schulter"
-                            },
-                            {
-                                "key": "C47.2",
-                                "name": "C47.2",
-                                "description": "Bösartige Neubildung: Periphere Nerven der unteren Extremität, einschließlich Hüfte"
-                            },
-                            {
-                                "key": "C47.4",
-                                "name": "C47.4",
-                                "description": "Bösartige Neubildung: Periphere Nerven des Abdomens"
-                            },
-                            {
-                                "key": "C47.5",
-                                "name": "C47.5",
-                                "description": "Bösartige Neubildung: Periphere Nerven des Beckens"
-                            },
-                            {
-                                "key": "C47.0",
-                                "name": "C47.0",
-                                "description": "Bösartige Neubildung: Periphere Nerven des Kopfes, des Gesichtes und des Halses"
-                            },
-                            {
-                                "key": "C47.6",
-                                "name": "C47.6",
-                                "description": "Bösartige Neubildung: Periphere Nerven des Rumpfes, nicht näher bezeichnet"
-                            },
-                            {
-                                "key": "C47.3",
-                                "name": "C47.3",
-                                "description": "Bösartige Neubildung: Periphere Nerven des Thorax"
-                            },
-                            {
-                                "key": "C47.8",
-                                "name": "C47.8",
-                                "description": "Bösartige Neubildung: Periphere Nerven und autonomes Nervensystem, mehrere Teilbereiche überlappend"
-                            },
-                            {
-                                "key": "C47.9",
-                                "name": "C47.9",
-                                "description": "Bösartige Neubildung: Periphere Nerven und autonomes Nervensystem, nicht näher bezeichnet"
-                            }
-                        ]
-                    },        {
-                        "key": "C48.%",
-                        "name": "C48.%",
-                        "description": "Bösartige Neubildung: Näher bezeichnete Teile des Peritoneums",
-                        "subgroup": [
-                            {
-                                "visible": false,
-                                "key": "C48",
-                                "name": "C48",
-                                "description": ""
-                            },
-                            {
-                                "key": "C48.1",
-                                "name": "C48.1",
-                                "description": "Bösartige Neubildung: Näher bezeichnete Teile des Peritoneums"
-                            },
-                            {
-                                "key": "C48.2",
-                                "name": "C48.2",
-                                "description": "Bösartige Neubildung: Peritoneum, nicht näher bezeichnet"
-                            },
-                            {
-                                "key": "C48.0",
-                                "name": "C48.0",
-                                "description": "Bösartige Neubildung: Retroperitoneum"
-                            },
-                            {
-                                "key": "C48.8",
-                                "name": "C48.8",
-                                "description": "Bösartige Neubildung: Retroperitoneum und Peritoneum, mehrere Teilbereiche überlappend"
-                            }
-                        ]
-                    },        {
-                        "key": "C49.%",
-                        "name": "C49.%",
-                        "description": "Bösartige Neubildung: Bindegewebe und andere Weichteilgewebe der oberen Extremität, einschließlich Schulter",
-                        "subgroup": [
-                            {
-                                "visible": false,
-                                "key": "C49",
-                                "name": "C49",
-                                "description": ""
-                            },
-                            {
-                                "key": "C49.1",
-                                "name": "C49.1",
-                                "description": "Bösartige Neubildung: Bindegewebe und andere Weichteilgewebe der oberen Extremität, einschließlich Schulter"
-                            },
-                            {
-                                "key": "C49.2",
-                                "name": "C49.2",
-                                "description": "Bösartige Neubildung: Bindegewebe und andere Weichteilgewebe der unteren Extremität, einschließlich Hüfte"
-                            },
-                            {
-                                "key": "C49.4",
-                                "name": "C49.4",
-                                "description": "Bösartige Neubildung: Bindegewebe und andere Weichteilgewebe des Abdomens"
-                            },
-                            {
-                                "key": "C49.5",
-                                "name": "C49.5",
-                                "description": "Bösartige Neubildung: Bindegewebe und andere Weichteilgewebe des Beckens"
-                            },
-                            {
-                                "key": "C49.0",
-                                "name": "C49.0",
-                                "description": "Bösartige Neubildung: Bindegewebe und andere Weichteilgewebe des Kopfes, des Gesichtes und des Halses"
-                            },
-                            {
-                                "key": "C49.6",
-                                "name": "C49.6",
-                                "description": "Bösartige Neubildung: Bindegewebe und andere Weichteilgewebe des Rumpfes, nicht näher bezeichnet"
-                            },
-                            {
-                                "key": "C49.3",
-                                "name": "C49.3",
-                                "description": "Bösartige Neubildung: Bindegewebe und andere Weichteilgewebe des Thorax"
-                            },
-                            {
-                                "key": "C49.8",
-                                "name": "C49.8",
-                                "description": "Bösartige Neubildung: Bindegewebe und andere Weichteilgewebe, mehrere Teilbereiche überlappend"
-                            },
-                            {
-                                "key": "C49.9",
-                                "name": "C49.9",
-                                "description": "Bösartige Neubildung: Bindegewebe und andere Weichteilgewebe, nicht näher bezeichnet"
+                                "key": "C47.%",
+                                "name": "C47.%",
+                                "description": "Bösartige Neubildung: Periphere Nerven der oberen Extremität, einschließlich Schulter",
+                                "subgroup": [
+                                    {
+                                        "visible": false,
+                                        "key": "C47",
+                                        "name": "C47",
+                                        "description": ""
+                                    },
+                                    {
+                                        "key": "C47.1",
+                                        "name": "C47.1",
+                                        "description": "Bösartige Neubildung: Periphere Nerven der oberen Extremität, einschließlich Schulter"
+                                    },
+                                    {
+                                        "key": "C47.2",
+                                        "name": "C47.2",
+                                        "description": "Bösartige Neubildung: Periphere Nerven der unteren Extremität, einschließlich Hüfte"
+                                    },
+                                    {
+                                        "key": "C47.4",
+                                        "name": "C47.4",
+                                        "description": "Bösartige Neubildung: Periphere Nerven des Abdomens"
+                                    },
+                                    {
+                                        "key": "C47.5",
+                                        "name": "C47.5",
+                                        "description": "Bösartige Neubildung: Periphere Nerven des Beckens"
+                                    },
+                                    {
+                                        "key": "C47.0",
+                                        "name": "C47.0",
+                                        "description": "Bösartige Neubildung: Periphere Nerven des Kopfes, des Gesichtes und des Halses"
+                                    },
+                                    {
+                                        "key": "C47.6",
+                                        "name": "C47.6",
+                                        "description": "Bösartige Neubildung: Periphere Nerven des Rumpfes, nicht näher bezeichnet"
+                                    },
+                                    {
+                                        "key": "C47.3",
+                                        "name": "C47.3",
+                                        "description": "Bösartige Neubildung: Periphere Nerven des Thorax"
+                                    },
+                                    {
+                                        "key": "C47.8",
+                                        "name": "C47.8",
+                                        "description": "Bösartige Neubildung: Periphere Nerven und autonomes Nervensystem, mehrere Teilbereiche überlappend"
+                                    },
+                                    {
+                                        "key": "C47.9",
+                                        "name": "C47.9",
+                                        "description": "Bösartige Neubildung: Periphere Nerven und autonomes Nervensystem, nicht näher bezeichnet"
+                                    }
+                                ]
+                            },        {
+                                "key": "C48.%",
+                                "name": "C48.%",
+                                "description": "Bösartige Neubildung: Näher bezeichnete Teile des Peritoneums",
+                                "subgroup": [
+                                    {
+                                        "visible": false,
+                                        "key": "C48",
+                                        "name": "C48",
+                                        "description": ""
+                                    },
+                                    {
+                                        "key": "C48.1",
+                                        "name": "C48.1",
+                                        "description": "Bösartige Neubildung: Näher bezeichnete Teile des Peritoneums"
+                                    },
+                                    {
+                                        "key": "C48.2",
+                                        "name": "C48.2",
+                                        "description": "Bösartige Neubildung: Peritoneum, nicht näher bezeichnet"
+                                    },
+                                    {
+                                        "key": "C48.0",
+                                        "name": "C48.0",
+                                        "description": "Bösartige Neubildung: Retroperitoneum"
+                                    },
+                                    {
+                                        "key": "C48.8",
+                                        "name": "C48.8",
+                                        "description": "Bösartige Neubildung: Retroperitoneum und Peritoneum, mehrere Teilbereiche überlappend"
+                                    }
+                                ]
+                            },        {
+                                "key": "C49.%",
+                                "name": "C49.%",
+                                "description": "Bösartige Neubildung: Bindegewebe und andere Weichteilgewebe der oberen Extremität, einschließlich Schulter",
+                                "subgroup": [
+                                    {
+                                        "visible": false,
+                                        "key": "C49",
+                                        "name": "C49",
+                                        "description": ""
+                                    },
+                                    {
+                                        "key": "C49.1",
+                                        "name": "C49.1",
+                                        "description": "Bösartige Neubildung: Bindegewebe und andere Weichteilgewebe der oberen Extremität, einschließlich Schulter"
+                                    },
+                                    {
+                                        "key": "C49.2",
+                                        "name": "C49.2",
+                                        "description": "Bösartige Neubildung: Bindegewebe und andere Weichteilgewebe der unteren Extremität, einschließlich Hüfte"
+                                    },
+                                    {
+                                        "key": "C49.4",
+                                        "name": "C49.4",
+                                        "description": "Bösartige Neubildung: Bindegewebe und andere Weichteilgewebe des Abdomens"
+                                    },
+                                    {
+                                        "key": "C49.5",
+                                        "name": "C49.5",
+                                        "description": "Bösartige Neubildung: Bindegewebe und andere Weichteilgewebe des Beckens"
+                                    },
+                                    {
+                                        "key": "C49.0",
+                                        "name": "C49.0",
+                                        "description": "Bösartige Neubildung: Bindegewebe und andere Weichteilgewebe des Kopfes, des Gesichtes und des Halses"
+                                    },
+                                    {
+                                        "key": "C49.6",
+                                        "name": "C49.6",
+                                        "description": "Bösartige Neubildung: Bindegewebe und andere Weichteilgewebe des Rumpfes, nicht näher bezeichnet"
+                                    },
+                                    {
+                                        "key": "C49.3",
+                                        "name": "C49.3",
+                                        "description": "Bösartige Neubildung: Bindegewebe und andere Weichteilgewebe des Thorax"
+                                    },
+                                    {
+                                        "key": "C49.8",
+                                        "name": "C49.8",
+                                        "description": "Bösartige Neubildung: Bindegewebe und andere Weichteilgewebe, mehrere Teilbereiche überlappend"
+                                    },
+                                    {
+                                        "key": "C49.9",
+                                        "name": "C49.9",
+                                        "description": "Bösartige Neubildung: Bindegewebe und andere Weichteilgewebe, nicht näher bezeichnet"
+                                    }
+                                ]
                             }
                         ]
                     },
