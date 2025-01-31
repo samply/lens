@@ -7142,7 +7142,7 @@
                     {
                         "key": "C00-C14",
                         "name": "C00-C14",
-                        "description": "Search for all subgroups of C00-C14",
+                        "description": "Search for all subgroups of C00,C01,C02,C03,C04,C05,C06,C07,C08,C09,C10,C11,C12,C13,C14",
                         "subgroup": [
                             {
                                 "key": "C00.%",
@@ -7597,7 +7597,7 @@
                     {
                         "key": "C15-C26",
                         "name": "C15-C26",
-                        "description": "Search for all subgroups of C15-C26",
+                        "description": "Search for all subgroups of C15,C16,C17,C18,C19,C20,C21,C22,C23,C24,C25,C26",
                         "subgroup": [
                             {
                                 "key": "C15.%",
@@ -8036,7 +8036,7 @@
                     {
                         "key": "C30-C39",
                         "name": "C30-C39",
-                        "description": "Search for all subgroups of C30-C39",
+                        "description": "Search for all subgroups of C30,C31,C32.C33,C34,C35,C36,C37,C38,C39",
                         "subgroup": [
                             {
                                 "key": "C30.%",
@@ -8276,7 +8276,7 @@
                     {
                         "key": "C40-C41",
                         "name": "C40-C41",
-                        "description": "Search for all subgroups of C40-C41",
+                        "description": "Search for all subgroups of C40,C41",
                         "subgroup": [
                             {
                                 "key": "C40.%",
@@ -8387,9 +8387,9 @@
                         ]
                     },
                     {
-                        "key": "C43-C44",
-                        "name": "C43-C44",
-                        "description": "Search for all subgroups of C43-C44",
+                        "key": "C43-C49",
+                        "name": "C43-C49",
+                        "description": "Search for all subgroups of C43,C44,C45,C46,C47,C48,C49",
                         "subgroup": [
                             {
                                 "key": "C43.%",
@@ -8813,7 +8813,7 @@
                     {
                         "key": "C51-C58",
                         "name": "C51-C58",
-                        "description": "Search for all subgroups of C51-C58",
+                        "description": "Search for all subgroups of C51,C52,C53,C54,C55,C56,C57,C58",
                         "subgroup": [
                             {
                                 "key": "C51.%",
@@ -9007,7 +9007,7 @@
                     {
                         "key": "C60-C63",
                         "name": "C60-C63",
-                        "description": "Search for all subgroups of C60-C63",
+                        "description": "Search for all subgroups of C60,C61,C62,C63",
                         "subgroup": [
                             {
                                 "key": "C60.%",
@@ -9128,7 +9128,7 @@
                     {
                         "key": "C64-C68",
                         "name": "C64-C68",
-                        "description": "Search for all subgroups of C64-C68",
+                        "description": "Search for all subgroups of C64,C65,C66,C67,C68",
                         "subgroup": [
                             {
                                 "key": "C64",
@@ -9251,7 +9251,7 @@
                     {
                         "key": "C69-C72",
                         "name": "C69-C72",
-                        "description": "Search for all subgroups of C69-C72",
+                        "description": "Search for all subgroups of C69,C70,C71,C72",
                         "subgroup": [
                             {
                                 "key": "C69.%",
@@ -9460,7 +9460,7 @@
                     {
                         "key": "C73-C75",
                         "name": "C73-C75",
-                        "description": "Search for all subgroups of C73-C75",
+                        "description": "Search for all subgroups of C73,C74,C75",
                         "subgroup": [
                             {
                                 "key": "C73",
@@ -9553,7 +9553,7 @@
                     {
                         "key": "C76-C80",
                         "name": "C76-C80",
-                        "description": "Search for all subgroups of C76-C80",
+                        "description": "Search for all subgroups of C76,C77,C78,C79,C80",
                         "subgroup": [
                             {
                                 "key": "C76.%",
@@ -9840,7 +9840,7 @@
                     {
                         "key": "C81-C96",
                         "name": "C81-C96",
-                        "description": "Search for all subgroups of C81-C96",
+                        "description": "Search for all subgroups of C81,C82,C83,C84,C85,C86,C87,C88,C89,C90,C91,C92,C93,C94,C95,C96",
                         "subgroup": [
                             {
                                 "key": "C81.%",
@@ -10774,7 +10774,7 @@
                     {
                         "key": "D00-D09",
                         "name": "D00-D09",
-                        "description": "Search for all subgroups of D00-D09",
+                        "description": "Search for all subgroups of D00,D01,D02,D03,D04,D05,D06,D07,D08,D09",
                         "subgroup": [
                             {
                                 "key": "D00.%",
@@ -11182,7 +11182,7 @@
                     {
                         "key": "D10-D36",
                         "name": "D10-D36",
-                        "description": "Search for all subgroups of D10-D36",
+                        "description": "Search for all subgroups of D10,D11,D12,D13,D14,D15,D16,D17,D18,D19,D20,D21,D22,D23,D24,D25,D26,D27,D28,D29,D30,D31,D32,D33,D34,D35,D36",
                         "subgroup": [
                             {
                                 "key": "D10.%",
@@ -11916,7 +11916,6 @@
                                 "name": "D24",
                                 "description": "Gutartige Neubildung der Brustdrüse [Mamma]"
                             },
-                
                     {
                         "key": "D25.%",
                         "name": "D25.%",
@@ -12357,7 +12356,7 @@
                     {
                         "key": "D37-D48",
                         "name": "D37-D48",
-                        "description": "Search for all subgroups of D37-D48",
+                        "description": "Search for all subgroups of D37,D38,D39,D40,D41,D42,D43,D44,D45,D46,D47,D48",
                         "subgroup": [  
                 
                     {
