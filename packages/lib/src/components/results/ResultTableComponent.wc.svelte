@@ -6,7 +6,7 @@
 
 <script lang="ts">
     import { uiSiteMappingsStore } from "../../stores/mappings";
-    import { datarequestsStore } from "../../stores/datarequests.ts";
+    import { datarequestsStore } from "../../stores/datarequests";
     import {
         getSitePopulationForCode,
         getSitePopulationForStratumCode,
@@ -23,7 +23,8 @@
 
     let claimedText: string;
     $: claimedText =
-        ($lensOptions?.tableOptions?.claimedText as string) || "Processing...";
+        ($lensOptions?.tableOptions as { claimedText: string })?.claimedText ||
+        "Processing...";
 
     /**
      * data-types for the table
@@ -77,7 +78,7 @@
                     if (header.dataKey) {
                         tableRow.push(
                             getSitePopulationForCode(
-                                value.data,
+                                value.data!,
                                 header.dataKey,
                             ),
                         );
@@ -89,7 +90,7 @@
                     header.aggregatedDataKeys?.forEach((dataKey) => {
                         if (dataKey.groupCode) {
                             aggregatedPopulation += getSitePopulationForCode(
-                                value.data,
+                                value.data!,
                                 dataKey.groupCode,
                             );
                         } else if (
@@ -98,7 +99,7 @@
                         ) {
                             aggregatedPopulation +=
                                 getSitePopulationForStratumCode(
-                                    value.data,
+                                    value.data!,
                                     dataKey.stratumCode,
                                     dataKey.stratifierCode,
                                 );

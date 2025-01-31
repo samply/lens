@@ -1,7 +1,7 @@
-import { defineConfig, PluginOption } from "vite";
+import { defineConfig, type PluginOption } from "vite";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import { transform } from "esbuild";
-import pkg from "./package.json";
+import * as pkg from "./package.json";
 import sveltePreprocess from "svelte-preprocess";
 import dts from "vite-plugin-dts";
 import { readdirSync, readFileSync, writeFileSync } from "fs";
@@ -18,12 +18,19 @@ export default defineConfig({
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             formats: bundleComponents ? (["es", "esm", "umd"] as any) : ["es"],
             name: pkg.name.replace(/-./g, (char) => char[1].toUpperCase()),
-            fileName: (format) =>
-                ({
-                    es: `${pkg.name.replace("@samply/", "")}.js`,
-                    esm: `${pkg.name.replace("@samply/", "")}.min.js`,
-                    umd: `${pkg.name.replace("@samply/", "")}.umd.js`,
-                })[format],
+            fileName: (format): string => {
+                const name = pkg.name.replace("@samply/", "");
+                switch (format) {
+                    case "es":
+                        return `${name}.js`;
+                    case "esm":
+                        return `${name}.js`;
+                    case "umd":
+                        return `${name}.umd.js`;
+                    default:
+                        return name;
+                }
+            },
         },
         rollupOptions: {
             output: bundleComponents

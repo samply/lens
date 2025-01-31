@@ -1,11 +1,11 @@
 <script lang="ts">
     import { v4 as uuidv4 } from "uuid";
-    import type { Category } from "../../types/treeData";
+    import type { CategoryLeaf } from "../../types/treeData";
     import type { Criteria } from "../../types/treeData";
     import QueryAddButtonComponent from "./QueryAddButtonComponent.svelte";
     import type { QueryItem } from "../../types/queryData";
 
-    export let element: Category;
+    export let element: CategoryLeaf;
     export let criterion: Criteria;
 
     const queryBindId: string = uuidv4();
@@ -14,13 +14,13 @@
         id: uuidv4(),
         key: element.key,
         name: element.name,
-        type: "type" in element && element.type,
+        type: element.type,
         system: "system" in element ? element.system : "",
         values: [
             {
                 name: criterion.name,
                 value:
-                    "aggregatedValue" in criterion
+                    criterion.aggregatedValue !== undefined
                         ? criterion.aggregatedValue
                         : criterion.key,
                 queryBindId: queryBindId,

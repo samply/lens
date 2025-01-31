@@ -14,7 +14,7 @@
     import type { QueryItem } from "../../types/queryData";
     import { iconStore } from "../../stores/icons";
 
-    export let message: string[] = [];
+    export let message: string[] | string = [];
     export let noQueryMessage: string = "Search for all results";
     export let showQuery: boolean = false;
 

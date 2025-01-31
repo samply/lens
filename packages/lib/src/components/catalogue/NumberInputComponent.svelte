@@ -1,13 +1,13 @@
 <script lang="ts">
     import { catalogueTextStore } from "../../stores/texts";
     import QueryAddButtonComponent from "./QueryAddButtonComponent.svelte";
-    import type { Category } from "../../types/treeData";
+    import type { CategoryLeaf } from "../../types/treeData";
     import { v4 as uuidv4 } from "uuid";
 
-    export let element: Category;
+    export let element: CategoryLeaf;
 
-    let from: number | null = element.min || 0;
-    let to: number | null = element.max || 0;
+    let from: number = (element.min as number) || 0;
+    let to: number = (element.max as number) || 0;
 
     /**
      * handles the "from" input field
@@ -74,7 +74,7 @@
         id: uuidv4(),
         key: element.key,
         name: element.name,
-        type: "type" in element && element.type,
+        type: element.type,
         values: [
             {
                 name: transformName(),
@@ -91,7 +91,7 @@
             <label
                 part="number-input-label number-input-values-label lens-number-input-values-label-from"
             >
-                {$catalogueTextStore.numberInput.labelFrom}
+                {$catalogueTextStore.numberInput?.labelFrom}
                 <input
                     part="number-input-formfield number-input-formfield-from
                         {to && from > to ? ' formfield-error' : ''}"
@@ -104,7 +104,7 @@
             <label
                 part="number-input-label number-input-values-label lens-number-input-values-label-to"
             >
-                {$catalogueTextStore.numberInput.labelTo}
+                {$catalogueTextStore.numberInput?.labelTo}
                 <input
                     part="number-input-formfield number-input-formfield-to
                         {to && from > to ? ' formfield-error' : ''}"

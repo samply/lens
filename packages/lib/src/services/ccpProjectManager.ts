@@ -187,8 +187,9 @@ export const getCollections = (
     const siteCollections: ProjectManagerOptionsSiteMapping[] = [];
 
     sitesToNegotiate.forEach((site: string) => {
-        if (siteCollectionMap.has(site) && siteCollectionMap.get(site) !== "") {
-            siteCollections.push(siteCollectionMap.get(site));
+        const siteCollection = siteCollectionMap.get(site);
+        if (siteCollection !== undefined) {
+            siteCollections.push(siteCollection);
         }
     });
 

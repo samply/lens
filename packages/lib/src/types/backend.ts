@@ -10,7 +10,7 @@ export type MeasureGroup = {
 
 export type MeasureItem = {
     key: string;
-    measure: Measure | undefined;
+    measure: Measure;
     cql: string;
 };
 export type Measure = {

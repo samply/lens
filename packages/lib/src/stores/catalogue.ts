@@ -1,11 +1,5 @@
 import { writable } from "svelte/store";
-import {
-    isCatagoryLeaf,
-    isCategoryNode,
-    type Category,
-    type Criteria,
-    type TreeNode,
-} from "../types/treeData";
+import { type Category, type Criteria, type TreeNode } from "../types/treeData";
 import {
     isBottomLayer,
     isTopLayer,
@@ -44,7 +38,7 @@ const resolveElementInCatalogueRec = (
 ): string[] => {
     let newCri: string[] = [];
 
-    if (isCatagoryLeaf(node)) {
+    if (node.nodeType === "leaf") {
         if (node.key === key) {
             for (const cri of node.criteria) {
                 if (cri.key == value) {
@@ -57,7 +51,7 @@ const resolveElementInCatalogueRec = (
                 }
             }
         }
-    } else if (isCategoryNode(node)) {
+    } else if (node.nodeType === "branch") {
         node.childCategories?.forEach((y) => {
             newCri = newCri.concat(resolveElementInCatalogueRec(key, value, y));
         });
@@ -70,8 +64,8 @@ const resolveElementInCatalogue = (key: string, value: string): string[] => {
     let subcatagories: string[] = [];
     catalogue.subscribe((x) => {
         x.forEach((element) => {
-            if (isCategoryNode(element)) {
-                element.childCategories?.forEach((y) => {
+            if (element.nodeType === "branch") {
+                element.childCategories.forEach((y: Category) => {
                     subcatagories = subcatagories.concat(
                         resolveElementInCatalogueRec(key, value, y),
                     );
@@ -101,6 +95,7 @@ const resolveAstSubCatagoriesRec = (query: AstElement): AstElement => {
             } else {
                 subcatagories.forEach((x) => {
                     elements.push({
+                        nodeType: "leaf",
                         key: query.key,
                         type: query.type,
                         system: query.system,
@@ -108,6 +103,7 @@ const resolveAstSubCatagoriesRec = (query: AstElement): AstElement => {
                     });
                 });
                 return {
+                    nodeType: "branch",
                     operand: "OR",
                     key: query.key,
                     children: elements,

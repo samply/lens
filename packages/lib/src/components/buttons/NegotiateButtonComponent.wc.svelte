@@ -6,11 +6,11 @@
 
 <script lang="ts">
     import { datarequestsStore } from "../../stores/datarequests";
+    import { negotiate } from "../../services/ccpProjectManager";
+    import { bbmrinegotiate } from "../../services/bbmriNegotiate";
 
     export let title: string = "Negotiate with biobanks";
     export let type: string;
-    import { negotiate } from "../../services/ccpProjectManager.ts";
-    import { bbmrinegotiate } from "../../services/bbmriNegotiate.ts";
 
     /**
      *

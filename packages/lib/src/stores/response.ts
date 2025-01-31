@@ -57,7 +57,7 @@ export const getAggregatedPopulation = (
     let population: number = 0;
 
     sites.forEach((site: Site) => {
-        if (site.data === null) return;
+        if (site.data === undefined) return;
         population += getSitePopulationForCode(site.data, code);
     });
 
@@ -99,7 +99,7 @@ export const getAggregatedStratifierForStratumCode = (
     if (store.size === 0) return 0;
 
     sites.forEach((site) => {
-        population += getSitePopulationForCode(site.data, code);
+        population += getSitePopulationForCode(site.data!, code);
     });
 
     return population;
@@ -124,7 +124,11 @@ export const getAggregatedPopulationForStratumCode = (
 
     sites.forEach((site: Site) => {
         population.push(
-            getSitePopulationForStratumCode(site.data, stratumCode, stratifier),
+            getSitePopulationForStratumCode(
+                site.data!,
+                stratumCode,
+                stratifier,
+            ),
         );
     });
 
@@ -179,7 +183,7 @@ export const getStratifierCodesForGroupCode = (
 
     sites.forEach((site: Site) => {
         const siteCodes: string[] = getSiteStratifierCodesForGroupCode(
-            site.data,
+            site.data!,
             code,
         );
         siteCodes.forEach((code: string) => {

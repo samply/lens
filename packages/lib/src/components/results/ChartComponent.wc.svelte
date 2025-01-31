@@ -52,7 +52,7 @@
             $lensOptions?.chartOptions[catalogueGroupCode]) ||
         ({} as ChartOption);
 
-    export let backgroundColor: string[] = [
+    export let backgroundColor: string[] | string = [
         "#4dc9f6",
         "#f67019",
         "#f53794",
@@ -83,7 +83,9 @@
 
     let chart: Chart;
 
-    let initialChartData = {
+    // TODO: Use ChartConfiguration type here instead of "any"
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let initialChartData: any = {
         type: chartType,
         data: {
             labels: ["", "", "", ""],

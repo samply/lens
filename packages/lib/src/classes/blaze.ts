@@ -108,7 +108,7 @@ export class Blaze {
 
         const failedResponse: ResponseStore = new Map<string, Site>().set(
             this.name,
-            { status: "permfailed", data: null },
+            { status: "permfailed" },
         );
         this.updateResponse(failedResponse);
     }

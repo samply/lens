@@ -32,10 +32,10 @@
             });
         }
         if (type === "item") {
-            removeItemFromQuery(item, index);
+            removeItemFromQuery(item!, index);
         }
         if (type === "value") {
-            removeValueFromQuery(item, index);
+            removeValueFromQuery(item!, index);
         }
     };
 </script>

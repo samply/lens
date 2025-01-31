@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { Category, Criteria } from "../../types/treeData";
+    import type { CategoryLeaf, Criteria } from "../../types/treeData";
     import { v4 as uuidv4 } from "uuid";
     import {
         activeQueryGroupIndex,
@@ -16,7 +16,7 @@
     let placeholderText: string = "Type to filter conditions";
     let noMatchesFoundMessage: string = "No matches found";
 
-    export let element: Category;
+    export let element: CategoryLeaf;
 
     /**
      * list of criteria
@@ -109,7 +109,9 @@
         [],
     );
 
-    const getChosenOptionsFromQueryStore = (queryStore): QueryItem[] => {
+    const getChosenOptionsFromQueryStore = (
+        queryStore: QueryItem[][],
+    ): QueryItem[] => {
         return queryStore
             .flat()
             .map((queryItem: QueryItem) => {
@@ -141,7 +143,7 @@
      */
     const addInputValueToStore = (
         inputItem: Criteria,
-        indexOfChosenStore: number = $activeQueryGroupIndex,
+        indexOfChosenStore: number,
     ): void => {
         /**
          * check if option is allready present in the query store
@@ -161,7 +163,7 @@
             id: uuidv4(),
             name: element.name,
             key: element.key,
-            type: "type" in element && element.type,
+            type: element.type,
             system: "system" in element ? element.system : "",
             values: [
                 {
@@ -203,7 +205,10 @@
         }
         if (event.key === "Enter") {
             event.preventDefault();
-            addInputValueToStore(inputOptions[focusedItemIndex]);
+            addInputValueToStore(
+                inputOptions[focusedItemIndex],
+                $activeQueryGroupIndex,
+            );
         }
     };
 
@@ -211,8 +216,8 @@
      * adds the input option to the query store
      * @param inputOption - the input option to add to the query store
      */
-    const selectItemByClick = (inputOption): void => {
-        addInputValueToStore(inputOption);
+    const selectItemByClick = (inputOption: Criteria): void => {
+        addInputValueToStore(inputOption, $activeQueryGroupIndex);
     };
 
     /**
@@ -220,10 +225,10 @@
      * @param activeDomElement - the active dom element
      */
     const scrollInsideContainerWhenActiveDomElementIsOutOfView = (
-        activeDomElement,
+        activeDomElement: HTMLElement,
     ): void => {
         if (!activeDomElement) return;
-        const container: HTMLElement = activeDomElement.parentElement;
+        const container: HTMLElement = activeDomElement.parentElement!;
         const containerTop: number = container.scrollTop;
         const containerBottom: number = containerTop + container.clientHeight;
         const elementTop: number = activeDomElement.offsetTop;
@@ -305,7 +310,7 @@
                                     part="autocomplete-options-item-description-focused"
                                 >
                                     {@html getBoldedText(
-                                        inputOption.description,
+                                        inputOption.description || "",
                                     )}
                                 </div>
                             </li>
@@ -325,7 +330,7 @@
                                     part="autocomplete-options-item-description"
                                 >
                                     {@html getBoldedText(
-                                        inputOption.description,
+                                        inputOption.description || "",
                                     )}
                                 </div>
                             </li>

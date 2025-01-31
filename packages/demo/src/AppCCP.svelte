@@ -2,8 +2,9 @@
     import type {
         MeasureGroup,
         MeasureItem,
-        LensDataPasser,
-    } from "../../../dist/types";
+    } from "../../lib/src/types/backend";
+    import type { LensDataPasser } from "../../lib/src/types/dataPasser";
+
     import {
         dktkDiagnosisMeasure,
         dktkMedicationStatementsMeasure,
