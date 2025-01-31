@@ -127,7 +127,7 @@
 <main>
     <div class="search">
         <div class="search-wrapper">
-            <lens-search-bar-multiple
+            <lens-search-bar
                 noMatchesFoundMessage={"keine Ergebnisse gefunden"}
             />
             <lens-info-button
