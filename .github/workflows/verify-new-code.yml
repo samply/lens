@@ -30,6 +30,6 @@ jobs:
       # - name: "Svelte Check"
       #   run: npm run check
       # svelte-check checks for unused CSS, Svelte A11y hints, and JavaScript/TypeScript compiler errors
-      - run: svelte-check
+      - run: npx svelte-check
       # for now disable linting, will be activated later
       # run: npm run lint
