@@ -21,17 +21,7 @@ import { get } from "svelte/store";
  * @returns Ast: the AST will later be converted to a query language of choice
  */
 export const buildAstFromQuery = (queryStore: QueryItem[][]): AstTopLayer => {
-    const ast: AstTopLayer = returnNestedValues(queryStore) as AstTopLayer;
-
-    if (ast.children.length === 1 && ast.children[0] === null) {
-        return {
-            nodeType: "branch",
-            operand: "OR",
-            children: [],
-        };
-    }
-
-    return ast;
+    return returnNestedValues(queryStore) as AstTopLayer;
 };
 
 /**
