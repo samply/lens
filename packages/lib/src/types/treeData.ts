@@ -8,7 +8,6 @@ export type TreeNode =
 export type Category = CategoryBranch | CategoryLeaf;
 
 export type CategoryBranch = {
-    nodeType: "branch";
     key: string;
     name: string;
     childCategories: Category[];
@@ -23,7 +22,6 @@ export type InfoLink = {
 };
 
 export type CategoryLeaf = {
-    nodeType: "leaf";
     key: string;
     name: string;
     system?: string;

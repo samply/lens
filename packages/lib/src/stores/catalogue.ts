@@ -38,7 +38,7 @@ const resolveElementInCatalogueRec = (
 ): string[] => {
     let newCri: string[] = [];
 
-    if (node.nodeType === "leaf") {
+    if ("criteria" in node) {
         if (node.key === key) {
             for (const cri of node.criteria) {
                 if (cri.key == value) {
@@ -51,7 +51,7 @@ const resolveElementInCatalogueRec = (
                 }
             }
         }
-    } else if (node.nodeType === "branch") {
+    } else {
         node.childCategories?.forEach((y) => {
             newCri = newCri.concat(resolveElementInCatalogueRec(key, value, y));
         });
@@ -64,7 +64,7 @@ const resolveElementInCatalogue = (key: string, value: string): string[] => {
     let subcatagories: string[] = [];
     catalogue.subscribe((x) => {
         x.forEach((element) => {
-            if (element.nodeType === "branch") {
+            if ("childCategories" in element) {
                 element.childCategories.forEach((y: Category) => {
                     subcatagories = subcatagories.concat(
                         resolveElementInCatalogueRec(key, value, y),

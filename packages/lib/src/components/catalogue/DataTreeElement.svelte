@@ -156,7 +156,7 @@
         <InfoButtonComponent message={element.infoButtonText} />
     {/if}
 
-    {#if element.nodeType === "branch" && element.infoLink !== undefined}
+    {#if "infoLink" in element && element.infoLink !== undefined}
         <a href={element.infoLink.link} target="_blank"
             >{element.infoLink.display}</a
         >
