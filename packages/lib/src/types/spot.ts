@@ -1,10 +1,8 @@
-import type { Status } from "./response";
-
 export type BeamResult = {
     body: string;
     from: string;
     metadata: string;
-    status: Status;
+    status: "succeeded" | "claimed" | "tempfailed" | "permfailed";
     task: string;
     to: string[];
 };
