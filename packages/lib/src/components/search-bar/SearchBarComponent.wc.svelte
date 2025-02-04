@@ -405,6 +405,7 @@
         }}
         on:focusout={() => {
             autoCompleteOpen = false;
+            inputValue = "";
         }}
     />
     {#if autoCompleteOpen && inputValue.length > 2}
