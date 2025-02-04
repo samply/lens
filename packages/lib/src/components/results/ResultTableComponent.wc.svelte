@@ -145,6 +145,13 @@
 
         // sort
         tableRowsCopy.sort((a, b) => {
+            // Always sort claimedText below everything else
+            if (a[sortColumnIndex] === claimedText) {
+                return 1;
+            } else if (b[sortColumnIndex] === claimedText) {
+                return -1;
+            }
+
             if (a[sortColumnIndex] < b[sortColumnIndex]) {
                 return sortAscending ? -1 : 1;
             }
@@ -197,11 +204,13 @@
                         <InfoButtonComponent message={header.hintText} />
                     {/if}
                     {#if index === sortColumnIndex}
-                        {#if sortAscending}
-                            ▲
-                        {:else}
-                            ▼
-                        {/if}
+                        <span style="font-size: 0.8em;">
+                            {#if sortAscending}
+                                ▲
+                            {:else}
+                                ▼
+                            {/if}
+                        </span>
                     {/if}
                 </th>
             {/each}
