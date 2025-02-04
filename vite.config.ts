@@ -24,7 +24,7 @@ export default defineConfig({
                     case "es":
                         return `${name}.js`;
                     case "esm":
-                        return `${name}.js`;
+                        return `${name}.min.js`;
                     case "umd":
                         return `${name}.umd.js`;
                     default:
