@@ -56,11 +56,17 @@
             ast.children.some(
                 (child) =>
                     child.nodeType === "branch" && child.children.length === 0,
+            ) &&
+            ast.children.some(
+                (child) =>
+                    child.nodeType === "branch" && child.children.length !== 0,
             )
         ) {
-            console.error("One of the search bars is empty, aborting search");
+            console.error(
+                "There is at least one empty and one non-empty search bar, aborting search",
+            );
             errorChannel.set(
-                "Die Suchleiste ist leer. Löschen Sie leere Suchleisten oder fügen Sie Suchkriterien ein.",
+                "Eine der Suchleisten ist leer. Löschen Sie leere Suchleisten oder fügen Sie Suchkriterien ein.",
             ); // show user-facing error
             return;
         }

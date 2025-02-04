@@ -348,7 +348,7 @@
 </script>
 
 <div part="lens-searchbar">
-    {#if queryGroup.length > 0}
+    {#if queryGroup !== undefined && queryGroup.length > 0}
         <div part="lens-searchbar-chips">
             {#each queryGroup as queryItem (queryItem.id)}
                 <div part="lens-searchbar-chip">
