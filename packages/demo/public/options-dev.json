@@ -288,92 +288,74 @@
             }
         ]
     },
-    "negotiateOptions": {
-        "negotiateApp": "project-manager",
-        "newProjectUrl": "http://localhost:8097/create-query-and-design-project",
-        "editProjectUrl": "http://localhost:8097/edit-project",
-        "siteMapping": [
+    "projectmanagerOptions": {
+        "newProjectUrl": "https://requests.dktk.dkfz.de/project-manager-api/create-query-and-design-project",
+        "editProjectUrl": "https://requests.dktk.dkfz.de/project-manager-api/edit-project",
+        "siteMappings": [
             {
-                "site": "Dresden",
-                "collection": "dresden"
+                "site": "DKTK-Test",
+                "collection": "lens-dktk-test"
             },
             {
-                "site": "Frankfurt",
-                "collection": "bbmri-eric:ID:DE_iBDF:collection:UCT"
+                "site": "dktk-datashield-test",
+                "collection": "lens-dktk-datashield-test"
             },
             {
                 "site": "Berlin",
-                "collection": "bbmri-eric:ID:DE_ZeBanC:collection:Onoloy"
+                "collection": "lens-berlin"
+            },
+            {
+                "site": "Berlin (OBDS)",
+                "collection": "lens-berlin"
+            },
+            {
+                "site": "Dresden",
+                "collection": "lens-dresden"
+            },
+            {
+                "site": "Essen",
+                "collection": "lens-essen"
+            },
+            {
+                "site": "Frankfurt",
+                "collection": "lens-frankfurt"
+            },
+            {
+                "site": "Freiburg",
+                "collection": "lens-freiburg"
+            },
+            {
+                "site": "Hannover",
+                "collection": "lens-hannover"
+            },
+            {
+                "site": "Mainz",
+                "collection": "lens-mainz"
+            },
+            {
+                "site": "München(LMU)",
+                "collection": "lens-muenchen-lmu"
+            },
+            {
+                "site": "München(TUM)",
+                "collection": "lens-muenchen-tum"
+            },
+            {
+                "site": "Ulm",
+                "collection": "lens-ulm"
             },
             {
                 "site": "Würzburg",
-                "collection": "bbmri-eric:ID:DE_ibdw:collection:bc"
-            },
-            {
-                "site": "Brno",
-                "collection": "bbmri-eric:ID:CZ_MMCI:collection:LTS"
-            },
-            {
-                "site": "Aachen",
-                "collection": "bbmri-eric:ID:DE_RWTHCBMB:collection:RWTHCBMB_BC"
-            },
-            {
-                "site": "Leipzig",
-                "collection": "bbmri-eric:ID:DE_LMB:collection:LIFE_ADULT"
-            },
-            {
-                "site": "München (HMGU)",
-                "collection": "bbmri-eric:ID:DE_Helmholtz-MuenchenBiobank:collection:DE_KORA"
-            },
-            {
-                "site": "Pilsen",
-                "collection": "bbmri-eric:ID:CZ_CUNI_PILS:collection:serum_plasma"
-            },
-            {
-                "site": "Regensburg",
-                "collection": "bbmri-eric:ID:DE_ZBR:collection:Tissue"
-            },
-            {
-                "site": "Heidelberg",
-                "collection": "bbmri-eric:ID:DE_BMBH:collection:Lungenbiobank"
-            },
-            {
-                "site": "Lübeck",
-                "collection": "bbmri-eric:ID:DE_ICBL:collection:ICBL"
-            },
-            {
-                "site": "Augsburg",
-                "collection": "bbmri-eric:ID:DE_ACBB:collection:TISSUE"
+                "collection": "lens-wuerzburg"
             },
             {
                 "site": "Mannheim",
-                "collection": "bbmri-eric:ID:DE_BioPsy:collection:Main_collecion"
+                "collection": "lens-mannheim"
             },
             {
-                "site": "Marburg",
-                "collection": "bbmri-eric:ID:DE_CBBMR:collection:main"
-            },
-            {
-                "site": "Göttingen",
-                "collection": "bbmri-eric:ID:DE_UMGB:collection:UMG-startegy"
-            },
-            {
-                "site": "Hanover",
-                "collection": "bbmri-eric:ID:DE_HUB:collection:ProBase"
-            },
-            {
-                "site": "Olomouc",
-                "collection": "bbmri-eric:ID:CZ_UPOL_LF:collection:all_samples"
-            },
-            {
-                "site": "Prague (FFM)",
-                "collection": "bbmri-eric:ID:CZ_CUNI_PILS:collection:serum_plasma"
-            },
-            {
-                "site": "Prague (IOR)",
-                "collection": "bbmri-eric:ID:CZ_CUNI_LF1:collection"
+                "site": "Hamburg",
+                "collection": "lens-hamburg"
             }
-
         ]
     }
 }

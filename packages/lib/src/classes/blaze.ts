@@ -1,6 +1,7 @@
 import { buildLibrary, buildMeasure } from "../helpers/cql-measure";
 import type { Site, SiteData } from "../types/response";
 import type { Measure, ResponseStore } from "../types/backend";
+import { errorChannel } from "../stores/error-channel";
 
 export class Blaze {
     constructor(
@@ -81,7 +82,7 @@ export class Blaze {
                     dataResponse,
                 );
             }
-            const blazeResponse: Site = await dataResponse.json();
+            const blazeResponse: SiteData = await dataResponse.json();
 
             response = new Map<string, Site>().set(this.name, {
                 status: "succeeded",
@@ -94,6 +95,7 @@ export class Blaze {
                 console.log(`Aborting former blaze request.`);
             } else {
                 console.error(err);
+                errorChannel.set("Fehler beim Bearbeiten der Anfrage"); // show user-facing error
             }
         }
     }
@@ -106,7 +108,7 @@ export class Blaze {
 
         const failedResponse: ResponseStore = new Map<string, Site>().set(
             this.name,
-            { status: "permfailed", data: null },
+            { status: "permfailed" },
         );
         this.updateResponse(failedResponse);
     }

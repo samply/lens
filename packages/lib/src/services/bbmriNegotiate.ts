@@ -1,14 +1,11 @@
-import { queryStore } from "../stores/query";
-
 import { lensOptions } from "../stores/options";
-import { v4 as uuidv4 } from "uuid";
-import type { QueryItem, SendableQuery } from "../types/queryData";
 import type {
     LensOptions,
-    NegotiateOptions,
+    NegotiatorOptions,
     NegotiateOptionsSiteMapping,
 } from "../types/options";
 import { getHumanReadableQuery } from "../stores/datarequests";
+import { errorChannel } from "../stores/error-channel";
 
 type NegotiatorResponse = Response & {
     url?: string;
@@ -17,7 +14,7 @@ type NegotiatorResponse = Response & {
     status: number;
 };
 
-let negotiateOptions: NegotiateOptions;
+let negotiateOptions: NegotiatorOptions;
 const siteCollectionMap: Map<string, NegotiateOptionsSiteMapping> = new Map();
 
 lensOptions.subscribe((options: LensOptions) => {
@@ -28,7 +25,7 @@ lensOptions.subscribe((options: LensOptions) => {
      * need to know how multiple collections are returned from the backend
      */
 
-    negotiateOptions = options.negotiateOptions as NegotiateOptions;
+    negotiateOptions = options.negotiateOptions as NegotiatorOptions;
     negotiateOptions?.siteMappings?.forEach((site) => {
         siteCollectionMap.set(site.site, site);
     });
@@ -45,8 +42,9 @@ export const getCollections = (
 
     sitesToNegotiate.forEach((site: string) => {
         // TODO: Why is site id mapped to Uppercase?
-        if (siteCollectionMap.has(site) && siteCollectionMap.get(site) !== "") {
-            siteCollections.push(siteCollectionMap.get(site));
+        const siteCollection = siteCollectionMap.get(site);
+        if (siteCollection !== undefined) {
+            siteCollections.push(siteCollection);
         }
     });
 
@@ -59,21 +57,13 @@ export const getCollections = (
  * redirects to negotiator
  * @param sitesToNegotiate the sites to negotiate with
  */
-export const negotiate = async (sitesToNegotiate: string[]): Promise<void> => {
-    let sendableQuery!: SendableQuery;
-    queryStore.subscribe((value: QueryItem[][]) => {
-        const uuid = uuidv4();
-        sendableQuery = {
-            query: value,
-            id: `${uuid}__search__${uuid}`,
-        };
-    });
-
+export const bbmrinegotiate = async (
+    sitesToNegotiate: string[],
+): Promise<void> => {
     const humanReadable: string = getHumanReadableQuery();
     const collections: NegotiateOptionsSiteMapping[] =
         getCollections(sitesToNegotiate);
     const negotiatorResponse = await sendRequestToNegotiator(
-        sendableQuery,
         humanReadable,
         collections,
     );
@@ -84,6 +74,7 @@ export const negotiate = async (sitesToNegotiate: string[]): Promise<void> => {
                 console.error(
                     "Negotiator response does not contain redirect uri",
                 );
+                errorChannel.set("Die Antwort vom Negotiator ist fehlerhaft"); // show user-facing error
                 return;
             } else {
                 const data = await negotiatorResponse.json();
@@ -119,22 +110,18 @@ interface BbmriCollectionResource {
 
 /**
  *
- * @param sendableQuery the query to be sent to the negotiator
  * @param humanReadable a human readable query string to view in the negotiator project
  * @param collections the collections to negotiate with
  * @returns the redirect uri from the negotiator
  */
 async function sendRequestToNegotiator(
-    sendableQuery: SendableQuery,
     humanReadable: string,
     collections: NegotiateOptionsSiteMapping[],
 ): Promise<NegotiatorResponse> {
-    const base64Query: string = btoa(JSON.stringify(sendableQuery.query));
-
     /**
      * handle redirect to negotiator url
      */
-    const returnURL: string = `${window.location.protocol}//${window.location.host}/?nToken=${sendableQuery.id}&query=${base64Query}`;
+    const returnURL: string = `${window.location.protocol}//${window.location.host}`;
 
     let response!: Response;
 
@@ -153,7 +140,7 @@ async function sendRequestToNegotiator(
     });
 
     try {
-        response = await fetch(`${negotiateOptions.newProjectUrl}`, {
+        response = await fetch(`${negotiateOptions.url}`, {
             method: "POST",
             headers: {
                 Accept: "application/json; charset=utf-8",
@@ -171,6 +158,7 @@ async function sendRequestToNegotiator(
         return response as NegotiatorResponse;
     } catch (error) {
         console.error(error);
+        errorChannel.set("Fehler beim Bearbeiten der Anfrage"); // show user-facing error
         return new Response() as NegotiatorResponse;
     }
 }

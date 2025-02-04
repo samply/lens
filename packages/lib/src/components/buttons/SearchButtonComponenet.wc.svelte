@@ -14,6 +14,7 @@
     import { Blaze } from "../../classes/blaze";
     import { responseStore, updateResponseStore } from "../../stores/response";
     import { lensOptions } from "../../stores/options";
+    import { errorChannel } from "../../stores/error-channel";
     import type {
         BackendOptions,
         Measure,
@@ -47,12 +48,26 @@
 
         controller = new AbortController();
 
-        const ast = buildAstFromQuery($queryStore);
+        const ast: AstTopLayer = buildAstFromQuery($queryStore);
 
-        if (ast.children.includes(null)) {
-            alert(
-                "No query entered in one of the queries. You can enter a query or remove the query fields.",
+        // The root node of the AST is an OR node that has AND nodes als children - one for each search bar.
+        // If one of the AND nodes has no children that means the corresponding search bar is empty.
+        if (
+            ast.children.some(
+                (child) =>
+                    child.nodeType === "branch" && child.children.length === 0,
+            ) &&
+            ast.children.some(
+                (child) =>
+                    child.nodeType === "branch" && child.children.length !== 0,
+            )
+        ) {
+            console.error(
+                "There is at least one empty and one non-empty search bar, aborting search",
             );
+            errorChannel.set(
+                "Eine der Suchleisten ist leer. Löschen Sie leere Suchleisten oder fügen Sie Suchkriterien ein.",
+            ); // show user-facing error
             return;
         }
 
@@ -153,6 +168,7 @@
             })
             .catch((error) => {
                 console.error("Error:", error);
+                errorChannel.set("Fehler beim Bearbeiten der Anfrage"); // show user-facing error
             });
     };
 

@@ -11,5 +11,6 @@ export { default as InfoButton } from "./src/components/buttons/InfoButtonCompon
 export { default as lensOptions } from "./src/components/Options.wc.svelte";
 export { default as DataPasser } from "./src/components/DataPasser.wc.svelte";
 export { default as ModifiedSearchComponent } from "./src/components/informational/ModifiedSearchComponent.wc.svelte";
+export { default as ErrorToasts } from "./src/components/ErrorToasts.wc.svelte";
 
-export * from "./src/styles/index.css";
+export * from "./src/styles/index.css?inline";

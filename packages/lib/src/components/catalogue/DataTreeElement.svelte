@@ -41,9 +41,10 @@
     let open: boolean = false;
     $: {
         if (subCategoryName) {
-            open = $openTreeNodes
-                .get(element.key)
-                .subCategoryNames?.includes(subCategoryName);
+            open =
+                $openTreeNodes
+                    .get(element.key)!
+                    .subCategoryNames?.includes(subCategoryName) || false;
         } else {
             open = $openTreeNodes.get(element.key) ? true : false;
         }
@@ -153,6 +154,12 @@
     </button>
     {#if element.infoButtonText}
         <InfoButtonComponent message={element.infoButtonText} />
+    {/if}
+
+    {#if "infoLink" in element && element.infoLink !== undefined}
+        <a href={element.infoLink.link} target="_blank"
+            >{element.infoLink.display}</a
+        >
     {/if}
 
     {#if finalParent && open}

@@ -23,6 +23,7 @@
         RemoveItemFromQuyeryAPIParams,
         RemoveValueFromQueryAPIParams,
     } from "../types/dataPasser";
+    import { buildQueryFromAst } from "../helpers/ast-transformer";
 
     /**
      * Getters
@@ -82,18 +83,29 @@
     };
 
     /**
+     * sets the query store using the ast representation of a query
+     * @param ast the ast that should be imported
+     */
+    export const setQueryStoreFromAstAPI = (ast: AstTopLayer): void => {
+        let query = buildQueryFromAst(ast);
+        queryStore.set(query);
+    };
+
+    /**
      * lets the library user add a single stratifier to the query store
      * @param params the parameters for the function
      * @param params.label the value of the stratifier (e.g. "C31")
      * @param params.catalogueGroupCode the code of the group where the stratifier is located (e.g. "diagnosis")
      * @param params.groupRange of the numerical groups in charts
      * @param params.queryGroupIndex the index of the query group where the stratifier should be added
+     * @param params.system the system used to describe the datafield in data model (e.g. a fhir system)
      */
     export const addStratifierToQueryAPI = ({
         label,
         catalogueGroupCode,
         groupRange,
         queryGroupIndex,
+        system,
     }: AddStratifierToQueryAPIParams): void => {
         addStratifier({
             label,
@@ -101,6 +113,7 @@
             catalogue: $catalogue,
             queryGroupIndex,
             groupRange,
+            system,
         });
     };
 

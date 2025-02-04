@@ -14,7 +14,7 @@
     import { measureStore } from "../stores/measures";
     import { iconStore } from "../stores/icons";
     import type { MeasureStore } from "../types/backend";
-    import type { Criteria } from "../types/treeData";
+    import type { Category } from "../types/treeData";
     import optionsSchema from "../types/options.schema.json";
     import catalogueSchema from "../types/catalogue.schema.json";
     import { parser, type Parse, type ParseResult } from "@exodus/schemasafe";
@@ -23,16 +23,17 @@
         catalogueKeyToResponseKeyMap,
         uiSiteMappingsStore,
     } from "../stores/mappings";
+    import { errorChannel } from "../stores/error-channel";
 
-    export let optionsJSON: string = "";
-    export let catalogueJSON: string = "";
+    export let optionsJSON: string = "{}";
+    export let catalogueJSON: string = "[]";
     export let measures: MeasureStore = {} as MeasureStore;
 
     /**
      * transform the JSON strings to objects for validation and further processing
      */
     let options: LensOptions = {} as LensOptions;
-    let catalogueData: Criteria[] = [];
+    let catalogueData: Category[] = [];
     $: options = JSON.parse(optionsJSON);
     $: catalogueData = JSON.parse(catalogueJSON);
 
@@ -52,6 +53,10 @@
                 "Lens-Options are not conform with the JSON schema",
                 validJSON.errors,
             );
+            // show user-facing error
+            errorChannel.set(
+                "Die Lens-Optionen sind nicht mit dem JSON-Schema konform",
+            );
         }
     }
 
@@ -67,6 +72,10 @@
             console.error(
                 "Catalogue is not conform with the JSON schema",
                 validJSON.errors,
+            );
+            // show user-facing error
+            errorChannel.set(
+                "Der Catalogue-Parameter ist nicht mit dem JSON-Schema konform",
             );
         }
     }

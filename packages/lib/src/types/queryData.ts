@@ -12,7 +12,11 @@ export type QueryItem = {
 
 export type QueryValue = {
     name: string;
-    value: string | { min: number; max: number } | AggregatedValue[][];
+    value:
+        | string
+        | { min: number; max: number }
+        | { min: string; max: string }
+        | AggregatedValue[][];
     queryBindId: string;
     description?: string;
 };
