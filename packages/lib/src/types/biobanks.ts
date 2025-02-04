@@ -6,6 +6,5 @@ export type HeaderData = {
         stratifierCode?: string;
         stratumCode?: string;
     }[];
-    ascending?: boolean;
     hintText?: string[];
 };

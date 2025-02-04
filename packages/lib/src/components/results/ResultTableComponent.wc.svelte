@@ -37,10 +37,6 @@
         headerData: [{ title: "", dataKey: "", aggregatedDataKeys: [] }],
     };
 
-    $: options?.headerData?.forEach((header: HeaderData): void => {
-        header.ascending = true;
-    });
-
     /**
      * watches the responseStore for changes to update the table
      */
@@ -115,24 +111,6 @@
     };
 
     $: buildTableRowData($responseStore);
-    $: tableRowData = sortTable(
-        sortColumnIndex,
-        options.headerData[sortColumnIndex].ascending,
-        tableRowData,
-    );
-
-    /**
-     * pagination
-     * pageSize will be set with the props of the custom element
-     */
-    export let pageSize: number = 10;
-
-    let activePage: number = 1;
-
-    $: pageItems = tableRowData.slice(
-        (activePage - 1) * pageSize,
-        activePage * pageSize,
-    );
 
     /**
      * watches the datarequestsStore for changes to check or uncheck the checkbox
@@ -155,47 +133,53 @@
         }
     };
 
-    /**
-     * sort tableRowData alphanumerically by the given column
-     */
+    export let pageSize = 10;
+    let activePage = 1;
+    let sortColumnIndex = 0;
+    let sortAscending = true;
 
-    let sortColumnIndex: number = 0;
+    let visibleRows: TableRowData;
+    $: {
+        // Array.sort sorts in place, so make a copy first
+        const tableRowsCopy = [...tableRowData];
 
-    /**
-     * sorts the tableRowData by the given column
-     * @param column - column to sort
-     * @param ascending - order of the sort, changes after every click but not on incoming responses
-     * @param tableRowData - as an argument to make the function reactive and prevent race conditions with incoming responses
-     * @param changeAscending - if true, the order of the sort will change after every click
-     * @returns the sorted tableRowData
-     */
-    const sortTable = (
-        column: number,
-        ascending: boolean = true,
-        tableRowData: TableRowData,
-        changeAscending: boolean = false,
-    ): TableRowData => {
-        /**
-         * sets the index of the column to sort, so that further incoming responses don't mess up the sorting
-         */
-        sortColumnIndex = column;
-
-        tableRowData = tableRowData.sort((a, b) => {
-            if (a[column] < b[column]) {
-                return ascending ? -1 : 1;
+        // sort
+        tableRowsCopy.sort((a, b) => {
+            // Always sort claimedText below everything else
+            if (a[sortColumnIndex] === claimedText) {
+                return 1;
+            } else if (b[sortColumnIndex] === claimedText) {
+                return -1;
             }
-            if (a[column] > b[column]) {
-                return ascending ? 1 : -1;
+
+            if (a[sortColumnIndex] < b[sortColumnIndex]) {
+                return sortAscending ? -1 : 1;
+            }
+            if (a[sortColumnIndex] > b[sortColumnIndex]) {
+                return sortAscending ? 1 : -1;
             }
             return 0;
         });
 
-        if (changeAscending) {
-            options.headerData[column].ascending = !ascending;
-        }
+        // paginate
+        visibleRows = tableRowsCopy.slice(
+            (activePage - 1) * pageSize,
+            activePage * pageSize,
+        );
+    }
 
-        return tableRowData;
-    };
+    /**
+     * Called when a user clicks on a column header to change the sorting
+     * @param index the index of the column on which the user clicked
+     */
+    function clickedOnColumnHeader(index: number): void {
+        if (index !== sortColumnIndex) {
+            sortColumnIndex = index;
+            sortAscending = true;
+        } else {
+            sortAscending = !sortAscending;
+        }
+    }
 </script>
 
 <h4 part="result-table-title">{title}</h4>
@@ -213,19 +197,27 @@
             {#each options.headerData as header, index}
                 <th
                     part="table-header-cell table-header-datatype"
-                    on:click={() =>
-                        sortTable(index, header.ascending, tableRowData, true)}
+                    on:click={() => clickedOnColumnHeader(index)}
                 >
                     {header.title}
                     {#if header.hintText}
                         <InfoButtonComponent message={header.hintText} />
+                    {/if}
+                    {#if index === sortColumnIndex}
+                        <span style="font-size: 0.8em;">
+                            {#if sortAscending}
+                                ▲
+                            {:else}
+                                ▼
+                            {/if}
+                        </span>
                     {/if}
                 </th>
             {/each}
         </tr>
     </thead>
     <tbody part="table-body">
-        {#each pageItems as tableRow}
+        {#each visibleRows as tableRow}
             <TableItemComponent {tableRow} />
         {/each}
     </tbody>
@@ -233,25 +225,16 @@
 <slot name="above-pagination" />
 <div part="table-pagination">
     <button
-        part="table-pagination-button pagination-pagination-previous 
-                {activePage === 1 ? 'pagination-button-disabled' : ''}"
+        part="table-pagination-button pagination-pagination-previous"
         disabled={activePage === 1}
-        on:click={() => {
-            activePage = activePage - 1;
-        }}>&#8592;</button
+        on:click={() => (activePage -= 1)}>&#8592;</button
     >
     <div part="table-pagination-pagenumber">{activePage}</div>
     <button
-        part="table-pagination-button pagination-pagination-next
-            {activePage === Math.ceil(tableRowData.length / pageSize) ||
-        pageItems.length === 0
-            ? 'pagination-button-disabled'
-            : ''}"
+        part="table-pagination-button pagination-pagination-next"
         disabled={activePage === Math.ceil(tableRowData.length / pageSize) ||
-            pageItems.length === 0}
-        on:click={() => {
-            activePage = activePage + 1;
-        }}>&#8594;</button
+            tableRowData.length === 0}
+        on:click={() => (activePage += 1)}>&#8594;</button
     >
 </div>
 <slot name="beneath-pagination" />
