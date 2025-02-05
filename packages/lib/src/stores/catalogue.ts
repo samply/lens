@@ -202,15 +202,6 @@ const itemIsBottomLevel = (item: TreeNode): boolean => {
  * @returns an array of strings containing the bottom level items' keys
  */
 const getBottomLevelItems = (item: TreeNode, category: string): string[] => {
-    /**
-     * FIX ME:
-     *  there seems to be a race condition where the catalogue is not yet loaded and the function is called right away
-     *  the data being a string comes from the data being passed as a json string
-     */
-    if (typeof item === "string") {
-        return [];
-    }
-
     if (item instanceof Array) {
         return item
             .map((childCategory) =>
