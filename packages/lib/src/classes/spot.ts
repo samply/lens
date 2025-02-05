@@ -2,7 +2,7 @@
  * TODO: document this class
  */
 
-import type { SiteData, Status } from "../types/response";
+import type { SiteData } from "../types/response";
 import type { ResponseStore } from "../types/backend";
 import type { BeamResult } from "../types/spot";
 import { errorChannel } from "../stores/error-channel";
@@ -67,7 +67,7 @@ export class Spot {
                 const response: BeamResult = JSON.parse(message.data);
                 if (response.task !== this.currentTask) return;
                 const site: string = response.from.split(".")[1];
-                const status: Status = response.status;
+                const status = response.status;
                 const body: SiteData =
                     status === "succeeded"
                         ? JSON.parse(atob(response.body))

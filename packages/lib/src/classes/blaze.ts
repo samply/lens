@@ -25,7 +25,7 @@ export class Blaze {
         try {
             let response: ResponseStore = new Map<string, Site>().set(
                 this.name,
-                { status: "claimed", data: {} as SiteData },
+                { status: "claimed" },
             );
 
             this.updateResponse(response);

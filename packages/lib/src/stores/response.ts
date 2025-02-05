@@ -50,17 +50,12 @@ export const getAggregatedPopulation = (
     store: ResponseStore,
     code: string,
 ): number => {
-    if (store.size === 0) return 0;
-
-    const sites: Site[] = Array.from(store.values());
-
-    let population: number = 0;
-
-    sites.forEach((site: Site) => {
-        if (site.data === undefined) return;
-        population += getSitePopulationForCode(site.data, code);
-    });
-
+    let population = 0;
+    for (const site of store.values()) {
+        if (site.status === "succeeded") {
+            population += getSitePopulationForCode(site.data, code);
+        }
+    }
     return population;
 };
 
@@ -73,66 +68,41 @@ export const getSitePopulationForCode = (
     site: SiteData,
     code: string,
 ): number => {
-    let population: number = 0;
-    if (!site || !site.group) return population;
-
-    site?.group?.forEach((group) => {
+    let population = 0;
+    for (const group of site.group) {
         if (group.code.text === code) {
             population += group.population[0].count;
         }
-    });
+    }
     return population;
 };
 
 /**
  * @param store - the response store
- * @param code - the code to search for
- * @returns the aggregated population count for a given stratum code
- */
-export const getAggregatedStratifierForStratumCode = (
-    store: ResponseStore,
-    code: string,
-): number => {
-    const sites: Site[] = Array.from(store.values());
-
-    let population: number = 0;
-    if (store.size === 0) return 0;
-
-    sites.forEach((site) => {
-        population += getSitePopulationForCode(site.data!, code);
-    });
-
-    return population;
-};
-
-/**
- * @param store - the response store
- * @param code - the code to search for
+ * @param stratumCode - the code to search for
+ * @param stratifier - the stratifier code to define where the stratumCode should be searched
  * @returns the aggregated population count for a given stratum code
  * (stratum code is the value.text of a stratum item e.g.'male')
  */
-
 export const getAggregatedPopulationForStratumCode = (
     store: ResponseStore,
     stratumCode: string,
     stratifier: string,
 ): number => {
-    const sites: Site[] = Array.from(store.values());
-
-    const population: number[] = [];
-    if (store.size === 0) return 1;
-
-    sites.forEach((site: Site) => {
-        population.push(
-            getSitePopulationForStratumCode(
-                site.data!,
+    if (store.size === 0) {
+        return 1;
+    }
+    let population = 0;
+    for (const site of store.values()) {
+        if (site.status === "succeeded") {
+            population += getSitePopulationForStratumCode(
+                site.data,
                 stratumCode,
                 stratifier,
-            ),
-        );
-    });
-
-    return population.reduce((a: number, b: number) => a + b, 0);
+            );
+        }
+    }
+    return population;
 };
 
 /**
@@ -176,23 +146,19 @@ export const getStratifierCodesForGroupCode = (
     store: ResponseStore,
     code: string,
 ): string[] => {
-    const sites: Site[] = Array.from(store.values());
-
     const codes: Set<string> = new Set();
-    if (store.size === 0) return [""];
-
-    sites.forEach((site: Site) => {
-        const siteCodes: string[] = getSiteStratifierCodesForGroupCode(
-            site.data!,
-            code,
-        );
-        siteCodes.forEach((code: string) => {
-            codes.add(code);
-        });
-    });
-
-    const codesArray = Array.from(codes);
-    return codesArray;
+    for (const site of store.values()) {
+        if (site.status === "succeeded") {
+            const siteCodes = getSiteStratifierCodesForGroupCode(
+                site.data,
+                code,
+            );
+            for (const code of siteCodes) {
+                codes.add(code);
+            }
+        }
+    }
+    return Array.from(codes);
 };
 
 /**
@@ -205,9 +171,7 @@ export const getSiteStratifierCodesForGroupCode = (
     site: SiteData,
     code: string,
 ): string[] => {
-    if (!site || !site.group) return [""];
     const codes: string[] = [];
-
     site.group.forEach((groupItem) => {
         groupItem.stratifier.forEach((stratifierItem) => {
             if (

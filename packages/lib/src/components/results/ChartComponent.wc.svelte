@@ -205,7 +205,7 @@
             dataSet = chartLabels.map((label: string) => {
                 const site: Site | undefined = responseStore.get(label);
 
-                if (site === undefined || site.data === null) return 0;
+                if (site === undefined || site.status !== "succeeded") return 0;
 
                 let data = site?.data?.group?.find(
                     (groupItem) => groupItem.code.text === catalogueGroupCode,
@@ -405,7 +405,7 @@
         let isDataAvailable: boolean = false;
 
         responseStore.forEach((value) => {
-            if (value.data !== null) isDataAvailable = true;
+            if (value.status === "succeeded") isDataAvailable = true;
         });
 
         if (!isDataAvailable) return;
