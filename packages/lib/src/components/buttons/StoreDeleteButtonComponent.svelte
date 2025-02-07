@@ -3,6 +3,7 @@
         queryStore,
         removeItemFromQuery,
         removeValueFromQuery,
+        queryModified,
     } from "../../stores/query";
     import { iconStore } from "../../stores/icons";
     import type { QueryItem } from "../../types/queryData";
@@ -23,6 +24,7 @@
         dispatch("clear-search");
 
         if (type === "group") {
+            queryModified.set(true);
             queryStore.update((query) => {
                 query = query.filter((group, i) => i !== index);
                 if (query.length === 0) {
