@@ -21,7 +21,28 @@ import { get } from "svelte/store";
  * @returns Ast: the AST will later be converted to a query language of choice
  */
 export const buildAstFromQuery = (queryStore: QueryItem[][]): AstTopLayer => {
-    return returnNestedValues(queryStore) as AstTopLayer;
+    const ast = returnNestedValues(queryStore) as AstTopLayer;
+
+    // The empty query is currently a special case because focus and potentially other consumers want it like this
+    // Instead of:
+    // {"nodeType":"branch","operand":"OR","children":[{"nodeType":"branch","operand":"AND","children":[]}]}
+    // We return:
+    // {"nodeType":"branch","operand":"OR","children":[]}
+    if (ast.children.length === 1) {
+        const onlyChild = ast.children[0];
+        if (
+            onlyChild.nodeType === "branch" &&
+            onlyChild.children.length === 0
+        ) {
+            return {
+                nodeType: "branch",
+                operand: "OR",
+                children: [],
+            };
+        }
+    }
+
+    return ast;
 };
 
 /**
