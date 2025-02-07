@@ -80,13 +80,6 @@ export class Spot {
                 updateResponse(parsedResponse);
             });
 
-            // read error events from beam
-            eventSource.addEventListener("error", (message) => {
-                console.error(`Beam returned error ${message}`);
-                errorChannel.set("Fehler von Beam erhalten"); // show user-facing error
-                eventSource.close();
-            });
-
             // event source in javascript throws an error then the event source is closed by backend
             eventSource.onerror = () => {
                 console.info(
