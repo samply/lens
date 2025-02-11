@@ -31,6 +31,31 @@ const resolveSubgroupButtoumLayer = (criteria: Criteria[]): string[] => {
     return collectedCriteria;
 };
 
+const resolveSubgroupMatch = (
+    key: string,
+    value: string,
+    subgroup: Criteria[],
+): string[] => {
+    let newCri: string[] = [];
+
+    for (const cri of subgroup) {
+        if (cri.key == value) {
+            if (cri.subgroup instanceof Array) {
+                newCri = newCri.concat(
+                    resolveSubgroupButtoumLayer(cri.subgroup),
+                );
+                break;
+            }
+        }
+        // Search deeper in the structure for a match
+        if (cri.subgroup instanceof Array) {
+            resolveSubgroupMatch(key, value, cri.subgroup);
+        }
+    }
+
+    return newCri;
+};
+
 const resolveElementInCatalogueRec = (
     key: string,
     value: string,
@@ -48,6 +73,12 @@ const resolveElementInCatalogueRec = (
                         );
                         break;
                     }
+                }
+                // Search deeper in the structure for a match
+                if (cri.subgroup instanceof Array) {
+                    newCri = newCri.concat(
+                        resolveSubgroupMatch(key, value, cri.subgroup),
+                    );
                 }
             }
         }
