@@ -355,6 +355,14 @@
                             "collection": {
                                 "type": "string",
                                 "pattern": "^.+$"
+                            },
+                            "site_id": {
+                                "type": "string",
+                                "pattern": "^.+$"
+                            },
+                            "collection_name": {
+                                "type": "string",
+                                "pattern": "^.+$"
                             }
                         },
                         "additionalProperties": false,
