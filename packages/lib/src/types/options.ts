@@ -3,25 +3,29 @@ export type LensOptions = {
     [key: string]: unknown;
     chartOptions?: ChartOptions;
     catalogueKeyToResponseKeyMap?: string[][];
-    negotiatorOptions?: NegotiatorOptions;
+    negotiateOptions?: NegotiateOptions;
     projectmanagerOptions?: ProjectManagerOptions;
 };
 
+export type NegotiateOptions = {
+    url: string;
+    siteMappings: NegotiateOptionsSiteMapping[];
+};
+
 export type NegotiateOptionsSiteMapping = {
+    /** Name of the site, e.g. "Aachen" */
     site: string;
-    site_id: string;
-    collection_id: string;
+    /** Unique identifier of the collection, e.g. "bbmri-eric:ID:DE_RWTHCBMB:collection:RWTHCBMB_BC" */
     collection: string;
+    /** Unique identifier of the site, e.g. "bbmri-eric:ID:DE_RWTHCBMB" */
+    site_id: string;
+    /** Name of the collection, e.g. "Collection of RWTH cBMB Broad Consent Aachen" */
+    collection_name: string;
 };
 
 export type ProjectManagerOptionsSiteMapping = {
     site: string;
     collection: string;
-};
-
-export type NegotiatorOptions = {
-    url: string;
-    siteMappings: NegotiateOptionsSiteMapping[];
 };
 
 export type ProjectManagerOptions = {
