@@ -65,6 +65,7 @@
      * returns the catalogue to the library user
      * @param category the category name (e.g. "diagnosis")
      * @returns array of strings containing the bottom level items' keys
+     * @deprecated may be removed in a future version
      */
     export const getCriteriaAPI = (category: string): string[] => {
         return getCriteria(category);
