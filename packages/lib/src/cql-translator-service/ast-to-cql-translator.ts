@@ -13,11 +13,10 @@ import {
     cqltemplate,
     criterionMap,
 } from "./cqlquery-mappings";
-import { getCriteria, resolveAstSubCatagories } from "../stores/catalogue";
+import { resolveAstSubCatagories } from "../stores/catalogue";
 import type { MeasureItem } from "../types/backend";
 
-let codesystems: string[] = [];
-let criteria: string[] = [];
+const codesystems: string[] = ["codesystem loinc: 'http://loinc.org'"];
 
 export const translateAstToCql = (
     query: AstTopLayer,
@@ -25,11 +24,6 @@ export const translateAstToCql = (
     backendMeasures: string,
     measures: MeasureItem[],
 ): string => {
-    if (criteria.length == 0) {
-        criteria = getCriteria("diagnosis");
-        codesystems = ["codesystem loinc: 'http://loinc.org'"];
-    }
-
     const localMeasures: { key: string; cql: string }[] = [];
     measures.forEach((x) => {
         localMeasures.push({
