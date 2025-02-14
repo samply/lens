@@ -159,7 +159,7 @@
             <div class="chart-wrapper result-summary">
                 <lens-result-summary />
                 <lens-negotiate-button
-                    type={"ccp"}
+                    type={"ProjectManager"}
                     title={"Daten und Proben Anfragen"}
                 ></lens-negotiate-button>
                 <lens-search-modified-display

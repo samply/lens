@@ -16,9 +16,9 @@
      *
      */
     function exec(): void {
-        if (type == "bbmri") {
+        if (type == "Negotiator") {
             bbmriNegotiate($datarequestsStore);
-        } else if (type == "ccp") {
+        } else if (type == "ProjectManager") {
             negotiate($datarequestsStore);
         }
     }
