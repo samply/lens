@@ -1,6 +1,7 @@
 import type { AstTopLayer } from "./ast";
 import type { ResponseStore } from "./backend";
 import type { QueryItem, QueryValue } from "./queryData";
+import type { Category } from "./treeData";
 
 export type AddStratifierToQueryAPIParams = {
     label: string;
@@ -32,4 +33,5 @@ export interface LensDataPasser extends HTMLElement {
     updateResponseAPI(params: ResponseStore): void;
     setQueryStoreAPI(params: QueryItem[][]): void;
     setQueryStoreFromAstAPI(params: AstTopLayer): void;
+    getCatalogueAPI(): Category[];
 }
