@@ -13,11 +13,10 @@ import {
     cqltemplate,
     criterionMap,
 } from "./cqlquery-mappings";
-import { getCriteria, resolveAstSubCatagories } from "../stores/catalogue";
+import { resolveAstSubCatagories } from "../stores/catalogue";
 import type { MeasureItem } from "../types/backend";
 
-let codesystems: string[] = [];
-let criteria: string[] = [];
+const codesystems: string[] = ["codesystem loinc: 'http://loinc.org'"];
 
 export const translateAstToCql = (
     query: AstTopLayer,
@@ -25,11 +24,6 @@ export const translateAstToCql = (
     backendMeasures: string,
     measures: MeasureItem[],
 ): string => {
-    if (criteria.length == 0) {
-        criteria = getCriteria("diagnosis");
-        codesystems = ["codesystem loinc: 'http://loinc.org'"];
-    }
-
     const localMeasures: { key: string; cql: string }[] = [];
     measures.forEach((x) => {
         localMeasures.push({
@@ -313,52 +307,12 @@ const getSingleton = (criterion: AstBottomLayerValue): string => {
                 case "observationMolecularMarkerEnsemblID":
                 case "department": {
                     if (typeof criterion.value === "string") {
-                        // TODO: Check if we really need to do this or we can somehow tell cql to do that expansion it self
-                        if (
-                            criterion.value.slice(-1) === "%" &&
-                            criterion.value.length == 5
-                        ) {
-                            const mykey = criterion.value.slice(0, -2);
-                            if (criteria != undefined) {
-                                const expandedValues = criteria.filter(
-                                    (value) => value.startsWith(mykey),
-                                );
-                                expression += getSingleton({
-                                    nodeType: "leaf",
-                                    key: criterion.key,
-                                    type: criterion.type,
-                                    system: criterion.system,
-                                    value: expandedValues,
-                                });
-                            }
-                        } else if (
-                            criterion.value.slice(-1) === "%" &&
-                            criterion.value.length == 6
-                        ) {
-                            const mykey = criterion.value.slice(0, -1);
-                            if (criteria != undefined) {
-                                const expandedValues = criteria.filter(
-                                    (value) => value.startsWith(mykey),
-                                );
-                                expandedValues.push(
-                                    criterion.value.slice(0, 5),
-                                );
-                                expression += getSingleton({
-                                    nodeType: "leaf",
-                                    key: criterion.key,
-                                    type: criterion.type,
-                                    system: criterion.system,
-                                    value: expandedValues,
-                                });
-                            }
-                        } else {
-                            expression += substituteCQLExpression(
-                                criterion.key,
-                                myCriterion.alias,
-                                myCQL,
-                                criterion.value as string,
-                            );
-                        }
+                        expression += substituteCQLExpression(
+                            criterion.key,
+                            myCriterion.alias,
+                            myCQL,
+                            criterion.value as string,
+                        );
                     }
                     if (typeof criterion.value === "boolean") {
                         expression += substituteCQLExpression(

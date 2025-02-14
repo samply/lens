@@ -629,7 +629,7 @@
                                         },
                                         {
                                             "value": "diagnosis",
-                                            "name": "C08.%"
+                                            "name": "C08"
                                         }
                                     ],
                                     [
@@ -703,7 +703,7 @@
                                         },
                                         {
                                             "value": "diagnosis",
-                                            "name": "C08.%"
+                                            "name": "C08"
                                         }
                                     ],
                                     [
@@ -8389,7 +8389,7 @@
                     {
                         "key": "C43-C44",
                         "name": "C43-C44",
-                        "description": "Search for all subgroups of C43,C44", 
+                        "description": "Search for all subgroups of C43,C44",
                         "subgroup": [
                             {
                                 "key": "C43.%",
@@ -8667,7 +8667,8 @@
                                         "description": "Bösartige Neubildung: Periphere Nerven und autonomes Nervensystem, nicht näher bezeichnet"
                                     }
                                 ]
-                            },        {
+                            },
+                            {
                                 "key": "C48.%",
                                 "name": "C48.%",
                                 "description": "Bösartige Neubildung: Näher bezeichnete Teile des Peritoneums",
@@ -8699,7 +8700,8 @@
                                         "description": "Bösartige Neubildung: Retroperitoneum und Peritoneum, mehrere Teilbereiche überlappend"
                                     }
                                 ]
-                            },        {
+                            },
+                            {
                                 "key": "C49.%",
                                 "name": "C49.%",
                                 "description": "Bösartige Neubildung: Bindegewebe und andere Weichteilgewebe der oberen Extremität, einschließlich Schulter",
@@ -11184,7 +11186,8 @@
                                         "description": "Carcinoma in situ: Sonstige und nicht näher bezeichnete Harnorgane"
                                     }
                                 ]
-                            }]
+                            }
+                        ]
                     },
                     {
                         "key": "D10-D36",
@@ -11923,72 +11926,72 @@
                                 "name": "D24",
                                 "description": "Gutartige Neubildung der Brustdrüse [Mamma]"
                             },
-                    {
-                        "key": "D25.%",
-                        "name": "D25.%",
-                        "description": "Intramurales Leiomyom des Uterus",
-                        "subgroup": [
                             {
-                                "visible": false,
-                                "key": "D25",
-                                "name": "D25",
-                                "description": ""
+                                "key": "D25.%",
+                                "name": "D25.%",
+                                "description": "Intramurales Leiomyom des Uterus",
+                                "subgroup": [
+                                    {
+                                        "visible": false,
+                                        "key": "D25",
+                                        "name": "D25",
+                                        "description": ""
+                                    },
+                                    {
+                                        "key": "D25.1",
+                                        "name": "D25.1",
+                                        "description": "Intramurales Leiomyom des Uterus"
+                                    },
+                                    {
+                                        "key": "D25.9",
+                                        "name": "D25.9",
+                                        "description": "Leiomyom des Uterus, nicht näher bezeichnet"
+                                    },
+                                    {
+                                        "key": "D25.0",
+                                        "name": "D25.0",
+                                        "description": "Submuköses Leiomyom des Uterus"
+                                    },
+                                    {
+                                        "key": "D25.2",
+                                        "name": "D25.2",
+                                        "description": "Subseröses Leiomyom des Uterus"
+                                    }
+                                ]
                             },
                             {
-                                "key": "D25.1",
-                                "name": "D25.1",
-                                "description": "Intramurales Leiomyom des Uterus"
+                                "key": "D26.%",
+                                "name": "D26.%",
+                                "description": "Sonstige gutartige Neubildungen: Cervix uteri",
+                                "subgroup": [
+                                    {
+                                        "visible": false,
+                                        "key": "D26",
+                                        "name": "D26",
+                                        "description": ""
+                                    },
+                                    {
+                                        "key": "D26.0",
+                                        "name": "D26.0",
+                                        "description": "Sonstige gutartige Neubildungen: Cervix uteri"
+                                    },
+                                    {
+                                        "key": "D26.1",
+                                        "name": "D26.1",
+                                        "description": "Sonstige gutartige Neubildungen: Corpus uteri"
+                                    },
+                                    {
+                                        "key": "D26.7",
+                                        "name": "D26.7",
+                                        "description": "Sonstige gutartige Neubildungen: Sonstige Teile des Uterus"
+                                    },
+                                    {
+                                        "key": "D26.9",
+                                        "name": "D26.9",
+                                        "description": "Sonstige gutartige Neubildungen: Uterus, nicht näher bezeichnet"
+                                    }
+                                ]
                             },
-                            {
-                                "key": "D25.9",
-                                "name": "D25.9",
-                                "description": "Leiomyom des Uterus, nicht näher bezeichnet"
-                            },
-                            {
-                                "key": "D25.0",
-                                "name": "D25.0",
-                                "description": "Submuköses Leiomyom des Uterus"
-                            },
-                            {
-                                "key": "D25.2",
-                                "name": "D25.2",
-                                "description": "Subseröses Leiomyom des Uterus"
-                            }
-                        ]
-                    },
-                    {
-                        "key": "D26.%",
-                        "name": "D26.%",
-                        "description": "Sonstige gutartige Neubildungen: Cervix uteri",
-                        "subgroup": [
-                            {
-                                "visible": false,
-                                "key": "D26",
-                                "name": "D26",
-                                "description": ""
-                            },
-                            {
-                                "key": "D26.0",
-                                "name": "D26.0",
-                                "description": "Sonstige gutartige Neubildungen: Cervix uteri"
-                            },
-                            {
-                                "key": "D26.1",
-                                "name": "D26.1",
-                                "description": "Sonstige gutartige Neubildungen: Corpus uteri"
-                            },
-                            {
-                                "key": "D26.7",
-                                "name": "D26.7",
-                                "description": "Sonstige gutartige Neubildungen: Sonstige Teile des Uterus"
-                            },
-                            {
-                                "key": "D26.9",
-                                "name": "D26.9",
-                                "description": "Sonstige gutartige Neubildungen: Uterus, nicht näher bezeichnet"
-                            }
-                        ]
-                    },
                             {
                                 "key": "D27",
                                 "name": "D27",
@@ -12364,190 +12367,189 @@
                         "key": "D37-D48",
                         "name": "D37-D48",
                         "description": "Search for all subgroups of D37,D38,D39,D40,D41,D42,D43,D44,D45,D46,D47,D48",
-                        "subgroup": [  
-                
-                    {
-                        "key": "D37.%",
-                        "name": "D37.%",
-                        "description": "Neubildung unsicheren oder unbekannten Verhaltens: Appendix vermiformis",
                         "subgroup": [
                             {
-                                "visible": false,
-                                "key": "D37",
-                                "name": "D37",
-                                "description": ""
+                                "key": "D37.%",
+                                "name": "D37.%",
+                                "description": "Neubildung unsicheren oder unbekannten Verhaltens: Appendix vermiformis",
+                                "subgroup": [
+                                    {
+                                        "visible": false,
+                                        "key": "D37",
+                                        "name": "D37",
+                                        "description": ""
+                                    },
+                                    {
+                                        "key": "D37.3",
+                                        "name": "D37.3",
+                                        "description": "Neubildung unsicheren oder unbekannten Verhaltens: Appendix vermiformis"
+                                    },
+                                    {
+                                        "key": "D37.2",
+                                        "name": "D37.2",
+                                        "description": "Neubildung unsicheren oder unbekannten Verhaltens: Dünndarm"
+                                    },
+                                    {
+                                        "key": "D37.4",
+                                        "name": "D37.4",
+                                        "description": "Neubildung unsicheren oder unbekannten Verhaltens: Kolon"
+                                    },
+                                    {
+                                        "key": "D37.6",
+                                        "name": "D37.6",
+                                        "description": "Neubildung unsicheren oder unbekannten Verhaltens: Leber, Gallenblase und Gallengänge"
+                                    },
+                                    {
+                                        "key": "D37.0",
+                                        "name": "D37.0",
+                                        "description": "Neubildung unsicheren oder unbekannten Verhaltens: Lippe, Mundhöhle und Pharynx"
+                                    },
+                                    {
+                                        "key": "D37.1",
+                                        "name": "D37.1",
+                                        "description": "Neubildung unsicheren oder unbekannten Verhaltens: Magen"
+                                    },
+                                    {
+                                        "key": "D37.5",
+                                        "name": "D37.5",
+                                        "description": "Neubildung unsicheren oder unbekannten Verhaltens: Rektum"
+                                    },
+                                    {
+                                        "key": "D37.70",
+                                        "name": "D37.70",
+                                        "description": "Neubildung unsicheren oder unbekannten Verhaltens: Pankreas"
+                                    },
+                                    {
+                                        "key": "D37.78",
+                                        "name": "D37.78",
+                                        "description": "Neubildung unsicheren oder unbekannten Verhaltens: Sonstige Verdauungsorgane"
+                                    },
+                                    {
+                                        "key": "D37.9",
+                                        "name": "D37.9",
+                                        "description": "Neubildung unsicheren oder unbekannten Verhaltens: Verdauungsorgan, nicht näher bezeichnet"
+                                    }
+                                ]
                             },
                             {
-                                "key": "D37.3",
-                                "name": "D37.3",
-                                "description": "Neubildung unsicheren oder unbekannten Verhaltens: Appendix vermiformis"
+                                "key": "D38.%",
+                                "name": "D38.%",
+                                "description": "Neubildung unsicheren oder unbekannten Verhaltens: Atmungsorgan, nicht näher bezeichnet",
+                                "subgroup": [
+                                    {
+                                        "visible": false,
+                                        "key": "D38",
+                                        "name": "D38",
+                                        "description": ""
+                                    },
+                                    {
+                                        "key": "D38.6",
+                                        "name": "D38.6",
+                                        "description": "Neubildung unsicheren oder unbekannten Verhaltens: Atmungsorgan, nicht näher bezeichnet"
+                                    },
+                                    {
+                                        "key": "D38.0",
+                                        "name": "D38.0",
+                                        "description": "Neubildung unsicheren oder unbekannten Verhaltens: Larynx"
+                                    },
+                                    {
+                                        "key": "D38.3",
+                                        "name": "D38.3",
+                                        "description": "Neubildung unsicheren oder unbekannten Verhaltens: Mediastinum"
+                                    },
+                                    {
+                                        "key": "D38.2",
+                                        "name": "D38.2",
+                                        "description": "Neubildung unsicheren oder unbekannten Verhaltens: Pleura"
+                                    },
+                                    {
+                                        "key": "D38.5",
+                                        "name": "D38.5",
+                                        "description": "Neubildung unsicheren oder unbekannten Verhaltens: Sonstige Atmungsorgane"
+                                    },
+                                    {
+                                        "key": "D38.4",
+                                        "name": "D38.4",
+                                        "description": "Neubildung unsicheren oder unbekannten Verhaltens: Thymus"
+                                    },
+                                    {
+                                        "key": "D38.1",
+                                        "name": "D38.1",
+                                        "description": "Neubildung unsicheren oder unbekannten Verhaltens: Trachea, Bronchus und Lunge"
+                                    }
+                                ]
                             },
                             {
-                                "key": "D37.2",
-                                "name": "D37.2",
-                                "description": "Neubildung unsicheren oder unbekannten Verhaltens: Dünndarm"
+                                "key": "D39.%",
+                                "name": "D39.%",
+                                "description": "Neubildung unsicheren oder unbekannten Verhaltens: Ovar",
+                                "subgroup": [
+                                    {
+                                        "visible": false,
+                                        "key": "D39",
+                                        "name": "D39",
+                                        "description": ""
+                                    },
+                                    {
+                                        "key": "D39.1",
+                                        "name": "D39.1",
+                                        "description": "Neubildung unsicheren oder unbekannten Verhaltens: Ovar"
+                                    },
+                                    {
+                                        "key": "D39.2",
+                                        "name": "D39.2",
+                                        "description": "Neubildung unsicheren oder unbekannten Verhaltens: Plazenta"
+                                    },
+                                    {
+                                        "key": "D39.7",
+                                        "name": "D39.7",
+                                        "description": "Neubildung unsicheren oder unbekannten Verhaltens: Sonstige weibliche Genitalorgane"
+                                    },
+                                    {
+                                        "key": "D39.0",
+                                        "name": "D39.0",
+                                        "description": "Neubildung unsicheren oder unbekannten Verhaltens: Uterus"
+                                    },
+                                    {
+                                        "key": "D39.9",
+                                        "name": "D39.9",
+                                        "description": "Neubildung unsicheren oder unbekannten Verhaltens: Weibliches Genitalorgan, nicht näher bezeichnet"
+                                    }
+                                ]
                             },
                             {
-                                "key": "D37.4",
-                                "name": "D37.4",
-                                "description": "Neubildung unsicheren oder unbekannten Verhaltens: Kolon"
+                                "key": "D40.%",
+                                "name": "D40.%",
+                                "description": "Neubildung unsicheren oder unbekannten Verhaltens: Hoden",
+                                "subgroup": [
+                                    {
+                                        "visible": false,
+                                        "key": "D40",
+                                        "name": "D40",
+                                        "description": ""
+                                    },
+                                    {
+                                        "key": "D40.1",
+                                        "name": "D40.1",
+                                        "description": "Neubildung unsicheren oder unbekannten Verhaltens: Hoden"
+                                    },
+                                    {
+                                        "key": "D40.9",
+                                        "name": "D40.9",
+                                        "description": "Neubildung unsicheren oder unbekannten Verhaltens: Männliches Genitalorgan, nicht näher bezeichnet"
+                                    },
+                                    {
+                                        "key": "D40.0",
+                                        "name": "D40.0",
+                                        "description": "Neubildung unsicheren oder unbekannten Verhaltens: Prostata"
+                                    },
+                                    {
+                                        "key": "D40.7",
+                                        "name": "D40.7",
+                                        "description": "Neubildung unsicheren oder unbekannten Verhaltens: Sonstige männliche Genitalorgane"
+                                    }
+                                ]
                             },
-                            {
-                                "key": "D37.6",
-                                "name": "D37.6",
-                                "description": "Neubildung unsicheren oder unbekannten Verhaltens: Leber, Gallenblase und Gallengänge"
-                            },
-                            {
-                                "key": "D37.0",
-                                "name": "D37.0",
-                                "description": "Neubildung unsicheren oder unbekannten Verhaltens: Lippe, Mundhöhle und Pharynx"
-                            },
-                            {
-                                "key": "D37.1",
-                                "name": "D37.1",
-                                "description": "Neubildung unsicheren oder unbekannten Verhaltens: Magen"
-                            },
-                            {
-                                "key": "D37.5",
-                                "name": "D37.5",
-                                "description": "Neubildung unsicheren oder unbekannten Verhaltens: Rektum"
-                            },
-                            {
-                                "key": "D37.70",
-                                "name": "D37.70",
-                                "description": "Neubildung unsicheren oder unbekannten Verhaltens: Pankreas"
-                            },
-                            {
-                                "key": "D37.78",
-                                "name": "D37.78",
-                                "description": "Neubildung unsicheren oder unbekannten Verhaltens: Sonstige Verdauungsorgane"
-                            },
-                            {
-                                "key": "D37.9",
-                                "name": "D37.9",
-                                "description": "Neubildung unsicheren oder unbekannten Verhaltens: Verdauungsorgan, nicht näher bezeichnet"
-                            }
-                        ]
-                    },
-                    {
-                        "key": "D38.%",
-                        "name": "D38.%",
-                        "description": "Neubildung unsicheren oder unbekannten Verhaltens: Atmungsorgan, nicht näher bezeichnet",
-                        "subgroup": [
-                            {
-                                "visible": false,
-                                "key": "D38",
-                                "name": "D38",
-                                "description": ""
-                            },
-                            {
-                                "key": "D38.6",
-                                "name": "D38.6",
-                                "description": "Neubildung unsicheren oder unbekannten Verhaltens: Atmungsorgan, nicht näher bezeichnet"
-                            },
-                            {
-                                "key": "D38.0",
-                                "name": "D38.0",
-                                "description": "Neubildung unsicheren oder unbekannten Verhaltens: Larynx"
-                            },
-                            {
-                                "key": "D38.3",
-                                "name": "D38.3",
-                                "description": "Neubildung unsicheren oder unbekannten Verhaltens: Mediastinum"
-                            },
-                            {
-                                "key": "D38.2",
-                                "name": "D38.2",
-                                "description": "Neubildung unsicheren oder unbekannten Verhaltens: Pleura"
-                            },
-                            {
-                                "key": "D38.5",
-                                "name": "D38.5",
-                                "description": "Neubildung unsicheren oder unbekannten Verhaltens: Sonstige Atmungsorgane"
-                            },
-                            {
-                                "key": "D38.4",
-                                "name": "D38.4",
-                                "description": "Neubildung unsicheren oder unbekannten Verhaltens: Thymus"
-                            },
-                            {
-                                "key": "D38.1",
-                                "name": "D38.1",
-                                "description": "Neubildung unsicheren oder unbekannten Verhaltens: Trachea, Bronchus und Lunge"
-                            }
-                        ]
-                    },
-                    {
-                        "key": "D39.%",
-                        "name": "D39.%",
-                        "description": "Neubildung unsicheren oder unbekannten Verhaltens: Ovar",
-                        "subgroup": [
-                            {
-                                "visible": false,
-                                "key": "D39",
-                                "name": "D39",
-                                "description": ""
-                            },
-                            {
-                                "key": "D39.1",
-                                "name": "D39.1",
-                                "description": "Neubildung unsicheren oder unbekannten Verhaltens: Ovar"
-                            },
-                            {
-                                "key": "D39.2",
-                                "name": "D39.2",
-                                "description": "Neubildung unsicheren oder unbekannten Verhaltens: Plazenta"
-                            },
-                            {
-                                "key": "D39.7",
-                                "name": "D39.7",
-                                "description": "Neubildung unsicheren oder unbekannten Verhaltens: Sonstige weibliche Genitalorgane"
-                            },
-                            {
-                                "key": "D39.0",
-                                "name": "D39.0",
-                                "description": "Neubildung unsicheren oder unbekannten Verhaltens: Uterus"
-                            },
-                            {
-                                "key": "D39.9",
-                                "name": "D39.9",
-                                "description": "Neubildung unsicheren oder unbekannten Verhaltens: Weibliches Genitalorgan, nicht näher bezeichnet"
-                            }
-                        ]
-                    },
-                    {
-                        "key": "D40.%",
-                        "name": "D40.%",
-                        "description": "Neubildung unsicheren oder unbekannten Verhaltens: Hoden",
-                        "subgroup": [
-                            {
-                                "visible": false,
-                                "key": "D40",
-                                "name": "D40",
-                                "description": ""
-                            },
-                            {
-                                "key": "D40.1",
-                                "name": "D40.1",
-                                "description": "Neubildung unsicheren oder unbekannten Verhaltens: Hoden"
-                            },
-                            {
-                                "key": "D40.9",
-                                "name": "D40.9",
-                                "description": "Neubildung unsicheren oder unbekannten Verhaltens: Männliches Genitalorgan, nicht näher bezeichnet"
-                            },
-                            {
-                                "key": "D40.0",
-                                "name": "D40.0",
-                                "description": "Neubildung unsicheren oder unbekannten Verhaltens: Prostata"
-                            },
-                            {
-                                "key": "D40.7",
-                                "name": "D40.7",
-                                "description": "Neubildung unsicheren oder unbekannten Verhaltens: Sonstige männliche Genitalorgane"
-                            }
-                        ]
-                    },
                             {
                                 "key": "D41.%",
                                 "name": "D41.%",
@@ -12792,120 +12794,120 @@
                                         "description": "Sonstige myelodysplastische Syndrome"
                                     }
                                 ]
-                            },    
-                        {
-                            "key": "D47.%",
-                            "name": "D47.%",
-                            "description": "Chronische Eosinophilen-Leukämie [Hypereosinophiles Syndrom]",
-                            "subgroup": [
-                                {
-                                    "visible": false,
-                                    "key": "D47",
-                                    "name": "D47",
-                                    "description": ""
-                                },
-                                {
-                                    "key": "D47.5",
-                                    "name": "D47.5",
-                                    "description": "Chronische Eosinophilen-Leukämie [Hypereosinophiles Syndrom]"
-                                },
-                                {
-                                    "key": "D47.1",
-                                    "name": "D47.1",
-                                    "description": "Chronische myeloproliferative Krankheit"
-                                },
-                                {
-                                    "key": "D47.3",
-                                    "name": "D47.3",
-                                    "description": "Essentielle (hämorrhagische) Thrombozythämie"
-                                },
-                                {
-                                    "key": "D47.0",
-                                    "name": "D47.0",
-                                    "description": "Histiozyten- und Mastzelltumor unsicheren oder unbekannten Verhaltens"
-                                },
-                                {
-                                    "key": "D47.2",
-                                    "name": "D47.2",
-                                    "description": "Monoklonale Gammopathie unbestimmter Signifikanz [MGUS]"
-                                },
-                                {
-                                    "key": "D47.9",
-                                    "name": "D47.9",
-                                    "description": "Neubildung unsicheren oder unbekannten Verhaltens des lymphatischen, blutbildenden und verwandten Gewebes, nicht näher bezeichnet"
-                                },
-                                {
-                                    "key": "D47.4",
-                                    "name": "D47.4",
-                                    "description": "Osteomyelofibrose"
-                                },
-                                {
-                                    "key": "D47.7",
-                                    "name": "D47.7",
-                                    "description": "Sonstige näher bezeichnete Neubildungen unsicheren oder unbekannten Verhaltens des lymphatischen, blutbildenden und verwandten Gewebes"
-                                }
-                            ]
-                        },
-                        {
-                            "key": "D48.%",
-                            "name": "D48.%",
-                            "description": "Neubildung unsicheren oder unbekannten Verhaltens, nicht näher bezeichnet",
-                            "subgroup": [
-                                {
-                                    "visible": false,
-                                    "key": "D48",
-                                    "name": "D48",
-                                    "description": ""
-                                },
-                                {
-                                    "key": "D48.9",
-                                    "name": "D48.9",
-                                    "description": "Neubildung unsicheren oder unbekannten Verhaltens, nicht näher bezeichnet"
-                                },
-                                {
-                                    "key": "D48.1",
-                                    "name": "D48.1",
-                                    "description": "Neubildung unsicheren oder unbekannten Verhaltens: Bindegewebe und andere Weichteilgewebe"
-                                },
-                                {
-                                    "key": "D48.6",
-                                    "name": "D48.6",
-                                    "description": "Neubildung unsicheren oder unbekannten Verhaltens: Brustdrüse [Mamma]"
-                                },
-                                {
-                                    "key": "D48.5",
-                                    "name": "D48.5",
-                                    "description": "Neubildung unsicheren oder unbekannten Verhaltens: Haut"
-                                },
-                                {
-                                    "key": "D48.0",
-                                    "name": "D48.0",
-                                    "description": "Neubildung unsicheren oder unbekannten Verhaltens: Knochen und Gelenkknorpel"
-                                },
-                                {
-                                    "key": "D48.2",
-                                    "name": "D48.2",
-                                    "description": "Neubildung unsicheren oder unbekannten Verhaltens: Periphere Nerven und autonomes Nervensystem"
-                                },
-                                {
-                                    "key": "D48.4",
-                                    "name": "D48.4",
-                                    "description": "Neubildung unsicheren oder unbekannten Verhaltens: Peritoneum"
-                                },
-                                {
-                                    "key": "D48.3",
-                                    "name": "D48.3",
-                                    "description": "Neubildung unsicheren oder unbekannten Verhaltens: Retroperitoneum"
-                                },
-                                {
-                                    "key": "D48.7",
-                                    "name": "D48.7",
-                                    "description": "Neubildung unsicheren oder unbekannten Verhaltens: Sonstige näher bezeichnete Lokalisationen"
-                                }
-                            ]
-                        }]
+                            },
+                            {
+                                "key": "D47.%",
+                                "name": "D47.%",
+                                "description": "Chronische Eosinophilen-Leukämie [Hypereosinophiles Syndrom]",
+                                "subgroup": [
+                                    {
+                                        "visible": false,
+                                        "key": "D47",
+                                        "name": "D47",
+                                        "description": ""
+                                    },
+                                    {
+                                        "key": "D47.5",
+                                        "name": "D47.5",
+                                        "description": "Chronische Eosinophilen-Leukämie [Hypereosinophiles Syndrom]"
+                                    },
+                                    {
+                                        "key": "D47.1",
+                                        "name": "D47.1",
+                                        "description": "Chronische myeloproliferative Krankheit"
+                                    },
+                                    {
+                                        "key": "D47.3",
+                                        "name": "D47.3",
+                                        "description": "Essentielle (hämorrhagische) Thrombozythämie"
+                                    },
+                                    {
+                                        "key": "D47.0",
+                                        "name": "D47.0",
+                                        "description": "Histiozyten- und Mastzelltumor unsicheren oder unbekannten Verhaltens"
+                                    },
+                                    {
+                                        "key": "D47.2",
+                                        "name": "D47.2",
+                                        "description": "Monoklonale Gammopathie unbestimmter Signifikanz [MGUS]"
+                                    },
+                                    {
+                                        "key": "D47.9",
+                                        "name": "D47.9",
+                                        "description": "Neubildung unsicheren oder unbekannten Verhaltens des lymphatischen, blutbildenden und verwandten Gewebes, nicht näher bezeichnet"
+                                    },
+                                    {
+                                        "key": "D47.4",
+                                        "name": "D47.4",
+                                        "description": "Osteomyelofibrose"
+                                    },
+                                    {
+                                        "key": "D47.7",
+                                        "name": "D47.7",
+                                        "description": "Sonstige näher bezeichnete Neubildungen unsicheren oder unbekannten Verhaltens des lymphatischen, blutbildenden und verwandten Gewebes"
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "D48.%",
+                                "name": "D48.%",
+                                "description": "Neubildung unsicheren oder unbekannten Verhaltens, nicht näher bezeichnet",
+                                "subgroup": [
+                                    {
+                                        "visible": false,
+                                        "key": "D48",
+                                        "name": "D48",
+                                        "description": ""
+                                    },
+                                    {
+                                        "key": "D48.9",
+                                        "name": "D48.9",
+                                        "description": "Neubildung unsicheren oder unbekannten Verhaltens, nicht näher bezeichnet"
+                                    },
+                                    {
+                                        "key": "D48.1",
+                                        "name": "D48.1",
+                                        "description": "Neubildung unsicheren oder unbekannten Verhaltens: Bindegewebe und andere Weichteilgewebe"
+                                    },
+                                    {
+                                        "key": "D48.6",
+                                        "name": "D48.6",
+                                        "description": "Neubildung unsicheren oder unbekannten Verhaltens: Brustdrüse [Mamma]"
+                                    },
+                                    {
+                                        "key": "D48.5",
+                                        "name": "D48.5",
+                                        "description": "Neubildung unsicheren oder unbekannten Verhaltens: Haut"
+                                    },
+                                    {
+                                        "key": "D48.0",
+                                        "name": "D48.0",
+                                        "description": "Neubildung unsicheren oder unbekannten Verhaltens: Knochen und Gelenkknorpel"
+                                    },
+                                    {
+                                        "key": "D48.2",
+                                        "name": "D48.2",
+                                        "description": "Neubildung unsicheren oder unbekannten Verhaltens: Periphere Nerven und autonomes Nervensystem"
+                                    },
+                                    {
+                                        "key": "D48.4",
+                                        "name": "D48.4",
+                                        "description": "Neubildung unsicheren oder unbekannten Verhaltens: Peritoneum"
+                                    },
+                                    {
+                                        "key": "D48.3",
+                                        "name": "D48.3",
+                                        "description": "Neubildung unsicheren oder unbekannten Verhaltens: Retroperitoneum"
+                                    },
+                                    {
+                                        "key": "D48.7",
+                                        "name": "D48.7",
+                                        "description": "Neubildung unsicheren oder unbekannten Verhaltens: Sonstige näher bezeichnete Lokalisationen"
+                                    }
+                                ]
+                            }
+                        ]
                     }
-                   
                 ]
             },
             {
