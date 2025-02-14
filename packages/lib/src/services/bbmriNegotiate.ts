@@ -55,9 +55,16 @@ export async function bbmriNegotiate(
     }
 
     const bbmriCollectionResources: BbmriCollectionResource[] = [];
-    for (const siteMapping of currentLensOptions.negotiateOptions
-        .siteMappings) {
-        if (sitesToNegotiate.includes(siteMapping.site)) {
+    for (const site of sitesToNegotiate) {
+        const siteMapping =
+            currentLensOptions.negotiateOptions.siteMappings.find(
+                (siteMapping) => siteMapping.site === site,
+            );
+        if (siteMapping === undefined) {
+            console.error(
+                `Site "${site}" is missing from negotiateOptions.siteMappings in the lens options`,
+            );
+        } else {
             bbmriCollectionResources.push({
                 id: siteMapping.collection,
                 name: siteMapping.collection,
