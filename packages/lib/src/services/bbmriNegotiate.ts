@@ -78,6 +78,7 @@ export async function bbmriNegotiate(
 
     await sendRequestToNegotiator(
         currentLensOptions.negotiateOptions.url,
+        currentLensOptions.negotiateOptions.authorizationHeader,
         bbmriNegotiatorRequest,
     );
 }
@@ -89,10 +90,12 @@ export async function bbmriNegotiate(
  * Negotiator responds with an unexpected HTTP status code an error is shown to
  * the user.
  * @param url The request endpoint for starting the application process
+ * @param authorizationHeader The value of the Authorization header
  * @param bbmriNegotiateRequest The request payload
  */
 async function sendRequestToNegotiator(
     url: string,
+    authorizationHeader: string,
     bbmriNegotiateRequest: BbmriNegotiateRequest,
 ): Promise<void> {
     let response;
@@ -103,8 +106,7 @@ async function sendRequestToNegotiator(
             headers: {
                 Accept: "application/json; charset=utf-8",
                 "Content-Type": "application/json",
-                Authorization:
-                    "Basic YmJtcmktZGlyZWN0b3J5Omw5RFJLVUROcTBTbDAySXhaUGQ2",
+                Authorization: authorizationHeader,
             },
             body: JSON.stringify(bbmriNegotiateRequest),
         });
