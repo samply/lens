@@ -1,164 +1,136 @@
+import { get } from "svelte/store";
 import { lensOptions } from "../stores/options";
-import type {
-    LensOptions,
-    NegotiatorOptions,
-    NegotiateOptionsSiteMapping,
-} from "../types/options";
 import { getHumanReadableQuery } from "../stores/datarequests";
 import { errorChannel } from "../stores/error-channel";
 
-type NegotiatorResponse = Response & {
-    url?: string;
-    redirect_uri?: string;
-    id?: string;
-    status: number;
-};
-
-let negotiateOptions: NegotiatorOptions;
-const siteCollectionMap: Map<string, NegotiateOptionsSiteMapping> = new Map();
-
-lensOptions.subscribe((options: LensOptions) => {
-    if (!options) return;
-
-    /**
-     * TODO: implement multiple collections per site
-     * need to know how multiple collections are returned from the backend
-     */
-
-    negotiateOptions = options.negotiateOptions as NegotiatorOptions;
-    negotiateOptions?.siteMappings?.forEach((site) => {
-        siteCollectionMap.set(site.site, site);
-    });
-});
-
 /**
- * @param sitesToNegotiate the sites to negotiate with
- * @returns an array of Collection objects
+ * The request payload expected by the BBMRI Negotiator to start the application
+ * process.
  */
-export const getCollections = (
-    sitesToNegotiate: string[],
-): NegotiateOptionsSiteMapping[] => {
-    const siteCollections: NegotiateOptionsSiteMapping[] = [];
-
-    sitesToNegotiate.forEach((site: string) => {
-        // TODO: Why is site id mapped to Uppercase?
-        const siteCollection = siteCollectionMap.get(site);
-        if (siteCollection !== undefined) {
-            siteCollections.push(siteCollection);
-        }
-    });
-
-    return siteCollections;
+type BbmriNegotiateRequest = {
+    /** URL of the lens interface. The BBMRI Negotiator uses this to send the user back to lens. */
+    url: string;
+    /** A human readable description of the query used in lens */
+    humanReadable: string;
+    /** The resources that are requested */
+    resources: BbmriCollectionResource[];
 };
 
 /**
- * builds a sendable query object from the current query
- * sends query to negotiator
- * redirects to negotiator
- * @param sitesToNegotiate the sites to negotiate with
+ * Description of a resource as expected by the BBMRI Negotiator.
  */
-export const bbmrinegotiate = async (
-    sitesToNegotiate: string[],
-): Promise<void> => {
-    const humanReadable: string = getHumanReadableQuery();
-    const collections: NegotiateOptionsSiteMapping[] =
-        getCollections(sitesToNegotiate);
-    const negotiatorResponse = await sendRequestToNegotiator(
-        humanReadable,
-        collections,
-    );
-
-    switch (negotiatorResponse.status) {
-        case 201: {
-            if (!negotiatorResponse.url) {
-                console.error(
-                    "Negotiator response does not contain redirect uri",
-                );
-                errorChannel.set("Die Antwort vom Negotiator ist fehlerhaft"); // show user-facing error
-                return;
-            } else {
-                const data = await negotiatorResponse.json();
-                window.location.href = data.redirectUrl;
-            }
-            break;
-        }
-        case 401: {
-            alert(
-                "An unexpected error has occurred. Please contact support if the issue persists.",
-            );
-            break;
-        }
-        case 400:
-        case 500: {
-            alert(
-                "The service is temporarily unavailable. Please try again in a few minutes.",
-            );
-            break;
-        }
-    }
-};
-
-interface BbmriCollectionResource {
+type BbmriCollectionResource = {
+    /** A unique Identifier of the Resource */
     id: string;
+    /** Name of the Resource */
     name: string;
+    /** Organization managing the resource */
     organization: {
+        /** Unique identifier of the organization */
         id: number;
+        /** External identifier of the organization */
         externalId: string;
+        /** Name of the organization */
         name: string;
     };
+};
+
+/**
+ * Initiate the process of applying for access to samples or data (also known as
+ * resources). Sends a request to the BBBMRI Negitiator describing the resources
+ * of interest. The user is then redirected to the BBMRI Negitator to submit the
+ * application.
+ * @param sitesToNegotiate The names of the sites with resources of interest.
+ * These are looked up in the "siteMappings" array of the "negotiateOptions"
+ * object in the lens options.
+ */
+export async function bbmriNegotiate(
+    sitesToNegotiate: string[],
+): Promise<void> {
+    const currentLensOptions = get(lensOptions);
+    if (currentLensOptions.negotiateOptions === undefined) {
+        console.error('"negotiateOptions" is missing the lens options');
+        errorChannel.set('"negotiateOptions" fehlt in den Lens-Optionen');
+        return;
+    }
+
+    const bbmriCollectionResources: BbmriCollectionResource[] = [];
+    for (const site of sitesToNegotiate) {
+        const siteMapping =
+            currentLensOptions.negotiateOptions.siteMappings.find(
+                (siteMapping) => siteMapping.site === site,
+            );
+        if (siteMapping === undefined) {
+            console.error(
+                `Site "${site}" is missing from negotiateOptions.siteMappings in the lens options`,
+            );
+        } else {
+            bbmriCollectionResources.push({
+                id: siteMapping.collection,
+                name: siteMapping.collection,
+                organization: {
+                    id: 0,
+                    externalId: siteMapping.site_id,
+                    name: siteMapping.site,
+                },
+            });
+        }
+    }
+
+    const bbmriNegotiatorRequest: BbmriNegotiateRequest = {
+        humanReadable: getHumanReadableQuery(),
+        url: `${window.location.protocol}//${window.location.host}`,
+        resources: bbmriCollectionResources,
+    };
+
+    await sendRequestToNegotiator(
+        currentLensOptions.negotiateOptions.url,
+        currentLensOptions.negotiateOptions.authorizationHeader,
+        bbmriNegotiatorRequest,
+    );
 }
 
 /**
- *
- * @param humanReadable a human readable query string to view in the negotiator project
- * @param collections the collections to negotiate with
- * @returns the redirect uri from the negotiator
+ * Sends the request to the BBMRI Negotiator to start the application process.
+ * In case of success the user is redirected to the BBMRI Negotiator to continue
+ * the application process. In case of a network error or if the BBMRI
+ * Negotiator responds with an unexpected HTTP status code an error is shown to
+ * the user.
+ * @param url The request endpoint for starting the application process
+ * @param authorizationHeader The value of the Authorization header
+ * @param bbmriNegotiateRequest The request payload
  */
 async function sendRequestToNegotiator(
-    humanReadable: string,
-    collections: NegotiateOptionsSiteMapping[],
-): Promise<NegotiatorResponse> {
-    /**
-     * handle redirect to negotiator url
-     */
-    const returnURL: string = `${window.location.protocol}//${window.location.host}`;
-
-    let response!: Response;
-
-    const BBMRI_collection_resource: BbmriCollectionResource[] = [];
-
-    collections.forEach(function (collection) {
-        BBMRI_collection_resource.push({
-            id: collection.collection,
-            name: collection.collection,
-            organization: {
-                id: 0,
-                externalId: collection.site_id,
-                name: collection.site,
-            },
-        });
-    });
-
+    url: string,
+    authorizationHeader: string,
+    bbmriNegotiateRequest: BbmriNegotiateRequest,
+): Promise<void> {
+    let response;
     try {
-        response = await fetch(`${negotiateOptions.url}`, {
+        // Swagger documentation: https://negotiator.bbmri-eric.eu/api/swagger-ui/index.html#/Requests/add
+        response = await fetch(url, {
             method: "POST",
             headers: {
                 Accept: "application/json; charset=utf-8",
                 "Content-Type": "application/json",
-                Authorization:
-                    "Basic YmJtcmktZGlyZWN0b3J5Omw5RFJLVUROcTBTbDAySXhaUGQ2",
+                Authorization: authorizationHeader,
             },
-            body: JSON.stringify({
-                humanReadable: humanReadable,
-                url: returnURL,
-                resources: BBMRI_collection_resource,
-            }),
+            body: JSON.stringify(bbmriNegotiateRequest),
         });
-
-        return response as NegotiatorResponse;
     } catch (error) {
         console.error(error);
-        errorChannel.set("Fehler beim Bearbeiten der Anfrage"); // show user-facing error
-        return new Response() as NegotiatorResponse;
+        errorChannel.set("Fehler beim Anfragen der Daten und Proben");
+        return;
+    }
+
+    if (response.status === 201) {
+        const data = await response.json();
+        // Redirect the user
+        window.location.href = data.redirectUrl;
+    } else {
+        console.error(
+            `Expected HTTP status 201 from BBMRI Negotiator but got ${response.status} with response body: ${await response.text()}`,
+        );
+        errorChannel.set("Fehler beim Anfragen der Daten und Proben");
     }
 }
