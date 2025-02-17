@@ -63,6 +63,7 @@
                     "enum": [
                         "single-select",
                         "number",
+                        "string",
                         "autocomplete",
                         "date"
                     ]

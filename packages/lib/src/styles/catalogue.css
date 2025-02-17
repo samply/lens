@@ -327,6 +327,33 @@ lens-catalogue::part(criterion-autocomplete-tooltip) {
   border: solid 1px var(--blue);
 }
 
+
+/**
+  * String
+  */
+lens-catalogue::part(string-formfield) {
+  margin-bottom: var(--gap-xs);
+  margin-top: var(--gap-xs);
+  position: relative;
+}
+
+lens-catalogue::part(string-formfield-input) {
+  box-sizing: border-box;
+  border: solid 1px var(--dark-gray);
+  border-top: none;
+  padding-left: var(--gap-xs);
+  outline: none;
+  border-top-left-radius: var(--border-radius-small);
+  border-top-right-radius: var(--border-radius-small);
+  font-size: var(--font-size-s);
+}
+
+lens-catalogue::part(string-formfield-input):focus {
+  border-color: var(--blue);
+  width: 100%;
+}
+
+
 lens-catalogue::part(formfield-error) {
   color: var(--red);
   border-color: var(--red);

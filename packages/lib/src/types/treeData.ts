@@ -25,7 +25,7 @@ export type CategoryLeaf = {
     key: string;
     name: string;
     system?: string;
-    fieldType: "single-select" | "autocomplete" | "number" | "date";
+    fieldType: "single-select" | "autocomplete" | "number" | "string" | "date";
     type: "EQUALS" | "BETWEEN";
     min?: number | string;
     max?: number | string;
