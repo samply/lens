@@ -89,9 +89,6 @@ export const getAggregatedPopulationForStratumCode = (
     stratumCode: string,
     stratifier: string,
 ): number => {
-    if (store.size === 0) {
-        return 1;
-    }
     let population = 0;
     for (const site of store.values()) {
         if (site.status === "succeeded") {
