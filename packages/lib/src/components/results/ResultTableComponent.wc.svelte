@@ -68,41 +68,41 @@
 
                     if (value.status === "claimed") {
                         tableRow.push(claimedText);
-                        return;
-                    }
-
-                    if (header.dataKey) {
-                        tableRow.push(
-                            getSitePopulationForCode(
-                                value.data!,
-                                header.dataKey,
-                            ),
-                        );
-                        return;
-                    }
-
-                    let aggregatedPopulation: number = 0;
-
-                    header.aggregatedDataKeys?.forEach((dataKey) => {
-                        if (dataKey.groupCode) {
-                            aggregatedPopulation += getSitePopulationForCode(
-                                value.data!,
-                                dataKey.groupCode,
+                    } else if (value.status === "succeeded") {
+                        if (header.dataKey) {
+                            tableRow.push(
+                                getSitePopulationForCode(
+                                    value.data,
+                                    header.dataKey,
+                                ),
                             );
-                        } else if (
-                            dataKey.stratifierCode &&
-                            dataKey.stratumCode
-                        ) {
-                            aggregatedPopulation +=
-                                getSitePopulationForStratumCode(
-                                    value.data!,
-                                    dataKey.stratumCode,
-                                    dataKey.stratifierCode,
-                                );
+                            return;
                         }
-                    });
 
-                    tableRow.push(aggregatedPopulation);
+                        let aggregatedPopulation: number = 0;
+
+                        header.aggregatedDataKeys?.forEach((dataKey) => {
+                            if (dataKey.groupCode) {
+                                aggregatedPopulation +=
+                                    getSitePopulationForCode(
+                                        value.data,
+                                        dataKey.groupCode,
+                                    );
+                            } else if (
+                                dataKey.stratifierCode &&
+                                dataKey.stratumCode
+                            ) {
+                                aggregatedPopulation +=
+                                    getSitePopulationForStratumCode(
+                                        value.data,
+                                        dataKey.stratumCode,
+                                        dataKey.stratifierCode,
+                                    );
+                            }
+                        });
+
+                        tableRow.push(aggregatedPopulation);
+                    }
                 },
             );
 
