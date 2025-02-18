@@ -94,7 +94,6 @@
             labels: ["", "", "", ""],
             datasets: [
                 {
-                    label: "",
                     data: [1, 1, 1, 1],
                     backgroundColor: ["#E6E6E6"],
                     backgroundHoverColor: ["#E6E6E6"],
@@ -233,7 +232,6 @@
                 labels: chartLabels,
                 data: [
                     {
-                        label: "",
                         data: dataSet,
                         backgroundColor,
                         backgroundHoverColor,
@@ -302,7 +300,6 @@
             labels: combinedSubGroupData.labels,
             data: [
                 {
-                    label: "",
                     data: combinedSubGroupData.data,
                     backgroundColor,
                     backgroundHoverColor,
@@ -439,7 +436,7 @@
             chartLabels,
         );
 
-        // If the chart is empty and no responses are pending show a
+        // If the chart is empty and no responses are pending show "No Data Available"
         noDataAvailable =
             chartData.labels.length === 0 &&
             !Array.from(responseStore.values()).some(
