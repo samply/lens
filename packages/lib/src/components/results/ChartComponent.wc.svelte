@@ -404,22 +404,8 @@
      */
     const setChartData = (responseStore: ResponseStore): void => {
         if (responseStore.size === 0) {
-            noDataAvailable = true;
             return;
         }
-
-        let isDataAvailable: boolean = false;
-
-        responseStore.forEach((value) => {
-            if (value.status === "succeeded") isDataAvailable = true;
-        });
-
-        if (!isDataAvailable) {
-            noDataAvailable = true;
-            return;
-        }
-
-        noDataAvailable = false;
 
         let chartLabels: string[] = [];
 
@@ -452,6 +438,13 @@
             responseStore,
             chartLabels,
         );
+
+        // If the chart is empty and no responses are pending show a
+        noDataAvailable =
+            chartData.labels.length === 0 &&
+            !Array.from(responseStore.values()).some(
+                (response) => response.status === "claimed",
+            );
 
         chart.data.datasets = chartData.data;
         chartLabels = chartData.labels;
@@ -616,7 +609,9 @@
     {/if}
 
     {#if noDataAvailable}
-        <p>No Data Available</p>
+        <div part="chart-overlay">
+            <p part="no-data-available">No Data Available</p>
+        </div>
     {/if}
 
     <canvas
@@ -627,12 +622,3 @@
     />
     <slot />
 </div>
-
-<style>
-    p {
-        position: absolute;
-        top: 45%;
-        font-weight: bold;
-        left: 30%;
-    }
-</style>
