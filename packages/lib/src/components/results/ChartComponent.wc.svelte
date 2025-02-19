@@ -79,6 +79,9 @@
     /**
      * initialize the chart
      */
+
+    let noDataAvailable: boolean = false;
+
     let canvas!: HTMLCanvasElement;
 
     let chart: Chart;
@@ -91,7 +94,6 @@
             labels: ["", "", "", ""],
             datasets: [
                 {
-                    label: "",
                     data: [1, 1, 1, 1],
                     backgroundColor: ["#E6E6E6"],
                     backgroundHoverColor: ["#E6E6E6"],
@@ -230,7 +232,6 @@
                 labels: chartLabels,
                 data: [
                     {
-                        label: "",
                         data: dataSet,
                         backgroundColor,
                         backgroundHoverColor,
@@ -299,7 +300,6 @@
             labels: combinedSubGroupData.labels,
             data: [
                 {
-                    label: "",
                     data: combinedSubGroupData.data,
                     backgroundColor,
                     backgroundHoverColor,
@@ -400,15 +400,9 @@
      * @param responseStore - the response store
      */
     const setChartData = (responseStore: ResponseStore): void => {
-        if (responseStore.size === 0) return;
-
-        let isDataAvailable: boolean = false;
-
-        responseStore.forEach((value) => {
-            if (value.status === "succeeded") isDataAvailable = true;
-        });
-
-        if (!isDataAvailable) return;
+        if (responseStore.size === 0) {
+            return;
+        }
 
         let chartLabels: string[] = [];
 
@@ -441,6 +435,13 @@
             responseStore,
             chartLabels,
         );
+
+        // If the chart is empty and no responses are pending show "No Data Available"
+        noDataAvailable =
+            chartData.data[0].data.every((value) => value === 0) &&
+            !Array.from(responseStore.values()).some(
+                (response) => response.status === "claimed",
+            );
 
         chart.data.datasets = chartData.data;
         chartLabels = chartData.labels;
@@ -603,6 +604,13 @@
     {#if options.hintText}
         <InfoButtonComponent message={options.hintText} />
     {/if}
+
+    {#if noDataAvailable}
+        <div part="chart-overlay">
+            <p part="no-data-available">No Data Available</p>
+        </div>
+    {/if}
+
     <canvas
         part="chart-canvas"
         bind:this={canvas}
