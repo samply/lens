@@ -438,7 +438,7 @@
 
         // If the chart is empty and no responses are pending show "No Data Available"
         noDataAvailable =
-            chartData.labels.length === 0 &&
+            chartData.data[0].data.every((value) => value === 0) &&
             !Array.from(responseStore.values()).some(
                 (response) => response.status === "claimed",
             );
