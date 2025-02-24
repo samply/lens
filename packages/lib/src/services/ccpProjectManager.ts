@@ -236,15 +236,14 @@ function buildPMBody(
     const query = { lang: "cql", lib: library, measure: measure };
 
     const body: PmBody = {
-        query: btoa(decodeURI(JSON.stringify(query))),
+        query: JSON.stringify(query),
         explorer_ids: negotiationPartners,
         query_format: "CQL_DATA",
         explorer_url:
             returnURL +
             projectCodeParam +
             "&query=" +
-            btoa(JSON.stringify(ast)),
+            btoa(JSON.stringify(currentQuery)),
     };
-
     return JSON.stringify(body);
 }
