@@ -75,13 +75,11 @@ export const negotiate = async (sitesToNegotiate: string[]): Promise<void> => {
     const humanReadable: string = getHumanReadableQuery();
     const collections: ProjectManagerOptionsSiteMapping[] =
         getCollections(sitesToNegotiate);
-    const queryBase64String: string = btoa(JSON.stringify(sendableQuery.query));
 
     const response: ProjectManagerResponse = await sendRequestToProjectManager(
         sendableQuery,
         humanReadable,
         collections,
-        queryBase64String,
     );
 
     if (!response.redirect_uri) {
@@ -102,14 +100,12 @@ export const negotiate = async (sitesToNegotiate: string[]): Promise<void> => {
  * @param sendableQuery the query to be sent to the negotiator
  * @param humanReadable a human readable query string to view in the negotiator project
  * @param collections the collections to negotiate with
- * @param queryBase64String the query in base64 string format
  * @returns a promise containing the response from the project manager. The response contains the redirect uri
  */
 async function sendRequestToProjectManager(
     sendableQuery: SendableQuery,
     humanReadable: string,
     collections: ProjectManagerOptionsSiteMapping[],
-    queryBase64String: string,
 ): Promise<ProjectManagerResponse> {
     /**
      * get temporary token from oauth2
@@ -131,13 +127,13 @@ async function sendRequestToProjectManager(
     /**
      * build query params
      */
-    const queryParam: string =
-        queryBase64String != "" ? `&query=${queryBase64String}` : "";
+    // const queryParam: string =
+    //     queryBase64String != "" ? `&query=${queryBase64String}` : "";
 
     const negotiationPartners = collections
         .map((collection) => collection.collection.toLocaleLowerCase())
         .join(",");
-    const returnURL: string = `${window.location.protocol}//${window.location.host}/?collections=${negotiationPartners}${queryParam}`;
+    const returnURL: string = `${window.location.protocol}//${window.location.host}/?collections=${negotiationPartners}`;
     const urlParams: URLSearchParams = new URLSearchParams(
         window.location.search,
     );
@@ -245,11 +241,10 @@ function buildPMBody(
         query_format: "CQL_DATA",
         explorer_url:
             returnURL +
-            "?" +
             projectCodeParam +
-            "&ast=" +
-            btoa(decodeURI(JSON.stringify(ast))),
+            "&query=" +
+            btoa(JSON.stringify(ast)),
     };
 
-    return btoa(decodeURI(JSON.stringify(body)));
+    return JSON.stringify(body);
 }
