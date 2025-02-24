@@ -24,7 +24,7 @@
 </script>
 
 <tr part="table-body-row">
-    <td part="table-body-cell"
+    <td part="table-body-cell table-body-cell-checkbox"
         ><input
             part="table-body-checkbox"
             type="checkbox"
