@@ -21,7 +21,9 @@
     let catalogueUrl: string = "";
     let optionsFilePath: string = "";
 
-    if (import.meta.env.VITE_TARGET_ENVIRONMENT === "production") {
+    let environment = import.meta.env.VITE_TARGET_ENVIRONMENT;
+
+    if (environment === "production") {
         catalogueUrl = "catalogues/catalogue-dktk.json";
         optionsFilePath = "options-ccp-prod.json";
     } else {
@@ -158,10 +160,12 @@
         <div class="charts">
             <div class="chart-wrapper result-summary">
                 <lens-result-summary />
-                <lens-negotiate-button
-                    type={"ProjectManager"}
-                    title={"Daten und Proben Anfragen"}
-                ></lens-negotiate-button>
+                {#if environment !== "production"}
+                    <lens-negotiate-button
+                        type={"ProjectManager"}
+                        title={"Daten und Proben Anfragen"}
+                    ></lens-negotiate-button>
+                {/if}
                 <lens-search-modified-display
                     >Diagramme repräsentieren nicht mehr die aktuelle Suche!</lens-search-modified-display
                 >
@@ -290,7 +294,7 @@
     >
     <a
         class="privacy-policy"
-        href="https://hub.dkfz.de/s/M8Ldxd5GsfrQG9S"
+        href="https://hub.dkfz.de/s/5LPccy6fgRSoD65"
         download="datenschutzerklaerung"
         target="_blank">Datenschutz</a
     >
