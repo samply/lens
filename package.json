@@ -30,9 +30,9 @@
     "start": "npm run dev -s",
     "dev": "vite --config vite.demo.config.ts",
     "build": "rimraf dist && vite build",
-    "build:demo": "node options_tester.cjs && vite build --config vite.demo.config.ts",
+    "build:demo": "vite build --config vite.demo.config.ts",
     "preview": "vite preview --config vite.demo.config.ts",
-    "check": "node options_tester.cjs && svelte-check --tsconfig ./tsconfig.json",
+    "check": "svelte-check --tsconfig ./tsconfig.json",
     "lint": "lint-staged",
     "watch": "rimraf dist && vite build --watch",
     "link": "wait-on dist/types.d.ts && npm link",
@@ -49,6 +49,7 @@
     "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
+    "ajv-cli": "^5.0.0",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-jsdoc": "^48.11.0",
@@ -70,7 +71,8 @@
     "wait-on": "^7.2.0"
   },
   "dependencies": {
-    "@exodus/schemasafe": "^1.3.0",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
     "chart.js": "^4.4.6",
     "uuid": "^11.0.3"
   },
