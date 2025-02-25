@@ -25,17 +25,13 @@ export const buildAstFromQuery = (queryStore: QueryItem[][]): AstTopLayer => {
 
     // The empty query is currently a special case because focus and potentially other consumers want it like this
     // Instead of:
-    // {"nodeType":"branch","operand":"OR","children":[{"nodeType":"branch","operand":"AND","children":[]}]}
+    // {"operand":"OR","children":[{"operand":"AND","children":[]}]}
     // We return:
-    // {"nodeType":"branch","operand":"OR","children":[]}
+    // {"operand":"OR","children":[]}
     if (ast.children.length === 1) {
         const onlyChild = ast.children[0];
-        if (
-            onlyChild.nodeType === "branch" &&
-            onlyChild.children.length === 0
-        ) {
+        if (isTopLayer(onlyChild) && onlyChild.children.length === 0) {
             return {
-                nodeType: "branch",
                 operand: "OR",
                 children: [],
             };
@@ -260,7 +256,6 @@ export const returnNestedValues = (
      */
     if (Array.isArray(item)) {
         return {
-            nodeType: "branch",
             operand: operand,
             children: item.map((value) => {
                 return returnNestedValues(value, operand, item);
@@ -273,7 +268,6 @@ export const returnNestedValues = (
      */
     if ("values" in item && Array.isArray(item.values)) {
         return {
-            nodeType: "branch",
             key: item.key,
             operand: operand,
             children: item.values.map((value) => {
@@ -287,7 +281,6 @@ export const returnNestedValues = (
      */
     if ("value" in item && Array.isArray(item.value)) {
         return {
-            nodeType: "branch",
             key: item.name,
             operand: operand,
             children: item.value.map((value) => {
@@ -306,7 +299,6 @@ export const returnNestedValues = (
         !Array.isArray(item.value)
     ) {
         return {
-            nodeType: "leaf",
             key: topLayerItem.key,
             type: topLayerItem.type,
             system: topLayerItem.system || "",
@@ -319,7 +311,6 @@ export const returnNestedValues = (
      */
     if ("value" in item && typeof item.value === "string") {
         return {
-            nodeType: "leaf",
             key: item.value,
             type: "EQUALS",
             system: "",
