@@ -7,7 +7,7 @@ import {
     type AstBottomLayerValue,
 } from "../types/ast";
 import type { QueryItem, QueryValue, queryStoreItem } from "../types/queryData";
-import type { AggregatedValue } from "../types/treeData";
+import type { AggregatedValue } from "../types/catalogue";
 import {
     catalogue,
     getCategoryFromKey,
@@ -99,9 +99,6 @@ const convertCriteria = (criteria: AstTopLayer): QueryItem | undefined => {
         system: checkedValues[0].system,
         values: convertedValues,
     };
-    if (catalogueCategory != undefined && "description" in catalogueCategory) {
-        convertedCriteria.description = catalogueCategory.description;
-    }
     return convertedCriteria;
 };
 
@@ -121,10 +118,6 @@ const convertComplexCriteria = (criteria: AstTopLayer): QueryItem => {
         name: criteriaCategory != undefined ? criteriaCategory.name : "",
         // NOTE: Assuming hard coding here, proof me wrong
         type: "EQUALS",
-        description:
-            criteriaCategory != undefined && "description" in criteriaCategory
-                ? criteriaCategory.description
-                : "",
         system: "",
         values: convertedValues,
     };

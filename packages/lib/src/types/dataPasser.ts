@@ -1,7 +1,7 @@
 import type { AstTopLayer } from "./ast";
 import type { ResponseStore } from "./backend";
 import type { QueryItem, QueryValue } from "./queryData";
-import type { Category } from "./treeData";
+import type { Category } from "./catalogue";
 
 export type AddStratifierToQueryAPIParams = {
     label: string;
