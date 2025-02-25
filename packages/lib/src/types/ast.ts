@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export type AstElement = AstTopLayer | AstBottomLayerValue;
 export const isTopLayer = (x: AstElement): x is AstTopLayer => "operand" in x;
 export const isBottomLayer = (x: AstElement): x is AstBottomLayerValue =>
@@ -6,14 +5,12 @@ export const isBottomLayer = (x: AstElement): x is AstBottomLayerValue =>
 
 // TODO: Split this into two types, one with mandatory `key` and one without
 export type AstTopLayer = {
-    nodeType: "branch";
     key?: string;
     operand: "AND" | "OR";
     children: AstElement[];
 };
 
 export type AstBottomLayerValue = {
-    nodeType: "leaf";
     key: string;
     type: string;
     system?: string;

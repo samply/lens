@@ -64,7 +64,6 @@ First(
 
 define AgeClass:
 if (Patient.birthDate is null) then 'unknown' else ToString((AgeInYears() div 10) * 10)
-if (PrimaryDiagnosis.onset is null) then 'unknown' else ToString((AgeInYearsAt(FHIRHelpers.ToDateTime(PrimaryDiagnosis.onset)) div 10) * 10)
 
 define PatientDeceased:
 First (from [Observation: Code '75186-7' from loinc] O return O.value.coding.where(system = 'http://dktk.dkfz.de/fhir/onco/core/CodeSystem/VitalstatusCS').code.first())

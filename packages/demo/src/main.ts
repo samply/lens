@@ -5,9 +5,6 @@
 
 import "../../lib";
 
-// import "./fragment-development.css";
-// import App from "./AppFragmentDevelopment.svelte";
-
 import "./ccp.css";
 import App from "./AppCCP.svelte";
 

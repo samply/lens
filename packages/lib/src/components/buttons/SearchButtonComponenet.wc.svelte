@@ -23,7 +23,7 @@
     } from "../../types/backend";
     import type { BlazeOption } from "../../types/blaze";
     import type { SpotOption } from "../../types/spot";
-    import type { AstTopLayer } from "../../types/ast";
+    import { isTopLayer, type AstTopLayer } from "../../types/ast";
     import type { Site } from "../../types/response";
 
     export let title: string = "Search";
@@ -54,12 +54,10 @@
         // If one of the AND nodes has no children that means the corresponding search bar is empty.
         if (
             ast.children.some(
-                (child) =>
-                    child.nodeType === "branch" && child.children.length === 0,
+                (child) => isTopLayer(child) && child.children.length === 0,
             ) &&
             ast.children.some(
-                (child) =>
-                    child.nodeType === "branch" && child.children.length !== 0,
+                (child) => isTopLayer(child) && child.children.length !== 0,
             )
         ) {
             console.error(

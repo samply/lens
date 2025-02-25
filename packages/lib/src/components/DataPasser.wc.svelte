@@ -6,6 +6,7 @@
 
 <!-- This component offers an api to pass and get data from the stores -->
 <script lang="ts">
+    import { get } from "svelte/store";
     import { catalogue, getCriteria } from "../stores/catalogue";
     import { responseStore, updateResponseStore } from "../stores/response";
     import {
@@ -24,6 +25,7 @@
         RemoveValueFromQueryAPIParams,
     } from "../types/dataPasser";
     import { buildQueryFromAst } from "../helpers/ast-transformer";
+    import type { Category } from "../types/treeData";
 
     /**
      * Getters
@@ -65,9 +67,18 @@
      * returns the catalogue to the library user
      * @param category the category name (e.g. "diagnosis")
      * @returns array of strings containing the bottom level items' keys
+     * @deprecated Marked for deletion in v0.4.7. You may use getCatalogueAPI() and extract the criteria yourself.
      */
     export const getCriteriaAPI = (category: string): string[] => {
         return getCriteria(category);
+    };
+
+    /**
+     * Get the catalogue
+     * @returns The catalogue
+     */
+    export const getCatalogueAPI = (): Category[] => {
+        return get(catalogue);
     };
 
     /**

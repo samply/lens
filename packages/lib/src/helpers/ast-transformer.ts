@@ -21,7 +21,24 @@ import { get } from "svelte/store";
  * @returns Ast: the AST will later be converted to a query language of choice
  */
 export const buildAstFromQuery = (queryStore: QueryItem[][]): AstTopLayer => {
-    return returnNestedValues(queryStore) as AstTopLayer;
+    const ast = returnNestedValues(queryStore) as AstTopLayer;
+
+    // The empty query is currently a special case because focus and potentially other consumers want it like this
+    // Instead of:
+    // {"operand":"OR","children":[{"operand":"AND","children":[]}]}
+    // We return:
+    // {"operand":"OR","children":[]}
+    if (ast.children.length === 1) {
+        const onlyChild = ast.children[0];
+        if (isTopLayer(onlyChild) && onlyChild.children.length === 0) {
+            return {
+                operand: "OR",
+                children: [],
+            };
+        }
+    }
+
+    return ast;
 };
 
 /**
@@ -239,7 +256,6 @@ export const returnNestedValues = (
      */
     if (Array.isArray(item)) {
         return {
-            nodeType: "branch",
             operand: operand,
             children: item.map((value) => {
                 return returnNestedValues(value, operand, item);
@@ -252,7 +268,6 @@ export const returnNestedValues = (
      */
     if ("values" in item && Array.isArray(item.values)) {
         return {
-            nodeType: "branch",
             key: item.key,
             operand: operand,
             children: item.values.map((value) => {
@@ -266,7 +281,6 @@ export const returnNestedValues = (
      */
     if ("value" in item && Array.isArray(item.value)) {
         return {
-            nodeType: "branch",
             key: item.name,
             operand: operand,
             children: item.value.map((value) => {
@@ -285,7 +299,6 @@ export const returnNestedValues = (
         !Array.isArray(item.value)
     ) {
         return {
-            nodeType: "leaf",
             key: topLayerItem.key,
             type: topLayerItem.type,
             system: topLayerItem.system || "",
@@ -298,7 +311,6 @@ export const returnNestedValues = (
      */
     if ("value" in item && typeof item.value === "string") {
         return {
-            nodeType: "leaf",
             key: item.value,
             type: "EQUALS",
             system: "",

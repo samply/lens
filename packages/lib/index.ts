@@ -13,4 +13,4 @@ export { default as DataPasser } from "./src/components/DataPasser.wc.svelte";
 export { default as ModifiedSearchComponent } from "./src/components/informational/ModifiedSearchComponent.wc.svelte";
 export { default as ErrorToasts } from "./src/components/ErrorToasts.wc.svelte";
 
-export * from "./src/styles/index.css";
+import "./src/styles/index.css";
