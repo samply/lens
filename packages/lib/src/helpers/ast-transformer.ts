@@ -25,9 +25,9 @@ export const buildAstFromQuery = (queryStore: QueryItem[][]): AstTopLayer => {
 
     // The empty query is currently a special case because focus and potentially other consumers want it like this
     // Instead of:
-    // {"nodeType":"branch","operand":"OR","children":[{"nodeType":"branch","operand":"AND","children":[]}]}
+    // {"operand":"OR","children":[{"operand":"AND","children":[]}]}
     // We return:
-    // {"nodeType":"branch","operand":"OR","children":[]}
+    // {"operand":"OR","children":[]}
     if (ast.children.length === 1) {
         const onlyChild = ast.children[0];
         if (isTopLayer(onlyChild) && onlyChild.children.length === 0) {

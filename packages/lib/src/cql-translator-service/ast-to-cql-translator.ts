@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * TODO: Document this file. Move to Project
  */
@@ -8,6 +7,7 @@ import {
     type AstElement,
     type AstTopLayer,
     isBottomLayer,
+    isTopLayer,
 } from "../types/ast";
 import {
     alias as aliasMap,
@@ -125,10 +125,10 @@ const isQueryEmpty = (query: AstTopLayer): boolean => {
     return query.children.every(isQueryEmptyRec);
 };
 
-const processAdditionalCriterion = (query: any): string => {
+const processAdditionalCriterion = (query: AstElement): string => {
     let additionalCriteria = "";
 
-    if (query.nodeType === "branch") {
+    if (isTopLayer(query)) {
         const top: AstTopLayer = query;
         top.children.forEach(function (child) {
             additionalCriteria += processAdditionalCriterion(child);
