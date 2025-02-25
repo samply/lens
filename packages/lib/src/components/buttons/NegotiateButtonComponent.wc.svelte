@@ -7,7 +7,7 @@
 <script lang="ts">
     import { datarequestsStore } from "../../stores/datarequests";
     import { negotiate } from "../../services/ccpProjectManager";
-    import { bbmrinegotiate } from "../../services/bbmriNegotiate";
+    import { bbmriNegotiate } from "../../services/bbmriNegotiate";
 
     export let title: string = "Negotiate with biobanks";
     export let type: string;
@@ -16,9 +16,9 @@
      *
      */
     function exec(): void {
-        if (type == "bbmri") {
-            bbmrinegotiate($datarequestsStore);
-        } else if (type == "ccp") {
+        if (type == "Negotiator") {
+            bbmriNegotiate($datarequestsStore);
+        } else if (type == "ProjectManager") {
             negotiate($datarequestsStore);
         }
     }

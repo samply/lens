@@ -3,13 +3,14 @@ export type Stratum = {
     population?: number;
 };
 
-export type Status = "claimed" | "succeeded" | "tempfailed" | "permfailed";
-
-// TODO: make this a tagged union where e.g. variant "succeeded" has mandatory `data` and variant "permfailed" has no `data`
-export type Site = {
-    status: Status;
-    data?: SiteData;
-};
+export type Site =
+    | {
+          status: "succeeded";
+          data: SiteData;
+      }
+    | {
+          status: "claimed" | "tempfailed" | "permfailed";
+      };
 
 export type SiteData = {
     date: string;

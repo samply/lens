@@ -3,25 +3,43 @@ export type LensOptions = {
     [key: string]: unknown;
     chartOptions?: ChartOptions;
     catalogueKeyToResponseKeyMap?: string[][];
-    negotiatorOptions?: NegotiatorOptions;
+    negotiateOptions?: NegotiateOptions;
     projectmanagerOptions?: ProjectManagerOptions;
 };
 
+export type NegotiateOptions = {
+    /**
+     * The URL of the BBMRI Negotiator API endpoint that creates a request to
+     * apply for access. The URL path is typically /api/v3/requests. Lens will
+     * send a POST request to the URL to start the application process.
+     */
+    url: string;
+    /** The value of the Authorization header for the POST request. */
+    authorizationHeader: string;
+    /**
+     * Maps the site names in the results table to the unique identifiers
+     * expected by the BBMRI Negotiator.
+     */
+    siteMappings: NegotiateOptionsSiteMapping[];
+};
+
 export type NegotiateOptionsSiteMapping = {
+    /**
+     * Name of the site, e.g. "Aachen". This must correspond to the site names
+     * as they are displayed in the results table.
+     */
     site: string;
-    site_id: string;
-    collection_id: string;
+    /** Unique identifier of the collection, e.g. "bbmri-eric:ID:DE_RWTHCBMB:collection:RWTHCBMB_BC" */
     collection: string;
+    /** Unique identifier of the site, e.g. "bbmri-eric:ID:DE_RWTHCBMB" */
+    site_id: string;
+    /** Name of the collection, e.g. "Collection of RWTH cBMB Broad Consent Aachen" */
+    collection_name: string;
 };
 
 export type ProjectManagerOptionsSiteMapping = {
     site: string;
     collection: string;
-};
-
-export type NegotiatorOptions = {
-    url: string;
-    siteMappings: NegotiateOptionsSiteMapping[];
 };
 
 export type ProjectManagerOptions = {
