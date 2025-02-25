@@ -1,6 +1,6 @@
 <script lang="ts">
     import { addItemToQuery, activeQueryGroupIndex } from "../../stores/query";
-    import type { Category } from "../../types/treeData";
+    import type { Category } from "../../types/catalogue";
     import DataTreeElement from "./DataTreeElement.svelte";
     import NumberInputComponent from "./NumberInputComponent.svelte";
     import AutocompleteComponent from "./AutoCompleteComponent.svelte";
@@ -183,13 +183,13 @@
             {/each}
         {:else}
             <div part="data-tree-element-last-child-options">
-                {#if "fieldType" in element && element.fieldType === "single-select"}
+                {#if element.fieldType === "single-select"}
                     <SingleSelectComponent {element} />
-                {:else if "fieldType" in element && element.fieldType === "autocomplete"}
+                {:else if element.fieldType === "autocomplete"}
                     <AutocompleteComponent {element} />
-                {:else if "fieldType" in element && element.fieldType === "number"}
+                {:else if element.fieldType === "number"}
                     <NumberInputComponent {element} />
-                {:else if "fieldType" in element && element.fieldType === "date"}
+                {:else if element.fieldType === "date"}
                     <DatePickerComponent {element} />
                 {/if}
             </div>

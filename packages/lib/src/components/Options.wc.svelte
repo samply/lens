@@ -14,7 +14,7 @@
     import { measureStore } from "../stores/measures";
     import { iconStore } from "../stores/icons";
     import type { MeasureStore } from "../types/backend";
-    import type { Category } from "../types/treeData";
+    import type { Catalogue } from "../types/catalogue";
     import optionsSchema from "../types/options.schema.json";
     import catalogueSchema from "../types/catalogue.schema.json";
     import { parser, type Parse, type ParseResult } from "@exodus/schemasafe";
@@ -33,7 +33,7 @@
      * transform the JSON strings to objects for validation and further processing
      */
     let options: LensOptions = {} as LensOptions;
-    let catalogueData: Category[] = [];
+    let catalogueData: Catalogue = [];
     $: options = JSON.parse(optionsJSON);
     $: catalogueData = JSON.parse(catalogueJSON);
 

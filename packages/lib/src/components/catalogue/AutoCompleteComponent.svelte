@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { CategoryLeaf, Criteria } from "../../types/treeData";
+    import type { AutocompleteCategory, Criteria } from "../../types/catalogue";
     import { v4 as uuidv4 } from "uuid";
     import {
         activeQueryGroupIndex,
@@ -16,12 +16,12 @@
     let placeholderText: string = "Type to filter conditions";
     let noMatchesFoundMessage: string = "No matches found";
 
-    export let element: CategoryLeaf;
+    export let element: AutocompleteCategory;
 
     /**
      * list of criteria
      */
-    let criteria: Criteria[] = "criteria" in element ? element.criteria : [];
+    let criteria: Criteria[] = element.criteria;
 
     const resolvesubgroup = (criterion: Criteria): Criteria[] => {
         let subgroups: Criteria[] = [];
@@ -164,7 +164,7 @@
             name: element.name,
             key: element.key,
             type: element.type,
-            system: "system" in element ? element.system : "",
+            system: element.system,
             values: [
                 {
                     value: inputItem.key,

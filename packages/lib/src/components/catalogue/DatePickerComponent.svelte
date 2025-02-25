@@ -1,15 +1,14 @@
 <script lang="ts">
-    import type { CategoryLeaf } from "../../types/treeData";
+    import type { DateRangeCategory } from "../../types/catalogue";
     import { catalogueTextStore } from "../../stores/texts";
     import QueryAddButtonComponent from "./QueryAddButtonComponent.svelte";
     import type { QueryItem } from "../../types/queryData";
     import { v4 as uuidv4 } from "uuid";
 
-    export let element: CategoryLeaf;
+    export let element: DateRangeCategory;
 
-    let from: string = (element.min as string) || "1900-01-01";
-    let to: string =
-        (element.max as string) || new Date().toISOString().split("T")[0];
+    let from: string = element.min || "1900-01-01";
+    let to: string = element.max || new Date().toISOString().split("T")[0];
 
     /**
      * build the proper name for the query value

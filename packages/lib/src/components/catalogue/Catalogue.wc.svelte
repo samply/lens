@@ -9,11 +9,13 @@
     import { catalogue } from "../../stores/catalogue";
     import type { ToggleAttribute } from "../../types/helpers";
     import type { CatalogueText } from "../../types/texts";
-    import type { Category } from "../../types/treeData";
+    import type { Catalogue } from "../../types/catalogue";
     import DataTreeElement from "./DataTreeElement.svelte";
     import { iconStore } from "../../stores/icons";
 
-    export let treeData: Category[] = [];
+    // TODO: check if anyone actually uses this, otherwise remove it
+    export let treeData: Catalogue = [];
+
     export let texts: CatalogueText = {};
     export let addIconUrl: string | null = null;
     export let toggleIconUrl: string | null = null;

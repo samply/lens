@@ -10,7 +10,7 @@
         AggregatedValue,
         Category,
         Criteria,
-    } from "../../types/treeData";
+    } from "../../types/catalogue";
     import {
         addItemToQuery,
         queryStore,
@@ -22,11 +22,7 @@
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
     import { catalogue } from "../../stores/catalogue";
 
-    /**
-     * props
-     * @param treeData takes a Category tree to build the autocomplete items from
-     * @param noMatchesFoundMessage takes a string to display when no matches are found
-     */
+    /** The string to display when no matches are found */
     export let noMatchesFoundMessage: string = "No matches found";
     export let typeMoreMessage: string =
         "Search will start with 3 inserted letters";
@@ -34,11 +30,6 @@
     export let index: number = 0;
 
     $: queryGroup = $queryStore[index];
-
-    /**
-     * Initialize the catalogue store with the given tree data
-     * watch for changes from other components
-     */
 
     /**
      * handles the focus state of the input element
@@ -49,9 +40,9 @@
     /**
      * Build a full list of autocomplete items and saves it to 'criteria'
      * @param category - a bottom layer of the category tree
+     * @param criterion - the criterion
      * @returns an item that can be used in the autocomplete list
      */
-
     const buildDatalistItemFromBottomCategoryRec = (
         category: Category,
         criterion: Criteria,

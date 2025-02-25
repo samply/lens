@@ -1,5 +1,5 @@
 import { writable } from "svelte/store";
-import { type Category, type Criteria, type TreeNode } from "../types/treeData";
+import type { Catalogue, Criteria, Category } from "../types/catalogue";
 import {
     isBottomLayer,
     isTopLayer,
@@ -14,14 +14,14 @@ import {
  * there could be some corner cases for that
  */
 
-export const catalogue = writable<Category[]>([]);
+export const catalogue = writable<Catalogue>([]);
 
-const resolveSubgroupButtoumLayer = (criteria: Criteria[]): string[] => {
+const resolveSubgroupBottomLayer = (criteria: Criteria[]): string[] => {
     let collectedCriteria: string[] = [];
     criteria.forEach((element) => {
         if (element.subgroup instanceof Array) {
             collectedCriteria = collectedCriteria.concat(
-                resolveSubgroupButtoumLayer(element.subgroup),
+                resolveSubgroupBottomLayer(element.subgroup),
             );
         } else {
             collectedCriteria = collectedCriteria.concat(element.key);
@@ -42,7 +42,7 @@ const resolveSubgroupMatch = (
         if (cri.key == value) {
             if (cri.subgroup instanceof Array) {
                 newCri = newCri.concat(
-                    resolveSubgroupButtoumLayer(cri.subgroup),
+                    resolveSubgroupBottomLayer(cri.subgroup),
                 );
                 break;
             }
@@ -63,13 +63,16 @@ const resolveElementInCatalogueRec = (
 ): string[] => {
     let newCri: string[] = [];
 
-    if ("criteria" in node) {
+    if (
+        node.fieldType === "single-select" ||
+        node.fieldType === "autocomplete"
+    ) {
         if (node.key === key) {
             for (const cri of node.criteria) {
                 if (cri.key == value) {
                     if (cri.subgroup instanceof Array) {
                         newCri = newCri.concat(
-                            resolveSubgroupButtoumLayer(cri.subgroup),
+                            resolveSubgroupBottomLayer(cri.subgroup),
                         );
                         break;
                     }
@@ -82,7 +85,7 @@ const resolveElementInCatalogueRec = (
                 }
             }
         }
-    } else {
+    } else if (node.fieldType === "group") {
         node.childCategories?.forEach((y) => {
             newCri = newCri.concat(resolveElementInCatalogueRec(key, value, y));
         });
@@ -173,91 +176,67 @@ export const getCriteria = (category: string): string[] => {
     let bottomLevelItems: string[] = [];
 
     catalogue.subscribe((catalogue) => {
-        bottomLevelItems = getBottomLevelItems(catalogue, category);
+        bottomLevelItems = getCriteriaValuesOfCategoryWithKey(
+            catalogue as Catalogue,
+            category,
+        );
     });
 
     return bottomLevelItems;
 };
 
 /**
- * @param item the TreeNode you want to check
- * @returns true if the item is a bottom level item, false otherwise
+ * Find the category with the provided key and return the values of all its possible criteria.
+ * @param categories The category tree to search
+ * @param categoryKey The key of the category to search for
+ * @returns The values of all criteria of the found category
  */
-const itemIsBottomLevel = (item: TreeNode): boolean => {
-    if (
-        item instanceof Array ||
-        "childCategories" in item ||
-        "criteria" in item ||
-        "aggregatedValue" in item ||
-        "fieldType" in item
-    ) {
-        return false;
-    }
-    return true;
-};
+function getCriteriaValuesOfCategoryWithKey(
+    categories: Category[],
+    categoryKey: string,
+): string[] {
+    for (const category of categories) {
+        if (
+            (category.fieldType === "single-select" ||
+                category.fieldType === "autocomplete") &&
+            category.key === categoryKey
+        ) {
+            /**
+             * Walk the provided criteria recursively and collect all values.
+             * @param criteria the list of criteria
+             * @returns all values
+             */
+            const getCriteriaValuesRecursively = (
+                criteria: Criteria[],
+            ): string[] => {
+                const values = [];
+                for (const criterion of criteria) {
+                    values.push(criterion.key);
+                    if (criterion.subgroup !== undefined) {
+                        values.push(
+                            ...getCriteriaValuesRecursively(criterion.subgroup),
+                        );
+                    }
+                }
+                return values;
+            };
 
-/**
- * @param item takes any item from the catalogue
- * @param category string of the category you want to get the bottom level items from
- * @returns an array of strings containing the bottom level items' keys
- */
-const getBottomLevelItems = (item: TreeNode, category: string): string[] => {
-    if (item instanceof Array) {
-        return item
-            .map((childCategory) =>
-                getBottomLevelItems(childCategory, category),
-            )
-            .flat()
-            .filter((item) => item !== undefined);
-    }
-
-    if ("childCategories" in item) {
-        return (
-            item.childCategories
-                ?.map((childCategory) =>
-                    getBottomLevelItems(childCategory, category),
-                )
-                .flat() || []
-        );
-    }
-
-    if ("criteria" in item && item.key === category) {
-        return item.criteria
-            .map((criterion) => getBottomLevelItems(criterion, category))
-            .flat();
-    }
-
-    /**
-     * TODO:
-     * find deeper nested items to search for eg glioma
-     * not needed for right now
-     */
-
-    // if ('criteria' in item) {
-    //     return item.criteria.map((criterion) => {
-    //         if (criterion.aggregatedValue) {
-    //             return getBottomLevelItems(criterion, category)
-    //         }
-    //     }).flat()
-    // }
-
-    // if ('aggregatedValue' in item) {
-    //     return item.aggregatedValue.map((aggregatedValue) => getBottomLevelItems(aggregatedValue, category)).flat()
-    // }
-
-    if (itemIsBottomLevel(item) && "key" in item) {
-        let array: string[] = [];
-        array.push(item.key);
-        if ("subgroup" in item) {
-            item.subgroup?.forEach((element) => {
-                array = array.concat(getBottomLevelItems(element, category));
-            });
+            return getCriteriaValuesRecursively(category.criteria);
         }
-        return array;
+
+        if (category.fieldType === "group") {
+            const values = getCriteriaValuesOfCategoryWithKey(
+                category.childCategories,
+                categoryKey,
+            );
+            if (values.length !== 0) {
+                return values;
+            }
+        }
     }
 
     return [];
-};
+}
 
 export const getCriteriaNamesFromKey = (
     catalogue: Category[],
