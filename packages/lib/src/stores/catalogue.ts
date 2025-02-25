@@ -126,7 +126,6 @@ const resolveAstSubCatagoriesRec = (query: AstElement): AstElement => {
             } else {
                 subcatagories.forEach((x) => {
                     elements.push({
-                        nodeType: "leaf",
                         key: query.key,
                         type: query.type,
                         system: query.system,
@@ -134,7 +133,6 @@ const resolveAstSubCatagoriesRec = (query: AstElement): AstElement => {
                     });
                 });
                 return {
-                    nodeType: "branch",
                     operand: "OR",
                     key: query.key,
                     children: elements,

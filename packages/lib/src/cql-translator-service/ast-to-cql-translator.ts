@@ -7,6 +7,7 @@ import {
     type AstBottomLayerValue,
     type AstElement,
     type AstTopLayer,
+    isBottomLayer,
 } from "../types/ast";
 import {
     alias as aliasMap,
@@ -108,7 +109,7 @@ export const translateAstToCql = (
 };
 
 const isQueryEmptyRec = (query: AstElement): boolean => {
-    if (query.nodeType === "leaf") {
+    if (isBottomLayer(query)) {
         return false;
     }
     if (query.children.length === 0) {
