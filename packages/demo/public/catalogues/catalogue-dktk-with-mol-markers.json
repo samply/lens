@@ -1,5 +1,6 @@
 [
     {
+        "fieldType": "group",
         "key": "patient",
         "name": "Patient",
         "childCategories": [
@@ -59,6 +60,7 @@
         ]
     },
     {
+        "fieldType": "group",
         "key": "tumor_entity",
         "name": "Tumorentität",
         "infoButtonText": [
@@ -66,6 +68,7 @@
         ],
         "childCategories": [
             {
+                "fieldType": "group",
                 "key": "neuro",
                 "name": "Neuroonkologie",
                 "childCategories": [
@@ -580,6 +583,7 @@
                 ]
             },
             {
+                "fieldType": "group",
                 "key": "head-neck",
                 "name": "Kopf-Hals-Tumore",
                 "childCategories": [
@@ -1127,6 +1131,7 @@
                 ]
             },
             {
+                "fieldType": "group",
                 "key": "thoraxonkologie",
                 "name": "Thoraxonkologie",
                 "childCategories": [
@@ -1674,6 +1679,7 @@
                 ]
             },
             {
+                "fieldType": "group",
                 "key": "gastro",
                 "name": "Gastrointestinale Onkologie",
                 "childCategories": [
@@ -2661,6 +2667,7 @@
                 ]
             },
             {
+                "fieldType": "group",
                 "key": "gny",
                 "name": "Gynäkologische Onkologie",
                 "childCategories": [
@@ -3241,6 +3248,7 @@
                 ]
             },
             {
+                "fieldType": "group",
                 "key": "oru",
                 "name": "Urologische Onkologie",
                 "childCategories": [
@@ -3889,6 +3897,7 @@
                 ]
             },
             {
+                "fieldType": "group",
                 "name": "Dermatologische Onkologie",
                 "key": "dema",
                 "childCategories": [
@@ -4713,6 +4722,7 @@
                 ]
             },
             {
+                "fieldType": "group",
                 "key": "hema",
                 "name": "Hämatologische Neoplasien",
                 "childCategories": [
@@ -5986,6 +5996,7 @@
                 ]
             },
             {
+                "fieldType": "group",
                 "key": "sarkome",
                 "name": "Sarkome",
                 "childCategories": [
@@ -6854,6 +6865,7 @@
                 ]
             },
             {
+                "fieldType": "group",
                 "key": "blastome",
                 "name": "Blastome",
                 "childCategories": [
@@ -7064,6 +7076,7 @@
                 ]
             },
             {
+                "fieldType": "group",
                 "name": "Keimzellentumore",
                 "key": "keim",
                 "childCategories": [
@@ -7251,6 +7264,7 @@
         ]
     },
     {
+        "fieldType": "group",
         "key": "tumor_classification",
         "name": "Klassifikation von Tumoren",
         "childCategories": [
@@ -7259,16 +7273,14 @@
                 "name": "Diagnosejahr",
                 "system": "",
                 "fieldType": "number",
-                "type": "BETWEEN",
-                "criteria": []
+                "type": "BETWEEN"
             },
             {
                 "key": "age_at_diagnosis",
                 "name": "Alter bei Erstdiagnose",
                 "system": "",
                 "fieldType": "number",
-                "type": "BETWEEN",
-                "criteria": []
+                "type": "BETWEEN"
             },
             {
                 "key": "diagnosis",
@@ -17967,6 +17979,7 @@
                 ]
             },
             {
+                "fieldType": "group",
                 "key": "21908-9",
                 "name": "UICC Stadium",
                 "infoButtonText": [
@@ -18191,6 +18204,7 @@
                 ]
             },
             {
+                "fieldType": "group",
                 "key": "tnm",
                 "name": "TNM",
                 "infoButtonText": [
@@ -18198,6 +18212,7 @@
                 ],
                 "childCategories": [
                     {
+                        "fieldType": "group",
                         "key": "21905-5",
                         "name": "TNM-T",
                         "childCategories": [
@@ -19042,6 +19057,7 @@
         ]
     },
     {
+        "fieldType": "group",
         "key": "response_to_therapy",
         "name": "Ansprechen auf Therapie",
         "infoButtonText": [
@@ -19269,6 +19285,7 @@
         ]
     },
     {
+        "fieldType": "group",
         "key": "biosamples",
         "name": "Bioproben",
         "childCategories": [
@@ -19382,6 +19399,7 @@
         ]
     },
     {
+        "fieldType": "group",
         "key": "MolecularMarker1",
         "name": "Molekulare Marker",
         "childCategories": [

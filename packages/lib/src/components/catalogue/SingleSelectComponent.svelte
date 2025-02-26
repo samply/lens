@@ -1,14 +1,12 @@
 <script lang="ts">
-    import type { Category } from "../../types/treeData";
+    import type { SingleSelectCategory } from "../../types/catalogue";
     import SingleSelectItemComponent from "./SingleSelectItemComponent.svelte";
 
-    export let element: Category;
+    export let element: SingleSelectCategory;
 </script>
 
 <div part="criterion-wrapper single-select-wrapper">
-    {#if "criteria" in element}
-        {#each element.criteria as criterion}
-            <SingleSelectItemComponent {element} {criterion} />
-        {/each}
-    {/if}
+    {#each element.criteria as criterion}
+        <SingleSelectItemComponent {element} {criterion} />
+    {/each}
 </div>

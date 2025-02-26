@@ -1,4 +1,4 @@
-import type { AggregatedValue } from "./treeData";
+import type { AggregatedValue } from "./catalogue";
 
 export type QueryItem = {
     id: string;

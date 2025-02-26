@@ -17,7 +17,7 @@
     import { activeQueryGroupIndex, addItemToQuery } from "../../stores/query";
     import { catalogue } from "../../stores/catalogue";
     import type { QueryItem, QueryValue } from "../../types/queryData";
-    import type { Category, Criteria } from "../../types/treeData";
+    import type { Category, Criteria } from "../../types/catalogue";
     import { catalogueKeyToResponseKeyMap } from "../../stores/mappings";
     import type { ResponseStore } from "../../types/backend";
     import type { Site } from "../../types/response";
@@ -533,7 +533,9 @@
                     (childCategorie: Category) => {
                         if (
                             childCategorie.key === catalogueGroupCode &&
-                            "criteria" in childCategorie
+                            (childCategorie.fieldType === "single-select" ||
+                                childCategorie.fieldType === "autocomplete" ||
+                                childCategorie.fieldType === "number")
                         ) {
                             let values: QueryValue[] = [];
 

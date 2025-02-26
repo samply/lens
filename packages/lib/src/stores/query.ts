@@ -5,7 +5,7 @@
 import type { QueryItem, QueryValue } from "../types/queryData";
 import { writable } from "svelte/store";
 import { v4 as uuidv4 } from "uuid";
-import type { Category, Criteria } from "../types/treeData";
+import type { Category, Criteria } from "../types/catalogue";
 
 export const queryStore = writable<QueryItem[][]>([[]]);
 
@@ -254,7 +254,9 @@ export const addStratifier = ({
                 (childCategorie: Category) => {
                     if (
                         childCategorie.key === catalogueGroupCode &&
-                        "criteria" in childCategorie
+                        (childCategorie.fieldType === "single-select" ||
+                            childCategorie.fieldType === "autocomplete" ||
+                            childCategorie.fieldType === "number")
                     ) {
                         let values: QueryValue[] = [];
 

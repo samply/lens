@@ -25,7 +25,7 @@
         RemoveValueFromQueryAPIParams,
     } from "../types/dataPasser";
     import { buildQueryFromAst } from "../helpers/ast-transformer";
-    import type { Category } from "../types/treeData";
+    import type { Category } from "../types/catalogue";
 
     /**
      * Getters

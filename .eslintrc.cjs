@@ -44,5 +44,8 @@ module.exports = {
         "svelte/no-at-html-tags": "off",
         "jsdoc/check-syntax": 2,
         "jsdoc/check-param-names": 2,
+        // ESLint does not know about the JSDoc annotations used by ts-json-schema-generator so we explicitly allow them here.
+        // Full list: https://github.com/vega/ts-json-schema-generator/blob/next/src/AnnotationsReader/BasicAnnotationsReader.ts
+        "jsdoc/check-tag-names": ["error", {"definedTags": ["discriminator", "format"]}]
     },
 };
