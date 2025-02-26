@@ -33,3 +33,4 @@ jobs:
       - run: npx svelte-check
       # for now disable linting, will be activated later
       # run: npm run lint
+      - run: npm run schemacheck

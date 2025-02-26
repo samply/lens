@@ -1,3 +1,7 @@
+// Note: The JSON schema file catalogue.schema.json is automatically generated
+// from the type definitions in this file. After making changes to this file run
+// `npm run schemagen` to update the JSON schema.
+
 /**
  * The catalogue is a tree-like data structure that describes what the user can
  * search for. The application passes the catalogue to lens as a JSON string via
