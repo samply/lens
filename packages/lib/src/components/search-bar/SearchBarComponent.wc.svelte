@@ -152,7 +152,7 @@
      * structuredClone is used to prevent the store from being mutated when the .% is added to the criteria
      */
     let criteria: AutoCompleteItem[] = $derived(
-        buildDatalistItems(structuredClone($catalogue)) || [],
+        buildDatalistItems(structuredClone($state.snapshot($catalogue))) || [],
     );
 
     /**

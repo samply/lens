@@ -14,13 +14,6 @@
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
     import DatePickerComponent from "./DatePickerComponent.svelte";
 
-    const subCategoryName: string | null =
-        "subCategoryName" in element &&
-        element.subCategoryName !== undefined &&
-        element.subCategoryName !== null
-            ? element.subCategoryName
-            : null;
-
     interface Props {
         element: Category;
         /**
@@ -34,6 +27,13 @@
     }
 
     let { element, layer = 1, treeOpen = false }: Props = $props();
+
+    const subCategoryName: string | null =
+        "subCategoryName" in element &&
+        element.subCategoryName !== undefined &&
+        element.subCategoryName !== null
+            ? element.subCategoryName
+            : null;
 
     if (treeOpen) {
         /**

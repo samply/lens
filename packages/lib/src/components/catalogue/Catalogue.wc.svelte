@@ -15,19 +15,6 @@
     import DataTreeElement from "./DataTreeElement.svelte";
     import { iconStore } from "../../stores/icons";
 
-    iconStore.update((store: Map<string, string>) => {
-        if (addIconUrl) {
-            store.set("addIconUrl", addIconUrl);
-        }
-        if (toggleIconUrl) {
-            store.set("toggleIconUrl", toggleIconUrl);
-        }
-        if (infoIconUrl) {
-            store.set("infoIconUrl", infoIconUrl);
-        }
-        return store;
-    });
-
     interface Props {
         // TODO: check if anyone actually uses this, otherwise remove it
         treeData?: Catalogue;
@@ -52,6 +39,19 @@
             open: false,
         },
     }: Props = $props();
+
+    iconStore.update((store: Map<string, string>) => {
+        if (addIconUrl) {
+            store.set("addIconUrl", addIconUrl);
+        }
+        if (toggleIconUrl) {
+            store.set("toggleIconUrl", toggleIconUrl);
+        }
+        if (infoIconUrl) {
+            store.set("infoIconUrl", infoIconUrl);
+        }
+        return store;
+    });
 
     let toggleTree = $state(toggle.open);
 
