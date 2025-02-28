@@ -5,6 +5,8 @@
 />
 
 <script lang="ts">
+    import { run } from "svelte/legacy";
+
     import Chart, { type ChartTypeRegistry } from "chart.js/auto";
     import { onMount } from "svelte";
     import {
@@ -26,63 +28,80 @@
     import type { ChartOption } from "../../types/options";
     import type { ChartDataSets } from "../../types/charts";
 
-    export let title: string = ""; // e.g. 'Gender Distribution'
-    export let catalogueGroupCode: string = ""; // e.g. "gender"
-    export let indexAxis: string = "x";
-    export let xAxisTitle: string = "";
-    export let yAxisTitle: string = "";
-    export let clickToAddState: boolean = false;
-    let responseGroupCode: string;
-    $: responseGroupCode =
-        $catalogueKeyToResponseKeyMap.get(catalogueGroupCode) || "";
+    let responseGroupCode: string = $state();
 
-    export let headers: Map<string, string> = new Map<string, string>();
-    export let displayLegends: boolean = false;
-    export let chartType: keyof ChartTypeRegistry = "pie";
-    export let scaleType: string = "linear";
-    export let perSite: boolean = false;
-    export let groupRange: number = 0;
-    export let groupingDivider: string = "";
-    export let filterRegex: string = "";
-    export let groupingLabel: string = "";
-    export let viewScales: boolean = chartType !== "pie" ? true : false;
-    let options: ChartOption;
-    $: options =
-        ($lensOptions?.chartOptions &&
-            $lensOptions?.chartOptions[catalogueGroupCode]) ||
-        ({} as ChartOption);
+    let options: ChartOption = $state();
 
-    export let backgroundColor: string[] | string = [
-        "#4dc9f6",
-        "#f67019",
-        "#f53794",
-        "#537bc4",
-        "#acc236",
-        "#166a8f",
-        "#00a950",
-        "#58595b",
-        "#8549ba",
-        "#ff8a33",
-        "#ff5996",
-        "#8ace7e",
-        "#c789d6",
-        "#ffcc00",
-        "#7fc2f4",
-        "#969696",
-        "#cfd27e",
-        "#db843d",
-        "#89a54e",
-        "#80699b",
-    ];
-    export let backgroundHoverColor: string[] = ["#aaaaaa"];
+    interface Props {
+        title?: string; // e.g. 'Gender Distribution'
+        catalogueGroupCode?: string; // e.g. "gender"
+        indexAxis?: string;
+        xAxisTitle?: string;
+        yAxisTitle?: string;
+        clickToAddState?: boolean;
+        headers?: Map<string, string>;
+        displayLegends?: boolean;
+        chartType?: keyof ChartTypeRegistry;
+        scaleType?: string;
+        perSite?: boolean;
+        groupRange?: number;
+        groupingDivider?: string;
+        filterRegex?: string;
+        groupingLabel?: string;
+        viewScales?: boolean;
+        backgroundColor?: string[] | string;
+        backgroundHoverColor?: string[];
+    }
+
+    let {
+        title = "",
+        catalogueGroupCode = "",
+        indexAxis = "x",
+        xAxisTitle = "",
+        yAxisTitle = "",
+        clickToAddState = false,
+        headers = new Map<string, string>(),
+        displayLegends = false,
+        chartType = "pie",
+        scaleType = "linear",
+        perSite = false,
+        groupRange = $bindable(0),
+        groupingDivider = "",
+        filterRegex = "",
+        groupingLabel = "",
+        viewScales = chartType !== "pie" ? true : false,
+        backgroundColor = $bindable([
+            "#4dc9f6",
+            "#f67019",
+            "#f53794",
+            "#537bc4",
+            "#acc236",
+            "#166a8f",
+            "#00a950",
+            "#58595b",
+            "#8549ba",
+            "#ff8a33",
+            "#ff5996",
+            "#8ace7e",
+            "#c789d6",
+            "#ffcc00",
+            "#7fc2f4",
+            "#969696",
+            "#cfd27e",
+            "#db843d",
+            "#89a54e",
+            "#80699b",
+        ]),
+        backgroundHoverColor = ["#aaaaaa"],
+    }: Props = $props();
 
     /**
      * initialize the chart
      */
 
-    let noDataAvailable: boolean = false;
+    let noDataAvailable: boolean = $state(false);
 
-    let canvas!: HTMLCanvasElement;
+    let canvas!: HTMLCanvasElement = $state();
 
     let chart: Chart;
 
@@ -482,10 +501,6 @@
         chart.update();
     };
 
-    $: {
-        setChartData($responseStore);
-    }
-
     onMount(() => {
         if (indexAxis === "y") {
             initialChartData.options.scales.x.type = scaleType;
@@ -599,6 +614,19 @@
 
         addItemToQuery(queryItem, $activeQueryGroupIndex);
     };
+    run(() => {
+        responseGroupCode =
+            $catalogueKeyToResponseKeyMap.get(catalogueGroupCode) || "";
+    });
+    run(() => {
+        options =
+            ($lensOptions?.chartOptions &&
+                $lensOptions?.chartOptions[catalogueGroupCode]) ||
+            ({} as ChartOption);
+    });
+    run(() => {
+        setChartData($responseStore);
+    });
 </script>
 
 <div part="chart-wrapper">
@@ -617,7 +645,7 @@
         part="chart-canvas"
         bind:this={canvas}
         id="chart"
-        on:click={handleClickOnStratifier}
-    />
+        onclick={handleClickOnStratifier}
+    ></canvas>
     <slot />
 </div>

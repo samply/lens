@@ -109,7 +109,7 @@
         "Sys. T",
     );
 
-    let dataPasser: LensDataPasser;
+    let dataPasser: LensDataPasser = $state();
 </script>
 
 <header>
@@ -129,14 +129,13 @@
 <main>
     <div class="search">
         <div class="search-wrapper">
-            <lens-search-bar
-                noMatchesFoundMessage={"keine Ergebnisse gefunden"}
-            />
+            <lens-search-bar noMatchesFoundMessage={"keine Ergebnisse gefunden"}
+            ></lens-search-bar>
             <lens-info-button
                 noQueryMessage="Leere Suchanfrage: Sucht nach allen Ergebnissen."
                 showQuery={true}
-            />
-            <lens-search-button title="Suchen" />
+            ></lens-info-button>
+            <lens-search-button title="Suchen"></lens-search-button>
         </div>
     </div>
     <div class="grid">
@@ -148,18 +147,18 @@
                         `Bei Patienten mit mehreren onkologischen Diagnosen, können sich ausgewählte Suchkriterien nicht nur auf eine Erkrankung beziehen, sondern auch auf Weitere.`,
                         `Innerhalb einer Kategorie werden verschiedene Ausprägungen mit einer „Oder-Verknüpfung“ gesucht; bei der Suche über mehrere Kategorien mit einer „Und-Verknüpfung“.`,
                     ]}
-                />
+                ></lens-info-button>
                 <lens-catalogue
                     toggleIconUrl="right-arrow-svgrepo-com.svg"
                     texts={catalogueText}
                     toggle={{ collapsable: false, open: catalogueopen }}
                     addIconUrl="long-right-arrow-svgrepo-com.svg"
-                />
+                ></lens-catalogue>
             </div>
         </div>
         <div class="charts">
             <div class="chart-wrapper result-summary">
-                <lens-result-summary />
+                <lens-result-summary></lens-result-summary>
                 {#if environment !== "production"}
                     <lens-negotiate-button
                         type={"ProjectManager"}
@@ -177,7 +176,7 @@
                     perSite={true}
                     displayLegends={true}
                     chartType="pie"
-                />
+                ></lens-chart>
             </div>
             <div class="chart-wrapper result-table">
                 <lens-result-table pageSize="10">
@@ -195,7 +194,7 @@
                     chartType="pie"
                     displayLegends={true}
                     headers={genderHeaders}
-                />
+                ></lens-chart>
             </div>
             <div class="chart-wrapper chart-diagnosis">
                 <lens-chart
@@ -209,7 +208,7 @@
                     xAxisTitle="Anzahl der Diagnosen"
                     yAxisTitle="ICD-10-Codes"
                     backgroundColor={barChartBackgroundColors}
-                />
+                ></lens-chart>
             </div>
             <div class="chart-wrapper chart-age-distribution">
                 <lens-chart
@@ -221,7 +220,7 @@
                     xAxisTitle="Alter"
                     yAxisTitle="Anzahl der Primärdiagnosen"
                     backgroundColor={barChartBackgroundColors}
-                />
+                ></lens-chart>
             </div>
             <div class="chart-wrapper">
                 <lens-chart
@@ -230,7 +229,7 @@
                     chartType="pie"
                     displayLegends={true}
                     headers={vitalStateHeaders}
-                />
+                ></lens-chart>
             </div>
             <div class="chart-wrapper">
                 <lens-chart
@@ -241,7 +240,7 @@
                     xAxisTitle="Art der Therapie"
                     yAxisTitle="Anzahl der Therapieeinträge"
                     backgroundColor={barChartBackgroundColors}
-                />
+                ></lens-chart>
             </div>
             <div class="chart-wrapper">
                 <lens-chart
@@ -251,7 +250,7 @@
                     xAxisTitle="Art der Therapie"
                     yAxisTitle="Anzahl der Therapieeinträge"
                     backgroundColor={barChartBackgroundColors}
-                />
+                ></lens-chart>
             </div>
             <div class="chart-wrapper">
                 <lens-chart
@@ -306,7 +305,7 @@
 </footer>
 
 <!-- Toasts use `position: fixed` and thus are removed from the normal document flow -->
-<error-toasts />
+<error-toasts></error-toasts>
 
 {#await jsonPromises}
     Loading data...
@@ -316,4 +315,4 @@
     System error: {someError.message}
 {/await}
 
-<lens-data-passer bind:this={dataPasser} />
+<lens-data-passer bind:this={dataPasser}></lens-data-passer>

@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { run } from "svelte/legacy";
+
     import type { AutocompleteCategory, Criteria } from "../../types/catalogue";
     import { v4 as uuidv4 } from "uuid";
     import {
@@ -16,12 +18,16 @@
     let placeholderText: string = "Type to filter conditions";
     let noMatchesFoundMessage: string = "No matches found";
 
-    export let element: AutocompleteCategory;
+    interface Props {
+        element: AutocompleteCategory;
+    }
+
+    let { element }: Props = $props();
 
     /**
      * list of criteria
      */
-    let criteria: Criteria[] = element.criteria;
+    let criteria: Criteria[] = $state(element.criteria);
 
     const resolvesubgroup = (criterion: Criteria): Criteria[] => {
         let subgroups: Criteria[] = [];
@@ -53,61 +59,22 @@
     /**
      * stores the filtered list of autocomplete items
      */
-    let inputOptions: Criteria[] = [];
+    let inputOptions: Criteria[] = $state([]);
 
     /**
      * input element binds to this variable. Used to focus the input element
      */
-    let searchBarInput: HTMLInputElement;
+    let searchBarInput: HTMLInputElement = $state();
     /**
      * watches the input value and updates the input options
      */
-    let inputValue: string = "";
+    let inputValue: string = $state("");
 
     /**
      * handles the focus state of the input element
      * closes options when clicked outside
      */
-    let autoCompleteOpen = false;
-
-    /**
-     * watches the input value and updates the input options
-     */
-    $: inputOptions = criteria.filter((item: Criteria) => {
-        const clearedInputValue = inputValue
-            .replace(/^[0-9]*:/g, "")
-            .toLocaleLowerCase();
-
-        return (
-            item.name.toLowerCase().includes(clearedInputValue) ||
-            item.key.toLowerCase().includes(clearedInputValue) ||
-            item.description?.toLowerCase().includes(clearedInputValue)
-            /**
-             * FIX ME:
-             * should only take names. This needs a catalogue fix
-             */
-            // item.key.toLocaleLowerCase().includes(clearedInputValue) ||
-            // item.criterion.key.toLowerCase().includes(clearedInputValue) ||
-        );
-    });
-
-    /**
-     * list of options that allready have been chosen and should be displayed beneath the autocomplete input
-     * chosenOptions are constructed from the query store and has no duplicates
-     * if an option is put into the store from anywhere it will update
-     */
-    $: chosenOptions = getChosenOptionsFromQueryStore($queryStore).reduce(
-        (acc: QueryItem[], queryItem: QueryItem) => {
-            const optionAllreadyPresent = acc.find((option: QueryItem) => {
-                return option.values[0].value === queryItem.values[0].value;
-            });
-            if (optionAllreadyPresent || queryItem.key !== element.key) {
-                return acc;
-            }
-            return [...acc, queryItem];
-        },
-        [],
-    );
+    let autoCompleteOpen = $state(false);
 
     const getChosenOptionsFromQueryStore = (
         queryStore: QueryItem[][],
@@ -131,9 +98,9 @@
     /**
      * keeps track of the focused item
      */
-    let focusedItemIndex: number = -1;
+    let focusedItemIndex: number = $state(-1);
 
-    let activeDomElement: HTMLElement;
+    let activeDomElement: HTMLElement = $state();
 
     /**
      * transforms the inputvalue to a QueryItem, adds it to the query store
@@ -242,8 +209,6 @@
         }
     };
 
-    $: scrollInsideContainerWhenActiveDomElementIsOutOfView(activeDomElement);
-
     /**
      * returns the input option with the matched substring wrapped in <strong> tags
      * @param inputOption - the input option to bold
@@ -271,6 +236,50 @@
         );
         return resultString;
     };
+    /**
+     * watches the input value and updates the input options
+     */
+    run(() => {
+        inputOptions = criteria.filter((item: Criteria) => {
+            const clearedInputValue = inputValue
+                .replace(/^[0-9]*:/g, "")
+                .toLocaleLowerCase();
+
+            return (
+                item.name.toLowerCase().includes(clearedInputValue) ||
+                item.key.toLowerCase().includes(clearedInputValue) ||
+                item.description?.toLowerCase().includes(clearedInputValue)
+                /**
+                 * FIX ME:
+                 * should only take names. This needs a catalogue fix
+                 */
+                // item.key.toLocaleLowerCase().includes(clearedInputValue) ||
+                // item.criterion.key.toLowerCase().includes(clearedInputValue) ||
+            );
+        });
+    });
+    /**
+     * list of options that allready have been chosen and should be displayed beneath the autocomplete input
+     * chosenOptions are constructed from the query store and has no duplicates
+     * if an option is put into the store from anywhere it will update
+     */
+    let chosenOptions = $derived(
+        getChosenOptionsFromQueryStore($queryStore).reduce(
+            (acc: QueryItem[], queryItem: QueryItem) => {
+                const optionAllreadyPresent = acc.find((option: QueryItem) => {
+                    return option.values[0].value === queryItem.values[0].value;
+                });
+                if (optionAllreadyPresent || queryItem.key !== element.key) {
+                    return acc;
+                }
+                return [...acc, queryItem];
+            },
+            [],
+        ),
+    );
+    run(() => {
+        scrollInsideContainerWhenActiveDomElementIsOutOfView(activeDomElement);
+    });
 </script>
 
 <div part="autocomplete-container">
@@ -280,12 +289,12 @@
             type="text"
             bind:this={searchBarInput}
             bind:value={inputValue}
-            on:keydown={handleKeyDown}
+            onkeydown={handleKeyDown}
             placeholder={placeholderText}
-            on:focusin={() => {
+            onfocusin={() => {
                 autoCompleteOpen = true;
             }}
-            on:focusout={() => {
+            onfocusout={() => {
                 autoCompleteOpen = false;
             }}
         />
@@ -294,13 +303,13 @@
                 {#if inputOptions?.length > 0}
                     {#each inputOptions as inputOption, index}
                         {#if index === focusedItemIndex}
-                            <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+                            <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
                             <!-- onmousedown is chosen because the input looses focus when clicked outside, 
                                 which will close the options before the click is finshed -->
                             <li
                                 bind:this={activeDomElement}
                                 part="autocomplete-options-item autocomplete-options-item-focused"
-                                on:mousedown={() =>
+                                onmousedown={() =>
                                     selectItemByClick(inputOption)}
                             >
                                 <div part="autocomplete-options-item-name">
@@ -315,12 +324,12 @@
                                 </div>
                             </li>
                         {:else}
-                            <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+                            <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
                             <!-- onmousedown is chosen because the input looses focus when clicked outside, 
                                 which will close the options before the click is finshed -->
                             <li
                                 part="autocomplete-options-item"
-                                on:mousedown={() =>
+                                onmousedown={() =>
                                     selectItemByClick(inputOption)}
                             >
                                 <div part="autocomplete-options-item-name">

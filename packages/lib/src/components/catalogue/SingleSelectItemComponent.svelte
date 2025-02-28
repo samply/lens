@@ -4,8 +4,12 @@
     import QueryAddButtonComponent from "./QueryAddButtonComponent.svelte";
     import type { QueryItem } from "../../types/queryData";
 
-    export let element: SingleSelectCategory;
-    export let criterion: Criteria;
+    interface Props {
+        element: SingleSelectCategory;
+        criterion: Criteria;
+    }
+
+    let { element, criterion }: Props = $props();
 
     const queryBindId: string = uuidv4();
 

@@ -5,6 +5,8 @@
 />
 
 <script lang="ts">
+    import { run } from "svelte/legacy";
+
     import { lensOptions } from "../../stores/options";
     import type { LensOptions } from "../../types/options";
     import {
@@ -19,16 +21,21 @@
 
     type ResultSummaryDataType = HeaderData & { population?: string | number };
 
-    let options: LensOptions & { infoButtonText?: string };
-    $: options = $lensOptions?.resultSummaryOptions as LensOptions & {
-        infoButtonText?: string;
-    };
+    let options: LensOptions & { infoButtonText?: string } = $derived(
+        $lensOptions?.resultSummaryOptions as LensOptions & {
+            infoButtonText?: string;
+        },
+    );
 
-    let dataTypes: ResultSummaryDataType[];
-    $: dataTypes = options?.dataTypes as ResultSummaryDataType[];
+    let dataTypes: ResultSummaryDataType[] = $state();
+    run(() => {
+        dataTypes = options?.dataTypes as ResultSummaryDataType[];
+    });
 
-    let resultSummaryDataTypes: ResultSummaryDataType[];
-    $: resultSummaryDataTypes = dataTypes || [];
+    let resultSummaryDataTypes: ResultSummaryDataType[] = $state();
+    run(() => {
+        resultSummaryDataTypes = dataTypes || [];
+    });
 
     /**
      * Extracts the population for each result summary data type and adds it to the type object
@@ -108,7 +115,9 @@
         );
     };
 
-    $: fillPopulationToSummaryTypes($responseStore);
+    run(() => {
+        fillPopulationToSummaryTypes($responseStore);
+    });
 </script>
 
 {#if options?.title}

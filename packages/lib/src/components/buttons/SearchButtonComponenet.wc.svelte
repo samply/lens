@@ -26,11 +26,14 @@
     import { isTopLayer, type AstTopLayer } from "../../types/ast";
     import type { Site } from "../../types/response";
 
-    export let title: string = "Search";
+    interface Props {
+        title?: string;
+        disabled?: boolean;
+    }
 
-    export let disabled: boolean = false;
+    let { title = "Search", disabled = false }: Props = $props();
 
-    $: options = $lensOptions?.backends as BackendOptions;
+    let options = $derived($lensOptions?.backends as BackendOptions);
 
     let controller: AbortController = new AbortController();
 
@@ -197,7 +200,7 @@
     part={`lens-search-button lens-search-button-${
         disabled ? "disabled" : "active"
     }`}
-    on:click={getResultsFromBackend}
+    onclick={getResultsFromBackend}
     {disabled}
 >
     <div part="lens-search-button-magnifying-glass">&#x26B2;</div>

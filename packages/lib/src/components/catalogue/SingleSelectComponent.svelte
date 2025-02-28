@@ -2,7 +2,11 @@
     import type { SingleSelectCategory } from "../../types/catalogue";
     import SingleSelectItemComponent from "./SingleSelectItemComponent.svelte";
 
-    export let element: SingleSelectCategory;
+    interface Props {
+        element: SingleSelectCategory;
+    }
+
+    let { element }: Props = $props();
 </script>
 
 <div part="criterion-wrapper single-select-wrapper">
