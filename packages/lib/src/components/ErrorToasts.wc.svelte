@@ -5,11 +5,13 @@
 />
 
 <script lang="ts">
+    import { run } from "svelte/legacy";
+
     import { fade } from "svelte/transition";
     import { errorChannel } from "../stores/error-channel";
 
     // Each toast has a unique id that maps to the error message
-    let toasts: Map<string, string> = new Map();
+    let toasts: Map<string, string> = $state(new Map());
 
     /**
      * @param message user-facing error message
@@ -26,10 +28,12 @@
     }
 
     // subscribe to error channel
-    $: if ($errorChannel !== "") {
-        showToast($errorChannel);
-        errorChannel.set("");
-    }
+    run(() => {
+        if ($errorChannel !== "") {
+            showToast($errorChannel);
+            errorChannel.set("");
+        }
+    });
 </script>
 
 <div part="flex-container">
@@ -38,10 +42,11 @@
             <div part="message">{message}</div>
             <button
                 part="close-button"
-                on:click={() => {
+                onclick={() => {
                     toasts.delete(uuid);
                     toasts = toasts; // update
                 }}
+                aria-label="Close"
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"

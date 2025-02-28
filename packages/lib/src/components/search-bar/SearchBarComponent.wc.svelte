@@ -5,6 +5,8 @@
 />
 
 <script lang="ts">
+    import { run } from "svelte/legacy";
+
     import { writable } from "svelte/store";
     import type {
         AggregatedValue,
@@ -22,20 +24,28 @@
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
     import { catalogue } from "../../stores/catalogue";
 
-    /** The string to display when no matches are found */
-    export let noMatchesFoundMessage: string = "No matches found";
-    export let typeMoreMessage: string =
-        "Search will start with 3 inserted letters";
-    export let placeholderText: string = "Type to filter conditions";
-    export let index: number = 0;
+    interface Props {
+        /** The string to display when no matches are found */
+        noMatchesFoundMessage?: string;
+        typeMoreMessage?: string;
+        placeholderText?: string;
+        index?: number;
+    }
 
-    $: queryGroup = $queryStore[index];
+    let {
+        noMatchesFoundMessage = "No matches found",
+        typeMoreMessage = "Search will start with 3 inserted letters",
+        placeholderText = "Type to filter conditions",
+        index = 0,
+    }: Props = $props();
+
+    let queryGroup = $derived($queryStore[index]);
 
     /**
      * handles the focus state of the input element
      * closes options when clicked outside
      */
-    let autoCompleteOpen = false;
+    let autoCompleteOpen = $state(false);
 
     /**
      * Build a full list of autocomplete items and saves it to 'criteria'
@@ -141,8 +151,9 @@
      * stores the full list of autocomplete items
      * structuredClone is used to prevent the store from being mutated when the .% is added to the criteria
      */
-    let criteria: AutoCompleteItem[];
-    $: criteria = buildDatalistItems(structuredClone($catalogue)) || [];
+    let criteria: AutoCompleteItem[] = $derived(
+        buildDatalistItems(structuredClone($catalogue)) || [],
+    );
 
     /**
      * stores the filtered list of autocomplete items
@@ -152,45 +163,47 @@
     /**
      * input element binds to this variable. Used to focus the input element
      */
-    let searchBarInput: HTMLInputElement;
+    let searchBarInput: HTMLInputElement = $state();
     /**
      * watches the input value and updates the input options
      */
-    let inputValue: string = "";
+    let inputValue: string = $state("");
 
     /**
      * watches the input value and updates the input options
      */
-    $: $inputOptions = criteria.filter((item: AutoCompleteItem) => {
-        /**
-         * lets the user use a number followed by a colon to specify the search group. nice to have for the power users
-         */
-        const clearedInputValue = inputValue
-            .replace(/^[0-9]*:/g, "")
-            .toLocaleLowerCase();
-
-        return (
-            item.name.toLowerCase().includes(clearedInputValue) ||
-            item.criterion.name.toLowerCase().includes(clearedInputValue) ||
-            item.criterion.description
-                ?.toLowerCase()
-                .includes(clearedInputValue)
-
+    run(() => {
+        $inputOptions = criteria.filter((item: AutoCompleteItem) => {
             /**
-             * Discussion:
-             * should it also be possible to search for the key?
+             * lets the user use a number followed by a colon to specify the search group. nice to have for the power users
              */
-            // item.key.toLocaleLowerCase().includes(clearedInputValue) ||
-            // item.criterion.key.toLowerCase().includes(clearedInputValue) ||
-        );
+            const clearedInputValue = inputValue
+                .replace(/^[0-9]*:/g, "")
+                .toLocaleLowerCase();
+
+            return (
+                item.name.toLowerCase().includes(clearedInputValue) ||
+                item.criterion.name.toLowerCase().includes(clearedInputValue) ||
+                item.criterion.description
+                    ?.toLowerCase()
+                    .includes(clearedInputValue)
+
+                /**
+                 * Discussion:
+                 * should it also be possible to search for the key?
+                 */
+                // item.key.toLocaleLowerCase().includes(clearedInputValue) ||
+                // item.criterion.key.toLowerCase().includes(clearedInputValue) ||
+            );
+        });
     });
 
     /**
      * keeps track of the focused item
      */
-    let focusedItemIndex: number = -1;
+    let focusedItemIndex: number = $state(-1);
 
-    let activeDomElement: HTMLElement;
+    let activeDomElement: HTMLElement = $state();
 
     /**
      * transforms the inputvalue to a QueryItem, adds it to the query store
@@ -299,7 +312,9 @@
         }
     };
 
-    $: scrollInsideContainerWhenActiveDomElementIsOutOfView(activeDomElement);
+    run(() => {
+        scrollInsideContainerWhenActiveDomElementIsOutOfView(activeDomElement);
+    });
 
     /**
      * handles click events to make input options selectable
@@ -388,13 +403,13 @@
         type="text"
         bind:this={searchBarInput}
         bind:value={inputValue}
-        on:keydown={handleKeyDown}
+        onkeydown={handleKeyDown}
         placeholder={placeholderText}
-        on:focusin={() => {
+        onfocusin={() => {
             autoCompleteOpen = true;
             activeQueryGroupIndex.set(index);
         }}
-        on:focusout={() => {
+        onfocusout={() => {
             autoCompleteOpen = false;
             inputValue = "";
         }}
@@ -411,13 +426,13 @@
                         </div>
                     {/if}
                     {#if i === focusedItemIndex}
-                        <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+                        <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
                         <!-- onmousedown is chosen because the input looses focus when clicked outside, 
                              which will close the options before the click is finshed -->
                         <li
                             bind:this={activeDomElement}
                             part="lens-searchbar-autocomplete-options-item lens-searchbar-autocomplete-options-item-focused"
-                            on:mousedown={() => selectItemByClick(inputOption)}
+                            onmousedown={() => selectItemByClick(inputOption)}
                         >
                             <div part="autocomplete-options-item-name">
                                 {@html getBoldedText(
@@ -435,12 +450,12 @@
                             {/if}
                         </li>
                     {:else}
-                        <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+                        <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
                         <!-- onmousedown is chosen because the input looses focus when clicked outside, 
                              which will close the options before the click is finshed -->
                         <li
                             part="lens-searchbar-autocomplete-options-item"
-                            on:mousedown={() => selectItemByClick(inputOption)}
+                            onmousedown={() => selectItemByClick(inputOption)}
                         >
                             <div part="autocomplete-options-item-name">
                                 {@html getBoldedText(

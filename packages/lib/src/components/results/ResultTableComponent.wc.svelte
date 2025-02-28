@@ -5,6 +5,8 @@
 />
 
 <script lang="ts">
+    import { run } from "svelte/legacy";
+
     import { uiSiteMappingsStore } from "../../stores/mappings";
     import { datarequestsStore } from "../../stores/datarequests";
     import {
@@ -19,29 +21,30 @@
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
     import type { ResponseStore } from "../../types/backend";
 
-    export let title: string = "";
-
-    let claimedText: string;
-    $: claimedText =
-        ($lensOptions?.tableOptions as { claimedText: string })?.claimedText ||
-        "Processing...";
+    let claimedText: string = $state();
+    run(() => {
+        claimedText =
+            ($lensOptions?.tableOptions as { claimedText: string })
+                ?.claimedText || "Processing...";
+    });
 
     /**
      * data-types for the table
      * can be set via options component
      */
-    let options: { headerData: HeaderData[] };
-    $: options = (($lensOptions?.tableOptions && $lensOptions.tableOptions) as {
-        headerData: HeaderData[];
-    }) || {
-        headerData: [{ title: "", dataKey: "", aggregatedDataKeys: [] }],
-    };
+    let options: { headerData: HeaderData[] } = $derived(
+        (($lensOptions?.tableOptions && $lensOptions.tableOptions) as {
+            headerData: HeaderData[];
+        }) || {
+            headerData: [{ title: "", dataKey: "", aggregatedDataKeys: [] }],
+        },
+    );
 
     /**
      * watches the responseStore for changes to update the table
      */
     type TableRowData = (string | number)[][];
-    let tableRowData: TableRowData = [];
+    let tableRowData: TableRowData = $state([]);
 
     const buildTableRowData = (responseStore: ResponseStore): void => {
         tableRowData = [];
@@ -110,15 +113,19 @@
         });
     };
 
-    $: buildTableRowData($responseStore);
+    run(() => {
+        buildTableRowData($responseStore);
+    });
 
     /**
      * watches the datarequestsStore for changes to check or uncheck the checkbox
      */
-    let allChecked: boolean = false;
-    $: allChecked =
-        $datarequestsStore.length === tableRowData.length &&
-        tableRowData.length !== 0;
+    let allChecked: boolean = $state(false);
+    run(() => {
+        allChecked =
+            $datarequestsStore.length === tableRowData.length &&
+            tableRowData.length !== 0;
+    });
 
     /**
      * checks or unchecks all biobanks
@@ -133,13 +140,18 @@
         }
     };
 
-    export let pageSize = 10;
-    let activePage = 1;
-    let sortColumnIndex = 0;
-    let sortAscending = true;
+    interface Props {
+        title?: string;
+        pageSize?: number;
+    }
 
-    let visibleRows: TableRowData;
-    $: {
+    let { title = "", pageSize = 10 }: Props = $props();
+    let activePage = $state(1);
+    let sortColumnIndex = $state(0);
+    let sortAscending = $state(true);
+
+    let visibleRows: TableRowData = $state();
+    run(() => {
         // Array.sort sorts in place, so make a copy first
         const tableRowsCopy = [...tableRowData];
 
@@ -166,7 +178,7 @@
             (activePage - 1) * pageSize,
             activePage * pageSize,
         );
-    }
+    });
 
     /**
      * Called when a user clicks on a column header to change the sorting
@@ -191,13 +203,13 @@
                     part="table-header-checkbox"
                     type="checkbox"
                     bind:checked={allChecked}
-                    on:change={checkAllBiobanks}
+                    onchange={checkAllBiobanks}
                 /></th
             >
             {#each options.headerData as header, index}
                 <th
                     part="table-header-cell table-header-datatype"
-                    on:click={() => clickedOnColumnHeader(index)}
+                    onclick={() => clickedOnColumnHeader(index)}
                 >
                     {header.title}
                     {#if header.hintText}
@@ -227,14 +239,14 @@
     <button
         part="table-pagination-button pagination-pagination-previous"
         disabled={activePage === 1}
-        on:click={() => (activePage -= 1)}>&#8592;</button
+        onclick={() => (activePage -= 1)}>&#8592;</button
     >
     <div part="table-pagination-pagenumber">{activePage}</div>
     <button
         part="table-pagination-button pagination-pagination-next"
         disabled={activePage === Math.ceil(tableRowData.length / pageSize) ||
             tableRowData.length === 0}
-        on:click={() => (activePage += 1)}>&#8594;</button
+        onclick={() => (activePage += 1)}>&#8594;</button
     >
 </div>
 <slot name="beneath-pagination" />

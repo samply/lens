@@ -7,8 +7,9 @@ import "../../lib";
 
 import "./ccp.css";
 import App from "./AppCCP.svelte";
+import { mount } from "svelte";
 
-const app = new App({
+const app = mount(App, {
     target: document.getElementById("app") as HTMLElement,
 });
 

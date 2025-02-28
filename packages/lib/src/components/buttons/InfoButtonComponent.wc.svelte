@@ -14,19 +14,28 @@
     import type { QueryItem } from "../../types/queryData";
     import { iconStore } from "../../stores/icons";
 
-    export let message: string[] | string = [];
-    export let noQueryMessage: string = "Search for all results";
-    export let showQuery: boolean = false;
+    interface Props {
+        message?: string[] | string;
+        noQueryMessage?: string;
+        showQuery?: boolean;
+        onlyChildInfo?: boolean;
+        queryItem?: QueryItem | undefined;
+    }
 
-    export let onlyChildInfo: boolean = false;
-    export let queryItem: QueryItem | undefined = undefined;
+    let {
+        message = $bindable([]),
+        noQueryMessage = "Search for all results",
+        showQuery = false,
+        onlyChildInfo = false,
+        queryItem = undefined,
+    }: Props = $props();
 
-    $: iconUrl = $iconStore.get("infoUrl");
+    let iconUrl = $derived($iconStore.get("infoUrl"));
 
     /**
      * handles the toggling of the tooltip
      */
-    let tooltipOpen: boolean = false;
+    let tooltipOpen: boolean = $state(false);
 
     const onFocusOut = (): void => {
         tooltipOpen = false;
@@ -64,9 +73,9 @@
 
 <button
     part="info-button"
-    on:click={(e) =>
+    onclick={(e) =>
         onlyChildInfo ? displayQueryInfo(e, queryItem) : displayQueryInfo(e)}
-    on:focusout={onFocusOut}
+    onfocusout={onFocusOut}
 >
     {#if iconUrl}
         <img part="info-button-icon" src={iconUrl} alt="info icon" />
