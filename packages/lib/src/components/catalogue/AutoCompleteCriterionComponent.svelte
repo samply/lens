@@ -1,18 +1,21 @@
 <script lang="ts">
-
     import type { QueryItem } from "../../types/queryData";
     import QueryAddButtonComponent from "./QueryAddButtonComponent.svelte";
 
-    /**
-     * the item which will be added to the query store
-     */
-    export let chosenOption: QueryItem;
+    interface Props {
+        /**
+         * the item which will be added to the query store
+         */
+        chosenOption: QueryItem;
+    }
+
+    let { chosenOption }: Props = $props();
 
     /**
      * Handles the tooltip behaviour
      */
     let waitingForTooltip: boolean = false;
-    let tooltipOpen: boolean = false;
+    let tooltipOpen: boolean = $state(false);
 
     const showTooltip = (): void => {
         waitingForTooltip = true;
@@ -27,11 +30,11 @@
     };
 </script>
 
-<!-- svelte-ignore a11y-no-static-element-interactions -->
+<!-- svelte-ignore a11y_no_static_element_interactions -->
 <span
     part="criterion-autocomplete-name"
-    on:mouseenter={showTooltip}
-    on:mouseleave={hideTooltip}
+    onmouseenter={showTooltip}
+    onmouseleave={hideTooltip}
 >
     {chosenOption.values[0].name}
     <dialog part="criterion-autocomplete-tooltip" open={tooltipOpen}>

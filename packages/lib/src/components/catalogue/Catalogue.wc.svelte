@@ -5,6 +5,8 @@
 />
 
 <script lang="ts">
+    import { run } from "svelte/legacy";
+
     import { catalogueTextStore } from "../../stores/texts";
     import { catalogue } from "../../stores/catalogue";
     import type { ToggleAttribute } from "../../types/helpers";
@@ -12,14 +14,6 @@
     import type { Catalogue } from "../../types/catalogue";
     import DataTreeElement from "./DataTreeElement.svelte";
     import { iconStore } from "../../stores/icons";
-
-    // TODO: check if anyone actually uses this, otherwise remove it
-    export let treeData: Catalogue = [];
-
-    export let texts: CatalogueText = {};
-    export let addIconUrl: string | null = null;
-    export let toggleIconUrl: string | null = null;
-    export let infoIconUrl: string | null = null;
 
     iconStore.update((store: Map<string, string>) => {
         if (addIconUrl) {
@@ -34,26 +28,32 @@
         return store;
     });
 
-    /**
-     * Initialize the catalogue store with the given tree data
-     * watch for changes from other components
-     */
-    $: $catalogue = treeData;
+    interface Props {
+        // TODO: check if anyone actually uses this, otherwise remove it
+        treeData?: Catalogue;
+        texts?: CatalogueText;
+        addIconUrl?: string | null;
+        toggleIconUrl?: string | null;
+        infoIconUrl?: string | null;
+        /**
+         * handle the toggle of the catalogue
+         */
+        toggle?: ToggleAttribute;
+    }
 
-    /**
-     * Initialize the text store with the given texts
-     */
-    $: $catalogueTextStore = initializedTexts;
+    let {
+        treeData = [],
+        texts = {},
+        addIconUrl = null,
+        toggleIconUrl = null,
+        infoIconUrl = null,
+        toggle = {
+            collapsable: true,
+            open: false,
+        },
+    }: Props = $props();
 
-    /**
-     * handle the toggle of the catalogue
-     */
-    export let toggle: ToggleAttribute = {
-        collapsable: true,
-        open: false,
-    };
-
-    let toggleTree = toggle.open;
+    let toggleTree = $state(toggle.open);
 
     const handleToggle = (): void => {
         toggleTree = !toggleTree;
@@ -71,6 +71,19 @@
             labelTo: texts.numberInput?.labelTo || "to",
         },
     };
+    /**
+     * Initialize the catalogue store with the given tree data
+     * watch for changes from other components
+     */
+    run(() => {
+        $catalogue = treeData;
+    });
+    /**
+     * Initialize the text store with the given texts
+     */
+    run(() => {
+        $catalogueTextStore = initializedTexts;
+    });
 </script>
 
 <div part="lens-catalogue">
@@ -79,7 +92,7 @@
             part="lens-catalogue-toggle-button {toggle.open
                 ? 'lens-catalogue-button-open'
                 : ''}"
-            on:click={handleToggle}
+            onclick={handleToggle}
         >
             <div
                 part="toggle-button-icon {toggle.open

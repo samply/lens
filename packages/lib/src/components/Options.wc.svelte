@@ -5,6 +5,8 @@
 />
 
 <script lang="ts">
+    import { run } from "svelte/legacy";
+
     /**
      * this component takes the catalogue and all options set from the project and passes them to the appropriate store
      * TODO: refactor all mappings and configurations to be passed in here
@@ -26,22 +28,34 @@
     import Ajv from "ajv";
     import addFormats from "ajv-formats";
 
-    export let optionsJSON: string = "{}";
-    export let catalogueJSON: string = "[]";
-    export let measures: MeasureStore = {} as MeasureStore;
+    interface Props {
+        optionsJSON?: string;
+        catalogueJSON?: string;
+        measures?: MeasureStore;
+    }
+
+    let {
+        optionsJSON = "{}",
+        catalogueJSON = "[]",
+        measures = {} as MeasureStore,
+    }: Props = $props();
 
     /**
      * transform the JSON strings to objects for validation and further processing
      */
-    let options: LensOptions = {} as LensOptions;
-    let catalogueData: Catalogue = [];
-    $: options = JSON.parse(optionsJSON);
-    $: catalogueData = JSON.parse(catalogueJSON);
+    let options: LensOptions = $state({} as LensOptions);
+    let catalogueData: Catalogue = $state([]);
+    run(() => {
+        options = JSON.parse(optionsJSON);
+    });
+    run(() => {
+        catalogueData = JSON.parse(catalogueJSON);
+    });
 
     /**
      * Validate the options against the schema before passing them to the store
      */
-    $: {
+    run(() => {
         const ajv = new Ajv({
             allErrors: true,
         });
@@ -58,9 +72,9 @@
                 "Die Lens-Optionen sind nicht mit dem JSON-Schema konform",
             );
         }
-    }
+    });
 
-    $: {
+    run(() => {
         const ajv = new Ajv({
             allErrors: true,
         });
@@ -77,7 +91,7 @@
                 "Der Katalog ist nicht mit dem JSON-Schema konform",
             );
         }
-    }
+    });
 
     /**
      * updates the icon store with the options passed in
@@ -130,24 +144,32 @@
      * web components' props are json, meaning that Maps are not supported
      * therefore it's a 2d array of strings which is converted to a map
      */
-    $: uiSiteMappingsStore.update((mappings) => {
-        if (!options?.siteMappings) return mappings;
-        Object.entries(options?.siteMappings)?.forEach((site) => {
-            mappings.set(site[0], site[1]);
-        });
+    run(() => {
+        uiSiteMappingsStore.update((mappings) => {
+            if (!options?.siteMappings) return mappings;
+            Object.entries(options?.siteMappings)?.forEach((site) => {
+                mappings.set(site[0], site[1]);
+            });
 
-        return mappings;
+            return mappings;
+        });
     });
 
-    $: catalogueKeyToResponseKeyMap.update((mappings) => {
-        if (!options?.catalogueKeyToResponseKeyMap) return mappings;
+    run(() => {
+        catalogueKeyToResponseKeyMap.update((mappings) => {
+            if (!options?.catalogueKeyToResponseKeyMap) return mappings;
 
-        options.catalogueKeyToResponseKeyMap.forEach((mapping) => {
-            mappings.set(mapping[0], mapping[1]);
+            options.catalogueKeyToResponseKeyMap.forEach((mapping) => {
+                mappings.set(mapping[0], mapping[1]);
+            });
+            return mappings;
         });
-        return mappings;
     });
 
-    $: updateIconStore(options);
-    $: $measureStore = measures;
+    run(() => {
+        updateIconStore(options);
+    });
+    run(() => {
+        $measureStore = measures;
+    });
 </script>

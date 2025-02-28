@@ -9,8 +9,12 @@
     import { negotiate } from "../../services/ccpProjectManager";
     import { bbmriNegotiate } from "../../services/bbmriNegotiate";
 
-    export let title: string = "Negotiate with biobanks";
-    export let type: string;
+    interface Props {
+        title?: string;
+        type: string;
+    }
+
+    let { title = "Negotiate with biobanks", type }: Props = $props();
 
     /**
      *
@@ -28,7 +32,7 @@
     part={`lens-negotiate-button lens-negotiate-button-${
         $datarequestsStore.length === 0 ? "disabled" : "active"
     }`}
-    on:click={exec}
+    onclick={exec}
     disabled={$datarequestsStore.length === 0}
 >
     <div part="lens-negotiate-button-title">

@@ -4,10 +4,14 @@
     import type { NumericRangeCategory } from "../../types/catalogue";
     import { v4 as uuidv4 } from "uuid";
 
-    export let element: NumericRangeCategory;
+    interface Props {
+        element: NumericRangeCategory;
+    }
 
-    let from: number = (element.min as number) || 0;
-    let to: number = (element.max as number) || 0;
+    let { element }: Props = $props();
+
+    let from: number = $state((element.min as number) || 0);
+    let to: number = $state((element.max as number) || 0);
 
     /**
      * handles the "from" input field
@@ -70,7 +74,7 @@
     /**
      * build the query item each time the values change
      */
-    $: queryItem = {
+    let queryItem = $derived({
         id: uuidv4(),
         key: element.key,
         name: element.name,
@@ -82,7 +86,7 @@
                 queryBindId: uuidv4(),
             },
         ],
-    };
+    });
 </script>
 
 <div part="criterion-wrapper number-input-wrapper">
@@ -97,7 +101,7 @@
                         {to && from > to ? ' formfield-error' : ''}"
                     type="number"
                     bind:value={from}
-                    on:focusout={handleInputFrom}
+                    onfocusout={handleInputFrom}
                 />
             </label>
 
@@ -110,7 +114,7 @@
                         {to && from > to ? ' formfield-error' : ''}"
                     type="number"
                     bind:value={to}
-                    on:focusout={handleInputTo}
+                    onfocusout={handleInputTo}
                 />
             </label>
         </div>
