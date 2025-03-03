@@ -1,7 +1,7 @@
 import { buildLibrary, buildMeasure } from "../helpers/cql-measure";
 import type { Site, SiteData } from "../types/response";
 import type { Measure, ResponseStore } from "../types/backend";
-import { errorChannel } from "../stores/error-channel";
+import { showError } from "../stores/toasts.svelte";
 
 export class Blaze {
     constructor(
@@ -95,7 +95,7 @@ export class Blaze {
                 console.log(`Aborting former blaze request.`);
             } else {
                 console.error(err);
-                errorChannel.set("Fehler beim Bearbeiten der Anfrage"); // show user-facing error
+                showError("Fehler beim Bearbeiten der Anfrage");
             }
         }
     }

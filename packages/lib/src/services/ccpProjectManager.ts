@@ -16,7 +16,7 @@ import type {
 } from "../types/options";
 import type { QueryItem, SendableQuery } from "../types/queryData";
 import { v4 as uuidv4 } from "uuid";
-import { errorChannel } from "../stores/error-channel";
+import { showError } from "../stores/toasts.svelte";
 
 //const urlParams: URLSearchParams = new URLSearchParams(window.location.search);
 //const collectionParams: string | null = urlParams.get("collections");
@@ -42,7 +42,7 @@ export const negotiate = async (sitesToNegotiate: string[]): Promise<void> => {
         get(lensOptions)?.projectmanagerOptions;
     if (currentProjectmanagerOptions === undefined) {
         console.error('"projectmanagerOptions" is missing the lens options');
-        errorChannel.set('"projectmanagerOptions" fehlt in den Lens-Optionen');
+        showError('"projectmanagerOptions" fehlt in den Lens-Optionen');
         return;
     }
 

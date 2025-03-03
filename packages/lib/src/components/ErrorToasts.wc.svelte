@@ -5,46 +5,18 @@
 />
 
 <script lang="ts">
-    import { run } from "svelte/legacy";
-
     import { fade } from "svelte/transition";
-    import { errorChannel } from "../stores/error-channel";
-
-    // Each toast has a unique id that maps to the error message
-    let toasts: Map<string, string> = $state(new Map());
-
-    /**
-     * @param message user-facing error message
-     */
-    function showToast(message: string): void {
-        const uuid = crypto.randomUUID();
-        toasts.set(uuid, message);
-        toasts = toasts; // update
-
-        setTimeout(() => {
-            toasts.delete(uuid);
-            toasts = toasts; // update
-        }, 8000);
-    }
-
-    // subscribe to error channel
-    run(() => {
-        if ($errorChannel !== "") {
-            showToast($errorChannel);
-            errorChannel.set("");
-        }
-    });
+    import { getToasts, removeToast } from "../stores/toasts.svelte";
 </script>
 
 <div part="flex-container">
-    {#each toasts as [uuid, message] (uuid)}
+    {#each getToasts() as toast (toast.id)}
         <div out:fade part="toast">
-            <div part="message">{message}</div>
+            <div part="message">{toast.message}</div>
             <button
                 part="close-button"
                 onclick={() => {
-                    toasts.delete(uuid);
-                    toasts = toasts; // update
+                    removeToast(toast.id);
                 }}
                 aria-label="Close"
             >
