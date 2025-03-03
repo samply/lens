@@ -1,4 +1,6 @@
 import { writable } from "svelte/store";
 import type { LensOptions } from "../types/options";
 
-export const lensOptions = writable<LensOptions>({});
+// This is undefined when the app starts up and gets populated when the options
+// are fetched via the network.
+export const lensOptions = writable<LensOptions | undefined>();

@@ -64,7 +64,7 @@
     /**
      * input element binds to this variable. Used to focus the input element
      */
-    let searchBarInput: HTMLInputElement = $state();
+    let searchBarInput: HTMLInputElement;
     /**
      * watches the input value and updates the input options
      */
@@ -100,7 +100,7 @@
      */
     let focusedItemIndex: number = $state(-1);
 
-    let activeDomElement: HTMLElement = $state();
+    let activeDomElement: HTMLElement | undefined = $state();
 
     /**
      * transforms the inputvalue to a QueryItem, adds it to the query store
@@ -278,7 +278,11 @@
         ),
     );
     run(() => {
-        scrollInsideContainerWhenActiveDomElementIsOutOfView(activeDomElement);
+        if (activeDomElement) {
+            scrollInsideContainerWhenActiveDomElementIsOutOfView(
+                activeDomElement,
+            );
+        }
     });
 </script>
 

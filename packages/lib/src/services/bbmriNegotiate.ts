@@ -48,7 +48,7 @@ export async function bbmriNegotiate(
     sitesToNegotiate: string[],
 ): Promise<void> {
     const currentLensOptions = get(lensOptions);
-    if (currentLensOptions.negotiateOptions === undefined) {
+    if (currentLensOptions?.negotiateOptions === undefined) {
         console.error('"negotiateOptions" is missing the lens options');
         errorChannel.set('"negotiateOptions" fehlt in den Lens-Optionen');
         return;

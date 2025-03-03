@@ -16,17 +16,14 @@
     } from "../../stores/response";
     import TableItemComponent from "./TableItemComponent.svelte";
     import { lensOptions } from "../../stores/options";
-    import type { HeaderData } from "../../types/biobanks";
+    import type { HeaderData } from "../../types/options";
     import type { Site } from "../../types/response";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
     import type { ResponseStore } from "../../types/backend";
 
-    let claimedText: string = $state();
-    run(() => {
-        claimedText =
-            ($lensOptions?.tableOptions as { claimedText: string })
-                ?.claimedText || "Processing...";
-    });
+    const claimedText = $derived(
+        $lensOptions?.tableOptions.claimedText || "Processing...",
+    );
 
     /**
      * data-types for the table
@@ -150,7 +147,7 @@
     let sortColumnIndex = $state(0);
     let sortAscending = $state(true);
 
-    let visibleRows: TableRowData = $state();
+    let visibleRows: TableRowData = $state([]);
     run(() => {
         // Array.sort sorts in place, so make a copy first
         const tableRowsCopy = [...tableRowData];
