@@ -14,7 +14,7 @@
     import { Blaze } from "../../classes/blaze";
     import { responseStore, updateResponseStore } from "../../stores/response";
     import { lensOptions } from "../../stores/options";
-    import { errorChannel } from "../../stores/error-channel";
+    import { showError } from "../../stores/toasts.svelte";
     import type {
         BackendOptions,
         Measure,
@@ -66,9 +66,9 @@
             console.error(
                 "There is at least one empty and one non-empty search bar, aborting search",
             );
-            errorChannel.set(
+            showError(
                 "Eine der Suchleisten ist leer. Löschen Sie leere Suchleisten oder fügen Sie Suchkriterien ein.",
-            ); // show user-facing error
+            );
             return;
         }
 
@@ -169,7 +169,7 @@
             })
             .catch((error) => {
                 console.error("Error:", error);
-                errorChannel.set("Fehler beim Bearbeiten der Anfrage"); // show user-facing error
+                showError("Fehler beim Bearbeiten der Anfrage");
             });
     };
 

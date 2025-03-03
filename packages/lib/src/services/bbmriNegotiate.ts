@@ -1,7 +1,7 @@
 import { get } from "svelte/store";
 import { lensOptions } from "../stores/options";
 import { getHumanReadableQuery } from "../stores/datarequests";
-import { errorChannel } from "../stores/error-channel";
+import { showError } from "../stores/toasts.svelte";
 
 /**
  * The request payload expected by the BBMRI Negotiator to start the application
@@ -50,7 +50,7 @@ export async function bbmriNegotiate(
     const currentLensOptions = get(lensOptions);
     if (currentLensOptions?.negotiateOptions === undefined) {
         console.error('"negotiateOptions" is missing the lens options');
-        errorChannel.set('"negotiateOptions" fehlt in den Lens-Optionen');
+        showError('"negotiateOptions" fehlt in den Lens-Optionen');
         return;
     }
 
@@ -119,7 +119,7 @@ async function sendRequestToNegotiator(
         });
     } catch (error) {
         console.error(error);
-        errorChannel.set("Fehler beim Anfragen der Daten und Proben");
+        showError("Fehler beim Anfragen der Daten und Proben");
         return;
     }
 
@@ -131,6 +131,6 @@ async function sendRequestToNegotiator(
         console.error(
             `Expected HTTP status 201 from BBMRI Negotiator but got ${response.status} with response body: ${await response.text()}`,
         );
-        errorChannel.set("Fehler beim Anfragen der Daten und Proben");
+        showError("Fehler beim Anfragen der Daten und Proben");
     }
 }
