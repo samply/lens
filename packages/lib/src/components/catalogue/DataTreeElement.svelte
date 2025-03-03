@@ -1,6 +1,8 @@
 <script lang="ts">
+    import { run } from "svelte/legacy";
+
     import { addItemToQuery, activeQueryGroupIndex } from "../../stores/query";
-    import type { Category } from "../../types/treeData";
+    import type { Category } from "../../types/catalogue";
     import DataTreeElement from "./DataTreeElement.svelte";
     import NumberInputComponent from "./NumberInputComponent.svelte";
     import AutocompleteComponent from "./AutoCompleteComponent.svelte";
@@ -12,22 +14,26 @@
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
     import DatePickerComponent from "./DatePickerComponent.svelte";
 
-    export let element: Category;
+    interface Props {
+        element: Category;
+        /**
+         * defines the layer of the element in the tree
+         */
+        layer?: number;
+        /**
+         * defines if the subcategorys are open, iterates over the whole tree
+         */
+        treeOpen?: boolean;
+    }
+
+    let { element, layer = 1, treeOpen = false }: Props = $props();
+
     const subCategoryName: string | null =
         "subCategoryName" in element &&
         element.subCategoryName !== undefined &&
         element.subCategoryName !== null
             ? element.subCategoryName
             : null;
-    /**
-     * defines the layer of the element in the tree
-     */
-    export let layer: number = 1;
-
-    /**
-     * defines if the subcategorys are open, iterates over the whole tree
-     */
-    export let treeOpen: boolean = false;
 
     if (treeOpen) {
         /**
@@ -38,8 +44,8 @@
     /**
      * watches the open tree nodes store to update the open state of the subcategorys
      */
-    let open: boolean = false;
-    $: {
+    let open: boolean = $state(false);
+    run(() => {
         if (subCategoryName) {
             open =
                 $openTreeNodes
@@ -48,7 +54,7 @@
         } else {
             open = $openTreeNodes.get(element.key) ? true : false;
         }
-    }
+    });
 
     /**
      * adds and removes the subcategorys from the open tree nodes store
@@ -102,7 +108,7 @@
                 typeof element.fieldType === "string" &&
                 element.fieldType == "single-select"));
 
-    $: selectAllText = $iconStore.get("selectAllText");
+    let selectAllText = $derived($iconStore.get("selectAllText"));
 
     const selectAllOptions = (): void => {
         if (!("criteria" in element)) return;
@@ -130,7 +136,7 @@
 </script>
 
 <div part="data-tree-element">
-    <button part="data-tree-element-name" on:click={toggleChildren}>
+    <button part="data-tree-element-name" onclick={toggleChildren}>
         {#if $iconStore.get("toggleIconUrl")}
             <img
                 part="data-tree-element-toggle-icon {open
@@ -163,7 +169,7 @@
     {/if}
 
     {#if finalParent && open}
-        <button part="add-all-options-button" on:click={selectAllOptions}>
+        <button part="add-all-options-button" onclick={selectAllOptions}>
             {selectAllText ? selectAllText : "Add all"}
         </button>
     {/if}
@@ -183,13 +189,13 @@
             {/each}
         {:else}
             <div part="data-tree-element-last-child-options">
-                {#if "fieldType" in element && element.fieldType === "single-select"}
+                {#if element.fieldType === "single-select"}
                     <SingleSelectComponent {element} />
-                {:else if "fieldType" in element && element.fieldType === "autocomplete"}
+                {:else if element.fieldType === "autocomplete"}
                     <AutocompleteComponent {element} />
-                {:else if "fieldType" in element && element.fieldType === "number"}
+                {:else if element.fieldType === "number"}
                     <NumberInputComponent {element} />
-                {:else if "fieldType" in element && element.fieldType === "date"}
+                {:else if element.fieldType === "date"}
                     <DatePickerComponent {element} />
                 {/if}
             </div>

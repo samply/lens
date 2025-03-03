@@ -6,9 +6,13 @@
     /**
      * index: index of the group in the query store
      */
-    let index: number;
-    $: index = $activeQueryGroupIndex;
-    export let queryItem: QueryItem;
+    let index: number = $derived($activeQueryGroupIndex);
+
+    interface Props {
+        queryItem: QueryItem;
+    }
+
+    let { queryItem }: Props = $props();
 
     /**
      * adds the item to the query store within the focused group
@@ -18,7 +22,7 @@
     };
 </script>
 
-<button part="query-add-button" on:click={addItem}>
+<button part="query-add-button" onclick={addItem}>
     {#if $iconStore.get("addIconUrl")}
         <img
             part="query-add-button-icon"

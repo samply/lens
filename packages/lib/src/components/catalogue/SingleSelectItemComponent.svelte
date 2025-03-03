@@ -1,12 +1,15 @@
 <script lang="ts">
     import { v4 as uuidv4 } from "uuid";
-    import type { CategoryLeaf } from "../../types/treeData";
-    import type { Criteria } from "../../types/treeData";
+    import type { SingleSelectCategory, Criteria } from "../../types/catalogue";
     import QueryAddButtonComponent from "./QueryAddButtonComponent.svelte";
     import type { QueryItem } from "../../types/queryData";
 
-    export let element: CategoryLeaf;
-    export let criterion: Criteria;
+    interface Props {
+        element: SingleSelectCategory;
+        criterion: Criteria;
+    }
+
+    let { element, criterion }: Props = $props();
 
     const queryBindId: string = uuidv4();
 

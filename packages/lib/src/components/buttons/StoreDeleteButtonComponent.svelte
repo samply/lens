@@ -10,9 +10,13 @@
     import { createEventDispatcher } from "svelte";
 
     const dispatch = createEventDispatcher();
-    export let itemToDelete: { type: string; index: number; item?: QueryItem };
+    interface Props {
+        itemToDelete: { type: string; index: number; item?: QueryItem };
+    }
 
-    $: deleteUrl = $iconStore.get("deleteUrl");
+    let { itemToDelete }: Props = $props();
+
+    let deleteUrl = $derived($iconStore.get("deleteUrl"));
 
     const { type, index, item } = itemToDelete;
 
@@ -44,7 +48,7 @@
 
 <button
     part="query-delete-button query-delete-button-{type}"
-    on:click={deleteItem}
+    onclick={deleteItem}
 >
     {#if deleteUrl}
         <img

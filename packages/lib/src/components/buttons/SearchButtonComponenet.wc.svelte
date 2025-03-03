@@ -14,7 +14,7 @@
     import { Blaze } from "../../classes/blaze";
     import { responseStore, updateResponseStore } from "../../stores/response";
     import { lensOptions } from "../../stores/options";
-    import { errorChannel } from "../../stores/error-channel";
+    import { showError } from "../../stores/toasts";
     import type {
         BackendOptions,
         Measure,
@@ -26,11 +26,14 @@
     import { isTopLayer, type AstTopLayer } from "../../types/ast";
     import type { Site } from "../../types/response";
 
-    export let title: string = "Search";
+    interface Props {
+        title?: string;
+        disabled?: boolean;
+    }
 
-    export let disabled: boolean = false;
+    let { title = "Search", disabled = false }: Props = $props();
 
-    $: options = $lensOptions?.backends as BackendOptions;
+    let options = $derived($lensOptions?.backends as BackendOptions);
 
     let controller: AbortController = new AbortController();
 
@@ -63,9 +66,9 @@
             console.error(
                 "There is at least one empty and one non-empty search bar, aborting search",
             );
-            errorChannel.set(
+            showError(
                 "Eine der Suchleisten ist leer. Löschen Sie leere Suchleisten oder fügen Sie Suchkriterien ein.",
-            ); // show user-facing error
+            );
             return;
         }
 
@@ -166,7 +169,7 @@
             })
             .catch((error) => {
                 console.error("Error:", error);
-                errorChannel.set("Fehler beim Bearbeiten der Anfrage"); // show user-facing error
+                showError("Fehler beim Bearbeiten der Anfrage");
             });
     };
 
@@ -197,7 +200,7 @@
     part={`lens-search-button lens-search-button-${
         disabled ? "disabled" : "active"
     }`}
-    on:click={getResultsFromBackend}
+    onclick={getResultsFromBackend}
     {disabled}
 >
     <div part="lens-search-button-magnifying-glass">&#x26B2;</div>

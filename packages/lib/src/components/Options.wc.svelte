@@ -9,76 +9,84 @@
      * this component takes the catalogue and all options set from the project and passes them to the appropriate store
      * TODO: refactor all mappings and configurations to be passed in here
      */
+
+    import { run } from "svelte/legacy";
     import { lensOptions } from "../stores/options";
     import { catalogue } from "../stores/catalogue";
     import { measureStore } from "../stores/measures";
     import { iconStore } from "../stores/icons";
     import type { MeasureStore } from "../types/backend";
-    import type { Category } from "../types/treeData";
+    import type { Catalogue } from "../types/catalogue";
     import optionsSchema from "../types/options.schema.json";
     import catalogueSchema from "../types/catalogue.schema.json";
-    import { parser, type Parse, type ParseResult } from "@exodus/schemasafe";
     import type { LensOptions } from "../types/options";
     import {
         catalogueKeyToResponseKeyMap,
         uiSiteMappingsStore,
     } from "../stores/mappings";
-    import { errorChannel } from "../stores/error-channel";
+    import { showError } from "../stores/toasts";
+    import Ajv from "ajv";
+    import addFormats from "ajv-formats";
 
-    export let optionsJSON: string = "{}";
-    export let catalogueJSON: string = "[]";
-    export let measures: MeasureStore = {} as MeasureStore;
+    interface Props {
+        optionsJSON?: string;
+        catalogueJSON?: string;
+        measures?: MeasureStore;
+    }
 
-    /**
-     * transform the JSON strings to objects for validation and further processing
-     */
-    let options: LensOptions = {} as LensOptions;
-    let catalogueData: Category[] = [];
-    $: options = JSON.parse(optionsJSON);
-    $: catalogueData = JSON.parse(catalogueJSON);
+    let {
+        optionsJSON = "{}",
+        catalogueJSON = "[]",
+        measures = {} as MeasureStore,
+    }: Props = $props();
 
-    /**
-     * Validate the options against the schema before passing them to the store
-     */
-    $: {
-        const parse: Parse = parser(optionsSchema, {
-            includeErrors: true,
+    // Transform the JSON strings to objects for validation and further processing
+    let options: LensOptions = $state({} as LensOptions);
+    let catalogueData: Catalogue = $state([]);
+    run(() => {
+        options = JSON.parse(optionsJSON);
+    });
+    run(() => {
+        catalogueData = JSON.parse(catalogueJSON);
+    });
+
+    // Validate the options against the schema before passing them to the store
+    $effect(() => {
+        const ajv = new Ajv({
             allErrors: true,
         });
-        const validJSON: ParseResult = parse(JSON.stringify(options));
-        if (validJSON.valid === true) {
+        addFormats(ajv);
+        const valid = ajv.validate(optionsSchema, options);
+        if (valid) {
             $lensOptions = options;
-        } else if (typeof options === "object") {
+        } else {
             console.error(
-                "Lens-Options are not conform with the JSON schema",
-                validJSON.errors,
+                "The lens options are not conform with the JSON schema",
+                ajv.errors,
             );
-            // show user-facing error
-            errorChannel.set(
+            showError(
                 "Die Lens-Optionen sind nicht mit dem JSON-Schema konform",
             );
         }
-    }
+    });
 
-    $: {
-        const parse: Parse = parser(catalogueSchema, {
-            includeErrors: true,
+    $effect(() => {
+        const ajv = new Ajv({
             allErrors: true,
         });
-        const validJSON: ParseResult = parse(JSON.stringify(catalogueData));
-        if (validJSON.valid === true) {
+        addFormats(ajv);
+        const valid = ajv.validate(catalogueSchema, catalogueData);
+        if (valid) {
             $catalogue = catalogueData;
-        } else if (typeof catalogueData === "object") {
+        } else {
             console.error(
-                "Catalogue is not conform with the JSON schema",
-                validJSON.errors,
+                "The catalogue is not conform with the JSON schema",
+                ajv.errors,
             );
-            // show user-facing error
-            errorChannel.set(
-                "Der Catalogue-Parameter ist nicht mit dem JSON-Schema konform",
-            );
+            showError("Der Katalog ist nicht mit dem JSON-Schema konform");
         }
-    }
+    });
+
     /**
      * updates the icon store with the options passed in
      * @param options the Lens options
@@ -130,26 +138,32 @@
      * web components' props are json, meaning that Maps are not supported
      * therefore it's a 2d array of strings which is converted to a map
      */
-    $: uiSiteMappingsStore.update((mappings) => {
-        if (!options?.siteMappings) return mappings;
-        Object.entries(options?.siteMappings)?.forEach((site) => {
-            mappings.set(site[0], site[1]);
-        });
+    run(() => {
+        uiSiteMappingsStore.update((mappings) => {
+            if (!options?.siteMappings) return mappings;
+            Object.entries(options?.siteMappings)?.forEach((site) => {
+                mappings.set(site[0], site[1]);
+            });
 
-        return mappings;
+            return mappings;
+        });
     });
 
-    $: catalogueKeyToResponseKeyMap.update((mappings) => {
-        if (!options?.catalogueKeyToResponseKeyMap) return mappings;
+    run(() => {
+        catalogueKeyToResponseKeyMap.update((mappings) => {
+            if (!options?.catalogueKeyToResponseKeyMap) return mappings;
 
-        options.catalogueKeyToResponseKeyMap.forEach((mapping) => {
-            mappings.set(mapping[0], mapping[1]);
+            options.catalogueKeyToResponseKeyMap.forEach((mapping) => {
+                mappings.set(mapping[0], mapping[1]);
+            });
+            return mappings;
         });
-        return mappings;
     });
 
-    $: $lensOptions = options;
-    $: updateIconStore(options);
-    $: $catalogue = catalogueData;
-    $: $measureStore = measures;
+    run(() => {
+        updateIconStore(options);
+    });
+    run(() => {
+        $measureStore = measures;
+    });
 </script>

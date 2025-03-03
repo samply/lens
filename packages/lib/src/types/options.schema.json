@@ -1,5 +1,5 @@
 {
-    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "title": "Lens Options",
     "description": "The options for the lens",
     "type": "object",
@@ -27,12 +27,10 @@
                         }
                     },
                     "additionalProperties": false,
-                    "unevaluatedProperties": false,
                     "required": []
                 }
             },
             "additionalProperties": false,
-            "unevaluatedProperties": false,
             "required": []
         },
         "siteMappings":{
@@ -44,7 +42,6 @@
                 }
             },
             "additionalProperties": false,
-            "unevaluatedProperties": false,
             "required": []
         },
         "catalogueKeyToResponseKeyMap": {
@@ -73,7 +70,6 @@
                                 }
                             },
                             "additionalProperties": false,
-                            "unevaluatedProperties": false,
                             "required": []
                         },
                         "hintText": {
@@ -113,7 +109,6 @@
                                     }
                                 },
                                 "additionalProperties": false,
-                                "unevaluatedProperties": false,
                                 "required": []
                             }
                         },
@@ -127,17 +122,14 @@
                                 }
                             },
                             "additionalProperties": false,
-                            "unevaluatedProperties": false,
                             "required": []
                         }
                     },
                     "additionalProperties": false,
-                    "unevaluatedProperties": false,
                     "required": []
                 }
             },
             "additionalProperties": false,
-            "unevaluatedProperties": false,
             "required": []
         },
         "tableOptions": {
@@ -178,13 +170,11 @@
                                         }
                                     },
                                     "additionalProperties": false,
-                                    "unevaluatedProperties": false,
                                     "required": []
                                 }
                             }
                         },
                         "additionalProperties": false,
-                        "unevaluatedProperties": false,
                         "required": [
                             "title"
                         ]
@@ -197,7 +187,6 @@
                 }
             },
             "additionalProperties": false,
-            "unevaluatedProperties": false,
             "required": ["headerData"]
         },
         "resultSummaryOptions": {
@@ -244,19 +233,16 @@
                                         }
                                     },
                                     "additionalProperties": false,
-                                    "unevaluatedProperties": false,
                                     "required": []
                                 }
                             }
                         },
                         "additionalProperties": false,
-                        "unevaluatedProperties": false,
                         "required": []
                     }
                 }
             },
             "additionalProperties": false,
-            "unevaluatedProperties": false,
             "required": []
         },
         "backends": {
@@ -300,7 +286,6 @@
                             }
                         },
                         "additionalProperties": false,
-                        "unevaluatedProperties": false,
                         "required": ["name", "backendMeasures", "url", "sites"]
                     }
                 },
@@ -326,13 +311,11 @@
                             }
                         },
                         "additionalProperties": false,
-                        "unevaluatedProperties": false,
                         "required": ["name", "backendMeasures", "url"]
                     }
                 }
             },
             "additionalProperties": false,
-            "unevaluatedProperties": false,
             "required": []
         },
         "negotiateOptions": {
@@ -366,13 +349,11 @@
                             }
                         },
                         "additionalProperties": false,
-                        "unevaluatedProperties": false,
                         "required": ["site", "collection"]                    
                     }
                 }
             },
             "additionalProperties": false,
-            "unevaluatedProperties": false,
             "required": ["url", "siteMappings"]
             
         },
@@ -404,17 +385,14 @@
                             }
                         },
                         "additionalProperties": false,
-                        "unevaluatedProperties": false,
                         "required": ["site", "collection"]                    
                     }
                 }
             },
             "additionalProperties": false,
-            "unevaluatedProperties": false,
             "required": ["newProjectUrl", "editProjectUrl", "siteMappings"]
         }
     },
     "additionalProperties": false,
-    "unevaluatedProperties": false,
     "required": []
 }

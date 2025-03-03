@@ -1,10 +1,18 @@
 <script lang="ts">
+    import { run } from "svelte/legacy";
+
     import { datarequestsStore } from "../../stores/datarequests";
 
-    export let tableRow: (string | number)[];
+    interface Props {
+        tableRow: (string | number)[];
+    }
 
-    let checked: boolean = false;
-    $: checked = $datarequestsStore.includes(tableRow[0] as string);
+    let { tableRow }: Props = $props();
+
+    let checked: boolean = $state(false);
+    run(() => {
+        checked = $datarequestsStore.includes(tableRow[0] as string);
+    });
 
     /**
      * adds and removes tableRows from the negotiateStore whenever the checkbox is checked or unchecked
@@ -29,7 +37,7 @@
             part="table-body-checkbox"
             type="checkbox"
             bind:checked
-            on:change={updateStoreOnCheck}
+            onchange={updateStoreOnCheck}
         /></td
     >
 

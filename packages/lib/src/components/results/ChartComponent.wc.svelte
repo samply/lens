@@ -5,6 +5,8 @@
 />
 
 <script lang="ts">
+    import { run } from "svelte/legacy";
+
     import Chart, { type ChartTypeRegistry } from "chart.js/auto";
     import { onMount } from "svelte";
     import {
@@ -17,7 +19,7 @@
     import { activeQueryGroupIndex, addItemToQuery } from "../../stores/query";
     import { catalogue } from "../../stores/catalogue";
     import type { QueryItem, QueryValue } from "../../types/queryData";
-    import type { Category, Criteria } from "../../types/treeData";
+    import type { Category, Criteria } from "../../types/catalogue";
     import { catalogueKeyToResponseKeyMap } from "../../stores/mappings";
     import type { ResponseStore } from "../../types/backend";
     import type { Site } from "../../types/response";
@@ -26,63 +28,85 @@
     import type { ChartOption } from "../../types/options";
     import type { ChartDataSets } from "../../types/charts";
 
-    export let title: string = ""; // e.g. 'Gender Distribution'
-    export let catalogueGroupCode: string = ""; // e.g. "gender"
-    export let indexAxis: string = "x";
-    export let xAxisTitle: string = "";
-    export let yAxisTitle: string = "";
-    export let clickToAddState: boolean = false;
-    let responseGroupCode: string;
-    $: responseGroupCode =
-        $catalogueKeyToResponseKeyMap.get(catalogueGroupCode) || "";
+    interface Props {
+        title?: string; // e.g. 'Gender Distribution'
+        catalogueGroupCode?: string; // e.g. "gender"
+        indexAxis?: string;
+        xAxisTitle?: string;
+        yAxisTitle?: string;
+        clickToAddState?: boolean;
+        headers?: Map<string, string>;
+        displayLegends?: boolean;
+        chartType?: keyof ChartTypeRegistry;
+        scaleType?: string;
+        perSite?: boolean;
+        groupRange?: number;
+        groupingDivider?: string;
+        filterRegex?: string;
+        groupingLabel?: string;
+        viewScales?: boolean;
+        backgroundColor?: string[] | string;
+        backgroundHoverColor?: string[];
+    }
 
-    export let headers: Map<string, string> = new Map<string, string>();
-    export let displayLegends: boolean = false;
-    export let chartType: keyof ChartTypeRegistry = "pie";
-    export let scaleType: string = "linear";
-    export let perSite: boolean = false;
-    export let groupRange: number = 0;
-    export let groupingDivider: string = "";
-    export let filterRegex: string = "";
-    export let groupingLabel: string = "";
-    export let viewScales: boolean = chartType !== "pie" ? true : false;
-    let options: ChartOption;
-    $: options =
-        ($lensOptions?.chartOptions &&
-            $lensOptions?.chartOptions[catalogueGroupCode]) ||
-        ({} as ChartOption);
+    let {
+        title = "",
+        catalogueGroupCode = "",
+        indexAxis = "x",
+        xAxisTitle = "",
+        yAxisTitle = "",
+        clickToAddState = false,
+        headers = new Map<string, string>(),
+        displayLegends = false,
+        chartType = "pie",
+        scaleType = "linear",
+        perSite = false,
+        groupRange = $bindable(0),
+        groupingDivider = "",
+        filterRegex = "",
+        groupingLabel = "",
+        viewScales = chartType !== "pie" ? true : false,
+        backgroundColor = $bindable([
+            "#4dc9f6",
+            "#f67019",
+            "#f53794",
+            "#537bc4",
+            "#acc236",
+            "#166a8f",
+            "#00a950",
+            "#58595b",
+            "#8549ba",
+            "#ff8a33",
+            "#ff5996",
+            "#8ace7e",
+            "#c789d6",
+            "#ffcc00",
+            "#7fc2f4",
+            "#969696",
+            "#cfd27e",
+            "#db843d",
+            "#89a54e",
+            "#80699b",
+        ]),
+        backgroundHoverColor = ["#aaaaaa"],
+    }: Props = $props();
 
-    export let backgroundColor: string[] | string = [
-        "#4dc9f6",
-        "#f67019",
-        "#f53794",
-        "#537bc4",
-        "#acc236",
-        "#166a8f",
-        "#00a950",
-        "#58595b",
-        "#8549ba",
-        "#ff8a33",
-        "#ff5996",
-        "#8ace7e",
-        "#c789d6",
-        "#ffcc00",
-        "#7fc2f4",
-        "#969696",
-        "#cfd27e",
-        "#db843d",
-        "#89a54e",
-        "#80699b",
-    ];
-    export let backgroundHoverColor: string[] = ["#aaaaaa"];
+    // This is undefined if the lens options are not loaded yet
+    let options: ChartOption | undefined = $derived(
+        $lensOptions?.chartOptions?.[catalogueGroupCode],
+    );
+
+    let responseGroupCode: string = $derived(
+        $catalogueKeyToResponseKeyMap.get(catalogueGroupCode) || "",
+    );
 
     /**
      * initialize the chart
      */
 
-    let noDataAvailable: boolean = false;
+    let noDataAvailable: boolean = $state(false);
 
-    let canvas!: HTMLCanvasElement;
+    let canvas: HTMLCanvasElement;
 
     let chart: Chart;
 
@@ -118,7 +142,8 @@
                         ) => {
                             const key = context[0].label || "";
                             let result =
-                                options.tooltips && options.tooltips[key]
+                                options?.tooltips !== undefined &&
+                                options.tooltips[key] !== undefined
                                     ? options.tooltips[key]
                                     : key;
                             return result;
@@ -250,7 +275,7 @@
          * if aggregations are set, aggregate the data from other groups and adds them to the chart
          * e.g. add aggregated number of medical statements to the chart for therapy of tumor
          */
-        if (options.aggregations) {
+        if (options?.aggregations !== undefined) {
             options.aggregations.forEach((aggregation) => {
                 const aggregationCount = getAggregatedPopulation(
                     responseStore,
@@ -267,7 +292,7 @@
          * will remove the values from the chart and add their accumulated value to "frozen-tissue"
          */
         if (
-            options.accumulatedValues !== undefined &&
+            options?.accumulatedValues !== undefined &&
             options.accumulatedValues.length > 0
         ) {
             options.accumulatedValues.forEach((valueToAccumulate) => {
@@ -333,7 +358,7 @@
         const groupedChartData: { label: string; value: number }[] =
             labels.reduce<{ label: string; value: number }[]>((acc, label) => {
                 // This is a hack! This will help with the wrong coding of ICD10
-                label = label.replaceAll("_", ".");
+                label = label.replace(/_/g, ".");
 
                 /**
                  * see if the label contains the divider
@@ -470,21 +495,15 @@
          * set the labels of the chart
          * if a legend mapping is set, use the legend mapping
          */
-        chart.data.labels = options.legendMapping
-            ? chartLabels.map((label) => {
-                  return (
-                      (options.legendMapping && options.legendMapping[label]) ||
-                      ""
-                  );
-              })
-            : chartLabels;
+        chart.data.labels =
+            options?.legendMapping !== undefined
+                ? chartLabels.map(
+                      (label) => options.legendMapping?.[label] || "",
+                  )
+                : chartLabels;
 
         chart.update();
     };
-
-    $: {
-        setChartData($responseStore);
-    }
 
     onMount(() => {
         if (indexAxis === "y") {
@@ -533,7 +552,9 @@
                     (childCategorie: Category) => {
                         if (
                             childCategorie.key === catalogueGroupCode &&
-                            "criteria" in childCategorie
+                            (childCategorie.fieldType === "single-select" ||
+                                childCategorie.fieldType === "autocomplete" ||
+                                childCategorie.fieldType === "number")
                         ) {
                             let values: QueryValue[] = [];
 
@@ -597,11 +618,14 @@
 
         addItemToQuery(queryItem, $activeQueryGroupIndex);
     };
+    run(() => {
+        setChartData($responseStore);
+    });
 </script>
 
 <div part="chart-wrapper">
     <h4 part="chart-title">{title}</h4>
-    {#if options.hintText}
+    {#if options?.hintText !== undefined}
         <InfoButtonComponent message={options.hintText} />
     {/if}
 
@@ -615,7 +639,7 @@
         part="chart-canvas"
         bind:this={canvas}
         id="chart"
-        on:click={handleClickOnStratifier}
-    />
+        onclick={handleClickOnStratifier}
+    ></canvas>
     <slot />
 </div>

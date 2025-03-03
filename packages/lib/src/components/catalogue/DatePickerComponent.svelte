@@ -1,15 +1,20 @@
 <script lang="ts">
-    import type { CategoryLeaf } from "../../types/treeData";
+    import type { DateRangeCategory } from "../../types/catalogue";
     import { catalogueTextStore } from "../../stores/texts";
     import QueryAddButtonComponent from "./QueryAddButtonComponent.svelte";
     import type { QueryItem } from "../../types/queryData";
     import { v4 as uuidv4 } from "uuid";
 
-    export let element: CategoryLeaf;
+    interface Props {
+        element: DateRangeCategory;
+    }
 
-    let from: string = (element.min as string) || "1900-01-01";
-    let to: string =
-        (element.max as string) || new Date().toISOString().split("T")[0];
+    let { element }: Props = $props();
+
+    let from: string = $state(element.min || "1900-01-01");
+    let to: string = $state(
+        element.max || new Date().toISOString().split("T")[0],
+    );
 
     /**
      * build the proper name for the query value
@@ -26,8 +31,7 @@
     /**
      * builds the query item each time the values change
      */
-    let queryItem: QueryItem;
-    $: queryItem = {
+    let queryItem: QueryItem = $derived({
         id: uuidv4(),
         key: element.key,
         name: element.name,
@@ -39,7 +43,7 @@
                 queryBindId: uuidv4(),
             },
         ],
-    };
+    });
 
     /**
      * when the fields loose focus, the values are reset to the starting values
@@ -75,7 +79,7 @@
                         : ''}"
                     type="date"
                     bind:value={from}
-                    on:focusout={handleInputFrom}
+                    onfocusout={handleInputFrom}
                 />
             </label>
 
@@ -90,7 +94,7 @@
                         : ''}"
                     type="date"
                     bind:value={to}
-                    on:focusout={handleInputTo}
+                    onfocusout={handleInputTo}
                 />
             </label>
         </div>
