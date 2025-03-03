@@ -11,7 +11,6 @@
      */
 
     import { run } from "svelte/legacy";
-    import { untrack } from "svelte";
     import { lensOptions } from "../stores/options";
     import { catalogue } from "../stores/catalogue";
     import { measureStore } from "../stores/measures";
@@ -25,7 +24,7 @@
         catalogueKeyToResponseKeyMap,
         uiSiteMappingsStore,
     } from "../stores/mappings";
-    import { showError } from "../stores/toasts.svelte";
+    import { showError } from "../stores/toasts";
     import Ajv from "ajv";
     import addFormats from "ajv-formats";
 
@@ -65,10 +64,8 @@
                 "The lens options are not conform with the JSON schema",
                 ajv.errors,
             );
-            untrack(() =>
-                showError(
-                    "Die Lens-Optionen sind nicht mit dem JSON-Schema konform",
-                ),
+            showError(
+                "Die Lens-Optionen sind nicht mit dem JSON-Schema konform",
             );
         }
     });
@@ -86,9 +83,7 @@
                 "The catalogue is not conform with the JSON schema",
                 ajv.errors,
             );
-            untrack(() =>
-                showError("Der Katalog ist nicht mit dem JSON-Schema konform"),
-            );
+            showError("Der Katalog ist nicht mit dem JSON-Schema konform");
         }
     });
 

@@ -1,7 +1,7 @@
 import { get } from "svelte/store";
 import { lensOptions } from "../stores/options";
 import { getHumanReadableQuery } from "../stores/datarequests";
-import { showError } from "../stores/toasts.svelte";
+import { showError } from "../stores/toasts";
 
 /**
  * The request payload expected by the BBMRI Negotiator to start the application

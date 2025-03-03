@@ -6,11 +6,11 @@
 
 <script lang="ts">
     import { fade } from "svelte/transition";
-    import { getToasts, removeToast } from "../stores/toasts.svelte";
+    import { errorToasts, removeToast } from "../stores/toasts";
 </script>
 
 <div part="flex-container">
-    {#each getToasts() as toast (toast.id)}
+    {#each $errorToasts as toast (toast.id)}
         <div out:fade part="toast">
             <div part="message">{toast.message}</div>
             <button

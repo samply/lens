@@ -16,7 +16,7 @@ import type {
 } from "../types/options";
 import type { QueryItem, SendableQuery } from "../types/queryData";
 import { v4 as uuidv4 } from "uuid";
-import { showError } from "../stores/toasts.svelte";
+import { showError } from "../stores/toasts";
 
 //const urlParams: URLSearchParams = new URLSearchParams(window.location.search);
 //const collectionParams: string | null = urlParams.get("collections");

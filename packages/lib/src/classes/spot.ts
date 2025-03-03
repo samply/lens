@@ -5,7 +5,7 @@
 import type { SiteData } from "../types/response";
 import type { ResponseStore } from "../types/backend";
 import type { BeamResult } from "../types/spot";
-import { showError } from "../stores/toasts.svelte";
+import { showError } from "../stores/toasts";
 
 export class Spot {
     private currentTask!: string;

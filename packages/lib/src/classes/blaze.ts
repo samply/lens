@@ -1,7 +1,7 @@
 import { buildLibrary, buildMeasure } from "../helpers/cql-measure";
 import type { Site, SiteData } from "../types/response";
 import type { Measure, ResponseStore } from "../types/backend";
-import { showError } from "../stores/toasts.svelte";
+import { showError } from "../stores/toasts";
 
 export class Blaze {
     constructor(

@@ -1,4 +1,6 @@
-let errorToasts: { id: number; message: string }[] = $state([]);
+import { writable } from "svelte/store";
+
+export const errorToasts = writable<{ id: number; message: string }[]>([]);
 
 let nextId = 0;
 
@@ -9,7 +11,7 @@ let nextId = 0;
  */
 export function showError(message: string, timeout = 8000): void {
     const id = nextId++;
-    errorToasts.push({ id, message });
+    errorToasts.update((toasts) => [...toasts, { id, message }]);
 
     // Auto-remove the toast after timeout
     setTimeout(() => {
@@ -18,17 +20,9 @@ export function showError(message: string, timeout = 8000): void {
 }
 
 /**
- * Return the visibile error toasts
- * @returns The error toasts that are currently visible
- */
-export function getToasts(): { id: number; message: string }[] {
-    return errorToasts;
-}
-
-/**
  * Remove an error toast
  * @param id Id of the error toast to remove
  */
 export function removeToast(id: number): void {
-    errorToasts = errorToasts.filter((t) => t.id !== id);
+    errorToasts.update((toasts) => toasts.filter((t) => t.id !== id));
 }
