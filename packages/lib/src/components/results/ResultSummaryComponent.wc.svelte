@@ -5,10 +5,7 @@
 />
 
 <script lang="ts">
-    import { run } from "svelte/legacy";
-
     import { lensOptions } from "../../stores/options";
-    import type { LensOptions } from "../../types/options";
     import {
         responseStore,
         getAggregatedPopulation,
@@ -16,126 +13,98 @@
     } from "../../stores/response";
     import type { ResponseStore } from "../../types/backend";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
-    import type { Site } from "../../types/response";
-    import type { HeaderData } from "../../types/biobanks";
+    import type { HeaderData } from "../../types/options";
 
-    type ResultSummaryDataType = HeaderData & { population?: string | number };
+    // This is derived from lensOptions and from responseStore
+    const populations: { title: string; population: string }[] = $derived.by(
+        () => {
+            // Show empty header when lens options are not loaded yet
+            if ($lensOptions === undefined) {
+                return [];
+            }
 
-    let options: LensOptions & { infoButtonText?: string } = $derived(
-        $lensOptions?.resultSummaryOptions as LensOptions & {
-            infoButtonText?: string;
+            const populations = [];
+            for (const type of $lensOptions?.resultSummaryOptions.dataTypes) {
+                populations.push({
+                    title: type.title,
+                    population: getPopulation(type, $responseStore),
+                });
+            }
+            return populations;
         },
     );
 
-    let dataTypes: ResultSummaryDataType[] = $state();
-    run(() => {
-        dataTypes = options?.dataTypes as ResultSummaryDataType[];
-    });
-
-    let resultSummaryDataTypes: ResultSummaryDataType[] = $state();
-    run(() => {
-        resultSummaryDataTypes = dataTypes || [];
-    });
-
     /**
-     * Extracts the population for each result summary data type and adds it to the type object
-     * @param store - the response store
+     * Get the count to display in the result summary header.
+     * @param type An element of the "dataTypes" array from the lens options
+     * @param store The current value of the response store
+     * @returns This is the text that is displayed after the colon, e.g. "Standorte: 13 / 15"
      */
-    const fillPopulationToSummaryTypes = (store: ResponseStore): void => {
-        if (!dataTypes) {
-            return;
+    function getPopulation(type: HeaderData, store: ResponseStore): string {
+        // If the type is collections, the population is the length of the store
+        if (type.dataKey === "collections") {
+            let sitesClaimed = 0;
+            let sitesWithData = 0;
+            for (const site of $responseStore.values()) {
+                if (site.status === "claimed" || site.status === "succeeded") {
+                    sitesClaimed++;
+                }
+                if (site.status === "succeeded") {
+                    sitesWithData++;
+                }
+            }
+            return `${sitesWithData} / ${sitesClaimed}`;
         }
 
-        /**
-         * show the number of sites with data and the number of sites claimed/succeeded
-         * like this: 2 / 3
-         */
-        let sitesClaimed: number = 0;
-        let sitesWithData: number = 0;
-        store.forEach((site: Site): void => {
-            if (site.status === "claimed" || site.status === "succeeded") {
-                sitesClaimed++;
+        // if the type has only one dataKey, the population is the aggregated population of that dataKey
+        if (type.dataKey) {
+            return getAggregatedPopulation(store, type.dataKey).toString();
+        }
+
+        // if the type has multiple dataKeys to aggregate, the population is the aggregated population of all dataKeys
+        let aggregatedPopulation: number = 0;
+        type.aggregatedDataKeys?.forEach((dataKey) => {
+            if (dataKey.groupCode) {
+                aggregatedPopulation += getAggregatedPopulation(
+                    store,
+                    dataKey.groupCode,
+                );
+            } else if (dataKey.stratifierCode && dataKey.stratumCode) {
+                aggregatedPopulation += getAggregatedPopulationForStratumCode(
+                    store,
+                    dataKey.stratumCode,
+                    dataKey.stratifierCode,
+                );
             }
-            if (site.status === "succeeded") {
-                sitesWithData++;
-            }
+            /**
+             * TODO: add support for stratifiers if needed?
+             * needs to be implemented in response.ts
+             */
         });
-
-        resultSummaryDataTypes = dataTypes.map(
-            (type: ResultSummaryDataType): ResultSummaryDataType => {
-                /**
-                 * If the type is collections, the population is the length of the store
-                 */
-                if (type.dataKey === "collections") {
-                    type.population = `${sitesWithData} / ${sitesClaimed}`;
-                    return type;
-                }
-
-                /**
-                 * if the type has only one dataKey, the population is the aggregated population of that dataKey
-                 */
-
-                if (type.dataKey) {
-                    type.population = getAggregatedPopulation(
-                        store,
-                        type.dataKey,
-                    );
-                    return type;
-                }
-
-                /**
-                 * if the type has multiple dataKeys to aggregate, the population is the aggregated population of all dataKeys
-                 */
-
-                let aggregatedPopulation: number = 0;
-
-                type.aggregatedDataKeys?.forEach((dataKey) => {
-                    if (dataKey.groupCode) {
-                        aggregatedPopulation += getAggregatedPopulation(
-                            store,
-                            dataKey.groupCode,
-                        );
-                    } else if (dataKey.stratifierCode && dataKey.stratumCode) {
-                        aggregatedPopulation +=
-                            getAggregatedPopulationForStratumCode(
-                                store,
-                                dataKey.stratumCode,
-                                dataKey.stratifierCode,
-                            );
-                    }
-                    /**
-                     * TODO: add support for stratifiers if needed?
-                     * needs to be implemented in response.ts
-                     */
-                });
-
-                type.population = aggregatedPopulation;
-                return type;
-            },
-        );
-    };
-
-    run(() => {
-        fillPopulationToSummaryTypes($responseStore);
-    });
+        return aggregatedPopulation.toString();
+    }
 </script>
 
-{#if options?.title}
+{#if $lensOptions?.resultSummaryOptions.title !== undefined}
     <div part="result-summary-header">
         <div part="heading">
             <h4 part="result-summary-header-title">
-                {options.title}
-                {#if options.infoButtonText}
-                    <InfoButtonComponent message={[options.infoButtonText]} />
+                {$lensOptions?.resultSummaryOptions.title}
+                {#if $lensOptions?.resultSummaryOptions.infoButtonText !== undefined}
+                    <InfoButtonComponent
+                        message={[
+                            $lensOptions?.resultSummaryOptions.infoButtonText,
+                        ]}
+                    />
                 {/if}
             </h4>
         </div>
     </div>
 {/if}
 <div part="result-summary-content">
-    {#each resultSummaryDataTypes as type}
+    {#each populations as population}
         <div part="result-summary-content-type">
-            {type.title}: {type.population || 0}
+            {population.title}: {population.population}
         </div>
     {/each}
 </div>
