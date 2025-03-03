@@ -352,7 +352,7 @@
         const groupedChartData: { label: string; value: number }[] =
             labels.reduce<{ label: string; value: number }[]>((acc, label) => {
                 // This is a hack! This will help with the wrong coding of ICD10
-                label = label.replaceAll("_", ".");
+                label = label.replace(/_/g, ".");
 
                 /**
                  * see if the label contains the divider
