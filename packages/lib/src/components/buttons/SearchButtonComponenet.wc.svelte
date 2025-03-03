@@ -14,7 +14,7 @@
     import { Blaze } from "../../classes/blaze";
     import { responseStore, updateResponseStore } from "../../stores/response";
     import { lensOptions } from "../../stores/options";
-    import { showError } from "../../stores/toasts.svelte";
+    import { showError } from "../../stores/toasts";
     import type {
         BackendOptions,
         Measure,
