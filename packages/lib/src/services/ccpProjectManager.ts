@@ -1,6 +1,7 @@
 // const urlParams: URLSearchParams = new URLSearchParams(window.location.search);
 // const collectionParams: string | null = urlParams.get("collections");
 
+import { get } from "svelte/store";
 import { translateAstToCql } from "../cql-translator-service/ast-to-cql-translator";
 import { buildAstFromQuery } from "../helpers/ast-transformer";
 import { buildLibrary, buildMeasure } from "../helpers/cql-measure";
@@ -10,16 +11,12 @@ import { lensOptions } from "../stores/options";
 import { queryStore } from "../stores/query";
 import type { MeasureStore } from "../types/backend";
 import type {
-    LensOptions,
     ProjectManagerOptions,
     ProjectManagerOptionsSiteMapping,
 } from "../types/options";
 import type { QueryItem, SendableQuery } from "../types/queryData";
 import { v4 as uuidv4 } from "uuid";
-
-let negotiateOptions: ProjectManagerOptions;
-const siteCollectionMap: Map<string, ProjectManagerOptionsSiteMapping> =
-    new Map();
+import { errorChannel } from "../stores/error-channel";
 
 //const urlParams: URLSearchParams = new URLSearchParams(window.location.search);
 //const collectionParams: string | null = urlParams.get("collections");
@@ -40,22 +37,15 @@ measureStore.subscribe((measures) => {
     currentMeasures = measures;
 });
 
-lensOptions.subscribe((options: LensOptions) => {
-    /**
-     * TODO: implement multiple collections per site
-     * need to know how multiple collections are returned from the backend
-     */
-
-    negotiateOptions = options.projectmanagerOptions as ProjectManagerOptions;
-
-    if (negotiateOptions != undefined) {
-        negotiateOptions.siteMappings?.forEach(function (site) {
-            siteCollectionMap.set(site.site, site);
-        });
-    }
-});
-
 export const negotiate = async (sitesToNegotiate: string[]): Promise<void> => {
+    const currentProjectmanagerOptions =
+        get(lensOptions)?.projectmanagerOptions;
+    if (currentProjectmanagerOptions === undefined) {
+        console.error('"projectmanagerOptions" is missing the lens options');
+        errorChannel.set('"projectmanagerOptions" fehlt in den Lens-Optionen');
+        return;
+    }
+
     let sendableQuery!: SendableQuery;
     queryStore.subscribe((value: QueryItem[][]) => {
         const uuid = uuidv4();
@@ -66,11 +56,14 @@ export const negotiate = async (sitesToNegotiate: string[]): Promise<void> => {
     });
 
     const humanReadable: string = getHumanReadableQuery();
-    const collections: ProjectManagerOptionsSiteMapping[] =
-        getCollections(sitesToNegotiate);
+    const collections: ProjectManagerOptionsSiteMapping[] = getCollections(
+        currentProjectmanagerOptions,
+        sitesToNegotiate,
+    );
     const queryBase64String: string = btoa(JSON.stringify(sendableQuery.query));
 
     const response: ProjectManagerResponse = await sendRequestToProjectManager(
+        currentProjectmanagerOptions,
         sendableQuery,
         humanReadable,
         collections,
@@ -91,7 +84,7 @@ export const negotiate = async (sitesToNegotiate: string[]): Promise<void> => {
 //     // project manager
 
 /**
- *
+ * @param currentProjectmanagerOptions the current project manager options
  * @param sendableQuery the query to be sent to the negotiator
  * @param humanReadable a human readable query string to view in the negotiator project
  * @param collections the collections to negotiate with
@@ -99,6 +92,7 @@ export const negotiate = async (sitesToNegotiate: string[]): Promise<void> => {
  * @returns a promise containing the response from the project manager. The response contains the redirect uri
  */
 async function sendRequestToProjectManager(
+    currentProjectmanagerOptions: ProjectManagerOptions,
     sendableQuery: SendableQuery,
     humanReadable: string,
     collections: ProjectManagerOptionsSiteMapping[],
@@ -140,8 +134,8 @@ async function sendRequestToProjectManager(
         ? `&project-code=${projectCode}`
         : "";
     const negotiateUrl = projectCode
-        ? negotiateOptions.editProjectUrl
-        : negotiateOptions.newProjectUrl;
+        ? currentProjectmanagerOptions.editProjectUrl
+        : currentProjectmanagerOptions.newProjectUrl;
 
     let response!: ProjectManagerResponse;
 
@@ -178,20 +172,27 @@ async function sendRequestToProjectManager(
 }
 
 /**
+ * @param currentProjectmanagerOptions the current projectmanager options
  * @param sitesToNegotiate the sites to negotiate with
  * @returns an array of Collection objects
  */
 export const getCollections = (
+    currentProjectmanagerOptions: ProjectManagerOptions,
     sitesToNegotiate: string[],
 ): ProjectManagerOptionsSiteMapping[] => {
     const siteCollections: ProjectManagerOptionsSiteMapping[] = [];
-
-    sitesToNegotiate.forEach((site: string) => {
-        const siteCollection = siteCollectionMap.get(site);
-        if (siteCollection !== undefined) {
+    for (const site of sitesToNegotiate) {
+        const siteCollection = currentProjectmanagerOptions.siteMappings.find(
+            (siteMapping) => siteMapping.site === site,
+        );
+        if (siteCollection === undefined) {
+            console.error(
+                `Site "${site}" is missing from projectmanagerOptions.siteMappings in the lens options`,
+            );
+        } else {
             siteCollections.push(siteCollection);
         }
-    });
+    }
 
     return siteCollections;
 };

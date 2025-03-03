@@ -109,7 +109,7 @@
         "Sys. T",
     );
 
-    let dataPasser: LensDataPasser = $state();
+    let dataPasser: LensDataPasser;
 </script>
 
 <header>

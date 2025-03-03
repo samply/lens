@@ -28,10 +28,6 @@
     import type { ChartOption } from "../../types/options";
     import type { ChartDataSets } from "../../types/charts";
 
-    let responseGroupCode: string = $state();
-
-    let options: ChartOption = $state();
-
     interface Props {
         title?: string; // e.g. 'Gender Distribution'
         catalogueGroupCode?: string; // e.g. "gender"
@@ -95,13 +91,22 @@
         backgroundHoverColor = ["#aaaaaa"],
     }: Props = $props();
 
+    // This is undefined if the lens options are not loaded yet
+    let options: ChartOption | undefined = $derived(
+        $lensOptions?.chartOptions?.[catalogueGroupCode],
+    );
+
+    let responseGroupCode: string = $derived(
+        $catalogueKeyToResponseKeyMap.get(catalogueGroupCode) || "",
+    );
+
     /**
      * initialize the chart
      */
 
     let noDataAvailable: boolean = $state(false);
 
-    let canvas!: HTMLCanvasElement = $state();
+    let canvas: HTMLCanvasElement;
 
     let chart: Chart;
 
@@ -137,7 +142,8 @@
                         ) => {
                             const key = context[0].label || "";
                             let result =
-                                options.tooltips && options.tooltips[key]
+                                options?.tooltips !== undefined &&
+                                options.tooltips[key] !== undefined
                                     ? options.tooltips[key]
                                     : key;
                             return result;
@@ -269,7 +275,7 @@
          * if aggregations are set, aggregate the data from other groups and adds them to the chart
          * e.g. add aggregated number of medical statements to the chart for therapy of tumor
          */
-        if (options.aggregations) {
+        if (options?.aggregations !== undefined) {
             options.aggregations.forEach((aggregation) => {
                 const aggregationCount = getAggregatedPopulation(
                     responseStore,
@@ -286,7 +292,7 @@
          * will remove the values from the chart and add their accumulated value to "frozen-tissue"
          */
         if (
-            options.accumulatedValues !== undefined &&
+            options?.accumulatedValues !== undefined &&
             options.accumulatedValues.length > 0
         ) {
             options.accumulatedValues.forEach((valueToAccumulate) => {
@@ -489,14 +495,12 @@
          * set the labels of the chart
          * if a legend mapping is set, use the legend mapping
          */
-        chart.data.labels = options.legendMapping
-            ? chartLabels.map((label) => {
-                  return (
-                      (options.legendMapping && options.legendMapping[label]) ||
-                      ""
-                  );
-              })
-            : chartLabels;
+        chart.data.labels =
+            options?.legendMapping !== undefined
+                ? chartLabels.map(
+                      (label) => options.legendMapping?.[label] || "",
+                  )
+                : chartLabels;
 
         chart.update();
     };
@@ -615,23 +619,13 @@
         addItemToQuery(queryItem, $activeQueryGroupIndex);
     };
     run(() => {
-        responseGroupCode =
-            $catalogueKeyToResponseKeyMap.get(catalogueGroupCode) || "";
-    });
-    run(() => {
-        options =
-            ($lensOptions?.chartOptions &&
-                $lensOptions?.chartOptions[catalogueGroupCode]) ||
-            ({} as ChartOption);
-    });
-    run(() => {
         setChartData($responseStore);
     });
 </script>
 
 <div part="chart-wrapper">
     <h4 part="chart-title">{title}</h4>
-    {#if options.hintText}
+    {#if options?.hintText !== undefined}
         <InfoButtonComponent message={options.hintText} />
     {/if}
 

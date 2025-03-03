@@ -5,6 +5,8 @@ export type LensOptions = {
     catalogueKeyToResponseKeyMap?: string[][];
     negotiateOptions?: NegotiateOptions;
     projectmanagerOptions?: ProjectManagerOptions;
+    tableOptions: TableOptions;
+    resultSummaryOptions: ResultSummaryOptions;
 };
 
 export type NegotiateOptions = {
@@ -58,4 +60,29 @@ export type ChartOption = {
     aggregations?: string[];
     tooltips?: { [key: string]: string };
     accumulatedValues: { name: string; values: string[] }[];
+};
+
+export type TableOptions = {
+    /**
+     * Text to display in the table when a query has been sent to a site and
+     * lens is waiting for the result.
+     */
+    claimedText?: string;
+};
+
+export type ResultSummaryOptions = {
+    title?: string;
+    infoButtonText?: string;
+    dataTypes: HeaderData[];
+};
+
+export type HeaderData = {
+    title: string;
+    dataKey?: string;
+    aggregatedDataKeys?: {
+        groupCode?: string;
+        stratifierCode?: string;
+        stratumCode?: string;
+    }[];
+    hintText?: string[];
 };
