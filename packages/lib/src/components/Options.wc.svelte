@@ -5,12 +5,13 @@
 />
 
 <script lang="ts">
-    import { run } from "svelte/legacy";
-
     /**
      * this component takes the catalogue and all options set from the project and passes them to the appropriate store
      * TODO: refactor all mappings and configurations to be passed in here
      */
+
+    import { run } from "svelte/legacy";
+    import { untrack } from "svelte";
     import { lensOptions } from "../stores/options";
     import { catalogue } from "../stores/catalogue";
     import { measureStore } from "../stores/measures";
@@ -24,7 +25,7 @@
         catalogueKeyToResponseKeyMap,
         uiSiteMappingsStore,
     } from "../stores/mappings";
-    import { errorChannel } from "../stores/error-channel";
+    import { showError } from "../stores/toasts.svelte";
     import Ajv from "ajv";
     import addFormats from "ajv-formats";
 
@@ -40,9 +41,7 @@
         measures = {} as MeasureStore,
     }: Props = $props();
 
-    /**
-     * transform the JSON strings to objects for validation and further processing
-     */
+    // Transform the JSON strings to objects for validation and further processing
     let options: LensOptions = $state({} as LensOptions);
     let catalogueData: Catalogue = $state([]);
     run(() => {
@@ -52,10 +51,8 @@
         catalogueData = JSON.parse(catalogueJSON);
     });
 
-    /**
-     * Validate the options against the schema before passing them to the store
-     */
-    run(() => {
+    // Validate the options against the schema before passing them to the store
+    $effect(() => {
         const ajv = new Ajv({
             allErrors: true,
         });
@@ -68,13 +65,15 @@
                 "The lens options are not conform with the JSON schema",
                 ajv.errors,
             );
-            errorChannel.set(
-                "Die Lens-Optionen sind nicht mit dem JSON-Schema konform",
+            untrack(() =>
+                showError(
+                    "Die Lens-Optionen sind nicht mit dem JSON-Schema konform",
+                ),
             );
         }
     });
 
-    run(() => {
+    $effect(() => {
         const ajv = new Ajv({
             allErrors: true,
         });
@@ -87,8 +86,8 @@
                 "The catalogue is not conform with the JSON schema",
                 ajv.errors,
             );
-            errorChannel.set(
-                "Der Katalog ist nicht mit dem JSON-Schema konform",
+            untrack(() =>
+                showError("Der Katalog ist nicht mit dem JSON-Schema konform"),
             );
         }
     });

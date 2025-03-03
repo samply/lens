@@ -5,7 +5,7 @@
 import type { SiteData } from "../types/response";
 import type { ResponseStore } from "../types/backend";
 import type { BeamResult } from "../types/spot";
-import { errorChannel } from "../stores/error-channel";
+import { showError } from "../stores/toasts.svelte";
 
 export class Spot {
     private currentTask!: string;
@@ -92,7 +92,7 @@ export class Spot {
                 console.log(`Aborting request ${this.currentTask}`);
             } else {
                 console.error(err);
-                errorChannel.set("Fehler beim Bearbeiten der Anfrage"); // show user-facing error
+                showError("Fehler beim Bearbeiten der Anfrage");
             }
         }
     }
