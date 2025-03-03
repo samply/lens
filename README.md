@@ -26,8 +26,6 @@ npm start
 
 to start a development server, that will typically be available at [http://localhost:5173](http://localhost:5173). For further available npm scripts, you can review the [package.json](./package.json)
 
-Lens is built using Svelte 4, which differs significantly from the newer Svelte 5. You can find the official Svelte 4 documentation at https://v4.svelte.dev/docs/introduction.
-
 ### Building the Library locally
 
 If you want to make changes to the lens library while integrating those changes directly in the local development version of your application, you need to tell npm to make lens locally available. For this use-case, we prepared two npm scripts:
