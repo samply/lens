@@ -28,9 +28,6 @@ let negotiateOptions: ProjectManagerOptions;
 const siteCollectionMap: Map<string, ProjectManagerOptionsSiteMapping> =
     new Map();
 
-//const urlParams: URLSearchParams = new URLSearchParams(window.location.search);
-//const collectionParams: string | null = urlParams.get("collections");
-
 let currentQuery: QueryItem[][] = [[]];
 
 let currentMeasures: MeasureStore = [];
@@ -213,12 +210,7 @@ function buildPMBody(
     const ast = buildAstFromQuery(currentQuery);
 
     /**
-     * TODO:
-     * For now backenMeasures is hardcoded because
-     * this function only needed for dktk project manager so far.
-     * Change if needed for negotiator.
-     *
-     * should be configurable via options other than spot/blaze, so custom backends can be used
+     * The Translation is DKTK/CCP specific.
      */
 
     const cql = translateAstToCql(
