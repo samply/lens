@@ -17,12 +17,16 @@ import type {
 import type { QueryItem, SendableQuery } from "../types/queryData";
 import { v4 as uuidv4 } from "uuid";
 
+type PmBody = {
+    query: string;
+    explorer_ids: string;
+    query_format: string;
+    explorer_url: string;
+};
+
 let negotiateOptions: ProjectManagerOptions;
 const siteCollectionMap: Map<string, ProjectManagerOptionsSiteMapping> =
     new Map();
-
-//const urlParams: URLSearchParams = new URLSearchParams(window.location.search);
-//const collectionParams: string | null = urlParams.get("collections");
 
 let currentQuery: QueryItem[][] = [[]];
 
@@ -68,13 +72,11 @@ export const negotiate = async (sitesToNegotiate: string[]): Promise<void> => {
     const humanReadable: string = getHumanReadableQuery();
     const collections: ProjectManagerOptionsSiteMapping[] =
         getCollections(sitesToNegotiate);
-    const queryBase64String: string = btoa(JSON.stringify(sendableQuery.query));
 
     const response: ProjectManagerResponse = await sendRequestToProjectManager(
         sendableQuery,
         humanReadable,
         collections,
-        queryBase64String,
     );
 
     if (!response.redirect_uri) {
@@ -95,14 +97,12 @@ export const negotiate = async (sitesToNegotiate: string[]): Promise<void> => {
  * @param sendableQuery the query to be sent to the negotiator
  * @param humanReadable a human readable query string to view in the negotiator project
  * @param collections the collections to negotiate with
- * @param queryBase64String the query in base64 string format
  * @returns a promise containing the response from the project manager. The response contains the redirect uri
  */
 async function sendRequestToProjectManager(
     sendableQuery: SendableQuery,
     humanReadable: string,
     collections: ProjectManagerOptionsSiteMapping[],
-    queryBase64String: string,
 ): Promise<ProjectManagerResponse> {
     /**
      * get temporary token from oauth2
@@ -124,13 +124,13 @@ async function sendRequestToProjectManager(
     /**
      * build query params
      */
-    const queryParam: string =
-        queryBase64String != "" ? `&query=${queryBase64String}` : "";
+    // const queryParam: string =
+    //     queryBase64String != "" ? `&query=${queryBase64String}` : "";
 
     const negotiationPartners = collections
         .map((collection) => collection.collection.toLocaleLowerCase())
         .join(",");
-    const returnURL: string = `${window.location.protocol}//${window.location.host}/?collections=${negotiationPartners}${queryParam}`;
+    const returnURL: string = `${window.location.protocol}//${window.location.host}/?collections=${negotiationPartners}`;
     const urlParams: URLSearchParams = new URLSearchParams(
         window.location.search,
     );
@@ -150,15 +150,8 @@ async function sendRequestToProjectManager(
      * Explorer IDS = Options Struktur = lens-<standortname>
      */
 
-    console.log(
-        `${negotiateUrl}?explorer-ids=${negotiationPartners}&query-format=CQL_DATA&explorer-url=${encodeURIComponent(returnURL)}${projectCodeParam}`,
-    );
-    console.log(getCql());
+    const pmRequestUrl = `${negotiateUrl}`;
 
-    let pmRequestUrl = `${negotiateUrl}?explorer-ids=${negotiationPartners}&query-format=CQL_DATA&explorer-url=${encodeURIComponent(returnURL)}${projectCodeParam}`;
-    if (humanReadable != "") {
-        pmRequestUrl = pmRequestUrl + `&human-readable=${btoa(humanReadable)}`;
-    }
     try {
         response = await fetch(pmRequestUrl, {
             method: "POST",
@@ -167,7 +160,12 @@ async function sendRequestToProjectManager(
                 "Content-Type": "application/json",
                 Authorization: temporaryToken ? temporaryToken : "",
             },
-            body: getCql(),
+            body: buildPMBody(
+                humanReadable,
+                negotiationPartners,
+                returnURL,
+                projectCodeParam,
+            ),
         }).then((response) => response.json());
 
         return response;
@@ -197,18 +195,22 @@ export const getCollections = (
 };
 
 /**
+ * @param humanReadable the human readable string of the query
+ * @param negotiationPartners all the selected sites in a string with , seperated
+ * @param returnURL the url to return to lens
+ * @param projectCodeParam if the project already exists
  * @returns a base64 encoded CQL query
  */
-function getCql(): string {
+function buildPMBody(
+    humanReadable: string,
+    negotiationPartners: string,
+    returnURL: string,
+    projectCodeParam: string,
+): string {
     const ast = buildAstFromQuery(currentQuery);
 
     /**
-     * TODO:
-     * For now backenMeasures is hardcoded because
-     * this function only needed for dktk project manager so far.
-     * Change if needed for negotiator.
-     *
-     * should be configurable via options other than spot/blaze, so custom backends can be used
+     * The Translation is DKTK/CCP specific.
      */
 
     const cql = translateAstToCql(
@@ -225,5 +227,15 @@ function getCql(): string {
     );
     const query = { lang: "cql", lib: library, measure: measure };
 
-    return btoa(decodeURI(JSON.stringify(query)));
+    const body: PmBody = {
+        query: btoa(JSON.stringify(query)),
+        explorer_ids: negotiationPartners,
+        query_format: "CQL_DATA",
+        explorer_url:
+            returnURL +
+            projectCodeParam +
+            "&query=" +
+            btoa(JSON.stringify(currentQuery)),
+    };
+    return JSON.stringify(body);
 }
