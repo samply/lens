@@ -19,9 +19,9 @@ import { v4 as uuidv4 } from "uuid";
 
 type PmBody = {
     query: string;
-    explorer_ids: string;
-    query_format: string;
-    explorer_url: string;
+    "explorer-ids": string;
+    "query-format": string;
+    "explorer-url": string;
 };
 
 let negotiateOptions: ProjectManagerOptions;
@@ -229,9 +229,9 @@ function buildPMBody(
 
     const body: PmBody = {
         query: btoa(JSON.stringify(query)),
-        explorer_ids: negotiationPartners,
-        query_format: "CQL_DATA",
-        explorer_url:
+        "explorer-ids": negotiationPartners,
+        "query-format": "CQL_DATA",
+        "explorer-url":
             returnURL +
             projectCodeParam +
             "&query=" +
