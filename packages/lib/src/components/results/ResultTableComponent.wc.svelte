@@ -5,8 +5,6 @@
 />
 
 <script lang="ts">
-    import { run } from "svelte/legacy";
-
     import { uiSiteMappingsStore } from "../../stores/mappings";
     import { datarequestsStore } from "../../stores/datarequests";
     import {
@@ -17,9 +15,7 @@
     import TableItemComponent from "./TableItemComponent.svelte";
     import { lensOptions } from "../../stores/options";
     import type { HeaderData } from "../../types/options";
-    import type { Site } from "../../types/response";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
-    import type { ResponseStore } from "../../types/backend";
 
     const claimedText = $derived(
         $lensOptions?.tableOptions.claimedText || "Processing...",
@@ -29,25 +25,19 @@
      * data-types for the table
      * can be set via options component
      */
-    let options: { headerData: HeaderData[] } = $derived(
-        (($lensOptions?.tableOptions && $lensOptions.tableOptions) as {
-            headerData: HeaderData[];
-        }) || {
-            headerData: [{ title: "", dataKey: "", aggregatedDataKeys: [] }],
-        },
+    let headerData: HeaderData[] = $derived(
+        $lensOptions?.tableOptions.headerData || [],
     );
 
     /**
      * watches the responseStore for changes to update the table
      */
     type TableRowData = (string | number)[][];
-    let tableRowData: TableRowData = $state([]);
+    let tableRowData: TableRowData = $derived.by(() => {
+        let tableRowData: TableRowData = [];
 
-    const buildTableRowData = (responseStore: ResponseStore): void => {
-        tableRowData = [];
-
-        responseStore.forEach((value: Site, key: string): void => {
-            if (!["claimed", "succeeded"].includes(value.status)) return;
+        for (const [key, value] of $responseStore) {
+            if (!["claimed", "succeeded"].includes(value.status)) continue;
 
             let tableRow: (string | number)[] = [];
 
@@ -56,32 +46,29 @@
              * the first item is the name of the collection
              * the following items are the population for each data type (single or aggregated)
              */
-            options.headerData.forEach(
-                (header: HeaderData, index: number): void => {
-                    if (index === 0) {
-                        const name: string | undefined =
-                            $uiSiteMappingsStore.get(key);
-                        if (name === undefined) return;
-                        tableRow.push(name);
-                        return;
-                    }
+            for (const [index, header] of headerData.entries()) {
+                // First column is the site name
+                if (index === 0) {
+                    const name: string | undefined =
+                        $uiSiteMappingsStore.get(key);
+                    if (name === undefined) continue;
+                    tableRow.push(name);
+                    continue;
+                }
 
-                    if (value.status === "claimed") {
-                        tableRow.push(claimedText);
-                    } else if (value.status === "succeeded") {
-                        if (header.dataKey) {
-                            tableRow.push(
-                                getSitePopulationForCode(
-                                    value.data,
-                                    header.dataKey,
-                                ),
-                            );
-                            return;
-                        }
-
-                        let aggregatedPopulation: number = 0;
-
-                        header.aggregatedDataKeys?.forEach((dataKey) => {
+                if (value.status === "claimed") {
+                    tableRow.push(claimedText);
+                } else if (value.status === "succeeded") {
+                    if (header.dataKey !== undefined) {
+                        tableRow.push(
+                            getSitePopulationForCode(
+                                value.data,
+                                header.dataKey,
+                            ),
+                        );
+                    } else if (header.aggregatedDataKeys !== undefined) {
+                        let aggregatedPopulation = 0;
+                        for (const dataKey of header.aggregatedDataKeys) {
                             if (dataKey.groupCode) {
                                 aggregatedPopulation +=
                                     getSitePopulationForCode(
@@ -99,30 +86,29 @@
                                         dataKey.stratifierCode,
                                     );
                             }
-                        });
-
+                        }
                         tableRow.push(aggregatedPopulation);
+                    } else {
+                        console.error(
+                            "An element of tableOptions.headerData in the lens options is missing both 'dataKey' and 'aggregatedDataKeys' property, but one is required",
+                        );
                     }
-                },
-            );
+                }
+            }
 
             tableRowData = [...tableRowData, tableRow];
-        });
-    };
+        }
 
-    run(() => {
-        buildTableRowData($responseStore);
+        return tableRowData;
     });
 
     /**
      * watches the datarequestsStore for changes to check or uncheck the checkbox
      */
-    let allChecked: boolean = $state(false);
-    run(() => {
-        allChecked =
-            $datarequestsStore.length === tableRowData.length &&
-            tableRowData.length !== 0;
-    });
+    let allChecked: boolean = $derived(
+        $datarequestsStore.length === tableRowData.length &&
+            tableRowData.length !== 0,
+    );
 
     /**
      * checks or unchecks all biobanks
@@ -146,9 +132,7 @@
     let activePage = $state(1);
     let sortColumnIndex = $state(0);
     let sortAscending = $state(true);
-
-    let visibleRows: TableRowData = $state([]);
-    run(() => {
+    let visibleRows: TableRowData = $derived.by(() => {
         // Array.sort sorts in place, so make a copy first
         const tableRowsCopy = [...tableRowData];
 
@@ -171,7 +155,7 @@
         });
 
         // paginate
-        visibleRows = tableRowsCopy.slice(
+        return tableRowsCopy.slice(
             (activePage - 1) * pageSize,
             activePage * pageSize,
         );
@@ -199,11 +183,11 @@
                 ><input
                     part="table-header-checkbox"
                     type="checkbox"
-                    bind:checked={allChecked}
+                    checked={allChecked}
                     onchange={checkAllBiobanks}
                 /></th
             >
-            {#each options.headerData as header, index}
+            {#each headerData as header, index}
                 <th
                     part="table-header-cell table-header-datatype"
                     onclick={() => clickedOnColumnHeader(index)}

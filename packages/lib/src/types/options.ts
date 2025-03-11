@@ -68,6 +68,7 @@ export type TableOptions = {
      * lens is waiting for the result.
      */
     claimedText?: string;
+    headerData: HeaderData[];
 };
 
 export type ResultSummaryOptions = {
