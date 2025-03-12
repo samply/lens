@@ -1,6 +1,4 @@
 <script lang="ts">
-    import { run } from "svelte/legacy";
-
     import { addItemToQuery, activeQueryGroupIndex } from "../../stores/query";
     import type { Category } from "../../types/catalogue";
     import DataTreeElement from "./DataTreeElement.svelte";
@@ -44,15 +42,15 @@
     /**
      * watches the open tree nodes store to update the open state of the subcategorys
      */
-    let open: boolean = $state(false);
-    run(() => {
+    let open = $derived.by(() => {
         if (subCategoryName) {
-            open =
+            return (
                 $openTreeNodes
                     .get(element.key)!
-                    .subCategoryNames?.includes(subCategoryName) || false;
+                    .subCategoryNames?.includes(subCategoryName) || false
+            );
         } else {
-            open = $openTreeNodes.get(element.key) ? true : false;
+            return $openTreeNodes.get(element.key) ? true : false;
         }
     });
 
