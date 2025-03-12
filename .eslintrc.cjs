@@ -24,12 +24,6 @@ module.exports = {
             parserOptions: {
                 parser: "@typescript-eslint/parser",
             },
-        },
-        {
-            files: ["vite.config.ts"],
-            parserOptions: {
-                project: "./tsconfig.node.json"
-            }
         }
     ],
     settings: {

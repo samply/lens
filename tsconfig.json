@@ -1,16 +1,16 @@
 {
-  "extends": "@tsconfig/svelte/tsconfig.json",
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
-    }
-  ],
   "compilerOptions": {
-    "declaration": true,
-    "emitDeclarationOnly": true,
-    "declarationDir": "dist/",
+    "moduleResolution": "bundler",
+    // Settings required by Svelte, see https://svelte.dev/docs/svelte/typescript#tsconfig.json-settings
+    "target": "ES2022",
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    // These settings control strictness and are based on our personal taste
     "strict": true,
-    "noImplicitAny": true,
+    "noImplicitAny": true
   },
-  
+  // The type checker should only check source files and not the build output.
+  // Without this the Svelte language server would frequently disable IntelliSense.
+  // See: https://github.com/sveltejs/language-tools/issues/2171#issuecomment-2709517688
+  "exclude": ["dist"],
 }

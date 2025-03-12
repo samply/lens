@@ -3,7 +3,7 @@
  */
 // import "@samply/lens";
 
-import "../../lib";
+import "../../lib/src";
 
 import "./ccp.css";
 import App from "./AppCCP.svelte";
