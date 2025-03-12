@@ -9,8 +9,7 @@
   "styles": "dist/style.css",
   "files": [
     "dist",
-    "packages/lib/src/types/options.schema.json",
-    "packages/lib/src/types/catalogue.schema.json"
+    "schema"
   ],
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
