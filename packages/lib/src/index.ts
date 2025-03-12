@@ -1,25 +1,9 @@
 // This file is the entry point for the Vite bundler. Everything that is
 // re-exported here appears in the bundle and is part of the public API.
 
-// Export custom elements (aka web components)
-export { default as CatalogueComponent } from "./components/catalogue/Catalogue.wc.svelte";
-export { default as SearchBarComponent } from "./components/search-bar/SearchBarComponent.wc.svelte";
-export { default as StateDisplayComponent } from "./components/testing-components/StateDisplayComponent.wc.svelte";
-export { default as SearchButtonComponent } from "./components/buttons/SearchButtonComponenet.wc.svelte";
-export { default as ChartComponent } from "./components/results/ChartComponent.wc.svelte";
-export { default as ResutSummaryComponent } from "./components/results/ResultSummaryComponent.wc.svelte";
-export { default as ResultTableComponent } from "./components/results/ResultTableComponent.wc.svelte";
-export { default as SearchBarMultipleComponent } from "./components/search-bar/SearchBarMultipleComponent.wc.svelte";
-export { default as NegotiateButtonComponent } from "./components/buttons/NegotiateButtonComponent.wc.svelte";
-export { default as InfoButton } from "./components/buttons/InfoButtonComponent.wc.svelte";
-export { default as lensOptions } from "./components/Options.wc.svelte";
-export { default as DataPasser } from "./components/DataPasser.wc.svelte";
-export { default as ModifiedSearchComponent } from "./components/informational/ModifiedSearchComponent.wc.svelte";
-export { default as ErrorToasts } from "./components/ErrorToasts.wc.svelte";
-
 // Export types
-export * from "./types/ast";
-export * from "./types/catalogue";
+export type * from "./types/ast";
+export type * from "./types/catalogue";
 export type { LensDataPasser } from "./types/dataPasser";
 export type {
     MeasureItem,
@@ -30,5 +14,21 @@ export type {
 export type { SiteData, Site } from "./types/response";
 export type { BeamResult } from "./types/spot";
 
-// Export CSS so that Vite bundles it
+// Include custom elements (aka web components) in the bundle
+import "./components/catalogue/Catalogue.wc.svelte";
+import "./components/search-bar/SearchBarComponent.wc.svelte";
+import "./components/testing-components/StateDisplayComponent.wc.svelte";
+import "./components/buttons/SearchButtonComponent.wc.svelte";
+import "./components/results/ChartComponent.wc.svelte";
+import "./components/results/ResultSummaryComponent.wc.svelte";
+import "./components/results/ResultTableComponent.wc.svelte";
+import "./components/search-bar/SearchBarMultipleComponent.wc.svelte";
+import "./components/buttons/NegotiateButtonComponent.wc.svelte";
+import "./components/buttons/InfoButtonComponent.wc.svelte";
+import "./components/Options.wc.svelte";
+import "./components/DataPasser.wc.svelte";
+import "./components/informational/ModifiedSearchComponent.wc.svelte";
+import "./components/ErrorToasts.wc.svelte";
+
+// Include CSS in the bundle
 import "./styles/index.css";
