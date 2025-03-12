@@ -17,8 +17,8 @@
     import { iconStore } from "../stores/icons";
     import type { MeasureStore } from "../types/backend";
     import type { Catalogue } from "../types/catalogue";
-    import optionsSchema from "../types/options.schema.json";
-    import catalogueSchema from "../types/catalogue.schema.json";
+    import optionsSchema from "../../../../schema/options.schema.json";
+    import catalogueSchema from "../../../../schema/catalogue.schema.json";
     import type { LensOptions } from "../types/options";
     import {
         catalogueKeyToResponseKeyMap,
