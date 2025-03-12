@@ -52,8 +52,6 @@ export const buildHumanReadableRecursively = (
                 humanReadableQuery,
             );
 
-            if (index === queryLayer.children.length - 1) {
-            }
             if (index < queryLayer.children.length - 1) {
                 humanReadableQuery += ` ${queryLayer.operand} `;
             }

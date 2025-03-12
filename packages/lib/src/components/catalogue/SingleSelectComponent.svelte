@@ -10,6 +10,7 @@
 </script>
 
 <div part="criterion-wrapper single-select-wrapper">
+    <!-- eslint-disable-next-line svelte/require-each-key -->
     {#each element.criteria as criterion}
         <SingleSelectItemComponent {element} {criterion} />
     {/each}

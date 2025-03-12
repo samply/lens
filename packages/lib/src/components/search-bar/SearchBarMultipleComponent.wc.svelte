@@ -31,8 +31,7 @@
 </script>
 
 <div part="lens-searchbar-multiple">
-    <!-- eslint-disable-next-line @typescript-eslint/no-unused-vars -->
-    {#each $queryStore as _, index}
+    {#each $queryStore, index}
         <div part="search-bar-wrapper">
             <SearchBarComponent
                 {noMatchesFoundMessage}

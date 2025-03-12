@@ -421,11 +421,13 @@
     {#if autoCompleteOpen && inputValue.length > 2}
         <ul part="lens-searchbar-autocomplete-options">
             {#if $inputOptions?.length > 0}
+                <!-- eslint-disable-next-line svelte/require-each-key -->
                 {#each $inputOptions as inputOption, i}
                     {#if $inputOptions
                         .map((option) => option.name)
                         .indexOf(inputOption.name) === i}
                         <div part="autocomplete-options-item-name">
+                            <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                             {@html getBoldedText(inputOption.name)}
                         </div>
                     {/if}
@@ -439,6 +441,7 @@
                             onmousedown={() => selectItemByClick(inputOption)}
                         >
                             <div part="autocomplete-options-item-name">
+                                <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                                 {@html getBoldedText(
                                     inputOption.criterion.name,
                                 )}
@@ -447,6 +450,7 @@
                                 <div
                                     part="autocomplete-options-item-description autocomplete-options-item-description-focused"
                                 >
+                                    <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                                     {@html getBoldedText(
                                         inputOption.criterion.description,
                                     )}
@@ -462,6 +466,7 @@
                             onmousedown={() => selectItemByClick(inputOption)}
                         >
                             <div part="autocomplete-options-item-name">
+                                <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                                 {@html getBoldedText(
                                     inputOption.criterion.name,
                                 )}
@@ -470,6 +475,7 @@
                                 <div
                                     part="autocomplete-options-item-description"
                                 >
+                                    <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                                     {@html getBoldedText(
                                         inputOption.criterion.description,
                                     )}

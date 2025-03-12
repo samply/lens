@@ -24,11 +24,14 @@
             }
 
             const populations = [];
-            for (const type of $lensOptions?.resultSummaryOptions.dataTypes) {
-                populations.push({
-                    title: type.title,
-                    population: getPopulation(type, $responseStore),
-                });
+            if ($lensOptions?.resultSummaryOptions.dataTypes !== undefined) {
+                for (const type of $lensOptions.resultSummaryOptions
+                    .dataTypes) {
+                    populations.push({
+                        title: type.title,
+                        population: getPopulation(type, $responseStore),
+                    });
+                }
             }
             return populations;
         },
@@ -102,6 +105,7 @@
     </div>
 {/if}
 <div part="result-summary-content">
+    <!-- eslint-disable-next-line svelte/require-each-key -->
     {#each populations as population}
         <div part="result-summary-content-type">
             {population.title}: {population.population}

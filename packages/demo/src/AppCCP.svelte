@@ -129,7 +129,7 @@
 <main>
     <div class="search">
         <div class="search-wrapper">
-            <lens-search-bar noMatchesFoundMessage={"keine Ergebnisse gefunden"}
+            <lens-search-bar noMatchesFoundMessage="keine Ergebnisse gefunden"
             ></lens-search-bar>
             <lens-info-button
                 noQueryMessage="Leere Suchanfrage: Sucht nach allen Ergebnissen."
@@ -161,8 +161,8 @@
                 <lens-result-summary></lens-result-summary>
                 {#if environment !== "production"}
                     <lens-negotiate-button
-                        type={"ProjectManager"}
-                        title={"Daten und Proben Anfragen"}
+                        type="ProjectManager"
+                        title="Daten und Proben Anfragen"
                     ></lens-negotiate-button>
                 {/if}
                 <lens-search-modified-display

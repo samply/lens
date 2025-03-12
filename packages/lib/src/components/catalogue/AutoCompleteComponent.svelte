@@ -305,6 +305,7 @@
         {#if autoCompleteOpen && inputValue.length > 0}
             <ul part="autocomplete-options">
                 {#if inputOptions?.length > 0}
+                    <!-- eslint-disable-next-line svelte/require-each-key -->
                     {#each inputOptions as inputOption, index}
                         {#if index === focusedItemIndex}
                             <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
@@ -317,11 +318,13 @@
                                     selectItemByClick(inputOption)}
                             >
                                 <div part="autocomplete-options-item-name">
+                                    <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                                     {@html getBoldedText(inputOption.name)}
                                 </div>
                                 <div
                                     part="autocomplete-options-item-description-focused"
                                 >
+                                    <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                                     {@html getBoldedText(
                                         inputOption.description || "",
                                     )}
@@ -337,11 +340,13 @@
                                     selectItemByClick(inputOption)}
                             >
                                 <div part="autocomplete-options-item-name">
+                                    <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                                     {@html getBoldedText(inputOption.name)}
                                 </div>
                                 <div
                                     part="autocomplete-options-item-description"
                                 >
+                                    <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                                     {@html getBoldedText(
                                         inputOption.description || "",
                                     )}
@@ -360,6 +365,7 @@
         {/if}
     </div>
     <div part="criterion-wrapper autocomplete-wrapper">
+        <!-- eslint-disable-next-line svelte/require-each-key -->
         {#each chosenOptions as chosenOption}
             <AutoCompleteCriterionComponent {chosenOption} />
         {/each}

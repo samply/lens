@@ -16,8 +16,10 @@
     )}
 {/if}
 <hr />
+<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 <pre>{@html JSON.stringify($queryStore, null, 2)}</pre>
 <hr />
 {#if $queryStore[0].length > 0}
+    <!-- eslint-disable-next-line svelte/no-at-html-tags -->
     <pre>{@html JSON.stringify(buildAstFromQuery($queryStore), null, 2)}</pre>
 {/if}

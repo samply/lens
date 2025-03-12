@@ -187,6 +187,7 @@
                     onchange={checkAllBiobanks}
                 /></th
             >
+            <!-- eslint-disable-next-line svelte/require-each-key -->
             {#each headerData as header, index}
                 <th
                     part="table-header-cell table-header-datatype"
@@ -210,6 +211,7 @@
         </tr>
     </thead>
     <tbody part="table-body">
+        <!-- eslint-disable-next-line svelte/require-each-key -->
         {#each visibleRows as tableRow}
             <TableItemComponent {tableRow} />
         {/each}
