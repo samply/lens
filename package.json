@@ -42,9 +42,9 @@
     "security:check": "npm audit --omit=dev --audit-level high",
     "prepare": "husky install",
     "version": "npm version -m \"build: release version %s\"",
-    "schemagen": "bash generate-json-schema.bash",
-    "schemacheck": "bash generate-json-schema.bash --check",
-    "schemavalid": "bash validate-json-schema.bash"
+    "schemagen": "bash scripts/generate-json-schema.bash",
+    "schemacheck": "bash scripts/generate-json-schema.bash --check",
+    "schemavalid": "bash scripts/validate-json-schema.bash"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.5.0",
