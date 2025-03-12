@@ -2,38 +2,34 @@
   "name": "@samply/lens",
   "description": "A web component library for clinical data search and visualisation",
   "version": "0.4.6",
-  "type": "module",
-  "module": "dist/lens.js",
-  "main": "dist/lens.umd.js",
-  "types": "dist/types.d.ts",
-  "styles": "dist/style.css",
-  "files": [
-    "dist",
-    "schema"
-  ],
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org"
-  },
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/samply/lens.git"
   },
+  "//": "Settings recommended by Vite but without CommonJS exports, see https://vite.dev/guide/build#library-mode",
+  "type": "module",
+  "files": [
+    "dist",
+    "schema"
+  ],
+  "module": "dist/lens.js",
+  "types": "dist/lens.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/lens.js",
-      "require": "./dist/lens.umd.js",
-      "types": "./dist/types.d.ts",
-      "styles": "./dist/style.css"
+      "import": "./dist/lens.js"
+    },
+    "./style.css": {
+      "import": "./dist/lens.css"
     }
   },
-  "license": "Apache-2.0",
   "scripts": {
     "start": "npm run dev -s",
-    "dev": "vite --config vite.demo.config.ts",
+    "dev": "vite packages/demo",
     "build": "rimraf dist && vite build",
-    "build:demo": "vite build --config vite.demo.config.ts",
-    "preview": "vite preview --config vite.demo.config.ts",
-    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "build:demo": "vite build packages/demo",
+    "preview": "vite preview packages/demo",
+    "check": "svelte-check",
     "lint": "lint-staged",
     "watch": "rimraf dist && vite build --watch",
     "link": "wait-on dist/types.d.ts && npm link",
@@ -66,7 +62,6 @@
     "rimraf": "^5.0.10",
     "svelte": "^5.0.0",
     "svelte-check": "^4.0.0",
-    "svelte-preprocess": "^6.0.0",
     "ts-json-schema-generator": "^2.3.0",
     "tslib": "^2.8.1",
     "typescript": "^5.6.3",
