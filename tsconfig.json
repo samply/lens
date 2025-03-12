@@ -7,10 +7,13 @@
     "isolatedModules": true,
     // These settings control strictness and are based on our personal taste
     "strict": true,
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    // Without this the Svelte language server would frequently disable IntelliSense.
+    // See: https://github.com/sveltejs/language-tools/issues/2171#issuecomment-2709517688
+    "disableSizeLimit": true
   },
-  // The type checker should only check source files and not the build output.
-  // Without this the Svelte language server would frequently disable IntelliSense.
-  // See: https://github.com/sveltejs/language-tools/issues/2171#issuecomment-2709517688
-  "exclude": ["dist"],
+  // The type checker should only check source files and not the build output
+  "exclude": [
+    "dist"
+  ],
 }
