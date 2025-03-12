@@ -37,6 +37,7 @@
         /></td
     >
 
+    <!-- eslint-disable-next-line svelte/require-each-key -->
     {#each tableRow as data}
         <td part="table-body-cell">{data}</td>
     {/each}

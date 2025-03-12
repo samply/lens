@@ -174,6 +174,7 @@
 
     {#if open}
         {#if "childCategories" in element}
+            <!-- eslint-disable-next-line svelte/require-each-key -->
             {#each element.childCategories as child}
                 <div
                     part={`data-tree-element-child-category data-tree-element-child-category-layer-${layer}`}

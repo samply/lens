@@ -84,6 +84,7 @@
     {/if}
     {#if tooltipOpen}
         <div part="info-button-dialogue" style="user-select: text;">
+            <!-- eslint-disable-next-line svelte/require-each-key -->
             {#each message as msg}
                 <div
                     part="info-button-dialogue-message"
