@@ -3,6 +3,7 @@ export type LensOptions = {
     [key: string]: unknown;
     chartOptions?: ChartOptions;
     catalogueKeyToResponseKeyMap?: [string, string][];
+    siteMappings?: { [key: string]: string };
     negotiateOptions?: NegotiateOptions;
     projectmanagerOptions?: ProjectManagerOptions;
     tableOptions: TableOptions;
