@@ -317,3 +317,7 @@ export const getCriteriaFromKey = (
     }
     return undefined;
 };
+
+export function setCatalogue(cat: Catalogue) {
+    catalogue.set(cat);
+}

@@ -60,7 +60,7 @@ export type ChartOption = {
     hintText?: string[];
     aggregations?: string[];
     tooltips?: { [key: string]: string };
-    accumulatedValues: { name: string; values: string[] }[];
+    accumulatedValues?: { name: string; values: string[] }[];
 };
 
 export type TableOptions = {
