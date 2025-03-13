@@ -18,6 +18,7 @@
     interface Props {
         // TODO: check if anyone actually uses this, otherwise remove it
         treeData?: Catalogue;
+
         texts?: CatalogueText;
         addIconUrl?: string | null;
         toggleIconUrl?: string | null;
@@ -76,7 +77,9 @@
      * watch for changes from other components
      */
     run(() => {
-        $catalogue = treeData;
+        if (treeData.length !== 0) {
+            $catalogue = treeData;
+        }
     });
     /**
      * Initialize the text store with the given texts

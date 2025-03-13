@@ -1,6 +1,10 @@
 // This file is the entry point for the Vite bundler. Everything that is
 // re-exported here appears in the bundle and is part of the public API.
 
+// Export functions
+export { setCatalogue } from "./stores/catalogue";
+export { setOptions } from "./stores/options";
+
 // Export types
 export type * from "./types/ast";
 export type * from "./types/catalogue";
@@ -13,6 +17,7 @@ export type {
 } from "./types/backend";
 export type { SiteData, Site } from "./types/response";
 export type { BeamResult } from "./types/spot";
+export type { QueryEvent } from "./types/queryEvent";
 
 // Include custom elements (aka web components) in the bundle
 import "./components/catalogue/Catalogue.wc.svelte";

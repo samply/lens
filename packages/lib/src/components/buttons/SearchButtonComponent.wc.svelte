@@ -24,7 +24,7 @@
     import type { BlazeOption } from "../../types/blaze";
     import type { SpotOption } from "../../types/spot";
     import { isTopLayer, type AstTopLayer } from "../../types/ast";
-    import type { Site } from "../../types/response";
+    import type { QueryEvent } from "../../types/queryEvent";
 
     interface Props {
         title?: string;
@@ -173,13 +173,6 @@
             });
     };
 
-    interface QueryEvent extends Event {
-        detail: {
-            ast: AstTopLayer;
-            updateResponse: (response: Map<string, Site>) => void;
-            abortController?: AbortController;
-        };
-    }
     /**
      * Emits the ast and the updateResponseStore function to the project
      * @param ast the ast to be emitted
