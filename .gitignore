@@ -13,6 +13,7 @@ dist-ssr
 *.local
 TODO
 /book/book
+/docs
 
 # Editor directories and files
 .vscode/*
