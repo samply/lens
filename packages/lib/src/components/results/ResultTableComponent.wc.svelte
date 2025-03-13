@@ -5,7 +5,6 @@
 />
 
 <script lang="ts">
-    import { uiSiteMappingsStore } from "../../stores/mappings";
     import { datarequestsStore } from "../../stores/datarequests";
     import {
         getSitePopulationForCode,
@@ -50,7 +49,7 @@
                 // First column is the site name
                 if (index === 0) {
                     const name: string | undefined =
-                        $uiSiteMappingsStore.get(key);
+                        $lensOptions?.siteMappings?.[key];
                     if (name === undefined) continue;
                     tableRow.push(name);
                     continue;
