@@ -4,5 +4,4 @@ export type BlazeOption = {
     auth?: string;
     backendMeasures: string;
     uiSiteMap: string[][];
-    catalogueKeyToResponseKeyMap: string[][];
 };
