@@ -20,10 +20,7 @@
     import optionsSchema from "../../../../schema/options.schema.json";
     import catalogueSchema from "../../../../schema/catalogue.schema.json";
     import type { LensOptions } from "../types/options";
-    import {
-        catalogueKeyToResponseKeyMap,
-        uiSiteMappingsStore,
-    } from "../stores/mappings";
+    import { uiSiteMappingsStore } from "../stores/mappings";
     import { showError } from "../stores/toasts";
     import Ajv from "ajv";
     import addFormats from "ajv-formats";
@@ -145,17 +142,6 @@
                 mappings.set(site[0], site[1]);
             });
 
-            return mappings;
-        });
-    });
-
-    run(() => {
-        catalogueKeyToResponseKeyMap.update((mappings) => {
-            if (!options?.catalogueKeyToResponseKeyMap) return mappings;
-
-            options.catalogueKeyToResponseKeyMap.forEach((mapping) => {
-                mappings.set(mapping[0], mapping[1]);
-            });
             return mappings;
         });
     });

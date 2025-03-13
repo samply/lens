@@ -20,7 +20,6 @@
     import { catalogue } from "../../stores/catalogue";
     import type { QueryItem, QueryValue } from "../../types/queryData";
     import type { Category, Criteria } from "../../types/catalogue";
-    import { catalogueKeyToResponseKeyMap } from "../../stores/mappings";
     import type { ResponseStore } from "../../types/backend";
     import type { Site } from "../../types/response";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
@@ -97,7 +96,9 @@
     );
 
     let responseGroupCode: string = $derived(
-        $catalogueKeyToResponseKeyMap.get(catalogueGroupCode) || "",
+        new Map($lensOptions?.catalogueKeyToResponseKeyMap).get(
+            catalogueGroupCode,
+        ) || "",
     );
 
     /**

@@ -13,5 +13,4 @@ export type SpotOption = {
     url: string;
     sites: string[];
     uiSiteMap: string[][];
-    catalogueKeyToResponseKeyMap: string[][];
 };
