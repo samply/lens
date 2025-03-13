@@ -34,7 +34,9 @@
     "version": "npm version -m \"build: release version %s\"",
     "schemagen": "bash scripts/generate-json-schema.bash",
     "schemacheck": "bash scripts/generate-json-schema.bash --check",
-    "schemavalid": "bash scripts/validate-json-schema.bash"
+    "schemavalid": "bash scripts/validate-json-schema.bash",
+    "book": "mdbook serve book --open",
+    "typedoc": "typedoc packages/lib/src/index.ts --watch"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.0",
