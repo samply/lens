@@ -326,6 +326,11 @@
                     "pattern": "^.+$",
                     "description": "The URL of the negotiator"
                 },
+                "authorizationHeader": {
+                    "type": "string",
+                    "pattern": "^.+$",
+                    "description": "Basic Auth header"
+                },
                 "siteMappings": {
                     "type": "array",
                     "items": {
