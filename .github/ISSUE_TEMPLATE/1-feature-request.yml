@@ -6,16 +6,8 @@ body:
     id: summary
     attributes:
       label: General Summary
-      description: Please provide a general summary of the problem
+      description: Please provide a general summary of the new feature. Why it is important and how it should look like
       placeholder: e.g. "The main issue is that..."
-    validations:
-      required: true
-  - type: textarea
-    id: change 
-    attributes:
-      label: Suggested Change
-      description: Provide details on the suggested change
-      placeholder: e.g. "This new feature will allow users to update..."
     validations:
       required: true
   - type: dropdown
@@ -28,24 +20,3 @@ body:
         - "No"
     validations:
       required: true
-  - type: textarea 
-    id: current_behavior
-    attributes:
-      label: Current Behavior
-      description: Explain what the current behavior is
-    validations:
-      required: true
-  - type: textarea
-    id: new_behavior
-    attributes:
-      label: New Behavior
-      description: Propose what the new behavior would be
-    validations:
-      required: true
-  - type: textarea
-    id: description
-    attributes:
-      label: Detailed Description
-      description: Please provide a more detailed description
-    validations:
-      required: false 
