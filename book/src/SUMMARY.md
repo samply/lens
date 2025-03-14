@@ -1,7 +1,10 @@
 # Summary
 
-- [Migration guides](migration/README.md)
-  - [Migrating to v0.5](migration/v0.5.md)
+- [User guide](guide/README.md)
+  - [Translations](guide/translations.md)
+- [Development](development/README.md)
+- [Release notes](releases/README.md)
+  - [Version 0.5](releases/v0.5.md)
 
 # Old guides
 
