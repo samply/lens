@@ -433,6 +433,14 @@ const substituteRangeCQLExpression = (
     rangeCQL: string,
 ): string => {
     const input = criterion.value as { min: number; max: number };
+    if (input.min === null) {
+        input.min = 0;
+    }
+
+    if (input.max === null) {
+        input.max = 2040;
+    }
+
     if (input === null) {
         console.warn(
             `Throwing away a ${criterionPrefix}Range${criterionSuffix} criterion, as it is not of type {min: number, max: number}!`,
