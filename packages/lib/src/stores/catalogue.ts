@@ -6,6 +6,9 @@ import {
     type AstElement,
     type AstTopLayer,
 } from "../types/ast";
+import Ajv from "ajv";
+import addFormats from "ajv-formats";
+import catalogueSchema from "../../../../schema/catalogue.schema.json";
 
 /**
  * store to hold the catalogue
@@ -318,6 +321,21 @@ export const getCriteriaFromKey = (
     return undefined;
 };
 
+/**
+ * Set the catalogue. An exception is thrown if the catalogue does not match the JSON schema.
+ */
 export function setCatalogue(cat: Catalogue) {
-    catalogue.set(cat);
+    const ajv = new Ajv({
+        allErrors: true,
+    });
+    addFormats(ajv);
+    const valid = ajv.validate(catalogueSchema, cat);
+    if (valid) {
+        catalogue.set(cat);
+    } else {
+        throw new Error(
+            "Catalogue not conform with JSON schema: " +
+                JSON.stringify(ajv.errors),
+        );
+    }
 }
