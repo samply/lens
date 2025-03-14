@@ -11,18 +11,12 @@
      */
 
     import { run } from "svelte/legacy";
-    import { lensOptions } from "../stores/options";
-    import { catalogue } from "../stores/catalogue";
+    import { setOptions } from "../stores/options";
+    import { setCatalogue } from "../stores/catalogue";
     import { measureStore } from "../stores/measures";
     import { iconStore } from "../stores/icons";
     import type { MeasureStore } from "../types/backend";
-    import type { Catalogue } from "../types/catalogue";
-    import optionsSchema from "../../../../schema/options.schema.json";
-    import catalogueSchema from "../../../../schema/catalogue.schema.json";
     import type { LensOptions } from "../types/options";
-    import { showError } from "../stores/toasts";
-    import Ajv from "ajv";
-    import addFormats from "ajv-formats";
 
     interface Props {
         optionsJSON?: string;
@@ -36,51 +30,18 @@
         measures = {} as MeasureStore,
     }: Props = $props();
 
+    $effect(() => {
+        setOptions(JSON.parse(optionsJSON));
+    });
+
+    $effect(() => {
+        setCatalogue(JSON.parse(catalogueJSON));
+    });
+
     // Transform the JSON strings to objects for validation and further processing
     let options: LensOptions = $state({} as LensOptions);
-    let catalogueData: Catalogue = $state([]);
     run(() => {
         options = JSON.parse(optionsJSON);
-    });
-    run(() => {
-        catalogueData = JSON.parse(catalogueJSON);
-    });
-
-    // Validate the options against the schema before passing them to the store
-    $effect(() => {
-        const ajv = new Ajv({
-            allErrors: true,
-        });
-        addFormats(ajv);
-        const valid = ajv.validate(optionsSchema, options);
-        if (valid) {
-            $lensOptions = options;
-        } else {
-            console.error(
-                "The lens options are not conform with the JSON schema",
-                ajv.errors,
-            );
-            showError(
-                "Die Lens-Optionen sind nicht mit dem JSON-Schema konform",
-            );
-        }
-    });
-
-    $effect(() => {
-        const ajv = new Ajv({
-            allErrors: true,
-        });
-        addFormats(ajv);
-        const valid = ajv.validate(catalogueSchema, catalogueData);
-        if (valid) {
-            $catalogue = catalogueData;
-        } else {
-            console.error(
-                "The catalogue is not conform with the JSON schema",
-                ajv.errors,
-            );
-            showError("Der Katalog ist nicht mit dem JSON-Schema konform");
-        }
     });
 
     /**
