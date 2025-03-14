@@ -22,6 +22,8 @@ type PmBody = {
     query: string;
     "explorer-ids": string;
     "query-format": string;
+    "human-readable": string;
+    "project-code": string;
     "explorer-url": string;
 };
 
@@ -232,6 +234,8 @@ function buildPMBody(
         query: btoa(JSON.stringify(query)),
         "explorer-ids": negotiationPartners,
         "query-format": "CQL_DATA",
+        "human-readable": humanReadable,
+        "project-code": projectCodeParam,
         "explorer-url":
             returnURL +
             projectCodeParam +
