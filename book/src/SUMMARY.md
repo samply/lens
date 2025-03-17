@@ -1,6 +1,8 @@
 # Summary
 
 - [User guide](guide/README.md)
+  - [Creating a new application](guide/new-app.md)
+  - [Overwriting styles](guide/overwriting-styles.md)
   - [Translations](guide/translations.md)
 - [Development](development/README.md)
 - [Release notes](releases/README.md)
