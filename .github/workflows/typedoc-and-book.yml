@@ -1,5 +1,9 @@
-# This file is copied and adapted from
+# This workflow is triggered on push to the main branch and builds the TypeDoc
+# and mdbook documentation and deploys them to GitHub Pages.
+#
+# This file is copied and adapted from:
 # https://github.com/rust-lang/mdBook/wiki/Automated-Deployment%3A-GitHub-Actions#using-deploy-via-actions
+
 name: Deploy TypeDoc and mdbook
 on:
   push:
