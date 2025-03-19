@@ -4,6 +4,7 @@
 // Export functions
 export { setCatalogue } from "./stores/catalogue";
 export { setOptions } from "./stores/options";
+export { setMeasures } from "./stores/measures";
 
 // Export types
 export type * from "./types/ast";
