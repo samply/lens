@@ -8,7 +8,7 @@
     import { v4 as uuidv4 } from "uuid";
     import { openTreeNodes } from "../../stores/catalogue";
     import type { QueryItem } from "../../types/queryData";
-    import { iconStore } from "../../stores/icons";
+    import { lensOptions } from "../../stores/options";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
     import DatePickerComponent from "./DatePickerComponent.svelte";
 
@@ -106,8 +106,6 @@
                 typeof element.fieldType === "string" &&
                 element.fieldType == "single-select"));
 
-    let selectAllText = $derived($iconStore.get("selectAllText"));
-
     const selectAllOptions = (): void => {
         if (!("criteria" in element)) return;
 
@@ -135,12 +133,12 @@
 
 <div part="data-tree-element">
     <button part="data-tree-element-name" onclick={toggleChildren}>
-        {#if $iconStore.get("toggleIconUrl")}
+        {#if $lensOptions?.iconOptions?.toggleIconUrl}
             <img
                 part="data-tree-element-toggle-icon {open
                     ? 'data-tree-element-toggle-icon-open'
                     : ''}"
-                src={$iconStore.get("toggleIconUrl")}
+                src={$lensOptions?.iconOptions?.toggleIconUrl}
                 alt="catalogue-open-close-icon"
             />
         {:else}
@@ -168,7 +166,7 @@
 
     {#if finalParent && open}
         <button part="add-all-options-button" onclick={selectAllOptions}>
-            {selectAllText ? selectAllText : "Add all"}
+            Add all
         </button>
     {/if}
 

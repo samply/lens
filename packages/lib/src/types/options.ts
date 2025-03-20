@@ -8,6 +8,10 @@ export type LensOptions = {
     projectmanagerOptions?: ProjectManagerOptions;
     tableOptions: TableOptions;
     resultSummaryOptions: ResultSummaryOptions;
+    /**
+     * Options for the icons used in the Lens UI. Each URL should point to an image file.
+     */
+    iconOptions?: IconUrls;
 };
 
 export type NegotiateOptions = {
@@ -87,4 +91,15 @@ export type HeaderData = {
         stratumCode?: string;
     }[];
     hintText?: string[];
+};
+
+export type IconUrls = {
+    /** Icon for an info button used in various places */
+    infoUrl?: string;
+    /** Icon for a delete button used in various places */
+    deleteUrl?: string;
+    /** Icon for the button that adds items from the catalogue to the search bar */
+    addIconUrl?: string;
+    /** Icon for the button that expands and collapses items in the catalogue */
+    toggleIconUrl?: string;
 };

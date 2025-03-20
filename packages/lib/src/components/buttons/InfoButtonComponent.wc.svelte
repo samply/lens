@@ -12,7 +12,7 @@
     import { returnNestedValues } from "../../helpers/ast-transformer";
     import type { AstElement } from "../../types/ast";
     import type { QueryItem } from "../../types/queryData";
-    import { iconStore } from "../../stores/icons";
+    import { lensOptions } from "../../stores/options";
 
     interface Props {
         message?: string[] | string;
@@ -29,8 +29,6 @@
         onlyChildInfo = false,
         queryItem = undefined,
     }: Props = $props();
-
-    let iconUrl = $derived($iconStore.get("infoUrl"));
 
     /**
      * handles the toggling of the tooltip
@@ -77,8 +75,12 @@
         onlyChildInfo ? displayQueryInfo(e, queryItem) : displayQueryInfo(e)}
     onfocusout={onFocusOut}
 >
-    {#if iconUrl}
-        <img part="info-button-icon" src={iconUrl} alt="info icon" />
+    {#if $lensOptions?.iconOptions?.infoUrl}
+        <img
+            part="info-button-icon"
+            src={$lensOptions?.iconOptions?.infoUrl}
+            alt="info icon"
+        />
     {:else}
         <span part="info-button-icon"> &#9432; </span>
     {/if}

@@ -5,9 +5,9 @@
         removeValueFromQuery,
         queryModified,
     } from "../../stores/query";
-    import { iconStore } from "../../stores/icons";
     import type { QueryItem } from "../../types/queryData";
     import { createEventDispatcher } from "svelte";
+    import { lensOptions } from "../../stores/options";
 
     const dispatch = createEventDispatcher();
     interface Props {
@@ -15,8 +15,6 @@
     }
 
     let { itemToDelete }: Props = $props();
-
-    let deleteUrl = $derived($iconStore.get("deleteUrl"));
 
     const { type, index, item } = itemToDelete;
 
@@ -50,10 +48,10 @@
     part="query-delete-button query-delete-button-{type}"
     onclick={deleteItem}
 >
-    {#if deleteUrl}
+    {#if $lensOptions?.iconOptions?.deleteUrl}
         <img
             part="delete-button-icon delete-button-icon-{type}"
-            src={deleteUrl}
+            src={$lensOptions?.iconOptions?.deleteUrl}
             alt="delete icon"
         />
     {:else}
