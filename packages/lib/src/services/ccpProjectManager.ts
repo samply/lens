@@ -132,9 +132,6 @@ async function sendRequestToProjectManager(
     );
 
     const projectCode: string | null = urlParams.get("project-code");
-    const projectCodeParam: string = projectCode
-        ? `&project-code=${projectCode}`
-        : "";
     const negotiateUrl = projectCode
         ? currentProjectmanagerOptions.editProjectUrl
         : currentProjectmanagerOptions.newProjectUrl;
@@ -160,7 +157,7 @@ async function sendRequestToProjectManager(
                 humanReadable,
                 negotiationPartners,
                 returnURL,
-                projectCodeParam,
+                projectCode,
             ),
         }).then((response) => response.json());
 
@@ -201,14 +198,14 @@ export const getCollections = (
  * @param humanReadable the human readable string of the query
  * @param negotiationPartners all the selected sites in a string with , seperated
  * @param returnURL the url to return to lens
- * @param projectCodeParam if the project already exists
+ * @param projectCode if the project already exists
  * @returns a base64 encoded CQL query
  */
 function buildPMBody(
     humanReadable: string,
     negotiationPartners: string,
     returnURL: string,
-    projectCodeParam: string,
+    projectCode: string,
 ): string {
     const ast = buildAstFromQuery(currentQuery);
 
@@ -235,10 +232,10 @@ function buildPMBody(
         "explorer-ids": negotiationPartners,
         "query-format": "CQL_DATA",
         "human-readable": humanReadable,
-        "project-code": projectCodeParam,
+        "project-code": projectCode,
         "explorer-url":
             returnURL +
-            projectCodeParam +
+            projectCode +
             "&query=" +
             btoa(JSON.stringify(currentQuery)),
     };
