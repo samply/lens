@@ -9,25 +9,19 @@
             "properties": {
                 "infoUrl": {
                     "type": "string",
-                    "pattern": "^.+$",
-                    "description": "The icon to use for the info button"
+                    "pattern": "^.+$"
                 },
                 "deleteUrl": {
                     "type": "string",
-                    "pattern": "^.+$",
-                    "description": "The icon to use for the info button"
+                    "pattern": "^.+$"
                 },
-                "selectAll": {
-                    "type": "object",
-                    "properties": {
-                        "text": {
-                            "type": "string",
-                            "pattern": "^.+$",
-                            "description": "The text to display for the select all button"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": []
+                "addIconUrl": {
+                    "type": "string",
+                    "pattern": "^.+$"
+                },
+                "toggleIconUrl": {
+                    "type": "string",
+                    "pattern": "^.+$"
                 }
             },
             "additionalProperties": false,

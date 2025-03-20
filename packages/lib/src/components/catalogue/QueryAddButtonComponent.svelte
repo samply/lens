@@ -1,7 +1,7 @@
 <script lang="ts">
     import { activeQueryGroupIndex, addItemToQuery } from "../../stores/query";
     import type { QueryItem } from "../../types/queryData";
-    import { iconStore } from "../../stores/icons";
+    import { lensOptions } from "../../stores/options";
 
     /**
      * index: index of the group in the query store
@@ -23,10 +23,10 @@
 </script>
 
 <button part="query-add-button" onclick={addItem}>
-    {#if $iconStore.get("addIconUrl")}
+    {#if $lensOptions?.iconOptions?.addIconUrl}
         <img
             part="query-add-button-icon"
-            src={$iconStore.get("addIconUrl")}
+            src={$lensOptions?.iconOptions?.addIconUrl}
             alt="add icon"
         />
     {:else}

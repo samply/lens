@@ -13,7 +13,6 @@
     import type { CatalogueText } from "../../types/texts";
     import type { Catalogue } from "../../types/catalogue";
     import DataTreeElement from "./DataTreeElement.svelte";
-    import { iconStore } from "../../stores/icons";
 
     interface Props {
         // TODO: check if anyone actually uses this, otherwise remove it
@@ -32,27 +31,11 @@
     let {
         treeData = [],
         texts = {},
-        addIconUrl = null,
-        toggleIconUrl = null,
-        infoIconUrl = null,
         toggle = {
             collapsable: true,
             open: false,
         },
     }: Props = $props();
-
-    iconStore.update((store: Map<string, string>) => {
-        if (addIconUrl) {
-            store.set("addIconUrl", addIconUrl);
-        }
-        if (toggleIconUrl) {
-            store.set("toggleIconUrl", toggleIconUrl);
-        }
-        if (infoIconUrl) {
-            store.set("infoIconUrl", infoIconUrl);
-        }
-        return store;
-    });
 
     let toggleTree = $state(toggle.open);
 
