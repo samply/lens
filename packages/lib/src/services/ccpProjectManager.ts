@@ -157,7 +157,7 @@ async function sendRequestToProjectManager(
                 humanReadable,
                 negotiationPartners,
                 returnURL,
-                projectCode,
+                projectCode ? projectCode : "",
             ),
         }).then((response) => response.json());
 
