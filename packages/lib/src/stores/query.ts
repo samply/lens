@@ -147,7 +147,9 @@ export const removeValueFromQuery = (
     queryObject = Object.assign({}, queryObject);
 
     queryStore.update((query) => {
-        let queryStoreGroup: QueryItem[] = query[queryGroupIndex];
+        let queryStoreGroup: QueryItem[] = structuredClone(
+            query[queryGroupIndex],
+        );
 
         queryStoreGroup = queryStoreGroup.map((item) => {
             if (item.name === queryObject.name) {
