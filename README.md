@@ -1,12 +1,14 @@
-# Lens
+# samply.lens
 
 **samply.lens** is a front-end library that provides essential functionalities for building search, exploration, and visualization web applications. It offers a set of flexible building blocks while remaining open to user-specific extensions.
 
 This library can be included in various ways. Below are some examples of tools built with samply.lens:
+
 - [CCP-Explorer](https://github.com/samply/ccp-explorer)
 - [BBMRI-Sample-Locator](https://github.com/samply/bbmri-sample-locator)
 
 For further documentation, please refer to:
+
 - [samply.lens Book](https://samply.github.io/lens/book/)
 - [Type Documentation (TSdocs)](https://samply.github.io/lens/docs/modules.html)
 
@@ -27,7 +29,6 @@ We strive to keep the library lightweight. Therefore, **samply.lens** does not i
 - [Vue.js](https://vuejs.org/)
 - [React](https://react.dev/)
 
-
 ---
 
 ## 🚀 Getting Started
@@ -39,50 +40,37 @@ To quickly try out **samply.lens**, clone the repository and run the tests. For 
 To set up a development environment for **samply.lens**, ensure you have [Node.js and npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) installed.
 
 1. Clone the repository:
-   ```shell
-   git clone https://github.com/samply/lens.git
-   ```
+    ```shell
+    git clone https://github.com/samply/lens.git
+    ```
 2. Install dependencies:
-   ```shell
-   npm install
-   ```
+    ```shell
+    npm install
+    ```
 3. Start the development server:
-   ```shell
-   npm start
-   ```
-   This will launch a server, typically available at [http://localhost:5173](http://localhost:5173). For more npm scripts, refer to [package.json](./package.json).
+    ```shell
+    npm run dev
+    ```
+    This will launch a server, typically available at [http://localhost:5173](http://localhost:5173). For more npm scripts, refer to [package.json](./package.json).
 
 ### 🔧 Building the Library Locally
 
 If you want to modify **samply.lens** and integrate changes into your local application, follow these steps:
 
 1. Start a watcher to rebuild the library on changes:
-   ```shell
-   npm run watch
-   ```
+    ```shell
+    npx vite build --watch --emptyOutDir false
+    ```
 2. Open a second terminal.
 3. In your application's repository, install the local version of the library:
-   ```shell
-   npm install --no-save path/to/lens/repo
-   ```
+    ```shell
+    npm install --no-save path/to/lens/repo
+    ```
 4. Verify the linking:
-   ```shell
-   npm ls | grep lens
-   ```
-   Ensure that it points to your local **samply.lens** repository.
-
-#### 📌 Additional Note for Applications Using Vite
-
-If your application is built with **Vite**, add the following to `vite.config.ts`:
-
-```javascript
-export default defineConfig({
-    // ...
-    optimizeDeps: {
-        exclude: ['@samply/lens']
-    }
-});
-```
+    ```shell
+    npm ls | grep lens
+    ```
+    Ensure that it points to your local **samply.lens** repository.
 
 ---
 
@@ -97,6 +85,7 @@ export default defineConfig({
 ## 🤝 How to Contribute
 
 We welcome contributions! If you have questions or ideas:
+
 - Start a discussion on [GitHub Discussions](https://github.com/samply/lens/discussions)
 - Open an issue for specific problems
 - Submit a pull request
@@ -111,7 +100,6 @@ We welcome contributions! If you have questions or ideas:
 
 ## 📜 License
 
-
 **samply.lens** is licensed under the Apache License, Version 2.0.
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
@@ -119,6 +107,5 @@ Licensed under the Apache License, Version 2.0 (the "License"); you may not use 
 http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-
 
 **© 2019 - 2025 The Samply Community**
