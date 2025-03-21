@@ -21,9 +21,9 @@ Typically your application will only use the root route at `src/routes`. We will
     // registered, see https://github.com/WICG/webcomponents/issues/820.
     // Therefore we do a full page reload instead of HMR.
     if (import.meta.hot) {
-      import.meta.hot.on('vite:beforeUpdate', () => {
-        window.location.reload();
-      });
+        import.meta.hot.on('vite:beforeUpdate', () => {
+            window.location.reload();
+        });
     }
 
     // Import Lens CSS and JS bundles
