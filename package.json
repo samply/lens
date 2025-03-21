@@ -65,7 +65,7 @@
     "lint-staged": {
         "*": [
             "eslint --fix",
-            "prettier --write"
+            "prettier --ignore-unknown --write"
         ]
     },
     "commitlint": {
