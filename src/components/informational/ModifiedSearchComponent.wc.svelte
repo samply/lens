@@ -9,7 +9,7 @@
 </script>
 
 {#if $queryModified}
-<div part='display-wrapper'>
-    <slot></slot>
-</div>
+    <div part="display-wrapper">
+        <slot></slot>
+    </div>
 {/if}
