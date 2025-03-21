@@ -53,6 +53,7 @@
     "lint-staged": "^15.5.0",
     "prettier": "^3.5.3",
     "prettier-plugin-svelte": "^3.3.3",
+    "rollup": "^4.36.0",
     "svelte": "^5.23.0",
     "svelte-check": "^4.1.5",
     "ts-json-schema-generator": "^2.3.0",
@@ -75,10 +76,18 @@
     ]
   },
   "commitlint": {
-    "extends": ["@commitlint/config-conventional"],
+    "extends": [
+      "@commitlint/config-conventional"
+    ],
     "rules": {
-        "body-max-line-length": [0, "always"],
-        "footer-max-line-length": [0, "always"]
+      "body-max-line-length": [
+        0,
+        "always"
+      ],
+      "footer-max-line-length": [
+        0,
+        "always"
+      ]
     }
   }
 }
