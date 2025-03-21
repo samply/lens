@@ -5,7 +5,7 @@ import dts from "vite-plugin-dts";
 export default defineConfig({
     build: {
         lib: {
-            entry: "packages/lib/src/index.ts",
+            entry: "src/index.ts",
             // Only emit ESM, no CommonJS
             formats: ["es"],
         },
