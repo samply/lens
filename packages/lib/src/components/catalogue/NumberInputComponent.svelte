@@ -3,6 +3,7 @@
     import QueryAddButtonComponent from "./QueryAddButtonComponent.svelte";
     import type { NumericRangeCategory } from "../../types/catalogue";
     import { v4 as uuidv4 } from "uuid";
+    import type { QueryItem } from "../../types/queryData";
 
     interface Props {
         element: NumericRangeCategory;
@@ -10,8 +11,8 @@
 
     let { element }: Props = $props();
 
-    let from: number = $state((element.min as number) || 0);
-    let to: number = $state((element.max as number) || 0);
+    let from: number | null = $state(element.min || null);
+    let to: number | null = $state(element.max || null);
 
     /**
      * handles the "from" input field
@@ -64,17 +65,19 @@
      * @returns the "from", "≥ from", "≤ to", "from - to" or "invalid"
      */
     const transformName = (): string => {
+        if (from === null && to === null) return "invalid";
         if (from === to) return `${from}`;
-        if (!to && from) return `≥ ${from}`;
-        if (!from && to) return `≤ ${to}`;
-        if (from < to) return ` ${from} - ${to}`;
+        if (to === null && from !== null) return `≥ ${from}`;
+        if (from === null && to !== null) return `≤ ${to}`;
+        if (from !== null && to !== null && from < to)
+            return ` ${from} - ${to}`;
         return "invalid";
     };
 
     /**
      * build the query item each time the values change
      */
-    let queryItem = $derived({
+    let queryItem: QueryItem = $derived({
         id: uuidv4(),
         key: element.key,
         name: element.name,
@@ -82,7 +85,7 @@
         values: [
             {
                 name: transformName(),
-                value: { min: from, max: to },
+                value: { min: from || 0, max: to || 0 },
                 queryBindId: uuidv4(),
             },
         ],
@@ -98,7 +101,10 @@
                 {$catalogueTextStore.numberInput?.labelFrom}
                 <input
                     part="number-input-formfield number-input-formfield-from
-                        {to && from > to ? ' formfield-error' : ''}"
+                        {(to === null && from === null) ||
+                    (to !== null && from !== null && from > to)
+                        ? ' formfield-error'
+                        : ''}"
                     type="number"
                     bind:value={from}
                     onfocusout={handleInputFrom}
@@ -111,7 +117,10 @@
                 {$catalogueTextStore.numberInput?.labelTo}
                 <input
                     part="number-input-formfield number-input-formfield-to
-                        {to && from > to ? ' formfield-error' : ''}"
+                        {(to === null && from === null) ||
+                    (to !== null && from !== null && from > to)
+                        ? ' formfield-error'
+                        : ''}"
                     type="number"
                     bind:value={to}
                     onfocusout={handleInputTo}
