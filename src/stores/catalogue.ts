@@ -8,7 +8,7 @@ import {
 } from "../types/ast";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
-import catalogueSchema from "../../../../schema/catalogue.schema.json";
+import catalogueSchema from "../../schema/catalogue.schema.json";
 
 /**
  * store to hold the catalogue

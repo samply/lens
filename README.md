@@ -30,7 +30,7 @@ to start a development server, that will typically be available at [http://local
 
 If you want to make changes to the lens library while integrating those changes directly in the local development version of your application, you need to tell npm to make lens locally available.
 
-1) Run `npm run watch`, to start building the library on changes
+1) Run `npx vite build --watch --emptyOutDir false`, to start building the library on changes
 2) Open a second terminal
 3) In your own applications repository run `npm install --no-save path/to/lens/repo`
 

@@ -1,6 +1,6 @@
 // This import loads lens CSS and web components as a side effect
-import { setCatalogue, setOptions } from "./packages/lib/src/index";
-import type { QueryEvent, Site } from "./packages/lib/src/index";
+import { setCatalogue, setOptions } from "./src/index";
+import type { QueryEvent, Site } from "./src/index";
 
 setOptions({
     siteMappings: {
