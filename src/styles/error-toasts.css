@@ -13,7 +13,7 @@ error-toasts::part(flex-container) {
 error-toasts::part(toast) {
     pointer-events: auto;
     border-radius: var(--border-radius-small);
-    background-color: #EF9A9A;
+    background-color: #ef9a9a;
     border: solid 1px var(--red);
     display: flex;
     align-items: center;
@@ -28,10 +28,10 @@ error-toasts::part(close-button) {
     margin-left: auto; /* align right */
 
     /* Remove button default styles */
-	background: none;
-	color: inherit;
-	border: none;
-	font: inherit;
-	cursor: pointer;
-	outline: inherit;
+    background: none;
+    color: inherit;
+    border: none;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
 }

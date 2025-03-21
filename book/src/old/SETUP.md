@@ -25,8 +25,8 @@ npm install @samply/lens
 <lens-options options={yourlibraryOptions} catalogueData={yourCatalogueData} />
 ```
 
-- ```options``` takes the general configuration for the library as JSON.
-- ```catalogueData``` takes a catalogue of search criteria, also as JSON.
+- `options` takes the general configuration for the library as JSON.
+- `catalogueData` takes a catalogue of search criteria, also as JSON.
 
 ### Schemas
 
@@ -240,6 +240,7 @@ npm install @samply/lens
     "required": []
 }
 ```
+
 </details>
 
 <details>
@@ -377,6 +378,7 @@ npm install @samply/lens
     }
 }
 ```
+
 </details>
 
 <br>
@@ -395,7 +397,6 @@ Place the following components in your application where they are needed.
 ```
 
 displays a catalogue navigation
-
 
 ### Search Bar
 
@@ -419,9 +420,9 @@ displays a catalogue navigation
 />
 ```
 
-- ```title```: the title to show as heading in the chart
-- ```atalogueGroupCode```: the key of your childCategory in the catalogue
-- ```chartType```: the type of the chart (currently supports: ```bar``` for bar charts and ```pie``` for pie charts
+- `title`: the title to show as heading in the chart
+- `atalogueGroupCode`: the key of your childCategory in the catalogue
+- `chartType`: the type of the chart (currently supports: `bar` for bar charts and `pie` for pie charts
 
 [comment]:<> (TODO: Add full documentation website)
 

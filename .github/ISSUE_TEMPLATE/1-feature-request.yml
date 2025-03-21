@@ -2,21 +2,21 @@ name: Feature request
 description: Suggest an idea for this project
 title: "[Feature]: "
 body:
-  - type: textarea 
-    id: summary
-    attributes:
-      label: General Summary
-      description: Please provide a general summary of the new feature. Why it is important and how it should look like
-      placeholder: e.g. "The main issue is that..."
-    validations:
-      required: true
-  - type: dropdown
-    id: breaking
-    attributes:
-      label: Is this Breaking?
-      description: Explain the behavior expected in this case
-      options:
-        - "Yes"
-        - "No"
-    validations:
-      required: true
+    - type: textarea
+      id: summary
+      attributes:
+          label: General Summary
+          description: Please provide a general summary of the new feature. Why it is important and how it should look like
+          placeholder: e.g. "The main issue is that..."
+      validations:
+          required: true
+    - type: dropdown
+      id: breaking
+      attributes:
+          label: Is this Breaking?
+          description: Explain the behavior expected in this case
+          options:
+              - "Yes"
+              - "No"
+      validations:
+          required: true
