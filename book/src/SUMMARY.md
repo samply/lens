@@ -1,7 +1,7 @@
 # Summary
 
 - Components
-  - [AST](components/AST.md)
+    - [AST](components/AST.md)
 - [User guide](guide/README.md)
     - [Creating a new application](guide/new-app.md)
     - [Overwriting styles](guide/overwriting-styles.md)
