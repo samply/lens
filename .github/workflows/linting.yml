@@ -19,3 +19,4 @@ jobs:
             - run: npx prettier --check .
             - run: npx eslint .
             - run: bash scripts/generate-json-schema.bash --check
+            - run: npx vite build

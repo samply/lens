@@ -1,4 +1,3 @@
-version: "3.8"
 # TODO: BBMRI expects Traefik to already exist
 services:
     traefik:
