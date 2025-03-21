@@ -1,17 +1,19 @@
 ## Branching
+
 ### Gitflow:
 
 1. The branch `develop` is created from `main`
 2. The branch `release` is created from `develop`
 3. `Feature` branches are created from `develop`
 4. When a feature is complete it is merged into the `develop` branch
-5. When the `release` branch is done it is merged into `develop` *and* `main`
+5. When the `release` branch is done it is merged into `develop` _and_ `main`
 6. If an urgent issue in `main` is detected a `hotfix` branch is created from `main`
 7. Once the `hotfix` is complete it is merged to both `develop` and `main`
 
-*[For reference](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow)*
+_[For reference](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow)_
 
 ## Versioning
+
 #### For MAIN/ RELEASE branches
 
 Given a version number `MAJOR.MINOR.PATCH`, increment the:
@@ -20,7 +22,7 @@ Given a version number `MAJOR.MINOR.PATCH`, increment the:
 - MINOR version when you add functionality in a backward compatible manner
 - PATCH version when you make backward compatible bug fixes
 
-*Additional labels for pre-release and build metadata are available as extensions to the MAJOR.MINOR.PATCH format.*
+_Additional labels for pre-release and build metadata are available as extensions to the MAJOR.MINOR.PATCH format._
 
 Please see **[Semantic Versioning](https://semver.org/)**
 

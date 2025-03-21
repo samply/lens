@@ -16,21 +16,21 @@ Typically your application will only use the root route at `src/routes`. We will
 
 ```html
 <script>
-  // Using hot module replacement (HMR) with custom elements (aka web
-  // components) does not work because a custom element cannot be updated once
-  // registered, see https://github.com/WICG/webcomponents/issues/820.
-  // Therefore we do a full page reload instead of HMR.
-  if (import.meta.hot) {
-    import.meta.hot.on('vite:beforeUpdate', () => {
-      window.location.reload();
-    });
-  }
+    // Using hot module replacement (HMR) with custom elements (aka web
+    // components) does not work because a custom element cannot be updated once
+    // registered, see https://github.com/WICG/webcomponents/issues/820.
+    // Therefore we do a full page reload instead of HMR.
+    if (import.meta.hot) {
+      import.meta.hot.on('vite:beforeUpdate', () => {
+        window.location.reload();
+      });
+    }
 
-  // Import Lens CSS and JS bundles
-  import "@samply/lens/style.css";
-  import "@samply/lens";
+    // Import Lens CSS and JS bundles
+    import "@samply/lens/style.css";
+    import "@samply/lens";
 
-  import App from '../App.svelte';
+    import App from '../App.svelte';
 </script>
 
 <App />
@@ -51,7 +51,7 @@ Your main application code lives in the application component. Create the file `
 
 ```html
 <script lang="ts">
-  import "./app.css";
+    import "./app.css";
 </script>
 
 <lens-search-button></lens-search-button>
@@ -107,32 +107,32 @@ To automatically build Docker images and publish them to Docker Hub when a branc
 name: Docker CI
 
 on:
-  push:
-    branches:
-      - main
-      - develop
-    # Build when a new version is tagged
-    tags:
-      - 'v*.*.*'
-  pull_request:
-    branches:
-      - main
-      - develop
-  schedule:
-    # Build every night at 1am
-    - cron: '0 1 * * *'
+    push:
+        branches:
+            - main
+            - develop
+        # Build when a new version is tagged
+        tags:
+            - "v*.*.*"
+    pull_request:
+        branches:
+            - main
+            - develop
+    schedule:
+        # Build every night at 1am
+        - cron: "0 1 * * *"
 jobs:
-  build:
-    # This workflow defines how a samply docker image is built, tested and published.
-    # Visit: https://github.com/samply/github-workflows/blob/main/.github/workflows/docker-ci.yml, for more information
-    uses: samply/github-workflows/.github/workflows/docker-ci.yml@main
-    with:
-      # The Docker Hub Repository you want eventually push to, e.g samply/share-client
-      image-name: "samply/your-project"
-      # Where to push your images ("dockerhub", "ghcr", "both" or "none")
-      push-to: dockerhub
-    # This passes the secrets from calling workflow to the called workflow
-    secrets:
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+    build:
+        # This workflow defines how a samply docker image is built, tested and published.
+        # Visit: https://github.com/samply/github-workflows/blob/main/.github/workflows/docker-ci.yml, for more information
+        uses: samply/github-workflows/.github/workflows/docker-ci.yml@main
+        with:
+            # The Docker Hub Repository you want eventually push to, e.g samply/share-client
+            image-name: "samply/your-project"
+            # Where to push your images ("dockerhub", "ghcr", "both" or "none")
+            push-to: dockerhub
+        # This passes the secrets from calling workflow to the called workflow
+        secrets:
+            DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+            DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 ```

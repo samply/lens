@@ -1,4 +1,3 @@
-
 /**
 * result summary
 */
@@ -9,16 +8,16 @@ lens-result-summary {
     grid-gap: var(--gap-xl);
     grid-column: 1/-1;
     align-items: center;
-  }
-  
-  lens-result-summary::part(result-summary-content) {
+}
+
+lens-result-summary::part(result-summary-content) {
     display: flex;
     align-items: center;
     justify-content: space-around;
-    gap: 10px
-  }
+    gap: 10px;
+}
 
-  lens-result-summary::part(info-button) {
+lens-result-summary::part(info-button) {
     position: relative;
     cursor: pointer;
     height: 100%;
@@ -26,7 +25,7 @@ lens-result-summary {
     background-color: var(--white);
     border-radius: var(--border-radius-small);
 }
-  lens-result-summary::part(info-button-icon) {
+lens-result-summary::part(info-button-icon) {
     width: 16px;
 }
 

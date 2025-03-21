@@ -1,6 +1,6 @@
 # Lens
 
-Lens is a front-end library, that provides common functionalities necessary for building search, exploration and visualization  applications. The primary target of this library is to deliver a good amount of building blocks, while also being open to user specific extensions.
+Lens is a front-end library, that provides common functionalities necessary for building search, exploration and visualization applications. The primary target of this library is to deliver a good amount of building blocks, while also being open to user specific extensions.
 
 ## Documentation
 

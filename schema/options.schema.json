@@ -27,7 +27,7 @@
             "additionalProperties": false,
             "required": []
         },
-        "siteMappings":{
+        "siteMappings": {
             "type": "object",
             "patternProperties": {
                 "^.+$": {
@@ -169,9 +169,7 @@
                             }
                         },
                         "additionalProperties": false,
-                        "required": [
-                            "title"
-                        ]
+                        "required": ["title"]
                     }
                 },
                 "claimedText": {
@@ -348,13 +346,12 @@
                             }
                         },
                         "additionalProperties": false,
-                        "required": ["site", "collection"]                    
+                        "required": ["site", "collection"]
                     }
                 }
             },
             "additionalProperties": false,
             "required": ["url", "siteMappings"]
-            
         },
         "projectmanagerOptions": {
             "type": "object",
@@ -384,7 +381,7 @@
                             }
                         },
                         "additionalProperties": false,
-                        "required": ["site", "collection"]                    
+                        "required": ["site", "collection"]
                     }
                 }
             },
