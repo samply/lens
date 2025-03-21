@@ -4,8 +4,8 @@ import type { QueryEvent, Site } from "./packages/lib/src/index";
 
 setOptions({
     siteMappings: {
-        bonn: "Bonn",
-        hamburg: "Hamburg",
+        riverside: "Riverside",
+        summit: "Summit",
     },
     catalogueKeyToResponseKeyMap: [["gender", "Gender"]],
     chartOptions: {
@@ -66,12 +66,19 @@ setCatalogue([
             },
         ],
     },
+    {
+        key: "age",
+        name: "Alter",
+        fieldType: "number",
+        type: "BETWEEN",
+        system: "",
+    },
 ]);
 
 window.addEventListener("emit-lens-query", (event) => {
     const detail = (event as QueryEvent).detail;
-    detail.updateResponse(new Map([["bonn", makeSite(5, 4, 0)]]));
-    detail.updateResponse(new Map([["hamburg", makeSite(12, 18, 3)]]));
+    detail.updateResponse(new Map([["riverside", makeSite(5, 4, 0)]]));
+    detail.updateResponse(new Map([["summit", makeSite(12, 18, 3)]]));
 });
 
 /**
