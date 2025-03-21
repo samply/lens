@@ -6,5 +6,5 @@ export const catalogueTextStore = writable<CatalogueText>({
     numberInput: {
         labelFrom: "From",
         labelTo: "to",
-    }
+    },
 });
