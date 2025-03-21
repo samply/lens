@@ -136,5 +136,3 @@ jobs:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 ```
-
- The workflow will create an image with the `latest` tag when a build is triggered by a push to the default branch. Therefore the default branch of your repository should be `main`.
