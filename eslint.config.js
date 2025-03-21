@@ -7,7 +7,7 @@ import svelte from "eslint-plugin-svelte";
 import svelteConfig from "./svelte.config.js";
 
 export default defineConfig([
-    globalIgnores(["dist"]),
+    globalIgnores(["dist", "book/book"]),
     // Recommended JavaScript and TypeScript lints
     pluginJs.configs.recommended,
     ...tseslint.configs.recommended,
