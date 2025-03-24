@@ -113,25 +113,24 @@ export const getSitePopulationForStratumCode = (
     stratumCode: string,
     stratifier: string,
 ): number => {
-    if (!site || !site.group) return 0;
-
-    let population: number = 0;
-
-    site.group.forEach((group) => {
-        group.stratifier.forEach((stratifierItem) => {
-            if (stratifierItem.code[0].text !== stratifier) return;
-            stratifierItem.stratum?.forEach((stratumItem) => {
-                if (
-                    stratumItem.value.text === stratumCode &&
-                    stratumItem.population !== undefined
-                ) {
-                    population = stratumItem.population[0].count;
+    for (const group of site.group) {
+        for (const stratifierItem of group.stratifier) {
+            if (
+                stratifierItem.code[0].text === stratifier &&
+                stratifierItem.stratum !== undefined
+            ) {
+                for (const stratumItem of stratifierItem.stratum) {
+                    if (
+                        stratumItem.value.text === stratumCode &&
+                        stratumItem.population !== undefined
+                    ) {
+                        return stratumItem.population[0].count;
+                    }
                 }
-            });
-        });
-    });
-
-    return population;
+            }
+        }
+    }
+    return 0;
 };
 
 /**
