@@ -23,4 +23,8 @@ const lensTranslations: Texts = {
         en: "The negotiator returned an error response.",
         de: "Der Negotiator hat einen Fehler zurückgegeben.",
     },
+    add_all: {
+        en: "Add all",
+        de: "Alle hinzufügen",
+    },
 };
