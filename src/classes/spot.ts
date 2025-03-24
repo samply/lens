@@ -6,6 +6,7 @@ import type { SiteData } from "../types/response";
 import type { ResponseStore } from "../types/backend";
 import type { BeamResult } from "../types/spot";
 import { showError } from "../stores/toasts";
+import { translate } from "../helpers/translations";
 
 export class Spot {
     private currentTask!: string;
@@ -92,7 +93,7 @@ export class Spot {
                 console.log(`Aborting request ${this.currentTask}`);
             } else {
                 console.error(err);
-                showError("Fehler beim Bearbeiten der Anfrage");
+                showError(translate("network_error"));
             }
         }
     }

@@ -8,10 +8,12 @@ export type LensOptions = {
     projectmanagerOptions?: ProjectManagerOptions;
     tableOptions: TableOptions;
     resultSummaryOptions: ResultSummaryOptions;
-    /**
-     * Options for the icons used in the Lens UI. Each URL should point to an image file.
-     */
+    /** Allows customizing icons by specifying image files */
     iconOptions?: IconUrls;
+    /** Two letter language code of the application language */
+    language?: string;
+    /** Allows to customize texts and add new translations */
+    texts?: Texts;
 };
 
 export type NegotiateOptions = {
@@ -68,11 +70,6 @@ export type ChartOption = {
 };
 
 export type TableOptions = {
-    /**
-     * Text to display in the table when a query has been sent to a site and
-     * lens is waiting for the result.
-     */
-    claimedText?: string;
     headerData: HeaderData[];
 };
 
@@ -102,4 +99,15 @@ export type IconUrls = {
     addIconUrl?: string;
     /** Icon for the button that expands and collapses items in the catalogue */
     toggleIconUrl?: string;
+};
+
+/**
+ * A map of texts that are displayed in the application. The keys are used to
+ * look up the text in the application code. The values are objects that map
+ * two letter language codes to the actual text.
+ */
+export type Texts = {
+    [key: string]: {
+        [key: string]: string;
+    };
 };

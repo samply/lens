@@ -25,6 +25,7 @@
     import type { SpotOption } from "../../types/spot";
     import { isTopLayer, type AstTopLayer } from "../../types/ast";
     import type { QueryEvent } from "../../types/queryEvent";
+    import { translate } from "../../helpers/translations";
 
     interface Props {
         title?: string;
@@ -169,7 +170,7 @@
             })
             .catch((error) => {
                 console.error("Error:", error);
-                showError("Fehler beim Bearbeiten der Anfrage");
+                showError(translate("network_error"));
             });
     };
 

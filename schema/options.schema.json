@@ -171,11 +171,6 @@
                         "additionalProperties": false,
                         "required": ["title"]
                     }
-                },
-                "claimedText": {
-                    "type": "string",
-                    "pattern": "^.+$",
-                    "description": "The text to be displayed when query is being executed"
                 }
             },
             "additionalProperties": false,
@@ -387,6 +382,20 @@
             },
             "additionalProperties": false,
             "required": ["newProjectUrl", "editProjectUrl", "siteMappings"]
+        },
+        "language": {
+            "type": "string",
+            "pattern": "^.+$",
+            "description": "The language of the lens"
+        },
+        "texts": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "object",
+                "additionalProperties": {
+                    "type": "string"
+                }
+            }
         }
     },
     "additionalProperties": false,

@@ -15,10 +15,7 @@
     import { lensOptions } from "../../stores/options";
     import type { HeaderData } from "../../types/options";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
-
-    const claimedText = $derived(
-        $lensOptions?.tableOptions.claimedText || "Processing...",
-    );
+    import { translate } from "../../helpers/translations";
 
     /**
      * data-types for the table
@@ -56,7 +53,7 @@
                 }
 
                 if (value.status === "claimed") {
-                    tableRow.push(claimedText);
+                    tableRow.push(translate("loading"));
                 } else if (value.status === "succeeded") {
                     if (header.dataKey !== undefined) {
                         tableRow.push(
@@ -137,10 +134,10 @@
 
         // sort
         tableRowsCopy.sort((a, b) => {
-            // Always sort claimedText below everything else
-            if (a[sortColumnIndex] === claimedText) {
+            // Always sort loading text below everything else
+            if (a[sortColumnIndex] === translate("loading")) {
                 return 1;
-            } else if (b[sortColumnIndex] === claimedText) {
+            } else if (b[sortColumnIndex] === translate("loading")) {
                 return -1;
             }
 

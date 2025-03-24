@@ -16,7 +16,6 @@ import type {
 } from "../types/options";
 import type { QueryItem, SendableQuery } from "../types/queryData";
 import { v4 as uuidv4 } from "uuid";
-import { showError } from "../stores/toasts";
 
 type PmBody = {
     query: string;
@@ -48,7 +47,6 @@ export const negotiate = async (sitesToNegotiate: string[]): Promise<void> => {
         get(lensOptions)?.projectmanagerOptions;
     if (currentProjectmanagerOptions === undefined) {
         console.error('"projectmanagerOptions" is missing the lens options');
-        showError('"projectmanagerOptions" fehlt in den Lens-Optionen');
         return;
     }
 
