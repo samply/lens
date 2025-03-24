@@ -1,7 +1,7 @@
 import { buildLibrary, buildMeasure } from "../helpers/cql-measure";
 import type { Site, SiteData } from "../types/response";
 import type { Measure, ResponseStore } from "../types/backend";
-import { showError } from "../stores/toasts";
+import { showErrorToast } from "../stores/toasts";
 import { translate } from "../helpers/translations";
 
 export class Blaze {
@@ -96,7 +96,7 @@ export class Blaze {
                 console.log(`Aborting former blaze request.`);
             } else {
                 console.error(err);
-                showError(translate("network_error"));
+                showErrorToast(translate("network_error"));
             }
         }
     }

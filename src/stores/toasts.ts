@@ -9,7 +9,7 @@ let nextId = 0;
  * @param message The error message
  * @param timeout Timeout in milliseconds after which to remove the toast
  */
-export function showError(message: string, timeout = 8000): void {
+export function showErrorToast(message: string, timeout = 8000): void {
     const id = nextId++;
     errorToasts.update((toasts) => [...toasts, { id, message }]);
 

@@ -6,6 +6,7 @@ export { setCatalogue } from "./stores/catalogue";
 export { setOptions } from "./stores/options";
 export { setMeasures } from "./stores/measures";
 export { translate } from "./helpers/translations";
+export { showErrorToast } from "./stores/toasts";
 
 // Export types
 export type * from "./types/ast";
