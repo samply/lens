@@ -18,5 +18,5 @@ jobs:
             - run: npx svelte-check
             - run: npx prettier --check .
             - run: npx eslint .
-            - run: bash scripts/generate-json-schema.bash --check
             - run: npx vite build
+            - run: bash scripts/generate-json-schema.bash --check

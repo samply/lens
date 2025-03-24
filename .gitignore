@@ -13,7 +13,7 @@ dist
 dist-ssr
 *.local
 TODO
-book
+book/book
 docs
 
 # Editor directories and files

@@ -2,12 +2,30 @@
 
 Lens is framework agnostic, so there are many ways to build and deploy your application. This guide focuses on compatibility with other projects in the [Samply organization](https://github.com/samply), so we use SvelteKit as the frontend framework and Docker for deployment.
 
-To create a new Sveltkit application run `npx sv create my-app`. We recommend that you use the minimal template with TypeScript syntax and enable Prettier and ESLint.
+To create a new SveltKit application run `npx sv create my-app`. Use the minimal template with TypeScript syntax and select Prettier and ESLint when prompted.
 
 Now `cd` to the new directory and install Lens:
 
 ```bash
 npm install @samply/lens
+```
+
+## Prettier config
+
+The Prettier config created by `sv create` uses tabs and sets the print width to 100 [against the recommendation of Prettier](https://prettier.io/docs/options#print-width). We recommend to remove these options from `.prettierrc` and use the Prettier defaults with the Svelte plugin only:
+
+```json
+{
+    "plugins": ["prettier-plugin-svelte"],
+    "overrides": [
+        {
+            "files": "*.svelte",
+            "options": {
+                "parser": "svelte"
+            }
+        }
+    ]
+}
 ```
 
 ## Configuring the root route
@@ -94,7 +112,7 @@ EXPOSE 3000
 CMD ["node", "build"]
 ```
 
-To automatically build Docker images and publish them to Docker Hub when a branch changes, we recommend to use the [Samply Docker CI](https://github.com/samply/github-workflows/blob/main/.github/workflows/docker-ci.yml) workflow for GitHub Actions. Use the [workflow template](https://github.com/samply/.github/blob/main/workflow-templates/docker-ci-template.yml) or manually create `.github/workflows/docker.yml` with the following content:
+To automatically build Docker images and publish them to Docker Hub when a branch changes, we recommend to use the [Samply Docker CI](https://github.com/samply/github-workflows/blob/main/.github/workflows/docker-ci.yml) workflow for GitHub Actions. Use the [workflow template](https://github.com/samply/.github/blob/main/workflow-templates/docker-ci-template.yml) or copy the following into `.github/workflows/docker.yml`:
 
 ```yml
 # This workflow builds a Docker image from the Dockerfile and publishes the
@@ -135,4 +153,49 @@ jobs:
         secrets:
             DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
             DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+```
+
+## TODO
+
+add section about catalogue and tell reader to create `scripts/validate-json-schema.bash`
+
+```
+npm install ajv-cli ajv-formats --save-dev
+```
+
+## Linting in GitHub Actions
+
+You can use GitHub Actions to run the following checks on pull requests:
+
+- [svelte-check](https://www.npmjs.com/package/svelte-check) to check for TypeScript compiler errors
+- Prettier
+- ESLint
+- Test that the build works
+- Validate catalogue and options
+
+To do so create `.github/workflows/linting.yml` with the following content:
+
+```yml
+name: Linting
+on:
+    pull_request:
+        branches:
+            - main
+            - develop
+    push:
+        branches:
+            - develop
+
+jobs:
+    verify-code:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+            - run: npm ci
+            - run: npx svelte-check
+            - run: npx prettier --check .
+            - run: npx eslint .
+            - run: npx vite build
+            - run: bash scripts/validate-json-schema.bash
 ```
