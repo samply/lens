@@ -7,6 +7,7 @@ import type { ResponseStore } from "../types/backend";
 import type { BeamResult } from "../types/spot";
 import { showErrorToast } from "../stores/toasts";
 import { translate } from "../helpers/translations";
+import { v4 as uuidv4 } from "uuid";
 
 export class Spot {
     private currentTask!: string;
@@ -28,7 +29,7 @@ export class Spot {
         controller: AbortController,
     ): Promise<void> {
         try {
-            this.currentTask = crypto.randomUUID();
+            this.currentTask = uuidv4();
             const beamTaskResponse = await fetch(
                 `${this.url}beam?sites=${this.sites.toString()}`,
                 {
