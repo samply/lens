@@ -63,6 +63,11 @@ export type SingleSelectCategory = {
     criteria: Criteria[];
     /** Optional text that is accessed by clicking a "ⓘ" button next to the display name */
     infoButtonText?: string[];
+    /** This overwrites the display name in the catalogue component only. The
+     * intended use-case is to have multiple catalogue items with the same key
+     * and name but different subCategoryName. They will appear as different
+     * collapsable entries in the catalogue but will be grouped together in the
+     * same chip in the search bar. */
     subCategoryName?: string;
 };
 
