@@ -5,9 +5,8 @@
 />
 
 <script lang="ts">
-    import { run } from "svelte/legacy";
-
     import { writable } from "svelte/store";
+
     import type {
         AggregatedValue,
         Category,
@@ -172,7 +171,7 @@
     /**
      * watches the input value and updates the input options
      */
-    run(() => {
+    $effect(() => {
         $inputOptions = criteria.filter((item: AutoCompleteItem) => {
             /**
              * lets the user use a number followed by a colon to specify the search group. nice to have for the power users
@@ -187,13 +186,6 @@
                 item.criterion.description
                     ?.toLowerCase()
                     .includes(clearedInputValue)
-
-                /**
-                 * Discussion:
-                 * should it also be possible to search for the key?
-                 */
-                // item.key.toLocaleLowerCase().includes(clearedInputValue) ||
-                // item.criterion.key.toLowerCase().includes(clearedInputValue) ||
             );
         });
     });
@@ -312,7 +304,7 @@
         }
     };
 
-    run(() => {
+    $effect(() => {
         if (activeDomElement) {
             scrollInsideContainerWhenActiveDomElementIsOutOfView(
                 activeDomElement,

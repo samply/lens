@@ -5,8 +5,6 @@
 />
 
 <script lang="ts">
-    import { run } from "svelte/legacy";
-
     import Chart, { type ChartTypeRegistry } from "chart.js/auto";
     import { onMount } from "svelte";
     import {
@@ -90,7 +88,6 @@
         backgroundHoverColor = ["#aaaaaa"],
     }: Props = $props();
 
-    // This is undefined if the lens options are not loaded yet
     let options: ChartOption | undefined = $derived(
         $lensOptions?.chartOptions?.[catalogueGroupCode],
     );
@@ -619,7 +616,9 @@
 
         addItemToQuery(queryItem, $activeQueryGroupIndex);
     };
-    run(() => {
+
+    // Correto - usando $effect para executar um efeito colateral
+    $effect(() => {
         setChartData($responseStore);
     });
 </script>

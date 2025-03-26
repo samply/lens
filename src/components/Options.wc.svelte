@@ -34,6 +34,7 @@
     $effect(() => {
         setCatalogue(JSON.parse(catalogueJSON));
     });
+
     $effect(() => {
         $measureStore = measures;
     });

@@ -1,6 +1,4 @@
 <script lang="ts">
-    import { run } from "svelte/legacy";
-
     import type { AutocompleteCategory, Criteria } from "../../types/catalogue";
     import { v4 as uuidv4 } from "uuid";
     import {
@@ -239,7 +237,7 @@
     /**
      * watches the input value and updates the input options
      */
-    run(() => {
+    $effect(() => {
         inputOptions = criteria.filter((item: Criteria) => {
             const clearedInputValue = inputValue
                 .replace(/^[0-9]*:/g, "")
@@ -249,12 +247,6 @@
                 item.name.toLowerCase().includes(clearedInputValue) ||
                 item.key.toLowerCase().includes(clearedInputValue) ||
                 item.description?.toLowerCase().includes(clearedInputValue)
-                /**
-                 * FIX ME:
-                 * should only take names. This needs a catalogue fix
-                 */
-                // item.key.toLocaleLowerCase().includes(clearedInputValue) ||
-                // item.criterion.key.toLowerCase().includes(clearedInputValue) ||
             );
         });
     });
@@ -277,7 +269,7 @@
             [],
         ),
     );
-    run(() => {
+    $effect(() => {
         if (activeDomElement) {
             scrollInsideContainerWhenActiveDomElementIsOutOfView(
                 activeDomElement,
