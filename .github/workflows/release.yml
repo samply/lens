@@ -10,9 +10,9 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: "Checkout Code"
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
             - name: "Setup NodeJS with cache (if available)"
-              uses: actions/setup-node@v3
+              uses: actions/setup-node@v4
               with:
                   node-version: 20
                   registry-url: "https://registry.npmjs.org"
@@ -31,7 +31,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: "Checkout Code"
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
               with:
                   fetch-depth: 0
 
@@ -51,18 +51,3 @@ jobs:
                   name: ${{ github.ref_name }}
                   body: ${{ steps.changelog.outputs.changes }}
                   token: ${{ github.token }}
-
-            - name: "Commit CHANGELOG.md"
-              uses: stefanzweifel/git-auto-commit-action@v4
-              with:
-                  branch: main
-                  commit_message: "docs: added changelog for ${{ github.ref_name }} [skip ci]"
-                  file_pattern: CHANGELOG.md
-
-            - name: "Create PR for syncing back changelog"
-              uses: peter-evans/create-pull-request@v6
-              with:
-                  title: "Sync develop with main"
-                  body: "For easy synchronisation of main with develop, triggered by the [release workflow](./.github/workflows/release.yml). Automated changes by [create-pull-request](https://github.com/peter-evans/create-pull-request) GitHub action."
-                  branch: "automated-pr/sync-main-to-develop"
-                  base: "develop"
