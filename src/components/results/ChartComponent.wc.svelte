@@ -356,14 +356,8 @@
         responseStore: ResponseStore,
         labels: string[],
     ): { labels: string[]; data: number[] } => {
-        // console.log(`processing ${labels.length} labels`);
-        // const start = performance.now();
-
         const labelsToData = new Map<string, number>();
         for (const label of labels) {
-            // This is a hack! This will help with the wrong coding of ICD10
-            // label = label.replace(/_/g, ".");
-
             const value = getAggregatedPopulationForStratumCode(
                 responseStore,
                 label,
@@ -390,9 +384,6 @@
                 );
             }
         }
-
-        // const end = performance.now();
-        // console.log(`processing took ${end - start} ms`);
 
         return {
             labels: Array.from(labelsToData.keys()),
