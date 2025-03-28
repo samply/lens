@@ -20,7 +20,7 @@ jobs:
             - uses: actions/checkout@v4
             - uses: actions/setup-node@v4
             - run: npm ci
-            - run: npx typedoc packages/lib/src/index.ts
+            - run: npx typedoc src/index.ts
             - name: Install latest mdbook
               run: |
                   tag=$(curl 'https://api.github.com/repos/rust-lang/mdbook/releases/latest' | jq -r '.tag_name')
