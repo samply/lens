@@ -1,9 +1,20 @@
 // This import loads lens CSS and web components as a side effect
-import { setCatalogue, setOptions, showErrorToast } from "./src/index";
+import {
+    setCatalogue,
+    setOptions,
+    showErrorToast,
+    translate,
+} from "./src/index";
 import type { QueryEvent, Site } from "./src/index";
 
 setOptions({
     language: localStorage.getItem("language") || "en",
+    texts: {
+        "lens-dev-test-error": {
+            en: "Task failed successfully.",
+            de: "Aufgabe erfolgreich fehlgeschlagen.",
+        },
+    },
     siteMappings: {
         riverside: "Riverside",
         summit: "Summit",
@@ -186,7 +197,7 @@ const errorToastTestButton = document.getElementById(
     "error-toast-test-button",
 ) as HTMLButtonElement;
 errorToastTestButton.addEventListener("click", () => {
-    showErrorToast("Task failed successfully.");
+    showErrorToast(translate("lens-dev-test-error"));
 });
 const switchLanguageToGermanButton = document.getElementById(
     "switch-language-to-german-button",
