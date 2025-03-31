@@ -27,4 +27,8 @@ const lensTranslations: Texts = {
         en: "Add all",
         de: "Alle hinzufügen",
     },
+    search: {
+        en: "Search",
+        de: "Suchen",
+    },
 };

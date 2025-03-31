@@ -32,7 +32,7 @@
         disabled?: boolean;
     }
 
-    let { title = "Search", disabled = false }: Props = $props();
+    let { title = translate("search"), disabled = false }: Props = $props();
 
     let options = $derived($lensOptions?.backends as BackendOptions);
 
