@@ -113,11 +113,11 @@ const resolveElementInCatalogue = (key: string, value: string): string[] => {
     return subcatagories;
 };
 
-const resolveAstSubCatagoriesRec = (query: AstElement): AstElement => {
+const resolveAstSubCategoriesRec = (query: AstElement): AstElement => {
     let elements: AstElement[] = [];
     if (isTopLayer(query)) {
         query.children.forEach((element) => {
-            elements = elements.concat(resolveAstSubCatagoriesRec(element));
+            elements = elements.concat(resolveAstSubCategoriesRec(element));
         });
         query.children = elements;
         return query;
@@ -158,9 +158,9 @@ const resolveAstSubCatagoriesRec = (query: AstElement): AstElement => {
  * @param query The Query as Ast Element
  * @returns The new Query with replace elements
  */
-export const resolveAstSubCatagories = (query: AstTopLayer): AstTopLayer => {
+export const resolveAstSubCategories = (query: AstTopLayer): AstTopLayer => {
     query.children.forEach((element, i) => {
-        query.children[i] = resolveAstSubCatagoriesRec(element);
+        query.children[i] = resolveAstSubCategoriesRec(element);
     });
 
     return query;

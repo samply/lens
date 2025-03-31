@@ -14,7 +14,7 @@ import {
     cqltemplate,
     criterionMap,
 } from "./cqlquery-mappings";
-import { resolveAstSubCatagories } from "../stores/catalogue";
+import { resolveAstSubCategories as resolveAstSubCategories } from "../stores/catalogue";
 import type { MeasureItem } from "../types/backend";
 
 const codesystems: string[] = ["codesystem loinc: 'http://loinc.org'"];
@@ -42,7 +42,7 @@ export const translateAstToCql = (
     let singletons: string = "";
     singletons = backendMeasures;
 
-    query = resolveAstSubCatagories(query);
+    query = resolveAstSubCategories(query);
 
     singletons += resolveOperation(query);
 
