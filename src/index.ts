@@ -11,16 +11,24 @@ export { showErrorToast } from "./stores/toasts";
 // Export types
 export type * from "./types/ast";
 export type * from "./types/catalogue";
-export type { LensDataPasser } from "./types/dataPasser";
+export type * from "./types/options";
+export type {
+    LensDataPasser,
+    AddStratifierToQueryAPIParams,
+    RemoveItemFromQuyeryAPIParams,
+    RemoveValueFromQueryAPIParams,
+} from "./types/dataPasser";
 export type {
     MeasureItem,
     Measure,
     MeasureGroup,
     ResponseStore,
+    MeasureStore,
 } from "./types/backend";
 export type { SiteData, Site } from "./types/response";
 export type { BeamResult } from "./types/spot";
 export type { QueryEvent } from "./types/queryEvent";
+export type { QueryItem, QueryValue } from "./types/queryData";
 
 // Include custom elements (aka web components) in the bundle
 import "./components/catalogue/Catalogue.wc.svelte";
