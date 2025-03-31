@@ -14,7 +14,7 @@
     import { Blaze } from "../../classes/blaze";
     import { responseStore, updateResponseStore } from "../../stores/response";
     import { lensOptions } from "../../stores/options";
-    import { showError } from "../../stores/toasts";
+    import { showErrorToast } from "../../stores/toasts";
     import type {
         BackendOptions,
         Measure,
@@ -25,13 +25,14 @@
     import type { SpotOption } from "../../types/spot";
     import { isTopLayer, type AstTopLayer } from "../../types/ast";
     import type { QueryEvent } from "../../types/queryEvent";
+    import { translate } from "../../helpers/translations";
 
     interface Props {
         title?: string;
         disabled?: boolean;
     }
 
-    let { title = "Search", disabled = false }: Props = $props();
+    let { title = translate("search"), disabled = false }: Props = $props();
 
     let options = $derived($lensOptions?.backends as BackendOptions);
 
@@ -66,7 +67,7 @@
             console.error(
                 "There is at least one empty and one non-empty search bar, aborting search",
             );
-            showError(
+            showErrorToast(
                 "Eine der Suchleisten ist leer. Löschen Sie leere Suchleisten oder fügen Sie Suchkriterien ein.",
             );
             return;
@@ -169,7 +170,7 @@
             })
             .catch((error) => {
                 console.error("Error:", error);
-                showError("Fehler beim Bearbeiten der Anfrage");
+                showErrorToast(translate("network_error"));
             });
     };
 

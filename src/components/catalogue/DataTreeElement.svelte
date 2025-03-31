@@ -11,6 +11,7 @@
     import { lensOptions } from "../../stores/options";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
     import DatePickerComponent from "./DatePickerComponent.svelte";
+    import { translate } from "../../helpers/translations";
 
     interface Props {
         element: Category;
@@ -166,7 +167,7 @@
 
     {#if finalParent && open}
         <button part="add-all-options-button" onclick={selectAllOptions}>
-            Add all
+            {translate("add_all")}
         </button>
     {/if}
 

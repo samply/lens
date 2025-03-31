@@ -1,8 +1,20 @@
 // This import loads lens CSS and web components as a side effect
-import { setCatalogue, setOptions } from "./src/index";
+import {
+    setCatalogue,
+    setOptions,
+    showErrorToast,
+    translate,
+} from "./src/index";
 import type { QueryEvent, Site } from "./src/index";
 
 setOptions({
+    language: localStorage.getItem("language") || "en",
+    texts: {
+        "lens-dev-test-error": {
+            en: "Task failed successfully.",
+            de: "Aufgabe erfolgreich fehlgeschlagen.",
+        },
+    },
     siteMappings: {
         riverside: "Riverside",
         summit: "Summit",
@@ -179,6 +191,27 @@ window.addEventListener("emit-lens-query", (event) => {
     const detail = (event as QueryEvent).detail;
     detail.updateResponse(new Map([["riverside", makeSite(5, 4, 0)]]));
     detail.updateResponse(new Map([["summit", makeSite(12, 18, 3)]]));
+});
+
+const errorToastTestButton = document.getElementById(
+    "error-toast-test-button",
+) as HTMLButtonElement;
+errorToastTestButton.addEventListener("click", () => {
+    showErrorToast(translate("lens-dev-test-error"));
+});
+const switchLanguageToGermanButton = document.getElementById(
+    "switch-language-to-german-button",
+) as HTMLButtonElement;
+const switchLanguageToEnglishButton = document.getElementById(
+    "switch-language-to-english-button",
+) as HTMLButtonElement;
+switchLanguageToGermanButton.addEventListener("click", () => {
+    localStorage.setItem("language", "de");
+    window.location.reload();
+});
+switchLanguageToEnglishButton.addEventListener("click", () => {
+    localStorage.setItem("language", "en");
+    window.location.reload();
 });
 
 /**

@@ -5,7 +5,8 @@
 import type { SiteData } from "../types/response";
 import type { ResponseStore } from "../types/backend";
 import type { BeamResult } from "../types/spot";
-import { showError } from "../stores/toasts";
+import { showErrorToast } from "../stores/toasts";
+import { translate } from "../helpers/translations";
 import { v4 as uuidv4 } from "uuid";
 
 export class Spot {
@@ -93,7 +94,7 @@ export class Spot {
                 console.log(`Aborting request ${this.currentTask}`);
             } else {
                 console.error(err);
-                showError("Fehler beim Bearbeiten der Anfrage");
+                showErrorToast(translate("network_error"));
             }
         }
     }
