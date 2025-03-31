@@ -15,13 +15,9 @@
     import DataTreeElement from "./DataTreeElement.svelte";
 
     interface Props {
-        // TODO: check if anyone actually uses this, otherwise remove it
         treeData?: Catalogue;
 
         texts?: CatalogueText;
-        addIconUrl?: string | null;
-        toggleIconUrl?: string | null;
-        infoIconUrl?: string | null;
         /**
          * handle the toggle of the catalogue
          */

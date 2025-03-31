@@ -9,6 +9,8 @@ export default defineConfig({
             // Only emit ESM, no CommonJS
             formats: ["es"],
         },
+        // Also emit source map as lens.js.map
+        sourcemap: true,
     },
     plugins: [
         svelte(),

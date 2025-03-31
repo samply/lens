@@ -356,68 +356,38 @@
         responseStore: ResponseStore,
         labels: string[],
     ): { labels: string[]; data: number[] } => {
-        const groupedChartData: { label: string; value: number }[] =
-            labels.reduce<{ label: string; value: number }[]>((acc, label) => {
-                // This is a hack! This will help with the wrong coding of ICD10
-                label = label.replace(/_/g, ".");
+        const labelsToData = new Map<string, number>();
+        for (const label of labels) {
+            const value = getAggregatedPopulationForStratumCode(
+                responseStore,
+                label,
+                responseGroupCode,
+            );
 
-                /**
+            if (!label.includes(divider) || divider === "") {
+                /*
                  * see if the label contains the divider
-                 * if not, add it to the accumulator with a .% at the end
+                 * if not, add it to the accumulator with a grouping label (.%) at the end
                  */
-                if (!label.includes(divider) || divider === "") {
-                    return [
-                        ...acc,
-                        {
-                            label: label + groupingLabel,
-                            value: getAggregatedPopulationForStratumCode(
-                                responseStore,
-                                label,
-                                responseGroupCode,
-                            ),
-                        },
-                    ];
-                }
-
-                /**
+                labelsToData.set(label + groupingLabel, value);
+            } else {
+                /*
                  * if the label contains the divider, find the corresponding super class item
                  * if it doesn't exist, create it
                  * add the value of the current label to the value of the super class item
-                 * and add it to the accumulator
                  */
-                let superClassItem:
-                    | { label: string; value: number }
-                    | undefined = acc.find(
-                    (item) =>
-                        item.label === label.split(divider)[0] + groupingLabel,
+                const superClassLabel = label.split(divider)[0] + groupingLabel;
+                let oldValue = labelsToData.get(superClassLabel);
+                labelsToData.set(
+                    superClassLabel,
+                    oldValue ? oldValue + value : value,
                 );
-
-                if (!superClassItem) {
-                    superClassItem = {
-                        label: label.split(divider)[0] + groupingLabel,
-                        value: 0,
-                    };
-                }
-
-                superClassItem.value += getAggregatedPopulationForStratumCode(
-                    responseStore,
-                    label,
-                    responseGroupCode,
-                );
-
-                return [
-                    ...acc.filter(
-                        (item) =>
-                            item.label !==
-                            label.split(divider)[0] + groupingLabel,
-                    ),
-                    superClassItem,
-                ];
-            }, []);
+            }
+        }
 
         return {
-            labels: groupedChartData.map((item) => item.label),
-            data: groupedChartData.map((item) => item.value),
+            labels: Array.from(labelsToData.keys()),
+            data: Array.from(labelsToData.values()),
         };
     };
 
