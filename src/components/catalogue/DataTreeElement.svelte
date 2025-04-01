@@ -193,7 +193,7 @@
                     <AutocompleteComponent {element} />
                 {:else if element.fieldType === "number"}
                     <NumberInputComponent {element} />
-                {:else if "fieldType" in element && element.fieldType === "string"}
+                {:else if element.fieldType === "string"}
                     <StringInputComponent {element} />
                 {:else if element.fieldType === "date"}
                     <DatePickerComponent {element} />

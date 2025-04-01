@@ -21,7 +21,8 @@ export type Category =
     | SingleSelectCategory
     | AutocompleteCategory
     | NumericRangeCategory
-    | DateRangeCategory;
+    | DateRangeCategory
+    | StringCategory;
 
 /**
  * A logical grouping of catalogue items that is rendered as a collapsable entry
@@ -130,6 +131,21 @@ export type DateRangeCategory = {
      * @format date
      */
     max?: string;
+    infoButtonText?: string[];
+};
+
+/**
+ * A catalogue item that lets the user to specify a string.
+ */
+export type StringCategory = {
+    fieldType: "string";
+    /** A key that uniquely identifies the catalogue item. It is typically used to look up the CQL snippet for that item. */
+    key: string;
+    /** The item's user-facing display name */
+    name: string;
+    system: string;
+    type: "EQUALS";
+    /** Optional text that is accessed by clicking a "ⓘ" button next to the display name */
     infoButtonText?: string[];
 };
 

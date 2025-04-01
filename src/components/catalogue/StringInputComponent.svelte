@@ -4,18 +4,22 @@
      *
      * It allows a user to enter an arbitrary string.
      */
-    import type { CategoryLeaf } from "../../types/treeData";
     import { v4 as uuidv4 } from "uuid";
     import { addItemToQuery } from "../../stores/query";
     import type { QueryItem } from "../../types/queryData";
-    import {run} from "svelte/legacy";
+    import { run } from "svelte/legacy";
+    import { StringCategory } from "../../types/catalogue";
 
     /**
      * Grayed-out text that initially appears in the field before the user enters a string.
      */
     let placeholderText: string = "Enter filter term";
 
-    export let element: CategoryLeaf;
+    interface Props {
+        element: StringCategory;
+    }
+
+    let { element }: Props = $props();
 
     /**
      * input element binds to this variable. Used to focus the input element
