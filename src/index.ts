@@ -45,6 +45,7 @@ import "./components/buttons/InfoButtonComponent.wc.svelte";
 import "./components/Options.wc.svelte";
 import "./components/DataPasser.wc.svelte";
 import "./components/informational/ModifiedSearchComponent.wc.svelte";
+import "./components/informational/QuerySpinner.wc.svelte";
 import "./components/ErrorToasts.wc.svelte";
 
 // Include CSS in the bundle
