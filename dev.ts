@@ -173,6 +173,13 @@ setCatalogue([
             },
         ],
     },
+    {
+        fieldType: "string",
+        key: "sample-id",
+        name: "Sample ID",
+        type: "EQUALS",
+        system: "",
+    },
 ]);
 
 window.addEventListener("emit-lens-query", (event) => {
