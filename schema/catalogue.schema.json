@@ -419,7 +419,7 @@
     },
     "StringCategory": {
       "additionalProperties": false,
-      "description": "A catalogue item that lets the user enter an arbitrary string.",
+      "description": "A catalogue item that lets the user to specify a string.",
       "properties": {
         "fieldType": {
           "const": "string",
@@ -438,9 +438,6 @@
         },
         "name": {
           "description": "The item's user-facing display name",
-          "type": "string"
-        },
-        "subCategoryName": {
           "type": "string"
         },
         "system": {
