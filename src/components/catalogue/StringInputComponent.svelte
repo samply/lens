@@ -8,7 +8,7 @@
     import { addItemToQuery } from "../../stores/query";
     import type { QueryItem } from "../../types/queryData";
     import { run } from "svelte/legacy";
-    import { StringCategory } from "../../types/catalogue";
+    import type { StringCategory } from "../../types/catalogue";
 
     /**
      * Grayed-out text that initially appears in the field before the user enters a string.
@@ -30,8 +30,7 @@
      */
     let inputValue: string = "";
 
-    let activeDomElement: HTMLElement;
-
+    let activeDomElement: HTMLElement | null = null; // Initialize as null or undefined
     /**
      * transforms the inputvalue to a QueryItem, adds it to the query store
      * and resets the input value and the focused item index
