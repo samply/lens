@@ -131,7 +131,7 @@ When you run `npm run dev` you should see the catalogue component with the "Rh f
 
 ### Schema validation
 
-Lens includes JSON schemas for the options and the catalogue type. Create the script `scripts/validate-json-schema.bash` to validate the JSON files against the JSON schemas:
+Lens includes JSON schema definitions for the options and the catalogue type. Create the script `scripts/validate-json-schema.bash` to validate your JSON files against the schema definitions:
 
 ```bash
 set -e # Return non-zero exit status if one of the validations fails
@@ -146,7 +146,7 @@ npm install ajv-cli ajv-formats --save-dev
 bash scripts/validate-json-schema.bash
 ```
 
-You can also configure VS Code to validate your JSON files against the JSON schema. This will show validation errors in your editor and provide IntelliSense. To do so add the following configuration to your workspace settings in VS Code:
+You can also configure VS Code to validate your JSON files against the schema definitions. This will show validation errors in your editor and provide IntelliSense. To do so add the following configuration to your workspace settings in VS Code:
 
 ```json
 "json.schemas": [
