@@ -219,10 +219,6 @@
           "description": "Allows to customize texts and add new translations"
         }
       },
-      "required": [
-        "tableOptions",
-        "resultSummaryOptions"
-      ],
       "type": "object"
     },
     "NegotiateOptions": {

@@ -8,8 +8,8 @@ export type LensOptions = {
     siteMappings?: { [key: string]: string };
     negotiateOptions?: NegotiateOptions;
     projectmanagerOptions?: ProjectManagerOptions;
-    tableOptions: TableOptions;
-    resultSummaryOptions: ResultSummaryOptions;
+    tableOptions?: TableOptions;
+    resultSummaryOptions?: ResultSummaryOptions;
     /** Allows customizing icons by specifying image files */
     iconOptions?: IconUrls;
     /** Two letter language code of the application language */

@@ -22,7 +22,7 @@
      * can be set via options component
      */
     let headerData: HeaderData[] = $derived(
-        $lensOptions?.tableOptions.headerData || [],
+        $lensOptions?.tableOptions?.headerData || [],
     );
 
     /**
