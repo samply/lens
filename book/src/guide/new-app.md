@@ -39,9 +39,9 @@ Typically your application will only use the root route at `src/routes`. We will
   // registered, see https://github.com/WICG/webcomponents/issues/820.
   // Therefore we do a full page reload instead of HMR.
   if (import.meta.hot) {
-      import.meta.hot.on('vite:beforeUpdate', () => {
-          window.location.reload();
-      });
+    import.meta.hot.on('vite:beforeUpdate', () => {
+      window.location.reload();
+    });
   }
 
   // Import Lens CSS and JS bundles
@@ -150,18 +150,18 @@ You can also configure VS Code to validate your JSON files against the schema de
 
 ```json
 "json.schemas": [
+  {
+    "fileMatch": [
+      "catalogue*.json"
+    ],
+    "url": "./node_modules/@samply/lens/schema/catalogue.schema.json",
+  },
     {
-        "fileMatch": [
-            "catalogue*.json"
-        ],
-        "url": "./node_modules/@samply/lens/schema/catalogue.schema.json",
-    },
-        {
-        "fileMatch": [
-            "options*.json"
-        ],
-        "url": "./node_modules/@samply/lens/schema/options.schema.json",
-    },
+    "fileMatch": [
+      "options*.json"
+    ],
+    "url": "./node_modules/@samply/lens/schema/options.schema.json",
+  },
 ]
 ```
 
@@ -176,12 +176,12 @@ For example you could handle the `PUBLIC_ENVIRONMENT` variable as follows:
 
 ```html
 <script lang="ts">
-     import { env } from "$env/dynamic/public";
-     ...
+  import { env } from "$env/dynamic/public";
+  ...
   onMount(() => {
-         setOptions(env.PUBLIC_ENVIRONMENT === "test" ? testOptions : prodOptions);
+    setOptions(env.PUBLIC_ENVIRONMENT === "test" ? testOptions : prodOptions);
   });
-     ...
+  ...
 </script>
 ```
 

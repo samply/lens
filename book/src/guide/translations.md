@@ -12,9 +12,9 @@ You can overwrite the [built-in translations](https://github.com/samply/lens/blo
 
 ```json
 "texts": {
-    "loading": {
-        "en": "Processing..."
-    }
+  "loading": {
+    "en": "Processing..."
+  }
 }
 ```
 
@@ -22,9 +22,9 @@ Or add translations for new languages:
 
 ```json
 "texts": {
-    "loading": {
-        "es": "Cargando..."
-    }
+  "loading": {
+    "es": "Cargando..."
+  }
 }
 ```
 
@@ -32,10 +32,10 @@ Or you can add your own texts that you can then translate in your application. W
 
 ```json
 "texts": {
-    "ccp-welcome": {
-        "en": "Welcome to CCP Explorer!",
-        "de": "Willkommen beim CCP Explorer!"
-    }
+  "ccp-welcome": {
+    "en": "Welcome to CCP Explorer!",
+    "de": "Willkommen beim CCP Explorer!"
+  }
 }
 ```
 
