@@ -5,9 +5,6 @@
 />
 
 <script lang="ts">
-    import { run } from "svelte/legacy";
-
-    import { writable } from "svelte/store";
     import type {
         AggregatedValue,
         Category,
@@ -156,11 +153,6 @@
     );
 
     /**
-     * stores the filtered list of autocomplete items
-     */
-    const inputOptions = writable<AutoCompleteItem[]>();
-
-    /**
      * input element binds to this variable. Used to focus the input element
      */
     let searchBarInput: HTMLInputElement;
@@ -170,10 +162,10 @@
     let inputValue: string = $state("");
 
     /**
-     * watches the input value and updates the input options
+     * stores the filtered list of autocomplete items
      */
-    run(() => {
-        $inputOptions = criteria.filter((item: AutoCompleteItem) => {
+    let inputOptions: AutoCompleteItem[] = $derived.by(() => {
+        return criteria.filter((item: AutoCompleteItem) => {
             /**
              * lets the user use a number followed by a colon to specify the search group. nice to have for the power users
              */
@@ -271,19 +263,19 @@
         if (event.key === "ArrowDown") {
             event.preventDefault();
             focusedItemIndex = focusedItemIndex + 1;
-            if (focusedItemIndex > $inputOptions.length - 1)
+            if (focusedItemIndex > inputOptions.length - 1)
                 focusedItemIndex = 0;
         }
         if (event.key === "ArrowUp") {
             event.preventDefault();
             focusedItemIndex = focusedItemIndex - 1;
             if (focusedItemIndex < 0)
-                focusedItemIndex = $inputOptions.length - 1;
+                focusedItemIndex = inputOptions.length - 1;
         }
         if (event.key === "Enter") {
             event.preventDefault();
             addInputValueToStore(
-                $inputOptions[focusedItemIndex],
+                inputOptions[focusedItemIndex],
                 extractTargetGroupFromInputValue(),
             );
         }
@@ -312,7 +304,7 @@
         }
     };
 
-    run(() => {
+    $effect(() => {
         if (activeDomElement) {
             scrollInsideContainerWhenActiveDomElementIsOutOfView(
                 activeDomElement,
@@ -420,10 +412,10 @@
     />
     {#if autoCompleteOpen && inputValue.length > 2}
         <ul part="lens-searchbar-autocomplete-options">
-            {#if $inputOptions?.length > 0}
+            {#if inputOptions?.length > 0}
                 <!-- eslint-disable-next-line svelte/require-each-key -->
-                {#each $inputOptions as inputOption, i}
-                    {#if $inputOptions
+                {#each inputOptions as inputOption, i}
+                    {#if inputOptions
                         .map((option) => option.name)
                         .indexOf(inputOption.name) === i}
                         <div part="autocomplete-options-item-name">
@@ -498,7 +490,6 @@
         on:clear-search={() => {
             inputValue = "";
             focusedItemIndex = -1;
-            $inputOptions = [];
         }}
     />
 </div>
