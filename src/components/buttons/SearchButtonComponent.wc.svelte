@@ -16,16 +16,18 @@
     import { lensOptions } from "../../stores/options";
     import { showErrorToast } from "../../stores/toasts";
     import type {
-        BackendOptions,
         Measure,
         MeasureItem,
         MeasureOption,
     } from "../../types/backend";
-    import type { BlazeOption } from "../../types/blaze";
-    import type { SpotOption } from "../../types/spot";
     import { isTopLayer, type AstTopLayer } from "../../types/ast";
     import type { QueryEvent } from "../../types/queryEvent";
     import { translate } from "../../helpers/translations";
+    import type {
+        BackendOptions,
+        SpotOption,
+        BlazeOption,
+    } from "../../types/options";
 
     interface Props {
         title?: string;
