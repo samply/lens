@@ -3,6 +3,7 @@
     import type { Category } from "../../types/catalogue";
     import DataTreeElement from "./DataTreeElement.svelte";
     import NumberInputComponent from "./NumberInputComponent.svelte";
+    import StringInputComponent from "./StringInputComponent.svelte";
     import AutocompleteComponent from "./AutoCompleteComponent.svelte";
     import SingleSelectComponent from "./SingleSelectComponent.svelte";
     import { v4 as uuidv4 } from "uuid";
@@ -193,6 +194,8 @@
                     <AutocompleteComponent {element} />
                 {:else if element.fieldType === "number"}
                     <NumberInputComponent {element} />
+                {:else if element.fieldType === "string"}
+                    <StringInputComponent {element} />
                 {:else if element.fieldType === "date"}
                     <DatePickerComponent {element} />
                 {/if}

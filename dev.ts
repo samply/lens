@@ -185,10 +185,18 @@ setCatalogue([
             },
         ],
     },
+    {
+        fieldType: "string",
+        key: "sample-id",
+        name: "Sample ID",
+        type: "EQUALS",
+        system: "",
+    },
 ]);
 
 window.addEventListener("emit-lens-query", (event) => {
     const detail = (event as QueryEvent).detail;
+    console.log("AST:", JSON.stringify(detail.ast));
     detail.updateResponse(new Map([["riverside", makeSite(5, 4, 0)]]));
     detail.updateResponse(new Map([["summit", makeSite(12, 18, 3)]]));
 });
