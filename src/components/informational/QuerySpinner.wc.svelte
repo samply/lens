@@ -26,9 +26,10 @@
     });
 </script>
 
-{#if loading}
-    <div class="spinner" style="--size: {size};"></div>
-{/if}
+<div
+    class="spinner"
+    style="--size: {size}; visibility: {loading ? 'visible' : 'hidden'};"
+></div>
 
 <style>
     .spinner {
