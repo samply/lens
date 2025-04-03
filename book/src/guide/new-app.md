@@ -77,6 +77,114 @@ Your main application code lives in the application component. Create the file `
 
 Now run `npm run dev` and open <http://localhost:5173/> in your browser. You should see a search button in the top left corner of the page.
 
+## Options and catalogue
+
+Your application must pass two objects to Lens. The [LensOptions](https://samply.github.io/lens/docs/types/LensOptions.html) object contains general configuration options and the [Catalogue](https://samply.github.io/lens/docs/types/Catalogue.html) object describes what users can search for. You can define these objects in TypeScript but many applications in the Samply organization define them in JSON files.
+
+Assuming you are using JSON files, create the file `src/options.json` containing the empty object `{}` and the file `src/catalogue.json` with the following content:
+
+```json
+[
+    {
+        "key": "rh_factor",
+        "name": "Rh factor",
+        "system": "",
+        "fieldType": "single-select",
+        "type": "EQUALS",
+        "criteria": [
+            {
+                "key": "rh_positive",
+                "name": "Rh+"
+            },
+            {
+                "key": "rh_negative",
+                "name": "Rh-"
+            }
+        ]
+    }
+]
+```
+
+Add the following to the top of `src/App.svelte` to load the JSON files and pass the objects to Lens:
+
+```html
+<script lang="ts">
+    import { onMount } from "svelte";
+    import {
+        setOptions,
+        setCatalogue,
+        type LensOptions,
+        type Catalogue,
+    } from "@samply/lens";
+    import options from "./options.json";
+    import catalogue from "./catalogue.json";
+    onMount(() => {
+        setOptions(options as LensOptions);
+        setCatalogue(catalogue as Catalogue);
+    });
+</script>
+
+<lens-catalogue></lens-catalogue>
+```
+
+When you run `npm run dev` you should see the catalogue component with the "Rh factor" item.
+
+### Schema validation
+
+Lens includes JSON schemas for the options and the catalogue type. Create the script `scripts/validate-json-schema.bash` to validate the JSON files against the JSON schemas:
+
+```bash
+set -e # Return non-zero exit status if one of the validations fails
+npx ajv validate -c ajv-formats -s node_modules/@samply/lens/schema/options.schema.json -d src/options.json
+npx ajv validate -c ajv-formats -s node_modules/@samply/lens/schema/catalogue.schema.json -d src/catalogue.json
+```
+
+Then install the required dependencies and test the script:
+
+```
+npm install ajv-cli ajv-formats --save-dev
+bash scripts/validate-json-schema.bash
+```
+
+You can also configure VS Code to validate your JSON files against the JSON schema. This will show validation errors in your editor and provide IntelliSense. To do so add the following configuration to your workspace settings in VS Code:
+
+```json
+"json.schemas": [
+    {
+        "fileMatch": [
+            "catalogue*.json"
+        ],
+        "url": "./node_modules/@samply/lens/schema/catalogue.schema.json",
+    },
+        {
+        "fileMatch": [
+            "options*.json"
+        ],
+        "url": "./node_modules/@samply/lens/schema/options.schema.json",
+    },
+]
+```
+
+### Test environment
+
+It is a common requirement to load different options in test than in production. You can achieve this by using [a feature of SvelteKit](https://svelte.dev/tutorial/kit/env-dynamic-public) that makes environment variables from the server available in the browser. Applications in the Samply organization commonly accept the following environment variables:
+
+- `PUBLIC_ENVIRONMENT`: Accepts the name of the environment, e.g. `production` or `test`
+- `PUBLIC_BACKEND_URL`: Overwrites the URL of the backend that your application queries
+
+For example you could handle the `PUBLIC_ENVIRONMENT` variable as follows:
+
+```html
+<script lang="ts">
+       import { env } from "$env/dynamic/public";
+       ...
+    onMount(() => {
+           setOptions(env.PUBLIC_ENVIRONMENT === "test" ? testOptions : prodOptions);
+    });
+       ...
+</script>
+```
+
 ## Deployment
 
 We recommend that projects in the Samply organization follow these deployment practices. We will use Node.js inside Docker. Run `npm install @sveltejs/adapter-node` and change the adapter in `svelte.config.js`:
@@ -153,14 +261,6 @@ jobs:
         secrets:
             DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
             DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-```
-
-## TODO
-
-add section about catalogue and tell reader to create `scripts/validate-json-schema.bash`
-
-```
-npm install ajv-cli ajv-formats --save-dev
 ```
 
 ## Linting in GitHub Actions
