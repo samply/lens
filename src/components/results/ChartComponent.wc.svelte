@@ -5,8 +5,6 @@
 />
 
 <script lang="ts">
-    import { run } from "svelte/legacy";
-
     import Chart, { type ChartTypeRegistry } from "chart.js/auto";
     import { onMount } from "svelte";
     import {
@@ -589,7 +587,8 @@
 
         addItemToQuery(queryItem, $activeQueryGroupIndex);
     };
-    run(() => {
+
+    $effect(() => {
         setChartData($responseStore);
     });
 </script>

@@ -7,7 +7,6 @@
     import { v4 as uuidv4 } from "uuid";
     import { addItemToQuery } from "../../stores/query";
     import type { QueryItem } from "../../types/queryData";
-    import { run } from "svelte/legacy";
     import type { StringCategory } from "../../types/catalogue";
     import QueryAddButtonComponent from "./QueryAddButtonComponent.svelte";
 
@@ -31,7 +30,6 @@
      */
     let inputValue: string = $state("");
 
-    let activeDomElement: HTMLElement | null = null; // Initialize as null or undefined
     /**
      * transforms the inputvalue to a QueryItem, adds it to the query store
      * and resets the input value and the focused item index
@@ -69,36 +67,6 @@
             addInputValueToStore();
         }
     };
-
-    /**
-     * scrolls the active dom element into view when it is out of view
-     * @param activeDomElement - the active dom element
-     */
-    const scrollInsideContainerWhenActiveDomElementIsOutOfView = (
-        activeDomElement: HTMLElement,
-    ): void => {
-        if (!activeDomElement) return;
-        const container: HTMLElement = activeDomElement.parentElement!;
-        const containerTop: number = container.scrollTop;
-        const containerBottom: number = containerTop + container.clientHeight;
-        const elementTop: number = activeDomElement.offsetTop;
-        const elementBottom: number =
-            elementTop + activeDomElement.clientHeight;
-
-        if (elementTop < containerTop) {
-            container.scrollTop = elementTop;
-        } else if (elementBottom > containerBottom) {
-            container.scrollTop = elementBottom - container.clientHeight;
-        }
-    };
-
-    run(() => {
-        if (activeDomElement) {
-            scrollInsideContainerWhenActiveDomElementIsOutOfView(
-                activeDomElement,
-            );
-        }
-    });
 </script>
 
 <div part="string-container">

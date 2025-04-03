@@ -5,8 +5,6 @@
 />
 
 <script lang="ts">
-    import { run } from "svelte/legacy";
-
     import { catalogueTextStore } from "../../stores/texts";
     import { catalogue } from "../../stores/catalogue";
     import type { ToggleAttribute } from "../../types/helpers";
@@ -51,19 +49,21 @@
             labelTo: texts.numberInput?.labelTo || "to",
         },
     };
+
     /**
      * Initialize the catalogue store with the given tree data
      * watch for changes from other components
      */
-    run(() => {
+    $effect(() => {
         if (treeData.length !== 0) {
             $catalogue = treeData;
         }
     });
+
     /**
      * Initialize the text store with the given texts
      */
-    run(() => {
+    $effect(() => {
         $catalogueTextStore = initializedTexts;
     });
 </script>
