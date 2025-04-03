@@ -9,6 +9,7 @@
     import type { QueryItem } from "../../types/queryData";
     import { run } from "svelte/legacy";
     import type { StringCategory } from "../../types/catalogue";
+    import QueryAddButtonComponent from "./QueryAddButtonComponent.svelte";
 
     /**
      * Grayed-out text that initially appears in the field before the user enters a string.
@@ -28,7 +29,7 @@
     /**
      * watches the input value and updates the input options
      */
-    let inputValue: string = "";
+    let inputValue: string = $state("");
 
     let activeDomElement: HTMLElement | null = null; // Initialize as null or undefined
     /**
@@ -36,29 +37,27 @@
      * and resets the input value and the focused item index
      * @param inputItem - the input item to add to the query store
      */
-    const addInputValueToStore = (inputItem: string): void => {
-        /**
-         * transform inputItem to QueryItem
-         */
-        const queryItem: QueryItem = {
-            id: uuidv4(),
-            name: element.name,
-            key: element.key,
-            type: element.type,
-            system: "system" in element ? element.system : "",
-            values: [
-                {
-                    value: inputItem,
-                    name: inputItem,
-                    queryBindId: uuidv4(),
-                },
-            ],
-        };
-
-        inputValue = "";
-
+    const addInputValueToStore = (): void => {
         addItemToQuery(queryItem, 0);
     };
+
+    /**
+     * transform inputItem to QueryItem
+     */
+    const queryItem: QueryItem = $derived({
+        id: uuidv4(),
+        key: element.key,
+        name: element.name,
+        type: element.type,
+        system: "system" in element ? element.system : "",
+        values: [
+            {
+                name: inputValue,
+                value: inputValue,
+                queryBindId: uuidv4(),
+            },
+        ],
+    });
 
     /**
      * handles keyboard events to make input options selectable
@@ -67,7 +66,7 @@
     const handleKeyDown = (event: KeyboardEvent): void => {
         if (event.key === "Enter") {
             event.preventDefault();
-            addInputValueToStore(inputValue);
+            addInputValueToStore();
         }
     };
 
@@ -109,8 +108,9 @@
             type="text"
             bind:this={searchBarInput}
             bind:value={inputValue}
-            on:keydown={handleKeyDown}
+            onkeydown={handleKeyDown}
             placeholder={placeholderText}
         />
+        <QueryAddButtonComponent {queryItem} />
     </div>
 </div>

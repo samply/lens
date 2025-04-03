@@ -326,6 +326,8 @@ lens-catalogue::part(string-formfield) {
     margin-bottom: var(--gap-xs);
     margin-top: var(--gap-xs);
     position: relative;
+    display: flex;
+    gap: var(--gap-xs);
 }
 
 lens-catalogue::part(string-formfield-input) {
