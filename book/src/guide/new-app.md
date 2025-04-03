@@ -244,9 +244,6 @@ on:
         branches:
             - main
             - develop
-    schedule:
-        # Build every night at 1am
-        - cron: "0 1 * * *"
 jobs:
     build:
         # This workflow defines how a samply docker image is built, tested and published.
