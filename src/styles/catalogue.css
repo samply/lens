@@ -343,7 +343,6 @@ lens-catalogue::part(string-formfield-input) {
 
 lens-catalogue::part(string-formfield-input):focus {
     border-color: var(--blue);
-    width: 100%;
 }
 
 lens-catalogue::part(formfield-error) {
