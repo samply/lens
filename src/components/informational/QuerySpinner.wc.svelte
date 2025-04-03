@@ -8,9 +8,9 @@
     import { responseStore } from "../../stores/response";
     import type { ResponseStore } from "../../types/backend";
 
-    export let size = "20px";
+    let { size = "20px" } = $props();
 
-    let loading = false;
+    let loading = $state(false);
 
     window.addEventListener("emit-lens-query", function () {
         loading = true;
@@ -21,8 +21,8 @@
             if (value[1].status === "claimed") {
                 return;
             }
-            loading = false;
         }
+        loading = false;
     });
 </script>
 
