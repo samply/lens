@@ -167,7 +167,7 @@ You can also configure VS Code to validate your JSON files against the schema de
 
 ### Test environment
 
-It is a common requirement to load different options in test than in production. You can achieve this by using [a feature of SvelteKit](https://svelte.dev/tutorial/kit/env-dynamic-public) that makes environment variables from the server available in the browser. Applications in the Samply organization commonly accept the following environment variables:
+It is a common requirement to load different options in test and production. You can achieve this by using [a feature of SvelteKit](https://svelte.dev/tutorial/kit/env-dynamic-public) that makes environment variables from the server available in the browser. Applications in the Samply organization commonly accept the following environment variables:
 
 - `PUBLIC_ENVIRONMENT`: Accepts the name of the environment, e.g. `production` or `test`
 - `PUBLIC_BACKEND_URL`: Overwrites the URL of the backend that your application queries
