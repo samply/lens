@@ -1,8 +1,8 @@
 export type ChartDataSets = {
-    labels: string[];
-    data: {
-        data: number[];
-        backgroundColor: string[];
-        backgroundHoverColor: string[];
-    }[];
+  labels: string[];
+  data: {
+    data: number[];
+    backgroundColor: string[];
+    backgroundHoverColor: string[];
+  }[];
 };

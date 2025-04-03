@@ -40,37 +40,37 @@ To quickly try out **samply.lens**, clone the repository and run the tests. For 
 To set up a development environment for **samply.lens**, ensure you have [Node.js and npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) installed.
 
 1. Clone the repository:
-    ```shell
-    git clone https://github.com/samply/lens.git
-    ```
+   ```shell
+   git clone https://github.com/samply/lens.git
+   ```
 2. Install dependencies:
-    ```shell
-    npm install
-    ```
+   ```shell
+   npm install
+   ```
 3. Start the development server:
-    ```shell
-    npm run dev
-    ```
-    This will launch a server, typically available at [http://localhost:5173](http://localhost:5173). For more npm scripts, refer to [package.json](./package.json).
+   ```shell
+   npm run dev
+   ```
+   This will launch a server, typically available at [http://localhost:5173](http://localhost:5173). For more npm scripts, refer to [package.json](./package.json).
 
 ### 🔧 Building the Library Locally
 
 If you want to modify **samply.lens** and integrate changes into your local application, follow these steps:
 
 1. Start a watcher to rebuild the library on changes:
-    ```shell
-    npx vite build --watch --emptyOutDir false
-    ```
+   ```shell
+   npx vite build --watch --emptyOutDir false
+   ```
 2. Open a second terminal.
 3. In your application's repository, install the local version of the library:
-    ```shell
-    npm install --no-save path/to/lens/repo
-    ```
+   ```shell
+   npm install --no-save path/to/lens/repo
+   ```
 4. Verify the linking:
-    ```shell
-    npm ls | grep lens
-    ```
-    Ensure that it points to your local **samply.lens** repository.
+   ```shell
+   npm ls | grep lens
+   ```
+   Ensure that it points to your local **samply.lens** repository.
 
 ---
 

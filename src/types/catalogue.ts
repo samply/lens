@@ -17,33 +17,33 @@ export type Catalogue = Category[];
 // this type as a discriminated union in the generated JSON schema.
 /** @discriminator fieldType */
 export type Category =
-    | CategoryGroup
-    | SingleSelectCategory
-    | AutocompleteCategory
-    | NumericRangeCategory
-    | DateRangeCategory
-    | StringCategory;
+  | CategoryGroup
+  | SingleSelectCategory
+  | AutocompleteCategory
+  | NumericRangeCategory
+  | DateRangeCategory
+  | StringCategory;
 
 /**
  * A logical grouping of catalogue items that is rendered as a collapsable entry
  * in the catalogue tree.
  */
 export type CategoryGroup = {
-    fieldType: "group";
-    key: string;
-    /** The group's user-facing display name */
-    name: string;
-    /** The list of catalogue items in the group */
-    childCategories: Category[];
-    /** Optional text that is accessed by clicking a "ⓘ" button next to the display name */
-    infoButtonText?: string[];
-    /** Optional hyperlink shown next to the display name */
-    infoLink?: {
-        /** The link URL */
-        link: string;
-        /** The link text */
-        display: string;
-    };
+  fieldType: "group";
+  key: string;
+  /** The group's user-facing display name */
+  name: string;
+  /** The list of catalogue items in the group */
+  childCategories: Category[];
+  /** Optional text that is accessed by clicking a "ⓘ" button next to the display name */
+  infoButtonText?: string[];
+  /** Optional hyperlink shown next to the display name */
+  infoLink?: {
+    /** The link URL */
+    link: string;
+    /** The link text */
+    display: string;
+  };
 };
 
 /**
@@ -53,23 +53,23 @@ export type CategoryGroup = {
  * matches any of the selected criteria.
  */
 export type SingleSelectCategory = {
-    fieldType: "single-select";
-    /** A key that uniquely identifies the catalogue item. It is typically used to look up the CQL snippet for that item. */
-    key: string;
-    /** The item's user-facing display name */
-    name: string;
-    system: string;
-    type: "EQUALS";
-    /** The list of criteria the user can select from */
-    criteria: Criteria[];
-    /** Optional text that is accessed by clicking a "ⓘ" button next to the display name */
-    infoButtonText?: string[];
-    /** This overwrites the display name in the catalogue component only. The
-     * intended use-case is to have multiple catalogue items with the same key
-     * and name but different subCategoryName. They will appear as different
-     * collapsable entries in the catalogue but will be grouped together in the
-     * same chip in the search bar. */
-    subCategoryName?: string;
+  fieldType: "single-select";
+  /** A key that uniquely identifies the catalogue item. It is typically used to look up the CQL snippet for that item. */
+  key: string;
+  /** The item's user-facing display name */
+  name: string;
+  system: string;
+  type: "EQUALS";
+  /** The list of criteria the user can select from */
+  criteria: Criteria[];
+  /** Optional text that is accessed by clicking a "ⓘ" button next to the display name */
+  infoButtonText?: string[];
+  /** This overwrites the display name in the catalogue component only. The
+   * intended use-case is to have multiple catalogue items with the same key
+   * and name but different subCategoryName. They will appear as different
+   * collapsable entries in the catalogue but will be grouped together in the
+   * same chip in the search bar. */
+  subCategoryName?: string;
 };
 
 /**
@@ -79,17 +79,17 @@ export type SingleSelectCategory = {
  * query matches any of the selected criteria.
  */
 export type AutocompleteCategory = {
-    fieldType: "autocomplete";
-    /** A key that uniquely identifies the catalogue item. It is typically used to look up the CQL snippet for that item. */
-    key: string;
-    /** The item's user-facing display name */
-    name: string;
-    system: string;
-    type: "EQUALS";
-    /** The list of criteria the user can select from */
-    criteria: Criteria[];
-    /** Optional text that is accessed by clicking a "ⓘ" button next to the display name */
-    infoButtonText?: string[];
+  fieldType: "autocomplete";
+  /** A key that uniquely identifies the catalogue item. It is typically used to look up the CQL snippet for that item. */
+  key: string;
+  /** The item's user-facing display name */
+  name: string;
+  system: string;
+  type: "EQUALS";
+  /** The list of criteria the user can select from */
+  criteria: Criteria[];
+  /** Optional text that is accessed by clicking a "ⓘ" button next to the display name */
+  infoButtonText?: string[];
 };
 
 /**
@@ -98,19 +98,19 @@ export type AutocompleteCategory = {
  * less than or greater than constraints.
  */
 export type NumericRangeCategory = {
-    fieldType: "number";
-    /** A key that uniquely identifies the catalogue item. It is typically used to look up the CQL snippet for that item. */
-    key: string;
-    /** The item's user-facing display name */
-    name: string;
-    system: string;
-    type: "BETWEEN";
-    /** The smallest value that the user can enter */
-    min?: number;
-    /** The largest value that the user can enter */
-    max?: number;
-    /** Optional text that is accessed by clicking a "ⓘ" button next to the display name */
-    infoButtonText?: string[];
+  fieldType: "number";
+  /** A key that uniquely identifies the catalogue item. It is typically used to look up the CQL snippet for that item. */
+  key: string;
+  /** The item's user-facing display name */
+  name: string;
+  system: string;
+  type: "BETWEEN";
+  /** The smallest value that the user can enter */
+  min?: number;
+  /** The largest value that the user can enter */
+  max?: number;
+  /** Optional text that is accessed by clicking a "ⓘ" button next to the display name */
+  infoButtonText?: string[];
 };
 
 /**
@@ -119,57 +119,57 @@ export type NumericRangeCategory = {
  * earlier than or later than constraints.
  */
 export type DateRangeCategory = {
-    fieldType: "date";
-    /** A key that uniquely identifies the catalogue item. It is typically used to look up the CQL snippet for that item. */
-    key: string;
-    /** The item's user-facing display name */
-    name: string;
-    system: string;
-    type: "BETWEEN";
-    /**
-     * The earliest date that the user can pick
-     * @format date
-     */
-    min?: string;
-    /**
-     * The latest date that the user can pick
-     * @format date
-     */
-    max?: string;
-    infoButtonText?: string[];
+  fieldType: "date";
+  /** A key that uniquely identifies the catalogue item. It is typically used to look up the CQL snippet for that item. */
+  key: string;
+  /** The item's user-facing display name */
+  name: string;
+  system: string;
+  type: "BETWEEN";
+  /**
+   * The earliest date that the user can pick
+   * @format date
+   */
+  min?: string;
+  /**
+   * The latest date that the user can pick
+   * @format date
+   */
+  max?: string;
+  infoButtonText?: string[];
 };
 
 /**
  * A catalogue item that lets the user to specify a string.
  */
 export type StringCategory = {
-    fieldType: "string";
-    /** A key that uniquely identifies the catalogue item. It is typically used to look up the CQL snippet for that item. */
-    key: string;
-    /** The item's user-facing display name */
-    name: string;
-    system: string;
-    type: "EQUALS";
-    /** Optional text that is accessed by clicking a "ⓘ" button next to the display name */
-    infoButtonText?: string[];
+  fieldType: "string";
+  /** A key that uniquely identifies the catalogue item. It is typically used to look up the CQL snippet for that item. */
+  key: string;
+  /** The item's user-facing display name */
+  name: string;
+  system: string;
+  type: "EQUALS";
+  /** Optional text that is accessed by clicking a "ⓘ" button next to the display name */
+  infoButtonText?: string[];
 };
 
 /**
  * A criterion that can be selected in a single-select or autocomplete catalogue item.
  */
 export type Criteria = {
-    visible?: boolean;
-    /** A key that uniquely identifies the criterion */
-    key: string;
-    /** The criterion's user-facing display name */
-    name: string;
-    /** Optional description that is shown next to the display name during autocompletion */
-    description?: string;
-    aggregatedValue?: AggregatedValue[][];
-    subgroup?: Criteria[];
+  visible?: boolean;
+  /** A key that uniquely identifies the criterion */
+  key: string;
+  /** The criterion's user-facing display name */
+  name: string;
+  /** Optional description that is shown next to the display name during autocompletion */
+  description?: string;
+  aggregatedValue?: AggregatedValue[][];
+  subgroup?: Criteria[];
 };
 
 export type AggregatedValue = {
-    value: string;
-    name: string;
+  value: string;
+  name: string;
 };

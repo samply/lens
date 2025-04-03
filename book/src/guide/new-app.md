@@ -16,15 +16,15 @@ The Prettier config created by `sv create` uses tabs and sets the print width to
 
 ```json
 {
-    "plugins": ["prettier-plugin-svelte"],
-    "overrides": [
-        {
-            "files": "*.svelte",
-            "options": {
-                "parser": "svelte"
-            }
-        }
-    ]
+  "plugins": ["prettier-plugin-svelte"],
+  "overrides": [
+    {
+      "files": "*.svelte",
+      "options": {
+        "parser": "svelte"
+      }
+    }
+  ]
 }
 ```
 
@@ -34,21 +34,21 @@ Typically your application will only use the root route at `src/routes`. We will
 
 ```html
 <script>
-    // Using hot module replacement (HMR) with custom elements (aka web
-    // components) does not work because a custom element cannot be updated once
-    // registered, see https://github.com/WICG/webcomponents/issues/820.
-    // Therefore we do a full page reload instead of HMR.
-    if (import.meta.hot) {
-        import.meta.hot.on('vite:beforeUpdate', () => {
-            window.location.reload();
-        });
-    }
+  // Using hot module replacement (HMR) with custom elements (aka web
+  // components) does not work because a custom element cannot be updated once
+  // registered, see https://github.com/WICG/webcomponents/issues/820.
+  // Therefore we do a full page reload instead of HMR.
+  if (import.meta.hot) {
+      import.meta.hot.on('vite:beforeUpdate', () => {
+          window.location.reload();
+      });
+  }
 
-    // Import Lens CSS and JS bundles
-    import "@samply/lens/style.css";
-    import "@samply/lens";
+  // Import Lens CSS and JS bundles
+  import "@samply/lens/style.css";
+  import "@samply/lens";
 
-    import App from '../App.svelte';
+  import App from '../App.svelte';
 </script>
 
 <App />
@@ -69,7 +69,7 @@ Your main application code lives in the application component. Create the file `
 
 ```html
 <script lang="ts">
-    import "./app.css";
+  import "./app.css";
 </script>
 
 <lens-search-button></lens-search-button>
@@ -85,23 +85,23 @@ Assuming you are using JSON files, create the file `src/options.json` containing
 
 ```json
 [
-    {
-        "key": "rh_factor",
-        "name": "Rh factor",
-        "system": "",
-        "fieldType": "single-select",
-        "type": "EQUALS",
-        "criteria": [
-            {
-                "key": "rh_positive",
-                "name": "Rh+"
-            },
-            {
-                "key": "rh_negative",
-                "name": "Rh-"
-            }
-        ]
-    }
+  {
+    "key": "rh_factor",
+    "name": "Rh factor",
+    "system": "",
+    "fieldType": "single-select",
+    "type": "EQUALS",
+    "criteria": [
+      {
+        "key": "rh_positive",
+        "name": "Rh+"
+      },
+      {
+        "key": "rh_negative",
+        "name": "Rh-"
+      }
+    ]
+  }
 ]
 ```
 
@@ -109,19 +109,19 @@ Add the following to the top of `src/App.svelte` to load the JSON files and pass
 
 ```html
 <script lang="ts">
-    import { onMount } from "svelte";
-    import {
-        setOptions,
-        setCatalogue,
-        type LensOptions,
-        type Catalogue,
-    } from "@samply/lens";
-    import options from "./options.json";
-    import catalogue from "./catalogue.json";
-    onMount(() => {
-        setOptions(options as LensOptions);
-        setCatalogue(catalogue as Catalogue);
-    });
+  import { onMount } from "svelte";
+  import {
+    setOptions,
+    setCatalogue,
+    type LensOptions,
+    type Catalogue,
+  } from "@samply/lens";
+  import options from "./options.json";
+  import catalogue from "./catalogue.json";
+  onMount(() => {
+    setOptions(options as LensOptions);
+    setCatalogue(catalogue as Catalogue);
+  });
 </script>
 
 <lens-catalogue></lens-catalogue>
@@ -176,12 +176,12 @@ For example you could handle the `PUBLIC_ENVIRONMENT` variable as follows:
 
 ```html
 <script lang="ts">
-       import { env } from "$env/dynamic/public";
-       ...
-    onMount(() => {
-           setOptions(env.PUBLIC_ENVIRONMENT === "test" ? testOptions : prodOptions);
-    });
-       ...
+     import { env } from "$env/dynamic/public";
+     ...
+  onMount(() => {
+         setOptions(env.PUBLIC_ENVIRONMENT === "test" ? testOptions : prodOptions);
+  });
+     ...
 </script>
 ```
 
@@ -233,31 +233,31 @@ To automatically build Docker images and publish them to Docker Hub when a branc
 name: Docker CI
 
 on:
-    push:
-        branches:
-            - main
-            - develop
-        # Build when a new version is tagged
-        tags:
-            - "v*.*.*"
-    pull_request:
-        branches:
-            - main
-            - develop
+  push:
+    branches:
+      - main
+      - develop
+    # Build when a new version is tagged
+    tags:
+      - "v*.*.*"
+  pull_request:
+    branches:
+      - main
+      - develop
 jobs:
-    build:
-        # This workflow defines how a samply docker image is built, tested and published.
-        # Visit: https://github.com/samply/github-workflows/blob/main/.github/workflows/docker-ci.yml, for more information
-        uses: samply/github-workflows/.github/workflows/docker-ci.yml@main
-        with:
-            # The Docker Hub Repository you want eventually push to, e.g samply/share-client
-            image-name: "samply/your-project"
-            # Where to push your images ("dockerhub", "ghcr", "both" or "none")
-            push-to: dockerhub
-        # This passes the secrets from calling workflow to the called workflow
-        secrets:
-            DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-            DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+  build:
+    # This workflow defines how a samply docker image is built, tested and published.
+    # Visit: https://github.com/samply/github-workflows/blob/main/.github/workflows/docker-ci.yml, for more information
+    uses: samply/github-workflows/.github/workflows/docker-ci.yml@main
+    with:
+      # The Docker Hub Repository you want eventually push to, e.g samply/share-client
+      image-name: "samply/your-project"
+      # Where to push your images ("dockerhub", "ghcr", "both" or "none")
+      push-to: dockerhub
+    # This passes the secrets from calling workflow to the called workflow
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 ```
 
 ## Linting in GitHub Actions
@@ -275,24 +275,24 @@ To do so create `.github/workflows/linting.yml` with the following content:
 ```yml
 name: Linting
 on:
-    pull_request:
-        branches:
-            - main
-            - develop
-    push:
-        branches:
-            - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+  push:
+    branches:
+      - develop
 
 jobs:
-    verify-code:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v4
-            - uses: actions/setup-node@v4
-            - run: npm ci
-            - run: npx svelte-check
-            - run: npx prettier --check .
-            - run: npx eslint .
-            - run: npx vite build
-            - run: bash scripts/validate-json-schema.bash
+  verify-code:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+      - run: npm ci
+      - run: npx svelte-check
+      - run: npx prettier --check .
+      - run: npx eslint .
+      - run: npx vite build
+      - run: bash scripts/validate-json-schema.bash
 ```

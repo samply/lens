@@ -10,13 +10,13 @@ let nextId = 0;
  * @param timeout Timeout in milliseconds after which to remove the toast
  */
 export function showErrorToast(message: string, timeout = 8000): void {
-    const id = nextId++;
-    errorToasts.update((toasts) => [...toasts, { id, message }]);
+  const id = nextId++;
+  errorToasts.update((toasts) => [...toasts, { id, message }]);
 
-    // Auto-remove the toast after timeout
-    setTimeout(() => {
-        removeToast(id);
-    }, timeout);
+  // Auto-remove the toast after timeout
+  setTimeout(() => {
+    removeToast(id);
+  }, timeout);
 }
 
 /**
@@ -24,5 +24,5 @@ export function showErrorToast(message: string, timeout = 8000): void {
  * @param id Id of the error toast to remove
  */
 export function removeToast(id: number): void {
-    errorToasts.update((toasts) => toasts.filter((t) => t.id !== id));
+  errorToasts.update((toasts) => toasts.filter((t) => t.id !== id));
 }

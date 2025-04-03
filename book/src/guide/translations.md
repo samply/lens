@@ -45,7 +45,7 @@ You can also use the translations in your application:
 
 ```html
 <script lang="ts">
-    import { translate } from "@samply/lens";
+  import { translate } from "@samply/lens";
 </script>
 
 <span>{translate("loading")}</span>

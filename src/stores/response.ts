@@ -8,8 +8,8 @@ export const responseStore = writable<ResponseStore>(new Map<string, Site>());
  * emits an event every time the response store is updated
  */
 responseStore.subscribe(() => {
-    const event = new CustomEvent("lens-responses-updated");
-    window.dispatchEvent(event);
+  const event = new CustomEvent("lens-responses-updated");
+  window.dispatchEvent(event);
 });
 
 /**
@@ -17,28 +17,28 @@ responseStore.subscribe(() => {
  * @param response - the response to update the store with
  */
 export const updateResponseStore = (response: ResponseStore): void => {
-    let store: ResponseStore;
-    responseStore.subscribe((s: ResponseStore) => (store = s));
+  let store: ResponseStore;
+  responseStore.subscribe((s: ResponseStore) => (store = s));
 
-    const changes = new Map<string, Site>();
+  const changes = new Map<string, Site>();
 
-    response.forEach((value, key) => {
-        if (store.get(key)?.status === response.get(key)?.status) {
-            return;
-        }
-        changes.set(key, value);
-    });
-
-    if (changes.size === 0) {
-        return;
+  response.forEach((value, key) => {
+    if (store.get(key)?.status === response.get(key)?.status) {
+      return;
     }
+    changes.set(key, value);
+  });
 
-    responseStore.update((store: ResponseStore): ResponseStore => {
-        changes.forEach((value, key) => {
-            store.set(key, value);
-        });
-        return store;
+  if (changes.size === 0) {
+    return;
+  }
+
+  responseStore.update((store: ResponseStore): ResponseStore => {
+    changes.forEach((value, key) => {
+      store.set(key, value);
     });
+    return store;
+  });
 };
 
 /**
@@ -47,16 +47,16 @@ export const updateResponseStore = (response: ResponseStore): void => {
  * @returns the aggregated population count for a given code
  */
 export const getAggregatedPopulation = (
-    store: ResponseStore,
-    code: string,
+  store: ResponseStore,
+  code: string,
 ): number => {
-    let population = 0;
-    for (const site of store.values()) {
-        if (site.status === "succeeded") {
-            population += getSitePopulationForCode(site.data, code);
-        }
+  let population = 0;
+  for (const site of store.values()) {
+    if (site.status === "succeeded") {
+      population += getSitePopulationForCode(site.data, code);
     }
-    return population;
+  }
+  return population;
 };
 
 /**
@@ -65,16 +65,16 @@ export const getAggregatedPopulation = (
  * @returns the population count for a given code at a given site
  */
 export const getSitePopulationForCode = (
-    site: SiteData,
-    code: string,
+  site: SiteData,
+  code: string,
 ): number => {
-    let population = 0;
-    for (const group of site.group) {
-        if (group.code.text === code) {
-            population += group.population[0].count;
-        }
+  let population = 0;
+  for (const group of site.group) {
+    if (group.code.text === code) {
+      population += group.population[0].count;
     }
-    return population;
+  }
+  return population;
 };
 
 /**
@@ -85,21 +85,21 @@ export const getSitePopulationForCode = (
  * (stratum code is the value.text of a stratum item e.g.'male')
  */
 export const getAggregatedPopulationForStratumCode = (
-    store: ResponseStore,
-    stratumCode: string,
-    stratifier: string,
+  store: ResponseStore,
+  stratumCode: string,
+  stratifier: string,
 ): number => {
-    let population = 0;
-    for (const site of store.values()) {
-        if (site.status === "succeeded") {
-            population += getSitePopulationForStratumCode(
-                site.data,
-                stratumCode,
-                stratifier,
-            );
-        }
+  let population = 0;
+  for (const site of store.values()) {
+    if (site.status === "succeeded") {
+      population += getSitePopulationForStratumCode(
+        site.data,
+        stratumCode,
+        stratifier,
+      );
     }
-    return population;
+  }
+  return population;
 };
 
 /**
@@ -109,28 +109,28 @@ export const getAggregatedPopulationForStratumCode = (
  * @returns the population for a given stratum code for a given site
  */
 export const getSitePopulationForStratumCode = (
-    site: SiteData,
-    stratumCode: string,
-    stratifier: string,
+  site: SiteData,
+  stratumCode: string,
+  stratifier: string,
 ): number => {
-    for (const group of site.group) {
-        for (const stratifierItem of group.stratifier) {
-            if (
-                stratifierItem.code[0].text === stratifier &&
-                stratifierItem.stratum !== undefined
-            ) {
-                for (const stratumItem of stratifierItem.stratum) {
-                    if (
-                        stratumItem.value.text === stratumCode &&
-                        stratumItem.population !== undefined
-                    ) {
-                        return stratumItem.population[0].count;
-                    }
-                }
-            }
+  for (const group of site.group) {
+    for (const stratifierItem of group.stratifier) {
+      if (
+        stratifierItem.code[0].text === stratifier &&
+        stratifierItem.stratum !== undefined
+      ) {
+        for (const stratumItem of stratifierItem.stratum) {
+          if (
+            stratumItem.value.text === stratumCode &&
+            stratumItem.population !== undefined
+          ) {
+            return stratumItem.population[0].count;
+          }
         }
+      }
     }
-    return 0;
+  }
+  return 0;
 };
 
 /**
@@ -139,22 +139,19 @@ export const getSitePopulationForStratumCode = (
  * @returns the stratifier codes for a given group code
  */
 export const getStratifierCodesForGroupCode = (
-    store: ResponseStore,
-    code: string,
+  store: ResponseStore,
+  code: string,
 ): string[] => {
-    const codes: Set<string> = new Set();
-    for (const site of store.values()) {
-        if (site.status === "succeeded") {
-            const siteCodes = getSiteStratifierCodesForGroupCode(
-                site.data,
-                code,
-            );
-            for (const code of siteCodes) {
-                codes.add(code);
-            }
-        }
+  const codes: Set<string> = new Set();
+  for (const site of store.values()) {
+    if (site.status === "succeeded") {
+      const siteCodes = getSiteStratifierCodesForGroupCode(site.data, code);
+      for (const code of siteCodes) {
+        codes.add(code);
+      }
     }
-    return Array.from(codes);
+  }
+  return Array.from(codes);
 };
 
 /**
@@ -164,22 +161,19 @@ export const getStratifierCodesForGroupCode = (
  */
 
 export const getSiteStratifierCodesForGroupCode = (
-    site: SiteData,
-    code: string,
+  site: SiteData,
+  code: string,
 ): string[] => {
-    const codes: string[] = [];
-    site.group.forEach((groupItem) => {
-        groupItem.stratifier.forEach((stratifierItem) => {
-            if (
-                stratifierItem.code[0].text === code &&
-                stratifierItem.stratum
-            ) {
-                stratifierItem.stratum.forEach((stratumItem) => {
-                    codes.push(stratumItem.value.text);
-                });
-            }
+  const codes: string[] = [];
+  site.group.forEach((groupItem) => {
+    groupItem.stratifier.forEach((stratifierItem) => {
+      if (stratifierItem.code[0].text === code && stratifierItem.stratum) {
+        stratifierItem.stratum.forEach((stratumItem) => {
+          codes.push(stratumItem.value.text);
         });
+      }
     });
+  });
 
-    return codes;
+  return codes;
 };

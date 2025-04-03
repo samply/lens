@@ -9,5 +9,5 @@ import type { MeasureStore } from "../types/backend";
 export const measureStore = writable<MeasureStore>();
 
 export function setMeasures(measures: MeasureStore) {
-    measureStore.set(measures);
+  measureStore.set(measures);
 }

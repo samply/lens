@@ -1,10 +1,10 @@
 import { writable } from "svelte/store";
 import type { Catalogue, Criteria, Category } from "../types/catalogue";
 import {
-    isBottomLayer,
-    isTopLayer,
-    type AstElement,
-    type AstTopLayer,
+  isBottomLayer,
+  isTopLayer,
+  type AstElement,
+  type AstTopLayer,
 } from "../types/ast";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
@@ -20,137 +20,127 @@ import catalogueSchema from "../../schema/catalogue.schema.json";
 export const catalogue = writable<Catalogue>([]);
 
 const resolveSubgroupBottomLayer = (criteria: Criteria[]): string[] => {
-    let collectedCriteria: string[] = [];
-    criteria.forEach((element) => {
-        if (element.subgroup instanceof Array) {
-            collectedCriteria = collectedCriteria.concat(
-                resolveSubgroupBottomLayer(element.subgroup),
-            );
-        } else {
-            collectedCriteria = collectedCriteria.concat(element.key);
-        }
-    });
+  let collectedCriteria: string[] = [];
+  criteria.forEach((element) => {
+    if (element.subgroup instanceof Array) {
+      collectedCriteria = collectedCriteria.concat(
+        resolveSubgroupBottomLayer(element.subgroup),
+      );
+    } else {
+      collectedCriteria = collectedCriteria.concat(element.key);
+    }
+  });
 
-    return collectedCriteria;
+  return collectedCriteria;
 };
 
 const resolveSubgroupMatch = (
-    key: string,
-    value: string,
-    subgroup: Criteria[],
+  key: string,
+  value: string,
+  subgroup: Criteria[],
 ): string[] => {
-    let newCri: string[] = [];
+  let newCri: string[] = [];
 
-    for (const cri of subgroup) {
-        if (cri.key == value) {
-            if (cri.subgroup instanceof Array) {
-                newCri = newCri.concat(
-                    resolveSubgroupBottomLayer(cri.subgroup),
-                );
-                break;
-            }
-        }
-        // Search deeper in the structure for a match
-        if (cri.subgroup instanceof Array) {
-            resolveSubgroupMatch(key, value, cri.subgroup);
-        }
+  for (const cri of subgroup) {
+    if (cri.key == value) {
+      if (cri.subgroup instanceof Array) {
+        newCri = newCri.concat(resolveSubgroupBottomLayer(cri.subgroup));
+        break;
+      }
     }
+    // Search deeper in the structure for a match
+    if (cri.subgroup instanceof Array) {
+      resolveSubgroupMatch(key, value, cri.subgroup);
+    }
+  }
 
-    return newCri;
+  return newCri;
 };
 
 const resolveElementInCatalogueRec = (
-    key: string,
-    value: string,
-    node: Category,
+  key: string,
+  value: string,
+  node: Category,
 ): string[] => {
-    let newCri: string[] = [];
+  let newCri: string[] = [];
 
-    if (
-        node.fieldType === "single-select" ||
-        node.fieldType === "autocomplete"
-    ) {
-        if (node.key === key) {
-            for (const cri of node.criteria) {
-                if (cri.key == value) {
-                    if (cri.subgroup instanceof Array) {
-                        newCri = newCri.concat(
-                            resolveSubgroupBottomLayer(cri.subgroup),
-                        );
-                        break;
-                    }
-                }
-                // Search deeper in the structure for a match
-                if (cri.subgroup instanceof Array) {
-                    newCri = newCri.concat(
-                        resolveSubgroupMatch(key, value, cri.subgroup),
-                    );
-                }
-            }
+  if (node.fieldType === "single-select" || node.fieldType === "autocomplete") {
+    if (node.key === key) {
+      for (const cri of node.criteria) {
+        if (cri.key == value) {
+          if (cri.subgroup instanceof Array) {
+            newCri = newCri.concat(resolveSubgroupBottomLayer(cri.subgroup));
+            break;
+          }
         }
-    } else if (node.fieldType === "group") {
-        node.childCategories?.forEach((y) => {
-            newCri = newCri.concat(resolveElementInCatalogueRec(key, value, y));
-        });
+        // Search deeper in the structure for a match
+        if (cri.subgroup instanceof Array) {
+          newCri = newCri.concat(
+            resolveSubgroupMatch(key, value, cri.subgroup),
+          );
+        }
+      }
     }
+  } else if (node.fieldType === "group") {
+    node.childCategories?.forEach((y) => {
+      newCri = newCri.concat(resolveElementInCatalogueRec(key, value, y));
+    });
+  }
 
-    return newCri;
+  return newCri;
 };
 
 const resolveElementInCatalogue = (key: string, value: string): string[] => {
-    let subcatagories: string[] = [];
-    catalogue.subscribe((x) => {
-        x.forEach((element) => {
-            if ("childCategories" in element) {
-                element.childCategories.forEach((y: Category) => {
-                    subcatagories = subcatagories.concat(
-                        resolveElementInCatalogueRec(key, value, y),
-                    );
-                });
-            }
+  let subcatagories: string[] = [];
+  catalogue.subscribe((x) => {
+    x.forEach((element) => {
+      if ("childCategories" in element) {
+        element.childCategories.forEach((y: Category) => {
+          subcatagories = subcatagories.concat(
+            resolveElementInCatalogueRec(key, value, y),
+          );
         });
+      }
     });
-    return subcatagories;
+  });
+  return subcatagories;
 };
 
 const resolveAstSubCategoriesRec = (query: AstElement): AstElement => {
-    let elements: AstElement[] = [];
-    if (isTopLayer(query)) {
-        query.children.forEach((element) => {
-            elements = elements.concat(resolveAstSubCategoriesRec(element));
-        });
-        query.children = elements;
-        return query;
-    } else if (isBottomLayer(query)) {
-        if (typeof query.value === "string") {
-            const subcatagories = resolveElementInCatalogue(
-                query.key,
-                query.value,
-            );
-            if (subcatagories.length == 0) {
-                return query;
-            } else {
-                subcatagories.forEach((x) => {
-                    elements.push({
-                        key: query.key,
-                        type: query.type,
-                        system: query.system,
-                        value: x,
-                    });
-                });
-                return {
-                    operand: "OR",
-                    key: query.key,
-                    children: elements,
-                };
-            }
-        } else {
-            return query;
-        }
-    } else {
-        console.error("Element not a query");
-    }
+  let elements: AstElement[] = [];
+  if (isTopLayer(query)) {
+    query.children.forEach((element) => {
+      elements = elements.concat(resolveAstSubCategoriesRec(element));
+    });
+    query.children = elements;
     return query;
+  } else if (isBottomLayer(query)) {
+    if (typeof query.value === "string") {
+      const subcatagories = resolveElementInCatalogue(query.key, query.value);
+      if (subcatagories.length == 0) {
+        return query;
+      } else {
+        subcatagories.forEach((x) => {
+          elements.push({
+            key: query.key,
+            type: query.type,
+            system: query.system,
+            value: x,
+          });
+        });
+        return {
+          operand: "OR",
+          key: query.key,
+          children: elements,
+        };
+      }
+    } else {
+      return query;
+    }
+  } else {
+    console.error("Element not a query");
+  }
+  return query;
 };
 
 /**
@@ -159,15 +149,15 @@ const resolveAstSubCategoriesRec = (query: AstElement): AstElement => {
  * @returns The new Query with replace elements
  */
 export const resolveAstSubCategories = (query: AstTopLayer): AstTopLayer => {
-    query.children.forEach((element, i) => {
-        query.children[i] = resolveAstSubCategoriesRec(element);
-    });
+  query.children.forEach((element, i) => {
+    query.children[i] = resolveAstSubCategoriesRec(element);
+  });
 
-    return query;
+  return query;
 };
 
 export const openTreeNodes = writable<
-    Map<string, { key: string; subCategoryNames: string[] | null }>
+  Map<string, { key: string; subCategoryNames: string[] | null }>
 >(new Map());
 
 /**
@@ -176,16 +166,16 @@ export const openTreeNodes = writable<
  * @returns array of strings containing the bottom level items' keys
  */
 export const getCriteria = (category: string): string[] => {
-    let bottomLevelItems: string[] = [];
+  let bottomLevelItems: string[] = [];
 
-    catalogue.subscribe((catalogue) => {
-        bottomLevelItems = getCriteriaValuesOfCategoryWithKey(
-            catalogue as Catalogue,
-            category,
-        );
-    });
+  catalogue.subscribe((catalogue) => {
+    bottomLevelItems = getCriteriaValuesOfCategoryWithKey(
+      catalogue as Catalogue,
+      category,
+    );
+  });
 
-    return bottomLevelItems;
+  return bottomLevelItems;
 };
 
 /**
@@ -195,147 +185,132 @@ export const getCriteria = (category: string): string[] => {
  * @returns The values of all criteria of the found category
  */
 function getCriteriaValuesOfCategoryWithKey(
-    categories: Category[],
-    categoryKey: string,
+  categories: Category[],
+  categoryKey: string,
 ): string[] {
-    for (const category of categories) {
-        if (
-            (category.fieldType === "single-select" ||
-                category.fieldType === "autocomplete") &&
-            category.key === categoryKey
-        ) {
-            /**
-             * Walk the provided criteria recursively and collect all values.
-             * @param criteria the list of criteria
-             * @returns all values
-             */
-            const getCriteriaValuesRecursively = (
-                criteria: Criteria[],
-            ): string[] => {
-                const values = [];
-                for (const criterion of criteria) {
-                    values.push(criterion.key);
-                    if (criterion.subgroup !== undefined) {
-                        values.push(
-                            ...getCriteriaValuesRecursively(criterion.subgroup),
-                        );
-                    }
-                }
-                return values;
-            };
-
-            return getCriteriaValuesRecursively(category.criteria);
+  for (const category of categories) {
+    if (
+      (category.fieldType === "single-select" ||
+        category.fieldType === "autocomplete") &&
+      category.key === categoryKey
+    ) {
+      /**
+       * Walk the provided criteria recursively and collect all values.
+       * @param criteria the list of criteria
+       * @returns all values
+       */
+      const getCriteriaValuesRecursively = (criteria: Criteria[]): string[] => {
+        const values = [];
+        for (const criterion of criteria) {
+          values.push(criterion.key);
+          if (criterion.subgroup !== undefined) {
+            values.push(...getCriteriaValuesRecursively(criterion.subgroup));
+          }
         }
+        return values;
+      };
 
-        if (category.fieldType === "group") {
-            const values = getCriteriaValuesOfCategoryWithKey(
-                category.childCategories,
-                categoryKey,
-            );
-            if (values.length !== 0) {
-                return values;
-            }
-        }
+      return getCriteriaValuesRecursively(category.criteria);
     }
 
-    return [];
+    if (category.fieldType === "group") {
+      const values = getCriteriaValuesOfCategoryWithKey(
+        category.childCategories,
+        categoryKey,
+      );
+      if (values.length !== 0) {
+        return values;
+      }
+    }
+  }
+
+  return [];
 }
 
 export const getCriteriaNamesFromKey = (
-    catalogue: Category[],
-    key: string,
+  catalogue: Category[],
+  key: string,
 ): string[] => {
-    let criteriaNames: string[] = [];
+  let criteriaNames: string[] = [];
 
-    if (catalogue.length === 0 || key === "") {
-        return criteriaNames;
-    }
-
-    catalogue.forEach((category: Category): void => {
-        if ("childCategories" in category) {
-            category.childCategories?.forEach(
-                (childCategory: Category): void => {
-                    if (
-                        "criteria" in childCategory &&
-                        childCategory.key === key
-                    ) {
-                        criteriaNames = childCategory.criteria.map(
-                            (criterion) => criterion.name,
-                        );
-                    }
-                },
-            );
-        }
-    });
-
-    if (criteriaNames.length === 0) {
-        criteriaNames = ["20", "30", "40", "50"];
-    }
+  if (catalogue.length === 0 || key === "") {
     return criteriaNames;
+  }
+
+  catalogue.forEach((category: Category): void => {
+    if ("childCategories" in category) {
+      category.childCategories?.forEach((childCategory: Category): void => {
+        if ("criteria" in childCategory && childCategory.key === key) {
+          criteriaNames = childCategory.criteria.map(
+            (criterion) => criterion.name,
+          );
+        }
+      });
+    }
+  });
+
+  if (criteriaNames.length === 0) {
+    criteriaNames = ["20", "30", "40", "50"];
+  }
+  return criteriaNames;
 };
 
 export const getCategoryFromKey = (
-    catalogue: Category[],
-    key: string,
+  catalogue: Category[],
+  key: string,
 ): Category | undefined => {
-    let category: Category | undefined = undefined;
+  let category: Category | undefined = undefined;
 
-    if (catalogue.length === 0 || key === "") {
-        return category;
-    }
-
-    catalogue.forEach((catalogueEntry: Category) => {
-        if ("childCategories" in catalogueEntry) {
-            if (catalogueEntry.childCategories != undefined) {
-                const result = getCategoryFromKey(
-                    catalogueEntry.childCategories,
-                    key,
-                );
-                if (result != undefined) category = result;
-            }
-        } else {
-            if (catalogueEntry.key === key) {
-                category = catalogueEntry;
-            }
-        }
-    });
-
+  if (catalogue.length === 0 || key === "") {
     return category;
+  }
+
+  catalogue.forEach((catalogueEntry: Category) => {
+    if ("childCategories" in catalogueEntry) {
+      if (catalogueEntry.childCategories != undefined) {
+        const result = getCategoryFromKey(catalogueEntry.childCategories, key);
+        if (result != undefined) category = result;
+      }
+    } else {
+      if (catalogueEntry.key === key) {
+        category = catalogueEntry;
+      }
+    }
+  });
+
+  return category;
 };
 
 export const getCriteriaFromKey = (
-    catalogue: Category[],
-    categoryKey: string,
-    criteriaKey: string,
+  catalogue: Category[],
+  categoryKey: string,
+  criteriaKey: string,
 ): Criteria | undefined => {
-    const category: Category | undefined = getCategoryFromKey(
-        catalogue,
-        categoryKey,
-    );
-    if (category == undefined) return undefined;
-    if ("criteria" in category) {
-        return category.criteria.find(
-            (criteria) => criteria.key === criteriaKey,
-        );
-    }
-    return undefined;
+  const category: Category | undefined = getCategoryFromKey(
+    catalogue,
+    categoryKey,
+  );
+  if (category == undefined) return undefined;
+  if ("criteria" in category) {
+    return category.criteria.find((criteria) => criteria.key === criteriaKey);
+  }
+  return undefined;
 };
 
 /**
  * Set the catalogue. An exception is thrown if the catalogue does not match the JSON schema.
  */
 export function setCatalogue(cat: Catalogue) {
-    const ajv = new Ajv({
-        allErrors: true,
-    });
-    addFormats(ajv);
-    const valid = ajv.validate(catalogueSchema, cat);
-    if (valid) {
-        catalogue.set(cat);
-    } else {
-        throw new Error(
-            "Catalogue not conform with JSON schema: " +
-                JSON.stringify(ajv.errors),
-        );
-    }
+  const ajv = new Ajv({
+    allErrors: true,
+  });
+  addFormats(ajv);
+  const valid = ajv.validate(catalogueSchema, cat);
+  if (valid) {
+    catalogue.set(cat);
+  } else {
+    throw new Error(
+      "Catalogue not conform with JSON schema: " + JSON.stringify(ajv.errors),
+    );
+  }
 }

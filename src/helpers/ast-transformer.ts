@@ -1,17 +1,17 @@
 import { v4 as uuidv4 } from "uuid";
 import {
-    isTopLayer,
-    type AstElement,
-    type AstTopLayer,
-    isBottomLayer,
-    type AstBottomLayerValue,
+  isTopLayer,
+  type AstElement,
+  type AstTopLayer,
+  isBottomLayer,
+  type AstBottomLayerValue,
 } from "../types/ast";
 import type { QueryItem, QueryValue, queryStoreItem } from "../types/queryData";
 import type { AggregatedValue } from "../types/catalogue";
 import {
-    catalogue,
-    getCategoryFromKey,
-    getCriteriaFromKey,
+  catalogue,
+  getCategoryFromKey,
+  getCriteriaFromKey,
 } from "../stores/catalogue";
 import { get } from "svelte/store";
 
@@ -21,24 +21,24 @@ import { get } from "svelte/store";
  * @returns Ast: the AST will later be converted to a query language of choice
  */
 export const buildAstFromQuery = (queryStore: QueryItem[][]): AstTopLayer => {
-    const ast = returnNestedValues(queryStore) as AstTopLayer;
+  const ast = returnNestedValues(queryStore) as AstTopLayer;
 
-    // The empty query is currently a special case because focus and potentially other consumers want it like this
-    // Instead of:
-    // {"operand":"OR","children":[{"operand":"AND","children":[]}]}
-    // We return:
-    // {"operand":"OR","children":[]}
-    if (ast.children.length === 1) {
-        const onlyChild = ast.children[0];
-        if (isTopLayer(onlyChild) && onlyChild.children.length === 0) {
-            return {
-                operand: "OR",
-                children: [],
-            };
-        }
+  // The empty query is currently a special case because focus and potentially other consumers want it like this
+  // Instead of:
+  // {"operand":"OR","children":[{"operand":"AND","children":[]}]}
+  // We return:
+  // {"operand":"OR","children":[]}
+  if (ast.children.length === 1) {
+    const onlyChild = ast.children[0];
+    if (isTopLayer(onlyChild) && onlyChild.children.length === 0) {
+      return {
+        operand: "OR",
+        children: [],
+      };
     }
+  }
 
-    return ast;
+  return ast;
 };
 
 /**
@@ -47,7 +47,7 @@ export const buildAstFromQuery = (queryStore: QueryItem[][]): AstTopLayer => {
  * @returns query
  */
 export const buildQueryFromAst = (ast: AstTopLayer): QueryItem[][] => {
-    return divideQueries(ast);
+  return divideQueries(ast);
 };
 
 /**
@@ -56,7 +56,7 @@ export const buildQueryFromAst = (ast: AstTopLayer): QueryItem[][] => {
  * @returns array of different queries
  */
 const divideQueries = (queries: AstTopLayer): QueryItem[][] => {
-    return queries.children.map((child) => divideCriterias(child));
+  return queries.children.map((child) => divideCriterias(child));
 };
 
 /**
@@ -66,14 +66,14 @@ const divideQueries = (queries: AstTopLayer): QueryItem[][] => {
  * @returns a single query in the internal representation
  */
 const divideCriterias = (query: AstElement): QueryItem[] => {
-    if (isTopLayer(query)) {
-        const criterias = query.children
-            .filter((child) => isTopLayer(child))
-            .map((child) => convertCriteria(<AstTopLayer>child));
-        return criterias != undefined ? <QueryItem[]>criterias : [];
-    } else {
-        return [];
-    }
+  if (isTopLayer(query)) {
+    const criterias = query.children
+      .filter((child) => isTopLayer(child))
+      .map((child) => convertCriteria(<AstTopLayer>child));
+    return criterias != undefined ? <QueryItem[]>criterias : [];
+  } else {
+    return [];
+  }
 };
 
 /**
@@ -83,23 +83,23 @@ const divideCriterias = (query: AstElement): QueryItem[] => {
  * @returns the internal QueryItem representation of this criteria
  */
 const convertCriteria = (criteria: AstTopLayer): QueryItem | undefined => {
-    const values = criteria.children.filter((child) => isBottomLayer(child));
-    if (values.length === 0) return convertComplexCriteria(criteria);
-    const checkedValues: AstBottomLayerValue[] = <AstBottomLayerValue[]>values;
-    const convertedValues = convertValues(checkedValues);
-    const catalogueCategory = getCategoryFromKey(
-        get(catalogue),
-        checkedValues[0].key,
-    );
-    const convertedCriteria: QueryItem = {
-        id: uuidv4(),
-        key: checkedValues[0].key,
-        name: catalogueCategory != undefined ? catalogueCategory.name : "",
-        type: checkedValues[0].type,
-        system: checkedValues[0].system,
-        values: convertedValues,
-    };
-    return convertedCriteria;
+  const values = criteria.children.filter((child) => isBottomLayer(child));
+  if (values.length === 0) return convertComplexCriteria(criteria);
+  const checkedValues: AstBottomLayerValue[] = <AstBottomLayerValue[]>values;
+  const convertedValues = convertValues(checkedValues);
+  const catalogueCategory = getCategoryFromKey(
+    get(catalogue),
+    checkedValues[0].key,
+  );
+  const convertedCriteria: QueryItem = {
+    id: uuidv4(),
+    key: checkedValues[0].key,
+    name: catalogueCategory != undefined ? catalogueCategory.name : "",
+    type: checkedValues[0].type,
+    system: checkedValues[0].system,
+    values: convertedValues,
+  };
+  return convertedCriteria;
 };
 
 /**
@@ -108,31 +108,31 @@ const convertCriteria = (criteria: AstTopLayer): QueryItem | undefined => {
  * @returns the internal QueryItem representation of this criteria
  */
 const convertComplexCriteria = (criteria: AstTopLayer): QueryItem => {
-    const values = criteria.children.filter((child) => isTopLayer(child));
-    const checkedValues: AstTopLayer[] = <AstTopLayer[]>values;
-    const convertedValues = convertValues(checkedValues);
-    const criteriaCategory = getCategoryFromKey(get(catalogue), criteria.key!);
-    return {
-        id: uuidv4(),
-        key: criteria.key!,
-        name: criteriaCategory != undefined ? criteriaCategory.name : "",
-        // NOTE: Assuming hard coding here, proof me wrong
-        type: "EQUALS",
-        system: "",
-        values: convertedValues,
-    };
+  const values = criteria.children.filter((child) => isTopLayer(child));
+  const checkedValues: AstTopLayer[] = <AstTopLayer[]>values;
+  const convertedValues = convertValues(checkedValues);
+  const criteriaCategory = getCategoryFromKey(get(catalogue), criteria.key!);
+  return {
+    id: uuidv4(),
+    key: criteria.key!,
+    name: criteriaCategory != undefined ? criteriaCategory.name : "",
+    // NOTE: Assuming hard coding here, proof me wrong
+    type: "EQUALS",
+    system: "",
+    values: convertedValues,
+  };
 };
 
 const convertValues = (values: AstElement[]): QueryValue[] => {
-    return values.map((value) => convertValue(value));
+  return values.map((value) => convertValue(value));
 };
 
 const convertValue = (value: AstElement): QueryValue => {
-    if (isBottomLayer(value)) {
-        return convertBottomLayerValue(value);
-    } else {
-        return convertTopLayerValue(value);
-    }
+  if (isBottomLayer(value)) {
+    return convertBottomLayerValue(value);
+  } else {
+    return convertTopLayerValue(value);
+  }
 };
 
 /**
@@ -141,29 +141,27 @@ const convertValue = (value: AstElement): QueryValue => {
  * @returns a QueryValue
  */
 const convertTopLayerValue = (value: AstTopLayer): QueryValue => {
-    const values = value.children
-        .map((orArray) => {
-            if (isTopLayer(orArray)) {
-                const result = orArray.children.map((andValue) => {
-                    if (isBottomLayer(andValue)) {
-                        return {
-                            name: andValue.key,
-                            value: andValue.value.toString(),
-                        };
-                    }
-                });
-                const filteredResult = result.filter(
-                    (value) => value !== undefined,
-                );
-                return <AggregatedValue[]>filteredResult;
-            }
-        })
-        .filter((value) => value != undefined);
-    return {
-        queryBindId: uuidv4(),
-        name: value.key!,
-        value: <AggregatedValue[][]>values,
-    };
+  const values = value.children
+    .map((orArray) => {
+      if (isTopLayer(orArray)) {
+        const result = orArray.children.map((andValue) => {
+          if (isBottomLayer(andValue)) {
+            return {
+              name: andValue.key,
+              value: andValue.value.toString(),
+            };
+          }
+        });
+        const filteredResult = result.filter((value) => value !== undefined);
+        return <AggregatedValue[]>filteredResult;
+      }
+    })
+    .filter((value) => value != undefined);
+  return {
+    queryBindId: uuidv4(),
+    name: value.key!,
+    value: <AggregatedValue[][]>values,
+  };
 };
 
 /**
@@ -172,57 +170,49 @@ const convertTopLayerValue = (value: AstTopLayer): QueryValue => {
  * @returns a QueryValue
  */
 const convertBottomLayerValue = (value: AstBottomLayerValue): QueryValue => {
-    let mappedName: string = `Combination ${value.key} and ${value.value} is not mapped!`;
-    let mappedValue:
-        | string
-        | { min: number; max: number }
-        | AggregatedValue[][] =
-        "WARNING: This value was not processed by convertValue function!";
+  let mappedName: string = `Combination ${value.key} and ${value.value} is not mapped!`;
+  let mappedValue: string | { min: number; max: number } | AggregatedValue[][] =
+    "WARNING: This value was not processed by convertValue function!";
 
-    if (typeof value.value === "string") {
-        const criteria = getCriteriaFromKey(
-            get(catalogue),
-            value.key,
-            value.value,
-        );
-        mappedName = criteria != undefined ? criteria.name : "";
-        mappedValue = value.value;
-    } else if (typeof value.value === "boolean") {
-        mappedValue = value.value.toString();
-    } else if (typeof value.value === "object") {
-        if ("min" in value.value && "max" in value.value) {
-            mappedName =
-                value.value.min === 0
-                    ? ` ≤ ${value.value.max}`
-                    : value.value.max === 0
-                      ? ` ≥ ${value.value.min}`
-                      : ` ${value.value.min} - ${value.value.max}`;
-            if (
-                typeof value.value.min === "number" &&
-                typeof value.value.max === "number"
-            ) {
-                mappedValue = { min: value.value.min, max: value.value.max };
-            } else if (
-                typeof value.value.min === "string" &&
-                typeof value.value.max === "string"
-            ) {
-                const minDate = new Date(value.value.min);
-                const maxDate = new Date(value.value.min);
-                mappedValue = {
-                    min: minDate.getDate(),
-                    max: maxDate.getDate(),
-                };
-            }
-        } else {
-            mappedValue =
-                "TODO: This is the not mapped Array<string> case for value";
-        }
+  if (typeof value.value === "string") {
+    const criteria = getCriteriaFromKey(get(catalogue), value.key, value.value);
+    mappedName = criteria != undefined ? criteria.name : "";
+    mappedValue = value.value;
+  } else if (typeof value.value === "boolean") {
+    mappedValue = value.value.toString();
+  } else if (typeof value.value === "object") {
+    if ("min" in value.value && "max" in value.value) {
+      mappedName =
+        value.value.min === 0
+          ? ` ≤ ${value.value.max}`
+          : value.value.max === 0
+            ? ` ≥ ${value.value.min}`
+            : ` ${value.value.min} - ${value.value.max}`;
+      if (
+        typeof value.value.min === "number" &&
+        typeof value.value.max === "number"
+      ) {
+        mappedValue = { min: value.value.min, max: value.value.max };
+      } else if (
+        typeof value.value.min === "string" &&
+        typeof value.value.max === "string"
+      ) {
+        const minDate = new Date(value.value.min);
+        const maxDate = new Date(value.value.min);
+        mappedValue = {
+          min: minDate.getDate(),
+          max: maxDate.getDate(),
+        };
+      }
+    } else {
+      mappedValue = "TODO: This is the not mapped Array<string> case for value";
     }
-    return {
-        queryBindId: uuidv4(),
-        name: mappedName,
-        value: mappedValue,
-    };
+  }
+  return {
+    queryBindId: uuidv4(),
+    name: mappedName,
+    value: mappedValue,
+  };
 };
 
 /**
@@ -233,83 +223,83 @@ const convertBottomLayerValue = (value: AstBottomLayerValue): QueryValue => {
  * @returns AstElement
  */
 export const returnNestedValues = (
-    item: queryStoreItem | QueryItem[][],
-    operand?: "AND" | "OR",
-    topLayerItem?: queryStoreItem | QueryItem[][],
+  item: queryStoreItem | QueryItem[][],
+  operand?: "AND" | "OR",
+  topLayerItem?: queryStoreItem | QueryItem[][],
 ): AstElement => {
-    /**
-     * sets the operand for the current layer
-     * starts with 'OR' from the top layer and switches to the opposite each layer
-     */
-    operand = operand === "OR" ? "AND" : "OR";
+  /**
+   * sets the operand for the current layer
+   * starts with 'OR' from the top layer and switches to the opposite each layer
+   */
+  operand = operand === "OR" ? "AND" : "OR";
 
-    /**
-     * handles first layer of the store (QueryItem[])
-     * or entities (aggregatedValue)
-     */
-    if (Array.isArray(item)) {
-        return {
-            operand: operand,
-            children: item.map((value) => {
-                return returnNestedValues(value, operand, item);
-            }),
-        };
-    }
+  /**
+   * handles first layer of the store (QueryItem[])
+   * or entities (aggregatedValue)
+   */
+  if (Array.isArray(item)) {
+    return {
+      operand: operand,
+      children: item.map((value) => {
+        return returnNestedValues(value, operand, item);
+      }),
+    };
+  }
 
-    /**
-     * handles second layer of the store (queryItem)
-     */
-    if ("values" in item && Array.isArray(item.values)) {
-        return {
-            key: item.key,
-            operand: operand,
-            children: item.values.map((value) => {
-                return returnNestedValues(value, operand, item);
-            }),
-        };
-    }
+  /**
+   * handles second layer of the store (queryItem)
+   */
+  if ("values" in item && Array.isArray(item.values)) {
+    return {
+      key: item.key,
+      operand: operand,
+      children: item.values.map((value) => {
+        return returnNestedValues(value, operand, item);
+      }),
+    };
+  }
 
-    /**
-     * handles the third layer of store when the value of the QueryItem is an entity (aggregatedValue)
-     */
-    if ("value" in item && Array.isArray(item.value)) {
-        return {
-            key: item.name,
-            operand: operand,
-            children: item.value.map((value) => {
-                return returnNestedValues(value, operand, item);
-            }),
-        };
-    }
+  /**
+   * handles the third layer of store when the value of the QueryItem is an entity (aggregatedValue)
+   */
+  if ("value" in item && Array.isArray(item.value)) {
+    return {
+      key: item.name,
+      operand: operand,
+      children: item.value.map((value) => {
+        return returnNestedValues(value, operand, item);
+      }),
+    };
+  }
 
-    /**
-     * return bottom level object of other QueryValues (string | {min: number, max: number})
-     */
-    if (
-        "value" in item &&
-        topLayerItem !== undefined &&
-        "key" in topLayerItem &&
-        !Array.isArray(item.value)
-    ) {
-        return {
-            key: topLayerItem.key,
-            type: topLayerItem.type,
-            system: topLayerItem.system || "",
-            value: item.value,
-        };
-    }
+  /**
+   * return bottom level object of other QueryValues (string | {min: number, max: number})
+   */
+  if (
+    "value" in item &&
+    topLayerItem !== undefined &&
+    "key" in topLayerItem &&
+    !Array.isArray(item.value)
+  ) {
+    return {
+      key: topLayerItem.key,
+      type: topLayerItem.type,
+      system: topLayerItem.system || "",
+      value: item.value,
+    };
+  }
 
-    /**
-     * return bottom level object of an entity (aggregatedValue)
-     */
-    if ("value" in item && typeof item.value === "string") {
-        return {
-            key: item.value,
-            type: "EQUALS",
-            system: "",
-            value: item.name,
-        };
-    }
+  /**
+   * return bottom level object of an entity (aggregatedValue)
+   */
+  if ("value" in item && typeof item.value === "string") {
+    return {
+      key: item.value,
+      type: "EQUALS",
+      system: "",
+      value: item.name,
+    };
+  }
 
-    throw new Error("This should be unreachable");
+  throw new Error("This should be unreachable");
 };

@@ -11,19 +11,19 @@ import { lensOptions } from "../stores/options";
 import { queryStore } from "../stores/query";
 import type { MeasureStore } from "../types/backend";
 import type {
-    ProjectManagerOptions,
-    ProjectManagerOptionsSiteMapping,
+  ProjectManagerOptions,
+  ProjectManagerOptionsSiteMapping,
 } from "../types/options";
 import type { QueryItem, SendableQuery } from "../types/queryData";
 import { v4 as uuidv4 } from "uuid";
 
 type PmBody = {
-    query: string;
-    "explorer-ids": string;
-    "query-format": string;
-    "human-readable": string;
-    "project-code": string;
-    "explorer-url": string;
+  query: string;
+  "explorer-ids": string;
+  "query-format": string;
+  "human-readable": string;
+  "project-code": string;
+  "explorer-url": string;
 };
 
 let currentQuery: QueryItem[][] = [[]];
@@ -31,53 +31,52 @@ let currentQuery: QueryItem[][] = [[]];
 let currentMeasures: MeasureStore = [];
 
 type ProjectManagerResponse = Response & {
-    redirect_uri?: string;
+  redirect_uri?: string;
 };
 
 queryStore.subscribe((query) => {
-    currentQuery = query;
+  currentQuery = query;
 });
 
 measureStore.subscribe((measures) => {
-    currentMeasures = measures;
+  currentMeasures = measures;
 });
 
 export const negotiate = async (sitesToNegotiate: string[]): Promise<void> => {
-    const currentProjectmanagerOptions =
-        get(lensOptions)?.projectmanagerOptions;
-    if (currentProjectmanagerOptions === undefined) {
-        console.error('"projectmanagerOptions" is missing the lens options');
-        return;
-    }
+  const currentProjectmanagerOptions = get(lensOptions)?.projectmanagerOptions;
+  if (currentProjectmanagerOptions === undefined) {
+    console.error('"projectmanagerOptions" is missing the lens options');
+    return;
+  }
 
-    let sendableQuery!: SendableQuery;
-    queryStore.subscribe((value: QueryItem[][]) => {
-        const uuid = uuidv4();
-        sendableQuery = {
-            query: value,
-            id: `${uuid}__search__${uuid}`,
-        };
-    });
+  let sendableQuery!: SendableQuery;
+  queryStore.subscribe((value: QueryItem[][]) => {
+    const uuid = uuidv4();
+    sendableQuery = {
+      query: value,
+      id: `${uuid}__search__${uuid}`,
+    };
+  });
 
-    const humanReadable: string = getHumanReadableQuery();
-    const collections: ProjectManagerOptionsSiteMapping[] = getCollections(
-        currentProjectmanagerOptions,
-        sitesToNegotiate,
-    );
+  const humanReadable: string = getHumanReadableQuery();
+  const collections: ProjectManagerOptionsSiteMapping[] = getCollections(
+    currentProjectmanagerOptions,
+    sitesToNegotiate,
+  );
 
-    const response: ProjectManagerResponse = await sendRequestToProjectManager(
-        currentProjectmanagerOptions,
-        sendableQuery,
-        humanReadable,
-        collections,
-    );
+  const response: ProjectManagerResponse = await sendRequestToProjectManager(
+    currentProjectmanagerOptions,
+    sendableQuery,
+    humanReadable,
+    collections,
+  );
 
-    if (!response.redirect_uri) {
-        console.error("Projectmanager response does not contain redirect uri");
-        return;
-    }
+  if (!response.redirect_uri) {
+    console.error("Projectmanager response does not contain redirect uri");
+    return;
+  }
 
-    window.location.href = response.redirect_uri;
+  window.location.href = response.redirect_uri;
 };
 
 /**
@@ -93,77 +92,77 @@ export const negotiate = async (sitesToNegotiate: string[]): Promise<void> => {
  * @returns a promise containing the response from the project manager. The response contains the redirect uri
  */
 async function sendRequestToProjectManager(
-    currentProjectmanagerOptions: ProjectManagerOptions,
-    sendableQuery: SendableQuery,
-    humanReadable: string,
-    collections: ProjectManagerOptionsSiteMapping[],
+  currentProjectmanagerOptions: ProjectManagerOptions,
+  sendableQuery: SendableQuery,
+  humanReadable: string,
+  collections: ProjectManagerOptionsSiteMapping[],
 ): Promise<ProjectManagerResponse> {
-    /**
-     * get temporary token from oauth2
-     */
-    let temporaryToken: string | null = "";
+  /**
+   * get temporary token from oauth2
+   */
+  let temporaryToken: string | null = "";
 
-    try {
-        const res = await fetch(`/oauth2/auth`, {
-            method: "GET",
-            credentials: "include",
-        });
+  try {
+    const res = await fetch(`/oauth2/auth`, {
+      method: "GET",
+      credentials: "include",
+    });
 
-        temporaryToken = res.headers.get("Authorization");
-    } catch (error) {
-        console.log("error", error);
-        return new Response() as Response & { redirect_uri: string };
-    }
+    temporaryToken = res.headers.get("Authorization");
+  } catch (error) {
+    console.log("error", error);
+    return new Response() as Response & { redirect_uri: string };
+  }
 
-    /**
-     * build query params
-     */
-    // const queryParam: string =
-    //     queryBase64String != "" ? `&query=${queryBase64String}` : "";
+  /**
+   * build query params
+   */
+  // const queryParam: string =
+  //     queryBase64String != "" ? `&query=${queryBase64String}` : "";
 
-    const negotiationPartners = collections
-        .map((collection) => collection.collection.toLocaleLowerCase())
-        .join(",");
-    const returnURL: string = `${window.location.protocol}//${window.location.host}/?collections=${negotiationPartners}`;
-    const urlParams: URLSearchParams = new URLSearchParams(
-        window.location.search,
-    );
+  const negotiationPartners = collections
+    .map((collection) => collection.collection.toLocaleLowerCase())
+    .join(",");
+  const returnURL: string = `${window.location.protocol}//${window.location.host}/?collections=${negotiationPartners}`;
+  const urlParams: URLSearchParams = new URLSearchParams(
+    window.location.search,
+  );
 
-    const projectCode: string | null = urlParams.get("project-code");
-    const negotiateUrl = projectCode
-        ? currentProjectmanagerOptions.editProjectUrl
-        : currentProjectmanagerOptions.newProjectUrl;
+  const projectCode: string | null = urlParams.get("project-code");
+  const negotiateUrl = projectCode
+    ? currentProjectmanagerOptions.editProjectUrl
+    : currentProjectmanagerOptions.newProjectUrl;
 
-    let response!: ProjectManagerResponse;
+  let response!: ProjectManagerResponse;
 
-    /**
-     * send request to project manager
-     * Explorer IDS = Options Struktur = lens-<standortname>
-     */
+  /**
+   * send request to project manager
+   * Explorer IDS = Options Struktur = lens-<standortname>
+   */
 
-    const pmRequestUrl = `${negotiateUrl}`;
+  const pmRequestUrl = `${negotiateUrl}`;
 
-    try {
-        response = await fetch(pmRequestUrl, {
-            method: "POST",
-            headers: {
-                returnAccept: "application/json; charset=utf-8",
-                "Content-Type": "application/json",
-                Authorization: temporaryToken ? temporaryToken : "",
-            },
-            body: buildPMBody(
-                humanReadable,
-                negotiationPartners,
-                returnURL,
-                projectCode ? projectCode : "",
-            ),
-        }).then((response) => response.json());
+  try {
+    response = await fetch(pmRequestUrl, {
+      method: "POST",
+      headers: {
+        returnAccept: "application/json; charset=utf-8",
+        "Content-Type": "application/json",
+        Authorization: temporaryToken ? temporaryToken : "",
+      },
+      body: buildPMBody(
+        humanReadable,
+        negotiationPartners,
+        returnURL,
+        projectCode ? projectCode : "",
+      ),
+    }).then((response) => response.json());
 
-        return response;
-    } catch (error) {
-        console.log("error", error);
-        return new Response() as ProjectManagerResponse;
-    }
+    return response;
+  } catch (error) {
+    console.log("error", error);
+    return new Response() as ProjectManagerResponse;
+  }
 }
 
 /**
@@ -172,24 +171,24 @@ async function sendRequestToProjectManager(
  * @returns an array of Collection objects
  */
 export const getCollections = (
-    currentProjectmanagerOptions: ProjectManagerOptions,
-    sitesToNegotiate: string[],
+  currentProjectmanagerOptions: ProjectManagerOptions,
+  sitesToNegotiate: string[],
 ): ProjectManagerOptionsSiteMapping[] => {
-    const siteCollections: ProjectManagerOptionsSiteMapping[] = [];
-    for (const site of sitesToNegotiate) {
-        const siteCollection = currentProjectmanagerOptions.siteMappings.find(
-            (siteMapping) => siteMapping.site === site,
-        );
-        if (siteCollection === undefined) {
-            console.error(
-                `Site "${site}" is missing from projectmanagerOptions.siteMappings in the lens options`,
-            );
-        } else {
-            siteCollections.push(siteCollection);
-        }
+  const siteCollections: ProjectManagerOptionsSiteMapping[] = [];
+  for (const site of sitesToNegotiate) {
+    const siteCollection = currentProjectmanagerOptions.siteMappings.find(
+      (siteMapping) => siteMapping.site === site,
+    );
+    if (siteCollection === undefined) {
+      console.error(
+        `Site "${site}" is missing from projectmanagerOptions.siteMappings in the lens options`,
+      );
+    } else {
+      siteCollections.push(siteCollection);
     }
+  }
 
-    return siteCollections;
+  return siteCollections;
 };
 
 /**
@@ -200,42 +199,39 @@ export const getCollections = (
  * @returns a base64 encoded CQL query
  */
 function buildPMBody(
-    humanReadable: string,
-    negotiationPartners: string,
-    returnURL: string,
-    projectCode: string,
+  humanReadable: string,
+  negotiationPartners: string,
+  returnURL: string,
+  projectCode: string,
 ): string {
-    const ast = buildAstFromQuery(currentQuery);
+  const ast = buildAstFromQuery(currentQuery);
 
-    /**
-     * The Translation is DKTK/CCP specific.
-     */
+  /**
+   * The Translation is DKTK/CCP specific.
+   */
 
-    const cql = translateAstToCql(
-        ast,
-        false,
-        "DKTK_STRAT_DEF_IN_INITIAL_POPULATION",
-        currentMeasures[0].measures,
-    );
+  const cql = translateAstToCql(
+    ast,
+    false,
+    "DKTK_STRAT_DEF_IN_INITIAL_POPULATION",
+    currentMeasures[0].measures,
+  );
 
-    const library = buildLibrary(`${cql}`);
-    const measure = buildMeasure(
-        library.url,
-        currentMeasures[0].measures.map((measureItem) => measureItem.measure),
-    );
-    const query = { lang: "cql", lib: library, measure: measure };
+  const library = buildLibrary(`${cql}`);
+  const measure = buildMeasure(
+    library.url,
+    currentMeasures[0].measures.map((measureItem) => measureItem.measure),
+  );
+  const query = { lang: "cql", lib: library, measure: measure };
 
-    const body: PmBody = {
-        query: btoa(JSON.stringify(query)),
-        "explorer-ids": negotiationPartners,
-        "query-format": "CQL_DATA",
-        "human-readable": humanReadable,
-        "project-code": projectCode,
-        "explorer-url":
-            returnURL +
-            projectCode +
-            "&query=" +
-            btoa(JSON.stringify(currentQuery)),
-    };
-    return JSON.stringify(body);
+  const body: PmBody = {
+    query: btoa(JSON.stringify(query)),
+    "explorer-ids": negotiationPartners,
+    "query-format": "CQL_DATA",
+    "human-readable": humanReadable,
+    "project-code": projectCode,
+    "explorer-url":
+      returnURL + projectCode + "&query=" + btoa(JSON.stringify(currentQuery)),
+  };
+  return JSON.stringify(body);
 }

@@ -14,17 +14,17 @@ export type * from "./types/ast";
 export type * from "./types/catalogue";
 export type * from "./types/options";
 export type {
-    LensDataPasser,
-    AddStratifierToQueryAPIParams,
-    RemoveItemFromQuyeryAPIParams,
-    RemoveValueFromQueryAPIParams,
+  LensDataPasser,
+  AddStratifierToQueryAPIParams,
+  RemoveItemFromQuyeryAPIParams,
+  RemoveValueFromQueryAPIParams,
 } from "./types/dataPasser";
 export type {
-    MeasureItem,
-    Measure,
-    MeasureGroup,
-    ResponseStore,
-    MeasureStore,
+  MeasureItem,
+  Measure,
+  MeasureGroup,
+  ResponseStore,
+  MeasureStore,
 } from "./types/backend";
 export type { SiteData, Site } from "./types/response";
 export type { BeamResult } from "./types/spot";

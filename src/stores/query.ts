@@ -18,8 +18,8 @@ const urlParams: URLSearchParams = new URLSearchParams(window.location.search);
 const queryParam: string | null = urlParams.get("query");
 
 if (queryParam !== null) {
-    const queryParamDecoded: QueryItem[][] = JSON.parse(atob(queryParam));
-    queryStore.set(queryParamDecoded);
+  const queryParamDecoded: QueryItem[][] = JSON.parse(atob(queryParam));
+  queryStore.set(queryParamDecoded);
 }
 
 /**
@@ -36,8 +36,8 @@ export const queryModified = writable<boolean>(false);
  * emits an event every time the value of the query store is updated
  */
 queryStore.subscribe(() => {
-    const event = new CustomEvent("lens-query-updated");
-    window.dispatchEvent(event);
+  const event = new CustomEvent("lens-query-updated");
+  window.dispatchEvent(event);
 });
 
 /**
@@ -50,81 +50,81 @@ queryStore.subscribe(() => {
  * @param queryGroupIndex - the index of the group (searchbar) where the object should be added
  */
 export const addItemToQuery = (
-    queryObject: QueryItem,
-    queryGroupIndex: number,
+  queryObject: QueryItem,
+  queryGroupIndex: number,
 ): void => {
-    queryModified.set(true);
+  queryModified.set(true);
+
+  /**
+   * prevent mutation of the original object
+   * otherwise the queryStore will not update properly with live changes inside the catalogue
+   * (e.g. when numbers are changed)
+   */
+  queryObject = Object.assign({}, queryObject);
+  queryStore.update((query) => {
+    /**
+     * handles the case when the group index is negative or too high
+     */
+    if (queryGroupIndex < 0) queryGroupIndex = 0;
+
+    if (queryGroupIndex > query.length) {
+      queryGroupIndex = query.length;
+    }
+
+    if (queryGroupIndex === query.length) {
+      query = [...query, []];
+    }
 
     /**
-     * prevent mutation of the original object
-     * otherwise the queryStore will not update properly with live changes inside the catalogue
-     * (e.g. when numbers are changed)
+     * finds objects with the same name in the query
      */
-    queryObject = Object.assign({}, queryObject);
-    queryStore.update((query) => {
-        /**
-         * handles the case when the group index is negative or too high
-         */
-        if (queryGroupIndex < 0) queryGroupIndex = 0;
 
-        if (queryGroupIndex > query.length) {
-            queryGroupIndex = query.length;
-        }
+    let queryStoreGroup: QueryItem[] = query[queryGroupIndex];
 
-        if (queryGroupIndex === query.length) {
-            query = [...query, []];
-        }
+    const duplicateObjects: QueryItem[] = findObjectsWithSameName(
+      queryStoreGroup.concat(queryObject),
+    );
 
-        /**
-         * finds objects with the same name in the query
-         */
+    /**
+     * merges the values of the duplicate objects
+     */
+    if (duplicateObjects !== undefined) {
+      queryObject = {
+        id: uuidv4(),
+        key: duplicateObjects[0].key,
+        name: duplicateObjects[0].name,
+        type: duplicateObjects[0].type,
+        system: duplicateObjects[0].system,
+        values: [],
+      };
+      duplicateObjects.forEach((obj: QueryItem) => {
+        obj.values.forEach((value: QueryValue) => {
+          /**
+           * writes the first value of the first object to the values
+           */
+          if (
+            !queryObject.values.some(
+              (val: QueryValue) => val.name === value.name,
+            )
+          ) {
+            queryObject.values.push(value);
+          }
+        });
+      });
+    }
 
-        let queryStoreGroup: QueryItem[] = query[queryGroupIndex];
+    /**
+     * removes all items with the same name from the group,
+     * then adds the new item
+     */
+    queryStoreGroup = queryStoreGroup.filter(
+      (item) => item.name !== queryObject.name,
+    );
+    queryStoreGroup.push(queryObject);
 
-        const duplicateObjects: QueryItem[] = findObjectsWithSameName(
-            queryStoreGroup.concat(queryObject),
-        );
-
-        /**
-         * merges the values of the duplicate objects
-         */
-        if (duplicateObjects !== undefined) {
-            queryObject = {
-                id: uuidv4(),
-                key: duplicateObjects[0].key,
-                name: duplicateObjects[0].name,
-                type: duplicateObjects[0].type,
-                system: duplicateObjects[0].system,
-                values: [],
-            };
-            duplicateObjects.forEach((obj: QueryItem) => {
-                obj.values.forEach((value: QueryValue) => {
-                    /**
-                     * writes the first value of the first object to the values
-                     */
-                    if (
-                        !queryObject.values.some(
-                            (val: QueryValue) => val.name === value.name,
-                        )
-                    ) {
-                        queryObject.values.push(value);
-                    }
-                });
-            });
-        }
-
-        /**
-         * removes all items with the same name from the group,
-         * then adds the new item
-         */
-        queryStoreGroup = queryStoreGroup.filter(
-            (item) => item.name !== queryObject.name,
-        );
-        queryStoreGroup.push(queryObject);
-
-        query[queryGroupIndex] = queryStoreGroup;
-        return query;
-    });
+    query[queryGroupIndex] = queryStoreGroup;
+    return query;
+  });
 };
 
 /**
@@ -135,39 +135,35 @@ export const addItemToQuery = (
  * @param queryGroupIndex - the index of the group (searchbar) where the object is located
  */
 export const removeValueFromQuery = (
-    queryObject: QueryItem,
-    queryGroupIndex: number,
+  queryObject: QueryItem,
+  queryGroupIndex: number,
 ): void => {
-    queryModified.set(true);
-    /**
-     * prevent mutation of the original object
-     * otherwise the queryStore will not update properly with live changes inside the catalogue
-     * (e.g. when numbers are changed)
-     */
-    queryObject = Object.assign({}, queryObject);
+  queryModified.set(true);
+  /**
+   * prevent mutation of the original object
+   * otherwise the queryStore will not update properly with live changes inside the catalogue
+   * (e.g. when numbers are changed)
+   */
+  queryObject = Object.assign({}, queryObject);
 
-    queryStore.update((query) => {
-        let queryStoreGroup: QueryItem[] = structuredClone(
-            query[queryGroupIndex],
+  queryStore.update((query) => {
+    let queryStoreGroup: QueryItem[] = structuredClone(query[queryGroupIndex]);
+
+    queryStoreGroup = queryStoreGroup.map((item) => {
+      if (item.name === queryObject.name) {
+        item.values = item.values.filter(
+          (value: QueryValue) =>
+            value.queryBindId !== queryObject.values[0].queryBindId,
         );
-
-        queryStoreGroup = queryStoreGroup.map((item) => {
-            if (item.name === queryObject.name) {
-                item.values = item.values.filter(
-                    (value: QueryValue) =>
-                        value.queryBindId !== queryObject.values[0].queryBindId,
-                );
-            }
-            return item;
-        });
-
-        queryStoreGroup = queryStoreGroup.filter(
-            (item) => item.values.length > 0,
-        );
-
-        query[queryGroupIndex] = queryStoreGroup;
-        return query;
+      }
+      return item;
     });
+
+    queryStoreGroup = queryStoreGroup.filter((item) => item.values.length > 0);
+
+    query[queryGroupIndex] = queryStoreGroup;
+    return query;
+  });
 };
 
 /**
@@ -176,27 +172,27 @@ export const removeValueFromQuery = (
  * @param queryGroupIndex index of the group where the object is located
  */
 export const removeItemFromQuery = (
-    queryObject: QueryItem,
-    queryGroupIndex: number,
+  queryObject: QueryItem,
+  queryGroupIndex: number,
 ): void => {
-    queryModified.set(true);
-    /**
-     * prevent mutation of the original object
-     * otherwise the queryStore will not update properly with live changes inside the catalogue
-     * (e.g. when numbers are changed)
-     */
-    queryObject = Object.assign({}, queryObject);
+  queryModified.set(true);
+  /**
+   * prevent mutation of the original object
+   * otherwise the queryStore will not update properly with live changes inside the catalogue
+   * (e.g. when numbers are changed)
+   */
+  queryObject = Object.assign({}, queryObject);
 
-    queryStore.update((query: QueryItem[][]) => {
-        let queryStoreGroup: QueryItem[] = query[queryGroupIndex];
+  queryStore.update((query: QueryItem[][]) => {
+    let queryStoreGroup: QueryItem[] = query[queryGroupIndex];
 
-        queryStoreGroup = queryStoreGroup.filter((item) => {
-            return item.id !== queryObject.id;
-        });
-
-        query[queryGroupIndex] = queryStoreGroup;
-        return query;
+    queryStoreGroup = queryStoreGroup.filter((item) => {
+      return item.id !== queryObject.id;
     });
+
+    query[queryGroupIndex] = queryStoreGroup;
+    return query;
+  });
 };
 
 /**
@@ -205,22 +201,22 @@ export const removeItemFromQuery = (
  * @returns the objects with the same name
  */
 function findObjectsWithSameName(objectsArray: QueryItem[]): QueryItem[] {
-    const nameObjectMap = new Map<string, QueryItem[]>();
+  const nameObjectMap = new Map<string, QueryItem[]>();
 
-    objectsArray.forEach((obj: QueryItem) => {
-        const name = obj.name;
-        if (nameObjectMap.has(name)) {
-            nameObjectMap.get(name)?.push(obj);
-        } else {
-            nameObjectMap.set(name, [obj]);
-        }
-    });
+  objectsArray.forEach((obj: QueryItem) => {
+    const name = obj.name;
+    if (nameObjectMap.has(name)) {
+      nameObjectMap.get(name)?.push(obj);
+    } else {
+      nameObjectMap.set(name, [obj]);
+    }
+  });
 
-    const duplicateObjects: QueryItem[] = Array.from(
-        nameObjectMap.values(),
-    ).filter((objects: QueryItem[]) => objects.length > 1)[0];
+  const duplicateObjects: QueryItem[] = Array.from(
+    nameObjectMap.values(),
+  ).filter((objects: QueryItem[]) => objects.length > 1)[0];
 
-    return duplicateObjects;
+  return duplicateObjects;
 }
 
 /**
@@ -233,81 +229,73 @@ function findObjectsWithSameName(objectsArray: QueryItem[]): QueryItem[] {
  */
 
 export interface AddStratifierParams {
-    label: string;
-    catalogueGroupCode: string;
-    catalogue: Category[];
-    queryGroupIndex?: number;
-    groupRange?: number;
-    system?: string;
+  label: string;
+  catalogueGroupCode: string;
+  catalogue: Category[];
+  queryGroupIndex?: number;
+  groupRange?: number;
+  system?: string;
 }
 
 export const addStratifier = ({
-    label,
-    catalogue,
-    catalogueGroupCode,
-    queryGroupIndex = 0,
-    groupRange = 1,
-    system = "",
+  label,
+  catalogue,
+  catalogueGroupCode,
+  queryGroupIndex = 0,
+  groupRange = 1,
+  system = "",
 }: AddStratifierParams): void => {
-    let queryItem: QueryItem;
-    catalogue.forEach((parentCategory: Category) => {
-        if ("childCategories" in parentCategory) {
-            parentCategory.childCategories?.forEach(
-                (childCategorie: Category) => {
-                    if (
-                        childCategorie.key === catalogueGroupCode &&
-                        (childCategorie.fieldType === "single-select" ||
-                            childCategorie.fieldType === "autocomplete" ||
-                            childCategorie.fieldType === "number")
-                    ) {
-                        let values: QueryValue[] = [];
+  let queryItem: QueryItem;
+  catalogue.forEach((parentCategory: Category) => {
+    if ("childCategories" in parentCategory) {
+      parentCategory.childCategories?.forEach((childCategorie: Category) => {
+        if (
+          childCategorie.key === catalogueGroupCode &&
+          (childCategorie.fieldType === "single-select" ||
+            childCategorie.fieldType === "autocomplete" ||
+            childCategorie.fieldType === "number")
+        ) {
+          let values: QueryValue[] = [];
 
-                        if (childCategorie.fieldType === "number") {
-                            values = [
-                                {
-                                    name: `${label}`,
-                                    value: {
-                                        min: parseInt(label),
-                                        max: parseInt(label) + groupRange - 1,
-                                    },
-                                    queryBindId: uuidv4(),
-                                },
-                            ];
-                        } else {
-                            childCategorie.criteria.forEach(
-                                (criterion: Criteria) => {
-                                    if (criterion.key === label) {
-                                        values[0] = {
-                                            name: criterion.name,
-                                            value: criterion.key,
-                                            queryBindId: uuidv4(),
-                                            description: criterion.description,
-                                        };
-                                    }
-                                },
-                            );
-                        }
-
-                        queryItem = {
-                            id: uuidv4(),
-                            key: childCategorie.key,
-                            name: childCategorie.name,
-                            system:
-                                "system" in childCategorie &&
-                                childCategorie.system !== ""
-                                    ? childCategorie.system
-                                    : system,
-                            type:
-                                "type" in childCategorie
-                                    ? childCategorie.type
-                                    : "BETWEEN",
-                            values: values,
-                        };
-
-                        addItemToQuery(queryItem, queryGroupIndex);
-                    }
+          if (childCategorie.fieldType === "number") {
+            values = [
+              {
+                name: `${label}`,
+                value: {
+                  min: parseInt(label),
+                  max: parseInt(label) + groupRange - 1,
                 },
-            );
+                queryBindId: uuidv4(),
+              },
+            ];
+          } else {
+            childCategorie.criteria.forEach((criterion: Criteria) => {
+              if (criterion.key === label) {
+                values[0] = {
+                  name: criterion.name,
+                  value: criterion.key,
+                  queryBindId: uuidv4(),
+                  description: criterion.description,
+                };
+              }
+            });
+          }
+
+          queryItem = {
+            id: uuidv4(),
+            key: childCategorie.key,
+            name: childCategorie.name,
+            system:
+              "system" in childCategorie && childCategorie.system !== ""
+                ? childCategorie.system
+                : system,
+            type: "type" in childCategorie ? childCategorie.type : "BETWEEN",
+            values: values,
+          };
+
+          addItemToQuery(queryItem, queryGroupIndex);
         }
-    });
+      });
+    }
+  });
 };
