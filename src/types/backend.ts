@@ -1,7 +1,5 @@
 import type { AstTopLayer } from "./ast";
-import type { BlazeOption } from "./blaze";
 import type { Site } from "./response";
-import type { SpotOption } from "./spot";
 
 export type MeasureGroup = {
     name: string;
@@ -60,12 +58,6 @@ export type MeasureOption = {
 export type MeasureStore = MeasureOption[];
 
 export type ResponseStore = Map<string, Site>;
-
-export type BackendOptions = {
-    spots?: SpotOption[];
-    blazes?: BlazeOption[];
-    customAstBackends?: string[];
-};
 
 export interface QueryEvent extends Event {
     detail: {

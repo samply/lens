@@ -24,7 +24,7 @@
             }
 
             const populations = [];
-            if ($lensOptions?.resultSummaryOptions.dataTypes !== undefined) {
+            if ($lensOptions?.resultSummaryOptions?.dataTypes !== undefined) {
                 for (const type of $lensOptions.resultSummaryOptions
                     .dataTypes) {
                     populations.push({
@@ -88,7 +88,7 @@
     }
 </script>
 
-{#if $lensOptions?.resultSummaryOptions.title !== undefined}
+{#if $lensOptions?.resultSummaryOptions?.title !== undefined}
     <div part="result-summary-header">
         <div part="heading">
             <h4 part="result-summary-header-title">
