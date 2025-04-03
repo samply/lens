@@ -1,19 +1,22 @@
+// Note: The JSON schema file options.schema.json is automatically generated
+// from the type definitions in this file. After making changes to this file run
+// `npm run schemagen` to update the JSON schema.
+
 export type LensOptions = {
-    // TODO: remove the index signature and instead properly define all fields and their types
-    [key: string]: unknown;
     chartOptions?: ChartOptions;
     catalogueKeyToResponseKeyMap?: [string, string][];
     siteMappings?: { [key: string]: string };
     negotiateOptions?: NegotiateOptions;
     projectmanagerOptions?: ProjectManagerOptions;
-    tableOptions: TableOptions;
-    resultSummaryOptions: ResultSummaryOptions;
+    tableOptions?: TableOptions;
+    resultSummaryOptions?: ResultSummaryOptions;
     /** Allows customizing icons by specifying image files */
     iconOptions?: IconUrls;
     /** Two letter language code of the application language */
     language?: string;
     /** Allows to customize texts and add new translations */
     texts?: Texts;
+    backends?: BackendOptions;
 };
 
 export type NegotiateOptions = {
@@ -110,4 +113,24 @@ export type Texts = {
     [key: string]: {
         [key: string]: string;
     };
+};
+
+export type BackendOptions = {
+    spots?: SpotOption[];
+    blazes?: BlazeOption[];
+    customAstBackends?: string[];
+};
+
+export type SpotOption = {
+    name: string;
+    backendMeasures: string;
+    url: string;
+    sites: string[];
+};
+
+export type BlazeOption = {
+    name: string;
+    url: string;
+    auth?: string;
+    backendMeasures: string;
 };

@@ -139,6 +139,19 @@
           "then": {
             "$ref": "#/definitions/DateRangeCategory"
           }
+        },
+        {
+          "if": {
+            "properties": {
+              "fieldType": {
+                "const": "string",
+                "type": "string"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/definitions/StringCategory"
+          }
         }
       ],
       "properties": {
@@ -148,7 +161,8 @@
             "single-select",
             "autocomplete",
             "number",
-            "date"
+            "date",
+            "string"
           ]
         }
       },
@@ -401,6 +415,46 @@
         "system",
         "type",
         "criteria"
+      ],
+      "type": "object"
+    },
+    "StringCategory": {
+      "additionalProperties": false,
+      "description": "A catalogue item that lets the user to specify a string.",
+      "properties": {
+        "fieldType": {
+          "const": "string",
+          "type": "string"
+        },
+        "infoButtonText": {
+          "description": "Optional text that is accessed by clicking a \"ⓘ\" button next to the display name",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "key": {
+          "description": "A key that uniquely identifies the catalogue item. It is typically used to look up the CQL snippet for that item.",
+          "type": "string"
+        },
+        "name": {
+          "description": "The item's user-facing display name",
+          "type": "string"
+        },
+        "system": {
+          "type": "string"
+        },
+        "type": {
+          "const": "EQUALS",
+          "type": "string"
+        }
+      },
+      "required": [
+        "fieldType",
+        "key",
+        "name",
+        "system",
+        "type"
       ],
       "type": "object"
     }

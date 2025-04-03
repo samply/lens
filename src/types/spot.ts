@@ -6,11 +6,3 @@ export type BeamResult = {
     task: string;
     to: string[];
 };
-
-export type SpotOption = {
-    name: string;
-    backendMeasures: string;
-    url: string;
-    sites: string[];
-    uiSiteMap: string[][];
-};

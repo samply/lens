@@ -1,6 +1,4 @@
 <script lang="ts">
-    import { run } from "svelte/legacy";
-
     import type { AutocompleteCategory, Criteria } from "../../types/catalogue";
     import { v4 as uuidv4 } from "uuid";
     import {
@@ -55,11 +53,6 @@
 
         criteria = criteria.concat(subgroups);
     });
-
-    /**
-     * stores the filtered list of autocomplete items
-     */
-    let inputOptions: Criteria[] = $state([]);
 
     /**
      * input element binds to this variable. Used to focus the input element
@@ -236,11 +229,12 @@
         );
         return resultString;
     };
+
     /**
-     * watches the input value and updates the input options
+     * stores the filtered list of autocomplete items
      */
-    run(() => {
-        inputOptions = criteria.filter((item: Criteria) => {
+    let inputOptions: Criteria[] = $derived.by(() => {
+        return criteria.filter((item: Criteria) => {
             const clearedInputValue = inputValue
                 .replace(/^[0-9]*:/g, "")
                 .toLocaleLowerCase();
@@ -258,6 +252,7 @@
             );
         });
     });
+
     /**
      * list of options that allready have been chosen and should be displayed beneath the autocomplete input
      * chosenOptions are constructed from the query store and has no duplicates
@@ -277,7 +272,8 @@
             [],
         ),
     );
-    run(() => {
+
+    $effect(() => {
         if (activeDomElement) {
             scrollInsideContainerWhenActiveDomElementIsOutOfView(
                 activeDomElement,
