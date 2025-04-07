@@ -1,0 +1,39 @@
+# This workflow is triggered on push to the main branch and builds the TypeDoc
+# and mdbook documentation and deploys them to GitHub Pages.
+#
+# This file is copied and adapted from:
+# https://github.com/rust-lang/mdBook/wiki/Automated-Deployment%3A-GitHub-Actions#using-deploy-via-actions
+
+name: Deploy TypeDoc and mdbook
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        permissions:
+            pages: write # To push to a GitHub Pages site
+            id-token: write # To update the deployment status
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+            - run: npm ci
+            - run: npx typedoc src/index.ts
+            - name: Install latest mdbook
+              run: |
+                  tag=$(curl 'https://api.github.com/repos/rust-lang/mdbook/releases/latest' | jq -r '.tag_name')
+                  url="https://github.com/rust-lang/mdbook/releases/download/${tag}/mdbook-${tag}-x86_64-unknown-linux-gnu.tar.gz"
+                  mkdir mdbook
+                  curl -sSL $url | tar -xz --directory=./mdbook
+                  echo `pwd`/mdbook >> $GITHUB_PATH
+            - run: mdbook build book
+            - name: Move assets to artifact directory
+              run: |
+                  mkdir _site
+                  mv book/book _site
+                  mv docs _site
+            - uses: actions/configure-pages@v5
+            - uses: actions/upload-pages-artifact@v3
+            - uses: actions/deploy-pages@v4
