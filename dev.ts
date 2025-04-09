@@ -58,6 +58,23 @@ setOptions({
 
 setCatalogue([
     {
+        fieldType: "number",
+        key: "body_weight",
+        name: "Body weight",
+        type: "BETWEEN",
+        system: "",
+        min: 0,
+        unitText: "kg",
+    },
+    {
+        fieldType: "date",
+        key: "birthday",
+        name: "Birthday",
+        type: "BETWEEN",
+        system: "",
+        max: "2025-09-04",
+    },
+    {
         fieldType: "group",
         key: "donor",
         name: "Donor/Clinical Information",
