@@ -290,9 +290,9 @@ jobs:
             - uses: actions/checkout@v4
             - uses: actions/setup-node@v4
             - run: npm ci
-            - run: npx svelte-check
             - run: npx prettier --check .
             - run: npx eslint .
-            - run: npx vite build
+            - run: npm run check
+            - run: npm run build
             - run: bash scripts/validate-json-schema.bash
 ```
