@@ -355,6 +355,10 @@
         "type": {
           "const": "BETWEEN",
           "type": "string"
+        },
+        "unitText": {
+          "description": "Optional text that is shown next to the input field, e.g. \"kg\"",
+          "type": "string"
         }
       },
       "required": [
