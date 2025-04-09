@@ -68,8 +68,8 @@ setCatalogue([
     },
     {
         fieldType: "date",
-        key: "birthday",
-        name: "Birthday",
+        key: "date-of-birth",
+        name: "Date of birth",
         type: "BETWEEN",
         system: "",
         max: "2025-09-04",
