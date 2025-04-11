@@ -5,23 +5,78 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Document</title>
         <script type="module" src="dev.ts"></script>
+        <style>
+            body {
+                padding-left: 100px;
+                padding-right: 100px;
+            }
+
+            header {
+                background-color: ghostwhite;
+            }
+
+            footer {
+                background-color: ghostwhite;
+            }
+
+            .container {
+                text-align: left;
+            }
+
+            .box {
+                display: inline-block;
+                padding: 10px;
+                margin-right: 20px;
+                width: 400px;
+            }
+            .box2 {
+                display: inline-block;
+                width: 800px;
+                padding: 10px;
+                margin-right: 20px;
+            }
+
+            /* Clearfix for container */
+            .container::after {
+                content: "";
+                display: table;
+                clear: both;
+            }
+        </style>
     </head>
+
     <body>
-        <lens-query-spinner></lens-query-spinner>
-        <lens-search-bar></lens-search-bar>
-        <lens-search-button></lens-search-button>
-        <lens-catalogue></lens-catalogue>
-        <lens-result-summary></lens-result-summary>
-        <lens-result-table></lens-result-table>
-        <lens-chart
-            title="Geschlecht"
-            catalogueGroupCode="gender"
-            chartType="pie"
-            displayLegends="true"
-        ></lens-chart>
+        <header>
+            <h2>Lens Demo</h2>
+        </header>
+        <div>
+            <lens-search-bar></lens-search-bar>
+            <lens-search-button></lens-search-button>
+            <lens-query-spinner></lens-query-spinner>
+        </div>
+        <div class="container">
+            <div class="box">
+                <lens-catalogue></lens-catalogue>
+            </div>
+            <div class="box2">
+                <lens-result-summary></lens-result-summary>
+                <lens-result-table></lens-result-table>
+                <lens-chart
+                    title="Geschlecht"
+                    catalogueGroupCode="gender"
+                    chartType="pie"
+                    displayLegends="true"
+                ></lens-chart>
+            </div>
+        </div>
         <button id="error-toast-test-button">Error toast test</button>
         <button id="switch-language-to-german-button">🇩🇪</button
         ><button id="switch-language-to-english-button">🇬🇧</button>
         <error-toasts></error-toasts>
+
+        <footer>
+            Made with ♥ and
+            <a href="https://github.com/samply/lens">samply/lens</a>.
+        </footer>
     </body>
 </html>
