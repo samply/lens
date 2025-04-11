@@ -261,13 +261,14 @@
             {
                 "name": "DKTK",
                 "backendMeasures": "DKTK_STRAT_DEF_IN_INITIAL_POPULATION",
-                "url": "https://backend.demo.lens.samply.de/prod/",
+                "url": "http://localhost:8100",
                 "sites": [
                     "dktk-test",
                     "dktk-datashield-test",
                     "berlin",
                     "berlin-test",
                     "dresden",
+                    "patrick-skowronek-dev",
                     "essen",
                     "frankfurt",
                     "freiburg",
