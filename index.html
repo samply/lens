@@ -16,11 +16,23 @@
             title="Geschlecht"
             catalogueGroupCode="gender"
             chartType="pie"
-            xAxisStepSize="1"
-            yAxisStepSize="1"
-            xAxisPrecision="0"
-            yAxisPrecision="0"
             displayLegends="true"
+        ></lens-chart>
+        <lens-chart
+            title="diagnosis"
+            catalogueGroupCode="diagnosis"
+            chartType="bar"
+            xAxisTitle="ICD-10-Codes"
+            yAxisTitle="Anzahl der Diagnosen"
+        ></lens-chart>
+        <lens-chart
+            title="diagnosis"
+            catalogueGroupCode="diagnosis"
+            indexAxis="y"
+            scaleType="logarithmic"
+            chartType="bar"
+            xAxisTitle="Anzahl der Diagnosen"
+            yAxisTitle="ICD-10-Codes"
         ></lens-chart>
     </body>
 </html>

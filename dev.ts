@@ -7,7 +7,10 @@ setOptions({
         riverside: "Riverside",
         summit: "Summit",
     },
-    catalogueKeyToResponseKeyMap: [["gender", "Gender"]],
+    catalogueKeyToResponseKeyMap: [
+        ["gender", "Gender"],
+        ["diagnosis", "diagnosis-icd10"],
+    ],
     chartOptions: {
         gender: {
             legendMapping: {
@@ -15,6 +18,11 @@ setOptions({
                 female: "Weiblich",
                 other: "Divers",
             },
+        },
+        diagnosis: {
+            hintText: [
+                "Bei Patienten mit mehreren onkologischen Diagnosen werden auch Einträge angezeigt, die ggfs. nicht den ausgewählten Suchkriterien entsprechen.",
+            ],
         },
     },
     tableOptions: {
@@ -291,6 +299,107 @@ function makeSite(male: number, female: number, other: number): Site {
                                     ],
                                     value: {
                                         text: "other",
+                                    },
+                                },
+                            ],
+                        },
+                    ],
+                },
+                {
+                    code: {
+                        text: "diagnosis-icd10",
+                    },
+                    population: [
+                        {
+                            code: {
+                                coding: [
+                                    {
+                                        code: "initial-population",
+                                        system: "http://terminology.hl7.org/CodeSystem/measure-population",
+                                    },
+                                ],
+                            },
+                            count: 100,
+                        },
+                    ],
+                    stratifier: [
+                        {
+                            code: [
+                                {
+                                    text: "diagnosis-icd10",
+                                },
+                            ],
+                            stratum: [
+                                {
+                                    population: [
+                                        {
+                                            code: {
+                                                coding: [
+                                                    {
+                                                        code: "initial-population",
+                                                        system: "http://terminology.hl7.org/CodeSystem/measure-population",
+                                                    },
+                                                ],
+                                            },
+                                            count: 40,
+                                        },
+                                    ],
+                                    value: {
+                                        text: "C31",
+                                    },
+                                },
+                                {
+                                    population: [
+                                        {
+                                            code: {
+                                                coding: [
+                                                    {
+                                                        code: "initial-population",
+                                                        system: "http://terminology.hl7.org/CodeSystem/measure-population",
+                                                    },
+                                                ],
+                                            },
+                                            count: 20,
+                                        },
+                                    ],
+                                    value: {
+                                        text: "C31.0",
+                                    },
+                                },
+                                {
+                                    population: [
+                                        {
+                                            code: {
+                                                coding: [
+                                                    {
+                                                        code: "initial-population",
+                                                        system: "http://terminology.hl7.org/CodeSystem/measure-population",
+                                                    },
+                                                ],
+                                            },
+                                            count: 30,
+                                        },
+                                    ],
+                                    value: {
+                                        text: "C41",
+                                    },
+                                },
+                                {
+                                    population: [
+                                        {
+                                            code: {
+                                                coding: [
+                                                    {
+                                                        code: "initial-population",
+                                                        system: "http://terminology.hl7.org/CodeSystem/measure-population",
+                                                    },
+                                                ],
+                                            },
+                                            count: 10,
+                                        },
+                                    ],
+                                    value: {
+                                        text: "41.0",
                                     },
                                 },
                             ],
