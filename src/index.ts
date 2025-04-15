@@ -47,6 +47,7 @@ import "./components/DataPasser.wc.svelte";
 import "./components/informational/ModifiedSearchComponent.wc.svelte";
 import "./components/informational/QuerySpinner.wc.svelte";
 import "./components/ErrorToasts.wc.svelte";
+import "./components/About.wc.svelte";
 
 // Include CSS in the bundle
 import "./styles/index.css";

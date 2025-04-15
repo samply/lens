@@ -36,6 +36,7 @@
         "@commitlint/config-conventional": "^19.8.0",
         "@eslint/js": "^9.22.0",
         "@sveltejs/vite-plugin-svelte": "^5.0.3",
+        "@types/canvas-confetti": "^1.9.0",
         "@types/uuid": "^10.0.0",
         "ajv-cli": "^5.0.0",
         "eslint": "^9.22.0",
@@ -59,6 +60,7 @@
     "dependencies": {
         "ajv": "^8.17.1",
         "ajv-formats": "^3.0.1",
+        "canvas-confetti": "^1.9.3",
         "chart.js": "^4.4.8",
         "uuid": "^11.1.0"
     },
