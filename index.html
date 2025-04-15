@@ -20,27 +20,23 @@
             }
 
             .container {
-                text-align: left;
+                display: flex;
+            }
+
+            .searchbar {
+                display: grid;
+                grid-template-columns: 25fr 1fr 1fr;
+                align-items: center;
             }
 
             .box {
-                display: inline-block;
                 padding: 10px;
-                margin-right: 20px;
-                width: 400px;
-            }
-            .box2 {
-                display: inline-block;
-                width: 800px;
-                padding: 10px;
-                margin-right: 20px;
+                padding: 1em;
+                width: 600px;
             }
 
-            /* Clearfix for container */
-            .container::after {
-                content: "";
-                display: table;
-                clear: both;
+            .box2 {
+                flex-grow: 1;
             }
         </style>
     </head>
@@ -49,10 +45,10 @@
         <header>
             <h2>Lens Demo</h2>
         </header>
-        <div>
+        <div class="searchbar">
             <lens-search-bar></lens-search-bar>
-            <lens-search-button></lens-search-button>
             <lens-query-spinner></lens-query-spinner>
+            <lens-search-button></lens-search-button>
         </div>
         <div class="container">
             <div class="box">
