@@ -474,13 +474,32 @@
         chart.update();
     };
 
+    /*
+     * clear charts
+     */
+    export function resetChart() {
+        if (!chart) return;
+
+        chart.data.labels = ["", "", "", ""];
+        chart.data.datasets = [
+            {
+                data: [1, 1, 1, 1],
+                backgroundColor: ["#E6E6E6"],
+                hoverBackgroundColor: ["#E6E6E6"], // or remove if Chart.js doesn't recognize it
+            },
+        ];
+        noDataAvailable = false;
+
+        chart.update();
+    }
+
     onMount(() => {
         if (indexAxis === "y") {
             initialChartData.options.scales.x.type = scaleType;
         } else {
             initialChartData.options.scales.y.type = scaleType;
         }
-        chart = new Chart(canvas, initialChartData);
+        chart = new Chart(canvas, initialChartData); // Store the Chart instance
     });
 
     const customSort = (a: string, b: string): number => {
