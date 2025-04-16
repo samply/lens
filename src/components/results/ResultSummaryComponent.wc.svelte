@@ -89,7 +89,7 @@
         return aggregatedPopulation.toString();
     }
 
-    function resetDiagrams() {
+    export function resetDiagrams() {
         //clear searchquery
         clearQuery();
         // clear resonseStore
