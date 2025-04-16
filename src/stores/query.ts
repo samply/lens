@@ -199,6 +199,14 @@ export const removeItemFromQuery = (
     });
 };
 
+/*
+* clears Quary
+*/
+export const clearQuery = () => {
+    queryStore.update(() => [[]]);
+    queryModified.set(true);
+}
+
 /**
  * finds objects with the same name in an array
  * @param objectsArray - the array to be searched
@@ -294,7 +302,7 @@ export const addStratifier = ({
                             name: childCategorie.name,
                             system:
                                 "system" in childCategorie &&
-                                childCategorie.system !== ""
+                                    childCategorie.system !== ""
                                     ? childCategorie.system
                                     : system,
                             type:

@@ -86,6 +86,7 @@
         });
         return aggregatedPopulation.toString();
     }
+
 </script>
 
 {#if $lensOptions?.resultSummaryOptions?.title !== undefined}
