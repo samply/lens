@@ -10,12 +10,10 @@
         responseStore,
         getAggregatedPopulation,
         getAggregatedPopulationForStratumCode,
-        clearResponseStore,
     } from "../../stores/response";
     import type { ResponseStore } from "../../types/backend";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
     import type { HeaderData } from "../../types/options";
-    import { clearQuery } from "../../stores/query";
 
     // This is derived from lensOptions and from responseStore
     const populations: { title: string; population: string }[] = $derived.by(
@@ -89,18 +87,6 @@
         return aggregatedPopulation.toString();
     }
 
-    export function resetDiagrams() {
-        //clear searchquery
-        clearQuery();
-        // clear resonseStore
-        clearResponseStore();
-        // Reset the charts
-        const charts = document.querySelectorAll("lens-chart");
-        charts.forEach((chart: any) => {
-            console.log(chart);
-            chart.resetChart?.(); // Now it should work
-        });
-    }
 </script>
 
 {#if $lensOptions?.resultSummaryOptions?.title !== undefined}
@@ -126,23 +112,4 @@
             {population.title}: {population.population}
         </div>
     {/each}
-    <!-- ToDo Change "Reset" to be dynamic (translated)-->
-    <button class="reset-button" onclick={resetDiagrams}>Reset</button>
 </div>
-
-<!-- ToDo Move Style ? -->
-<style>
-    button.reset-button {
-    background-color: var(--button-background-color);
-    color: var(--button-color);
-    border: none;
-    border-radius: var(--border-radius-small);
-    padding: var(--gap-xs) var(--gap-s);
-    font-size: var(--font-size-m);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: var(--gap-xs);
-}
-
-</style>
