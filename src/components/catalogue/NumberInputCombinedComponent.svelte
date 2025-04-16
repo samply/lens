@@ -78,12 +78,7 @@
             bind:value={from}
             bind:this={fromInput}
         />
-        {#if element.unitText !== undefined}
-            <span part="number-input-formfield-unit">{element.unitText}</span>
-        {/if}
-    </div>
-    <span part="number-input-range-separator">-</span>
-    <div part="number-input-formfield-wrapper">
+        <span part="number-input-range-separator">-</span>
         <input
             part="number-input-formfield"
             type="number"
@@ -122,6 +117,10 @@
         padding: var(--gap-xxs) var(--gap-xs);
         width: 70px;
         font-size: var(--font-size-m);
+    }
+    [part="number-input-range-separator"] {
+        display: flex;
+        align-items: center;
     }
     [part="number-input-formfield-unit"] {
         display: flex;

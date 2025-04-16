@@ -13,6 +13,7 @@
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
     import DatePickerComponent from "./DatePickerComponent.svelte";
     import { translate } from "../../helpers/translations";
+    import NumberInputCombinedComponent from "./NumberInputCombinedComponent.svelte";
 
     interface Props {
         element: Category;
@@ -194,6 +195,9 @@
                     <AutocompleteComponent {element} />
                 {:else if element.fieldType === "number"}
                     <NumberInputComponent {element} />
+                    <br />
+                    <br />
+                    <NumberInputCombinedComponent {element} />
                 {:else if element.fieldType === "string"}
                     <StringInputComponent {element} />
                 {:else if element.fieldType === "date"}

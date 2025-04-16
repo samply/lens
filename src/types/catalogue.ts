@@ -111,6 +111,8 @@ export type NumericRangeCategory = {
     max?: number;
     /** Optional text that is accessed by clicking a "ⓘ" button next to the display name */
     infoButtonText?: string[];
+    /** Optional text that is shown next to the input field, e.g. "kg" */
+    unitText?: string;
 };
 
 /**

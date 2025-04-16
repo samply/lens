@@ -19,6 +19,7 @@ export function setOptions(options: LensOptions) {
     if (valid) {
         lensOptions.set(options);
     } else {
+        lensOptions.set(options);
         throw new Error(
             "Options not conform with JSON schema: " +
                 JSON.stringify(ajv.errors),
