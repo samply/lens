@@ -6,21 +6,11 @@
 
 <script lang="ts">
     import pkg from "../../package.json";
-    import confetti from "canvas-confetti";
-
     const version = pkg.version;
-
-    function launchConfetti() {
-        confetti({
-            particleCount: 100,
-            spread: 70,
-            origin: { y: 1 },
-        });
-    }
 </script>
 
 <div>
-    Made with <button onclick={launchConfetti} class="heart-button" title="Version: v{version}">♥</button> and
+    Made with <button class="heart-button" title="Version: v{version}">♥</button> and
     <a href="https://github.com/samply/lens">samply/lens</a>.
 </div>
 
