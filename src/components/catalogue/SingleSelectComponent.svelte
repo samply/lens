@@ -9,9 +9,18 @@
     let { element }: Props = $props();
 </script>
 
-<div part="criterion-wrapper single-select-wrapper">
+<div part="single-select-wrapper">
     <!-- eslint-disable-next-line svelte/require-each-key -->
     {#each element.criteria as criterion}
         <SingleSelectItemComponent {element} {criterion} />
     {/each}
 </div>
+
+<style>
+    [part~="single-select-wrapper"] {
+        display: grid;
+        grid-template-columns: max-content auto;
+        column-gap: 10px;
+        align-items: center;
+    }
+</style>

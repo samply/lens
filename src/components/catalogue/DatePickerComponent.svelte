@@ -4,6 +4,7 @@
     import { v4 as uuidv4 } from "uuid";
     import { activeQueryGroupIndex, addItemToQuery } from "../../stores/query";
     import { onMount } from "svelte";
+    import { translate } from "../../helpers/translations";
 
     let {
         element,
@@ -37,9 +38,9 @@
 
     $effect(() => {
         if (from === "" && to === "") {
-            fromInput.setCustomValidity("Cannot both be empty");
+            fromInput.setCustomValidity(translate("cannot_both_be_empty"));
         } else if (from !== "" && to !== "" && from > to) {
-            fromInput.setCustomValidity("From must be less than To");
+            fromInput.setCustomValidity(translate("min_must_be_less_than_max"));
         } else {
             fromInput.setCustomValidity("");
         }
@@ -67,18 +68,18 @@
     }
 </script>
 
-<form part="number-input-form" {onsubmit}>
+<form part="date-input-form" {onsubmit}>
     <input
-        part="number-input-formfield"
+        part="date-input-formfield"
         type="date"
         min={element.min}
         max={element.max}
         bind:value={from}
         bind:this={fromInput}
     />
-    <span part="number-input-range-separator">-</span>
+    <span part="date-input-range-separator">-</span>
     <input
-        part="number-input-formfield"
+        part="date-input-formfield"
         type="date"
         min={element.min}
         max={element.max}
@@ -89,12 +90,12 @@
 </form>
 
 <style>
-    [part="number-input-form"] {
+    [part~="date-input-form"] {
         display: flex;
         align-items: center;
         gap: var(--gap-xs);
     }
-    [part="number-input-formfield"] {
+    [part~="date-input-formfield"] {
         border: 1px solid var(--gray);
         border-radius: var(--gap-xs);
         outline: none;
@@ -102,7 +103,7 @@
         font-size: var(--font-size-s);
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
-    [part="number-input-formfield"]:focus {
+    [part~="date-input-formfield"]:focus {
         border-color: var(--blue);
     }
 </style>

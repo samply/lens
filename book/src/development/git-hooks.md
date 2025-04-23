@@ -1,0 +1,3 @@
+# Git hooks
+
+The repository uses [Husky](https://typicode.github.io/husky/) with [lint-staged](https://github.com/lint-staged/lint-staged) to lint your commits. Husky automatically sets up a git hook when you do `npm install` for the first time. When you `git commit` the commit message is checked to comply with [Conventional Commits](https://www.conventionalcommits.org/) and your staged files (and staged files only) are verified with [ESLint](https://eslint.org/) and formatted with [Prettier](https://prettier.io/). If there are any problems you will get an error at the time of commit. This has the advantage that you notice problems before creating a pull request and without having to wait for GitHub Actions (our CI tool) to complete.

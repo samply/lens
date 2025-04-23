@@ -4,6 +4,7 @@
     import { v4 as uuidv4 } from "uuid";
     import { activeQueryGroupIndex, addItemToQuery } from "../../stores/query";
     import { onMount } from "svelte";
+    import { translate } from "../../helpers/translations";
 
     let {
         element,
@@ -37,9 +38,9 @@
 
     $effect(() => {
         if (from === null && to === null) {
-            fromInput.setCustomValidity("Cannot both be empty");
+            fromInput.setCustomValidity(translate("cannot_both_be_empty"));
         } else if (from !== null && to !== null && from > to) {
-            fromInput.setCustomValidity("From must be less than To");
+            fromInput.setCustomValidity(translate("min_must_be_less_than_max"));
         } else {
             fromInput.setCustomValidity("");
         }
@@ -73,6 +74,7 @@
             part="number-input-formfield"
             type="number"
             step="any"
+            placeholder="min"
             min={element.min}
             max={element.max}
             bind:value={from}
@@ -88,6 +90,7 @@
             part="number-input-formfield"
             type="number"
             step="any"
+            placeholder="max"
             min={element.min}
             max={element.max}
             bind:value={to}
@@ -101,29 +104,29 @@
 </form>
 
 <style>
-    [part="number-input-form"] {
+    [part~="number-input-form"] {
         display: flex;
         align-items: center;
         gap: var(--gap-xs);
     }
-    [part="number-input-formfield-wrapper"] {
+    [part~="number-input-formfield-wrapper"] {
         display: flex;
         border: 1px solid var(--gray);
         border-radius: var(--gap-xs);
         overflow: hidden;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
-    [part="number-input-formfield-wrapper"]:focus-within {
+    [part~="number-input-formfield-wrapper"]:focus-within {
         border-color: var(--blue);
     }
-    [part="number-input-formfield"] {
+    [part~="number-input-formfield"] {
         border: none;
         outline: none;
         padding: var(--gap-xxs) var(--gap-xs);
         width: 70px;
         font-size: var(--font-size-m);
     }
-    [part="number-input-formfield-unit"] {
+    [part~="number-input-formfield-unit"] {
         display: flex;
         align-items: center;
         border-left: 1px solid var(--gray);

@@ -58,6 +58,75 @@ setOptions({
 
 setCatalogue([
     {
+        fieldType: "autocomplete",
+        key: "diagnosis",
+        name: "Diagnosis",
+        type: "EQUALS",
+        system: "http://fhir.de/CodeSystem/dimdi/icd-10-gm",
+        criteria: [
+            {
+                key: "C31",
+                name: "C31",
+                description: "Malignant neoplasm of accessory sinuses",
+            },
+            {
+                key: "C31.0",
+                name: "C31.0",
+                description: "Malignant neoplasm: Maxillary sinus",
+            },
+            {
+                key: "C41",
+                name: "C41",
+                description:
+                    "Malignant neoplasm of bone and articular cartilage of other and unspecified sites",
+            },
+            {
+                key: "C41.0",
+                name: "C41.0",
+                description: "Malignant neoplasm: Bones of skull and face",
+            },
+            {
+                key: "C41.1",
+                name: "C41.1",
+                description: "Malignant neoplasm: Bones of vertebrae",
+            },
+            {
+                key: "C41.2",
+                name: "C41.2",
+                description: "Malignant neoplasm: Bones of pelvis",
+            },
+        ],
+    },
+    {
+        fieldType: "single-select",
+        key: "blood-group",
+        name: "Blood group",
+        type: "EQUALS",
+        system: "",
+        criteria: [
+            {
+                key: "A+",
+                name: "A+",
+                description: "",
+            },
+            {
+                key: "A-",
+                name: "A-",
+                description: "",
+            },
+            {
+                key: "B+",
+                name: "B+",
+                description: "",
+            },
+            {
+                key: "B-",
+                name: "B-",
+                description: "",
+            },
+        ],
+    },
+    {
         fieldType: "number",
         key: "body_weight",
         name: "Body weight",
@@ -73,6 +142,13 @@ setCatalogue([
         type: "BETWEEN",
         system: "",
         max: "2025-09-04",
+    },
+    {
+        fieldType: "string",
+        key: "first-name",
+        name: "First name",
+        type: "EQUALS",
+        system: "",
     },
     {
         fieldType: "group",
