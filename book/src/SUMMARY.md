@@ -4,7 +4,6 @@
     - [Creating a new application](guide/new-app.md)
     - [Overwriting styles](guide/overwriting-styles.md)
     - [Translations](guide/translations.md)
-      <!-- - [Query AST](guide/ast.md) -->
 - [Development](development/README.md)
     - [Git hooks](development/git-hooks.md)
     - [Styling](development/styling.md)
