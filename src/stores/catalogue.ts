@@ -322,19 +322,18 @@ export const getCriteriaFromKey = (
 };
 
 /**
- * Set the catalogue. An exception is thrown if the catalogue does not match the JSON schema.
+ * Set the catalogue. A warning is logged to the browser console if the catalogue does not match the JSON schema.
  */
 export function setCatalogue(cat: Catalogue) {
+    catalogue.set(cat);
     const ajv = new Ajv({
         allErrors: true,
     });
     addFormats(ajv);
     const valid = ajv.validate(catalogueSchema, cat);
-    if (valid) {
-        catalogue.set(cat);
-    } else {
-        throw new Error(
-            "Catalogue not conform with JSON schema: " +
+    if (!valid) {
+        console.warn(
+            "Catalogue does not conform with JSON schema: " +
                 JSON.stringify(ajv.errors),
         );
     }
