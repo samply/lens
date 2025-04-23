@@ -1,5 +1,5 @@
 <script lang="ts">
-    import AddToQueryButton from "./AddToQueryButton.svelte";
+    import AddButton from "./AddButton.svelte";
     import type { DateRangeCategory } from "../../types/catalogue";
     import { v4 as uuidv4 } from "uuid";
     import { activeQueryGroupIndex, addItemToQuery } from "../../stores/query";
@@ -85,7 +85,7 @@
         bind:value={to}
         bind:this={toInput}
     />
-    <AddToQueryButton />
+    <AddButton />
 </form>
 
 <style>

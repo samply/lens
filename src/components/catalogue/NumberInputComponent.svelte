@@ -1,5 +1,5 @@
 <script lang="ts">
-    import AddToQueryButton from "./AddToQueryButton.svelte";
+    import AddButton from "./AddButton.svelte";
     import type { NumericRangeCategory } from "../../types/catalogue";
     import { v4 as uuidv4 } from "uuid";
     import { activeQueryGroupIndex, addItemToQuery } from "../../stores/query";
@@ -97,7 +97,7 @@
             <span part="number-input-formfield-unit">{element.unitText}</span>
         {/if}
     </div>
-    <AddToQueryButton />
+    <AddButton />
 </form>
 
 <style>
