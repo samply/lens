@@ -200,12 +200,12 @@ export const removeItemFromQuery = (
 };
 
 /*
-* clears Quary
-*/
+ * clears Query
+ */
 export const clearQuery = () => {
     queryStore.update(() => [[]]);
     queryModified.set(true);
-}
+};
 
 /**
  * finds objects with the same name in an array
@@ -302,7 +302,7 @@ export const addStratifier = ({
                             name: childCategorie.name,
                             system:
                                 "system" in childCategorie &&
-                                    childCategorie.system !== ""
+                                childCategorie.system !== ""
                                     ? childCategorie.system
                                     : system,
                             type:

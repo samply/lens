@@ -485,7 +485,7 @@
             {
                 data: [1, 1, 1, 1],
                 backgroundColor: ["#E6E6E6"],
-                hoverBackgroundColor: ["#E6E6E6"], // or remove if Chart.js doesn't recognize it
+                hoverBackgroundColor: ["#E6E6E6"],
             },
         ];
         noDataAvailable = false;

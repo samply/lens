@@ -42,11 +42,11 @@ export const updateResponseStore = (response: ResponseStore): void => {
 };
 
 /*
-* clear the response store
-*/
+ * clear the response store
+ */
 export const clearResponseStore = () => {
     responseStore.set(new Map<string, Site>());
-}
+};
 
 /**
  * @param store - the response store
