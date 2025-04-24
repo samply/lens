@@ -28,4 +28,7 @@
         height: 28px;
         color: var(--button-background-color);
     }
+    [part~="add-to-query-button"]:hover svg {
+        color: var(--light-blue);
+    }
 </style>
