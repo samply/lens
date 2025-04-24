@@ -8,19 +8,18 @@ import optionsSchema from "../../schema/options.schema.json";
 export const lensOptions = writable<LensOptions | undefined>();
 
 /**
- * Set the options. An exception is thrown if the options do not match the JSON schema.
+ * Set the options. A warning is logged to the browser console if the options do not match the JSON schema.
  */
 export function setOptions(options: LensOptions) {
+    lensOptions.set(options);
     const ajv = new Ajv({
         allErrors: true,
     });
     addFormats(ajv);
     const valid = ajv.validate(optionsSchema, options);
-    if (valid) {
-        lensOptions.set(options);
-    } else {
-        throw new Error(
-            "Options not conform with JSON schema: " +
+    if (!valid) {
+        console.warn(
+            "Options do not conform with JSON schema: " +
                 JSON.stringify(ajv.errors),
         );
     }
