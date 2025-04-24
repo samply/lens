@@ -1,6 +1,12 @@
-This is how you would implement a reset button using the resetDiagrams functionn (service: reset.ts)
+# Reset button
+
+This is how you would implement a reset button using the `resetDiagrams` function.
 
 ```svelte
+<script>
+    import { resetDiagrams } from "@samply/lens";
+</script>
+
 <!-- example for a simple button-->
 <button class="reset-button" onclick={resetDiagrams}>Reset</button>
 

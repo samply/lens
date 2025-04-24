@@ -199,14 +199,6 @@ export const removeItemFromQuery = (
     });
 };
 
-/*
- * clears Query
- */
-export const clearQuery = () => {
-    queryStore.update(() => [[]]);
-    queryModified.set(true);
-};
-
 /**
  * finds objects with the same name in an array
  * @param objectsArray - the array to be searched
