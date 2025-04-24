@@ -25,7 +25,7 @@
     }
     [part~="add-to-query-button"] svg {
         display: block;
-        height: 30px;
+        height: 28px;
         color: var(--button-background-color);
     }
 </style>
