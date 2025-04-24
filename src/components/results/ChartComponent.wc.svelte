@@ -44,9 +44,6 @@
         viewScales?: boolean;
         backgroundColor?: string[] | string;
         backgroundHoverColor?: string[];
-        xAxisStepSize?: number;
-        yAxisStepSize?: number;
-        useIntegerPrecision?: boolean | undefined;
     }
 
     let {
@@ -64,8 +61,6 @@
         groupRange = $bindable(0),
         groupingDivider = "",
         filterRegex = "",
-        xAxisStepSize = undefined,
-        yAxisStepSize = 1,
         groupingLabel = "",
         viewScales = chartType !== "pie" ? true : false,
         backgroundColor = $bindable([
@@ -166,7 +161,6 @@
                     ticks:
                         chartType === "bar" && indexAxis === "x"
                             ? {
-                                  stepSize: yAxisStepSize,
                                   callback: (value: number) => {
                                       return Number.isInteger(value)
                                           ? value
@@ -174,7 +168,6 @@
                                   },
                               }
                             : {
-                                  stepSize: yAxisStepSize,
                                   callback: (val: string | number) => {
                                       if (typeof val === "string") return val;
                                       const key: unknown =
@@ -203,7 +196,6 @@
                     ticks:
                         chartType === "bar" && indexAxis === "x"
                             ? {
-                                  stepSize: xAxisStepSize,
                                   callback: (val: string | number) => {
                                       if (typeof val === "string") return val;
                                       const key: unknown =
@@ -222,7 +214,6 @@
                                   },
                               }
                             : {
-                                  stepSize: xAxisStepSize,
                                   callback: (value: number) => {
                                       return Number.isInteger(value)
                                           ? value
