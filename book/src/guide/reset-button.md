@@ -2,13 +2,13 @@
 
 This is how you would implement a reset button using the `resetDiagrams` function.
 
-```svelte
+```html
 <script>
     import { resetDiagrams } from "@samply/lens";
 </script>
 
 <!-- example for a simple button-->
-<button class="reset-button" onclick={resetDiagrams}>Reset</button>
+<button class="reset-button" onclick="{resetDiagrams}">Reset</button>
 
 <!-- styling to fit with the rest/other buttons -->
 <style>
