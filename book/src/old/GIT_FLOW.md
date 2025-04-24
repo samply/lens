@@ -1,3 +1,5 @@
+_TODO: verify if the information on this page is up to date and integrate it into the development guide_
+
 ## Branching
 
 ### Gitflow:

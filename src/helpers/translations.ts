@@ -11,6 +11,14 @@ export function translate(key: string): string {
 }
 
 const lensTranslations: Texts = {
+    cannot_both_be_empty: {
+        en: "Cannot both be empty",
+        de: "Es können nicht beide Felder leer sein",
+    },
+    min_must_be_less_than_max: {
+        en: "min must be less than max",
+        de: "Der erste Wert muss kleiner sein",
+    },
     loading: {
         en: "Loading...",
         de: "Lädt...",
