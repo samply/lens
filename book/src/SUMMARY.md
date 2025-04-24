@@ -5,6 +5,7 @@
     - [AST](guide/AST.md)
     - [Overwriting styles](guide/overwriting-styles.md)
     - [Translations](guide/translations.md)
+    - [Chart reset button](guide/reset-button.md)
 - [Development](development/README.md)
 - [Release notes](releases/README.md)
     - [Version 0.5](releases/v0.5.md)

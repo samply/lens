@@ -1,4 +1,4 @@
-# Reset button
+# Chart reset button
 
 This is how you would implement a reset button using the `resetDiagrams` function.
 
