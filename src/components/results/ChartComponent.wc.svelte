@@ -44,6 +44,10 @@
         viewScales?: boolean;
         backgroundColor?: string[] | string;
         backgroundHoverColor?: string[];
+        xAxisStepSize?: number;
+        yAxisStepSize?: number;
+        xAxisPrecision?: number;
+        yAxisPrecision?: number;
     }
 
     let {
@@ -86,6 +90,10 @@
             "#80699b",
         ]),
         backgroundHoverColor = ["#aaaaaa"],
+        xAxisStepSize = 1,
+        yAxisStepSize = 1,
+        xAxisPrecision = 0,
+        yAxisPrecision = 0,
     }: Props = $props();
 
     // This is undefined if the lens options are not loaded yet
@@ -117,7 +125,7 @@
             labels: ["", "", "", ""],
             datasets: [
                 {
-                    data: [1, 1, 1, 1],
+                    data: [3, 1, 2, 5],
                     backgroundColor: ["#E6E6E6"],
                     backgroundHoverColor: ["#E6E6E6"],
                 },
@@ -157,6 +165,13 @@
                         display: true,
                         text: yAxisTitle,
                     },
+                    ticks: {
+                        stepSize: yAxisStepSize,
+                        callback: (value: number) => {
+                            return value.toFixed(yAxisPrecision);
+                        },
+                    },
+                    type: scaleType === "linear" ? "linear" : undefined,
                 },
                 x: {
                     display: viewScales,
@@ -167,6 +182,7 @@
                     ticks:
                         chartType === "bar"
                             ? {
+                                  stepSize: xAxisStepSize,
                                   callback: (val: string | number) => {
                                       if (indexAxis === "y")
                                           return val.toString();
@@ -186,8 +202,13 @@
                                       return result;
                                   },
                               }
-                            : [],
-                    type: undefined,
+                            : {
+                                  stepSize: xAxisStepSize,
+                                  callback: (value: number) => {
+                                      return value.toFixed(xAxisPrecision);
+                                  },
+                              },
+                    type: indexAxis === "y" ? scaleType : undefined,
                 },
             },
         },
