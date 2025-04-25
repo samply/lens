@@ -117,7 +117,7 @@
             labels: ["", "", "", ""],
             datasets: [
                 {
-                    data: [1, 1, 1, 1],
+                    data: [3, 1, 2, 5],
                     backgroundColor: ["#E6E6E6"],
                     backgroundHoverColor: ["#E6E6E6"],
                 },
@@ -153,6 +153,7 @@
             scales: {
                 y: {
                     display: viewScales,
+                    suggestedMax: 6,
                     title: {
                         display: true,
                         text: yAxisTitle,
@@ -160,6 +161,7 @@
                 },
                 x: {
                     display: viewScales,
+                    suggestedMax: 6,
                     title: {
                         display: true,
                         text: xAxisTitle,
@@ -389,6 +391,18 @@
         };
     };
 
+    const calculateStepSize = (max: number) => {
+        const magnitude = Math.pow(10, Math.floor(Math.log10(max)));
+        const normalized = max / magnitude;
+
+        let step;
+        if (normalized <= 2) step = 2;
+        else if (normalized <= 5) step = 5;
+        else step = 10;
+
+        return (step * magnitude) / 10;
+    };
+
     /**
      * watches the response store and updates the chart data
      * @param responseStore - the response store
@@ -471,6 +485,34 @@
                   )
                 : chartLabels;
 
+        let max = Math.max(
+            ...chartData.data.map((dataset) => Math.max(...dataset.data)),
+        );
+        const stepSize = calculateStepSize(max);
+
+        const yMax = Math.ceil((max + 1) / stepSize) * stepSize;
+
+        if (
+            indexAxis === "x" &&
+            chart.options.scales !== undefined &&
+            chart.options.scales.y !== undefined
+        ) {
+            chart.options.scales.y.max = yMax;
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            chart.options.scales.y.ticks.stepSize = stepSize;
+        }
+        if (
+            indexAxis === "y" &&
+            chart.options.scales !== undefined &&
+            chart.options.scales.x !== undefined
+        ) {
+            chart.options.scales.x.max = yMax;
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            chart.options.scales.x.ticks.stepSize = stepSize;
+        }
+
         chart.update();
     };
 
@@ -483,7 +525,7 @@
         chart.data.labels = ["", "", "", ""];
         chart.data.datasets = [
             {
-                data: [1, 1, 1, 1],
+                data: [3, 1, 2, 5],
                 backgroundColor: ["#E6E6E6"],
                 hoverBackgroundColor: ["#E6E6E6"],
             },
