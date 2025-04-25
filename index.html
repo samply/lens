@@ -3,76 +3,14 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Document</title>
-        <script type="module" src="dev.ts"></script>
-        <style>
-            body {
-                padding-left: 100px;
-                padding-right: 100px;
-            }
-
-            header {
-                background-color: ghostwhite;
-            }
-
-            footer {
-                background-color: ghostwhite;
-            }
-
-            .container {
-                display: flex;
-            }
-
-            .searchbar {
-                display: grid;
-                grid-template-columns: 25fr 1fr 1fr;
-                align-items: center;
-            }
-
-            .box {
-                padding: 10px;
-                padding: 1em;
-                width: 600px;
-            }
-
-            .box2 {
-                flex-grow: 1;
-            }
-        </style>
+        <title>Lens Dev</title>
     </head>
-
     <body>
-        <header>
-            <h2>Lens Demo</h2>
-        </header>
-        <div class="searchbar">
-            <lens-search-bar></lens-search-bar>
-            <lens-query-spinner></lens-query-spinner>
-            <lens-search-button></lens-search-button>
-        </div>
-        <div class="container">
-            <div class="box">
-                <lens-catalogue></lens-catalogue>
-            </div>
-            <div class="box2">
-                <lens-result-summary></lens-result-summary>
-                <lens-result-table></lens-result-table>
-                <lens-chart
-                    title="Geschlecht"
-                    catalogueGroupCode="gender"
-                    chartType="pie"
-                    displayLegends="true"
-                ></lens-chart>
-            </div>
-        </div>
-        <button id="error-toast-test-button">Error toast test</button>
-        <button id="switch-language-to-german-button">🇩🇪</button
-        ><button id="switch-language-to-english-button">🇬🇧</button>
-        <error-toasts></error-toasts>
-
-        <footer>
-            Made with ♥ and
-            <a href="https://github.com/samply/lens">samply/lens</a>.
-        </footer>
+        <div id="app"></div>
     </body>
+    <script type="module">
+        import { mount } from "svelte";
+        import dev from "./dev.svelte";
+        mount(dev, { target: document.getElementById("app") });
+    </script>
 </html>
