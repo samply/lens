@@ -153,50 +153,25 @@
             scales: {
                 y: {
                     display: viewScales,
-                    max: 6,
+                    suggestedMax: 6,
                     title: {
                         display: true,
                         text: yAxisTitle,
                     },
-                    ticks:
-                        chartType === "bar" && indexAxis === "x"
-                            ? {
-                                  callback: (value: number) => {
-                                      return Number.isInteger(value)
-                                          ? value
-                                          : null;
-                                  },
-                              }
-                            : {
-                                  callback: (val: string | number) => {
-                                      if (typeof val === "string") return val;
-                                      const key: unknown =
-                                          initialChartData.data.labels[val] !==
-                                          undefined
-                                              ? initialChartData.data.labels[
-                                                    val
-                                                ]
-                                              : val.toString();
-                                      if (typeof key !== "string")
-                                          return val.toString();
-                                      let result = headers.get(key)
-                                          ? headers.get(key)
-                                          : key;
-                                      return result;
-                                  },
-                              },
                 },
                 x: {
                     display: viewScales,
-                    max: 6,
+                    suggestedMax: 6,
                     title: {
                         display: true,
                         text: xAxisTitle,
                     },
                     ticks:
-                        chartType === "bar" && indexAxis === "x"
+                        chartType === "bar"
                             ? {
                                   callback: (val: string | number) => {
+                                      if (indexAxis === "y")
+                                          return val.toString();
                                       if (typeof val === "string") return val;
                                       const key: unknown =
                                           initialChartData.data.labels[val] !==
@@ -213,13 +188,7 @@
                                       return result;
                                   },
                               }
-                            : {
-                                  callback: (value: number) => {
-                                      return Number.isInteger(value)
-                                          ? value
-                                          : null;
-                                  },
-                              },
+                            : [],
                     type: undefined,
                 },
             },
@@ -422,6 +391,18 @@
         };
     };
 
+    const calculateStepSize = (max: number) => {
+        const magnitude = Math.pow(10, Math.floor(Math.log10(max)));
+        const normalized = max / magnitude;
+
+        let step;
+        if (normalized <= 2) step = 2;
+        else if (normalized <= 5) step = 5;
+        else step = 10;
+
+        return (step * magnitude) / 10;
+    };
+
     /**
      * watches the response store and updates the chart data
      * @param responseStore - the response store
@@ -504,28 +485,32 @@
                   )
                 : chartLabels;
 
-        /**
-         * Calculate the max value and add a margin to the scale
-         */
         let max = Math.max(
             ...chartData.data.map((dataset) => Math.max(...dataset.data)),
         );
-        let percent = max * 0.1;
-        const maxValue = Math.ceil(max + percent);
+        const stepSize = calculateStepSize(max);
+
+        const yMax = Math.ceil((max + 1) / stepSize) * stepSize;
 
         if (
             indexAxis === "x" &&
             chart.options.scales !== undefined &&
             chart.options.scales.y !== undefined
         ) {
-            chart.options.scales.y.max = maxValue;
+            chart.options.scales.y.max = yMax;
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            chart.options.scales.y.ticks.stepSize = stepSize;
         }
         if (
             indexAxis === "y" &&
             chart.options.scales !== undefined &&
             chart.options.scales.x !== undefined
         ) {
-            chart.options.scales.x.max = maxValue;
+            chart.options.scales.x.max = yMax;
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            chart.options.scales.x.ticks.stepSize = stepSize;
         }
 
         chart.update();
@@ -540,7 +525,7 @@
         chart.data.labels = ["", "", "", ""];
         chart.data.datasets = [
             {
-                data: [1, 1, 1, 1],
+                data: [3, 1, 2, 5],
                 backgroundColor: ["#E6E6E6"],
                 hoverBackgroundColor: ["#E6E6E6"],
             },
