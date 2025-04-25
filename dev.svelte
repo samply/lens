@@ -19,7 +19,10 @@
             riverside: "Riverside",
             summit: "Summit",
         },
-        catalogueKeyToResponseKeyMap: [["gender", "Gender"]],
+        catalogueKeyToResponseKeyMap: [
+            ["gender", "Gender"],
+            ["diagnosis", "diagnosis-icd10"],
+        ],
         chartOptions: {
             gender: {
                 legendMapping: {
@@ -424,6 +427,107 @@
                             },
                         ],
                     },
+                    {
+                        code: {
+                            text: "diagnosis-icd10",
+                        },
+                        population: [
+                            {
+                                code: {
+                                    coding: [
+                                        {
+                                            code: "initial-population",
+                                            system: "http://terminology.hl7.org/CodeSystem/measure-population",
+                                        },
+                                    ],
+                                },
+                                count: 100,
+                            },
+                        ],
+                        stratifier: [
+                            {
+                                code: [
+                                    {
+                                        text: "diagnosis-icd10",
+                                    },
+                                ],
+                                stratum: [
+                                    {
+                                        population: [
+                                            {
+                                                code: {
+                                                    coding: [
+                                                        {
+                                                            code: "initial-population",
+                                                            system: "http://terminology.hl7.org/CodeSystem/measure-population",
+                                                        },
+                                                    ],
+                                                },
+                                                count: 40,
+                                            },
+                                        ],
+                                        value: {
+                                            text: "C31",
+                                        },
+                                    },
+                                    {
+                                        population: [
+                                            {
+                                                code: {
+                                                    coding: [
+                                                        {
+                                                            code: "initial-population",
+                                                            system: "http://terminology.hl7.org/CodeSystem/measure-population",
+                                                        },
+                                                    ],
+                                                },
+                                                count: 20,
+                                            },
+                                        ],
+                                        value: {
+                                            text: "C31.0",
+                                        },
+                                    },
+                                    {
+                                        population: [
+                                            {
+                                                code: {
+                                                    coding: [
+                                                        {
+                                                            code: "initial-population",
+                                                            system: "http://terminology.hl7.org/CodeSystem/measure-population",
+                                                        },
+                                                    ],
+                                                },
+                                                count: 30,
+                                            },
+                                        ],
+                                        value: {
+                                            text: "C41",
+                                        },
+                                    },
+                                    {
+                                        population: [
+                                            {
+                                                code: {
+                                                    coding: [
+                                                        {
+                                                            code: "initial-population",
+                                                            system: "http://terminology.hl7.org/CodeSystem/measure-population",
+                                                        },
+                                                    ],
+                                                },
+                                                count: 10,
+                                            },
+                                        ],
+                                        value: {
+                                            text: "41.0",
+                                        },
+                                    },
+                                ],
+                            },
+                        ],
+                    },
                 ],
                 measure: "urn:uuid:19a1b508-eaa1-483a-b9a2-26f505509e6a",
                 period: {
@@ -458,6 +562,22 @@
             catalogueGroupCode="gender"
             chartType="pie"
             displayLegends="true"
+        ></lens-chart>
+        <lens-chart
+            title="diagnosis"
+            catalogueGroupCode="diagnosis"
+            chartType="bar"
+            xAxisTitle="ICD-10-Codes"
+            yAxisTitle="Anzahl der Diagnosen"
+        ></lens-chart>
+        <lens-chart
+            title="diagnosis"
+            catalogueGroupCode="diagnosis"
+            indexAxis="y"
+            scaleType="logarithmic"
+            chartType="bar"
+            xAxisTitle="Anzahl der Diagnosen"
+            yAxisTitle="ICD-10-Codes"
         ></lens-chart>
     </div>
 </div>

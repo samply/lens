@@ -46,8 +46,7 @@
         backgroundHoverColor?: string[];
         xAxisStepSize?: number;
         yAxisStepSize?: number;
-        xAxisPrecision?: number;
-        yAxisPrecision?: number;
+        useIntegerPrecision?: boolean | undefined;
     }
 
     let {
@@ -65,6 +64,8 @@
         groupRange = $bindable(0),
         groupingDivider = "",
         filterRegex = "",
+        xAxisStepSize = undefined,
+        yAxisStepSize = 1,
         groupingLabel = "",
         viewScales = chartType !== "pie" ? true : false,
         backgroundColor = $bindable([
@@ -90,10 +91,6 @@
             "#80699b",
         ]),
         backgroundHoverColor = ["#aaaaaa"],
-        xAxisStepSize = 1,
-        yAxisStepSize = 1,
-        xAxisPrecision = 0,
-        yAxisPrecision = 0,
     }: Props = $props();
 
     // This is undefined if the lens options are not loaded yet
@@ -161,31 +158,53 @@
             scales: {
                 y: {
                     display: viewScales,
+                    max: 6,
                     title: {
                         display: true,
                         text: yAxisTitle,
                     },
-                    ticks: {
-                        stepSize: yAxisStepSize,
-                        callback: (value: number) => {
-                            return value.toFixed(yAxisPrecision);
-                        },
-                    },
-                    type: scaleType === "linear" ? "linear" : undefined,
+                    ticks:
+                        chartType === "bar" && indexAxis === "x"
+                            ? {
+                                  stepSize: yAxisStepSize,
+                                  callback: (value: number) => {
+                                      return Number.isInteger(value)
+                                          ? value
+                                          : null;
+                                  },
+                              }
+                            : {
+                                  stepSize: yAxisStepSize,
+                                  callback: (val: string | number) => {
+                                      if (typeof val === "string") return val;
+                                      const key: unknown =
+                                          initialChartData.data.labels[val] !==
+                                          undefined
+                                              ? initialChartData.data.labels[
+                                                    val
+                                                ]
+                                              : val.toString();
+                                      if (typeof key !== "string")
+                                          return val.toString();
+                                      let result = headers.get(key)
+                                          ? headers.get(key)
+                                          : key;
+                                      return result;
+                                  },
+                              },
                 },
                 x: {
                     display: viewScales,
+                    max: 6,
                     title: {
                         display: true,
                         text: xAxisTitle,
                     },
                     ticks:
-                        chartType === "bar"
+                        chartType === "bar" && indexAxis === "x"
                             ? {
                                   stepSize: xAxisStepSize,
                                   callback: (val: string | number) => {
-                                      if (indexAxis === "y")
-                                          return val.toString();
                                       if (typeof val === "string") return val;
                                       const key: unknown =
                                           initialChartData.data.labels[val] !==
@@ -205,10 +224,12 @@
                             : {
                                   stepSize: xAxisStepSize,
                                   callback: (value: number) => {
-                                      return value.toFixed(xAxisPrecision);
+                                      return Number.isInteger(value)
+                                          ? value
+                                          : null;
                                   },
                               },
-                    type: indexAxis === "y" ? scaleType : undefined,
+                    type: undefined,
                 },
             },
         },
@@ -491,6 +512,30 @@
                       (label) => options.legendMapping?.[label] || "",
                   )
                 : chartLabels;
+
+        /**
+         * Calculate the max value and add a margin to the scale
+         */
+        let max = Math.max(
+            ...chartData.data.map((dataset) => Math.max(...dataset.data)),
+        );
+        let percent = max * 0.1;
+        const maxValue = Math.ceil(max + percent);
+
+        if (
+            indexAxis === "x" &&
+            chart.options.scales !== undefined &&
+            chart.options.scales.y !== undefined
+        ) {
+            chart.options.scales.y.max = maxValue;
+        }
+        if (
+            indexAxis === "y" &&
+            chart.options.scales !== undefined &&
+            chart.options.scales.x !== undefined
+        ) {
+            chart.options.scales.x.max = maxValue;
+        }
 
         chart.update();
     };
