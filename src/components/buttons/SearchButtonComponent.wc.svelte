@@ -56,8 +56,8 @@
 
         const ast: AstTopLayer = buildAstFromQuery($queryStore);
 
-        // The root node of the AST is an OR node that has AND nodes als children - one for each search bar.
-        // If one of the AND nodes has no children that means the corresponding search bar is empty.
+        // The root node of the AST is an OR node that has AND nodes as children - one for each search bar.
+        // If one of the AND nodes has no children, means the corresponding search bar is empty.
         if (
             ast.children.some(
                 (child) => isTopLayer(child) && child.children.length === 0,
@@ -69,9 +69,7 @@
             console.error(
                 "There is at least one empty and one non-empty search bar, aborting search",
             );
-            showErrorToast(
-                "Eine der Suchleisten ist leer. Löschen Sie leere Suchleisten oder fügen Sie Suchkriterien ein.",
-            );
+            showErrorToast(translate("search_bar_error"));
             return;
         }
 
