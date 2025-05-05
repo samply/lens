@@ -231,12 +231,6 @@
 <slot name="beneath-pagination" />
 
 <style>
-    :root {
-        background-color: var(--white);
-        display: grid;
-        grid-template-rows: auto auto 1fr auto auto;
-    }
-
     [part~="result-table-title"] {
         text-align: center;
         margin: 0;
