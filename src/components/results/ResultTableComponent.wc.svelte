@@ -263,6 +263,8 @@
         padding-bottom: var(--gap-xs);
         width: 32%;
         cursor: pointer;
+        /* Prevent selecting text when clicking on the header */
+        user-select: none;
     }
 
     [part~="table-header-cell-checkbox"] {
