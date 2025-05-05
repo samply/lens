@@ -42,3 +42,13 @@
         <td part="table-body-cell">{data}</td>
     {/each}
 </tr>
+
+<style>
+    [part~="table-body-row"] {
+        border-bottom: solid 1px var(--light-gray);
+    }
+
+    [part~="table-body-cell"] {
+        padding-top: var(--gap-xs);
+    }
+</style>

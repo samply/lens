@@ -229,3 +229,68 @@
     >
 </div>
 <slot name="beneath-pagination" />
+
+<style>
+    :root {
+        background-color: var(--white);
+        display: grid;
+        grid-template-rows: auto auto 1fr auto auto;
+    }
+
+    [part~="result-table-title"] {
+        text-align: center;
+        margin: 0;
+        padding-bottom: var(--gap-m);
+    }
+
+    [part~="result-table"] {
+        border-collapse: collapse;
+        width: 100%;
+        border-spacing: 0 15px;
+        height: max-content;
+        overflow: scroll;
+    }
+
+    [part~="table-header"] {
+        border-bottom: solid 1px var(--gray);
+    }
+
+    [part~="table-header-row"] {
+        text-align: left;
+    }
+
+    [part~="table-header-cell"] {
+        padding-bottom: var(--gap-xs);
+        width: 32%;
+        cursor: pointer;
+    }
+
+    [part~="table-header-cell-checkbox"] {
+        padding-bottom: var(--gap-xs);
+        width: 4%;
+    }
+
+    [part~="table-pagination"] {
+        display: flex;
+        justify-content: center;
+        padding-top: var(--gap-m);
+        gap: var(--gap-s);
+        align-items: flex-end;
+    }
+
+    [part~="table-pagination-button"]:enabled {
+        border: solid 1px var(--blue);
+        background: var(--white);
+        border-radius: var(--border-radius-small);
+        padding: var(--gap-xxs) var(--gap-s);
+        cursor: pointer;
+    }
+
+    [part~="table-pagination-button"]:disabled {
+        border: solid 1px var(--light-gray);
+        background: var(--white);
+        border-radius: var(--border-radius-small);
+        padding: var(--gap-xxs) var(--gap-s);
+        cursor: auto;
+    }
+</style>
