@@ -17,6 +17,10 @@ The catalogue can either be:
 - a local file included in your project, or
 - fetched dynamically via a REST call.
 
+**⚠️Important:** While it is technically possible to retrieve and modify the catalogue at runtime, this is not recommended.
+
+The structure of the catalogue is defined in [schema](https://samply.github.io/lens/docs/types/AstBottomLayerValue.html) and [type](https://samply.github.io/lens/docs/types/Catalogue.html). Valdiating your catalogue can be done within VS Code with the schema, see [here](https://frontaid.io/blog/json-schema-vscode/).
+
 ### Subgroups
 
 The catalogue supports the definition of [subgroups](https://samply.github.io/lens/docs/types/Criteria.html#subgroup). For example, you might group all patients with diabetes at the top level, while also distinguishing between different types of diabetes. If a user wants to find patients with _any_ form of diabetes, this can be expressed using subgroups in the catalogue.
@@ -72,10 +76,6 @@ const jsonPromises: Promise<{
     System error: {someError.message}
 {/await}
 ```
-
-The structure of the catalogue is defined in [schema](https://samply.github.io/lens/docs/types/AstBottomLayerValue.html).
-
-**Important:** While it is technically possible to retrieve and modify the catalogue at runtime, this is not recommended.
 
 ---
 
