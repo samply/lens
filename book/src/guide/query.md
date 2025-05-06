@@ -17,6 +17,12 @@ The catalogue can either be:
 - a local file included in your project, or
 - fetched dynamically via a REST call.
 
+### Subgroups
+
+The catalogue supports the definition of [subgroups](https://samply.github.io/lens/docs/types/Criteria.html#subgroup). For example, you might group all patients with diabetes at the top level, while also distinguishing between different types of diabetes. If a user wants to find patients with _any_ form of diabetes, this can be expressed using subgroups in the catalogue.
+
+Subgroups allow you to structure complex concepts in a way that supports both broad and narrow search criteria.
+
 ### Recommended function for fetching:
 
 ```ts
@@ -46,12 +52,6 @@ export const fetchData = async (
 };
 ```
 
-### Subgroups
-
-The catalogue supports the definition of subgroups. For example, you might group all patients with diabetes at the top level, while also distinguishing between different types of diabetes. If a user wants to find patients with _any_ form of diabetes, this can be expressed using subgroups in the catalogue.
-
-Subgroups allow you to structure complex concepts in a way that supports both broad and narrow search criteria.
-
 ### Svelte integration
 
 If you're using Svelte, we recommend starting with this structure:
@@ -73,7 +73,7 @@ const jsonPromises: Promise<{
 {/await}
 ```
 
-The structure of the catalogue is defined in `schema/catalogue.schema.json`.
+The structure of the catalogue is defined in [schema](https://samply.github.io/lens/docs/types/AstBottomLayerValue.html).
 
 **Important:** While it is technically possible to retrieve and modify the catalogue at runtime, this is not recommended.
 
@@ -81,7 +81,7 @@ The structure of the catalogue is defined in `schema/catalogue.schema.json`.
 
 ## Query Data
 
-Once a user selects an element from the catalogue, it is added to the query store. Like the catalogue, query elements can also be added programmatically using `setQueryStoreAPI`.
+Once a user selects an element from the catalogue, it is added to the query store. Like the catalogue, query elements can also be added programmatically using [setQueryStoreAPI](https://samply.github.io/lens/docs/interfaces/LensDataPasser.html#setquerystoreapi).
 
 Query Data is the internal representation of the user's current query. It contains all necessary information required to construct the final query output.
 
@@ -93,13 +93,13 @@ To allow external systems (e.g., databases or APIs) to understand the query, the
 
 AST stands for Abstract Syntax Tree. It represents the query in a structured, hierarchical format that is decoupled from the original catalogue.
 
-The root of the AST is an `AstTopLayer`. It defines the overall logical structure using one of the following operators:
+The root of the AST is an [types](https://samply.github.io/lens/docs/types/AstElement.html). It defines the overall logical structure using one of the following operators:
 
 ```
 "AND" | "OR" | "XOR" | "NOT"
 ```
 
-The `children` of an `AstTopLayer` can be either another `AstTopLayer` or an `AstBottomLayerValue`. An `AstBottomLayerValue` contains the actual filter expressions — for example, `gender = male`.
+The `children` of an [types](https://samply.github.io/lens/docs/types/AstElement.html) can be either another [types](https://samply.github.io/lens/docs/types/AstElement.html) or an https://samply.github.io/lens/docs/types/AstBottomLayerValue.html. An [`AstBottomLayerValue`](https://samply.github.io/lens/docs/types/AstBottomLayerValue.html) contains the actual filter expressions — for example, `gender = male`.
 
 ### Empty Query
 
@@ -116,7 +116,7 @@ Since Lens is designed for exploratory querying, it supports an **empty query**,
 
 ## AST Example
 
-The AST types are located in `src/types/ast`. Here's an example of a more complex query structure:
+The AST types are located in [types](https://samply.github.io/lens/docs/types/AstElement.html). Here's an example of a more complex query structure:
 
 ```json
 {
@@ -143,13 +143,13 @@ The AST types are located in `src/types/ast`. Here's an example of a more comple
 }
 ```
 
-This AST includes two nested `AstTopLayer` objects with `OR` and `AND` operators. The inner `AstTopLayer` contains a `key`, indicating that its children are logically grouped under this key — in this case, `gender`.
+This AST includes two nested [AstTopLayer](https://samply.github.io/lens/docs/types/AstTopLayer.html) objects with `OR` and `AND` operators. The inner [AstTopLayer](https://samply.github.io/lens/docs/types/AstTopLayer.html) contains a `key`, indicating that its children are logically grouped under this key — in this case, `gender`.
 
 This layer provides context for the query at the database level. In the deepest `children` array, we see the actual condition: we are searching for patients whose gender is equal to "male".
 
 ---
 
-## Converting Query Data to AST
+### Converting Query Data to AST
 
 To send a query to a database or external service, you can subscribe to the query store to get the current state, then convert it to an AST using:
 
@@ -159,7 +159,7 @@ const ast = buildAstFromQueryStore(queryStore);
 
 ---
 
-## Handling Subgroups in AST
+### Handling Subgroups in AST
 
 If your catalogue includes subgroups, we recommend expanding them in the query before processing. This can be done easily using:
 
