@@ -30,7 +30,7 @@ export interface LensDataPasser extends HTMLElement {
     addStratifierToQueryAPI(params: AddStratifierToQueryAPIParams): void;
     removeItemFromQuyeryAPI(params: RemoveItemFromQuyeryAPIParams): void;
     removeValueFromQueryAPI(params: RemoveValueFromQueryAPIParams): void;
-    updateResponseAPI(params: ResponseStore): void;
+    updateResponseStoreAPI(params: ResponseStore): void;
     setQueryStoreAPI(params: QueryItem[][]): void;
     setQueryStoreFromAstAPI(params: AstTopLayer): void;
     getCatalogueAPI(): Category[];

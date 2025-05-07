@@ -2,7 +2,7 @@
 
 Lens is framework agnostic, so there are many ways to build and deploy your application. This guide focuses on compatibility with other projects in the [Samply organization](https://github.com/samply), so we use SvelteKit as the frontend framework and Docker for deployment.
 
-To create a new SveltKit application run `npx sv create my-app`. Use the minimal template with TypeScript syntax and select Prettier and ESLint when prompted.
+To create a new SvelteKit application run `npx sv create my-app`. Use the minimal template with TypeScript syntax and select Prettier and ESLint when prompted.
 
 Now `cd` to the new directory and install Lens:
 
@@ -290,9 +290,9 @@ jobs:
             - uses: actions/checkout@v4
             - uses: actions/setup-node@v4
             - run: npm ci
-            - run: npx svelte-check
             - run: npx prettier --check .
             - run: npx eslint .
-            - run: npx vite build
+            - run: npm run check
+            - run: npm run build
             - run: bash scripts/validate-json-schema.bash
 ```

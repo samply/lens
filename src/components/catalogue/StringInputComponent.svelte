@@ -5,15 +5,10 @@
      * It allows a user to enter an arbitrary string.
      */
     import { v4 as uuidv4 } from "uuid";
-    import { addItemToQuery } from "../../stores/query";
-    import type { QueryItem } from "../../types/queryData";
+    import { activeQueryGroupIndex, addItemToQuery } from "../../stores/query";
     import type { StringCategory } from "../../types/catalogue";
-    import QueryAddButtonComponent from "./QueryAddButtonComponent.svelte";
-
-    /**
-     * Grayed-out text that initially appears in the field before the user enters a string.
-     */
-    let placeholderText: string = "Enter filter term";
+    import AddButton from "./AddButton.svelte";
+    import { onMount } from "svelte";
 
     interface Props {
         element: StringCategory;
@@ -21,64 +16,60 @@
 
     let { element }: Props = $props();
 
-    /**
-     * input element binds to this variable. Used to focus the input element
-     */
-    let searchBarInput: HTMLInputElement;
-    /**
-     * watches the input value and updates the input options
-     */
-    let inputValue: string = $state("");
+    let input: HTMLInputElement;
 
-    /**
-     * transforms the inputvalue to a QueryItem, adds it to the query store
-     * and resets the input value and the focused item index
-     * @param inputItem - the input item to add to the query store
-     */
-    const addInputValueToStore = (): void => {
-        addItemToQuery(queryItem, 0);
-    };
-
-    /**
-     * transform inputItem to QueryItem
-     */
-    const queryItem: QueryItem = $derived({
-        id: uuidv4(),
-        key: element.key,
-        name: element.name,
-        type: element.type,
-        system: "system" in element ? element.system : "",
-        values: [
-            {
-                name: inputValue,
-                value: inputValue,
-                queryBindId: uuidv4(),
-            },
-        ],
+    onMount(() => {
+        input.focus();
     });
 
-    /**
-     * handles keyboard events to make input options selectable
-     * @param event - the keyboard event
-     */
-    const handleKeyDown = (event: KeyboardEvent): void => {
-        if (event.key === "Enter") {
-            event.preventDefault();
-            addInputValueToStore();
-        }
-    };
+    function onsubmit(event: Event) {
+        event.preventDefault();
+        addItemToQuery(
+            {
+                id: uuidv4(),
+                key: element.key,
+                name: element.name,
+                type: element.type,
+                system: "system" in element ? element.system : "",
+                values: [
+                    {
+                        name: input.value,
+                        value: input.value,
+                        queryBindId: uuidv4(),
+                    },
+                ],
+            },
+            $activeQueryGroupIndex,
+        );
+    }
 </script>
 
-<div part="string-container">
-    <div part="string-formfield">
-        <input
-            part="string-formfield-input"
-            type="text"
-            bind:this={searchBarInput}
-            bind:value={inputValue}
-            onkeydown={handleKeyDown}
-            placeholder={placeholderText}
-        />
-        <QueryAddButtonComponent {queryItem} />
-    </div>
-</div>
+<form part="string-form" {onsubmit}>
+    <input
+        part="string-formfield"
+        type="text"
+        bind:this={input}
+        placeholder="Enter filter term"
+    />
+    <AddButton />
+</form>
+
+<style>
+    [part~="string-form"] {
+        display: flex;
+        align-items: center;
+        gap: var(--gap-xs);
+    }
+    [part~="string-formfield"] {
+        border: 1px solid var(--gray);
+        border-radius: var(--gap-xs);
+        outline: none;
+        padding: var(--gap-xxs) var(--gap-xs);
+        font-size: var(--font-size-s);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        font-size: var(--font-size-m);
+    }
+    [part~="string-formfield"]:focus {
+        border-color: var(--blue);
+    }
+</style>

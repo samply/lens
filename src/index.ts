@@ -8,6 +8,12 @@ export { setMeasures } from "./stores/measures";
 export { translate } from "./helpers/translations";
 export { showErrorToast } from "./stores/toasts";
 export { resolveAstSubCategories } from "./stores/catalogue";
+export { resetDiagrams } from "./services/reset";
+
+// Export classes
+
+export { Spot } from "./classes/spot";
+export { Blaze } from "./classes/blaze";
 
 // Export types
 export type * from "./types/ast";

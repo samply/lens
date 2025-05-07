@@ -56,8 +56,8 @@
 
         const ast: AstTopLayer = buildAstFromQuery($queryStore);
 
-        // The root node of the AST is an OR node that has AND nodes als children - one for each search bar.
-        // If one of the AND nodes has no children that means the corresponding search bar is empty.
+        // The root node of the AST is an OR node that has AND nodes as children - one for each search bar.
+        // If one of the AND nodes has no children, means the corresponding search bar is empty.
         if (
             ast.children.some(
                 (child) => isTopLayer(child) && child.children.length === 0,
@@ -69,9 +69,7 @@
             console.error(
                 "There is at least one empty and one non-empty search bar, aborting search",
             );
-            showErrorToast(
-                "Eine der Suchleisten ist leer. Löschen Sie leere Suchleisten oder fügen Sie Suchkriterien ein.",
-            );
+            showErrorToast(translate("search_bar_error"));
             return;
         }
 
@@ -192,15 +190,38 @@
     };
 </script>
 
-<button
-    part={`lens-search-button lens-search-button-${
-        disabled ? "disabled" : "active"
-    }`}
-    onclick={getResultsFromBackend}
-    {disabled}
->
+<button part="lens-search-button" onclick={getResultsFromBackend} {disabled}>
     <div part="lens-search-button-magnifying-glass">&#x26B2;</div>
     <div part="lens-search-button-title">
         {title}
     </div>
 </button>
+
+<style>
+    [part~="lens-search-button"] {
+        color: var(--button-color);
+        border: none;
+        border-radius: var(--border-radius-small);
+        padding: var(--gap-xs) var(--gap-s);
+        font-size: var(--font-size-m);
+        cursor: pointer;
+        display: flex;
+        gap: var(--gap-xs);
+        align-items: center;
+        background-color: var(--blue);
+    }
+    [part~="lens-search-button"]:disabled {
+        background-color: var(--gray);
+    }
+    [part~="lens-search-button"]:hover {
+        background-color: var(--light-blue);
+    }
+    [part~="lens-search-button-magnifying-glass"] {
+        transform: rotate(-45deg);
+        font-size: var(--font-size-xl);
+        line-height: 0;
+    }
+    [part~="lens-search-button-title"] {
+        font-family: var(--font-family);
+    }
+</style>

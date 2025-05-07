@@ -7,7 +7,6 @@
         queryStore,
     } from "../../stores/query";
     import type { QueryItem, QueryValue } from "../../types/queryData";
-    import AutoCompleteCriterionComponent from "./AutoCompleteCriterionComponent.svelte";
     import { onMount } from "svelte";
 
     /**
@@ -360,10 +359,62 @@
             </ul>
         {/if}
     </div>
-    <div part="criterion-wrapper autocomplete-wrapper">
-        <!-- eslint-disable-next-line svelte/require-each-key -->
-        {#each chosenOptions as chosenOption}
-            <AutoCompleteCriterionComponent {chosenOption} />
-        {/each}
-    </div>
 </div>
+
+<style>
+    [part~="autocomplete-formfield"] {
+        margin-bottom: var(--gap-xs);
+        margin-top: var(--gap-xs);
+        position: relative;
+    }
+    [part~="autocomplete-formfield-input"] {
+        box-sizing: border-box;
+        border: solid 1px var(--dark-gray);
+        border-top: none;
+        padding-left: var(--gap-xs);
+        outline: none;
+        border-top-left-radius: var(--border-radius-small);
+        border-top-right-radius: var(--border-radius-small);
+        font-size: var(--font-size-s);
+    }
+    [part~="autocomplete-formfield-input"]:focus {
+        border-color: var(--blue);
+        width: 100%;
+    }
+    [part~="autocomplete-options"] {
+        box-sizing: border-box;
+        z-index: 1;
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        border: solid 1px var(--blue);
+        border-top: none;
+        width: 100%;
+        position: absolute;
+        background-color: white;
+        color: black;
+        border-bottom-left-radius: var(--border-radius-small);
+        border-bottom-right-radius: var(--border-radius-small);
+        max-height: 400px;
+        overflow: scroll;
+    }
+    [part~="autocomplete-options-item"] {
+        display: flex;
+        align-items: center;
+        gap: var(--gap-xs);
+        cursor: pointer;
+        padding: var(--gap-xs);
+    }
+    [part~="autocomplete-options-item-focused"] {
+        color: var(--white);
+        background-color: var(--blue);
+    }
+    [part~="autocomplete-options-item-description"] {
+        font-size: var(--font-size-xs);
+        color: var(--blue);
+    }
+    [part~="autocomplete-options-item-description-focused"] {
+        color: var(--white);
+        font-size: var(--font-size-xs);
+    }
+</style>

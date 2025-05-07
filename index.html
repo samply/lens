@@ -3,25 +3,14 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Document</title>
-        <script type="module" src="dev.ts"></script>
+        <title>Lens Dev</title>
     </head>
     <body>
-        <lens-query-spinner></lens-query-spinner>
-        <lens-search-bar></lens-search-bar>
-        <lens-search-button></lens-search-button>
-        <lens-catalogue></lens-catalogue>
-        <lens-result-summary></lens-result-summary>
-        <lens-result-table></lens-result-table>
-        <lens-chart
-            title="Geschlecht"
-            catalogueGroupCode="gender"
-            chartType="pie"
-            displayLegends="true"
-        ></lens-chart>
-        <button id="error-toast-test-button">Error toast test</button>
-        <button id="switch-language-to-german-button">🇩🇪</button
-        ><button id="switch-language-to-english-button">🇬🇧</button>
-        <error-toasts></error-toasts>
+        <div id="app"></div>
     </body>
+    <script type="module">
+        import { mount } from "svelte";
+        import dev from "./dev.svelte";
+        mount(dev, { target: document.getElementById("app") });
+    </script>
 </html>
