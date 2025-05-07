@@ -6,7 +6,7 @@ export const isBottomLayer = (x: AstElement): x is AstBottomLayerValue =>
 // TODO: Split this into two types, one with mandatory `key` and one without
 export type AstTopLayer = {
     key?: string;
-    operand: "AND" | "OR";
+    operand: "AND" | "OR" | "XOR" | "NOT";
     children: AstElement[];
 };
 
