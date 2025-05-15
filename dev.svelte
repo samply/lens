@@ -556,7 +556,7 @@
     </div>
     <div class="box2">
         <lens-result-summary></lens-result-summary>
-        <lens-result-table></lens-result-table>
+        <lens-result-table pageSize="1" showPageSize={true}></lens-result-table>
         <lens-chart
             title="Geschlecht"
             catalogueGroupCode="gender"

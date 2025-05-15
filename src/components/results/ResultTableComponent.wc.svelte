@@ -122,9 +122,11 @@
     interface Props {
         title?: string;
         pageSize?: number;
+        showPageSize?: boolean;
     }
 
-    let { title = "", pageSize = 10 }: Props = $props();
+    let { title = "", pageSize = 10, showPageSize = false }: Props = $props();
+
     let activePage = $state(1);
     let sortColumnIndex = $state(0);
     let sortAscending = $state(true);
@@ -169,6 +171,20 @@
             sortAscending = !sortAscending;
         }
     }
+
+    let pageSizeOptions: { size: number; text: string }[] = [
+        { size: 10, text: `10` },
+        { size: 25, text: `25` },
+        { size: 50, text: `50` },
+    ];
+
+    if (pageSize != 10 && pageSize != 25 && pageSize != 50) {
+        pageSizeOptions.push({ size: pageSize, text: String(pageSize) });
+    }
+
+    let selected = $state();
+
+    console.log(showPageSize);
 </script>
 
 <h4 part="result-table-title">{title}</h4>
@@ -215,6 +231,19 @@
 </table>
 <slot name="above-pagination" />
 <div part="table-pagination">
+    {#if showPageSize === true}
+        Results per page:
+        <select
+            bind:value={selected}
+            onchange={() => (pageSize = selected.size)}
+        >
+            {#each pageSizeOptions as option (option.size)}
+                <option value={option}>
+                    {option.text}
+                </option>
+            {/each}
+        </select>
+    {/if}
     <button
         part="table-pagination-button pagination-pagination-previous"
         disabled={activePage === 1}
