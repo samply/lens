@@ -122,9 +122,18 @@
     interface Props {
         title?: string;
         pageSize?: number;
+        showPageSize?: boolean;
     }
 
-    let { title = "", pageSize = 10 }: Props = $props();
+    /**
+     *  Configuration options for the result table.
+     * title:  The title to be displayed in the table header.
+     * pagesize: The number of rows to display per page. Defaults to 10.
+     * showPageSize: Whether to display a select box for changing the pagesize. If you set the pagesize otherthen 10,25,50 it will added as an option.
+     */
+
+    let { title = "", pageSize = 10, showPageSize = false }: Props = $props();
+
     let activePage = $state(1);
     let sortColumnIndex = $state(0);
     let sortAscending = $state(true);
@@ -169,6 +178,19 @@
             sortAscending = !sortAscending;
         }
     }
+
+    let pageSizeOptions: { size: number; text: string }[] = [
+        { size: 10, text: `10` },
+        { size: 25, text: `25` },
+        { size: 50, text: `50` },
+    ];
+
+    if (pageSize != 10 && pageSize != 25 && pageSize != 50) {
+        pageSizeOptions.push({ size: pageSize, text: String(pageSize) });
+        pageSizeOptions.sort((a, b) => a.size - b.size);
+    }
+
+    let selected = $state(pageSizeOptions[0]);
 </script>
 
 <h4 part="result-table-title">{title}</h4>
@@ -215,6 +237,19 @@
 </table>
 <slot name="above-pagination" />
 <div part="table-pagination">
+    {#if showPageSize === true}
+        Results per page:
+        <select
+            bind:value={selected}
+            onchange={() => (pageSize = selected.size)}
+        >
+            {#each pageSizeOptions as option (option.size)}
+                <option value={option}>
+                    {option.text}
+                </option>
+            {/each}
+        </select>
+    {/if}
     <button
         part="table-pagination-button pagination-pagination-previous"
         disabled={activePage === 1}
