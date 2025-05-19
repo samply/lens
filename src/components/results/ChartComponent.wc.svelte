@@ -674,3 +674,80 @@
     ></canvas>
     <slot />
 </div>
+
+<style>
+    lens-chart {
+        background-color: var(--white);
+        display: grid;
+    }
+
+    [part~="chart-wrapper"] {
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        position: relative;
+    }
+
+    [part~="chart-overlay"] {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    [part~="no-data-available"] {
+        font-weight: bold;
+        color: var(--gray);
+        background-color: var(--white);
+        padding: 0.5em;
+    }
+
+    [part~="chart-title"] {
+        text-align: center;
+        margin: 0;
+        padding-bottom: var(--gap-m);
+    }
+
+    [part~="info-button"] {
+        position: absolute;
+        cursor: pointer;
+        background-color: var(--white);
+        border: none;
+        padding: 0;
+        top: -10px;
+        right: -10px;
+    }
+
+    [part~="info-button-icon"] {
+        bottom: var(--gap-xxs);
+        width: 16px;
+        height: 16px;
+    }
+
+    [part~="info-button-dialogue"] {
+        cursor: auto;
+        position: absolute;
+        border: none;
+        background-color: var(--white);
+        width: max-content;
+        max-width: 300px;
+        z-index: 100;
+        padding: var(--gap-s);
+        top: 40px;
+        right: 0px;
+        border: solid 1px var(--blue);
+        border-radius: var(--border-radius-small);
+        text-align: left;
+    }
+
+    [part~="chart-canvas"] {
+        width: 100%;
+        max-height: 400px;
+    }
+
+    [part~="chart-hint"] {
+        font-size: var(--font-size-xs);
+        padding-top: var(--gap-m);
+    }
+</style>

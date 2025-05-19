@@ -19,8 +19,9 @@
 <style>
     [part~="single-select-wrapper"] {
         display: grid;
-        grid-template-columns: max-content max-content;
+        grid-template-columns: max-content 1fr;
         column-gap: 10px;
         align-items: center;
+        width: 100%;
     }
 </style>

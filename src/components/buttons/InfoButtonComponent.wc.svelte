@@ -98,3 +98,39 @@
         </div>
     {/if}
 </button>
+
+<style>
+    [part~="data-tree-element-info-icon"]:hover
+        lens-catalogue::part(data-tree-element-info-text) {
+        display: block;
+    }
+
+    [part~="info-button"] {
+        position: relative;
+        cursor: pointer;
+        height: 100%;
+        width: 38px;
+        background-color: var(--white);
+        border: solid 1px var(--blue);
+        border-radius: var(--border-radius-small);
+    }
+
+    [part~="info-button-title"] {
+        font-family: var(--font-family);
+    }
+
+    [part~="info-button-dialogue"] {
+        cursor: auto;
+        position: absolute;
+        border: none;
+        background-color: var(--white);
+        width: max-content;
+        max-width: 80vw;
+        z-index: 100;
+        padding: var(--gap-s);
+        top: 40px;
+        right: 0px;
+        border: solid 1px var(--blue);
+        border-radius: var(--border-radius-small);
+    }
+</style>

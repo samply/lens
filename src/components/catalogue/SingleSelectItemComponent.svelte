@@ -35,8 +35,13 @@
     }
 </script>
 
-<span>{criterion.name}</span>
+<span part="single-select-wrapper">{criterion.name}</span>
 <AddButton {onclick} />
 
 <style>
+    [part~="single-select-wrapper"] {
+        width: 100%; /* Take all space from the 1fr column */
+        max-width: 100%; /* Prevent overflow */
+        overflow-wrap: break-word; /* In case of long text */
+    }
 </style>

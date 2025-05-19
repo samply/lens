@@ -66,6 +66,7 @@
             name: "Diagnosis",
             type: "EQUALS",
             system: "http://fhir.de/CodeSystem/dimdi/icd-10-gm",
+            infoButtonText: ["Diagnosis"],
             criteria: [
                 {
                     key: "C31",
@@ -108,8 +109,8 @@
             system: "",
             criteria: [
                 {
-                    key: "A+",
-                    name: "A+",
+                    key: "A+dvoighsiuhgfidushdgfpisufhgpisdufhgpisdfhgpiusdfhgifuhgsiudfhgsiufdghsipufghsifugh",
+                    name: "A+dvoighsiuhgfidushdgfpisufhgpisdufhgpisdfhgpiusdfhgifuhgsiudfhgsiufdghsipufghsifugh",
                     description: "",
                 },
                 {
@@ -621,7 +622,6 @@
     }
     .box {
         padding: 10px;
-        padding: 1em;
         width: 600px;
     }
     .box2 {

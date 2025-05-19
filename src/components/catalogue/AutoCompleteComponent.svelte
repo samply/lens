@@ -367,19 +367,22 @@
         margin-top: var(--gap-xs);
         position: relative;
     }
+
+    /* Input field styled to match the date input */
     [part~="autocomplete-formfield-input"] {
         box-sizing: border-box;
-        border: solid 1px var(--dark-gray);
-        border-top: none;
-        padding-left: var(--gap-xs);
+        border: 1px solid var(--gray);
+        border-radius: var(--gap-xs);
         outline: none;
-        border-top-left-radius: var(--border-radius-small);
-        border-top-right-radius: var(--border-radius-small);
+        padding: var(--gap-xxs) var(--gap-xs);
         font-size: var(--font-size-s);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        width: 100%;
     }
+
+    /* Focus state */
     [part~="autocomplete-formfield-input"]:focus {
         border-color: var(--blue);
-        width: 100%;
     }
     [part~="autocomplete-options"] {
         box-sizing: border-box;
@@ -387,34 +390,55 @@
         list-style-type: none;
         padding: 0;
         margin: 0;
-        border: solid 1px var(--blue);
-        border-top: none;
         width: 100%;
         position: absolute;
         background-color: white;
         color: black;
-        border-bottom-left-radius: var(--border-radius-small);
-        border-bottom-right-radius: var(--border-radius-small);
+
+        /* Match the border with input field, and blend it */
+        border: 1px solid var(--gray);
+        border-radius: var(--gap-xs);
+        /* Shadow to match input and give depth */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
         max-height: 400px;
-        overflow: scroll;
+        overflow-y: auto;
     }
+
     [part~="autocomplete-options-item"] {
         display: flex;
         align-items: center;
         gap: var(--gap-xs);
         cursor: pointer;
-        padding: var(--gap-xs);
+        padding: var(--gap-xxs) var(--gap-xs); /* Match input field’s padding */
+        font-size: var(--font-size-s);
+        transition: background-color 0.2s ease;
     }
+
+    /* Highlighted option */
     [part~="autocomplete-options-item-focused"] {
         color: var(--white);
         background-color: var(--blue);
     }
+
+    /* Optional: soften background on hover even if not focused */
+    [part~="autocomplete-options-item"]:hover:not(
+            [part~="autocomplete-options-item-focused"]
+        ) {
+        background-color: var(
+            --gray-light
+        ); /* define or replace with actual light gray var */
+    }
+
+    /* Description (secondary text) */
     [part~="autocomplete-options-item-description"] {
         font-size: var(--font-size-xs);
         color: var(--blue);
     }
+
+    /* Description when focused */
     [part~="autocomplete-options-item-description-focused"] {
-        color: var(--white);
         font-size: var(--font-size-xs);
+        color: var(--white);
     }
 </style>

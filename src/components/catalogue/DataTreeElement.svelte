@@ -203,3 +203,17 @@
         {/if}
     {/if}
 </div>
+
+<style>
+    [part~="data-tree-element-child-category"] {
+        padding: var(--gap-xs) 0 0 var(--gap-s);
+        border-left: solid 1px var(--lightest-gray);
+    }
+
+    [part~="data-tree-element-last-child-options"] {
+        border-left: solid 1px var(--lightest-gray);
+        padding-left: var(--gap-m);
+        padding-top: var(--gap-xs);
+        padding-bottom: var(--gap-xs);
+    }
+</style>
