@@ -220,7 +220,11 @@
         disabled={activePage === 1}
         onclick={() => (activePage -= 1)}>&#8592;</button
     >
-    <div part="table-pagination-pagenumber">{activePage}</div>
+    <div part="table-pagination-pagenumber">
+        {activePage} / {tableRowData.length === 0
+            ? 1
+            : Math.ceil(tableRowData.length / pageSize)}
+    </div>
     <button
         part="table-pagination-button pagination-pagination-next"
         disabled={activePage === Math.ceil(tableRowData.length / pageSize) ||
