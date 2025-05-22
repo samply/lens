@@ -119,12 +119,24 @@
         }
     };
 
+    /**
+     *  Configuration options for the result table.
+     */
     interface Props {
+        /** The title to be displayed in the table header. */
         title?: string;
+        /** The number of rows to display per page. Defaults to 10. */
         pageSize?: number;
+        /** Whether to display a select box for changing the pagesize. If you set the pagesize otherthen 10,25,50 it will added as an option. */
+        pageSizeSwitcher?: boolean;
     }
 
-    let { title = "", pageSize = 10 }: Props = $props();
+    let {
+        title = "",
+        pageSize = 10,
+        pageSizeSwitcher = false,
+    }: Props = $props();
+
     let activePage = $state(1);
     let sortColumnIndex = $state(0);
     let sortAscending = $state(true);
@@ -169,6 +181,19 @@
             sortAscending = !sortAscending;
         }
     }
+
+    let pageSizeOptions: { size: number; text: string }[] = [
+        { size: 10, text: `10` },
+        { size: 25, text: `25` },
+        { size: 50, text: `50` },
+    ];
+
+    if (pageSize != 10 && pageSize != 25 && pageSize != 50) {
+        pageSizeOptions.push({ size: pageSize, text: String(pageSize) });
+        pageSizeOptions.sort((a, b) => a.size - b.size);
+    }
+
+    let pageSizeOption = $state(pageSizeOptions[0]);
 </script>
 
 <h4 part="result-table-title">{title}</h4>
@@ -231,6 +256,21 @@
             tableRowData.length === 0}
         onclick={() => (activePage += 1)}>&#8594;</button
     >
+    {#if pageSizeSwitcher === true}
+        <span part="table-pagination-switcher">
+            Results per page:
+            <select
+                bind:value={pageSizeOption}
+                onchange={() => (pageSize = pageSizeOption.size)}
+            >
+                {#each pageSizeOptions as option (option.size)}
+                    <option value={option}>
+                        {option.text}
+                    </option>
+                {/each}
+            </select>
+        </span>
+    {/if}
 </div>
 <slot name="beneath-pagination" />
 
@@ -292,5 +332,11 @@
         border-radius: var(--border-radius-small);
         padding: var(--gap-xxs) var(--gap-s);
         cursor: auto;
+    }
+
+    [part~="table-pagination-switcher"] {
+        position: absolute;
+        right: 0;
+        padding-right: 20px;
     }
 </style>
