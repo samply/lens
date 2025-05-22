@@ -654,29 +654,31 @@
     });
 </script>
 
-<div part="chart-wrapper">
-    <h4 part="chart-title">{title}</h4>
-    {#if options?.hintText !== undefined}
-        <InfoButtonComponent message={options.hintText} />
-    {/if}
+<div part="lens-chart">
+    <div part="chart-wrapper">
+        <h4 part="chart-title">{title}</h4>
+        {#if options?.hintText !== undefined}
+            <InfoButtonComponent message={options.hintText} />
+        {/if}
 
-    {#if noDataAvailable}
-        <div part="chart-overlay">
-            <p part="no-data-available">No Data Available</p>
-        </div>
-    {/if}
+        {#if noDataAvailable}
+            <div part="chart-overlay">
+                <p part="no-data-available">No Data Available</p>
+            </div>
+        {/if}
 
-    <canvas
-        part="chart-canvas"
-        bind:this={canvas}
-        id="chart"
-        onclick={handleClickOnStratifier}
-    ></canvas>
-    <slot />
+        <canvas
+            part="chart-canvas"
+            bind:this={canvas}
+            id="chart"
+            onclick={handleClickOnStratifier}
+        ></canvas>
+        <slot />
+    </div>
 </div>
 
 <style>
-    lens-chart {
+    [part~="lens-chart"] {
         background-color: var(--white);
         display: grid;
     }
@@ -709,7 +711,7 @@
         padding-bottom: var(--gap-m);
     }
 
-    [part~="info-button"] {
+    ::part(info-button) {
         position: absolute;
         cursor: pointer;
         background-color: var(--white);
@@ -719,13 +721,13 @@
         right: -10px;
     }
 
-    [part~="info-button-icon"] {
+    ::part(info-button-icon) {
         bottom: var(--gap-xxs);
         width: 16px;
         height: 16px;
     }
 
-    [part~="info-button-dialogue"] {
+    ::part(info-button-dialogue) {
         cursor: auto;
         position: absolute;
         border: none;
@@ -746,7 +748,8 @@
         max-height: 400px;
     }
 
-    [part~="chart-hint"] {
+    /* Needed? */
+    ::part(chart-hint) {
         font-size: var(--font-size-xs);
         padding-top: var(--gap-m);
     }

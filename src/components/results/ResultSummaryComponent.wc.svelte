@@ -88,27 +88,78 @@
     }
 </script>
 
-{#if $lensOptions?.resultSummaryOptions?.title !== undefined}
-    <div part="result-summary-header">
-        <div part="heading">
-            <h4 part="result-summary-header-title">
-                {$lensOptions?.resultSummaryOptions.title}
-                {#if $lensOptions?.resultSummaryOptions.infoButtonText !== undefined}
-                    <InfoButtonComponent
-                        message={[
-                            $lensOptions?.resultSummaryOptions.infoButtonText,
-                        ]}
-                    />
-                {/if}
-            </h4>
+<div class="lens-result-summary">
+    {#if $lensOptions?.resultSummaryOptions?.title !== undefined}
+        <div part="result-summary-header">
+            <div part="heading">
+                <h4 part="result-summary-header-title">
+                    {$lensOptions?.resultSummaryOptions.title}
+                    {#if $lensOptions?.resultSummaryOptions.infoButtonText !== undefined}
+                        <InfoButtonComponent
+                            message={[
+                                $lensOptions?.resultSummaryOptions
+                                    .infoButtonText,
+                            ]}
+                        />
+                    {/if}
+                </h4>
+            </div>
         </div>
+    {/if}
+    <div part="result-summary-content">
+        <!-- eslint-disable-next-line svelte/require-each-key -->
+        {#each populations as population}
+            <div part="result-summary-content-type">
+                {population.title}: {population.population}
+            </div>
+        {/each}
     </div>
-{/if}
-<div part="result-summary-content">
-    <!-- eslint-disable-next-line svelte/require-each-key -->
-    {#each populations as population}
-        <div part="result-summary-content-type">
-            {population.title}: {population.population}
-        </div>
-    {/each}
 </div>
+
+<style>
+    /**
+* result summary
+*/
+
+    .lens-result-summary {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        grid-gap: var(--gap-xl);
+        grid-column: 1/-1;
+        align-items: center;
+    }
+
+    [part~="result-summary-content"] {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        gap: 10px;
+    }
+
+    ::part(info-button) {
+        position: relative;
+        cursor: pointer;
+        height: 100%;
+        border: none;
+        background-color: var(--white);
+        border-radius: var(--border-radius-small);
+    }
+    ::part(info-button-icon) {
+        width: 16px;
+    }
+
+    ::part(info-button-dialogue) {
+        cursor: auto;
+        position: absolute;
+        border: none;
+        background-color: var(--white);
+        width: max-content;
+        max-width: 30vw;
+        z-index: 100;
+        padding: var(--gap-s);
+        top: 40px;
+        left: 0px;
+        border: solid 1px var(--blue);
+        border-radius: var(--border-radius-small);
+    }
+</style>

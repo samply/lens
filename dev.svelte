@@ -25,6 +25,9 @@
         ],
         chartOptions: {
             gender: {
+                hintText: [
+                    "This pie chart shows the proportion of males to females in our [population/data set]. The size of each section represents the percentage of individuals who identify as male or female.",
+                ],
                 legendMapping: {
                     male: "Männlich",
                     female: "Weiblich",
@@ -547,7 +550,9 @@
     <h2>Lens Dev</h2>
 </header>
 <div class="searchbar">
-    <lens-search-bar></lens-search-bar>
+    <lens-search-bar-multiple></lens-search-bar-multiple>
+    <lens-info-button noQueryMessage="Empyt Query" showQuery={true}
+    ></lens-info-button>
     <lens-query-spinner></lens-query-spinner>
     <lens-search-button></lens-search-button>
 </div>
@@ -557,6 +562,7 @@
     </div>
     <div class="box2">
         <lens-result-summary></lens-result-summary>
+        <lens-search-modified-display></lens-search-modified-display>
         <lens-result-table></lens-result-table>
         <lens-chart
             title="Geschlecht"
@@ -617,7 +623,7 @@
     }
     .searchbar {
         display: grid;
-        grid-template-columns: 25fr 1fr 1fr;
+        grid-template-columns: 25fr 1fr 1fr 1fr;
         align-items: center;
     }
     .box {

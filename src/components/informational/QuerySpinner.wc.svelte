@@ -27,12 +27,12 @@
 </script>
 
 <div
-    class="spinner"
+    part="spinner"
     style="--size: {size}; visibility: {loading ? 'visible' : 'hidden'};"
 ></div>
 
 <style>
-    .spinner {
+    [part~="spinner"] {
         border: 4px solid rgba(0, 0, 0, 0.1);
         border-top: 4px solid #3498db;
         border-radius: 50%;

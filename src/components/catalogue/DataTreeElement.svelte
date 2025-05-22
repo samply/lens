@@ -205,6 +205,13 @@
 </div>
 
 <style>
+    [part~="data-tree-element-info-icon"]:hover {
+        display: block;
+    }
+    [part~="data-tree-element-info-text"]:hover {
+        display: block;
+    }
+
     [part~="data-tree-element-child-category"] {
         padding: var(--gap-xs) 0 0 var(--gap-s);
         border-left: solid 1px var(--lightest-gray);

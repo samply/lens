@@ -65,4 +65,8 @@
     [part~="lens-negotiate-button-active"]:hover {
         background-color: var(--light-blue);
     }
+
+    [part~="lens-negotiate-button-title"] {
+        font-size: medium;
+    }
 </style>

@@ -100,11 +100,6 @@
 </button>
 
 <style>
-    [part~="data-tree-element-info-icon"]:hover
-        lens-catalogue::part(data-tree-element-info-text) {
-        display: block;
-    }
-
     [part~="info-button"] {
         position: relative;
         cursor: pointer;
@@ -113,9 +108,6 @@
         background-color: var(--white);
         border: solid 1px var(--blue);
         border-radius: var(--border-radius-small);
-    }
-
-    [part~="info-button-title"] {
         font-family: var(--font-family);
     }
 
@@ -132,5 +124,15 @@
         right: 0px;
         border: solid 1px var(--blue);
         border-radius: var(--border-radius-small);
+    }
+
+    [part~="info-button-dialogue-message"] {
+        font-family: var(--font-family);
+    }
+
+    [part~="info-button-icon"] {
+        bottom: var(--gap-xxs);
+        width: 16px;
+        height: 16px;
     }
 </style>

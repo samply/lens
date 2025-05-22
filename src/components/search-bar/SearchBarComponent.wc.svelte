@@ -493,3 +493,202 @@
         }}
     />
 </div>
+
+<style>
+    /**
+  * Lens Search Bar
+  */
+
+    [part~="lens-searchbar"]:focus-within {
+        border-color: var(--blue);
+        border: solid 1px var(--blue);
+        border-radius: var(--border-radius-small);
+        z-index: 2;
+    }
+
+    [part~="lens-searchbar"] {
+        position: relative;
+        z-index: 1;
+        align-items: center;
+        background-color: var(--white);
+        border: solid 1px var(--light-gray);
+        border-radius: var(--border-radius-small);
+        padding-right: var(--gap-xs);
+        padding-left: var(--gap-xs);
+        display: flex;
+        flex-wrap: wrap;
+        width: -webkit-fill-available;
+    }
+
+    [part~="lens-searchbar-chips"] {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--gap-xs);
+        padding-right: var(--gap-xs);
+    }
+
+    [part~="lens-searchbar-chip-name"] {
+        font-weight: bold;
+        padding-right: var(--gap-xs);
+    }
+
+    [part~="lens-searchbar-chip"] {
+        background-color: var(--blue);
+        color: var(--white);
+        border-radius: var(--border-radius-small);
+        padding: 2px var(--gap-s) 2px var(--gap-xs);
+        display: flex;
+        flex-flow: row wrap;
+        align-items: center;
+        position: relative;
+    }
+
+    [part~="lens-searchbar-chip-item"] {
+        display: inline-flex;
+        align-items: center;
+    }
+
+    [part~="lens-searchbar-input"] {
+        box-sizing: border-box;
+        padding: var(--gap-xs) var(--gap-s) var(--gap-xs) var(--gap-xs);
+        min-width: 200px;
+        flex-grow: 1;
+        outline: none;
+        border: none;
+    }
+
+    /**
+* Lens Search Bar Input Options
+*/
+
+    [part~="lens-searchbar-input-options-open"] {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    [part~="lens-searchbar-autocomplete-options"] {
+        max-height: 50vh;
+        overflow: scroll;
+        list-style-type: none;
+        padding: var(--gap-s);
+        margin: 0;
+        border: solid 1px var(--blue);
+        border-top: none;
+        position: absolute;
+        top: 30px;
+        left: -1px;
+        right: -1px;
+        background-color: white;
+        color: var(--font-color);
+        border-bottom-left-radius: var(--border-radius-small);
+        border-bottom-right-radius: var(--border-radius-small);
+    }
+
+    [part~="autocomplete-options-category-name"] {
+        padding: var(--gap-xs) var(--gap-s);
+        font-weight: bold;
+    }
+
+    [part~="lens-searchbar-autocomplete-options-item"] {
+        display: flex;
+        align-items: center;
+        gap: var(--gap-xs);
+        cursor: pointer;
+        padding: var(--gap-xs) var(--gap-m);
+    }
+
+    [part~="lens-searchbar-autocomplete-options-item-focused"] {
+        color: var(--white);
+        background-color: var(--blue);
+    }
+
+    [part~="autocomplete-options-item-description"] {
+        /* border: solid 1px var(--light-gray); */
+        display: flex;
+        align-items: center;
+        color: var(--blue);
+        font-size: var(--font-size-s);
+        padding-right: var(--gap-m);
+    }
+    [part~="autocomplete-options-item-description-focused"] {
+        color: var(--white);
+    }
+
+    /**
+* Lens Search Bar Info Button
+*/
+
+    ::part(info-button) {
+        background-color: var(--blue);
+        border-color: var(--blue);
+        position: relative;
+        padding: 0;
+        border: 0;
+        top: +2px;
+    }
+
+    ::part(info-button-icon) {
+        height: calc(var(--font-size-s) + 8px);
+        width: calc(var(--font-size-s) + 8px);
+        filter: brightness(0) invert(1);
+        box-sizing: content-box;
+        border-radius: 50%;
+    }
+
+    ::part(info-button-icon:hover) {
+        cursor: pointer;
+        filter: invert(41%) sepia(43%) saturate(4610%) hue-rotate(357deg)
+            brightness(96%) contrast(90%);
+    }
+
+    ::part(info-button-dialogue) {
+        position: absolute;
+        border: none;
+        background-color: var(--white);
+        width: max-content;
+        max-width: 200px;
+        z-index: 100;
+        padding: var(--gap-s);
+        top: calc(var(--gap-m) + 4px);
+        right: -20px;
+        border: solid 1px var(--light-blue);
+        border-radius: var(--border-radius-small);
+        text-align: left;
+    }
+
+    /**
+* delete buttons in searchbar and chips
+*/
+
+    ::part(delete-button-icon-item) {
+        filter: invert(41%) sepia(43%) saturate(4610%) hue-rotate(357deg)
+            brightness(96%) contrast(90%);
+        transform: translate(-1px, -1px);
+        width: 20px;
+    }
+
+    ::part(delete-button-icon-group) {
+        filter: invert(41%) sepia(43%) saturate(4610%) hue-rotate(357deg)
+            brightness(96%) contrast(90%);
+        transform: translate(0px, 2px);
+        width: 20px;
+    }
+
+    ::part(delete-button-icon-value) {
+        transform: translate(-1px, -1px);
+        width: 20px;
+    }
+
+    ::part(delete-button-icon:hover) {
+        filter: invert(38%) sepia(78%) saturate(1321%) hue-rotate(352deg)
+            brightness(92%) contrast(99%);
+    }
+
+    /**
+* Lens search Button in multiple searchbar mode
+*/
+
+    ::part(info-button-dialogue) {
+        left: 0px;
+    }
+</style>

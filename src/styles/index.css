@@ -1,9 +1,3 @@
-@import url("./searchbars.css");
-@import url("./results-overview.css");
-@import url("./result-chart.css");
-@import url("./negotiate-button.css");
-@import url("./error-toasts.css");
-
 :root {
     --white: #ffffff;
     --black: #000000;

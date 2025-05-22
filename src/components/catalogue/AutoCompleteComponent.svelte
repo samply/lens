@@ -281,7 +281,7 @@
     });
 </script>
 
-<div part="autocomplete-container">
+<div>
     <div part="autocomplete-formfield">
         <input
             part="autocomplete-formfield-input"
@@ -362,6 +362,12 @@
 </div>
 
 <style>
+    [part~="autocomplete-formfield"] {
+        margin-bottom: var(--gap-xs);
+        margin-top: var(--gap-xs);
+        position: relative;
+    }
+
     [part~="autocomplete-formfield"] {
         margin-bottom: var(--gap-xs);
         margin-top: var(--gap-xs);
