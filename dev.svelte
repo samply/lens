@@ -556,7 +556,7 @@
 </header>
 <div class="searchbar">
     <lens-search-bar-multiple></lens-search-bar-multiple>
-    <lens-info-button noQueryMessage="Empyt Query" showQuery={true}
+    <lens-info-button noQueryMessage="Empty Query" showQuery={true}
     ></lens-info-button>
     <lens-query-spinner></lens-query-spinner>
     <lens-search-button></lens-search-button>
