@@ -205,6 +205,38 @@
 </div>
 
 <style>
+    [part~="data-tree-element"] {
+        position: relative;
+    }
+
+    [part~="data-tree-element-name"] {
+        font-family: var(--font-family);
+        color: var(--font-color);
+        padding-left: var(--gap-s);
+        padding-right: 0;
+        font-size: var(--font-size-m);
+        margin-bottom: var(--gap-xs);
+        border: none;
+        background-color: unset;
+        cursor: pointer;
+        position: relative;
+        text-align: left;
+    }
+
+    [part~="data-tree-element-toggle-icon"] {
+        position: absolute;
+        left: -15px;
+        top: -8px;
+        font-size: 22px;
+        font-weight: lighter;
+        transform: rotate(-90deg);
+        transition: all 0.1s ease-in-out;
+    }
+
+    [part~="data-tree-element-toggle-icon-open"] {
+        transform: rotate(0deg);
+    }
+
     [part~="data-tree-element-info-icon"]:hover {
         display: block;
     }
@@ -222,5 +254,16 @@
         padding-left: var(--gap-m);
         padding-top: var(--gap-xs);
         padding-bottom: var(--gap-xs);
+    }
+
+    [part~="add-all-options-button"] {
+        background-color: var(--button-background-color);
+        border-radius: var(--border-radius-small);
+        color: var(--button-color);
+        position: relative;
+        padding: 3px 8px;
+        cursor: pointer;
+        border: none;
+        left: +15px;
     }
 </style>

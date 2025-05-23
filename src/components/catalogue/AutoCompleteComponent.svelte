@@ -368,12 +368,6 @@
         position: relative;
     }
 
-    [part~="autocomplete-formfield"] {
-        margin-bottom: var(--gap-xs);
-        margin-top: var(--gap-xs);
-        position: relative;
-    }
-
     /* Input field styled to match the date input */
     [part~="autocomplete-formfield-input"] {
         box-sizing: border-box;

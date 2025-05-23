@@ -105,6 +105,10 @@
 </div>
 
 <style>
+    [part~="lens-catalogue"] {
+        display: block;
+    }
+
     [part~="lens-catalogue-toggle-button"] {
         background-color: var(--button-background-color);
         color: var(--button-color);
