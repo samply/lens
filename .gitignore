@@ -15,6 +15,7 @@ dist-ssr
 TODO
 book/book
 docs
+demo-dist
 
 # Editor directories and files
 .vscode/*

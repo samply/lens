@@ -22,6 +22,8 @@
     "scripts": {
         "dev": "vite dev",
         "build": "vite build",
+        "build-demo": " vite build --config vite.config.demo.js",
+        "inline:demo": "node inline.js",
         "check": "svelte-check",
         "prepublishOnly": "vite build",
         "prepare": "husky",
