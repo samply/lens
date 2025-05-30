@@ -567,6 +567,7 @@
     </div>
     <div class="box2">
         <lens-result-summary></lens-result-summary>
+        <lens-negotiate-button title="Request Data"></lens-negotiate-button>
         <lens-search-modified-display></lens-search-modified-display>
         <lens-result-table></lens-result-table>
         <lens-chart

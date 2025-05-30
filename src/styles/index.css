@@ -2,9 +2,7 @@
 @import url("./catalogue.css");
 @import url("./results-overview.css");
 @import url("./result-chart.css");
-@import url("./negotiate-button.css");
 @import url("./info-button.css");
-@import url("./error-toasts.css");
 
 :root {
     --white: #ffffff;
