@@ -93,14 +93,14 @@
     [part~="date-input-form"] {
         display: flex;
         align-items: center;
-        gap: var(--gap-xs);
+        gap: var(--gap-xxs);
     }
     [part~="date-input-formfield"] {
         border: 1px solid var(--gray);
         border-radius: var(--gap-xs);
         outline: none;
         padding: var(--gap-xxs) var(--gap-xs);
-        font-size: var(--font-size-s);
+        font-size: var(--font-size-xs);
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
     [part~="date-input-formfield"]:focus {

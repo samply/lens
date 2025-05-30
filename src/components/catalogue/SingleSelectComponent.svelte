@@ -19,7 +19,7 @@
 <style>
     [part~="single-select-wrapper"] {
         display: grid;
-        grid-template-columns: max-content max-content;
+        grid-template-columns: 1fr auto;
         column-gap: 10px;
         align-items: center;
     }

@@ -107,6 +107,7 @@ lens-catalogue::part(data-tree-element-child-category) {
 }
 
 lens-catalogue::part(data-tree-element-last-child-options) {
+    max-width: 100%;
     border-left: solid 1px var(--lightest-gray);
     padding-left: var(--gap-m);
     padding-top: var(--gap-xs);
