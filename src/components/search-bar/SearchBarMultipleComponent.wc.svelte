@@ -50,3 +50,44 @@
     <!-- here is a slot mainly for the search button if whished to place in this component -->
     <slot />
 </div>
+
+<style>
+    [part~="lens-searchbar-multiple"] {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--gap-xs);
+        align-items: center;
+    }
+
+    [part~="search-bar-wrapper"] {
+        display: flex;
+        align-items: center;
+        min-width: calc(50% - 5px);
+        flex-grow: 1;
+    }
+
+    [part~="lens-searchbar-or-indicator"] {
+        margin-left: var(--gap-xs);
+        text-align: center;
+        width: 40px;
+    }
+
+    [part~="lens-searchbar-add-button"] {
+        background-color: var(--green);
+        color: var(--white);
+        border: none;
+        border-radius: var(--border-radius-small);
+        padding: 0;
+        font-size: var(--font-size-m);
+        cursor: pointer;
+        align-self: normal;
+        line-height: 22px;
+        width: 40px;
+        margin-left: var(--gap-xs);
+    }
+
+    ::part(lens-search-button) {
+        margin-left: auto;
+        margin-right: 45px;
+    }
+</style>
