@@ -20,6 +20,7 @@
     import StoreDeleteButtonComponent from "../buttons/StoreDeleteButtonComponent.svelte";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
     import { catalogue } from "../../stores/catalogue";
+    import { facetCounts } from "../../stores/facetCounts";
 
     interface Props {
         /** The string to display when no matches are found */
@@ -437,6 +438,13 @@
                                 {@html getBoldedText(
                                     inputOption.criterion.name,
                                 )}
+                                {#if $facetCounts[inputOption.key]?.[inputOption.criterion.key] !== undefined}
+                                    <span class="facet-count"
+                                        >({$facetCounts[inputOption.key][
+                                            inputOption.criterion.key
+                                        ]})</span
+                                    >
+                                {/if}
                             </div>
                             {#if inputOption.criterion.description}
                                 <div
@@ -462,6 +470,13 @@
                                 {@html getBoldedText(
                                     inputOption.criterion.name,
                                 )}
+                                {#if $facetCounts[inputOption.key]?.[inputOption.criterion.key] !== undefined}
+                                    <span class="facet-count"
+                                        >({$facetCounts[inputOption.key][
+                                            inputOption.criterion.key
+                                        ]})</span
+                                    >
+                                {/if}
                             </div>
                             {#if inputOption.criterion.description}
                                 <div

@@ -8,6 +8,7 @@
     } from "../../stores/query";
     import type { QueryItem, QueryValue } from "../../types/queryData";
     import { onMount } from "svelte";
+    import { facetCounts } from "../../stores/facetCounts";
 
     /**
      * mockdata to get from texts store
@@ -315,6 +316,13 @@
                                 <div part="autocomplete-options-item-name">
                                     <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                                     {@html getBoldedText(inputOption.name)}
+                                    {#if $facetCounts[element.key]?.[inputOption.key] !== undefined}
+                                        <span class="facet-count"
+                                            >({$facetCounts[element.key][
+                                                inputOption.key
+                                            ]})</span
+                                        >
+                                    {/if}
                                 </div>
                                 <div
                                     part="autocomplete-options-item-description-focused"
@@ -337,6 +345,13 @@
                                 <div part="autocomplete-options-item-name">
                                     <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                                     {@html getBoldedText(inputOption.name)}
+                                    {#if $facetCounts[element.key]?.[inputOption.key] !== undefined}
+                                        <span class="facet-count"
+                                            >({$facetCounts[element.key][
+                                                inputOption.key
+                                            ]})</span
+                                        >
+                                    {/if}
                                 </div>
                                 <div
                                     part="autocomplete-options-item-description"
@@ -440,5 +455,11 @@
     [part~="autocomplete-options-item-description-focused"] {
         font-size: var(--font-size-xs);
         color: var(--white);
+    }
+
+    .facet-count {
+        margin-left: 0.5em;
+        color: #888;
+        font-size: 0.95em;
     }
 </style>
