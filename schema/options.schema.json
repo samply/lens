@@ -188,6 +188,10 @@
         "chartOptions": {
           "$ref": "#/definitions/ChartOptions"
         },
+        "facetCountBackendURL": {
+          "description": "If set, fetch and display facet counts (number of results per discrete value) in the catalogue from this backend URL.",
+          "type": "string"
+        },
         "iconOptions": {
           "$ref": "#/definitions/IconUrls",
           "description": "Allows customizing icons by specifying image files"
@@ -389,4 +393,3 @@
     }
   }
 }
-

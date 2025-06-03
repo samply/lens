@@ -17,6 +17,8 @@ export type LensOptions = {
     /** Allows to customize texts and add new translations */
     texts?: Texts;
     backends?: BackendOptions;
+    /** If set, fetch and display facet counts (number of results per discrete value) in the catalogue from this backend URL. */
+    facetCountBackendURL?: string;
 };
 
 export type NegotiateOptions = {

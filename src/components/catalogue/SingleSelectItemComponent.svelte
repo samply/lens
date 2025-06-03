@@ -3,6 +3,7 @@
     import type { SingleSelectCategory, Criteria } from "../../types/catalogue";
     import AddButton from "./AddButton.svelte";
     import { activeQueryGroupIndex, addItemToQuery } from "../../stores/query";
+    import { facetCounts } from "../../stores/facetCounts";
 
     interface Props {
         element: SingleSelectCategory;
@@ -35,8 +36,20 @@
     }
 </script>
 
-<span>{criterion.name}</span>
+<span
+    >{criterion.name}
+    {#if $facetCounts[element.key]?.[criterion.key] !== undefined}
+        <span class="facet-count"
+            >({$facetCounts[element.key][criterion.key]})</span
+        >
+    {/if}
+</span>
 <AddButton {onclick} />
 
 <style>
+    .facet-count {
+        margin-left: 0.5em;
+        color: #888;
+        font-size: 0.95em;
+    }
 </style>
