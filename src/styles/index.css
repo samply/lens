@@ -1,9 +1,3 @@
-@import url("./searchbars.css");
-@import url("./catalogue.css");
-@import url("./results-overview.css");
-@import url("./result-chart.css");
-@import url("./info-button.css");
-
 :root {
     --white: #ffffff;
     --black: #000000;
@@ -48,4 +42,151 @@
     --button-background-color: var(--blue);
     --button-background-color-hover: var(--light-blue);
     --button-color: var(--white);
+}
+
+/**
+* Catalogue Structure
+*/
+
+lens-catalogue::part(info-button) {
+    cursor: pointer;
+    background-color: var(--white);
+    border: none;
+    padding: 0;
+}
+
+lens-catalogue::part(info-button-icon) {
+    bottom: 5px;
+    width: 16px;
+    height: 16px;
+}
+
+lens-catalogue::part(info-button-dialogue) {
+    cursor: auto;
+    position: absolute;
+    border: none;
+    background-color: var(--white);
+    width: max-content;
+    max-width: 200px;
+    z-index: 100;
+    padding: var(--gap-s);
+    top: var(--gap-m);
+    left: var(--gap-s);
+    border: solid 1px var(--light-blue);
+    border-radius: var(--border-radius-small);
+    text-align: left;
+}
+
+lens-chart::part(info-button) {
+    position: absolute;
+    cursor: pointer;
+    background-color: var(--white);
+    border: none;
+    padding: 0;
+    top: -10px;
+    right: -10px;
+}
+
+lens-chart::part(info-button-icon) {
+    bottom: var(--gap-xxs);
+    width: 16px;
+    height: 16px;
+}
+
+lens-chart::part(info-button-dialogue) {
+    cursor: auto;
+    position: absolute;
+    border: none;
+    background-color: var(--white);
+    width: max-content;
+    max-width: 300px;
+    z-index: 100;
+    padding: var(--gap-s);
+    top: 40px;
+    right: 0px;
+    border: solid 1px var(--blue);
+    border-radius: var(--border-radius-small);
+    text-align: left;
+}
+
+lens-chart::part(chart-hint) {
+    font-size: var(--font-size-xs);
+    padding-top: var(--gap-m);
+}
+
+/**
+* Lens Search Bar Info Button
+*/
+
+lens-search-bar-multiple::part(info-button),
+lens-search-bar::part(info-button) {
+    background-color: var(--blue);
+    border-color: var(--blue);
+    position: relative;
+    padding: 0;
+    border: 0;
+    top: +2px;
+}
+
+lens-search-bar::part(info-button-icon),
+lens-search-bar-multiple::part(info-button-icon) {
+    height: calc(var(--font-size-s) + 8px);
+    width: calc(var(--font-size-s) + 8px);
+    filter: brightness(0) invert(1);
+    box-sizing: content-box;
+    border-radius: 50%;
+}
+
+lens-search-bar::part(info-button-icon):hover,
+lens-search-bar-multiple::part(info-button-icon):hover {
+    cursor: pointer;
+    filter: invert(41%) sepia(43%) saturate(4610%) hue-rotate(357deg)
+        brightness(96%) contrast(90%);
+}
+
+lens-search-bar::part(info-button-dialogue),
+lens-search-bar-multiple::part(info-button-dialogue) {
+    position: absolute;
+    border: none;
+    background-color: var(--white);
+    width: max-content;
+    max-width: 200px;
+    z-index: 100;
+    padding: var(--gap-s);
+    top: calc(var(--gap-m) + 4px);
+    right: -20px;
+    border: solid 1px var(--light-blue);
+    border-radius: var(--border-radius-small);
+    text-align: left;
+}
+
+/**
+* result summary
+*/
+
+lens-result-summary::part(info-button) {
+    position: relative;
+    cursor: pointer;
+    height: 100%;
+    border: none;
+    background-color: var(--white);
+    border-radius: var(--border-radius-small);
+}
+lens-result-summary::part(info-button-icon) {
+    width: 16px;
+}
+
+lens-result-summary::part(info-button-dialogue) {
+    cursor: auto;
+    position: absolute;
+    border: none;
+    background-color: var(--white);
+    width: max-content;
+    max-width: 30vw;
+    z-index: 100;
+    padding: var(--gap-s);
+    top: 40px;
+    left: 0px;
+    border: solid 1px var(--blue);
+    border-radius: var(--border-radius-small);
 }
