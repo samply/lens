@@ -449,7 +449,7 @@
                                     )}
                                 {/if}
                             </div>
-                            <div class="autocomplete-options-item-facet-count">
+                            <div part="autocomplete-options-item-facet-count">
                                 {#if $facetCounts[inputOption.key]?.[inputOption.criterion.key] !== undefined}
                                     ({$facetCounts[inputOption.key][
                                         inputOption.criterion.key
@@ -479,7 +479,7 @@
                                     )}
                                 {/if}
                             </div>
-                            <div class="autocomplete-options-item-facet-count">
+                            <div part="autocomplete-options-item-facet-count">
                                 {#if $facetCounts[inputOption.key]?.[inputOption.criterion.key] !== undefined}
                                     ({$facetCounts[inputOption.key][
                                         inputOption.criterion.key
@@ -595,6 +595,8 @@
         color: var(--font-color);
         border-bottom-left-radius: var(--border-radius-small);
         border-bottom-right-radius: var(--border-radius-small);
+        display: grid;
+        grid-template-columns: max-content max-content auto;
     }
 
     [part~="autocomplete-options-category-name"] {
@@ -603,11 +605,13 @@
     }
 
     [part~="lens-searchbar-autocomplete-options-item"] {
-        display: flex;
-        align-items: center;
+        display: grid;
+        grid-template-columns: subgrid;
+        grid-column: 1 / -1; /* Full width */
         gap: var(--gap-xs);
         cursor: pointer;
-        padding: var(--gap-xs) var(--gap-m);
+        padding: var(--gap-xxs) var(--gap-m);
+        transition: background-color 0.2s ease;
     }
 
     [part~="lens-searchbar-autocomplete-options-item-focused"] {
@@ -615,15 +619,23 @@
         background-color: var(--blue);
     }
 
+    [part~="lens-searchbar-autocomplete-options-item"]:hover:not(
+            [part~="autocomplete-options-item-focused"]
+        ) {
+        background-color: var(--light-gray);
+    }
+
     [part~="autocomplete-options-item-description"] {
         /* border: solid 1px var(--light-gray); */
-        display: flex;
-        align-items: center;
         color: var(--blue);
         font-size: var(--font-size-s);
         padding-right: var(--gap-m);
     }
     [part~="autocomplete-options-item-description-focused"] {
         color: var(--white);
+    }
+    [part~="autocomplete-options-item-facet-count"] {
+        color: #888;
+        font-size: 0.95em;
     }
 </style>

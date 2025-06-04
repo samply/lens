@@ -46,7 +46,6 @@
 
 <style>
     [part~="single-select-facet-count"] {
-        margin-left: 0.5em;
         color: #888;
         font-size: 0.95em;
         justify-self: end;

@@ -424,7 +424,7 @@
         overflow-y: auto;
 
         display: grid;
-        grid-template-columns: max-content max-content max-content;
+        grid-template-columns: max-content max-content auto;
     }
 
     [part~="autocomplete-options-item"] {
@@ -442,18 +442,12 @@
     [part~="autocomplete-options-item-focused"] {
         color: var(--white);
         background-color: var(--blue);
-        display: grid;
-        grid-template-columns: subgrid;
-        grid-column: 1 / -1; /* Full width */
     }
 
-    /* Optional: soften background on hover even if not focused */
     [part~="autocomplete-options-item"]:hover:not(
             [part~="autocomplete-options-item-focused"]
         ) {
-        background-color: var(
-            --gray-light
-        ); /* define or replace with actual light gray var */
+        background-color: var(--light-gray);
     }
 
     /* Description (secondary text) */
@@ -469,9 +463,7 @@
     }
 
     [part~="autocomplete-options-item-facet-count"] {
-        margin-left: 0.5em;
         color: #888;
         font-size: 0.95em;
-        justify-self: end;
     }
 </style>
