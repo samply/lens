@@ -20,7 +20,7 @@
     [part~="single-select-wrapper"] {
         display: grid;
         grid-template-columns: 1fr auto;
-        column-gap: 10px;
+        row-gap: 4px;
         align-items: center;
     }
 </style>
