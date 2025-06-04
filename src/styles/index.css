@@ -53,6 +53,7 @@ lens-catalogue::part(info-button) {
     background-color: var(--white);
     border: none;
     padding: 0;
+    height: 16px;
 }
 
 lens-catalogue::part(info-button-icon) {
@@ -67,6 +68,7 @@ lens-catalogue::part(info-button-dialogue) {
     border: none;
     background-color: var(--white);
     width: max-content;
+    height: max-content;
     max-width: 200px;
     z-index: 100;
     padding: var(--gap-s);

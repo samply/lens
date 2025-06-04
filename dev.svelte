@@ -49,6 +49,7 @@
         },
         resultSummaryOptions: {
             title: "Ergebnisse",
+            infoButtonText: "This is a tooltip",
             dataTypes: [
                 {
                     title: "Standorte",
@@ -295,6 +296,7 @@
             fieldType: "string",
             key: "sample-id",
             name: "Sample ID",
+            infoButtonText: ["Sample ID"],
             type: "EQUALS",
             system: "",
         },
