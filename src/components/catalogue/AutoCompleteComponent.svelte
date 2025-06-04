@@ -316,13 +316,6 @@
                                 <div part="autocomplete-options-item-name">
                                     <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                                     {@html getBoldedText(inputOption.name)}
-                                    {#if $facetCounts[element.key]?.[inputOption.key] !== undefined}
-                                        <span class="facet-count"
-                                            >({$facetCounts[element.key][
-                                                inputOption.key
-                                            ]})</span
-                                        >
-                                    {/if}
                                 </div>
                                 <div
                                     part="autocomplete-options-item-description-focused"
@@ -331,6 +324,15 @@
                                     {@html getBoldedText(
                                         inputOption.description || "",
                                     )}
+                                </div>
+                                <div
+                                    part="autocomplete-options-item-facet-count"
+                                >
+                                    {#if $facetCounts[element.key]?.[inputOption.key] !== undefined}
+                                        ({$facetCounts[element.key][
+                                            inputOption.key
+                                        ]})
+                                    {/if}
                                 </div>
                             </li>
                         {:else}
@@ -345,13 +347,6 @@
                                 <div part="autocomplete-options-item-name">
                                     <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                                     {@html getBoldedText(inputOption.name)}
-                                    {#if $facetCounts[element.key]?.[inputOption.key] !== undefined}
-                                        <span class="facet-count"
-                                            >({$facetCounts[element.key][
-                                                inputOption.key
-                                            ]})</span
-                                        >
-                                    {/if}
                                 </div>
                                 <div
                                     part="autocomplete-options-item-description"
@@ -360,6 +355,15 @@
                                     {@html getBoldedText(
                                         inputOption.description || "",
                                     )}
+                                </div>
+                                <div
+                                    part="autocomplete-options-item-facet-count"
+                                >
+                                    {#if $facetCounts[element.key]?.[inputOption.key] !== undefined}
+                                        ({$facetCounts[element.key][
+                                            inputOption.key
+                                        ]})
+                                    {/if}
                                 </div>
                             </li>
                         {/if}
@@ -418,11 +422,15 @@
 
         max-height: 400px;
         overflow-y: auto;
+
+        display: grid;
+        grid-template-columns: max-content max-content max-content;
     }
 
     [part~="autocomplete-options-item"] {
-        display: flex;
-        align-items: center;
+        display: grid;
+        grid-template-columns: subgrid;
+        grid-column: 1 / -1; /* Full width */
         gap: var(--gap-xs);
         cursor: pointer;
         padding: var(--gap-xxs) var(--gap-xs); /* Match input field’s padding */
@@ -434,6 +442,9 @@
     [part~="autocomplete-options-item-focused"] {
         color: var(--white);
         background-color: var(--blue);
+        display: grid;
+        grid-template-columns: subgrid;
+        grid-column: 1 / -1; /* Full width */
     }
 
     /* Optional: soften background on hover even if not focused */
@@ -457,9 +468,10 @@
         color: var(--white);
     }
 
-    .facet-count {
+    [part~="autocomplete-options-item-facet-count"] {
         margin-left: 0.5em;
         color: #888;
         font-size: 0.95em;
+        justify-self: end;
     }
 </style>

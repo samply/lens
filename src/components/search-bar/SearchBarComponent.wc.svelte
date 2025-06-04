@@ -438,24 +438,24 @@
                                 {@html getBoldedText(
                                     inputOption.criterion.name,
                                 )}
-                                {#if $facetCounts[inputOption.key]?.[inputOption.criterion.key] !== undefined}
-                                    <span class="facet-count"
-                                        >({$facetCounts[inputOption.key][
-                                            inputOption.criterion.key
-                                        ]})</span
-                                    >
-                                {/if}
                             </div>
-                            {#if inputOption.criterion.description}
-                                <div
-                                    part="autocomplete-options-item-description autocomplete-options-item-description-focused"
-                                >
+                            <div
+                                part="autocomplete-options-item-description autocomplete-options-item-description-focused"
+                            >
+                                {#if inputOption.criterion.description}
                                     <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                                     {@html getBoldedText(
                                         inputOption.criterion.description,
                                     )}
-                                </div>
-                            {/if}
+                                {/if}
+                            </div>
+                            <div class="autocomplete-options-item-facet-count">
+                                {#if $facetCounts[inputOption.key]?.[inputOption.criterion.key] !== undefined}
+                                    ({$facetCounts[inputOption.key][
+                                        inputOption.criterion.key
+                                    ]})
+                                {/if}
+                            </div>
                         </li>
                     {:else}
                         <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
@@ -470,24 +470,22 @@
                                 {@html getBoldedText(
                                     inputOption.criterion.name,
                                 )}
-                                {#if $facetCounts[inputOption.key]?.[inputOption.criterion.key] !== undefined}
-                                    <span class="facet-count"
-                                        >({$facetCounts[inputOption.key][
-                                            inputOption.criterion.key
-                                        ]})</span
-                                    >
-                                {/if}
                             </div>
-                            {#if inputOption.criterion.description}
-                                <div
-                                    part="autocomplete-options-item-description"
-                                >
+                            <div part="autocomplete-options-item-description">
+                                {#if inputOption.criterion.description}
                                     <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                                     {@html getBoldedText(
                                         inputOption.criterion.description,
                                     )}
-                                </div>
-                            {/if}
+                                {/if}
+                            </div>
+                            <div class="autocomplete-options-item-facet-count">
+                                {#if $facetCounts[inputOption.key]?.[inputOption.criterion.key] !== undefined}
+                                    ({$facetCounts[inputOption.key][
+                                        inputOption.criterion.key
+                                    ]})
+                                {/if}
+                            </div>
                         </li>
                     {/if}
                 {/each}
