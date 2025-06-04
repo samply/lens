@@ -613,12 +613,4 @@
     [part~="autocomplete-options-item-description-focused"] {
         color: var(--white);
     }
-
-    /**
-* Lens search Button in multiple searchbar mode
-*/
-
-    ::part(info-button-dialogue) {
-        left: 0px;
-    }
 </style>
