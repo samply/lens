@@ -88,27 +88,47 @@
     }
 </script>
 
-{#if $lensOptions?.resultSummaryOptions?.title !== undefined}
-    <div part="result-summary-header">
-        <div part="heading">
-            <h4 part="result-summary-header-title">
-                {$lensOptions?.resultSummaryOptions.title}
-                {#if $lensOptions?.resultSummaryOptions.infoButtonText !== undefined}
-                    <InfoButtonComponent
-                        message={[
-                            $lensOptions?.resultSummaryOptions.infoButtonText,
-                        ]}
-                    />
-                {/if}
-            </h4>
+<div part="lens-result-summary">
+    {#if $lensOptions?.resultSummaryOptions?.title !== undefined}
+        <div part="result-summary-header">
+            <div part="heading">
+                <h4 part="result-summary-header-title">
+                    {$lensOptions?.resultSummaryOptions.title}
+                    {#if $lensOptions?.resultSummaryOptions.infoButtonText !== undefined}
+                        <InfoButtonComponent
+                            message={[
+                                $lensOptions?.resultSummaryOptions
+                                    .infoButtonText,
+                            ]}
+                        />
+                    {/if}
+                </h4>
+            </div>
         </div>
+    {/if}
+    <div part="result-summary-content">
+        <!-- eslint-disable-next-line svelte/require-each-key -->
+        {#each populations as population}
+            <div part="result-summary-content-type">
+                {population.title}: {population.population}
+            </div>
+        {/each}
     </div>
-{/if}
-<div part="result-summary-content">
-    <!-- eslint-disable-next-line svelte/require-each-key -->
-    {#each populations as population}
-        <div part="result-summary-content-type">
-            {population.title}: {population.population}
-        </div>
-    {/each}
 </div>
+
+<style>
+    [part~="lens-result-summary"] {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        grid-gap: var(--gap-xl);
+        grid-column: 1/-1;
+        align-items: center;
+    }
+
+    [part~="result-summary-content"] {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        gap: 10px;
+    }
+</style>

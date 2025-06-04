@@ -49,6 +49,7 @@
         },
         resultSummaryOptions: {
             title: "Ergebnisse",
+            infoButtonText: "This is a tooltip",
             dataTypes: [
                 {
                     title: "Standorte",
@@ -295,6 +296,7 @@
             fieldType: "string",
             key: "sample-id",
             name: "Sample ID",
+            infoButtonText: ["Sample ID"],
             type: "EQUALS",
             system: "",
         },
@@ -567,6 +569,7 @@
     </div>
     <div class="box2">
         <lens-result-summary></lens-result-summary>
+        <lens-negotiate-button title="Request Data"></lens-negotiate-button>
         <lens-search-modified-display></lens-search-modified-display>
         <lens-result-table></lens-result-table>
         <lens-chart
