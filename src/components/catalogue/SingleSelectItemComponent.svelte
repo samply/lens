@@ -48,6 +48,6 @@
     [part~="single-select-facet-count"] {
         color: #888;
         font-size: 0.95em;
-        justify-self: end;
+        text-align: right;
     }
 </style>

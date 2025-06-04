@@ -329,9 +329,9 @@
                                     part="autocomplete-options-item-facet-count"
                                 >
                                     {#if $facetCounts[element.key]?.[inputOption.key] !== undefined}
-                                        ({$facetCounts[element.key][
+                                        {$facetCounts[element.key][
                                             inputOption.key
-                                        ]})
+                                        ]}
                                     {/if}
                                 </div>
                             </li>
@@ -360,9 +360,9 @@
                                     part="autocomplete-options-item-facet-count"
                                 >
                                     {#if $facetCounts[element.key]?.[inputOption.key] !== undefined}
-                                        ({$facetCounts[element.key][
+                                        {$facetCounts[element.key][
                                             inputOption.key
-                                        ]})
+                                        ]}
                                     {/if}
                                 </div>
                             </li>
@@ -424,7 +424,7 @@
         overflow-y: auto;
 
         display: grid;
-        grid-template-columns: max-content max-content auto;
+        grid-template-columns: max-content auto max-content;
     }
 
     [part~="autocomplete-options-item"] {
@@ -463,7 +463,7 @@
     }
 
     [part~="autocomplete-options-item-facet-count"] {
-        color: #888;
         font-size: 0.95em;
+        text-align: right;
     }
 </style>
