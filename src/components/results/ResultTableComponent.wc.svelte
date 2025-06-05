@@ -335,8 +335,6 @@
     }
 
     [part~="table-pagination-switcher"] {
-        position: absolute;
-        right: 0;
-        padding-right: 20px;
+        margin-left: 20px;
     }
 </style>
