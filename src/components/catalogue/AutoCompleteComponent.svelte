@@ -325,15 +325,15 @@
                                         inputOption.description || "",
                                     )}
                                 </div>
-                                <div
-                                    part="autocomplete-options-item-facet-count"
-                                >
-                                    {#if $facetCounts[element.key]?.[inputOption.key] !== undefined}
+                                {#if $facetCounts[element.key]?.[inputOption.key] !== undefined}
+                                    <div
+                                        part="autocomplete-options-item-facet-count"
+                                    >
                                         {$facetCounts[element.key][
                                             inputOption.key
                                         ]}
-                                    {/if}
-                                </div>
+                                    </div>
+                                {/if}
                             </li>
                         {:else}
                             <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
@@ -356,15 +356,15 @@
                                         inputOption.description || "",
                                     )}
                                 </div>
-                                <div
-                                    part="autocomplete-options-item-facet-count"
-                                >
-                                    {#if $facetCounts[element.key]?.[inputOption.key] !== undefined}
+                                {#if $facetCounts[element.key]?.[inputOption.key] !== undefined}
+                                    <div
+                                        part="autocomplete-options-item-facet-count"
+                                    >
                                         {$facetCounts[element.key][
                                             inputOption.key
                                         ]}
-                                    {/if}
-                                </div>
+                                    </div>
+                                {/if}
                             </li>
                         {/if}
                     {/each}
@@ -463,7 +463,11 @@
     }
 
     [part~="autocomplete-options-item-facet-count"] {
+        color: #636363;
         font-size: 0.95em;
-        text-align: right;
+        justify-self: right;
+        background-color: rgb(239, 239, 252);
+        padding: 1px 6px;
+        border-radius: 40px;
     }
 </style>

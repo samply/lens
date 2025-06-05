@@ -37,17 +37,20 @@
 </script>
 
 <span>{criterion.name}</span>
-<span part="single-select-facet-count">
-    {#if $facetCounts[element.key]?.[criterion.key] !== undefined}
-        ({$facetCounts[element.key][criterion.key]})
-    {/if}
-</span>
+{#if $facetCounts[element.key]?.[criterion.key] !== undefined}
+    <span part="single-select-facet-count">
+        {$facetCounts[element.key][criterion.key]}
+    </span>
+{/if}
 <AddButton {onclick} />
 
 <style>
     [part~="single-select-facet-count"] {
-        color: #888;
+        color: #636363;
         font-size: 0.95em;
-        text-align: right;
+        justify-self: right;
+        background-color: rgb(239, 239, 252);
+        padding: 1px 6px;
+        border-radius: 40px;
     }
 </style>

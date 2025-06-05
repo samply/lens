@@ -33,6 +33,7 @@ export async function fetchFacetCounts(backendURL: string) {
             return;
         }
         const data = await response.json();
+        console.log("[facetCounts] response:", data);
         // Flatten: group -> stratifier -> stratum -> number  => stratifier -> stratum -> number
         const flat: Record<string, Record<string, number>> = {};
         for (const group of Object.values(data)) {
