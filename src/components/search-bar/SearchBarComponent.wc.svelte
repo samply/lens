@@ -21,6 +21,7 @@
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
     import { catalogue } from "../../stores/catalogue";
     import { facetCounts } from "../../stores/facetCounts";
+    import { lensOptions } from "../../stores/options";
 
     interface Props {
         /** The string to display when no matches are found */
@@ -452,6 +453,8 @@
                             {#if $facetCounts[inputOption.key]?.[inputOption.criterion.key] !== undefined}
                                 <div
                                     part="autocomplete-options-item-facet-count"
+                                    title={$lensOptions?.facetCount
+                                        ?.hoverText?.[inputOption.key] ?? ""}
                                 >
                                     {$facetCounts[inputOption.key][
                                         inputOption.criterion.key
@@ -484,6 +487,8 @@
                             {#if $facetCounts[inputOption.key]?.[inputOption.criterion.key] !== undefined}
                                 <div
                                     part="autocomplete-options-item-facet-count"
+                                    title={$lensOptions?.facetCount
+                                        ?.hoverText?.[inputOption.key] ?? ""}
                                 >
                                     {$facetCounts[inputOption.key][
                                         inputOption.criterion.key

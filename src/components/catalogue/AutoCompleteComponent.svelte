@@ -9,6 +9,7 @@
     import type { QueryItem, QueryValue } from "../../types/queryData";
     import { onMount } from "svelte";
     import { facetCounts } from "../../stores/facetCounts";
+    import { lensOptions } from "../../stores/options";
 
     /**
      * mockdata to get from texts store
@@ -328,6 +329,8 @@
                                 {#if $facetCounts[element.key]?.[inputOption.key] !== undefined}
                                     <div
                                         part="autocomplete-options-item-facet-count"
+                                        title={$lensOptions?.facetCount
+                                            ?.hoverText?.[element.key] ?? ""}
                                     >
                                         {$facetCounts[element.key][
                                             inputOption.key
@@ -359,6 +362,8 @@
                                 {#if $facetCounts[element.key]?.[inputOption.key] !== undefined}
                                     <div
                                         part="autocomplete-options-item-facet-count"
+                                        title={$lensOptions?.facetCount
+                                            ?.hoverText?.[element.key] ?? ""}
                                     >
                                         {$facetCounts[element.key][
                                             inputOption.key

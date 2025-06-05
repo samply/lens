@@ -17,8 +17,15 @@ export type LensOptions = {
     /** Allows to customize texts and add new translations */
     texts?: Texts;
     backends?: BackendOptions;
-    /** If set, fetch and display facet counts (number of results per discrete value) in the catalogue from this backend URL. */
-    facetCountBackendURL?: string;
+    /** If set, fetch and display facet counts (number of results per discrete value) in the catalogue. */
+    facetCount?: FacetCountOptions;
+};
+
+export type FacetCountOptions = {
+    /** URL of the backend that provides facet counts */
+    backendUrl: string;
+    /** Hover text for each stratifier in the catalogue */
+    hoverText: Record<string, string>;
 };
 
 export type NegotiateOptions = {

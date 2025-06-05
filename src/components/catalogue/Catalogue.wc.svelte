@@ -73,8 +73,8 @@
     onMount(() => {
         const unsubscribe = lensOptions.subscribe((opts) => {
             if (opts !== undefined) {
-                if (opts.facetCountBackendURL) {
-                    fetchFacetCounts(opts.facetCountBackendURL);
+                if (opts.facetCount) {
+                    fetchFacetCounts(opts.facetCount.backendUrl);
                 }
                 unsubscribe(); // Only run once when options become defined
             }

@@ -4,6 +4,7 @@
     import AddButton from "./AddButton.svelte";
     import { activeQueryGroupIndex, addItemToQuery } from "../../stores/query";
     import { facetCounts } from "../../stores/facetCounts";
+    import { lensOptions } from "../../stores/options";
 
     interface Props {
         element: SingleSelectCategory;
@@ -38,9 +39,14 @@
 
 <span>{criterion.name}</span>
 {#if $facetCounts[element.key]?.[criterion.key] !== undefined}
-    <span part="single-select-facet-count">
+    <span
+        part="single-select-facet-count"
+        title={$lensOptions?.facetCount?.hoverText?.[element.key] ?? ""}
+    >
         {$facetCounts[element.key][criterion.key]}
     </span>
+{:else}
+    <span></span>
 {/if}
 <AddButton {onclick} />
 
