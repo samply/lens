@@ -33,25 +33,13 @@ export async function fetchFacetCounts(backendURL: string) {
             );
             return;
         }
-        const data = await response.json();
-        console.log("[facetCounts] response:", data);
-        // Flatten: group -> stratifier -> stratum -> number  => stratifier -> stratum -> number
-        const flat: Record<string, Record<string, number>> = {};
-        for (const group of Object.values(data)) {
-            for (const [stratifier, stratumObj] of Object.entries(
-                group as object,
-            )) {
-                if (!flat[stratifier]) flat[stratifier] = {};
-                for (const [stratum, count] of Object.entries(
-                    stratumObj as object,
-                )) {
-                    flat[stratifier][stratum] = count as number;
-                }
-            }
-        }
+        const data: Record<
+            string,
+            Record<string, number>
+        > = await response.json();
         // For the diagnosis stratum, add new stratifiers <prefix>.% that add up all <prefix> and <prefix>.<something>
-        if (flat["diagnosis"]) {
-            const diagnoses = flat["diagnosis"];
+        if (data["diagnosis"]) {
+            const diagnoses = data["diagnosis"];
             const inCatalogue = new Set(getCriteria("diagnosis"));
             for (const [diagnosis, count] of Object.entries(diagnoses)) {
                 if (!inCatalogue.has(diagnosis)) continue; // Skip if not in catalogue
@@ -60,8 +48,8 @@ export async function fetchFacetCounts(backendURL: string) {
                 diagnoses[wildcard] = (diagnoses[wildcard] || 0) + count;
             }
         }
-        facetCounts.set(flat);
-        console.log("[facetCounts] updated:", flat);
+        facetCounts.set(data);
+        console.log("[facetCounts] updated:", data);
     } catch (e) {
         console.error("Error fetching facet counts", e);
     }

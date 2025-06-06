@@ -24,19 +24,13 @@ Lens POSTs an array of sites (e.g. `{"sites": ["berlin", "munich"]}`) to the end
 ```json
 {
     "diagnosis": {
-        "diagnosis": {
-            "C34.0": 26,
-            "C34.2": 28,
-            "C34.8": 25
-        }
+        "C34.0": 26,
+        "C34.2": 28,
+        "C34.8": 25
     },
-    "patients": {
-        "gender": {
-            "female": 31,
-            "male": 43
-        }
+    "gender": {
+        "female": 31,
+        "male": 43
     }
 }
 ```
-
-Lens flattens the object and ignores the outer group names.
