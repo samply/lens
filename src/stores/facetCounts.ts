@@ -48,6 +48,15 @@ export async function fetchFacetCounts(backendURL: string) {
                 }
             }
         }
+        // For the diagnosis stratum, add new stratifiers <prefix>.% that add up all <prefix> and <prefix>.<something>
+        if (flat["diagnosis"]) {
+            const diagnoses = flat["diagnosis"];
+            for (const [diagnosis, count] of Object.entries(diagnoses)) {
+                const prefix = diagnosis.split(".")[0];
+                const wildcard = `${prefix}.%`;
+                diagnoses[wildcard] = (diagnoses[wildcard] || 0) + count;
+            }
+        }
         facetCounts.set(flat);
         console.log("[facetCounts] updated:", flat);
     } catch (e) {
