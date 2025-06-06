@@ -6,6 +6,7 @@
         translate,
     } from "./src/index";
     import type { QueryEvent, Site } from "./src/index";
+    import { facetCounts } from "./src/stores/facetCounts";
 
     setOptions({
         language: localStorage.getItem("language") || "en",
@@ -296,6 +297,21 @@
             system: "",
         },
     ]);
+
+    facetCounts.set({
+        "blood-group": {
+            "A+": 10,
+            "A-": 5,
+            "B+": 8,
+            "B-": 2,
+        },
+        diagnosis: {
+            C31: 40,
+            "C31.0": 20,
+            C41: 30,
+            "C41.0": 10,
+        },
+    });
 
     function sleep(ms: number): Promise<void> {
         return new Promise((resolve) => {
