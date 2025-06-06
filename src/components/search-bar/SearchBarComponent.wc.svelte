@@ -450,7 +450,7 @@
                                     )}
                                 {/if}
                             </div>
-                            {#if $facetCounts[inputOption.key]?.[inputOption.criterion.key] !== undefined}
+                            {#if $facetCounts[inputOption.key] !== undefined}
                                 <div
                                     part="autocomplete-options-item-facet-count"
                                     title={$lensOptions?.facetCount
@@ -458,7 +458,7 @@
                                 >
                                     {$facetCounts[inputOption.key][
                                         inputOption.criterion.key
-                                    ]}
+                                    ] ?? 0}
                                 </div>
                             {/if}
                         </li>
@@ -484,7 +484,7 @@
                                     )}
                                 {/if}
                             </div>
-                            {#if $facetCounts[inputOption.key]?.[inputOption.criterion.key] !== undefined}
+                            {#if $facetCounts[inputOption.key] !== undefined}
                                 <div
                                     part="autocomplete-options-item-facet-count"
                                     title={$lensOptions?.facetCount
@@ -492,7 +492,7 @@
                                 >
                                     {$facetCounts[inputOption.key][
                                         inputOption.criterion.key
-                                    ]}
+                                    ] ?? 0}
                                 </div>
                             {/if}
                         </li>
