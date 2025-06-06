@@ -71,12 +71,13 @@
     });
 
     onMount(() => {
-        const unsubscribe = lensOptions.subscribe((opts) => {
-            if (opts !== undefined) {
+        let didRun = false;
+        lensOptions.subscribe((opts) => {
+            if (opts !== undefined && !didRun) {
                 if (opts.facetCount) {
                     fetchFacetCounts(opts.facetCount.backendUrl);
+                    didRun = true;
                 }
-                unsubscribe(); // Only run once when options become defined
             }
         });
     });
