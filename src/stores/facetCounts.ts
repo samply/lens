@@ -1,5 +1,6 @@
 import { writable, get } from "svelte/store";
 import { lensOptions } from "./options";
+import { getCriteria } from "../stores/catalogue";
 
 /**
  * Facet counts store: stratifier -> stratum -> number
@@ -51,7 +52,9 @@ export async function fetchFacetCounts(backendURL: string) {
         // For the diagnosis stratum, add new stratifiers <prefix>.% that add up all <prefix> and <prefix>.<something>
         if (flat["diagnosis"]) {
             const diagnoses = flat["diagnosis"];
+            const inCatalogue = new Set(getCriteria("diagnosis"));
             for (const [diagnosis, count] of Object.entries(diagnoses)) {
+                if (!inCatalogue.has(diagnosis)) continue; // Skip if not in catalogue
                 const prefix = diagnosis.split(".")[0];
                 const wildcard = `${prefix}.%`;
                 diagnoses[wildcard] = (diagnoses[wildcard] || 0) + count;
