@@ -44,13 +44,8 @@
      * Initialize the catalogue text store with the given texts
      */
     let initializedTexts = {
-        group: texts.group || "Group",
         collapseButtonTitle: texts.collapseButtonTitle || "Collapse Tree",
         expandButtonTitle: texts.expandButtonTitle || "Expand Tree",
-        numberInput: {
-            labelFrom: texts.numberInput?.labelFrom || "From",
-            labelTo: texts.numberInput?.labelTo || "to",
-        },
     };
 
     /**
