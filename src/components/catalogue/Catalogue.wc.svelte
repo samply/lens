@@ -7,7 +7,6 @@
 <script lang="ts">
     import { catalogueTextStore } from "../../stores/texts";
     import { catalogue } from "../../stores/catalogue";
-    import type { ToggleAttribute } from "../../types/helpers";
     import type { CatalogueText } from "../../types/texts";
     import type { Catalogue } from "../../types/catalogue";
     import DataTreeElement from "./DataTreeElement.svelte";
@@ -22,7 +21,10 @@
         /**
          * handle the toggle of the catalogue
          */
-        toggle?: ToggleAttribute;
+        toggle?: {
+            collapsable?: boolean;
+            open?: boolean;
+        };
     }
 
     let {
