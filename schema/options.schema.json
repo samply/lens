@@ -107,6 +107,27 @@
       },
       "type": "object"
     },
+    "FacetCountOptions": {
+      "additionalProperties": false,
+      "properties": {
+        "backendUrl": {
+          "description": "URL of the backend that provides facet counts",
+          "type": "string"
+        },
+        "hoverText": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Hover text for each stratifier in the catalogue",
+          "type": "object"
+        }
+      },
+      "required": [
+        "backendUrl",
+        "hoverText"
+      ],
+      "type": "object"
+    },
     "HeaderData": {
       "additionalProperties": false,
       "properties": {
@@ -187,6 +208,10 @@
         },
         "chartOptions": {
           "$ref": "#/definitions/ChartOptions"
+        },
+        "facetCount": {
+          "$ref": "#/definitions/FacetCountOptions",
+          "description": "If set, fetch and display facet counts (number of results per discrete value) in the catalogue."
         },
         "iconOptions": {
           "$ref": "#/definitions/IconUrls",

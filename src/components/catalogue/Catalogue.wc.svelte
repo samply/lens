@@ -11,6 +11,9 @@
     import type { CatalogueText } from "../../types/texts";
     import type { Catalogue } from "../../types/catalogue";
     import DataTreeElement from "./DataTreeElement.svelte";
+    import { onMount } from "svelte";
+    import { lensOptions } from "../../stores/options";
+    import { fetchFacetCounts } from "../../stores/facetCounts";
 
     interface Props {
         treeData?: Catalogue;
@@ -65,6 +68,18 @@
      */
     $effect(() => {
         $catalogueTextStore = initializedTexts;
+    });
+
+    onMount(() => {
+        let didRun = false;
+        lensOptions.subscribe((opts) => {
+            if (opts !== undefined && !didRun) {
+                if (opts.facetCount) {
+                    fetchFacetCounts(opts.facetCount.backendUrl);
+                    didRun = true;
+                }
+            }
+        });
     });
 </script>
 

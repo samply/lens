@@ -6,6 +6,7 @@
     - [Query](guide/query.md)
     - [Translations](guide/translations.md)
     - [Chart reset button](guide/reset-button.md)
+    - [Facet counts](guide/facet-counts.md)
 - [Development](development/README.md)
     - [Git hooks](development/git-hooks.md)
     - [Styling](development/styling.md)

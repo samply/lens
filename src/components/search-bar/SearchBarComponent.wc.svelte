@@ -20,6 +20,8 @@
     import StoreDeleteButtonComponent from "../buttons/StoreDeleteButtonComponent.svelte";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
     import { catalogue } from "../../stores/catalogue";
+    import { facetCounts } from "../../stores/facetCounts";
+    import { lensOptions } from "../../stores/options";
 
     interface Props {
         /** The string to display when no matches are found */
@@ -418,7 +420,7 @@
                     {#if inputOptions
                         .map((option) => option.name)
                         .indexOf(inputOption.name) === i}
-                        <div part="autocomplete-options-item-name">
+                        <div part="autocomplete-options-heading">
                             <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                             {@html getBoldedText(inputOption.name)}
                         </div>
@@ -438,14 +440,25 @@
                                     inputOption.criterion.name,
                                 )}
                             </div>
-                            {#if inputOption.criterion.description}
-                                <div
-                                    part="autocomplete-options-item-description autocomplete-options-item-description-focused"
-                                >
+                            <div
+                                part="autocomplete-options-item-description autocomplete-options-item-description-focused"
+                            >
+                                {#if inputOption.criterion.description}
                                     <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                                     {@html getBoldedText(
                                         inputOption.criterion.description,
                                     )}
+                                {/if}
+                            </div>
+                            {#if $facetCounts[inputOption.key] !== undefined}
+                                <div
+                                    part="autocomplete-options-item-facet-count"
+                                    title={$lensOptions?.facetCount
+                                        ?.hoverText?.[inputOption.key] ?? ""}
+                                >
+                                    {$facetCounts[inputOption.key][
+                                        inputOption.criterion.key
+                                    ] ?? 0}
                                 </div>
                             {/if}
                         </li>
@@ -463,14 +476,23 @@
                                     inputOption.criterion.name,
                                 )}
                             </div>
-                            {#if inputOption.criterion.description}
-                                <div
-                                    part="autocomplete-options-item-description"
-                                >
+                            <div part="autocomplete-options-item-description">
+                                {#if inputOption.criterion.description}
                                     <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                                     {@html getBoldedText(
                                         inputOption.criterion.description,
                                     )}
+                                {/if}
+                            </div>
+                            {#if $facetCounts[inputOption.key] !== undefined}
+                                <div
+                                    part="autocomplete-options-item-facet-count"
+                                    title={$lensOptions?.facetCount
+                                        ?.hoverText?.[inputOption.key] ?? ""}
+                                >
+                                    {$facetCounts[inputOption.key][
+                                        inputOption.criterion.key
+                                    ] ?? 0}
                                 </div>
                             {/if}
                         </li>
@@ -496,8 +518,8 @@
 
 <style>
     /**
-  * Lens Search Bar
-  */
+    * Lens Search Bar
+    */
 
     [part~="lens-searchbar"]:focus-within {
         border-color: var(--blue);
@@ -558,8 +580,8 @@
     }
 
     /**
-* Lens Search Bar Input Options
-*/
+    * Lens Search Bar Input Options
+    */
 
     [part~="lens-searchbar-input-options-open"] {
         border-bottom-left-radius: 0;
@@ -568,9 +590,9 @@
 
     [part~="lens-searchbar-autocomplete-options"] {
         max-height: 50vh;
-        overflow: scroll;
+        overflow-y: auto;
         list-style-type: none;
-        padding: var(--gap-s);
+        padding: var(--gap-xs);
         margin: 0;
         border: solid 1px var(--blue);
         border-top: none;
@@ -582,19 +604,23 @@
         color: var(--font-color);
         border-bottom-left-radius: var(--border-radius-small);
         border-bottom-right-radius: var(--border-radius-small);
-    }
-
-    [part~="autocomplete-options-category-name"] {
-        padding: var(--gap-xs) var(--gap-s);
-        font-weight: bold;
+        display: grid;
+        grid-template-columns: max-content auto max-content;
     }
 
     [part~="lens-searchbar-autocomplete-options-item"] {
-        display: flex;
-        align-items: center;
-        gap: var(--gap-xs);
+        display: grid;
+        grid-template-columns: subgrid;
+        grid-column: 1 / -1; /* Full width */
         cursor: pointer;
-        padding: var(--gap-xs) var(--gap-m);
+        transition: background-color 0.2s ease;
+        gap: var(--gap-xs);
+        padding: var(--gap-xxs) var(--gap-xs);
+    }
+
+    [part~="autocomplete-options-heading"] {
+        font-weight: bold;
+        grid-column: 1 / -1;
     }
 
     [part~="lens-searchbar-autocomplete-options-item-focused"] {
@@ -602,15 +628,25 @@
         background-color: var(--blue);
     }
 
+    [part~="lens-searchbar-autocomplete-options-item"]:hover:not(
+            [part~="autocomplete-options-item-focused"]
+        ) {
+        background-color: var(--light-gray);
+    }
+
     [part~="autocomplete-options-item-description"] {
-        /* border: solid 1px var(--light-gray); */
-        display: flex;
-        align-items: center;
         color: var(--blue);
         font-size: var(--font-size-s);
-        padding-right: var(--gap-m);
     }
     [part~="autocomplete-options-item-description-focused"] {
         color: var(--white);
+    }
+    [part~="autocomplete-options-item-facet-count"] {
+        color: #636363;
+        font-size: 0.95em;
+        justify-self: right;
+        background-color: rgb(239, 239, 252);
+        padding: 1px 6px;
+        border-radius: 40px;
     }
 </style>
