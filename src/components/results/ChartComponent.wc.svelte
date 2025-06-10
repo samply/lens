@@ -674,3 +674,39 @@
     ></canvas>
     <slot />
 </div>
+
+<style>
+    [part~="chart-wrapper"] {
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        position: relative;
+        background-color: var(--white);
+    }
+
+    [part~="chart-overlay"] {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    [part~="no-data-available"] {
+        font-weight: bold;
+        color: var(--gray);
+        background-color: var(--white);
+        padding: 0.5em;
+    }
+
+    [part~="chart-title"] {
+        text-align: center;
+        margin: 0;
+        padding-bottom: var(--gap-m);
+    }
+
+    [part~="chart-canvas"] {
+        width: 100%;
+        max-height: 400px;
+    }
+</style>

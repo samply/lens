@@ -107,10 +107,11 @@
     [part~="number-input-form"] {
         display: flex;
         align-items: center;
-        gap: var(--gap-xs);
+        gap: var(--gap-xxs);
     }
     [part~="number-input-formfield-wrapper"] {
         display: flex;
+        font-size: 10pt;
         border: 1px solid var(--gray);
         border-radius: var(--gap-xs);
         overflow: hidden;
@@ -123,8 +124,8 @@
         border: none;
         outline: none;
         padding: var(--gap-xxs) var(--gap-xs);
-        width: 70px;
-        font-size: var(--font-size-m);
+        width: 50px;
+        font-size: var(--font-size-s);
     }
     [part~="number-input-formfield-unit"] {
         display: flex;
@@ -132,5 +133,6 @@
         border-left: 1px solid var(--gray);
         padding: 0 var(--gap-xs);
         background-color: var(--lightest-gray);
+        font-size: var(--font-size-xs);
     }
 </style>

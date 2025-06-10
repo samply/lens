@@ -6,6 +6,7 @@
         translate,
     } from "./src/index";
     import type { QueryEvent, Site } from "./src/index";
+    import { facetCounts } from "./src/stores/facetCounts";
 
     setOptions({
         language: localStorage.getItem("language") || "en",
@@ -25,6 +26,9 @@
         ],
         chartOptions: {
             gender: {
+                hintText: [
+                    "This pie chart shows the proportion of males to females in our [population/data set]. The size of each section represents the percentage of individuals who identify as male or female.",
+                ],
                 legendMapping: {
                     male: "Männlich",
                     female: "Weiblich",
@@ -46,6 +50,7 @@
         },
         resultSummaryOptions: {
             title: "Ergebnisse",
+            infoButtonText: "This is a tooltip",
             dataTypes: [
                 {
                     title: "Standorte",
@@ -66,6 +71,7 @@
             name: "Diagnosis",
             type: "EQUALS",
             system: "http://fhir.de/CodeSystem/dimdi/icd-10-gm",
+            infoButtonText: ["Diagnosis"],
             criteria: [
                 {
                     key: "C31",
@@ -286,10 +292,26 @@
             fieldType: "string",
             key: "sample-id",
             name: "Sample ID",
+            infoButtonText: ["Sample ID"],
             type: "EQUALS",
             system: "",
         },
     ]);
+
+    facetCounts.set({
+        "blood-group": {
+            "A+": 10,
+            "A-": 5,
+            "B+": 8,
+            "B-": 2,
+        },
+        diagnosis: {
+            C31: 40,
+            "C31.0": 20,
+            C41: 30,
+            "C41.0": 10,
+        },
+    });
 
     function sleep(ms: number): Promise<void> {
         return new Promise((resolve) => {
@@ -542,20 +564,28 @@
     }
 </script>
 
-<header>
-    <h2>Lens Dev</h2>
+<header style="padding: 10px;">
+    <h2 style="margin: 0;">Lens Dev</h2>
 </header>
-<div class="searchbar">
-    <lens-search-bar></lens-search-bar>
-    <lens-query-spinner></lens-query-spinner>
+
+<div style="display: flex; padding: 10px; gap: 10px;">
+    <div style="flex: 1">
+        <lens-search-bar-multiple></lens-search-bar-multiple>
+    </div>
+    <lens-info-button noQueryMessage="Empty Query" showQuery={true}
+    ></lens-info-button>
     <lens-search-button></lens-search-button>
+    <lens-query-spinner></lens-query-spinner>
 </div>
-<div class="container">
-    <div class="box">
+
+<div style="display: flex; padding: 10px; gap: 10px;">
+    <div style="flex: 1">
         <lens-catalogue toggle={{ open: true }}></lens-catalogue>
     </div>
-    <div class="box2">
+    <div style="flex: 1">
         <lens-result-summary></lens-result-summary>
+        <lens-negotiate-button title="Request Data"></lens-negotiate-button>
+        <lens-search-modified-display></lens-search-modified-display>
         <lens-result-table></lens-result-table>
         <lens-chart
             title="Geschlecht"
@@ -581,50 +611,25 @@
         ></lens-chart>
     </div>
 </div>
-<button
-    id="error-toast-test-button"
-    onclick={() => showErrorToast(translate("lens-dev-test-error"))}
-    >Error toast test</button
->
-<button
-    id="switch-language-to-german-button"
-    onclick={() => setLangAndReload("de")}>🇩🇪</button
-><button
-    id="switch-language-to-english-button"
-    onclick={() => setLangAndReload("en")}>🇬🇧</button
->
-<error-toasts></error-toasts>
 
-<footer>
-    Made with ♥ and
-    <a href="https://github.com/samply/lens">samply/lens</a>.
+<footer style="display: flex; padding: 10px; gap: 10px;">
+    <button
+        id="error-toast-test-button"
+        onclick={() => showErrorToast(translate("lens-dev-test-error"))}
+        >Error toast test</button
+    >
+    <button
+        id="switch-language-to-german-button"
+        onclick={() => setLangAndReload("de")}>🇩🇪</button
+    ><button
+        id="switch-language-to-english-button"
+        onclick={() => setLangAndReload("en")}>🇬🇧</button
+    >
+    <span
+        >Made with ♥ and <a href="https://github.com/samply/lens"
+            >samply/lens</a
+        >.</span
+    >
 </footer>
 
-<style>
-    :root {
-        padding-left: 100px;
-        padding-right: 100px;
-    }
-    header {
-        background-color: ghostwhite;
-    }
-    footer {
-        background-color: ghostwhite;
-    }
-    .container {
-        display: flex;
-    }
-    .searchbar {
-        display: grid;
-        grid-template-columns: 25fr 1fr 1fr;
-        align-items: center;
-    }
-    .box {
-        padding: 10px;
-        padding: 1em;
-        width: 600px;
-    }
-    .box2 {
-        flex-grow: 1;
-    }
-</style>
+<error-toasts></error-toasts>

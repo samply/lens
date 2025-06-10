@@ -8,6 +8,8 @@
     } from "../../stores/query";
     import type { QueryItem, QueryValue } from "../../types/queryData";
     import { onMount } from "svelte";
+    import { facetCounts } from "../../stores/facetCounts";
+    import { lensOptions } from "../../stores/options";
 
     /**
      * mockdata to get from texts store
@@ -281,7 +283,7 @@
     });
 </script>
 
-<div part="autocomplete-container">
+<div>
     <div part="autocomplete-formfield">
         <input
             part="autocomplete-formfield-input"
@@ -324,6 +326,17 @@
                                         inputOption.description || "",
                                     )}
                                 </div>
+                                {#if $facetCounts[element.key] !== undefined}
+                                    <div
+                                        part="autocomplete-options-item-facet-count"
+                                        title={$lensOptions?.facetCount
+                                            ?.hoverText?.[element.key] ?? ""}
+                                    >
+                                        {$facetCounts[element.key][
+                                            inputOption.key
+                                        ] ?? 0}
+                                    </div>
+                                {/if}
                             </li>
                         {:else}
                             <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
@@ -346,6 +359,17 @@
                                         inputOption.description || "",
                                     )}
                                 </div>
+                                {#if $facetCounts[element.key] !== undefined}
+                                    <div
+                                        part="autocomplete-options-item-facet-count"
+                                        title={$lensOptions?.facetCount
+                                            ?.hoverText?.[element.key] ?? ""}
+                                    >
+                                        {$facetCounts[element.key][
+                                            inputOption.key
+                                        ] ?? 0}
+                                    </div>
+                                {/if}
                             </li>
                         {/if}
                     {/each}
@@ -367,19 +391,22 @@
         margin-top: var(--gap-xs);
         position: relative;
     }
+
+    /* Input field styled to match the date input */
     [part~="autocomplete-formfield-input"] {
         box-sizing: border-box;
-        border: solid 1px var(--dark-gray);
-        border-top: none;
-        padding-left: var(--gap-xs);
+        border: 1px solid var(--gray);
+        border-radius: var(--gap-xs);
         outline: none;
-        border-top-left-radius: var(--border-radius-small);
-        border-top-right-radius: var(--border-radius-small);
+        padding: var(--gap-xxs) var(--gap-xs);
         font-size: var(--font-size-s);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        width: 100%;
     }
+
+    /* Focus state */
     [part~="autocomplete-formfield-input"]:focus {
         border-color: var(--blue);
-        width: 100%;
     }
     [part~="autocomplete-options"] {
         box-sizing: border-box;
@@ -387,34 +414,65 @@
         list-style-type: none;
         padding: 0;
         margin: 0;
-        border: solid 1px var(--blue);
-        border-top: none;
         width: 100%;
         position: absolute;
         background-color: white;
         color: black;
-        border-bottom-left-radius: var(--border-radius-small);
-        border-bottom-right-radius: var(--border-radius-small);
+
+        /* Match the border with input field, and blend it */
+        border: 1px solid var(--gray);
+        border-radius: var(--gap-xs);
+        /* Shadow to match input and give depth */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
         max-height: 400px;
-        overflow: scroll;
+        overflow-y: auto;
+
+        display: grid;
+        grid-template-columns: max-content auto max-content;
     }
+
     [part~="autocomplete-options-item"] {
-        display: flex;
-        align-items: center;
+        display: grid;
+        grid-template-columns: subgrid;
+        grid-column: 1 / -1; /* Full width */
         gap: var(--gap-xs);
         cursor: pointer;
-        padding: var(--gap-xs);
+        padding: var(--gap-xxs) var(--gap-xs); /* Match input field’s padding */
+        font-size: var(--font-size-s);
+        transition: background-color 0.2s ease;
     }
+
+    /* Highlighted option */
     [part~="autocomplete-options-item-focused"] {
         color: var(--white);
         background-color: var(--blue);
     }
+
+    [part~="autocomplete-options-item"]:hover:not(
+            [part~="autocomplete-options-item-focused"]
+        ) {
+        background-color: var(--light-gray);
+    }
+
+    /* Description (secondary text) */
     [part~="autocomplete-options-item-description"] {
         font-size: var(--font-size-xs);
         color: var(--blue);
     }
+
+    /* Description when focused */
     [part~="autocomplete-options-item-description-focused"] {
-        color: var(--white);
         font-size: var(--font-size-xs);
+        color: var(--white);
+    }
+
+    [part~="autocomplete-options-item-facet-count"] {
+        color: #636363;
+        font-size: 0.95em;
+        justify-self: right;
+        background-color: rgb(239, 239, 252);
+        padding: 1px 6px;
+        border-radius: 40px;
     }
 </style>

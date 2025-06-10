@@ -29,11 +29,14 @@ jobs:
                   curl -sSL $url | tar -xz --directory=./mdbook
                   echo `pwd`/mdbook >> $GITHUB_PATH
             - run: mdbook build book
+            - run: npm run build-demo
+            - run: npm run inline:demo
             - name: Move assets to artifact directory
               run: |
                   mkdir _site
                   mv book/book _site
                   mv docs _site
+                  mv demo-dist _site
             - uses: actions/configure-pages@v5
             - uses: actions/upload-pages-artifact@v3
             - uses: actions/deploy-pages@v4

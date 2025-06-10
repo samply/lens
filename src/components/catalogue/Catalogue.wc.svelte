@@ -11,6 +11,9 @@
     import type { CatalogueText } from "../../types/texts";
     import type { Catalogue } from "../../types/catalogue";
     import DataTreeElement from "./DataTreeElement.svelte";
+    import { onMount } from "svelte";
+    import { lensOptions } from "../../stores/options";
+    import { fetchFacetCounts } from "../../stores/facetCounts";
 
     interface Props {
         treeData?: Catalogue;
@@ -66,6 +69,18 @@
     $effect(() => {
         $catalogueTextStore = initializedTexts;
     });
+
+    onMount(() => {
+        let didRun = false;
+        lensOptions.subscribe((opts) => {
+            if (opts !== undefined && !didRun) {
+                if (opts.facetCount) {
+                    fetchFacetCounts(opts.facetCount.backendUrl);
+                    didRun = true;
+                }
+            }
+        });
+    });
 </script>
 
 <div part="lens-catalogue">
@@ -103,3 +118,36 @@
         </div>
     {/if}
 </div>
+
+<style>
+    [part~="lens-catalogue-toggle-button"] {
+        background-color: var(--button-background-color);
+        color: var(--button-color);
+        border: none;
+        border-radius: var(--border-radius-small);
+        padding: var(--gap-xs) var(--gap-s);
+        margin-bottom: var(--gap-s);
+        font-size: var(--font-size-m);
+        cursor: pointer;
+        display: flex;
+        gap: var(--gap-xs);
+        width: 100%;
+    }
+
+    [part~="lens-catalogue-toggle-button"]:hover {
+        background-color: var(--button-background-color-hover);
+    }
+
+    [part~="toggle-button-open-icon"] {
+        transform: rotate(180deg);
+    }
+
+    /**
+  * Catalogue shared
+  */
+
+    [part~="lens-catalogue-wrapper"] {
+        display: grid;
+        grid-gap: var(--gap-xs);
+    }
+</style>
