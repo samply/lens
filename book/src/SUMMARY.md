@@ -15,7 +15,3 @@
     - [Version 0.5.2](releases/v0.5.2.md)
     - [Version 0.5.1](releases/v0.5.1.md)
     - [Version 0.5.0](releases/v0.5.0.md)
-
-# Old guides
-
-- [GIT_FLOW](old/GIT_FLOW.md)
