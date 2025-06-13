@@ -3,7 +3,7 @@
  * Consists of multiple arrays which will have an 'or' logic between them later when the query is sent to the server
  */
 import type { QueryItem, QueryValue } from "../types/queryData";
-import { writable } from "svelte/store";
+import { writable, get } from "svelte/store";
 import { v4 as uuidv4 } from "uuid";
 import type { Category, Criteria } from "../types/catalogue";
 
@@ -310,4 +310,13 @@ export const addStratifier = ({
             );
         }
     });
+};
+
+/**
+ * Adds an item to the currently active query group
+ * @param queryObject - the object to be added to the store
+ */
+export const addItemToActiveQueryGroup = (queryObject: QueryItem): void => {
+    const groupIndex = get(activeQueryGroupIndex);
+    addItemToQuery(queryObject, groupIndex);
 };
