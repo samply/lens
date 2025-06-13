@@ -9,7 +9,7 @@ export { translate } from "./helpers/translations";
 export { showErrorToast } from "./stores/toasts";
 export { resolveAstSubCategories } from "./stores/catalogue";
 export { resetDiagrams } from "./services/reset";
-export { addItemToQuery } from "./stores/query";
+export { addItemToActiveQueryGroup } from "./stores/query";
 
 // Export classes
 
