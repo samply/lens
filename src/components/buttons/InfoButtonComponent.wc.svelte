@@ -103,7 +103,6 @@
     [part~="info-button"] {
         position: relative;
         cursor: pointer;
-        height: 100%;
         width: 38px;
         background-color: var(--white);
         border: solid 1px var(--blue);
