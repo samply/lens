@@ -43,4 +43,12 @@ const lensTranslations: Texts = {
         en: "One of the search fields is empty. Please delete empty search fields or enter search criteria.",
         de: "Eine der Suchleisten ist leer. Löschen Sie leere Suchleisten oder fügen Sie Suchkriterien ein.",
     },
+    catalogue_expand: {
+        en: "Expand Catalogue",
+        de: "Katalog ausklappen",
+    },
+    catalogue_collapse: {
+        en: "Collapse Catalogue",
+        de: "Katalog einklappen",
+    },
 };
