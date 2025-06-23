@@ -133,6 +133,11 @@
                     name: "B-",
                     description: "",
                 },
+                {
+                    key: "somethinglong",
+                    name: "This is a very long name for a blood group just to test the layout",
+                    description: "",
+                },
             ],
         },
         {
@@ -587,28 +592,30 @@
         <lens-negotiate-button title="Request Data"></lens-negotiate-button>
         <lens-search-modified-display></lens-search-modified-display>
         <lens-result-table></lens-result-table>
-        <lens-chart
-            title="Geschlecht"
-            catalogueGroupCode="gender"
-            chartType="pie"
-            displayLegends="true"
-        ></lens-chart>
-        <lens-chart
-            title="diagnosis"
-            catalogueGroupCode="diagnosis"
-            chartType="bar"
-            xAxisTitle="ICD-10-Codes"
-            yAxisTitle="Anzahl der Diagnosen"
-        ></lens-chart>
-        <lens-chart
-            title="diagnosis"
-            catalogueGroupCode="diagnosis"
-            indexAxis="y"
-            scaleType="logarithmic"
-            chartType="bar"
-            xAxisTitle="Anzahl der Diagnosen"
-            yAxisTitle="ICD-10-Codes"
-        ></lens-chart>
+        <div>
+            <lens-chart
+                title="Geschlecht"
+                catalogueGroupCode="gender"
+                chartType="pie"
+                displayLegends="true"
+            ></lens-chart>
+            <lens-chart
+                title="diagnosis"
+                catalogueGroupCode="diagnosis"
+                chartType="bar"
+                xAxisTitle="ICD-10-Codes"
+                yAxisTitle="Anzahl der Diagnosen"
+            ></lens-chart>
+            <lens-chart
+                title="diagnosis"
+                catalogueGroupCode="diagnosis"
+                indexAxis="y"
+                scaleType="logarithmic"
+                chartType="bar"
+                xAxisTitle="Anzahl der Diagnosen"
+                yAxisTitle="ICD-10-Codes"
+            ></lens-chart>
+        </div>
     </div>
 </div>
 

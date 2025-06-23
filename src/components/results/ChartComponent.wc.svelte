@@ -666,19 +666,27 @@
         </div>
     {/if}
 
-    <canvas
-        part="chart-canvas"
-        bind:this={canvas}
-        id="chart"
-        onclick={handleClickOnStratifier}
-    ></canvas>
+    <!-- For responsive charts, Charts.js requires a dedicated container for each canvas: https://www.chartjs.org/docs/latest/configuration/responsive.html#important-note -->
+    <!-- The container requires `min-width: 0` or it won't shrink: https://github.com/chartjs/Chart.js/issues/4156#issuecomment-295180128 -->
+    <div part="container-min-width-0">
+        <canvas
+            part="chart-canvas"
+            bind:this={canvas}
+            id="chart"
+            onclick={handleClickOnStratifier}
+        ></canvas>
+    </div>
     <slot />
 </div>
 
 <style>
+    [part~="container-min-width-0"] {
+        min-width: 0;
+    }
+
     [part~="chart-wrapper"] {
+        height: 100%;
         display: grid;
-        grid-template-rows: auto 1fr auto;
         position: relative;
         background-color: var(--white);
     }
