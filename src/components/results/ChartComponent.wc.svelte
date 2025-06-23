@@ -668,7 +668,7 @@
 
     <!-- For responsive charts, Charts.js requires a dedicated container for each canvas: https://www.chartjs.org/docs/latest/configuration/responsive.html#important-note -->
     <!-- The container requires `min-width: 0` or it won't shrink: https://github.com/chartjs/Chart.js/issues/4156#issuecomment-295180128 -->
-    <div style="min-width: 0;">
+    <div part="container-min-width-0">
         <canvas
             part="chart-canvas"
             bind:this={canvas}
@@ -680,6 +680,10 @@
 </div>
 
 <style>
+    [part~="container-min-width-0"] {
+        min-width: 0;
+    }
+
     [part~="chart-wrapper"] {
         height: 100%;
         display: grid;
