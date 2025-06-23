@@ -12,6 +12,7 @@
     - [Styling](development/styling.md)
     - [Making a release](development/releasing.md)
 - [Release notes](releases/README.md)
+    - [Version 0.5.4](releases/v0.5.4.md)
     - [Version 0.5.3](releases/v0.5.3.md)
     - [Version 0.5.2](releases/v0.5.2.md)
     - [Version 0.5.1](releases/v0.5.1.md)
