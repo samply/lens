@@ -11,7 +11,6 @@
         getAggregatedPopulation,
         getAggregatedPopulationForStratumCode,
     } from "../../stores/response";
-    import type { ResponseStore } from "../../types/backend";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
     import type { HeaderData } from "../../types/options";
 
@@ -29,7 +28,7 @@
                     .dataTypes) {
                     populations.push({
                         title: type.title,
-                        population: getPopulation(type, $responseStore),
+                        population: getPopulation(type),
                     });
                 }
             }
@@ -40,10 +39,9 @@
     /**
      * Get the count to display in the result summary header.
      * @param type An element of the "dataTypes" array from the lens options
-     * @param store The current value of the response store
      * @returns This is the text that is displayed after the colon, e.g. "Standorte: 13 / 15"
      */
-    function getPopulation(type: HeaderData, store: ResponseStore): string {
+    function getPopulation(type: HeaderData): string {
         // If the type is collections, the population is the length of the store
         if (type.dataKey === "collections") {
             let sitesClaimed = 0;
@@ -61,7 +59,7 @@
 
         // if the type has only one dataKey, the population is the aggregated population of that dataKey
         if (type.dataKey) {
-            return getAggregatedPopulation(store, type.dataKey).toString();
+            return getAggregatedPopulation(type.dataKey).toString();
         }
 
         // if the type has multiple dataKeys to aggregate, the population is the aggregated population of all dataKeys
@@ -69,12 +67,10 @@
         type.aggregatedDataKeys?.forEach((dataKey) => {
             if (dataKey.groupCode) {
                 aggregatedPopulation += getAggregatedPopulation(
-                    store,
                     dataKey.groupCode,
                 );
             } else if (dataKey.stratifierCode && dataKey.stratumCode) {
                 aggregatedPopulation += getAggregatedPopulationForStratumCode(
-                    store,
                     dataKey.stratumCode,
                     dataKey.stratifierCode,
                 );

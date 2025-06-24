@@ -1,4 +1,4 @@
-import { writable } from "svelte/store";
+import { writable, get } from "svelte/store";
 import type { Site, SiteData } from "../types/response";
 import type { ResponseStore } from "../types/backend";
 
@@ -45,12 +45,9 @@ export const clearResponseStore = () => {
  * @param code - the code to search for
  * @returns the aggregated population count for a given code
  */
-export const getAggregatedPopulation = (
-    store: ResponseStore,
-    code: string,
-): number => {
+export const getAggregatedPopulation = (code: string): number => {
     let population = 0;
-    for (const site of store.values()) {
+    for (const site of get(responseStore).values()) {
         if (site.status === "succeeded") {
             population += getSitePopulationForCode(site.data, code);
         }
@@ -84,12 +81,11 @@ export const getSitePopulationForCode = (
  * (stratum code is the value.text of a stratum item e.g.'male')
  */
 export const getAggregatedPopulationForStratumCode = (
-    store: ResponseStore,
     stratumCode: string,
     stratifier: string,
 ): number => {
     let population = 0;
-    for (const site of store.values()) {
+    for (const site of get(responseStore).values()) {
         if (site.status === "succeeded") {
             population += getSitePopulationForStratumCode(
                 site.data,
@@ -137,12 +133,9 @@ export const getSitePopulationForStratumCode = (
  * @param code - the code to search for
  * @returns the stratifier codes for a given group code
  */
-export const getStratifierCodesForGroupCode = (
-    store: ResponseStore,
-    code: string,
-): string[] => {
+export const getStratifierCodesForGroupCode = (code: string): string[] => {
     const codes: Set<string> = new Set();
-    for (const site of store.values()) {
+    for (const site of get(responseStore).values()) {
         if (site.status === "succeeded") {
             const siteCodes = getSiteStratifierCodesForGroupCode(
                 site.data,
@@ -162,7 +155,7 @@ export const getStratifierCodesForGroupCode = (
  * @returns the stratifier codes for a given group code for a single site
  */
 
-export const getSiteStratifierCodesForGroupCode = (
+const getSiteStratifierCodesForGroupCode = (
     site: SiteData,
     code: string,
 ): string[] => {
