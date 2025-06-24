@@ -5,14 +5,6 @@ import type { ResponseStore } from "../types/backend";
 export const responseStore = writable<ResponseStore>(new Map<string, Site>());
 
 /**
- * emits an event every time the response store is updated
- */
-responseStore.subscribe(() => {
-    const event = new CustomEvent("lens-responses-updated");
-    window.dispatchEvent(event);
-});
-
-/**
  * updates the response store with a given response
  * @param response - the response to update the store with
  */
