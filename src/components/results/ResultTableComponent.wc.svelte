@@ -7,8 +7,8 @@
 <script lang="ts">
     import { datarequestsStore } from "../../stores/datarequests";
     import {
-        getSitePopulationForCode,
-        getSitePopulationForStratumCode,
+        getSiteTotal,
+        getSiteStratum,
         responseStore,
     } from "../../stores/response";
     import TableItemComponent from "./TableItemComponent.svelte";
@@ -56,31 +56,24 @@
                     tableRow.push(translate("loading"));
                 } else if (value.status === "succeeded") {
                     if (header.dataKey !== undefined) {
-                        tableRow.push(
-                            getSitePopulationForCode(
-                                value.data,
-                                header.dataKey,
-                            ),
-                        );
+                        tableRow.push(getSiteTotal(key, header.dataKey));
                     } else if (header.aggregatedDataKeys !== undefined) {
                         let aggregatedPopulation = 0;
                         for (const dataKey of header.aggregatedDataKeys) {
                             if (dataKey.groupCode) {
-                                aggregatedPopulation +=
-                                    getSitePopulationForCode(
-                                        value.data,
-                                        dataKey.groupCode,
-                                    );
+                                aggregatedPopulation += getSiteTotal(
+                                    key,
+                                    dataKey.groupCode,
+                                );
                             } else if (
                                 dataKey.stratifierCode &&
                                 dataKey.stratumCode
                             ) {
-                                aggregatedPopulation +=
-                                    getSitePopulationForStratumCode(
-                                        value.data,
-                                        dataKey.stratumCode,
-                                        dataKey.stratifierCode,
-                                    );
+                                aggregatedPopulation += getSiteStratum(
+                                    key,
+                                    dataKey.stratifierCode,
+                                    dataKey.stratumCode,
+                                );
                             }
                         }
                         tableRow.push(aggregatedPopulation);
