@@ -196,7 +196,6 @@
     };
 
     const accumulateValues = (
-        responseStore: ResponseStore,
         valuesToAccumulate: string[],
         catalogueGroupCode: string,
     ): number => {
@@ -204,7 +203,6 @@
 
         valuesToAccumulate.forEach((value: string) => {
             aggregatedData += getAggregatedPopulationForStratumCode(
-                responseStore,
                 value,
                 catalogueGroupCode,
             );
@@ -278,10 +276,7 @@
          */
         if (options?.aggregations !== undefined) {
             options.aggregations.forEach((aggregation) => {
-                const aggregationCount = getAggregatedPopulation(
-                    responseStore,
-                    aggregation,
-                );
+                const aggregationCount = getAggregatedPopulation(aggregation);
                 combinedSubGroupData.data.push(aggregationCount);
                 combinedSubGroupData.labels.push(aggregation);
             });
@@ -298,7 +293,6 @@
         ) {
             options.accumulatedValues.forEach((valueToAccumulate) => {
                 const aggregationCount: number = accumulateValues(
-                    responseStore,
                     valueToAccumulate.values,
                     catalogueGroupCode,
                 );
@@ -359,7 +353,6 @@
         const labelsToData = new Map<string, number>();
         for (const label of labels) {
             const value = getAggregatedPopulationForStratumCode(
-                responseStore,
                 label,
                 responseGroupCode,
             );
@@ -419,9 +412,13 @@
                 chartLabels.push(key);
             });
         } else {
-            chartLabels = getStratifierCodesForGroupCode(
-                responseStore,
+            chartLabels = getStratifierCodesForGroupCode(responseGroupCode);
+            // log return and params
+            console.log(responseStore);
+            console.log(
+                "getStratifierCodesForGroupCode",
                 responseGroupCode,
+                chartLabels,
             );
         }
         chartLabels = filterRegexMatch(chartLabels);
