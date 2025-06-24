@@ -8,9 +8,9 @@
     import Chart, { type ChartTypeRegistry } from "chart.js/auto";
     import { onMount } from "svelte";
     import {
-        getAggregatedPopulation,
-        getAggregatedPopulationForStratumCode,
-        getStratifierCodesForGroupCode,
+        getTotal,
+        getStratum,
+        getStrata,
         responseStore,
     } from "../../stores/response";
     import { v4 as uuidv4 } from "uuid";
@@ -202,10 +202,7 @@
         let aggregatedData = 0;
 
         valuesToAccumulate.forEach((value: string) => {
-            aggregatedData += getAggregatedPopulationForStratumCode(
-                value,
-                catalogueGroupCode,
-            );
+            aggregatedData += getStratum(catalogueGroupCode, value);
         });
         return aggregatedData;
     };
@@ -276,7 +273,7 @@
          */
         if (options?.aggregations !== undefined) {
             options.aggregations.forEach((aggregation) => {
-                const aggregationCount = getAggregatedPopulation(aggregation);
+                const aggregationCount = getTotal(aggregation);
                 combinedSubGroupData.data.push(aggregationCount);
                 combinedSubGroupData.labels.push(aggregation);
             });
@@ -352,10 +349,7 @@
     ): { labels: string[]; data: number[] } => {
         const labelsToData = new Map<string, number>();
         for (const label of labels) {
-            const value = getAggregatedPopulationForStratumCode(
-                label,
-                responseGroupCode,
-            );
+            const value = getStratum(responseGroupCode, label);
 
             if (!label.includes(divider) || divider === "") {
                 /*
@@ -412,14 +406,7 @@
                 chartLabels.push(key);
             });
         } else {
-            chartLabels = getStratifierCodesForGroupCode(responseGroupCode);
-            // log return and params
-            console.log(responseStore);
-            console.log(
-                "getStratifierCodesForGroupCode",
-                responseGroupCode,
-                chartLabels,
-            );
+            chartLabels = getStrata(responseGroupCode);
         }
         chartLabels = filterRegexMatch(chartLabels);
         chartLabels.sort(customSort);

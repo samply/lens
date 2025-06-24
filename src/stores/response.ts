@@ -45,11 +45,11 @@ export const clearResponseStore = () => {
  * @param code - the code to search for
  * @returns the aggregated population count for a given code
  */
-export const getAggregatedPopulation = (code: string): number => {
+export const getTotal = (code: string): number => {
     let population = 0;
-    for (const site of get(responseStore).values()) {
+    for (const [siteName, site] of get(responseStore).entries()) {
         if (site.status === "succeeded") {
-            population += getSitePopulationForCode(site.data, code);
+            population += getSiteTotal(siteName, code);
         }
     }
     return population;
@@ -60,12 +60,15 @@ export const getAggregatedPopulation = (code: string): number => {
  * @param code - the code to search for
  * @returns the population count for a given code at a given site
  */
-export const getSitePopulationForCode = (
-    site: SiteData,
-    code: string,
-): number => {
+export const getSiteTotal = (site: string, code: string): number => {
+    // only if site is in the map and status is succeeded
+    const siteData = get(responseStore).get(site);
+    if (!siteData || siteData.status !== "succeeded") {
+        return 0;
+    }
+
     let population = 0;
-    for (const group of site.group) {
+    for (const group of siteData.data.group) {
         if (group.code.text === code) {
             population += group.population[0].count;
         }
@@ -75,23 +78,16 @@ export const getSitePopulationForCode = (
 
 /**
  * @param store - the response store
- * @param stratumCode - the code to search for
+ * @param stratum - the code to search for
  * @param stratifier - the stratifier code to define where the stratumCode should be searched
  * @returns the aggregated population count for a given stratum code
  * (stratum code is the value.text of a stratum item e.g.'male')
  */
-export const getAggregatedPopulationForStratumCode = (
-    stratumCode: string,
-    stratifier: string,
-): number => {
+export const getStratum = (stratifier: string, stratum: string): number => {
     let population = 0;
-    for (const site of get(responseStore).values()) {
+    for (const [siteName, site] of get(responseStore).entries()) {
         if (site.status === "succeeded") {
-            population += getSitePopulationForStratumCode(
-                site.data,
-                stratumCode,
-                stratifier,
-            );
+            population += getSiteStratum(siteName, stratifier, stratum);
         }
     }
     return population;
@@ -103,12 +99,18 @@ export const getAggregatedPopulationForStratumCode = (
  * @param stratifier - the stratifier code to define where the stratumCode should be searched
  * @returns the population for a given stratum code for a given site
  */
-export const getSitePopulationForStratumCode = (
-    site: SiteData,
-    stratumCode: string,
+export const getSiteStratum = (
+    site: string,
     stratifier: string,
+    stratumCode: string,
 ): number => {
-    for (const group of site.group) {
+    // only if site is in the map and status is succeeded
+    const siteData = get(responseStore).get(site);
+    if (!siteData || siteData.status !== "succeeded") {
+        return 0;
+    }
+
+    for (const group of siteData.data.group) {
         for (const stratifierItem of group.stratifier) {
             if (
                 stratifierItem.code[0].text === stratifier &&
@@ -133,7 +135,28 @@ export const getSitePopulationForStratumCode = (
  * @param code - the code to search for
  * @returns the stratifier codes for a given group code
  */
-export const getStratifierCodesForGroupCode = (code: string): string[] => {
+export const getStrata = (code: string): string[] => {
+    const getSiteStratifierCodesForGroupCode = (
+        site: SiteData,
+        code: string,
+    ): string[] => {
+        const codes: string[] = [];
+        site.group.forEach((groupItem) => {
+            groupItem.stratifier.forEach((stratifierItem) => {
+                if (
+                    stratifierItem.code[0].text === code &&
+                    stratifierItem.stratum
+                ) {
+                    stratifierItem.stratum.forEach((stratumItem) => {
+                        codes.push(stratumItem.value.text);
+                    });
+                }
+            });
+        });
+
+        return codes;
+    };
+
     const codes: Set<string> = new Set();
     for (const site of get(responseStore).values()) {
         if (site.status === "succeeded") {
@@ -147,31 +170,4 @@ export const getStratifierCodesForGroupCode = (code: string): string[] => {
         }
     }
     return Array.from(codes);
-};
-
-/**
- * @param site - data of the responding site
- * @param code - the code to search for
- * @returns the stratifier codes for a given group code for a single site
- */
-
-const getSiteStratifierCodesForGroupCode = (
-    site: SiteData,
-    code: string,
-): string[] => {
-    const codes: string[] = [];
-    site.group.forEach((groupItem) => {
-        groupItem.stratifier.forEach((stratifierItem) => {
-            if (
-                stratifierItem.code[0].text === code &&
-                stratifierItem.stratum
-            ) {
-                stratifierItem.stratum.forEach((stratumItem) => {
-                    codes.push(stratumItem.value.text);
-                });
-            }
-        });
-    });
-
-    return codes;
 };

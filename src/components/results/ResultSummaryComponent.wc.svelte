@@ -6,11 +6,7 @@
 
 <script lang="ts">
     import { lensOptions } from "../../stores/options";
-    import {
-        responseStore,
-        getAggregatedPopulation,
-        getAggregatedPopulationForStratumCode,
-    } from "../../stores/response";
+    import { responseStore, getTotal, getStratum } from "../../stores/response";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
     import type { HeaderData } from "../../types/options";
 
@@ -59,20 +55,18 @@
 
         // if the type has only one dataKey, the population is the aggregated population of that dataKey
         if (type.dataKey) {
-            return getAggregatedPopulation(type.dataKey).toString();
+            return getTotal(type.dataKey).toString();
         }
 
         // if the type has multiple dataKeys to aggregate, the population is the aggregated population of all dataKeys
         let aggregatedPopulation: number = 0;
         type.aggregatedDataKeys?.forEach((dataKey) => {
             if (dataKey.groupCode) {
-                aggregatedPopulation += getAggregatedPopulation(
-                    dataKey.groupCode,
-                );
+                aggregatedPopulation += getTotal(dataKey.groupCode);
             } else if (dataKey.stratifierCode && dataKey.stratumCode) {
-                aggregatedPopulation += getAggregatedPopulationForStratumCode(
-                    dataKey.stratumCode,
+                aggregatedPopulation += getStratum(
                     dataKey.stratifierCode,
+                    dataKey.stratumCode,
                 );
             }
             /**
