@@ -9,7 +9,7 @@
     import {
         getSiteTotal,
         getSiteStratum,
-        responseStore,
+        siteStatus,
     } from "../../stores/response";
     import TableItemComponent from "./TableItemComponent.svelte";
     import { lensOptions } from "../../stores/options";
@@ -32,8 +32,8 @@
     let tableRowData: TableRowData = $derived.by(() => {
         let tableRowData: TableRowData = [];
 
-        for (const [key, value] of $responseStore) {
-            if (!["claimed", "succeeded"].includes(value.status)) continue;
+        for (const [site, status] of $siteStatus) {
+            if (!["claimed", "succeeded"].includes(status)) continue;
 
             let tableRow: (string | number)[] = [];
 
@@ -46,23 +46,23 @@
                 // First column is the site name
                 if (index === 0) {
                     const name: string | undefined =
-                        $lensOptions?.siteMappings?.[key];
+                        $lensOptions?.siteMappings?.[site];
                     if (name === undefined) continue;
                     tableRow.push(name);
                     continue;
                 }
 
-                if (value.status === "claimed") {
+                if (status === "claimed") {
                     tableRow.push(translate("loading"));
-                } else if (value.status === "succeeded") {
+                } else if (status === "succeeded") {
                     if (header.dataKey !== undefined) {
-                        tableRow.push(getSiteTotal(key, header.dataKey));
+                        tableRow.push(getSiteTotal(site, header.dataKey));
                     } else if (header.aggregatedDataKeys !== undefined) {
                         let aggregatedPopulation = 0;
                         for (const dataKey of header.aggregatedDataKeys) {
                             if (dataKey.groupCode) {
                                 aggregatedPopulation += getSiteTotal(
-                                    key,
+                                    site,
                                     dataKey.groupCode,
                                 );
                             } else if (
@@ -70,7 +70,7 @@
                                 dataKey.stratumCode
                             ) {
                                 aggregatedPopulation += getSiteStratum(
-                                    key,
+                                    site,
                                     dataKey.stratifierCode,
                                     dataKey.stratumCode,
                                 );
