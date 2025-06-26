@@ -13,8 +13,8 @@
     import { Spot } from "../../backends/spot";
     import { Blaze } from "../../backends/blaze";
     import {
-        updateResponseStore,
-        clearResponseStore,
+        legacyUpdateResponseStore,
+        clearSiteResults,
     } from "../../stores/response";
     import { lensOptions } from "../../stores/options";
     import { showErrorToast } from "../../stores/toasts";
@@ -53,7 +53,7 @@
         if (controller) {
             controller.abort();
         }
-        clearResponseStore();
+        clearSiteResults();
 
         controller = new AbortController();
 
@@ -107,7 +107,7 @@
 
             backend.send(
                 btoa(decodeURI(JSON.stringify(query))),
-                updateResponseStore,
+                legacyUpdateResponseStore,
                 controller,
             );
         });
@@ -141,7 +141,11 @@
                 measureItem.measures,
             );
 
-            const backend = new Blaze(new URL(url), name, updateResponseStore);
+            const backend = new Blaze(
+                new URL(url),
+                name,
+                legacyUpdateResponseStore,
+            );
 
             backend.send(cql, controller, measures);
         });
@@ -169,7 +173,7 @@
         })
             .then((response) => response.json())
             .then((data) => {
-                updateResponseStore(data);
+                legacyUpdateResponseStore(data);
             })
             .catch((error) => {
                 console.error("Error:", error);
@@ -185,7 +189,7 @@
         const event: QueryEvent = new CustomEvent("emit-lens-query", {
             detail: {
                 ast: ast,
-                updateResponse: updateResponseStore,
+                updateResponse: legacyUpdateResponseStore,
                 abortController: controller,
             },
         });

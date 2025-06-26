@@ -8,7 +8,7 @@
 <script lang="ts">
     import { get } from "svelte/store";
     import { catalogue, getCriteria } from "../stores/catalogue";
-    import { updateResponseStore } from "../stores/response";
+    import { legacyUpdateResponseStore } from "../stores/response";
     import {
         addStratifier,
         queryStore,
@@ -52,7 +52,7 @@
      * @param response the response from the backend
      */
     export const updateResponseStoreAPI = (response: ResponseStore): void => {
-        updateResponseStore(response);
+        legacyUpdateResponseStore(response);
     };
 
     /**
