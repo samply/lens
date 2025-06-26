@@ -2,8 +2,6 @@ import { writable, get } from "svelte/store";
 import type { SiteData } from "../types/response";
 import type { ResponseStore } from "../types/backend";
 
-// This is not exported so we can change the type without touching other files.
-// I would suggest to keep it private unless it becomes a larger inconvenience.
 const siteResults = writable(new Map<string, SiteResult>());
 
 /**
@@ -38,7 +36,7 @@ export const siteStatus = writable(new Map<string, "claimed" | "succeeded">());
  * }
  * ```
  */
-type SiteResult = {
+export type SiteResult = {
     totals: Record<string, number>;
     [stratifier: string]: Record<string, number>;
 };
@@ -77,13 +75,12 @@ export function legacyUpdateResponseStore(response: ResponseStore): void {
         if (siteData.status === "claimed") {
             markSiteClaimed(site);
         } else if (siteData.status === "succeeded") {
-            console.log(fhirToSiteResult(siteData.data));
-            setSiteResult(site, fhirToSiteResult(siteData.data));
+            setSiteResult(site, measureReportToSiteResult(siteData.data));
         }
     }
 }
 
-function fhirToSiteResult(siteData: SiteData): SiteResult {
+export function measureReportToSiteResult(siteData: SiteData): SiteResult {
     const result: SiteResult = {
         totals: {},
     };
