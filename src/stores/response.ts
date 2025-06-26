@@ -1,52 +1,124 @@
 import { writable, get } from "svelte/store";
-import type { Site, SiteData } from "../types/response";
+import type { SiteData } from "../types/response";
 import type { ResponseStore } from "../types/backend";
 
-export const responseStore = writable<ResponseStore>(new Map<string, Site>());
-export const siteStatus = writable(new Map<string, "succeeded" | "claimed">());
+// This is not exported so we can change the type without touching other files.
+// I would suggest to keep it private unless it becomes a larger inconvenience.
+const siteResults = writable(new Map<string, SiteResult>());
+
+/**
+ * This store contains the sites that have responded and their status.
+ *
+ * If the site has started processing the beam task, it will be marked as "claimed",
+ * and if a result is available, it will be marked as "succeeded".
+ */
+export const siteStatus = writable(new Map<string, "claimed" | "succeeded">());
+
+/**
+ * Site results contain the stratum counts for each stratifier (e.g gender)
+ * and the total count of patients, samples, etc. in the `totals` field.
+ *
+ * Example:
+ *
+ * ```
+ * {
+ *     "gender": {
+ *         "female": 31,
+ *         "male": 43
+ *     },
+ *     "diagnosis": {
+ *         "C34.0": 26,
+ *         "C34.2": 28,
+ *         "C34.8": 25
+ *     },
+ *     "totals": {
+ *         "patients": 74,
+ *         "samples": 312
+ *     }
+ * }
+ * ```
+ */
+type SiteResult = {
+    totals: Record<string, number>;
+    [stratifier: string]: Record<string, number>;
+};
+
+/**
+ * Call this when you receive a site result via beam.
+ */
+export function setSiteResult(site: string, result: SiteResult) {
+    siteResults.update((results) => {
+        results.set(site, result);
+        return results;
+    });
+    siteStatus.update((status) => {
+        status.set(site, "succeeded");
+        return status;
+    });
+}
+
+/**
+ * Call this to indicate that the beam task has been claimed and a result will be available soon.
+ */
+export function markSiteClaimed(site: string) {
+    siteStatus.update((sites) => {
+        sites.set(site, "claimed");
+        return sites;
+    });
+}
 
 /**
  * Legacy function to update the response store.
+ *
+ * Prefer to use {@link setSiteResult} and {@link markSiteClaimed} instead.
  */
 export function legacyUpdateResponseStore(response: ResponseStore): void {
-    let store: ResponseStore;
-    responseStore.subscribe((s: ResponseStore) => (store = s));
-
-    const changes = new Map<string, Site>();
-
-    response.forEach((value, key) => {
-        siteStatus.update((status) => {
-            if (response.get(key)?.status === "succeeded") {
-                status.set(key, "succeeded");
-            } else if (response.get(key)?.status === "claimed") {
-                status.set(key, "claimed");
-            }
-            return status;
-        });
-
-        if (store.get(key)?.status === response.get(key)?.status) {
-            return;
+    for (const [site, siteData] of response.entries()) {
+        if (siteData.status === "claimed") {
+            markSiteClaimed(site);
+        } else if (siteData.status === "succeeded") {
+            console.log(fhirToSiteResult(siteData.data));
+            setSiteResult(site, fhirToSiteResult(siteData.data));
         }
-        changes.set(key, value);
-    });
-
-    if (changes.size === 0) {
-        return;
     }
+}
 
-    responseStore.update((store: ResponseStore): ResponseStore => {
-        changes.forEach((value, key) => {
-            store.set(key, value);
-        });
-        return store;
-    });
+function fhirToSiteResult(siteData: SiteData): SiteResult {
+    const result: SiteResult = {
+        totals: {},
+    };
+    for (const group of siteData.group) {
+        const measureCode = group.code.text;
+        // Get total count
+        if (group.population && group.population.length > 0) {
+            result.totals[measureCode] = group.population[0].count;
+        }
+        // Get stratum counts
+        for (const stratifier of group.stratifier) {
+            const stratifierName = stratifier.code[0].text;
+            if (!result[stratifierName]) {
+                result[stratifierName] = {};
+            }
+            if (stratifier.stratum) {
+                for (const stratum of stratifier.stratum) {
+                    const stratumName = stratum.value.text;
+                    if (stratum.population && stratum.population.length > 0) {
+                        result[stratifierName][stratumName] =
+                            stratum.population[0].count;
+                    }
+                }
+            }
+        }
+    }
+    return result;
 }
 
 /*
  * Clear all site results.
  */
 export function clearSiteResults() {
-    responseStore.set(new Map<string, Site>());
+    siteResults.set(new Map());
+    siteStatus.set(new Map());
 }
 
 /**
@@ -59,13 +131,11 @@ export function clearSiteResults() {
  * ```
  */
 export function getTotal(code: string): number {
-    let population = 0;
-    for (const [siteName, site] of get(responseStore).entries()) {
-        if (site.status === "succeeded") {
-            population += getSiteTotal(siteName, code);
-        }
+    let total = 0;
+    for (const siteResult of get(siteResults).values()) {
+        total += siteResult.totals[code] ?? 0;
     }
-    return population;
+    return total;
 }
 
 /**
@@ -78,19 +148,7 @@ export function getTotal(code: string): number {
  * ```
  */
 export function getSiteTotal(site: string, code: string): number {
-    // only if site is in the map and status is succeeded
-    const siteData = get(responseStore).get(site);
-    if (!siteData || siteData.status !== "succeeded") {
-        return 0;
-    }
-
-    let population = 0;
-    for (const group of siteData.data.group) {
-        if (group.code.text === code) {
-            population += group.population[0].count;
-        }
-    }
-    return population;
+    return get(siteResults).get(site)?.totals[code] ?? 0;
 }
 
 /**
@@ -103,13 +161,11 @@ export function getSiteTotal(site: string, code: string): number {
  * ```
  */
 export function getStratum(stratifier: string, stratum: string): number {
-    let population = 0;
-    for (const [siteName, site] of get(responseStore).entries()) {
-        if (site.status === "succeeded") {
-            population += getSiteStratum(siteName, stratifier, stratum);
-        }
+    let total = 0;
+    for (const siteResult of get(siteResults).values()) {
+        total += siteResult[stratifier]?.[stratum] ?? 0;
     }
-    return population;
+    return total;
 }
 
 /**
@@ -126,30 +182,7 @@ export function getSiteStratum(
     stratifier: string,
     stratumCode: string,
 ): number {
-    // only if site is in the map and status is succeeded
-    const siteData = get(responseStore).get(site);
-    if (!siteData || siteData.status !== "succeeded") {
-        return 0;
-    }
-
-    for (const group of siteData.data.group) {
-        for (const stratifierItem of group.stratifier) {
-            if (
-                stratifierItem.code[0].text === stratifier &&
-                stratifierItem.stratum !== undefined
-            ) {
-                for (const stratumItem of stratifierItem.stratum) {
-                    if (
-                        stratumItem.value.text === stratumCode &&
-                        stratumItem.population !== undefined
-                    ) {
-                        return stratumItem.population[0].count;
-                    }
-                }
-            }
-        }
-    }
-    return 0;
+    return get(siteResults).get(site)?.[stratifier]?.[stratumCode] ?? 0;
 }
 
 /**
@@ -162,38 +195,13 @@ export function getSiteStratum(
  * ```
  */
 export function getStrata(code: string): string[] {
-    const getSiteStratifierCodesForGroupCode = (
-        site: SiteData,
-        code: string,
-    ): string[] => {
-        const codes: string[] = [];
-        site.group.forEach((groupItem) => {
-            groupItem.stratifier.forEach((stratifierItem) => {
-                if (
-                    stratifierItem.code[0].text === code &&
-                    stratifierItem.stratum
-                ) {
-                    stratifierItem.stratum.forEach((stratumItem) => {
-                        codes.push(stratumItem.value.text);
-                    });
-                }
-            });
-        });
-
-        return codes;
-    };
-
-    const codes: Set<string> = new Set();
-    for (const site of get(responseStore).values()) {
-        if (site.status === "succeeded") {
-            const siteCodes = getSiteStratifierCodesForGroupCode(
-                site.data,
-                code,
+    const strataSet = new Set<string>();
+    for (const siteResult of get(siteResults).values()) {
+        if (siteResult[code]) {
+            Object.keys(siteResult[code]).forEach((stratum) =>
+                strataSet.add(stratum),
             );
-            for (const code of siteCodes) {
-                codes.add(code);
-            }
         }
     }
-    return Array.from(codes);
+    return Array.from(strataSet);
 }
