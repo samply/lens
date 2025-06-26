@@ -6,7 +6,7 @@
 
 <script lang="ts">
     import { lensOptions } from "../../stores/options";
-    import { responseStore, getTotal, getStratum } from "../../stores/response";
+    import { siteStatus, getTotal, getStratum } from "../../stores/response";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
     import type { HeaderData } from "../../types/options";
 
@@ -42,11 +42,11 @@
         if (type.dataKey === "collections") {
             let sitesClaimed = 0;
             let sitesWithData = 0;
-            for (const site of $responseStore.values()) {
-                if (site.status === "claimed" || site.status === "succeeded") {
+            for (const status of $siteStatus.values()) {
+                if (status === "claimed" || status === "succeeded") {
                     sitesClaimed++;
                 }
-                if (site.status === "succeeded") {
+                if (status === "succeeded") {
                     sitesWithData++;
                 }
             }

@@ -12,7 +12,10 @@
     import { buildLibrary, buildMeasure } from "../../helpers/cql-measure";
     import { Spot } from "../../backends/spot";
     import { Blaze } from "../../backends/blaze";
-    import { responseStore, updateResponseStore } from "../../stores/response";
+    import {
+        updateResponseStore,
+        clearResponseStore,
+    } from "../../stores/response";
     import { lensOptions } from "../../stores/options";
     import { showErrorToast } from "../../stores/toasts";
     import type {
@@ -50,7 +53,7 @@
         if (controller) {
             controller.abort();
         }
-        responseStore.set(new Map());
+        clearResponseStore();
 
         controller = new AbortController();
 

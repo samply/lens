@@ -3,6 +3,7 @@ import type { Site, SiteData } from "../types/response";
 import type { ResponseStore } from "../types/backend";
 
 export const responseStore = writable<ResponseStore>(new Map<string, Site>());
+export const siteStatus = writable(new Map<string, "succeeded" | "claimed">());
 
 /**
  * updates the response store with a given response
@@ -15,6 +16,15 @@ export const updateResponseStore = (response: ResponseStore): void => {
     const changes = new Map<string, Site>();
 
     response.forEach((value, key) => {
+        siteStatus.update((status) => {
+            if (response.get(key)?.status === "succeeded") {
+                status.set(key, "succeeded");
+            } else if (response.get(key)?.status === "claimed") {
+                status.set(key, "claimed");
+            }
+            return status;
+        });
+
         if (store.get(key)?.status === response.get(key)?.status) {
             return;
         }

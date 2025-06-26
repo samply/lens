@@ -5,8 +5,7 @@
 />
 
 <script lang="ts">
-    import { responseStore } from "../../stores/response";
-    import type { ResponseStore } from "../../types/backend";
+    import { siteStatus } from "../../stores/response";
 
     let { size = "20px" } = $props();
 
@@ -16,13 +15,14 @@
         loading = true;
     });
 
-    responseStore.subscribe((s: ResponseStore) => {
-        for (const value of s) {
-            if (value[1].status === "claimed") {
-                return;
-            }
+    $effect(() => {
+        if (
+            Array.from($siteStatus.values()).every(
+                (status) => status !== "claimed",
+            )
+        ) {
+            loading = false;
         }
-        loading = false;
     });
 </script>
 

@@ -11,15 +11,14 @@
         getTotal,
         getStratum,
         getStrata,
-        responseStore,
+        getSiteTotal,
+        siteStatus,
     } from "../../stores/response";
     import { v4 as uuidv4 } from "uuid";
     import { activeQueryGroupIndex, addItemToQuery } from "../../stores/query";
     import { catalogue } from "../../stores/catalogue";
     import type { QueryItem, QueryValue } from "../../types/queryData";
     import type { Category, Criteria } from "../../types/catalogue";
-    import type { ResponseStore } from "../../types/backend";
-    import type { Site } from "../../types/response";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
     import { lensOptions } from "../../stores/options";
     import type { ChartOption } from "../../types/options";
@@ -209,14 +208,10 @@
 
     /**
      * gets the aggregated population for a given stratum code
-     * @param responseStore - the response store
      * @param chartLabels - the labels for the chart
      * @returns an array of chart data sets from the response store
      */
-    const getChartDataSets = (
-        responseStore: ResponseStore,
-        chartLabels: string[],
-    ): ChartDataSets => {
+    const getChartDataSets = (chartLabels: string[]): ChartDataSets => {
         let dataSet: number[];
 
         // This is bad. For some reason the passed value is a string not a array of strings. With this conversion it does work!
@@ -225,16 +220,9 @@
         }
 
         if (perSite) {
-            dataSet = chartLabels.map((label: string) => {
-                const site: Site | undefined = responseStore.get(label);
-
-                if (site === undefined || site.status !== "succeeded") return 0;
-
-                let data = site?.data?.group?.find(
-                    (groupItem) => groupItem.code.text === catalogueGroupCode,
-                );
-                return data?.population[0]?.count || 0;
-            });
+            dataSet = chartLabels.map((label: string) =>
+                getSiteTotal(label, catalogueGroupCode),
+            );
 
             let remove_indexes: number[] = [];
 
@@ -263,7 +251,6 @@
 
         const combinedSubGroupData = combineSubGroups(
             groupingDivider,
-            responseStore,
             chartLabels,
         );
 
@@ -338,13 +325,11 @@
     /**
      * combines subgroups into their supergroups like C30, C31.1 and C31.2 into C31
      * @param divider the divider used to split the labels
-     * @param responseStore the response store
      * @param labels the labels to combine
      * @returns the combined labels and their data
      */
     const combineSubGroups = (
         divider: string,
-        responseStore: ResponseStore,
         labels: string[],
     ): { labels: string[]; data: number[] } => {
         const labelsToData = new Map<string, number>();
@@ -394,17 +379,17 @@
      * watches the response store and updates the chart data
      * @param responseStore - the response store
      */
-    const setChartData = (responseStore: ResponseStore): void => {
-        if (responseStore.size === 0) {
+    const setChartData = (
+        siteStatus: Map<string, "claimed" | "succeeded">,
+    ): void => {
+        if (siteStatus.size === 0) {
             return;
         }
 
         let chartLabels: string[] = [];
 
         if (perSite) {
-            responseStore.forEach((value: Site, key: string) => {
-                chartLabels.push(key);
-            });
+            chartLabels.push(...siteStatus.keys());
         } else {
             chartLabels = getStrata(responseGroupCode);
         }
@@ -423,16 +408,13 @@
          * will be aggregated in groups if a divider is set
          * eg. 'C30', 'C31.1', 'C31.2' -> 'C31' when divider is '.'
          */
-        let chartData: ChartDataSets = getChartDataSets(
-            responseStore,
-            chartLabels,
-        );
+        let chartData: ChartDataSets = getChartDataSets(chartLabels);
 
         // If the chart is empty and no responses are pending show "No Data Available"
         noDataAvailable =
             chartData.data[0].data.every((value) => value === 0) &&
-            !Array.from(responseStore.values()).some(
-                (response) => response.status === "claimed",
+            Array.from(siteStatus.values()).every(
+                (status) => status !== "claimed",
             );
 
         chart.data.datasets = chartData.data;
@@ -634,7 +616,7 @@
     };
 
     $effect(() => {
-        setChartData($responseStore);
+        setChartData($siteStatus);
     });
 </script>
 
