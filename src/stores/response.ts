@@ -6,10 +6,9 @@ export const responseStore = writable<ResponseStore>(new Map<string, Site>());
 export const siteStatus = writable(new Map<string, "succeeded" | "claimed">());
 
 /**
- * updates the response store with a given response
- * @param response - the response to update the store with
+ * Legacy function to update the response store.
  */
-export const updateResponseStore = (response: ResponseStore): void => {
+export function legacyUpdateResponseStore(response: ResponseStore): void {
     let store: ResponseStore;
     responseStore.subscribe((s: ResponseStore) => (store = s));
 
@@ -41,21 +40,25 @@ export const updateResponseStore = (response: ResponseStore): void => {
         });
         return store;
     });
-};
+}
 
 /*
- * clear the response store
+ * Clear all site results.
  */
-export const clearResponseStore = () => {
+export function clearSiteResults() {
     responseStore.set(new Map<string, Site>());
-};
+}
 
 /**
- * @param store - the response store
- * @param code - the code to search for
- * @returns the aggregated population count for a given code
+ * Get a total count across all sites.
+ *
+ * Example usage:
+ *
+ * ```ts
+ * getTotal('patients'); // total number of patients across all sites
+ * ```
  */
-export const getTotal = (code: string): number => {
+export function getTotal(code: string): number {
     let population = 0;
     for (const [siteName, site] of get(responseStore).entries()) {
         if (site.status === "succeeded") {
@@ -63,14 +66,18 @@ export const getTotal = (code: string): number => {
         }
     }
     return population;
-};
+}
 
 /**
- * @param site - data of the responding site
- * @param code - the code to search for
- * @returns the population count for a given code at a given site
+ * Get a total count from a specific site.
+ *
+ * Example usage:
+ *
+ * ```ts
+ * getSiteTotal('berlin', 'patients'); // total number of patients in berlin
+ * ```
  */
-export const getSiteTotal = (site: string, code: string): number => {
+export function getSiteTotal(site: string, code: string): number {
     // only if site is in the map and status is succeeded
     const siteData = get(responseStore).get(site);
     if (!siteData || siteData.status !== "succeeded") {
@@ -84,16 +91,18 @@ export const getSiteTotal = (site: string, code: string): number => {
         }
     }
     return population;
-};
+}
 
 /**
- * @param store - the response store
- * @param stratum - the code to search for
- * @param stratifier - the stratifier code to define where the stratumCode should be searched
- * @returns the aggregated population count for a given stratum code
- * (stratum code is the value.text of a stratum item e.g.'male')
+ * Get a stratum count across all sites.
+ *
+ * Example usage:
+ *
+ * ```ts
+ * getStratum('gender', 'female'); // number of females across all sites
+ * ```
  */
-export const getStratum = (stratifier: string, stratum: string): number => {
+export function getStratum(stratifier: string, stratum: string): number {
     let population = 0;
     for (const [siteName, site] of get(responseStore).entries()) {
         if (site.status === "succeeded") {
@@ -101,19 +110,22 @@ export const getStratum = (stratifier: string, stratum: string): number => {
         }
     }
     return population;
-};
+}
 
 /**
- * @param site - data of the responding site
- * @param stratumCode - the code to search for
- * @param stratifier - the stratifier code to define where the stratumCode should be searched
- * @returns the population for a given stratum code for a given site
+ * Get a stratum count for a specific site.
+ *
+ * Example usage:
+ *
+ * ```ts
+ * getSiteStratum('berlin', 'gender', 'female'); // number of females in berlin
+ * ```
  */
-export const getSiteStratum = (
+export function getSiteStratum(
     site: string,
     stratifier: string,
     stratumCode: string,
-): number => {
+): number {
     // only if site is in the map and status is succeeded
     const siteData = get(responseStore).get(site);
     if (!siteData || siteData.status !== "succeeded") {
@@ -138,14 +150,18 @@ export const getSiteStratum = (
         }
     }
     return 0;
-};
+}
 
 /**
- * @param store - the response store
- * @param code - the code to search for
- * @returns the stratifier codes for a given group code
+ * For a given stratifier, get all possible stratum codes across all sites.
+ *
+ * Example usage:
+ *
+ * ```ts
+ * getStrata('gender'); // example return value: ['female', 'male', 'other']
+ * ```
  */
-export const getStrata = (code: string): string[] => {
+export function getStrata(code: string): string[] {
     const getSiteStratifierCodesForGroupCode = (
         site: SiteData,
         code: string,
@@ -180,4 +196,4 @@ export const getStrata = (code: string): string[] => {
         }
     }
     return Array.from(codes);
-};
+}

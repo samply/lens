@@ -1,6 +1,6 @@
 import { beforeAll, expect, test } from "vitest";
 import {
-    updateResponseStore,
+    legacyUpdateResponseStore,
     getTotal,
     getSiteTotal,
     getStratum,
@@ -40,7 +40,7 @@ test("getStrata", () => {
 
 // Mock site responses
 beforeAll(() => {
-    updateResponseStore(
+    legacyUpdateResponseStore(
         new Map([
             [
                 "mannheim",
