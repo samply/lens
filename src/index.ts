@@ -10,10 +10,14 @@ export { showErrorToast } from "./stores/toasts";
 export { resolveAstSubCategories } from "./stores/catalogue";
 export { resetDiagrams } from "./services/reset";
 export { addItemToActiveQueryGroup } from "./stores/query";
-export { setSiteResult, markSiteClaimed } from "./stores/response";
+export {
+    setSiteResult,
+    markSiteClaimed,
+    measureReportToSiteResult,
+    type SiteResult,
+} from "./stores/response";
 
 // Export backends
-
 export { Spot } from "./backends/spot";
 export { Blaze } from "./backends/blaze";
 
