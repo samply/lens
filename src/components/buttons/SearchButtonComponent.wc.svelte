@@ -10,8 +10,8 @@
     import { measureStore } from "../../stores/measures";
     import { translateAstToCql } from "../../cql-translator-service/ast-to-cql-translator";
     import { buildLibrary, buildMeasure } from "../../helpers/cql-measure";
-    import { Spot } from "../../classes/spot";
-    import { Blaze } from "../../classes/blaze";
+    import { Spot } from "../../backends/spot";
+    import { Blaze } from "../../backends/blaze";
     import { responseStore, updateResponseStore } from "../../stores/response";
     import { lensOptions } from "../../stores/options";
     import { showErrorToast } from "../../stores/toasts";
