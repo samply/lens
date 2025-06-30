@@ -19,6 +19,7 @@ jobs:
             - run: npx prettier --check .
             - run: npx eslint .
             - run: npx vite build
+            - run: npx vitest
             - run: bash scripts/generate-json-schema.bash --check
             - run: npx typedoc src/index.ts
             - name: Install latest mdbook
