@@ -11,10 +11,10 @@ export { resolveAstSubCategories } from "./stores/catalogue";
 export { resetDiagrams } from "./services/reset";
 export { addItemToActiveQueryGroup } from "./stores/query";
 
-// Export classes
+// Export backends
 
-export { Spot } from "./classes/spot";
-export { Blaze } from "./classes/blaze";
+export { Spot } from "./backends/spot";
+export { Blaze } from "./backends/blaze";
 
 // Export types
 export type * from "./types/ast";
