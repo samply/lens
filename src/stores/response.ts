@@ -13,21 +13,23 @@ const siteResults = writable(new Map<string, SiteResult>());
 export const siteStatus = writable(new Map<string, "claimed" | "succeeded">());
 
 /**
- * Site results contain the stratum counts for each stratifier (e.g gender)
+ * Site result contains the stratum counts for each stratifier (e.g gender) in the `stratifiers` field
  * and the total count of patients, samples, etc. in the `totals` field.
  *
  * Example:
  *
  * ```
  * {
- *     "gender": {
- *         "female": 31,
- *         "male": 43
- *     },
- *     "diagnosis": {
- *         "C34.0": 26,
- *         "C34.2": 28,
- *         "C34.8": 25
+ *     "stratifiers": {
+ *         "gender": {
+ *             "female": 31,
+ *             "male": 43
+ *         },
+ *         "diagnosis": {
+ *             "C34.0": 26,
+ *             "C34.2": 28,
+ *             "C34.8": 25
+ *         },
  *     },
  *     "totals": {
  *         "patients": 74,
@@ -37,8 +39,8 @@ export const siteStatus = writable(new Map<string, "claimed" | "succeeded">());
  * ```
  */
 export type SiteResult = {
+    stratifiers: Record<string, Record<string, number>>;
     totals: Record<string, number>;
-    [stratifier: string]: Record<string, number>;
 };
 
 /**
@@ -82,6 +84,7 @@ export function legacyUpdateResponseStore(response: ResponseStore): void {
 
 export function measureReportToSiteResult(siteData: SiteData): SiteResult {
     const result: SiteResult = {
+        stratifiers: {},
         totals: {},
     };
     for (const group of siteData.group) {
@@ -93,14 +96,14 @@ export function measureReportToSiteResult(siteData: SiteData): SiteResult {
         // Get stratum counts
         for (const stratifier of group.stratifier) {
             const stratifierName = stratifier.code[0].text;
-            if (!result[stratifierName]) {
-                result[stratifierName] = {};
+            if (!result.stratifiers[stratifierName]) {
+                result.stratifiers[stratifierName] = {};
             }
             if (stratifier.stratum) {
                 for (const stratum of stratifier.stratum) {
                     const stratumName = stratum.value.text;
                     if (stratum.population && stratum.population.length > 0) {
-                        result[stratifierName][stratumName] =
+                        result.stratifiers[stratifierName][stratumName] =
                             stratum.population[0].count;
                     }
                 }
@@ -160,7 +163,7 @@ export function getSiteTotal(site: string, code: string): number {
 export function getStratum(stratifier: string, stratum: string): number {
     let total = 0;
     for (const siteResult of get(siteResults).values()) {
-        total += siteResult[stratifier]?.[stratum] ?? 0;
+        total += siteResult.stratifiers[stratifier]?.[stratum] ?? 0;
     }
     return total;
 }
@@ -179,7 +182,9 @@ export function getSiteStratum(
     stratifier: string,
     stratumCode: string,
 ): number {
-    return get(siteResults).get(site)?.[stratifier]?.[stratumCode] ?? 0;
+    return (
+        get(siteResults).get(site)?.stratifiers[stratifier]?.[stratumCode] ?? 0
+    );
 }
 
 /**
@@ -194,8 +199,8 @@ export function getSiteStratum(
 export function getStrata(code: string): string[] {
     const strataSet = new Set<string>();
     for (const siteResult of get(siteResults).values()) {
-        if (siteResult[code]) {
-            Object.keys(siteResult[code]).forEach((stratum) =>
+        if (siteResult.stratifiers[code]) {
+            Object.keys(siteResult.stratifiers[code]).forEach((stratum) =>
                 strataSet.add(stratum),
             );
         }

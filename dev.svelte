@@ -333,33 +333,37 @@
                 totals: {
                     patients: 9,
                 },
-                gender: {
-                    male: 5,
-                    female: 4,
-                    other: 0,
-                },
-                diagnosis: {
-                    C31: 40,
-                    "C31.0": 20,
-                    C41: 30,
-                    "41.0": 10,
+                stratifiers: {
+                    gender: {
+                        male: 5,
+                        female: 4,
+                        other: 0,
+                    },
+                    diagnosis: {
+                        C31: 40,
+                        "C31.0": 20,
+                        C41: 30,
+                        "41.0": 10,
+                    },
                 },
             });
 
             setSiteResult("summit", {
+                stratifiers: {
+                    gender: {
+                        male: 12,
+                        female: 18,
+                        other: 3,
+                    },
+                    diagnosis: {
+                        C31: 40,
+                        "C31.0": 20,
+                        C41: 30,
+                        "41.0": 10,
+                    },
+                },
                 totals: {
                     patients: 33,
-                },
-                gender: {
-                    male: 12,
-                    female: 18,
-                    other: 3,
-                },
-                diagnosis: {
-                    C31: 40,
-                    "C31.0": 20,
-                    C41: 30,
-                    "41.0": 10,
                 },
             });
         });

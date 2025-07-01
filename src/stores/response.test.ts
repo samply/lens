@@ -11,12 +11,16 @@ import {
 beforeAll(() => {
     // Mock site responses
     setSiteResult("mannheim", {
+        stratifiers: {
+            gender: { female: 11900, male: 19130 },
+        },
         totals: { patients: 31020 },
-        gender: { female: 11900, male: 19130 },
     });
     setSiteResult("mainz", {
+        stratifiers: {
+            gender: { male: 16950, female: 9650, unknown: 10 },
+        },
         totals: { patients: 26610 },
-        gender: { male: 16950, female: 9650, unknown: 10 },
     });
 });
 
