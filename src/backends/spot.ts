@@ -57,13 +57,6 @@ export async function createBeamTask(
         eventSource.close();
     });
 
-    eventSource.onerror = () => {
-        console.log(
-            `Server has closed the connection? ${eventSource.readyState}`,
-        );
-        eventSource.close();
-    };
-
     eventSource.addEventListener("new_result", (message) => {
         const result: BeamResult = JSON.parse(message.data);
         resultCallback(result);
