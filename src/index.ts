@@ -16,6 +16,7 @@ export {
     measureReportToSiteResult,
     type SiteResult,
 } from "./stores/response";
+export { getAst } from "./helpers/ast-transformer";
 
 // Export backends
 export { Spot } from "./backends/spot";

@@ -14,6 +14,7 @@ import {
     getCriteriaFromKey,
 } from "../stores/catalogue";
 import { get } from "svelte/store";
+import { queryStore } from "../stores/query";
 
 /**
  * builds an AST from the query store
@@ -313,3 +314,10 @@ export const returnNestedValues = (
 
     throw new Error("This should be unreachable");
 };
+
+/**
+ * Get the AST representing the query that is currently in the search bar.
+ */
+export function getAst(): AstTopLayer {
+    return buildAstFromQuery(get(queryStore));
+}
