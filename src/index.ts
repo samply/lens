@@ -41,7 +41,6 @@ export type { QueryItem, QueryValue } from "./types/queryData";
 // Include custom elements (aka web components) in the bundle
 import "./components/catalogue/Catalogue.wc.svelte";
 import "./components/search-bar/SearchBarComponent.wc.svelte";
-import "./components/testing-components/StateDisplayComponent.wc.svelte";
 import "./components/buttons/SearchButtonComponent.wc.svelte";
 import "./components/results/ChartComponent.wc.svelte";
 import "./components/results/ResultSummaryComponent.wc.svelte";
