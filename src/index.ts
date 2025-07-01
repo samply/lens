@@ -19,6 +19,10 @@ export {
 } from "./stores/response";
 export { getAst } from "./helpers/ast-transformer";
 
+// export temporarily, this will hopefully be moved to CCP explorer before 0.6.0 release
+export { translateAstToCql } from "./cql-translator-service/ast-to-cql-translator";
+export { buildLibrary, buildMeasure } from "./helpers/cql-measure";
+
 // Export backends
 export { createBeamTask, type BeamResult } from "./backends/spot";
 export { Blaze } from "./backends/blaze";
