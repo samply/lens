@@ -14,12 +14,13 @@ export {
     setSiteResult,
     markSiteClaimed,
     measureReportToSiteResult,
+    clearSiteResults,
     type SiteResult,
 } from "./stores/response";
 export { getAst } from "./helpers/ast-transformer";
 
 // Export backends
-export { Spot } from "./backends/spot";
+export { createBeamTask, type BeamResult } from "./backends/spot";
 export { Blaze } from "./backends/blaze";
 
 // Export types
@@ -40,8 +41,6 @@ export type {
     MeasureStore,
 } from "./types/backend";
 export type { SiteData, Site } from "./types/response";
-export type { BeamResult } from "./types/spot";
-export type { QueryEvent } from "./types/queryEvent";
 export type { QueryItem, QueryValue } from "./types/queryData";
 
 // Include custom elements (aka web components) in the bundle

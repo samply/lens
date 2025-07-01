@@ -1,101 +1,71 @@
+export type BeamResult = {
+    body: string;
+    from: string;
+    status: "claimed" | "succeeded" | "tempfailed" | "permafailed";
+    task: string;
+    to: string[];
+};
+
 /**
- * TODO: document this class
+ * Use the spot API to create a beam task and listen for results.
+ *
+ * @param url The base URL of the Spot API
+ * @param sites An array of sites to query
+ * @param query The query to execute
+ * @param signal An AbortSignal to cancel the request
+ * @param resultCallback A callback function to handle each result
  */
+export async function createBeamTask(
+    url: string,
+    sites: string[],
+    query: string,
+    signal: AbortSignal,
+    resultCallback: (result: BeamResult) => void,
+): Promise<void> {
+    url = url.endsWith("/") ? url : url + "/";
+    const id = crypto.randomUUID();
 
-import type { SiteData } from "../types/response";
-import type { ResponseStore } from "../types/backend";
-import type { BeamResult } from "../types/spot";
-import { showErrorToast } from "../stores/toasts";
-import { translate } from "../helpers/translations";
-import { v4 as uuidv4 } from "uuid";
+    const beamTaskResponse = await fetch(
+        `${url}beam?sites=${sites.join(",")}`,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify({
+                id,
+                sites,
+                query,
+            }),
+        },
+    );
 
-export class Spot {
-    private currentTask!: string;
-
-    constructor(
-        private url: URL,
-        private sites: Array<string>,
-    ) {}
-
-    /**
-     * sends the query to beam and updates the store with the results
-     * @param query the query as base64 encoded string
-     * @param updateResponse the function to update the response store
-     * @param controller the abort controller to cancel the request
-     */
-    async send(
-        query: string,
-        updateResponse: (response: ResponseStore) => void,
-        controller: AbortController,
-    ): Promise<void> {
-        try {
-            this.currentTask = uuidv4();
-            const beamTaskResponse = await fetch(
-                `${this.url}beam?sites=${this.sites.toString()}`,
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    credentials: "include",
-                    body: JSON.stringify({
-                        id: this.currentTask,
-                        sites: this.sites,
-                        query: query,
-                    }),
-                    signal: controller.signal,
-                },
-            );
-            if (!beamTaskResponse.ok) {
-                const error = await beamTaskResponse.text();
-                console.debug(
-                    `Received ${beamTaskResponse.status} with message ${error}`,
-                );
-                throw new Error(`Unable to create new beam task.`);
-            }
-
-            console.info(`Created new Beam Task with id ${this.currentTask}`);
-
-            /**
-             * Listenes to the new_result event from beam and updates the response store
-             */
-            const eventSource = new EventSource(
-                `${this.url.toString()}beam/${this.currentTask}?wait_count=${this.sites.length}`,
-                {
-                    withCredentials: true,
-                },
-            );
-            eventSource.addEventListener("new_result", (message) => {
-                const response: BeamResult = JSON.parse(message.data);
-                if (response.task !== this.currentTask) return;
-                const site: string = response.from.split(".")[1];
-                const status = response.status;
-                const body: SiteData =
-                    status === "succeeded"
-                        ? JSON.parse(atob(response.body))
-                        : null;
-
-                const parsedResponse: ResponseStore = new Map().set(site, {
-                    status: status,
-                    data: body,
-                });
-                updateResponse(parsedResponse);
-            });
-
-            // event source in javascript throws an error then the event source is closed by backend
-            eventSource.onerror = () => {
-                console.info(
-                    `Querying results from sites for task ${this.currentTask} finished.`,
-                );
-                eventSource.close();
-            };
-        } catch (err) {
-            if (err instanceof Error && err.name === "AbortError") {
-                console.log(`Aborting request ${this.currentTask}`);
-            } else {
-                console.error(err);
-                showErrorToast(translate("network_error"));
-            }
-        }
+    if (!beamTaskResponse.ok) {
+        const error = await beamTaskResponse.text();
+        throw new Error(`Failed to start beam task: ${error}`);
     }
+
+    const eventSource = new EventSource(
+        `${url}beam/${id}?wait_count=${sites.length}`,
+        {
+            withCredentials: true,
+        },
+    );
+
+    signal.addEventListener("abort", () => {
+        eventSource.close();
+    });
+
+    eventSource.onerror = () => {
+        console.log(
+            `Server has closed the connection? ${eventSource.readyState}`,
+        );
+        eventSource.close();
+    };
+
+    eventSource.addEventListener("new_result", (message) => {
+        const result: BeamResult = JSON.parse(message.data);
+        resultCallback(result);
+    });
 }
