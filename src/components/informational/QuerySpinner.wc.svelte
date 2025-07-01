@@ -11,7 +11,7 @@
 
     let loading = $state(false);
 
-    window.addEventListener("lens-search-button-clicked", function () {
+    window.addEventListener("lens-search-triggered", function () {
         loading = true;
     });
 

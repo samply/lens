@@ -15,7 +15,7 @@
     let { title = translate("search"), disabled = false }: Props = $props();
 
     const onclick = (): void => {
-        window.dispatchEvent(new CustomEvent("lens-search-button-clicked"));
+        window.dispatchEvent(new CustomEvent("lens-search-triggered"));
     };
 </script>
 

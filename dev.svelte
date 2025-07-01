@@ -315,7 +315,7 @@
         },
     });
 
-    window.addEventListener("lens-search-button-clicked", () => {
+    window.addEventListener("lens-search-triggered", () => {
         console.log("AST:", JSON.stringify(getAst()));
 
         setTimeout(() => {

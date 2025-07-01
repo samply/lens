@@ -195,7 +195,7 @@ Add the following to `src/App.svelte` to print the current query to the console 
 ```html
 <script lang="ts">
     import { getAst, setSiteResult } from "@samply/lens";
-    window.addEventListener("lens-search-button-clicked", () => {
+    window.addEventListener("lens-search-triggered", () => {
         console.log("AST:", JSON.stringify(getAst()));
 
         setSiteResult("berlin", {
