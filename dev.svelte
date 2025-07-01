@@ -21,10 +21,6 @@
             riverside: "Riverside",
             summit: "Summit",
         },
-        catalogueKeyToResponseKeyMap: [
-            ["gender", "gender"],
-            ["diagnosis", "diagnosis"],
-        ],
         chartOptions: {
             gender: {
                 hintText: [
@@ -319,16 +315,10 @@
         },
     });
 
-    function sleep(ms: number): Promise<void> {
-        return new Promise((resolve) => {
-            setTimeout(resolve, ms);
-        });
-    }
-
     window.addEventListener("lens-search-button-clicked", () => {
         console.log("AST:", JSON.stringify(getAst()));
 
-        sleep(3000).then(() => {
+        setTimeout(() => {
             setSiteResult("riverside", {
                 totals: {
                     patients: 9,
@@ -366,7 +356,7 @@
                     patients: 33,
                 },
             });
-        });
+        }, 1000);
     });
 
     function setLangAndReload(lang: string) {

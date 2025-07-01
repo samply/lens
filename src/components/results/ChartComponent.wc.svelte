@@ -95,7 +95,7 @@
     let responseGroupCode: string = $derived(
         new Map($lensOptions?.catalogueKeyToResponseKeyMap).get(
             catalogueGroupCode,
-        ) || "",
+        ) || catalogueGroupCode,
     );
 
     /**
