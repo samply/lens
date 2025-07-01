@@ -124,10 +124,11 @@ Add the following to the top of `src/App.svelte` to load the JSON files and pass
     });
 </script>
 
+<lens-search-bar></lens-search-bar>
 <lens-catalogue></lens-catalogue>
 ```
 
-When you run `npm run dev` you should see the catalogue component with the "Rh factor" item.
+When you run `npm run dev` you should see the search bar and the catalogue component with the "Rh factor" entry. Open the "Rh factor" entry and click the plus icons next to Rh+ and Rh- in order to add them to the search bar.
 
 ### Schema validation
 
@@ -146,7 +147,7 @@ npm install ajv-cli ajv-formats --save-dev
 bash scripts/validate-json-schema.bash
 ```
 
-You can also configure VS Code to validate your JSON files against the schema definitions. This will show validation errors in your editor and provide IntelliSense. To do so add the following configuration to your workspace settings in VS Code:
+You can also configure VS Code to validate your JSON files against the schema definitions. This will show validation errors in your editor and provide IntelliSense. To do so add the following configuration to your projects `.vscode/settings.json`:
 
 ```json
 "json.schemas": [
@@ -185,7 +186,41 @@ For example you could handle the `PUBLIC_ENVIRONMENT` variable as follows:
 </script>
 ```
 
-## Deployment
+## Reading the query and showing results
+
+When the user clicks the search button, a typical application will read the current query from the search bar, send the query to some kind of backend to get results, and then pass the results to Lens so it can show them.
+
+Add the following to `src/App.svelte` to print the current query to the console when the search button is clicked and show some hardcoded results in a pie chart. Of course, in a real application the results would depend on the query. For example a user might want to know the gender distribution of people who are Rh positive.
+
+```html
+<script lang="ts">
+    import { getAst, setSiteResult } from "@samply/lens";
+    window.addEventListener("lens-search-button-clicked", () => {
+        console.log("AST:", JSON.stringify(getAst()));
+
+        setSiteResult("berlin", {
+            totals: {},
+            stratifiers: {
+                gender: {
+                    female: 9,
+                    male: 3,
+                },
+            },
+        });
+    });
+</script>
+
+<lens-chart
+    title="Gender distribution"
+    catalogueGroupCode="gender"
+    chartType="pie"
+    displayLegends="{true}"
+></lens-chart>
+```
+
+You can read more about [queries and the AST](./query.md) and about [showing results](./results.md) in the dedicated guides.
+
+## Deploying using Docker
 
 We recommend that projects in the Samply organization follow these deployment practices. We will use Node.js inside Docker. Run `npm install @sveltejs/adapter-node` and change the adapter in `svelte.config.js`:
 

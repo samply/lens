@@ -2,8 +2,9 @@
 
 - [User guide](guide/README.md)
     - [Creating a new application](guide/new-app.md)
-    - [Overwriting styles](guide/overwriting-styles.md)
     - [Query](guide/query.md)
+    - [Showing results](guide/results.md)
+    - [Overwriting styles](guide/overwriting-styles.md)
     - [Translations](guide/translations.md)
     - [Chart reset button](guide/reset-button.md)
     - [Facet counts](guide/facet-counts.md)
