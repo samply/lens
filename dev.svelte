@@ -373,8 +373,8 @@
     <div style="flex: 1">
         <lens-search-bar-multiple></lens-search-bar-multiple>
     </div>
-    <lens-info-button noQueryMessage="Empty Query" showQuery={true}
-    ></lens-info-button>
+    <lens-query-explain-button noQueryMessage="Empty Query"
+    ></lens-query-explain-button>
     <lens-search-button></lens-search-button>
     <lens-query-spinner></lens-query-spinner>
 </div>
