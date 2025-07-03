@@ -18,10 +18,10 @@
     import type { AutoCompleteItem, QueryItem } from "../../types/queryData";
     import { v4 as uuidv4 } from "uuid";
     import StoreDeleteButtonComponent from "../buttons/StoreDeleteButtonComponent.svelte";
-    import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
     import { catalogue } from "../../stores/catalogue";
     import { facetCounts } from "../../stores/facetCounts";
     import { lensOptions } from "../../stores/options";
+    import QueryExplainButtonComponent from "../buttons/QueryExplainButtonComponent.wc.svelte";
 
     interface Props {
         /** The string to display when no matches are found */
@@ -364,9 +364,7 @@
                             <span>{value.name}</span>
                             <span part="lens-searchbar-chip-info-span">
                                 &nbsp;
-                                <InfoButtonComponent
-                                    showQuery={true}
-                                    onlyChildInfo={true}
+                                <QueryExplainButtonComponent
                                     queryItem={{
                                         ...queryItem,
                                         values: [value],

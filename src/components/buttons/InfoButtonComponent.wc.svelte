@@ -5,30 +5,13 @@
 />
 
 <script lang="ts">
-    import {
-        getHumanReadableQuery,
-        buildHumanReadableRecursively,
-    } from "../../stores/datarequests";
-    import { returnNestedValues } from "../../helpers/ast-transformer";
-    import type { AstElement } from "../../types/ast";
-    import type { QueryItem } from "../../types/queryData";
     import { lensOptions } from "../../stores/options";
 
     interface Props {
         message?: string[] | string;
-        noQueryMessage?: string;
-        showQuery?: boolean;
-        onlyChildInfo?: boolean;
-        queryItem?: QueryItem | undefined;
     }
 
-    let {
-        message = $bindable([]),
-        noQueryMessage = "Search for all results",
-        showQuery = false,
-        onlyChildInfo = false,
-        queryItem = undefined,
-    }: Props = $props();
+    let { message = $bindable([]) }: Props = $props();
 
     /**
      * handles the toggling of the tooltip
@@ -39,27 +22,12 @@
         tooltipOpen = false;
     };
 
-    const displayQueryInfo = (e: MouseEvent, queryItem?: QueryItem): void => {
+    const displayQueryInfo = (e: MouseEvent): void => {
         if (typeof message == "string") {
             message = message.split(",");
         }
 
         const target: HTMLElement = e.target as HTMLElement;
-        if (showQuery) {
-            if (onlyChildInfo && queryItem !== undefined) {
-                let childMessage = buildHumanReadableRecursively(
-                    returnNestedValues(queryItem) as AstElement,
-                    "",
-                );
-                message =
-                    childMessage.length > 0 ? [childMessage] : [noQueryMessage];
-            } else {
-                message =
-                    getHumanReadableQuery().length > 0
-                        ? [getHumanReadableQuery()]
-                        : [noQueryMessage];
-            }
-        }
         if (
             target.getAttribute("part") !== "info-button-dialogue" &&
             target.getAttribute("part") !== "info-button-dialogue-message"
@@ -71,8 +39,7 @@
 
 <button
     part="info-button"
-    onclick={(e) =>
-        onlyChildInfo ? displayQueryInfo(e, queryItem) : displayQueryInfo(e)}
+    onclick={(e) => displayQueryInfo(e)}
     onfocusout={onFocusOut}
 >
     {#if $lensOptions?.iconOptions?.infoUrl}

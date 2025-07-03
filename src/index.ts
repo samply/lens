@@ -48,6 +48,7 @@ import "./components/results/ResultTableComponent.wc.svelte";
 import "./components/search-bar/SearchBarMultipleComponent.wc.svelte";
 import "./components/buttons/NegotiateButtonComponent.wc.svelte";
 import "./components/buttons/InfoButtonComponent.wc.svelte";
+import "./components/buttons/QueryExplainButtonComponent.wc.svelte";
 import "./components/Options.wc.svelte";
 import "./components/DataPasser.wc.svelte";
 import "./components/informational/ModifiedSearchComponent.wc.svelte";
