@@ -2,53 +2,6 @@
   "$ref": "#/definitions/LensOptions",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
-    "BackendOptions": {
-      "additionalProperties": false,
-      "properties": {
-        "blazes": {
-          "items": {
-            "$ref": "#/definitions/BlazeOption"
-          },
-          "type": "array"
-        },
-        "customAstBackends": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
-        },
-        "spots": {
-          "items": {
-            "$ref": "#/definitions/SpotOption"
-          },
-          "type": "array"
-        }
-      },
-      "type": "object"
-    },
-    "BlazeOption": {
-      "additionalProperties": false,
-      "properties": {
-        "auth": {
-          "type": "string"
-        },
-        "backendMeasures": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "url": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "name",
-        "url",
-        "backendMeasures"
-      ],
-      "type": "object"
-    },
     "ChartOption": {
       "additionalProperties": false,
       "properties": {
@@ -192,9 +145,6 @@
     "LensOptions": {
       "additionalProperties": false,
       "properties": {
-        "backends": {
-          "$ref": "#/definitions/BackendOptions"
-        },
         "catalogueKeyToResponseKeyMap": {
           "items": {
             "items": {
@@ -357,33 +307,6 @@
       },
       "required": [
         "dataTypes"
-      ],
-      "type": "object"
-    },
-    "SpotOption": {
-      "additionalProperties": false,
-      "properties": {
-        "backendMeasures": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "sites": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
-        },
-        "url": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "name",
-        "backendMeasures",
-        "url",
-        "sites"
       ],
       "type": "object"
     },

@@ -16,7 +16,6 @@ export type LensOptions = {
     language?: string;
     /** Allows to customize texts and add new translations */
     texts?: Texts;
-    backends?: BackendOptions;
     /** If set, fetch and display facet counts (number of results per discrete value) in the catalogue. */
     facetCount?: FacetCountOptions;
 };
@@ -122,24 +121,4 @@ export type Texts = {
     [key: string]: {
         [key: string]: string;
     };
-};
-
-export type BackendOptions = {
-    spots?: SpotOption[];
-    blazes?: BlazeOption[];
-    customAstBackends?: string[];
-};
-
-export type SpotOption = {
-    name: string;
-    backendMeasures: string;
-    url: string;
-    sites: string[];
-};
-
-export type BlazeOption = {
-    name: string;
-    url: string;
-    auth?: string;
-    backendMeasures: string;
 };
