@@ -256,7 +256,8 @@
                                 {
                                     key: "urn:dktk:code:3:2",
                                     name: "Gliom - Grad I",
-                                    description: "",
+                                    description:
+                                        "Diagnosis D43.% and Morph 9383/1,9384/1",
                                     aggregatedValue: [
                                         [
                                             {

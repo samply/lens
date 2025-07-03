@@ -37,7 +37,13 @@
     }
 </script>
 
-<span>{criterion.name}</span>
+{#if criterion.description != ""}
+    <abbr part="lens-singleselect-item-underline" title={criterion.description}
+        >{criterion.name}</abbr
+    >
+{:else}
+    <span>{criterion.name}</span>
+{/if}
 {#if $facetCounts[element.key] !== undefined}
     <span
         part="single-select-facet-count"
@@ -58,5 +64,8 @@
         background-color: rgb(239, 239, 252);
         padding: 1px 6px;
         border-radius: 40px;
+    }
+    [part~="lens-singleselect-item-underline"] {
+        cursor: help;
     }
 </style>
