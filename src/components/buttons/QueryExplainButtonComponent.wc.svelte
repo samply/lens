@@ -25,7 +25,7 @@
         noQueryMessage = "Search for all results",
     }: Props = $props();
 
-    let message: string = $state();
+    let message: string | undefined = $state();
 
     if (queryItem === undefined) {
         queryStore.subscribe(() => {
