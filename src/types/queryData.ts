@@ -14,8 +14,8 @@ export type QueryValue = {
     name: string;
     value:
         | string
-        | { min: number; max: number } // TODO: if user only specifies minimum or maximum, encode this as `number | undefined`, similar for dates
-        | { min: string; max: string }
+        | { min?: number; max?: number } // For numeric ranges
+        | { min?: string; max?: string } // For date ranges
         | AggregatedValue[][];
     queryBindId: string;
     description?: string;

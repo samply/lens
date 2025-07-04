@@ -433,19 +433,19 @@ const substituteRangeCQLExpression = (
     criterionSuffix: string,
     rangeCQL: string,
 ): string => {
-    const input = criterion.value as { min: number; max: number };
+    const input = criterion.value as { min?: number; max?: number };
     if (input === null) {
         console.warn(
             `Throwing away a ${criterionPrefix}Range${criterionSuffix} criterion, as it is not of type {min: number, max: number}!`,
         );
         return "";
     }
-    if (input.min === 0 && input.max === 0) {
+    if (input.min === undefined && input.max === undefined) {
         console.warn(
             `Throwing away a ${criterionPrefix}Range${criterionSuffix} criterion, as both dates are undefined!`,
         );
         return "";
-    } else if (input.min === 0) {
+    } else if (input.min === undefined) {
         const lowerThanDateTemplate = cqltemplate.get(
             `${criterionPrefix}LowerThan${criterionSuffix}`,
         );
@@ -458,7 +458,7 @@ const substituteRangeCQLExpression = (
                 input.min,
                 input.max,
             );
-    } else if (input.max === 0) {
+    } else if (input.max === undefined) {
         const greaterThanDateTemplate = cqltemplate.get(
             `${criterionPrefix}GreaterThan${criterionSuffix}`,
         );
@@ -515,10 +515,10 @@ const substituteCQLExpression = (
             codesystems.push(systemExpression);
         }
     }
-    if (min || min === 0) {
+    if (min !== undefined) {
         cqlString = cqlString.replace(new RegExp("{{D1}}"), min.toString());
     }
-    if (max || max === 0) {
+    if (max !== undefined) {
         cqlString = cqlString.replace(new RegExp("{{D2}}"), max.toString());
     }
     return cqlString;

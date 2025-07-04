@@ -57,8 +57,7 @@
                 values: [
                     {
                         name: buildName(),
-                        // Empty string indicates absence of min/max
-                        value: { min: from ?? "", max: to ?? "" },
+                        value: { min: from || undefined, max: to || undefined },
                         queryBindId: uuidv4(),
                     },
                 ],
