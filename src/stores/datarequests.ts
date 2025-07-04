@@ -43,15 +43,14 @@ export const buildHumanReadableRecursively = (
                     !Array.isArray(child.value) &&
                     ("min" in child.value || "max" in child.value)
                 ) {
-                    const hasMin =
-                        "min" in child.value && child.value.min !== "";
-                    const hasMax =
-                        "max" in child.value && child.value.max !== "";
-                    if (hasMin && hasMax) {
+                    if (
+                        child.value.min !== undefined &&
+                        child.value.max !== undefined
+                    ) {
                         humanReadableQuery += `(${child.key} from ${child.value.min} to ${child.value.max})`;
-                    } else if (hasMin) {
+                    } else if (child.value.min !== undefined) {
                         humanReadableQuery += `(${child.key} greater than or equal to ${child.value.min})`;
-                    } else if (hasMax) {
+                    } else if (child.value.max !== undefined) {
                         humanReadableQuery += `(${child.key} less than or equal to ${child.value.max})`;
                     }
                 }
