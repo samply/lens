@@ -6,18 +6,18 @@ import type { QueryItem, QueryValue } from "../types/queryData";
 import { writable, get } from "svelte/store";
 import { v4 as uuidv4 } from "uuid";
 import type { Category, Criteria } from "../types/catalogue";
+import { lensOptions } from "../stores/options";
 
 export const queryStore = writable<QueryItem[][]>([[]]);
 
-/**
- * when the url has a query as base64 string, this will be parsed and the queryStore will be updated
- */
-const urlParams: URLSearchParams = new URLSearchParams(window.location.search);
-const queryParam: string | null = urlParams.get("query");
-
-if (queryParam !== null) {
-    const queryParamDecoded: QueryItem[][] = JSON.parse(atob(queryParam));
-    queryStore.set(queryParamDecoded);
+const encodedQuery = new URLSearchParams(window.location.search).get("query");
+if (encodedQuery !== null) {
+    const query = JSON.parse(
+        new TextDecoder().decode(
+            Uint8Array.from(atob(encodedQuery), (c) => c.charCodeAt(0)),
+        ),
+    );
+    queryStore.set(query);
 }
 
 /**
@@ -30,12 +30,28 @@ export const activeQueryGroupIndex = writable<number>(0);
  */
 export const queryModified = writable<boolean>(false);
 
-/**
- * emits an event every time the value of the query store is updated
- */
 queryStore.subscribe(() => {
+    // emit an event when the query is updated
     const event = new CustomEvent("lens-query-updated");
     window.dispatchEvent(event);
+
+    if (get(lensOptions)?.autoUpdateQueryInUrl ?? true) {
+        // update the URL with the new query
+        const query = get(queryStore);
+        const encodedQuery = btoa(
+            String.fromCharCode(
+                ...new TextEncoder().encode(JSON.stringify(query)),
+            ),
+        );
+        const params = new URLSearchParams(window.location.search);
+        params.set("query", encodedQuery);
+        const newUrl =
+            window.location.pathname +
+            "?" +
+            params.toString() +
+            window.location.hash;
+        window.history.replaceState({}, "", newUrl);
+    }
 });
 
 /**
