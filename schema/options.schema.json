@@ -145,6 +145,10 @@
     "LensOptions": {
       "additionalProperties": false,
       "properties": {
+        "autoUpdateQueryInUrl": {
+          "description": "Whether to automatically update the query in the URL when it changes (default: true)",
+          "type": "boolean"
+        },
         "catalogueKeyToResponseKeyMap": {
           "items": {
             "items": {
