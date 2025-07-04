@@ -43,6 +43,8 @@
     };
 
     onMount(() => {
+        searchBarInput.focus();
+
         let subgroups: Criteria[] = [];
         criteria.forEach((element) => {
             if (element.subgroup != undefined) {
