@@ -18,6 +18,8 @@ export type LensOptions = {
     texts?: Texts;
     /** If set, fetch and display facet counts (number of results per discrete value) in the catalogue. */
     facetCount?: FacetCountOptions;
+    /** Whether to automatically update the query in the URL when it changes (default: true) */
+    autoUpdateQueryInUrl?: boolean;
 };
 
 export type FacetCountOptions = {
