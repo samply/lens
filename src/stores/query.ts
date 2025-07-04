@@ -9,8 +9,6 @@ import type { Category, Criteria } from "../types/catalogue";
 
 export const queryStore = writable<QueryItem[][]>([[]]);
 
-export const queryBase64Store = writable<string>("");
-
 /**
  * when the url has a query as base64 string, this will be parsed and the queryStore will be updated
  */
