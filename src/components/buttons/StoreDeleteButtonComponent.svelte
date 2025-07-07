@@ -45,7 +45,7 @@
 </script>
 
 <button
-    part="query-delete-button query-delete-button-{type}"
+    part="lens-query-delete-button lens-query-delete-button-{type}"
     onclick={deleteItem}
 >
     {#if $lensOptions?.iconOptions?.deleteUrl}
@@ -64,7 +64,7 @@
 * delete buttons in searchbar and chips
 */
 
-    [part~="query-delete-button"] {
+    [part~="lens-query-delete-button"] {
         background-color: var(--white);
         color: var(--orange);
         cursor: pointer;
@@ -75,12 +75,12 @@
         width: calc(var(--font-size-xs) + 6px);
     }
 
-    [part~="query-delete-button"]:hover {
+    [part~="lens-query-delete-button"]:hover {
         border: solid 1px var(--orange);
         color: var(--orange);
     }
 
-    [part~="query-delete-button-value"] {
+    [part~="lens-query-delete-button-value"] {
         font-size: var(--font-size-xxs);
         color: var(--white);
         margin: 0 var(--gap-xs) 0 var(--gap-xxs);
@@ -89,7 +89,7 @@
         transform: translatey(-1px);
     }
 
-    [part~="query-delete-button-item"] {
+    [part~="lens-query-delete-button-item"] {
         font-size: var(--font-size-xs);
         position: absolute;
         top: -6px;
@@ -97,7 +97,7 @@
         border: solid 1px var(--white);
     }
 
-    [part~="query-delete-button-group"] {
+    [part~="lens-query-delete-button-group"] {
         font-size: var(--font-size-s);
         height: calc(var(--font-size-s) + 10px);
         width: calc(var(--font-size-s) + 10px);
@@ -105,26 +105,26 @@
         border: solid 1px var(--white);
     }
 
-    [part~="delete-button-icon-item"] {
+    [part~="lens-delete-button-icon-item"] {
         filter: invert(41%) sepia(43%) saturate(4610%) hue-rotate(357deg)
             brightness(96%) contrast(90%);
         transform: translate(-1px, -1px);
         width: 20px;
     }
 
-    [part~="delete-button-icon-group"] {
+    [part~="lens-delete-button-icon-group"] {
         filter: invert(41%) sepia(43%) saturate(4610%) hue-rotate(357deg)
             brightness(96%) contrast(90%);
         transform: translate(0px, 2px);
         width: 20px;
     }
 
-    [part~="delete-button-icon-value"] {
+    [part~="lens-delete-button-icon-value"] {
         transform: translate(-1px, -1px);
         width: 20px;
     }
 
-    [part~="delete-button-icon-value"]:hover {
+    [part~="lens-delete-button-icon-value"]:hover {
         filter: invert(38%) sepia(78%) saturate(1321%) hue-rotate(352deg)
             brightness(92%) contrast(99%);
     }
