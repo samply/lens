@@ -6,25 +6,8 @@ import type { QueryItem, QueryValue } from "../types/queryData";
 import { writable, get } from "svelte/store";
 import { v4 as uuidv4 } from "uuid";
 import type { Category, Criteria } from "../types/catalogue";
-import { lensOptions } from "../stores/options";
-import { showErrorToast } from "./toasts";
 
 export const queryStore = writable<QueryItem[][]>([[]]);
-
-const encodedQuery = new URLSearchParams(window.location.search).get("query");
-if (encodedQuery !== null) {
-    try {
-        const query = JSON.parse(
-            new TextDecoder().decode(
-                Uint8Array.from(atob(encodedQuery), (c) => c.charCodeAt(0)),
-            ),
-        );
-        queryStore.set(query);
-    } catch {
-        console.error("Failed to parse query from URL:", encodedQuery);
-        showErrorToast("Failed to parse query from URL.");
-    }
-}
 
 /**
  * the index of the currently active search bar
@@ -40,24 +23,6 @@ queryStore.subscribe(() => {
     // emit an event when the query is updated
     const event = new CustomEvent("lens-query-updated");
     window.dispatchEvent(event);
-
-    if (get(lensOptions)?.autoUpdateQueryInUrl ?? true) {
-        // update the URL with the new query
-        const query = get(queryStore);
-        const encodedQuery = btoa(
-            String.fromCharCode(
-                ...new TextEncoder().encode(JSON.stringify(query)),
-            ),
-        );
-        const params = new URLSearchParams(window.location.search);
-        params.set("query", encodedQuery);
-        const newUrl =
-            window.location.pathname +
-            "?" +
-            params.toString() +
-            window.location.hash;
-        window.history.replaceState({}, "", newUrl);
-    }
 });
 
 /**
