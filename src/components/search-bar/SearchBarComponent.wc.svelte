@@ -583,8 +583,7 @@
         background-color: var(--white);
         border: solid 1px var(--light-gray);
         border-radius: var(--border-radius-small);
-        padding-right: var(--gap-xs);
-        padding-left: var(--gap-xs);
+        padding: var(--gap-xxs) var(--gap-xs);
         display: flex;
         flex-wrap: wrap;
         width: -webkit-fill-available;
@@ -621,7 +620,7 @@
 
     [part~="lens-searchbar-input"] {
         box-sizing: border-box;
-        padding: var(--gap-xs) var(--gap-s) var(--gap-xs) var(--gap-xs);
+        padding: var(--gap-xs);
         min-width: 200px;
         flex-grow: 1;
         outline: none;

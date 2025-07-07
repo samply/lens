@@ -623,11 +623,11 @@
 <div part="lens-chart-wrapper">
     {#if options?.hintText !== undefined}
         <div part="lens-chart-info-button-wrapper">
-            <InfoButtonComponent message={options.hintText} />
+            <InfoButtonComponent message={options.hintText} align="left" />
         </div>
     {/if}
 
-    <h4 part="chart-title">{title}</h4>
+    <h4 part="lens-chart-title">{title}</h4>
 
     {#if noDataAvailable}
         <div part="lens-chart-overlay">

@@ -45,10 +45,12 @@
 </script>
 
 {#if inSearchBar}
-    <InfoButtonComponent {message} size={18}></InfoButtonComponent>
+    <InfoButtonComponent {message} size={18} inSearchBar={true}
+    ></InfoButtonComponent>
 {:else}
     <div part="lens-query-explain-button">
-        <InfoButtonComponent {message} size={25}></InfoButtonComponent>
+        <InfoButtonComponent {message} size={25} align="left" maxWidth="600px"
+        ></InfoButtonComponent>
     </div>
 {/if}
 
@@ -57,6 +59,8 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        box-sizing: border-box;
+        height: 100%;
         padding: var(--gap-xxs);
         border: solid 1px var(--light-blue);
         border-radius: var(--border-radius-small);
