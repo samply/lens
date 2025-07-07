@@ -43,8 +43,3 @@
     --button-background-color-hover: var(--light-blue);
     --button-color: var(--white);
 }
-
-lens-chart::part(chart-hint) {
-    font-size: var(--font-size-xs);
-    padding-top: var(--gap-m);
-}
