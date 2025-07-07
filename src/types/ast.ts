@@ -18,6 +18,6 @@ export type AstBottomLayerValue = {
         | string
         | boolean
         | Array<string>
-        | { min: number; max: number }
-        | { min: string; max: string }; // for dates
+        | { min?: number; max?: number } // For numeric ranges
+        | { min?: string; max?: string }; // For date ranges
 };

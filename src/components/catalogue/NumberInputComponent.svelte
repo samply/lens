@@ -57,8 +57,7 @@
                 values: [
                     {
                         name: buildName(),
-                        // TODO: 0 indicates absence of min/max, this should be changed so we can use 0 as a value
-                        value: { min: from ?? 0, max: to ?? 0 },
+                        value: { min: from ?? undefined, max: to ?? undefined },
                         queryBindId: uuidv4(),
                     },
                 ],
