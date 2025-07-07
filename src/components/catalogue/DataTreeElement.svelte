@@ -165,14 +165,14 @@
             >
         {/if}
 
-    {#if finalParent && open}
-        <button
-            part="lens-data-tree-add-all-options-button"
-            onclick={selectAllOptions}
-        >
-            {translate("add_all")}
-        </button>
-    {/if}
+        {#if finalParent && open}
+            <button
+                part="lens-data-tree-add-all-options-button"
+                onclick={selectAllOptions}
+            >
+                {translate("add_all")}
+            </button>
+        {/if}
     </div>
 
     {#if open}
