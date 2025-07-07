@@ -7,18 +7,18 @@
 <script lang="ts">
     interface Props {
         message?: string[] | string;
-        size?: number;
-        align?: "left" | "right" | "center";
-        maxWidth?: string;
+        buttonSize?: string;
+        alignDialogue?: "left" | "right" | "center";
+        dialogueMaxWidth?: string;
         /** Info button in search bar is white and orange on hover */
         inSearchBar?: boolean;
     }
 
     let {
         message = "",
-        size = 16,
-        align = "center",
-        maxWidth = "300px",
+        buttonSize = "16px",
+        alignDialogue = "center",
+        dialogueMaxWidth = "300px",
         inSearchBar = false,
     }: Props = $props();
 
@@ -50,7 +50,7 @@
     part="lens-info-button"
     onclick={(e) => displayQueryInfo(e)}
     onfocusout={onFocusOut}
-    style="width: {size}px; height: {size}px;"
+    style="width: {buttonSize}; height: {buttonSize};"
 >
     <div
         part={inSearchBar
@@ -73,8 +73,8 @@
     </div>
     {#if tooltipOpen}
         <div
-            part="lens-info-button-dialogue {`lens-info-button-dialogue-align-${align}`}"
-            style="user-select: text; top: {size}px; max-width: {maxWidth};"
+            part="lens-info-button-dialogue {`lens-info-button-dialogue-align-${alignDialogue}`}"
+            style="user-select: text; top: {buttonSize}; max-width: {dialogueMaxWidth};"
         >
             <!-- eslint-disable-next-line svelte/require-each-key -->
             {#each message as msg}

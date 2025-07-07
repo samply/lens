@@ -623,7 +623,10 @@
 <div part="lens-chart-wrapper">
     {#if options?.hintText !== undefined}
         <div part="lens-chart-info-button-wrapper">
-            <InfoButtonComponent message={options.hintText} align="left" />
+            <InfoButtonComponent
+                message={options.hintText}
+                alignDialogue="left"
+            />
         </div>
     {/if}
 
