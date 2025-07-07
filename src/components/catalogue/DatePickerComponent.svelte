@@ -67,9 +67,9 @@
     }
 </script>
 
-<form part="date-input-form" {onsubmit}>
+<form part="lens-date-input-form" {onsubmit}>
     <input
-        part="date-input-formfield"
+        part="lens-date-input-formfield"
         type="date"
         min={element.min}
         max={element.max}
@@ -78,7 +78,7 @@
     />
     <span part="date-input-range-separator">-</span>
     <input
-        part="date-input-formfield"
+        part="lens-date-input-formfield"
         type="date"
         min={element.min}
         max={element.max}
@@ -89,12 +89,12 @@
 </form>
 
 <style>
-    [part~="date-input-form"] {
+    [part~="lens-date-input-form"] {
         display: flex;
         align-items: center;
         gap: var(--gap-xxs);
     }
-    [part~="date-input-formfield"] {
+    [part~="lens-date-input-formfield"] {
         border: 1px solid var(--gray);
         border-radius: var(--gap-xs);
         outline: none;
@@ -102,7 +102,7 @@
         font-size: var(--font-size-xs);
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
-    [part~="date-input-formfield"]:focus {
+    [part~="lens-date-input-formfield"]:focus {
         border-color: var(--blue);
     }
 </style>

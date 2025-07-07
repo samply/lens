@@ -29,8 +29,8 @@
 
         const target: HTMLElement = e.target as HTMLElement;
         if (
-            target.getAttribute("part") !== "info-button-dialogue" &&
-            target.getAttribute("part") !== "info-button-dialogue-message"
+            target.getAttribute("part") !== "lens-info-button-dialogue" &&
+            target.getAttribute("part") !== "lens-info-button-dialogue-message"
         ) {
             tooltipOpen = !tooltipOpen;
         }
@@ -38,25 +38,25 @@
 </script>
 
 <button
-    part="info-button"
+    part="lens-info-button"
     onclick={(e) => displayQueryInfo(e)}
     onfocusout={onFocusOut}
 >
     {#if $lensOptions?.iconOptions?.infoUrl}
         <img
-            part="info-button-icon"
+            part="lens-info-button-icon"
             src={$lensOptions?.iconOptions?.infoUrl}
             alt="info icon"
         />
     {:else}
-        <span part="info-button-icon"> &#9432; </span>
+        <span part="lens-info-button-icon"> &#9432; </span>
     {/if}
     {#if tooltipOpen}
-        <div part="info-button-dialogue" style="user-select: text;">
+        <div part="lens-info-button-dialogue" style="user-select: text;">
             <!-- eslint-disable-next-line svelte/require-each-key -->
             {#each message as msg}
                 <div
-                    part="info-button-dialogue-message"
+                    part="lens-info-button-dialogue-message"
                     style="user-select: text;"
                 >
                     {msg}
@@ -67,7 +67,7 @@
 </button>
 
 <style>
-    [part~="info-button"] {
+    [part~="lens-info-button"] {
         position: relative;
         cursor: pointer;
         width: 38px;
@@ -76,7 +76,7 @@
         border-radius: var(--border-radius-small);
     }
 
-    [part~="info-button-dialogue"] {
+    [part~="lens-info-button-dialogue"] {
         cursor: auto;
         position: absolute;
         border: none;

@@ -9,7 +9,7 @@
     let { element }: Props = $props();
 </script>
 
-<div part="single-select-wrapper">
+<div part="lens-single-select-wrapper">
     <!-- eslint-disable-next-line svelte/require-each-key -->
     {#each element.criteria as criterion}
         <SingleSelectItemComponent {element} {criterion} />
@@ -17,7 +17,7 @@
 </div>
 
 <style>
-    [part~="single-select-wrapper"] {
+    [part~="lens-single-select-wrapper"] {
         display: grid;
         grid-template-columns: 1fr max-content max-content;
         column-gap: 10px;
