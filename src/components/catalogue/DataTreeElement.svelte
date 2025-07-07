@@ -156,7 +156,7 @@
                 : element.name}
         </button>
         {#if element.infoButtonText}
-            <InfoButtonComponent message={element.infoButtonText} />
+            <InfoButtonComponent message={element.infoButtonText} size={18} />
         {/if}
 
         {#if "infoLink" in element && element.infoLink !== undefined}

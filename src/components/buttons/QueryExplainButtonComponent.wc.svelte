@@ -18,11 +18,14 @@
     interface Props {
         noQueryMessage?: string;
         queryItem?: QueryItem | undefined;
+        /** Query explain button in the search bar is smaller, white, and has no border */
+        inSearchBar: boolean;
     }
 
     let {
         queryItem = undefined,
         noQueryMessage = "Search for all results",
+        inSearchBar = false,
     }: Props = $props();
 
     let message: string | undefined = $state();
@@ -41,4 +44,21 @@
     }
 </script>
 
-<InfoButtonComponent {message}></InfoButtonComponent>
+{#if inSearchBar}
+    <InfoButtonComponent {message} size={18}></InfoButtonComponent>
+{:else}
+    <div part="lens-query-explain-button">
+        <InfoButtonComponent {message} size={25}></InfoButtonComponent>
+    </div>
+{/if}
+
+<style>
+    [part~="lens-query-explain-button"] {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: var(--gap-xxs);
+        border: solid 1px var(--light-blue);
+        border-radius: var(--border-radius-small);
+    }
+</style>

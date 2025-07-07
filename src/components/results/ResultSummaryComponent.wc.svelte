@@ -121,4 +121,10 @@
         justify-content: space-around;
         gap: 10px;
     }
+
+    [part~="result-summary-header-title"] {
+        display: flex;
+        align-items: center;
+        gap: var(--gap-xs);
+    }
 </style>
