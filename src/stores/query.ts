@@ -9,19 +9,6 @@ import type { Category, Criteria } from "../types/catalogue";
 
 export const queryStore = writable<QueryItem[][]>([[]]);
 
-export const queryBase64Store = writable<string>("");
-
-/**
- * when the url has a query as base64 string, this will be parsed and the queryStore will be updated
- */
-const urlParams: URLSearchParams = new URLSearchParams(window.location.search);
-const queryParam: string | null = urlParams.get("query");
-
-if (queryParam !== null) {
-    const queryParamDecoded: QueryItem[][] = JSON.parse(atob(queryParam));
-    queryStore.set(queryParamDecoded);
-}
-
 /**
  * the index of the currently active search bar
  */
@@ -32,10 +19,8 @@ export const activeQueryGroupIndex = writable<number>(0);
  */
 export const queryModified = writable<boolean>(false);
 
-/**
- * emits an event every time the value of the query store is updated
- */
 queryStore.subscribe(() => {
+    // emit an event when the query is updated
     const event = new CustomEvent("lens-query-updated");
     window.dispatchEvent(event);
 });

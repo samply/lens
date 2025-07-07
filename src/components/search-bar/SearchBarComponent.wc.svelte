@@ -22,6 +22,10 @@
     import { facetCounts } from "../../stores/facetCounts";
     import { lensOptions } from "../../stores/options";
     import QueryExplainButtonComponent from "../buttons/QueryExplainButtonComponent.wc.svelte";
+    import { onMount } from "svelte";
+    import { showErrorToast } from "../../stores/toasts";
+    import { translate } from "../../helpers/translations";
+    import { get } from "svelte/store";
 
     interface Props {
         /** The string to display when no matches are found */
@@ -349,6 +353,48 @@
         );
         return resultString;
     };
+
+    onMount(() => {
+        // load the query from the URL if it exists
+        const encodedQuery = new URLSearchParams(window.location.search).get(
+            "query",
+        );
+        if (encodedQuery !== null) {
+            try {
+                const query = JSON.parse(
+                    new TextDecoder().decode(
+                        Uint8Array.from(atob(encodedQuery), (c) =>
+                            c.charCodeAt(0),
+                        ),
+                    ),
+                );
+                queryStore.set(query);
+            } catch {
+                console.error("Failed to parse query from URL:", encodedQuery);
+                showErrorToast(translate("query_in_url_parse_error"));
+            }
+        }
+
+        // update the URL when the query changes
+        queryStore.subscribe(() => {
+            if (get(lensOptions)?.autoUpdateQueryInUrl ?? true) {
+                const query = get(queryStore);
+                const encodedQuery = btoa(
+                    String.fromCharCode(
+                        ...new TextEncoder().encode(JSON.stringify(query)),
+                    ),
+                );
+                const params = new URLSearchParams(window.location.search);
+                params.set("query", encodedQuery);
+                const newUrl =
+                    window.location.pathname +
+                    "?" +
+                    params.toString() +
+                    window.location.hash;
+                window.history.replaceState({}, "", newUrl);
+            }
+        });
+    });
 </script>
 
 <div part="lens-searchbar">

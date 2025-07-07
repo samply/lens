@@ -51,4 +51,8 @@ const lensTranslations: Texts = {
         en: "Collapse Catalogue",
         de: "Katalog einklappen",
     },
+    query_in_url_parse_error: {
+        en: "Failed to parse the query parameter in the URL",
+        de: "Der Query-Parameter in der URL konnte nicht geparst werden",
+    },
 };
