@@ -44,9 +44,9 @@
     }
 </script>
 
-<form part="lens-string-form" {onsubmit}>
+<form part="string-form" {onsubmit}>
     <input
-        part="lens-string-formfield"
+        part="string-formfield"
         type="text"
         bind:this={input}
         placeholder="Enter filter term"
@@ -55,12 +55,12 @@
 </form>
 
 <style>
-    [part~="lens-string-form"] {
+    [part~="string-form"] {
         display: flex;
         align-items: center;
         gap: var(--gap-xs);
     }
-    [part~="lens-string-formfield"] {
+    [part~="string-formfield"] {
         border: 1px solid var(--gray);
         border-radius: var(--gap-xs);
         outline: none;
@@ -69,7 +69,7 @@
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         font-size: var(--font-size-m);
     }
-    [part~="lens-string-formfield"]:focus {
+    [part~="string-formfield"]:focus {
         border-color: var(--blue);
     }
 </style>

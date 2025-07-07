@@ -27,11 +27,10 @@
     };
 </script>
 
-<tr part="lens-result-table-item-body-row">
-    <td
-        part="lens-result-table-item-body-cell lens-result-table-item-body-cell-checkbox"
+<tr part="table-body-row">
+    <td part="table-body-cell table-body-cell-checkbox"
         ><input
-            part="lens-result-table-item-body-checkbox"
+            part="table-body-checkbox"
             type="checkbox"
             {checked}
             onchange={updateStoreOnCheck}
@@ -40,16 +39,16 @@
 
     <!-- eslint-disable-next-line svelte/require-each-key -->
     {#each tableRow as data}
-        <td part="lens-result-table-item-body-cell">{data}</td>
+        <td part="table-body-cell">{data}</td>
     {/each}
 </tr>
 
 <style>
-    [part~="lens-result-table-item-body-row"] {
+    [part~="table-body-row"] {
         border-bottom: solid 1px var(--light-gray);
     }
 
-    [part~="lens-result-table-item-body-cell"] {
+    [part~="table-body-cell"] {
         padding-top: var(--gap-xs);
     }
 </style>

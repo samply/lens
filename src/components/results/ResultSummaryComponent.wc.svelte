@@ -80,9 +80,9 @@
 
 <div part="lens-result-summary">
     {#if $lensOptions?.resultSummaryOptions?.title !== undefined}
-        <div part="lens-result-summary-header">
-            <div part="lens-result-summary-heading">
-                <h4 part="lens-result-summary-header-title">
+        <div part="result-summary-header">
+            <div part="heading">
+                <h4 part="result-summary-header-title">
                     {$lensOptions?.resultSummaryOptions.title}
                     {#if $lensOptions?.resultSummaryOptions.infoButtonText !== undefined}
                         <InfoButtonComponent
@@ -96,10 +96,10 @@
             </div>
         </div>
     {/if}
-    <div part="lens-result-summary-content">
+    <div part="result-summary-content">
         <!-- eslint-disable-next-line svelte/require-each-key -->
         {#each populations as population}
-            <div part="lens-result-summary-content-type">
+            <div part="result-summary-content-type">
                 {population.title}: {population.population}
             </div>
         {/each}
@@ -115,7 +115,7 @@
         align-items: center;
     }
 
-    [part~="lens-result-summary-content"] {
+    [part~="result-summary-content"] {
         display: flex;
         align-items: center;
         justify-content: space-around;

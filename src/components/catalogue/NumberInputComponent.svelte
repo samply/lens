@@ -67,10 +67,10 @@
     }
 </script>
 
-<form part="lens-number-input-form" {onsubmit}>
-    <div part="lens-number-input-formfield-wrapper">
+<form part="number-input-form" {onsubmit}>
+    <div part="number-input-formfield-wrapper">
         <input
-            part="lens-number-input-formfield"
+            part="number-input-formfield"
             type="number"
             step="any"
             placeholder="min"
@@ -80,15 +80,13 @@
             bind:this={fromInput}
         />
         {#if element.unitText !== undefined}
-            <span part="lens-number-input-formfield-unit"
-                >{element.unitText}</span
-            >
+            <span part="number-input-formfield-unit">{element.unitText}</span>
         {/if}
     </div>
-    <span part="lens-number-input-range-separator">-</span>
-    <div part="lens-number-input-formfield-wrapper">
+    <span part="number-input-range-separator">-</span>
+    <div part="number-input-formfield-wrapper">
         <input
-            part="lens-number-input-formfield"
+            part="number-input-formfield"
             type="number"
             step="any"
             placeholder="max"
@@ -98,21 +96,19 @@
             bind:this={toInput}
         />
         {#if element.unitText !== undefined}
-            <span part="lens-number-input-formfield-unit"
-                >{element.unitText}</span
-            >
+            <span part="number-input-formfield-unit">{element.unitText}</span>
         {/if}
     </div>
     <AddButton />
 </form>
 
 <style>
-    [part~="lens-number-input-form"] {
+    [part~="number-input-form"] {
         display: flex;
         align-items: center;
         gap: var(--gap-xxs);
     }
-    [part~="lens-number-input-formfield-wrapper"] {
+    [part~="number-input-formfield-wrapper"] {
         display: flex;
         font-size: 10pt;
         border: 1px solid var(--gray);
@@ -120,17 +116,17 @@
         overflow: hidden;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
-    [part~="lens-number-input-formfield-wrapper"]:focus-within {
+    [part~="number-input-formfield-wrapper"]:focus-within {
         border-color: var(--blue);
     }
-    [part~="lens-number-input-formfield"] {
+    [part~="number-input-formfield"] {
         border: none;
         outline: none;
         padding: var(--gap-xxs) var(--gap-xs);
         width: 50px;
         font-size: var(--font-size-s);
     }
-    [part~="lens-number-input-formfield-unit"] {
+    [part~="number-input-formfield-unit"] {
         display: flex;
         align-items: center;
         border-left: 1px solid var(--gray);

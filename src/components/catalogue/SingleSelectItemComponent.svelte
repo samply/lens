@@ -46,7 +46,7 @@
 {/if}
 {#if $facetCounts[element.key] !== undefined}
     <span
-        part="lens-single-select-facet-count"
+        part="single-select-facet-count"
         title={$lensOptions?.facetCount?.hoverText?.[element.key] ?? ""}
     >
         {$facetCounts[element.key][criterion.key] ?? 0}
@@ -57,7 +57,7 @@
 <AddButton {onclick} />
 
 <style>
-    [part~="lens-single-select-facet-count"] {
+    [part~="single-select-facet-count"] {
         color: #636363;
         font-size: 0.95em;
         justify-self: right;

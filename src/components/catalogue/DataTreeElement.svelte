@@ -133,20 +133,20 @@
     };
 </script>
 
-<div part="lens-data-tree-element">
-    <button part="lens-data-tree-element-name" onclick={toggleChildren}>
+<div part="data-tree-element">
+    <button part="data-tree-element-name" onclick={toggleChildren}>
         {#if $lensOptions?.iconOptions?.toggleIconUrl}
             <img
-                part="lens-data-tree-element-toggle-icon {open
-                    ? 'lens-data-tree-element-toggle-icon-open'
+                part="data-tree-element-toggle-icon {open
+                    ? 'data-tree-element-toggle-icon-open'
                     : ''}"
                 src={$lensOptions?.iconOptions?.toggleIconUrl}
                 alt="catalogue-open-close-icon"
             />
         {:else}
             <span
-                part="lens-data-tree-element-toggle-icon {open
-                    ? 'lens-data-tree-element-toggle-icon-open'
+                part="data-tree-element-toggle-icon {open
+                    ? 'data-tree-element-toggle-icon-open'
                     : ''}"
             >
                 &#8964
@@ -167,10 +167,7 @@
     {/if}
 
     {#if finalParent && open}
-        <button
-            part="lens-data-tree-add-all-options-button"
-            onclick={selectAllOptions}
-        >
+        <button part="add-all-options-button" onclick={selectAllOptions}>
             {translate("add_all")}
         </button>
     {/if}
@@ -180,7 +177,7 @@
             <!-- eslint-disable-next-line svelte/require-each-key -->
             {#each element.childCategories as child}
                 <div
-                    part={`lens-data-tree-element-child-category lens-data-tree-element-child-category-layer-${layer}`}
+                    part={`data-tree-element-child-category data-tree-element-child-category-layer-${layer}`}
                 >
                     <DataTreeElement
                         layer={layer + 1}
@@ -190,7 +187,7 @@
                 </div>
             {/each}
         {:else}
-            <div part="lens-data-tree-element-last-child-options">
+            <div part="data-tree-element-last-child-options">
                 {#if element.fieldType === "single-select"}
                     <SingleSelectComponent {element} />
                 {:else if element.fieldType === "autocomplete"}
@@ -208,11 +205,11 @@
 </div>
 
 <style>
-    [part~="lens-data-tree-element"] {
+    [part~="data-tree-element"] {
         position: relative;
     }
 
-    [part~="lens-data-tree-element-name"] {
+    [part~="data-tree-element-name"] {
         font-family: var(--font-family);
         color: var(--font-color);
         padding-left: var(--gap-s);
@@ -226,7 +223,7 @@
         text-align: left;
     }
 
-    [part~="lens-data-tree-element-toggle-icon"] {
+    [part~="data-tree-element-toggle-icon"] {
         position: absolute;
         left: -15px;
         top: -8px;
@@ -236,7 +233,7 @@
         transition: all 0.1s ease-in-out;
     }
 
-    [part~="lens-data-tree-add-all-options-button"] {
+    [part~="add-all-options-button"] {
         background-color: var(--button-background-color);
         border-radius: var(--border-radius-small);
         color: var(--button-color);
@@ -251,12 +248,12 @@
         transform: rotate(0deg);
     }
 
-    [part~="lens-data-tree-element-child-category"] {
+    [part~="data-tree-element-child-category"] {
         padding: var(--gap-xs) 0 0 var(--gap-s);
         border-left: solid 1px var(--lightest-gray);
     }
 
-    [part~="lens-data-tree-element-last-child-options"] {
+    [part~="data-tree-element-last-child-options"] {
         max-width: 100%;
         border-left: solid 1px var(--lightest-gray);
         padding-left: var(--gap-m);

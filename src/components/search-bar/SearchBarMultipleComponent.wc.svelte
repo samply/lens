@@ -32,19 +32,18 @@
 
 <div part="lens-searchbar-multiple">
     {#each $queryStore, index}
-        <div part="lens-searchbar-multiple-wrapper">
+        <div part="search-bar-wrapper">
             <SearchBarComponent
                 {noMatchesFoundMessage}
                 {placeholderText}
                 {index}
             />
             {#if index === $queryStore.length - 1}
-                <button
-                    part="lens-searchbar-multiple-add-button"
-                    onclick={addSearchBar}>+</button
+                <button part="lens-searchbar-add-button" onclick={addSearchBar}
+                    >+</button
                 >
             {:else}
-                <span part="lens-searchbar-multiple-or-indicator">or</span>
+                <span part="lens-searchbar-or-indicator">or</span>
             {/if}
         </div>
     {/each}
@@ -60,20 +59,20 @@
         align-items: center;
     }
 
-    [part~="lens-searchbar-multiple-wrapper"] {
+    [part~="search-bar-wrapper"] {
         display: flex;
         align-items: center;
         min-width: calc(50% - 5px);
         flex-grow: 1;
     }
 
-    [part~="lens-searchbar-multiple-or-indicator"] {
+    [part~="lens-searchbar-or-indicator"] {
         margin-left: var(--gap-xs);
         text-align: center;
         width: 40px;
     }
 
-    [part~="lens-searchbar-multiple-add-button"] {
+    [part~="lens-searchbar-add-button"] {
         background-color: var(--green);
         color: var(--white);
         border: none;

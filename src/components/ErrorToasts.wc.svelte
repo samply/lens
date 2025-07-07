@@ -9,12 +9,12 @@
     import { errorToasts, removeToast } from "../stores/toasts";
 </script>
 
-<div part="lens-toast-flex-container">
+<div part="flex-container">
     {#each $errorToasts as toast (toast.id)}
-        <div out:fade part="lens-toast">
-            <div part="lens-toast-message">{toast.message}</div>
+        <div out:fade part="toast">
+            <div part="message">{toast.message}</div>
             <button
-                part="lens-toast-close-button"
+                part="close-button"
                 onclick={() => {
                     removeToast(toast.id);
                 }}
@@ -40,7 +40,7 @@
 </div>
 
 <style>
-    [part~="lens-toast-flex-container"] {
+    [part~="flex-container"] {
         pointer-events: none;
         position: fixed;
         bottom: 0;
@@ -52,7 +52,7 @@
         padding: var(--gap-s);
     }
 
-    [part~="lens-toast"] {
+    [part~="toast"] {
         pointer-events: auto;
         border-radius: var(--border-radius-small);
         background-color: #ef9a9a;
@@ -61,11 +61,11 @@
         align-items: center;
     }
 
-    [part~="lens-toast-message"] {
+    [part~="message"] {
         padding: var(--gap-xs);
     }
 
-    [part~="lens-toast-close-button"] {
+    [part~="close-button"] {
         padding: var(--gap-xs);
         margin-left: auto; /* align right */
 
