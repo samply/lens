@@ -464,7 +464,7 @@
                     {#if inputOptions
                         .map((option) => option.name)
                         .indexOf(inputOption.name) === i}
-                        <div part="autocomplete-options-heading">
+                        <div part="lens-searchbar-autocomplete-options-heading">
                             <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                             {@html getBoldedText(inputOption.name)}
                         </div>
@@ -478,14 +478,16 @@
                             part="lens-searchbar-autocomplete-options-item lens-searchbar-autocomplete-options-item-focused"
                             onmousedown={() => selectItemByClick(inputOption)}
                         >
-                            <div part="autocomplete-options-item-name">
+                            <div
+                                part="lens-searchbar-autocomplete-options-item-name"
+                            >
                                 <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                                 {@html getBoldedText(
                                     inputOption.criterion.name,
                                 )}
                             </div>
                             <div
-                                part="autocomplete-options-item-description autocomplete-options-item-description-focused"
+                                part="lens-searchbar-autocomplete-options-item-description lens-searchbar-autocomplete-options-item-description-focused"
                             >
                                 {#if inputOption.criterion.description}
                                     <!-- eslint-disable-next-line svelte/no-at-html-tags -->
@@ -496,7 +498,7 @@
                             </div>
                             {#if $facetCounts[inputOption.key] !== undefined}
                                 <div
-                                    part="autocomplete-options-item-facet-count"
+                                    part="lens-searchbar-autocomplete-options-item-facet-count"
                                     title={$lensOptions?.facetCount
                                         ?.hoverText?.[inputOption.key] ?? ""}
                                 >
@@ -514,13 +516,17 @@
                             part="lens-searchbar-autocomplete-options-item"
                             onmousedown={() => selectItemByClick(inputOption)}
                         >
-                            <div part="autocomplete-options-item-name">
+                            <div
+                                part="lens-searchbar-autocomplete-options-item-name"
+                            >
                                 <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                                 {@html getBoldedText(
                                     inputOption.criterion.name,
                                 )}
                             </div>
-                            <div part="autocomplete-options-item-description">
+                            <div
+                                part="lens-searchbar-autocomplete-options-item-description"
+                            >
                                 {#if inputOption.criterion.description}
                                     <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                                     {@html getBoldedText(
@@ -530,7 +536,7 @@
                             </div>
                             {#if $facetCounts[inputOption.key] !== undefined}
                                 <div
-                                    part="autocomplete-options-item-facet-count"
+                                    part="lens-searchbar-autocomplete-options-item-facet-count"
                                     title={$lensOptions?.facetCount
                                         ?.hoverText?.[inputOption.key] ?? ""}
                                 >
@@ -662,7 +668,7 @@
         padding: var(--gap-xxs) var(--gap-xs);
     }
 
-    [part~="autocomplete-options-heading"] {
+    [part~="lens-searchbar-autocomplete-options-heading"] {
         font-weight: bold;
         grid-column: 1 / -1;
     }
@@ -678,14 +684,14 @@
         background-color: var(--light-gray);
     }
 
-    [part~="autocomplete-options-item-description"] {
+    [part~="lens-searchbar-autocomplete-options-item-description"] {
         color: var(--blue);
         font-size: var(--font-size-s);
     }
-    [part~="autocomplete-options-item-description-focused"] {
+    [part~="lens-searchbar-autocomplete-options-item-description-focused"] {
         color: var(--white);
     }
-    [part~="autocomplete-options-item-facet-count"] {
+    [part~="lens-searchbar-autocomplete-options-item-facet-count"] {
         color: #636363;
         font-size: 0.95em;
         justify-self: right;

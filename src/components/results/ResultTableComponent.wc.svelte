@@ -189,13 +189,14 @@
     let pageSizeOption = $state(pageSizeOptions[0]);
 </script>
 
-<h4 part="result-table-title">{title}</h4>
-<table part="result-table">
-    <thead part="table-header">
-        <tr part="table-header-row">
-            <th part="table-header-cell table-header-cell-checkbox"
+<h4 part="lens-result-table-title">{title}</h4>
+<table part="lens-result-table">
+    <thead part="lens-result-table-header">
+        <tr part="lens-result-table-header-row">
+            <th
+                part="lens-result-table-header-cell lens-result-table-header-cell-checkbox"
                 ><input
-                    part="table-header-checkbox"
+                    part="lens-result-table-header-checkbox"
                     type="checkbox"
                     checked={allChecked}
                     onchange={checkAllBiobanks}
@@ -204,7 +205,7 @@
             <!-- eslint-disable-next-line svelte/require-each-key -->
             {#each headerData as header, index}
                 <th
-                    part="table-header-cell table-header-datatype"
+                    part="lens-result-table-header-cell lens-result-table-header-datatype"
                     onclick={() => clickedOnColumnHeader(index)}
                 >
                     {header.title}
@@ -231,26 +232,26 @@
         {/each}
     </tbody>
 </table>
-<slot name="above-pagination" />
-<div part="table-pagination">
+<slot name="lens-result-above-pagination" />
+<div part="lens-result-table-pagination">
     <button
-        part="table-pagination-button pagination-pagination-previous"
+        part="lens-result-table-pagination-button lens-result-pagination-pagination-previous"
         disabled={activePage === 1}
         onclick={() => (activePage -= 1)}>&#8592;</button
     >
-    <div part="table-pagination-pagenumber">
+    <div part="lens-result-table-pagination-pagenumber">
         {activePage} / {tableRowData.length === 0
             ? 1
             : Math.ceil(tableRowData.length / pageSize)}
     </div>
     <button
-        part="table-pagination-button pagination-pagination-next"
+        part="lens-result-table-pagination-button lens-result-pagination-pagination-next"
         disabled={activePage === Math.ceil(tableRowData.length / pageSize) ||
             tableRowData.length === 0}
         onclick={() => (activePage += 1)}>&#8594;</button
     >
     {#if pageSizeSwitcher === true}
-        <span part="table-pagination-switcher">
+        <span part="lens-result-table-pagination-switcher">
             Results per page:
             <select
                 bind:value={pageSizeOption}
@@ -268,13 +269,13 @@
 <slot name="beneath-pagination" />
 
 <style>
-    [part~="result-table-title"] {
+    [part~="lens-result-table-title"] {
         text-align: center;
         margin: 0;
         padding-bottom: var(--gap-m);
     }
 
-    [part~="result-table"] {
+    [part~="lens-result-table"] {
         border-collapse: collapse;
         width: 100%;
         border-spacing: 0 15px;
@@ -282,15 +283,15 @@
         overflow: scroll;
     }
 
-    [part~="table-header"] {
+    [part~="lens-result-table-header"] {
         border-bottom: solid 1px var(--gray);
     }
 
-    [part~="table-header-row"] {
+    [part~="lens-result-table-header-row"] {
         text-align: left;
     }
 
-    [part~="table-header-cell"] {
+    [part~="lens-result-table-header-cell"] {
         padding-bottom: var(--gap-xs);
         width: 32%;
         cursor: pointer;
@@ -298,12 +299,12 @@
         user-select: none;
     }
 
-    [part~="table-header-cell-checkbox"] {
+    [part~="lens-result-table-header-cell-checkbox"] {
         padding-bottom: var(--gap-xs);
         width: 4%;
     }
 
-    [part~="table-pagination"] {
+    [part~="lens-result-table-pagination"] {
         display: flex;
         justify-content: center;
         padding-top: var(--gap-m);
@@ -311,7 +312,7 @@
         align-items: flex-end;
     }
 
-    [part~="table-pagination-button"]:enabled {
+    [part~="lens-result-table-pagination-button"]:enabled {
         border: solid 1px var(--blue);
         background: var(--white);
         border-radius: var(--border-radius-small);
@@ -319,7 +320,7 @@
         cursor: pointer;
     }
 
-    [part~="table-pagination-button"]:disabled {
+    [part~="lens-result-table-pagination-button"]:disabled {
         border: solid 1px var(--light-gray);
         background: var(--white);
         border-radius: var(--border-radius-small);
@@ -327,7 +328,7 @@
         cursor: auto;
     }
 
-    [part~="table-pagination-switcher"] {
+    [part~="lens-result-table-pagination-switcher"] {
         margin-left: 20px;
     }
 </style>

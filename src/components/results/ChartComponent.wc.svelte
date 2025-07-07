@@ -620,23 +620,23 @@
     });
 </script>
 
-<div part="chart-wrapper">
-    <h4 part="chart-title">{title}</h4>
+<div part="lens-chart-wrapper">
+    <h4 part="lens-chart-title">{title}</h4>
     {#if options?.hintText !== undefined}
         <InfoButtonComponent message={options.hintText} />
     {/if}
 
     {#if noDataAvailable}
-        <div part="chart-overlay">
-            <p part="no-data-available">No Data Available</p>
+        <div part="lens-chart-overlay">
+            <p part="lens-chart-no-data-available">No Data Available</p>
         </div>
     {/if}
 
     <!-- For responsive charts, Charts.js requires a dedicated container for each canvas: https://www.chartjs.org/docs/latest/configuration/responsive.html#important-note -->
     <!-- The container requires `min-width: 0` or it won't shrink: https://github.com/chartjs/Chart.js/issues/4156#issuecomment-295180128 -->
-    <div part="container-min-width-0">
+    <div part="lens-chart-container-min-width-0">
         <canvas
-            part="chart-canvas"
+            part="lens-chart-canvas"
             bind:this={canvas}
             id="chart"
             onclick={handleClickOnStratifier}
@@ -646,18 +646,18 @@
 </div>
 
 <style>
-    [part~="container-min-width-0"] {
+    [part~="lens-chart-container-min-width-0"] {
         min-width: 0;
     }
 
-    [part~="chart-wrapper"] {
+    [part~="lens-chart-wrapper"] {
         height: 100%;
         display: grid;
         position: relative;
         background-color: var(--white);
     }
 
-    [part~="chart-overlay"] {
+    [part~="lens-chart-overlay"] {
         position: absolute;
         width: 100%;
         height: 100%;
@@ -666,20 +666,20 @@
         justify-content: center;
     }
 
-    [part~="no-data-available"] {
+    [part~="lens-chart-no-data-available"] {
         font-weight: bold;
         color: var(--gray);
         background-color: var(--white);
         padding: 0.5em;
     }
 
-    [part~="chart-title"] {
+    [part~="lens-chart-title"] {
         text-align: center;
         margin: 0;
         padding-bottom: var(--gap-m);
     }
 
-    [part~="chart-canvas"] {
+    [part~="lens-chart-canvas"] {
         width: 100%;
         max-height: 400px;
     }

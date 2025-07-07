@@ -2,7 +2,7 @@
     let { ...props } = $props();
 </script>
 
-<button aria-label="Add to query" part="add-to-query-button" {...props}>
+<button aria-label="Add to query" part="lens-add-to-query-button" {...props}>
     <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
@@ -17,18 +17,18 @@
 </button>
 
 <style>
-    [part~="add-to-query-button"] {
+    [part~="lens-add-to-query-button"] {
         border: none;
         background: none;
         cursor: pointer;
         padding: 0;
     }
-    [part~="add-to-query-button"] svg {
+    [part~="lens-add-to-query-button"] svg {
         display: block;
         height: 28px;
         color: var(--button-background-color);
     }
-    [part~="add-to-query-button"]:hover svg {
+    [part~="lens-add-to-query-button"]:hover svg {
         color: var(--light-blue);
     }
 </style>
