@@ -6,6 +6,8 @@ import type { QueryItem, QueryValue } from "../types/queryData";
 import { writable, get } from "svelte/store";
 import { v4 as uuidv4 } from "uuid";
 import type { Category, Criteria } from "../types/catalogue";
+import { buildQueryFromAst } from "../helpers/ast-transformer";
+import type { AstTopLayer } from "../types/ast";
 
 export const queryStore = writable<QueryItem[][]>([[]]);
 
@@ -234,7 +236,27 @@ export interface AddStratifierParams {
     system?: string;
 }
 
-export const addStratifier = ({
+/**
+ * Sets the query store using the AST representation of a query.
+ * @param ast the ast that should be imported
+ * @deprecated This function is kept because it is used by OVIS but we discourage its use in new code.
+ */
+export const setQueryStoreFromAst = (ast: AstTopLayer): void => {
+    const query = buildQueryFromAst(ast);
+    queryStore.set(query);
+};
+
+/**
+ * Lets the library user add a single stratifier to the query store.
+ * @param params the parameters for the function
+ * @param params.label the value of the stratifier (e.g. "C31")
+ * @param params.catalogueGroupCode the code of the group where the stratifier is located (e.g. "diagnosis")
+ * @param params.groupRange of the numerical groups in charts
+ * @param params.queryGroupIndex the index of the query group where the stratifier should be added
+ * @param params.system the system used to describe the datafield in data model (e.g. a fhir system)
+ * @deprecated This function is kept because it is used by OVIS but we discourage its use in new code.
+ */
+export const addStratifierToQuery = ({
     label,
     catalogue,
     catalogueGroupCode,

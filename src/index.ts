@@ -12,6 +12,8 @@ export {
     addItemToActiveQueryGroup,
     setQueryStore,
     getQueryStore,
+    addStratifierToQuery,
+    setQueryStoreFromAst,
 } from "./stores/query";
 export {
     setSiteResult,

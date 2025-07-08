@@ -10,7 +10,7 @@
     import { catalogue, getCriteria } from "../stores/catalogue";
     import { legacyUpdateResponseStore } from "../stores/response";
     import {
-        addStratifier,
+        addStratifierToQuery,
         queryStore,
         removeItemFromQuery,
         removeValueFromQuery,
@@ -110,7 +110,7 @@
         queryGroupIndex,
         system,
     }: AddStratifierToQueryAPIParams): void => {
-        addStratifier({
+        addStratifierToQuery({
             label,
             catalogueGroupCode,
             catalogue: $catalogue,
