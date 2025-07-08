@@ -9,6 +9,14 @@ import type { Category, Criteria } from "../types/catalogue";
 
 export const queryStore = writable<QueryItem[][]>([[]]);
 
+export function getQueryStore(): QueryItem[][] {
+    return get(queryStore);
+}
+
+export function setQueryStore(query: QueryItem[][]): void {
+    queryStore.set(query);
+}
+
 /**
  * the index of the currently active search bar
  */
