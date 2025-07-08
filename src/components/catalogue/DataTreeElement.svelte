@@ -9,7 +9,6 @@
     import { v4 as uuidv4 } from "uuid";
     import { openTreeNodes } from "../../stores/catalogue";
     import type { QueryItem } from "../../types/queryData";
-    import { lensOptions } from "../../stores/options";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
     import DatePickerComponent from "./DatePickerComponent.svelte";
     import { translate } from "../../helpers/translations";
@@ -133,47 +132,51 @@
     };
 </script>
 
-<div part="lens-data-tree-element">
-    <button part="lens-data-tree-element-name" onclick={toggleChildren}>
-        {#if $lensOptions?.iconOptions?.toggleIconUrl}
-            <img
-                part="lens-data-tree-element-toggle-icon {open
-                    ? 'lens-data-tree-element-toggle-icon-open'
-                    : ''}"
-                src={$lensOptions?.iconOptions?.toggleIconUrl}
-                alt="catalogue-open-close-icon"
-            />
-        {:else}
-            <span
+<div part="data-tree-element">
+    <div part="lens-data-tree-element-header">
+        <button part="lens-data-tree-element-name" onclick={toggleChildren}>
+            <div
                 part="lens-data-tree-element-toggle-icon {open
                     ? 'lens-data-tree-element-toggle-icon-open'
                     : ''}"
             >
-                &#8964
-            </span>
-        {/if}
-        {"subCategoryName" in element && element.subCategoryName
-            ? element.subCategoryName
-            : element.name}
-    </button>
-    {#if element.infoButtonText}
-        <InfoButtonComponent message={element.infoButtonText} />
-    {/if}
-
-    {#if "infoLink" in element && element.infoLink !== undefined}
-        <a href={element.infoLink.link} target="_blank"
-            >{element.infoLink.display}</a
-        >
-    {/if}
-
-    {#if finalParent && open}
-        <button
-            part="lens-data-tree-add-all-options-button"
-            onclick={selectAllOptions}
-        >
-            {translate("add_all")}
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"><path d="m9 18 6-6-6-6" /></svg
+                >
+            </div>
+            {"subCategoryName" in element && element.subCategoryName
+                ? element.subCategoryName
+                : element.name}
         </button>
-    {/if}
+        {#if element.infoButtonText}
+            <InfoButtonComponent
+                message={element.infoButtonText}
+                buttonSize="18px"
+            />
+        {/if}
+
+        {#if "infoLink" in element && element.infoLink !== undefined}
+            <a href={element.infoLink.link} target="_blank"
+                >{element.infoLink.display}</a
+            >
+        {/if}
+
+        {#if finalParent && open}
+            <button
+                part="lens-data-tree-add-all-options-button"
+                onclick={selectAllOptions}
+            >
+                {translate("add_all")}
+            </button>
+        {/if}
+    </div>
 
     {#if open}
         {#if "childCategories" in element}
@@ -208,57 +211,58 @@
 </div>
 
 <style>
-    [part~="lens-data-tree-element"] {
-        position: relative;
+    [part~="lens-data-tree-element-header"] {
+        display: flex;
+        gap: var(--gap-xs);
+        align-items: center;
+        margin-bottom: var(--gap-xxs);
     }
 
     [part~="lens-data-tree-element-name"] {
+        display: flex;
+        align-items: center;
+        gap: var(--gap-xxs);
         font-family: var(--font-family);
         color: var(--font-color);
-        padding-left: var(--gap-s);
-        padding-right: 0;
+        padding: 0;
         font-size: var(--font-size-m);
-        margin-bottom: var(--gap-xs);
         border: none;
         background-color: unset;
         cursor: pointer;
-        position: relative;
-        text-align: left;
     }
 
     [part~="lens-data-tree-element-toggle-icon"] {
-        position: absolute;
-        left: -15px;
-        top: -8px;
-        font-size: 22px;
-        font-weight: lighter;
-        transform: rotate(-90deg);
+        transform: rotate(0deg);
         transition: all 0.1s ease-in-out;
+    }
+
+    [part~="lens-data-tree-element-toggle-icon-open"] {
+        transform: rotate(90deg);
+    }
+
+    [part~="data-tree-element-toggle-icon-open"] {
+        transform: rotate(90deg);
     }
 
     [part~="lens-data-tree-add-all-options-button"] {
         background-color: var(--button-background-color);
         border-radius: var(--border-radius-small);
         color: var(--button-color);
-        position: relative;
         padding: 3px 8px;
         cursor: pointer;
         border: none;
-        left: +15px;
-    }
-
-    [part~="data-tree-element-toggle-icon-open"] {
-        transform: rotate(0deg);
     }
 
     [part~="lens-data-tree-element-child-category"] {
         padding: var(--gap-xs) 0 0 var(--gap-s);
         border-left: solid 1px var(--lightest-gray);
+        margin-left: var(--gap-xs);
     }
 
     [part~="lens-data-tree-element-last-child-options"] {
         max-width: 100%;
         border-left: solid 1px var(--lightest-gray);
+        margin-left: var(--gap-xs);
         padding-left: var(--gap-m);
         padding-top: var(--gap-xs);
         padding-bottom: var(--gap-xs);

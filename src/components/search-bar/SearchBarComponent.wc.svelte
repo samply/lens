@@ -408,15 +408,13 @@
                     {#each queryItem.values as value (value.queryBindId)}
                         <span part="lens-searchbar-chip-item">
                             <span>{value.name}</span>
-                            <span part="lens-searchbar-chip-info-span">
-                                &nbsp;
-                                <QueryExplainButtonComponent
-                                    queryItem={{
-                                        ...queryItem,
-                                        values: [value],
-                                    }}
-                                />
-                            </span>
+                            <QueryExplainButtonComponent
+                                queryItem={{
+                                    ...queryItem,
+                                    values: [value],
+                                }}
+                                inSearchBar={true}
+                            />
                             {#if queryItem.values.length > 1}
                                 <StoreDeleteButtonComponent
                                     itemToDelete={{
@@ -585,8 +583,7 @@
         background-color: var(--white);
         border: solid 1px var(--light-gray);
         border-radius: var(--border-radius-small);
-        padding-right: var(--gap-xs);
-        padding-left: var(--gap-xs);
+        padding: var(--gap-xxs) var(--gap-xs);
         display: flex;
         flex-wrap: wrap;
         width: -webkit-fill-available;
@@ -601,28 +598,29 @@
 
     [part~="lens-searchbar-chip-name"] {
         font-weight: bold;
-        padding-right: var(--gap-xs);
     }
 
     [part~="lens-searchbar-chip"] {
         background-color: var(--blue);
         color: var(--white);
         border-radius: var(--border-radius-small);
-        padding: 2px var(--gap-s) 2px var(--gap-xs);
+        padding: 5px var(--gap-s) 5px var(--gap-xs);
         display: flex;
         flex-flow: row wrap;
         align-items: center;
         position: relative;
+        gap: var(--gap-xs);
     }
 
     [part~="lens-searchbar-chip-item"] {
         display: inline-flex;
         align-items: center;
+        gap: var(--gap-xxs);
     }
 
     [part~="lens-searchbar-input"] {
         box-sizing: border-box;
-        padding: var(--gap-xs) var(--gap-s) var(--gap-xs) var(--gap-xs);
+        padding: var(--gap-xs);
         min-width: 200px;
         flex-grow: 1;
         outline: none;

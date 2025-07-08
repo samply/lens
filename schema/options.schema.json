@@ -120,28 +120,6 @@
       ],
       "type": "object"
     },
-    "IconUrls": {
-      "additionalProperties": false,
-      "properties": {
-        "addIconUrl": {
-          "description": "Icon for the button that adds items from the catalogue to the search bar",
-          "type": "string"
-        },
-        "deleteUrl": {
-          "description": "Icon for a delete button used in various places",
-          "type": "string"
-        },
-        "infoUrl": {
-          "description": "Icon for an info button used in various places",
-          "type": "string"
-        },
-        "toggleIconUrl": {
-          "description": "Icon for the button that expands and collapses items in the catalogue",
-          "type": "string"
-        }
-      },
-      "type": "object"
-    },
     "LensOptions": {
       "additionalProperties": false,
       "properties": {
@@ -166,10 +144,6 @@
         "facetCount": {
           "$ref": "#/definitions/FacetCountOptions",
           "description": "If set, fetch and display facet counts (number of results per discrete value) in the catalogue."
-        },
-        "iconOptions": {
-          "$ref": "#/definitions/IconUrls",
-          "description": "Allows customizing icons by specifying image files"
         },
         "language": {
           "description": "Two letter language code of the application language",

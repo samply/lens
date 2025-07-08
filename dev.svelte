@@ -370,7 +370,7 @@
     <h2 style="margin: 0;">Lens Dev</h2>
 </header>
 
-<div style="display: flex; padding: 10px; gap: 10px;">
+<div style="display: flex; padding: 10px; gap: 10px; align-items: center;">
     <div style="flex: 1">
         <lens-search-bar-multiple></lens-search-bar-multiple>
     </div>

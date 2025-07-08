@@ -10,8 +10,6 @@ export type LensOptions = {
     projectmanagerOptions?: ProjectManagerOptions;
     tableOptions?: TableOptions;
     resultSummaryOptions?: ResultSummaryOptions;
-    /** Allows customizing icons by specifying image files */
-    iconOptions?: IconUrls;
     /** Two letter language code of the application language */
     language?: string;
     /** Allows to customize texts and add new translations */
@@ -101,17 +99,6 @@ export type HeaderData = {
         stratumCode?: string;
     }[];
     hintText?: string[];
-};
-
-export type IconUrls = {
-    /** Icon for an info button used in various places */
-    infoUrl?: string;
-    /** Icon for a delete button used in various places */
-    deleteUrl?: string;
-    /** Icon for the button that adds items from the catalogue to the search bar */
-    addIconUrl?: string;
-    /** Icon for the button that expands and collapses items in the catalogue */
-    toggleIconUrl?: string;
 };
 
 /**

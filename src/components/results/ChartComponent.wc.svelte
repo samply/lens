@@ -621,10 +621,16 @@
 </script>
 
 <div part="lens-chart-wrapper">
-    <h4 part="lens-chart-title">{title}</h4>
     {#if options?.hintText !== undefined}
-        <InfoButtonComponent message={options.hintText} />
+        <div part="lens-chart-info-button-wrapper">
+            <InfoButtonComponent
+                message={options.hintText}
+                alignDialogue="left"
+            />
+        </div>
     {/if}
+
+    <h4 part="lens-chart-title">{title}</h4>
 
     {#if noDataAvailable}
         <div part="lens-chart-overlay">
@@ -682,5 +688,11 @@
     [part~="lens-chart-canvas"] {
         width: 100%;
         max-height: 400px;
+    }
+
+    [part~="lens-chart-info-button-wrapper"] {
+        position: absolute;
+        top: 0;
+        right: 0;
     }
 </style>
