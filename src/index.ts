@@ -37,12 +37,6 @@ export type * from "./types/ast";
 export type * from "./types/catalogue";
 export type * from "./types/options";
 export type {
-    LensDataPasser,
-    AddStratifierToQueryAPIParams,
-    RemoveItemFromQuyeryAPIParams,
-    RemoveValueFromQueryAPIParams,
-} from "./types/dataPasser";
-export type {
     MeasureItem,
     Measure,
     MeasureGroup,
@@ -64,7 +58,6 @@ import "./components/buttons/NegotiateButtonComponent.wc.svelte";
 import "./components/buttons/InfoButtonComponent.wc.svelte";
 import "./components/buttons/QueryExplainButtonComponent.wc.svelte";
 import "./components/Options.wc.svelte";
-import "./components/DataPasser.wc.svelte";
 import "./components/informational/ModifiedSearchComponent.wc.svelte";
 import "./components/informational/QuerySpinner.wc.svelte";
 import "./components/ErrorToasts.wc.svelte";
