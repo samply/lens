@@ -4,7 +4,6 @@
 // Export functions
 export { setCatalogue } from "./stores/catalogue";
 export { setOptions } from "./stores/options";
-export { setMeasures } from "./stores/measures";
 export { translate } from "./helpers/translations";
 export { showErrorToast } from "./stores/toasts";
 export { resetDiagrams } from "./services/reset";
@@ -23,10 +22,9 @@ export {
     type SiteResult,
 } from "./stores/response";
 export { getAst } from "./helpers/ast-transformer";
-
-// export temporarily, this will hopefully be moved to CCP explorer before 0.6.0 release
-export { translateAstToCql } from "./cql-translator-service/ast-to-cql-translator";
 export { buildLibrary, buildMeasure } from "./helpers/cql-measure";
+export { getSelectedSites, getHumanReadableQuery } from "./stores/datarequests";
+export { isTopLayer, isBottomLayer } from "./types/ast";
 
 // Export backends
 export { createBeamTask, type BeamResult } from "./backends/spot";
