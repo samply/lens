@@ -152,9 +152,6 @@
         "negotiateOptions": {
           "$ref": "#/definitions/NegotiateOptions"
         },
-        "projectmanagerOptions": {
-          "$ref": "#/definitions/ProjectManagerOptions"
-        },
         "resultSummaryOptions": {
           "$ref": "#/definitions/ResultSummaryOptions"
         },
@@ -225,45 +222,6 @@
         "collection",
         "site_id",
         "collection_name"
-      ],
-      "type": "object"
-    },
-    "ProjectManagerOptions": {
-      "additionalProperties": false,
-      "properties": {
-        "editProjectUrl": {
-          "type": "string"
-        },
-        "newProjectUrl": {
-          "type": "string"
-        },
-        "siteMappings": {
-          "items": {
-            "$ref": "#/definitions/ProjectManagerOptionsSiteMapping"
-          },
-          "type": "array"
-        }
-      },
-      "required": [
-        "newProjectUrl",
-        "editProjectUrl",
-        "siteMappings"
-      ],
-      "type": "object"
-    },
-    "ProjectManagerOptionsSiteMapping": {
-      "additionalProperties": false,
-      "properties": {
-        "collection": {
-          "type": "string"
-        },
-        "site": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "site",
-        "collection"
       ],
       "type": "object"
     },

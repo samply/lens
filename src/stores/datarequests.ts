@@ -1,4 +1,4 @@
-import { writable } from "svelte/store";
+import { get, writable } from "svelte/store";
 
 import { buildAstFromQuery } from "../helpers/ast-transformer";
 import type { AstElement, AstTopLayer } from "../types/ast";
@@ -6,6 +6,11 @@ import type { QueryItem } from "../types/queryData";
 import { queryStore } from "./query";
 
 export const datarequestsStore = writable<string[]>([]);
+
+/** Get the list of sites that the user has selected for negotiation in the results table. */
+export function getSelectedSites(): string[] {
+    return get(datarequestsStore);
+}
 
 /**
  * Recursively builds a human readable query string from the AST

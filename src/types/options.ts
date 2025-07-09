@@ -7,7 +7,6 @@ export type LensOptions = {
     catalogueKeyToResponseKeyMap?: [string, string][];
     siteMappings?: { [key: string]: string };
     negotiateOptions?: NegotiateOptions;
-    projectmanagerOptions?: ProjectManagerOptions;
     tableOptions?: TableOptions;
     resultSummaryOptions?: ResultSummaryOptions;
     /** Two letter language code of the application language */
@@ -55,17 +54,6 @@ export type NegotiateOptionsSiteMapping = {
     site_id: string;
     /** Name of the collection, e.g. "Collection of RWTH cBMB Broad Consent Aachen" */
     collection_name: string;
-};
-
-export type ProjectManagerOptionsSiteMapping = {
-    site: string;
-    collection: string;
-};
-
-export type ProjectManagerOptions = {
-    newProjectUrl: string;
-    editProjectUrl: string;
-    siteMappings: ProjectManagerOptionsSiteMapping[];
 };
 
 export type ChartOptions = {

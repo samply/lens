@@ -6,7 +6,6 @@
 
 <script lang="ts">
     import { datarequestsStore } from "../../stores/datarequests";
-    import { negotiate } from "../../services/ccpProjectManager";
     import { bbmriNegotiate } from "../../services/bbmriNegotiate";
 
     interface Props {
@@ -20,12 +19,9 @@
      *
      */
     function exec(): void {
+        window.dispatchEvent(new CustomEvent("lens-negotiate-triggered"));
         if (type == "Negotiator") {
             bbmriNegotiate($datarequestsStore);
-        } else if (type == "ProjectManager") {
-            negotiate($datarequestsStore);
-        } else {
-            console.error("No Service selected");
         }
     }
 </script>

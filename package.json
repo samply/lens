@@ -29,7 +29,6 @@
         "prepare": "husky",
         "version": "npm version -m \"chore: release %s\"",
         "schemagen": "bash scripts/generate-json-schema.bash",
-        "schemacheck": "bash scripts/generate-json-schema.bash --check",
         "book": "mdbook serve book --open",
         "typedoc": "typedoc src/index.ts --watch",
         "test": "vitest"
