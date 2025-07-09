@@ -7,9 +7,14 @@ export { setOptions } from "./stores/options";
 export { setMeasures } from "./stores/measures";
 export { translate } from "./helpers/translations";
 export { showErrorToast } from "./stores/toasts";
-export { resolveAstSubCategories } from "./stores/catalogue";
 export { resetDiagrams } from "./services/reset";
-export { addItemToActiveQueryGroup } from "./stores/query";
+export {
+    addItemToActiveQueryGroup,
+    setQueryStore,
+    getQueryStore,
+    addStratifierToQuery,
+    setQueryStoreFromAst,
+} from "./stores/query";
 export {
     setSiteResult,
     markSiteClaimed,
@@ -32,12 +37,6 @@ export type * from "./types/ast";
 export type * from "./types/catalogue";
 export type * from "./types/options";
 export type {
-    LensDataPasser,
-    AddStratifierToQueryAPIParams,
-    RemoveItemFromQuyeryAPIParams,
-    RemoveValueFromQueryAPIParams,
-} from "./types/dataPasser";
-export type {
     MeasureItem,
     Measure,
     MeasureGroup,
@@ -46,6 +45,7 @@ export type {
 } from "./types/backend";
 export type { SiteData, Site } from "./types/response";
 export type { QueryItem, QueryValue } from "./types/queryData";
+export type { AddStratifierParams } from "./stores/query";
 
 // Include custom elements (aka web components) in the bundle
 import "./components/catalogue/Catalogue.wc.svelte";
@@ -58,7 +58,6 @@ import "./components/search-bar/SearchBarMultipleComponent.wc.svelte";
 import "./components/buttons/NegotiateButtonComponent.wc.svelte";
 import "./components/buttons/InfoButtonComponent.wc.svelte";
 import "./components/buttons/QueryExplainButtonComponent.wc.svelte";
-import "./components/DataPasser.wc.svelte";
 import "./components/informational/ModifiedSearchComponent.wc.svelte";
 import "./components/informational/QuerySpinner.wc.svelte";
 import "./components/ErrorToasts.wc.svelte";

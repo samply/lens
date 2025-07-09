@@ -113,11 +113,11 @@ const resolveElementInCatalogue = (key: string, value: string): string[] => {
     return subcatagories;
 };
 
-const resolveAstSubCategoriesRec = (query: AstElement): AstElement => {
+const resolveAstSubgroupsRec = (query: AstElement): AstElement => {
     let elements: AstElement[] = [];
     if (isTopLayer(query)) {
         query.children.forEach((element) => {
-            elements = elements.concat(resolveAstSubCategoriesRec(element));
+            elements = elements.concat(resolveAstSubgroupsRec(element));
         });
         query.children = elements;
         return query;
@@ -154,13 +154,13 @@ const resolveAstSubCategoriesRec = (query: AstElement): AstElement => {
 };
 
 /**
- * This function takes a query in ast form and replaces all the subcatagories, eg. all icd-10 diagnosis like C00.% will be replace with C00.1...
+ * This function takes a query in ast form and replaces all the subgroups, eg. all icd-10 diagnosis like C00.% will be replace with C00.1...
  * @param query The Query as Ast Element
  * @returns The new Query with replace elements
  */
-export const resolveAstSubCategories = (query: AstTopLayer): AstTopLayer => {
+export const resolveAstSubgroups = (query: AstTopLayer): AstTopLayer => {
     query.children.forEach((element, i) => {
-        query.children[i] = resolveAstSubCategoriesRec(element);
+        query.children[i] = resolveAstSubgroupsRec(element);
     });
 
     return query;

@@ -12,6 +12,7 @@ import {
     catalogue,
     getCategoryFromKey,
     getCriteriaFromKey,
+    resolveAstSubgroups,
 } from "../stores/catalogue";
 import { get } from "svelte/store";
 import { queryStore } from "../stores/query";
@@ -22,7 +23,7 @@ import { queryStore } from "../stores/query";
  * @returns Ast: the AST will later be converted to a query language of choice
  */
 export const buildAstFromQuery = (queryStore: QueryItem[][]): AstTopLayer => {
-    const ast = returnNestedValues(queryStore) as AstTopLayer;
+    let ast = returnNestedValues(queryStore) as AstTopLayer;
 
     // The empty query is currently a special case because focus and potentially other consumers want it like this
     // Instead of:
@@ -38,6 +39,9 @@ export const buildAstFromQuery = (queryStore: QueryItem[][]): AstTopLayer => {
             };
         }
     }
+
+    // Resolving subgroups means e.g. replacing C50.% with C50.1, C50.2, etc.
+    ast = resolveAstSubgroups(ast);
 
     return ast;
 };
