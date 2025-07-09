@@ -24,7 +24,6 @@ export {
 export { getAst } from "./helpers/ast-transformer";
 export { buildLibrary, buildMeasure } from "./helpers/cql-measure";
 export { getSelectedSites, getHumanReadableQuery } from "./stores/datarequests";
-export { isTopLayer, isBottomLayer } from "./types/ast";
 
 // Export backends
 export { createBeamTask, type BeamResult } from "./backends/spot";
