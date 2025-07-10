@@ -439,20 +439,3 @@
 </footer>
 
 <error-toasts></error-toasts>
-
-<style>
-    lens-search-modified-display::part(lens-query-modified-display-wrapper) {
-        background-color: #fff3cd; /* soft yellow for attention */
-        color: #856404; /* dark amber text */
-        border: 1px solid #ffeeba;
-        border-radius: 8px;
-        padding: 16px 20px;
-        margin: 16px 0;
-        font-size: 1rem;
-        font-weight: 500;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-</style>
