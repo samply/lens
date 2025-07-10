@@ -13,7 +13,7 @@
         type: string;
     }
 
-    let { title = "Negotiate with biobanks", type }: Props = $props();
+    let { title = "Request Data", type }: Props = $props();
 
     /**
      *

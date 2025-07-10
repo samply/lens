@@ -6,6 +6,7 @@
 
 <script lang="ts">
     import { translate } from "../../helpers/translations";
+    import { queryModified } from "../../stores/query";
 
     interface Props {
         title?: string;
@@ -15,6 +16,7 @@
     let { title = translate("search"), disabled = false }: Props = $props();
 
     const onclick = (): void => {
+        queryModified.set(false);
         window.dispatchEvent(new CustomEvent("lens-search-triggered"));
     };
 </script>

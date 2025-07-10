@@ -34,12 +34,6 @@
             ? element.subCategoryName
             : null;
 
-    if (treeOpen) {
-        /**
-         * DISCUSS: open all subcategorys on creation needed?
-         */
-    }
-
     /**
      * watches the open tree nodes store to update the open state of the subcategorys
      */

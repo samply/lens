@@ -6,6 +6,7 @@
         translate,
         setSiteResult,
         getAst,
+        resetDiagrams,
     } from "./src/index";
     import { facetCounts } from "./src/stores/facetCounts";
 
@@ -317,6 +318,7 @@
     });
 
     window.addEventListener("lens-search-triggered", () => {
+        resetDiagrams();
         console.log("AST:", JSON.stringify(getAst()));
 
         setTimeout(() => {
@@ -387,7 +389,9 @@
     <div style="flex: 1">
         <lens-result-summary></lens-result-summary>
         <lens-negotiate-button title="Request Data"></lens-negotiate-button>
-        <lens-search-modified-display></lens-search-modified-display>
+        <lens-search-modified-display
+            >The query has changed!</lens-search-modified-display
+        >
         <lens-result-table></lens-result-table>
         <div>
             <lens-chart
