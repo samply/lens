@@ -9,7 +9,7 @@
 </script>
 
 {#if $queryModified}
-    <div part="display-wrapper">
+    <div part="lens-query-modified-display-wrapper">
         <slot></slot>
     </div>
 {/if}

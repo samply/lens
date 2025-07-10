@@ -102,7 +102,7 @@
     /**
      * checks or unchecks all biobanks
      */
-    const checkAllBiobanks = (): void => {
+    const checkAllSites = (): void => {
         if (allChecked) {
             $datarequestsStore = [];
         } else {
@@ -199,7 +199,7 @@
                     part="lens-result-table-header-checkbox"
                     type="checkbox"
                     checked={allChecked}
-                    onchange={checkAllBiobanks}
+                    onchange={checkAllSites}
                 /></th
             >
             <!-- eslint-disable-next-line svelte/require-each-key -->
@@ -225,7 +225,7 @@
             {/each}
         </tr>
     </thead>
-    <tbody part="table-body">
+    <tbody part="lens-result-table-table-body">
         <!-- eslint-disable-next-line svelte/require-each-key -->
         {#each visibleRows as tableRow}
             <TableItemComponent {tableRow} />
