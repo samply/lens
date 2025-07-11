@@ -378,7 +378,7 @@
     </div>
     <lens-query-explain-button noQueryMessage="Empty Query"
     ></lens-query-explain-button>
-    <lens-search-button></lens-search-button>
+    <lens-search-button disabled={true}></lens-search-button>
     <lens-query-spinner></lens-query-spinner>
 </div>
 

@@ -2,7 +2,7 @@
 
 Lens can query facet counts from a backend and display them in the catalogue. Facet counts are roughly speaking the number of results one would get when only searching for that criteria.
 
-![Example of facet counts](facet-counts.png)
+![Example of facet counts](pics/facet-counts.png)
 
 To enable facet counts add the following options:
 
