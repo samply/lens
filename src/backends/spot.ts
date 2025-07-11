@@ -53,6 +53,11 @@ export async function createBeamTask(
         },
     );
 
+    eventSource.addEventListener("error", () => {
+        // Server closed the connection, which is expected when all sites have responded
+        eventSource.close();
+    });
+
     signal.addEventListener("abort", () => {
         eventSource.close();
     });
