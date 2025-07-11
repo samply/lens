@@ -2,8 +2,6 @@
 
 Lens has two representations of the query in the search bar: the query store and the AST.
 
-<!-- Lens has two representations of the query in the search bar: the query store of type [`QueryItem[][]`](https://samply.github.io/lens/docs/types/QueryItem.html) and the AST (Abstract Syntax Tree) of type [`AstTopLayer`](https://samply.github.io/lens/docs/types/AstTopLayer.html). -->
-
 ## Query store
 
 Once a user selects an element from the catalogue, it is added to the query store. The query store is of type [`QueryItem[][]`](https://samply.github.io/lens/docs/types/QueryItem.html), where a `QueryItem` represents a chip in the search bar and the outer list represents a logical OR operation and the inner list a logical AND operation. Take for example this query:
