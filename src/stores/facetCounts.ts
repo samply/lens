@@ -49,7 +49,6 @@ export async function fetchFacetCounts(backendURL: string) {
             }
         }
         facetCounts.set(data);
-        console.log("[facetCounts] updated:", data);
     } catch (e) {
         console.error("Error fetching facet counts", e);
     }
