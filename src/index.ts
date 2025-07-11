@@ -6,7 +6,7 @@ export { setCatalogue } from "./stores/catalogue";
 export { setOptions } from "./stores/options";
 export { translate } from "./helpers/translations";
 export { showErrorToast } from "./stores/toasts";
-export { resetDiagrams } from "./services/reset";
+export { resetDiagrams } from "./helpers/reset";
 export {
     addItemToActiveQueryGroup,
     setQueryStore,
@@ -57,7 +57,7 @@ import "./components/buttons/InfoButtonComponent.wc.svelte";
 import "./components/buttons/QueryExplainButtonComponent.wc.svelte";
 import "./components/informational/ModifiedSearchComponent.wc.svelte";
 import "./components/informational/QuerySpinner.wc.svelte";
-import "./components/ErrorToasts.wc.svelte";
+import "./components/informational/ErrorToasts.wc.svelte";
 
 // Include CSS in the bundle
 import "./styles/index.css";
