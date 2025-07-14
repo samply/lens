@@ -11,9 +11,8 @@ export {
     addItemToActiveQueryGroup,
     setQueryStore,
     getQueryStore,
-    addStratifierToQuery,
-    setQueryStoreFromAst,
 } from "./stores/query";
+export { setQueryStoreFromAst } from "./services/ovis";
 export {
     setSiteResult,
     markSiteClaimed,
@@ -42,7 +41,6 @@ export type {
 } from "./types/backend";
 export type { SiteData, Site } from "./types/response";
 export type { QueryItem, QueryValue } from "./types/queryData";
-export type { AddStratifierParams } from "./stores/query";
 
 // Include custom elements (aka web components) in the bundle
 import "./components/catalogue/Catalogue.wc.svelte";

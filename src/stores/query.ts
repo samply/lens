@@ -5,9 +5,6 @@
 import type { QueryItem, QueryValue } from "../types/queryData";
 import { writable, get } from "svelte/store";
 import { v4 as uuidv4 } from "uuid";
-import type { Category, Criteria } from "../types/catalogue";
-import { buildQueryFromAst } from "../helpers/ast-transformer";
-import type { AstTopLayer } from "../types/ast";
 
 export const queryStore = writable<QueryItem[][]>([[]]);
 
@@ -217,115 +214,6 @@ function findObjectsWithSameName(objectsArray: QueryItem[]): QueryItem[] {
 
     return duplicateObjects;
 }
-
-/**
- * adds a single stratifier to the query
- * numbers can be grouped together by setting the groupRange
- * @param label the value of the stratifier (e.g. "C31")
- * @param catalogue the catalogue where the stratifier is located
- * @param catalogueGroupCode the code of the group where the stratifier is located (e.g. "diagnosis")
- * @param queryGroupIndex the index of the query group where the stratifier should be added
- */
-
-export interface AddStratifierParams {
-    label: string;
-    catalogueGroupCode: string;
-    catalogue: Category[];
-    queryGroupIndex?: number;
-    groupRange?: number;
-    system?: string;
-}
-
-/**
- * Sets the query store using the AST representation of a query.
- * @param ast the ast that should be imported
- * @deprecated This function is kept because it is used by OVIS but we discourage its use in new code.
- */
-export const setQueryStoreFromAst = (ast: AstTopLayer): void => {
-    const query = buildQueryFromAst(ast);
-    queryStore.set(query);
-};
-
-/**
- * Lets the library user add a single stratifier to the query store.
- * @param params the parameters for the function
- * @param params.label the value of the stratifier (e.g. "C31")
- * @param params.catalogueGroupCode the code of the group where the stratifier is located (e.g. "diagnosis")
- * @param params.groupRange of the numerical groups in charts
- * @param params.queryGroupIndex the index of the query group where the stratifier should be added
- * @param params.system the system used to describe the datafield in data model (e.g. a fhir system)
- * @deprecated This function is kept because it is used by OVIS but we discourage its use in new code.
- */
-export const addStratifierToQuery = ({
-    label,
-    catalogue,
-    catalogueGroupCode,
-    queryGroupIndex = 0,
-    groupRange = 1,
-    system = "",
-}: AddStratifierParams): void => {
-    let queryItem: QueryItem;
-    catalogue.forEach((parentCategory: Category) => {
-        if ("childCategories" in parentCategory) {
-            parentCategory.childCategories?.forEach(
-                (childCategorie: Category) => {
-                    if (
-                        childCategorie.key === catalogueGroupCode &&
-                        (childCategorie.fieldType === "single-select" ||
-                            childCategorie.fieldType === "autocomplete" ||
-                            childCategorie.fieldType === "number")
-                    ) {
-                        let values: QueryValue[] = [];
-
-                        if (childCategorie.fieldType === "number") {
-                            values = [
-                                {
-                                    name: `${label}`,
-                                    value: {
-                                        min: parseInt(label),
-                                        max: parseInt(label) + groupRange - 1,
-                                    },
-                                    queryBindId: uuidv4(),
-                                },
-                            ];
-                        } else {
-                            childCategorie.criteria.forEach(
-                                (criterion: Criteria) => {
-                                    if (criterion.key === label) {
-                                        values[0] = {
-                                            name: criterion.name,
-                                            value: criterion.key,
-                                            queryBindId: uuidv4(),
-                                            description: criterion.description,
-                                        };
-                                    }
-                                },
-                            );
-                        }
-
-                        queryItem = {
-                            id: uuidv4(),
-                            key: childCategorie.key,
-                            name: childCategorie.name,
-                            system:
-                                "system" in childCategorie &&
-                                childCategorie.system !== ""
-                                    ? childCategorie.system
-                                    : system,
-                            type:
-                                "type" in childCategorie
-                                    ? childCategorie.type
-                                    : "BETWEEN",
-                            values: values,
-                        };
-
-                        addItemToQuery(queryItem, queryGroupIndex);
-                    }
-                },
-            );
-        }
-    });
-};
 
 /**
  * Adds an item to the currently active query group
