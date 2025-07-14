@@ -555,13 +555,7 @@
             <li>{typeMoreMessage}</li>
         </ul>
     {/if}
-    <StoreDeleteButtonComponent
-        itemToDelete={{ type: "group", index }}
-        on:clear-search={() => {
-            inputValue = "";
-            focusedItemIndex = -1;
-        }}
-    />
+    <StoreDeleteButtonComponent itemToDelete={{ type: "group", index }} />
 </div>
 
 <style>
