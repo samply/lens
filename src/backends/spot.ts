@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from "uuid";
+
 export type BeamResult = {
     body: string;
     from: string;
@@ -23,7 +25,7 @@ export async function createBeamTask(
     resultCallback: (result: BeamResult) => void,
 ): Promise<void> {
     url = url.endsWith("/") ? url : url + "/";
-    const id = crypto.randomUUID();
+    const id = uuidv4();
 
     const beamTaskResponse = await fetch(
         `${url}beam?sites=${sites.join(",")}`,
