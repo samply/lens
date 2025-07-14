@@ -1,10 +1,10 @@
-## ResultTableComponent
+##ResultTableComponent
 
 The `lens-result-table` component displays a paginated, sortable data table of site-specific population metrics, dynamically built from the `siteStatus`, `lensOptions`, and `response` stores. It includes interactive sorting, pagination, and multi-select support for data requests.
 
 ---
 
-### Behavior and Features
+## Behavior and Features
 
 - Dynamically generates rows per site from response data.
 - Supports sorting by any column.
@@ -17,7 +17,7 @@ The `lens-result-table` component displays a paginated, sortable data table of s
 
 ---
 
-### Props
+## Props
 
 | Prop               | Type      | Default | Description                                                      |
 | ------------------ | --------- | ------- | ---------------------------------------------------------------- |
@@ -27,7 +27,7 @@ The `lens-result-table` component displays a paginated, sortable data table of s
 
 ---
 
-### Slots
+## Slots
 
 | Slot Name                      | Description                                            |
 | ------------------------------ | ------------------------------------------------------ |
@@ -36,7 +36,7 @@ The `lens-result-table` component displays a paginated, sortable data table of s
 
 ---
 
-### CSS Parts
+## CSS Parts
 
 | Part Name                                    | Description                                                              |
 | -------------------------------------------- | ------------------------------------------------------------------------ |
@@ -58,7 +58,7 @@ The `lens-result-table` component displays a paginated, sortable data table of s
 
 ---
 
-### Example
+## Example
 
 ```svelte
 <lens-result-table title="Result Table" pageSize={25} pageSizeSwitcher={true} />
@@ -66,7 +66,7 @@ The `lens-result-table` component displays a paginated, sortable data table of s
 
 ---
 
-### Notes
+## Notes
 
 - The first column always shows the site name, pulled from `lensOptions.siteMappings`.
 - The rest of the columns are configured through `lensOptions.tableOptions.headerData`.
