@@ -63,7 +63,7 @@ The query searches for patients with blood group A- and a body weight between 30
 ]
 ```
 
-Applications can read and write the query store using the [`getQueryStore`](file:///home/tim/projects/lens/docs/functions/getQueryStore.html) and [`setQueryStore`](file:///home/tim/projects/lens/docs/functions/setQueryStore.html) functions.
+Applications can read and write the query store using the [`getQueryStore`](https://samply.github.io/lens/docs/functions/getQueryStore.html) and [`setQueryStore`](https://samply.github.io/lens/docs/functions/setQueryStore.html) functions.
 
 ## AST
 
@@ -126,7 +126,7 @@ To allow external systems such as databases and APIs to understand the query, th
 }
 ```
 
-Applications can get the AST from the search bar using the [`getAst`](file:///home/tim/projects/lens/docs/functions/getAst.html) function.
+Applications can get the AST from the search bar using the [`getAst`](https://samply.github.io/lens/docs/functions/getAst.html) function.
 
 ## Querying a Focus instance
 
