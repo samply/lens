@@ -1,122 +1,73 @@
-# Query
+# Querying a backend
 
-In `samply/lens`, there are three important structures for building a query:
+Lens has two representations of the query in the search bar: the query store and the AST.
 
-- Catalogue
-- Query Data
-- Lens-AST (Abstract Syntax Tree)
+## Query store
 
----
+Once a user selects an element from the catalogue, it is added to the query store. The query store is of type [`QueryItem[][]`](https://samply.github.io/lens/docs/types/QueryItem.html), where a `QueryItem` represents a chip in the search bar and the outer list represents a logical OR operation and the inner list a logical AND operation. Take for example this query:
 
-## Catalogue
+![Example of search bar](search-bar-example.png)
 
-The **Catalogue** contains all possible query elements used in your search or exploration application. Lens expects a catalogue to be provided during initialization — even an empty one is valid.
-
-The catalogue can either be:
-
-- a local file included in your project, or
-- fetched dynamically via a REST call.
-
-**⚠️Important:** While it is technically possible to retrieve and modify the catalogue at runtime, this is not recommended.
-
-The structure of the catalogue is defined in [schema](https://samply.github.io/lens/docs/types/AstBottomLayerValue.html) and [type](https://samply.github.io/lens/docs/types/Catalogue.html). Valdiating your catalogue can be done within VS Code with the schema, see [here](https://frontaid.io/blog/json-schema-vscode/).
-
-### Subgroups
-
-The catalogue supports the definition of [subgroups](https://samply.github.io/lens/docs/types/Criteria.html#subgroup). For example, you might group all patients with diabetes at the top level, while also distinguishing between different types of diabetes. If a user wants to find patients with _any_ form of diabetes, this can be expressed using subgroups in the catalogue.
-
-Subgroups allow you to structure complex concepts in a way that supports both broad and narrow search criteria.
-
-### Recommended function for fetching:
-
-```ts
-/**
- * Fetches the catalogue and options file from the given URLs.
- * @param catalogueUrl The URL of the catalogue.
- * @param optionsUrl The URL or path of the options file.
- * @returns A promise that resolves to an object containing the catalogue and options as JSON strings
- */
-export const fetchData = async (
-    catalogueUrl: string,
-    optionsUrl: string,
-): Promise<{ catalogueJSON: string; optionsJSON: string }> => {
-    const cataloguePromise: string = await fetch(catalogueUrl).then(
-        (response) => response.text(),
-    );
-
-    const optionsPromise: string = await fetch(optionsUrl).then((response) =>
-        response.text(),
-    );
-
-    return Promise.all([cataloguePromise, optionsPromise]).then(
-        ([catalogueJSON, optionsJSON]) => {
-            return { catalogueJSON, optionsJSON };
-        },
-    );
-};
-```
-
-### Svelte integration
-
-If you're using Svelte, we recommend starting with this structure:
-
-```ts
-const jsonPromises: Promise<{
-    catalogueJSON: string;
-    optionsJSON: string;
-}> = fetchData(catalogueUrl, optionsFilePath);
-```
-
-```svelte
-{#await jsonPromises}
-    <p>Loading data...</p>
-{:then { optionsJSON, catalogueJSON }}
-    <lens-options {catalogueJSON} {optionsJSON} {measures}></lens-options>
-{:catch someError}
-    System error: {someError.message}
-{/await}
-```
-
----
-
-## Query Data
-
-Once a user selects an element from the catalogue, it is added to the query store. Like the catalogue, query elements can also be added programmatically using [setQueryStoreAPI](https://samply.github.io/lens/docs/interfaces/LensDataPasser.html#setquerystoreapi).
-
-Query Data is the internal representation of the user's current query. It contains all necessary information required to construct the final query output.
-
----
-
-## Lens-AST
-
-To allow external systems (e.g., databases or APIs) to understand the query, the internal Query Data is transformed into the **Lens-AST**.
-
-AST stands for Abstract Syntax Tree. It represents the query in a structured, hierarchical format that is decoupled from the original catalogue.
-
-The root of the AST is an [types](https://samply.github.io/lens/docs/types/AstElement.html). It defines the overall logical structure using one of the following operators:
-
-```
-"AND" | "OR" | "XOR" | "NOT"
-```
-
-The `children` of an [types](https://samply.github.io/lens/docs/types/AstElement.html) can be either another [types](https://samply.github.io/lens/docs/types/AstElement.html) or an https://samply.github.io/lens/docs/types/AstBottomLayerValue.html. An [`AstBottomLayerValue`](https://samply.github.io/lens/docs/types/AstBottomLayerValue.html) contains the actual filter expressions — for example, `gender = male`.
-
-### Empty Query
-
-Since Lens is designed for exploratory querying, it supports an **empty query**, which returns _all_ available data. In this case, Lens generates the following AST:
+The query searches for patients with blood group A- and a body weight between 30 and 100 as well as patients with blood group B+ regardless of their body weight. In the query store this query is represented as follows:
 
 ```json
-{
-    "operand": "OR",
-    "children": []
-}
+[
+    [
+        {
+            "id": "10254884-b969-4bb2-8da9-d40eeb08586e",
+            "key": "blood-group",
+            "name": "Blood group",
+            "type": "EQUALS",
+            "system": "",
+            "values": [
+                {
+                    "name": "A+",
+                    "value": "A+",
+                    "queryBindId": "7003ba31-2523-4e38-ba56-adf54dbf05cb"
+                }
+            ]
+        },
+        {
+            "id": "babb673e-43ee-4e9b-8d81-0b7f3d1e41d3",
+            "key": "body_weight",
+            "name": "Body weight",
+            "type": "BETWEEN",
+            "values": [
+                {
+                    "name": "30 - 100",
+                    "value": {
+                        "min": 30,
+                        "max": 100
+                    },
+                    "queryBindId": "8ac6ad91-4f7a-4709-b701-eed7968ceb12"
+                }
+            ]
+        }
+    ],
+    [
+        {
+            "id": "4fc693e6-7865-4075-a84f-66afab0db7a0",
+            "key": "blood-group",
+            "name": "Blood group",
+            "type": "EQUALS",
+            "system": "",
+            "values": [
+                {
+                    "name": "B+",
+                    "value": "B+",
+                    "queryBindId": "250d0bc1-b39d-47b0-98d8-e59a06797fd2"
+                }
+            ]
+        }
+    ]
+]
 ```
 
----
+Applications can read and write the query store using the [`getQueryStore`](https://samply.github.io/lens/docs/functions/getQueryStore.html) and [`setQueryStore`](https://samply.github.io/lens/docs/functions/setQueryStore.html) functions.
 
-## AST Example
+## AST
 
-The AST types are located in [types](https://samply.github.io/lens/docs/types/AstElement.html). Here's an example of a more complex query structure:
+To allow external systems such as databases and APIs to understand the query, the internal query store is transformed into an AST (Abstract Syntax Tree). The AST is a tree structure with the [`AstTopLayer`](https://samply.github.io/lens/docs/types/AstTopLayer.html) type for branches and the [`AstBottomLayerValue`](https://samply.github.io/lens/docs/types/AstBottomLayerValue.html) for leaves. Generally the AST structure allows arbitrarily nesting `AND` and `OR` operations, although the `AST` as generated by Lens always has an outer `OR` operation and an inner `AND` operation to reflect the struture of the query store. The aforementioned query looks as follows in AST form:
 
 ```json
 {
@@ -126,14 +77,46 @@ The AST types are located in [types](https://samply.github.io/lens/docs/types/As
             "operand": "AND",
             "children": [
                 {
-                    "key": "gender",
+                    "key": "blood-group",
                     "operand": "OR",
                     "children": [
                         {
-                            "key": "gender",
+                            "key": "blood-group",
                             "type": "EQUALS",
                             "system": "",
-                            "value": "male"
+                            "value": "A+"
+                        }
+                    ]
+                },
+                {
+                    "key": "body_weight",
+                    "operand": "OR",
+                    "children": [
+                        {
+                            "key": "body_weight",
+                            "type": "BETWEEN",
+                            "system": "",
+                            "value": {
+                                "min": 30,
+                                "max": 100
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "operand": "AND",
+            "children": [
+                {
+                    "key": "blood-group",
+                    "operand": "OR",
+                    "children": [
+                        {
+                            "key": "blood-group",
+                            "type": "EQUALS",
+                            "system": "",
+                            "value": "B+"
                         }
                     ]
                 }
@@ -143,28 +126,90 @@ The AST types are located in [types](https://samply.github.io/lens/docs/types/As
 }
 ```
 
-This AST includes two nested [AstTopLayer](https://samply.github.io/lens/docs/types/AstTopLayer.html) objects with `OR` and `AND` operators. The inner [AstTopLayer](https://samply.github.io/lens/docs/types/AstTopLayer.html) contains a `key`, indicating that its children are logically grouped under this key — in this case, `gender`.
+Applications can get the AST from the search bar using the [`getAst`](https://samply.github.io/lens/docs/functions/getAst.html) function.
 
-This layer provides context for the query at the database level. In the deepest `children` array, we see the actual condition: we are searching for patients whose gender is equal to "male".
+## Querying a Focus instance
 
----
-
-### Converting Query Data to AST
-
-To send a query to a database or external service, you can subscribe to the query store to get the current state, then convert it to an AST using:
+In the samply organization [Focus](https://github.com/samply/focus) is commonly used to parse the AST and execute the query. Because Focus only communicates over the [Beam](https://github.com/samply/beam) protocol, [Spot](https://github.com/samply/spot) is required as an intermediary. Applications can query Focus by listening for the `lens-search-triggered` event and sending the AST to the backend in the appropriate form:
 
 ```ts
-const ast = buildAstFromQueryStore(queryStore);
+import { getAst, clearSiteResults, createBeamTask } from "@samply/lens";
+
+let abortController = new AbortController();
+window.addEventListener("lens-search-triggered", () => {
+    abortController.abort();
+    abortController = new AbortController();
+    clearSiteResults();
+
+    const query = btoa(
+        JSON.stringify({
+            lang: "ast",
+            payload: btoa(
+                JSON.stringify({ ast: getAst(), id: crypto.randomUUID() }),
+            ),
+        }),
+    );
+    createBeamTask(
+        backendUrl,
+        siteList,
+        query,
+        abortController.signal,
+        (result) => {
+            // This is called once per site when its result is received.
+        },
+    );
+});
 ```
 
----
+Learn how to pass results to Lens in the [Showing results](./results.md) guide.
 
-### Handling Subgroups in AST
+### Querying Focus with CQL
 
-If your catalogue includes subgroups, we recommend expanding them in the query before processing. This can be done easily using:
+Some applications send CQL queries to Focus. In this case you need AST to CQL translation code in your application. You can get started by copying and adjusting the [`ast-to-cql-translator.ts`](https://github.com/samply/ccp-explorer/blob/main/src/lib/ast-to-cql-translator.ts), [`cqlquery-mappings.ts`](https://github.com/samply/ccp-explorer/blob/main/src/lib/cqlquery-mappings.ts) and [`measures.ts`](https://github.com/samply/ccp-explorer/blob/main/src/measures.ts) files from the CCP explorer repository. Sending the query would then look as follows:
 
 ```ts
-const astWithSubCategories = resolveAstSubCategories(ast);
-```
+import {
+    getAst,
+    clearSiteResults,
+    buildLibrary,
+    buildMeasure,
+    createBeamTask,
+} from "@samply/lens";
 
-This function replaces subgroup references with their actual sub-elements, making the query explicit and ready for processing.
+let abortController = new AbortController();
+window.addEventListener("lens-search-triggered", () => {
+    abortController.abort();
+    abortController = new AbortController();
+
+    // AST to CQL translation
+    const cql = translateAstToCql(
+        getAst(),
+        false,
+        "DKTK_STRAT_DEF_IN_INITIAL_POPULATION",
+        measures,
+    );
+    const lib = buildLibrary(cql);
+    const measure = buildMeasure(
+        lib.url,
+        measures.map((m) => m.measure),
+    );
+
+    clearSiteResults();
+    const query = btoa(
+        JSON.stringify({
+            lang: "cql",
+            lib,
+            measure,
+        }),
+    );
+    createBeamTask(
+        backendUrl,
+        siteList,
+        query,
+        abortController.signal,
+        (result) => {
+            // This is called once per site when its result is received.
+        },
+    );
+});
+```
