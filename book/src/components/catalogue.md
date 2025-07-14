@@ -2,7 +2,7 @@
 
 The `<lens-catalogue>` component renders a collapsible tree structure to visually organize a hierarchical data catalogue. It supports dynamic updates via the global store, or can be initialized with static data. The catalogue can be optionally collapsible, and will auto-expand based on configuration. If the global configuration includes a `facetCount` backend, it automatically fetches and updates facet counts on mount.
 
-This component integrates with the `catalogue` store and `lensOptions`, uses `DataTreeElement` for each node, and offers customizable toggle behavior. Styling is exposed through `::part()` attributes for full theme control.
+This component integrates with the `catalogue` store and [lensOptions](https://samply.github.io/lens/docs/types/LensOptions.html), uses `DataTreeElement` for each node, and offers customizable toggle behavior. Styling is exposed through `::part()` attributes for full theme control.
 
 ---
 

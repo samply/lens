@@ -1,6 +1,6 @@
 # ChartComponent
 
-The `lens-chart` component provides a styled wrapper for visualizing data using a canvas-based chart (e.g., Chart.js). It handles dynamic display behaviors like toggling chart visibility, showing hints, and rendering a fallback message when no data is available.
+The `lens-chart` component provides a styled wrapper for visualizing data using a canvas-based chart (e.g., Chart.js). It handles dynamic display behaviors like toggling chart visibility, showing hints, and rendering a fallback message when no data is available. Some Options are setable via [ChartOption](https://samply.github.io/lens/docs/types/ChartOption.html)
 
 - Displays a chart inside a responsive layout.
 - Renders a **title** above the chart.
