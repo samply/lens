@@ -1,6 +1,6 @@
 # InfoButtonComponent
 
-The `InfoButton` component displays a tooltip-style popup when clicked, used to provide users with helpful information or guidance. The popup is toggled by clicking the button and automatically closes when the button loses focus.
+The `lens-info-button` component displays a tooltip-style popup when clicked, used to provide users with helpful information or guidance. The popup is toggled by clicking the button and automatically closes when the button loses focus.
 
 ## Props
 

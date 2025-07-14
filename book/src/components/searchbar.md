@@ -1,7 +1,8 @@
 # SearchBarComponent
 
-A custom Svelte component providing an intelligent, interactive search bar with dynamic autocomplete, facet filtering, and chip-based query visualizations.
-Enables users to filter, explore, and manage complex query criteria through a user-friendly interface with chips and auto-completion. It is especially suitable for applications involving faceted search (e.g., data explorers, dashboards, filtering interfaces).
+The `lens-searchbar` component offers an intuitive, interactive search bar for exploring a catalog of single-select items. It serves as the primary interface for users to search, apply, and adjust query criteria.
+
+Selected items appear as interactive chips within the component, giving users a clear visual of their active filters. Users can easily refine their search by removing individual values or entire criteria directly from the chip display.
 
 ---
 
@@ -68,8 +69,6 @@ Custom styling is supported via `part` attributes. Key styling hooks include:
 | `lens-searchbar-autocomplete-options-item-focused`     | Highlighted result               |
 | `lens-searchbar-autocomplete-options-item-description` | Optional description             |
 | `lens-searchbar-autocomplete-options-item-facet-count` | Facet count badge                |
-
-> You can style these parts globally using the `::part()` pseudo-element.
 
 ---
 

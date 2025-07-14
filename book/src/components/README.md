@@ -12,5 +12,6 @@ Here we list all the Lens components:
 - [ResultsummeraryComponent](resultsummary.md)
 - [ResultTableComponent](resulttable.md)
 - [SearchbarComponent](searchbar.md)
+- [SearchbarComponentMultiple](searchbarmulti.md)
 - [SearchButtonComponent](searchbutton.md)
 - [StoreDeleteButtonComponent](storedeletebutton.md)
