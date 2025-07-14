@@ -10,7 +10,7 @@
 
     interface Props {
         title?: string;
-        type: string;
+        type?: string;
     }
 
     let { title = "Request Data", type }: Props = $props();

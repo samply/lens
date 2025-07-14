@@ -6,9 +6,7 @@
         queryModified,
     } from "../../stores/query";
     import type { QueryItem } from "../../types/queryData";
-    import { createEventDispatcher } from "svelte";
 
-    const dispatch = createEventDispatcher();
     interface Props {
         itemToDelete: {
             type: "item" | "group" | "value";
@@ -26,8 +24,6 @@
      * can be a group, item or value
      */
     const deleteItem = (): void => {
-        dispatch("clear-search");
-
         if (type === "group") {
             queryModified.set(true);
             queryStore.update((query) => {
