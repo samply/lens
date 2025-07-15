@@ -35,7 +35,6 @@ export type {
     MeasureItem,
     Measure,
     MeasureGroup,
-    ResponseStore,
     MeasureStore,
 } from "./types/backend";
 export type { SiteData, Site } from "./types/response";

@@ -57,8 +57,6 @@ export type MeasureOption = {
 
 export type MeasureStore = MeasureOption[];
 
-export type ResponseStore = Map<string, Site>;
-
 export interface QueryEvent extends Event {
     detail: {
         ast: AstTopLayer;
