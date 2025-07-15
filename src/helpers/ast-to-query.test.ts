@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
-import { setQueryStoreFromAst } from "./ovis";
-import { getAst } from "../helpers/ast-transformer";
+import { setQueryStoreFromAst } from "./ast-to-query";
+import { getAst } from "./ast-transformer";
 import type { AstTopLayer } from "../types/ast";
 
 function testConversion(ast: AstTopLayer): void {

@@ -12,7 +12,7 @@ export {
     setQueryStore,
     getQueryStore,
 } from "./stores/query";
-export { setQueryStoreFromAst } from "./services/ovis";
+export { setQueryStoreFromAst } from "./helpers/ast-to-query";
 export {
     setSiteResult,
     markSiteClaimed,
