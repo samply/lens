@@ -36,10 +36,3 @@ export type Measure = {
         };
     }[];
 };
-
-export type MeasureOption = {
-    name: string;
-    measures: MeasureItem[];
-};
-
-export type MeasureStore = MeasureOption[];
