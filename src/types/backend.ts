@@ -1,6 +1,3 @@
-import type { AstTopLayer } from "./ast";
-import type { Site } from "./response";
-
 export type MeasureGroup = {
     name: string;
     measures: MeasureItem[];
@@ -56,11 +53,3 @@ export type MeasureOption = {
 };
 
 export type MeasureStore = MeasureOption[];
-
-export interface QueryEvent extends Event {
-    detail: {
-        ast: AstTopLayer;
-        updateResponse: (response: Map<string, Site>) => void;
-        abortController: AbortController;
-    };
-}
