@@ -12,39 +12,33 @@ export type Measure = {
     code: {
         text: string;
     };
-    extension: [
-        {
-            url: string;
-            valueCode: string;
-        },
-    ];
-    population: [
-        {
-            code: {
-                coding: [
-                    {
-                        system: string;
-                        code: string;
-                    },
-                ];
-            };
-            criteria: {
-                language: string;
-                expression: string;
-            };
-        },
-    ];
-    stratifier: [
-        {
-            code: {
-                text: string;
-            };
-            criteria: {
-                language: string;
-                expression: string;
-            };
-        },
-    ];
+    extension?: {
+        url: string;
+        valueCode: string;
+    }[];
+    population: {
+        code: {
+            coding: [
+                {
+                    system: string;
+                    code: string;
+                },
+            ];
+        };
+        criteria: {
+            language: string;
+            expression: string;
+        };
+    }[];
+    stratifier: {
+        code: {
+            text: string;
+        };
+        criteria: {
+            language: string;
+            expression: string;
+        };
+    }[];
 };
 
 export type MeasureOption = {
