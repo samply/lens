@@ -37,7 +37,7 @@ export type {
     MeasureGroup,
     MeasureStore,
 } from "./types/backend";
-export type { SiteData } from "./types/response";
+export type { FhirMeasureReport } from "./types/response";
 export type { QueryItem, QueryValue } from "./types/queryData";
 
 // Include custom elements (aka web components) in the bundle

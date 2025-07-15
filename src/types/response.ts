@@ -3,7 +3,7 @@ export type Stratum = {
     population?: number;
 };
 
-export type SiteData = {
+export type FhirMeasureReport = {
     date: string;
     extension: object[];
     group: {

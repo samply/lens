@@ -1,5 +1,5 @@
 import { writable, get } from "svelte/store";
-import type { SiteData } from "../types/response";
+import type { FhirMeasureReport } from "../types/response";
 
 const siteResults = writable(new Map<string, SiteResult>());
 
@@ -66,7 +66,9 @@ export function markSiteClaimed(site: string) {
     });
 }
 
-export function measureReportToSiteResult(siteData: SiteData): SiteResult {
+export function measureReportToSiteResult(
+    siteData: FhirMeasureReport,
+): SiteResult {
     const result: SiteResult = {
         stratifiers: {},
         totals: {},
