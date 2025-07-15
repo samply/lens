@@ -1,8 +1,3 @@
-export type Stratum = {
-    code: string;
-    population?: number;
-};
-
 export type FhirMeasureReport = {
     date: string;
     extension: object[];
