@@ -1,13 +1,9 @@
-export type MeasureGroup = {
-    name: string;
-    measures: MeasureItem[];
-};
-
 export type MeasureItem = {
     key: string;
     measure: Measure;
     cql: string;
 };
+
 export type Measure = {
     code: {
         text: string;

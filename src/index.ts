@@ -31,12 +31,7 @@ export { createBeamTask, type BeamResult } from "./backends/spot";
 export type * from "./types/ast";
 export type * from "./types/catalogue";
 export type * from "./types/options";
-export type {
-    MeasureItem,
-    Measure,
-    MeasureGroup,
-    MeasureStore,
-} from "./types/backend";
+export type { MeasureItem, Measure, MeasureStore } from "./types/backend";
 export type { FhirMeasureReport } from "./types/response";
 export type { QueryItem, QueryValue } from "./types/queryData";
 
