@@ -3,15 +3,6 @@ export type Stratum = {
     population?: number;
 };
 
-export type Site =
-    | {
-          status: "succeeded";
-          data: SiteData;
-      }
-    | {
-          status: "claimed" | "tempfailed" | "permfailed";
-      };
-
 export type SiteData = {
     date: string;
     extension: object[];
