@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import type { Measure } from "../types/backend";
 
-type BuildLibraryReturn = {
+export type BuildLibraryReturn = {
     resourceType: string;
     url: string;
     status: string;
@@ -41,7 +41,7 @@ export const buildLibrary = (cql: string): BuildLibraryReturn => {
     };
 };
 
-type BuildMeasureReturn = {
+export type BuildMeasureReturn = {
     resourceType: string;
     url: string;
     status: string;
