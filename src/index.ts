@@ -26,7 +26,6 @@ export { getSelectedSites, getHumanReadableQuery } from "./stores/datarequests";
 
 // Export backends
 export { createBeamTask, type BeamResult } from "./backends/spot";
-export { Blaze } from "./backends/blaze";
 
 // Export types
 export type * from "./types/ast";
