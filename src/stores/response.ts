@@ -67,13 +67,13 @@ export function markSiteClaimed(site: string) {
 }
 
 export function measureReportToSiteResult(
-    siteData: FhirMeasureReport,
+    measureReport: FhirMeasureReport,
 ): SiteResult {
     const result: SiteResult = {
         stratifiers: {},
         totals: {},
     };
-    for (const group of siteData.group) {
+    for (const group of measureReport.group) {
         const measureCode = group.code.text;
         // Get total count
         if (group.population && group.population.length > 0) {
