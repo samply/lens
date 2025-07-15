@@ -1,6 +1,5 @@
 import { writable, get } from "svelte/store";
-import type { SiteData } from "../types/response";
-import type { ResponseStore } from "../types/backend";
+import type { FhirMeasureReport } from "../types/response";
 
 const siteResults = writable(new Map<string, SiteResult>());
 
@@ -67,27 +66,14 @@ export function markSiteClaimed(site: string) {
     });
 }
 
-/**
- * Legacy function to update the response store.
- *
- * Prefer to use {@link setSiteResult} and {@link markSiteClaimed} instead.
- */
-export function legacyUpdateResponseStore(response: ResponseStore): void {
-    for (const [site, siteData] of response.entries()) {
-        if (siteData.status === "claimed") {
-            markSiteClaimed(site);
-        } else if (siteData.status === "succeeded") {
-            setSiteResult(site, measureReportToSiteResult(siteData.data));
-        }
-    }
-}
-
-export function measureReportToSiteResult(siteData: SiteData): SiteResult {
+export function measureReportToSiteResult(
+    measureReport: FhirMeasureReport,
+): SiteResult {
     const result: SiteResult = {
         stratifiers: {},
         totals: {},
     };
-    for (const group of siteData.group) {
+    for (const group of measureReport.group) {
         const measureCode = group.code.text;
         // Get total count
         if (group.population && group.population.length > 0) {

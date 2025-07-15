@@ -21,25 +21,23 @@ export {
     type SiteResult,
 } from "./stores/response";
 export { getAst } from "./helpers/ast-transformer";
-export { buildLibrary, buildMeasure } from "./helpers/cql-measure";
+export {
+    buildLibrary,
+    buildMeasure,
+    type BuildLibraryReturn,
+    type BuildMeasureReturn,
+} from "./helpers/cql-measure";
 export { getSelectedSites, getHumanReadableQuery } from "./stores/datarequests";
 
 // Export backends
 export { createBeamTask, type BeamResult } from "./backends/spot";
-export { Blaze } from "./backends/blaze";
 
 // Export types
 export type * from "./types/ast";
 export type * from "./types/catalogue";
 export type * from "./types/options";
-export type {
-    MeasureItem,
-    Measure,
-    MeasureGroup,
-    ResponseStore,
-    MeasureStore,
-} from "./types/backend";
-export type { SiteData, Site } from "./types/response";
+export type { MeasureItem, Measure } from "./types/backend";
+export type { FhirMeasureReport } from "./types/response";
 export type { QueryItem, QueryValue } from "./types/queryData";
 
 // Include custom elements (aka web components) in the bundle
