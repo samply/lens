@@ -33,12 +33,12 @@ The `totals` field contains the total number of patients, samples, etc. The `str
 You pass results to Lens using the [`setSiteResult`](file:///home/tim/projects/lens/docs/functions/setSiteResult.html) function. Before you pass a result you may call [`markSiteClaimed`](https://samply.github.io/lens/docs/functions/markSiteClaimed.html) to indicate that the site is available and will deliver results soon. This examples shows how you would pass results from Focus to Lens.
 
 ```ts
-createBeamTask(
+querySpot(
     getBackendUrl(),
     getSiteList(),
     query,
     abortController.signal,
-    (result: BeamResult) => {
+    (result: SpotResult) => {
         const site = result.from.split(".")[1];
         if (result.status === "claimed") {
             markSiteClaimed(site);

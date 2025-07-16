@@ -30,7 +30,7 @@ export {
 export { getSelectedSites, getHumanReadableQuery } from "./stores/datarequests";
 
 // Export backends
-export { createBeamTask, type BeamResult } from "./backends/spot";
+export { querySpot, type SpotResult } from "./backends/spot";
 
 // Export types
 export type * from "./types/ast";

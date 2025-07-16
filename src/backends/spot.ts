@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 
-export type BeamResult = {
+export type SpotResult = {
     body: string;
     from: string;
     status: "claimed" | "succeeded" | "tempfailed" | "permafailed";
@@ -17,12 +17,12 @@ export type BeamResult = {
  * @param signal An AbortSignal to cancel the request
  * @param resultCallback A callback function to handle each result
  */
-export async function createBeamTask(
+export async function querySpot(
     url: string,
     sites: string[],
     query: string,
     signal: AbortSignal,
-    resultCallback: (result: BeamResult) => void,
+    resultCallback: (result: SpotResult) => void,
 ): Promise<void> {
     url = url.endsWith("/") ? url : url + "/";
     const id = uuidv4();
@@ -65,7 +65,7 @@ export async function createBeamTask(
     });
 
     eventSource.addEventListener("new_result", (message) => {
-        const result: BeamResult = JSON.parse(message.data);
+        const result: SpotResult = JSON.parse(message.data);
         resultCallback(result);
     });
 }
