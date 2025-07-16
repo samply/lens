@@ -1,7 +1,7 @@
 import { writable, get } from "svelte/store";
 import type { FhirMeasureReport } from "../types/response";
 
-const siteResults = writable(new Map<string, SiteResult>());
+const siteResults = writable(new Map<string, LensResult>());
 
 /**
  * This store contains the sites that have responded and their status.
@@ -37,7 +37,7 @@ export const siteStatus = writable(new Map<string, "claimed" | "succeeded">());
  * }
  * ```
  */
-export type SiteResult = {
+export type LensResult = {
     stratifiers: Record<string, Record<string, number>>;
     totals: Record<string, number>;
 };
@@ -45,7 +45,7 @@ export type SiteResult = {
 /**
  * Call this when you receive a site result via beam.
  */
-export function setSiteResult(site: string, result: SiteResult) {
+export function setSiteResult(site: string, result: LensResult) {
     siteResults.update((results) => {
         results.set(site, result);
         return results;
@@ -66,10 +66,10 @@ export function markSiteClaimed(site: string) {
     });
 }
 
-export function measureReportToSiteResult(
+export function measureReportToLensResult(
     measureReport: FhirMeasureReport,
-): SiteResult {
-    const result: SiteResult = {
+): LensResult {
+    const result: LensResult = {
         stratifiers: {},
         totals: {},
     };

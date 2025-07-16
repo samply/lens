@@ -16,9 +16,9 @@ export { setQueryStoreFromAst } from "./helpers/ast-to-query";
 export {
     setSiteResult,
     markSiteClaimed,
-    measureReportToSiteResult,
+    measureReportToLensResult,
     clearSiteResults,
-    type SiteResult,
+    type LensResult,
 } from "./stores/response";
 export { getAst } from "./helpers/ast-transformer";
 export {
