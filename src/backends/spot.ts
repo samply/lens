@@ -9,7 +9,7 @@ export type SpotResult = {
 };
 
 /**
- * Use the spot API to create a beam task and listen for results.
+ * Use the spot API to send a query and listen for results.
  *
  * @param url The base URL of the Spot API
  * @param sites An array of sites to query
@@ -27,25 +27,22 @@ export async function querySpot(
     url = url.endsWith("/") ? url : url + "/";
     const id = uuidv4();
 
-    const beamTaskResponse = await fetch(
-        `${url}beam?sites=${sites.join(",")}`,
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-            body: JSON.stringify({
-                id,
-                sites,
-                query,
-            }),
+    const response = await fetch(`${url}beam?sites=${sites.join(",")}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
         },
-    );
+        credentials: "include",
+        body: JSON.stringify({
+            id,
+            sites,
+            query,
+        }),
+    });
 
-    if (!beamTaskResponse.ok) {
-        const error = await beamTaskResponse.text();
-        throw new Error(`Failed to start beam task: ${error}`);
+    if (!response.ok) {
+        const error = await response.text();
+        throw new Error(`Failed to send query: ${error}`);
     }
 
     const eventSource = new EventSource(
