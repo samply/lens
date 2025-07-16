@@ -1,4 +1,4 @@
-##ResultTableComponent
+# Result Table
 
 The `lens-result-table` component displays a paginated, sortable data table of site-specific population metrics, dynamically built from the `siteStatus`, `lensOptions`, and `response` stores. It includes interactive sorting, pagination, and multi-select support for data requests.
 

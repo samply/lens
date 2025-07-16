@@ -1,4 +1,4 @@
-# QueryExplainButtonComponent
+# Query Explain Button
 
 The `lens-query-explain-button` is a wrapper around the `InfoButton` component that displays a human-readable version of the current query. When no query is entered, the `noQueryMessage` message is shown.
 

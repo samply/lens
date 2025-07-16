@@ -1,4 +1,4 @@
-# SearchModifiedComponent
+# Search Modified Component
 
 The `<lens-search-modified-display>` component provides a visual cue to the user whenever the current query has been changed but not yet submitted. It automatically listens to the application's query state and only renders its slotted content if a modification has occurred.
 

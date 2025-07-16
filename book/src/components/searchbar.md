@@ -1,4 +1,4 @@
-# SearchBarComponent
+# Search Bar
 
 The `lens-searchbar` component offers an intuitive, interactive search bar for exploring a catalog of single-select items. It serves as the primary interface for users to search, apply, and adjust query criteria.
 

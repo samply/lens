@@ -1,4 +1,4 @@
-# SeachbarMultipleComponent
+# Seach Bar Multiple
 
 The `lens-search-bar-multiple` provides a flexible interface for composing complex queries using **multiple search bars**, each representing a par of query criteria. This component builds on top of [lens-searchbar](searchbar.md), dynamically managing multiple instances tied to a shared query store.
 

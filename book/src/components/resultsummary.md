@@ -1,4 +1,4 @@
-# ResultsummaryComponent
+# Result Summary
 
 The `lens-result-summary` component displays a compact summary of result metrics derived from backend data. It dynamically computes and presents counts for different data types defined in `lensOptions`.
 
