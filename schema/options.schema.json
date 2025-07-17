@@ -127,17 +127,6 @@
           "description": "Whether to automatically update the query in the URL when it changes (default: true)",
           "type": "boolean"
         },
-        "catalogueKeyToResponseKeyMap": {
-          "items": {
-            "items": {
-              "type": "string"
-            },
-            "maxItems": 2,
-            "minItems": 2,
-            "type": "array"
-          },
-          "type": "array"
-        },
         "chartOptions": {
           "$ref": "#/definitions/ChartOptions"
         },
