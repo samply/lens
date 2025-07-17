@@ -133,7 +133,7 @@ Applications can get the AST from the search bar using the [`getAst`](https://sa
 In the samply organization [Focus](https://github.com/samply/focus) is commonly used to parse the AST and execute the query. Because Focus only communicates over the [Beam](https://github.com/samply/beam) protocol, [Spot](https://github.com/samply/spot) is required as an intermediary. Applications can query Focus by listening for the `lens-search-triggered` event and sending the AST to the backend in the appropriate form:
 
 ```ts
-import { getAst, clearSiteResults, createBeamTask } from "@samply/lens";
+import { getAst, clearSiteResults, querySpot } from "@samply/lens";
 
 let abortController = new AbortController();
 window.addEventListener("lens-search-triggered", () => {
@@ -149,15 +149,9 @@ window.addEventListener("lens-search-triggered", () => {
             ),
         }),
     );
-    createBeamTask(
-        backendUrl,
-        siteList,
-        query,
-        abortController.signal,
-        (result) => {
-            // This is called once per site when its result is received.
-        },
-    );
+    querySpot(backendUrl, siteList, query, abortController.signal, (result) => {
+        // This is called once per site when its result is received.
+    });
 });
 ```
 
@@ -173,7 +167,7 @@ import {
     clearSiteResults,
     buildLibrary,
     buildMeasure,
-    createBeamTask,
+    querySpot,
 } from "@samply/lens";
 
 let abortController = new AbortController();
@@ -202,14 +196,8 @@ window.addEventListener("lens-search-triggered", () => {
             measure,
         }),
     );
-    createBeamTask(
-        backendUrl,
-        siteList,
-        query,
-        abortController.signal,
-        (result) => {
-            // This is called once per site when its result is received.
-        },
-    );
+    querySpot(backendUrl, siteList, query, abortController.signal, (result) => {
+        // This is called once per site when its result is received.
+    });
 });
 ```

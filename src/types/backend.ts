@@ -1,10 +1,10 @@
-export type MeasureItem = {
+export type FhirMeasureItem = {
     key: string;
-    measure: Measure;
+    measure: FhirMeasure;
     cql: string;
 };
 
-export type Measure = {
+export type FhirMeasure = {
     code: {
         text: string;
     };

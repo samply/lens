@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import type { Measure } from "../types/backend";
+import type { FhirMeasure } from "../types/backend";
 
 export type BuildLibraryReturn = {
     resourceType: string;
@@ -58,12 +58,12 @@ export type BuildMeasureReturn = {
             code: string;
         }[];
     };
-    group: Measure[];
+    group: FhirMeasure[];
 };
 
 export const buildMeasure = (
     libraryUrl: string,
-    measures: Measure[],
+    measures: FhirMeasure[],
 ): BuildMeasureReturn => {
     const measureId = uuidv4();
     return {

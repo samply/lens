@@ -16,9 +16,9 @@ export { setQueryStoreFromAst } from "./helpers/ast-to-query";
 export {
     setSiteResult,
     markSiteClaimed,
-    measureReportToSiteResult,
+    measureReportToLensResult,
     clearSiteResults,
-    type SiteResult,
+    type LensResult,
 } from "./stores/response";
 export { getAst } from "./helpers/ast-transformer";
 export {
@@ -30,13 +30,13 @@ export {
 export { getSelectedSites, getHumanReadableQuery } from "./stores/datarequests";
 
 // Export backends
-export { createBeamTask, type BeamResult } from "./backends/spot";
+export { querySpot, type SpotResult } from "./backends/spot";
 
 // Export types
 export type * from "./types/ast";
 export type * from "./types/catalogue";
 export type * from "./types/options";
-export type { MeasureItem, Measure } from "./types/backend";
+export type { FhirMeasureItem, FhirMeasure } from "./types/backend";
 export type { FhirMeasureReport } from "./types/response";
 export type { QueryItem, QueryValue } from "./types/queryData";
 

@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 
-export type BeamResult = {
+export type SpotResult = {
     body: string;
     from: string;
     status: "claimed" | "succeeded" | "tempfailed" | "permafailed";
@@ -9,7 +9,7 @@ export type BeamResult = {
 };
 
 /**
- * Use the spot API to create a beam task and listen for results.
+ * Use the spot API to send a query and listen for results.
  *
  * @param url The base URL of the Spot API
  * @param sites An array of sites to query
@@ -17,35 +17,32 @@ export type BeamResult = {
  * @param signal An AbortSignal to cancel the request
  * @param resultCallback A callback function to handle each result
  */
-export async function createBeamTask(
+export async function querySpot(
     url: string,
     sites: string[],
     query: string,
     signal: AbortSignal,
-    resultCallback: (result: BeamResult) => void,
+    resultCallback: (result: SpotResult) => void,
 ): Promise<void> {
     url = url.endsWith("/") ? url : url + "/";
     const id = uuidv4();
 
-    const beamTaskResponse = await fetch(
-        `${url}beam?sites=${sites.join(",")}`,
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-            body: JSON.stringify({
-                id,
-                sites,
-                query,
-            }),
+    const response = await fetch(`${url}beam?sites=${sites.join(",")}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
         },
-    );
+        credentials: "include",
+        body: JSON.stringify({
+            id,
+            sites,
+            query,
+        }),
+    });
 
-    if (!beamTaskResponse.ok) {
-        const error = await beamTaskResponse.text();
-        throw new Error(`Failed to start beam task: ${error}`);
+    if (!response.ok) {
+        const error = await response.text();
+        throw new Error(`Failed to send query: ${error}`);
     }
 
     const eventSource = new EventSource(
@@ -65,7 +62,7 @@ export async function createBeamTask(
     });
 
     eventSource.addEventListener("new_result", (message) => {
-        const result: BeamResult = JSON.parse(message.data);
+        const result: SpotResult = JSON.parse(message.data);
         resultCallback(result);
     });
 }
