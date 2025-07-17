@@ -396,20 +396,20 @@
         <div>
             <lens-chart
                 title="Geschlecht"
-                catalogueGroupCode="gender"
+                dataKey="gender"
                 chartType="pie"
                 displayLegends="true"
             ></lens-chart>
             <lens-chart
                 title="diagnosis"
-                catalogueGroupCode="diagnosis"
+                dataKey="diagnosis"
                 chartType="bar"
                 xAxisTitle="ICD-10-Codes"
                 yAxisTitle="Anzahl der Diagnosen"
             ></lens-chart>
             <lens-chart
                 title="diagnosis"
-                catalogueGroupCode="diagnosis"
+                dataKey="diagnosis"
                 indexAxis="y"
                 scaleType="logarithmic"
                 chartType="bar"
