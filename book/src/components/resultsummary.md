@@ -1,32 +1,33 @@
 # Result Summary
 
-The `lens-result-summary` component displays a compact summary of result metrics derived from backend data. It dynamically computes and presents counts for different data types defined in `lensOptions`.
+The `lens-result-summary` component displays a compact summary of result metrics defined in the Lens options. It is typically used to show overall values, such as the total number of patients found across all data sources or how many sources responded successfully.
 
----
+## Example
 
-## Behavior and Features
+To use it, define the configuration in the Lens options and include the component in your HTML:
 
-- Dynamically computes and displays population summaries (e.g. `13 / 15`) based on site status and result summary options.
-- Displays a configurable header with optional info button.
-- Supports multiple population types using either single or aggregated data keys.
-- Reactively updates based on changes to `lensOptions` and `siteStatus`.
-- Layouts are optimized for horizontal alignment and grid-based placement.
+```json
+resultSummaryOptions: {
+    title: "Results",
+    infoButtonText: "This is a tooltip",
+    dataTypes: [
+        {
+            title: "Patients",
+            dataKey: "patients"
+        }
+    ]
+}
+```
 
----
-
-## Props
-
-This component uses data derived from Svelte stores and doesn’t accept direct props. It reacts to:
-
-| Source        | Key                      | Description                                            |
-| ------------- | ------------------------ | ------------------------------------------------------ |
-| `lensOptions` | `resultSummaryOptions`   | Provides `title`, `infoButtonText`, and `dataTypes`.   |
-| `siteStatus`  | internal store           | Used to calculate collection and population summaries. |
-| `response.ts` | `getTotal`, `getStratum` | Functions for aggregating count values.                |
+```svelte
+<lens-result-summary></lens-result-summary>
+```
 
 ---
 
 ## CSS Parts
+
+This component uses `::part()` selectors to expose internal styles for customization.
 
 | Part Name                          | Description                                             |
 | ---------------------------------- | ------------------------------------------------------- |
@@ -39,60 +40,10 @@ This component uses data derived from Svelte stores and doesn’t accept direct 
 
 ---
 
-## Example Markup
-
-```svelte
-<div part="lens-result-summary">
-    {#if $lensOptions?.resultSummaryOptions?.title !== undefined}
-        <div part="lens-result-summary-header">
-            <div part="lens-result-summary-heading">
-                <h4 part="lens-result-summary-header-title">
-                    {$lensOptions?.resultSummaryOptions.title}
-                    {#if $lensOptions?.resultSummaryOptions.infoButtonText !== undefined}
-                        <InfoButtonComponent
-                            message={[
-                                $lensOptions?.resultSummaryOptions
-                                    .infoButtonText,
-                            ]}
-                        />
-                    {/if}
-                </h4>
-            </div>
-        </div>
-    {/if}
-    <div part="lens-result-summary-content">
-        {#each populations as population}
-            <div part="lens-result-summary-content-type">
-                {population.title}: {population.population}
-            </div>
-        {/each}
-    </div>
-</div>
-```
-
----
-
-## Styling
+### Styling Example
 
 ```css
-[part~="lens-result-summary"] {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    grid-gap: var(--gap-xl);
-    grid-column: 1/-1;
-    align-items: center;
-}
-
-[part~="lens-result-summary-content"] {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    gap: 10px;
-}
-
-[part~="lens-result-summary-header-title"] {
-    display: flex;
-    align-items: center;
-    gap: var(--gap-xs);
+[part~="lens-result-summary-header"] {
+    background: #126154;
 }
 ```

@@ -1,6 +1,6 @@
 # Query Explain Button
 
-The `lens-query-explain-button` is a wrapper around the `InfoButton` component that displays a human-readable version of the current query. When no query is entered, the `noQueryMessage` message is shown.
+The `lens-query-explain-button` is a wrapper around the `lens-info-button` that displays a human-readable version of the current query. When the QueryStore is empty, the `noQueryMessage` message is shown. If just a `queryItem` is passed as a prop it will just display this part.
 
 ## Props
 
@@ -10,26 +10,10 @@ The `lens-query-explain-button` is a wrapper around the `InfoButton` component t
 | `noQueryMessage` | `string`                 | `"Search for all results"` | Message shown when no query is present.                                                                                                |
 | `inSearchBar`    | `boolean`                | `false`                    | Applies compact and minimal styling for use inside a search bar.                                                                       |
 
-## Behavior
-
-- If `queryItem` is **not** passed, the component subscribes to the global query store (`queryStore`) and updates automatically as the query changes.
-- If `queryItem` **is** passed, the component renders a static explanation for that query fragment only.
-
 ## Usage
-
-### Default Behavior (global query)
 
 ```html
 <lens-query-explain-button></lens-query-explain-button>
-```
-
-### With a specific query item
-
-```html
-<lens-query-explain-button
-    queryItem="{yourQueryItem}"
-    noQueryMessage="Nothing selected"
-></lens-query-explain-button>
 ```
 
 ## Styling

@@ -1,20 +1,18 @@
 # Search Modified Component
 
-The `<lens-search-modified-display>` component provides a visual cue to the user whenever the current query has been changed but not yet submitted. It automatically listens to the application's query state and only renders its slotted content if a modification has occurred.
-
-This makes it especially useful in search interfaces, where users might adjust filters or terms and should be reminded to re-run their search. The component includes built-in styling for emphasis and can be customized further using `::part()` selectors.
+`<lens-search-modified-display>` displays a visual cue when the current query has been modified. It listens to the `QueryStore` and only renders its slotted content if a change has occurred.
 
 ---
 
 ## Usage
 
+Use the default `<slot>` to pass in content:
+
 ```html
 <lens-search-modified-display>
-    You have unsaved changes. Please click "Search" to update results.
+    <b>You have unsaved changes. Please click "Search" to update results.</b>
 </lens-search-modified-display>
 ```
-
-This will display the message only if the query has been modified.
 
 ---
 
