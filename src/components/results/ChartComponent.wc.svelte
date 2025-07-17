@@ -26,6 +26,7 @@
 
     interface Props {
         title?: string; // e.g. 'Gender Distribution'
+        catalogueGroupCode?: string; // e.g. "gender"
         indexAxis?: string;
         xAxisTitle?: string;
         yAxisTitle?: string;
@@ -34,7 +35,6 @@
         displayLegends?: boolean;
         chartType?: keyof ChartTypeRegistry;
         scaleType?: string;
-        dataKey: string;
         perSite?: boolean;
         groupRange?: number;
         groupingDivider?: string;
@@ -47,13 +47,13 @@
 
     let {
         title = "",
+        catalogueGroupCode = "",
         indexAxis = "x",
         xAxisTitle = "",
         yAxisTitle = "",
         clickToAddState = false,
         headers = new Map<string, string>(),
         displayLegends = false,
-        dataKey = "",
         chartType = "pie",
         scaleType = "linear",
         perSite = false,
@@ -87,8 +87,15 @@
         backgroundHoverColor = ["#aaaaaa"],
     }: Props = $props();
 
+    // This is undefined if the lens options are not loaded yet
     let options: ChartOption | undefined = $derived(
-        $lensOptions?.chartOptions?.[dataKey],
+        $lensOptions?.chartOptions?.[catalogueGroupCode],
+    );
+
+    let responseGroupCode: string = $derived(
+        new Map($lensOptions?.catalogueKeyToResponseKeyMap).get(
+            catalogueGroupCode,
+        ) || catalogueGroupCode,
     );
 
     /**
@@ -189,12 +196,12 @@
 
     const accumulateValues = (
         valuesToAccumulate: string[],
-        datakey: string,
+        catalogueGroupCode: string,
     ): number => {
         let aggregatedData = 0;
 
         valuesToAccumulate.forEach((value: string) => {
-            aggregatedData += getStratum(datakey, value);
+            aggregatedData += getStratum(catalogueGroupCode, value);
         });
         return aggregatedData;
     };
@@ -214,7 +221,7 @@
 
         if (perSite) {
             dataSet = chartLabels.map((label: string) =>
-                getSiteTotal(label, dataKey),
+                getSiteTotal(label, catalogueGroupCode),
             );
 
             let remove_indexes: number[] = [];
@@ -271,7 +278,7 @@
             options.accumulatedValues.forEach((valueToAccumulate) => {
                 const aggregationCount: number = accumulateValues(
                     valueToAccumulate.values,
-                    dataKey,
+                    catalogueGroupCode,
                 );
                 if (aggregationCount > 0) {
                     combinedSubGroupData.data.push(aggregationCount);
@@ -327,7 +334,7 @@
     ): { labels: string[]; data: number[] } => {
         const labelsToData = new Map<string, number>();
         for (const label of labels) {
-            const value = getStratum(dataKey, label);
+            const value = getStratum(responseGroupCode, label);
 
             if (!label.includes(divider) || divider === "") {
                 /*
@@ -384,7 +391,7 @@
         if (perSite) {
             chartLabels.push(...siteStatus.keys());
         } else {
-            chartLabels = getStrata(dataKey);
+            chartLabels = getStrata(responseGroupCode);
         }
         chartLabels = filterRegexMatch(chartLabels);
         chartLabels.sort(customSort);
@@ -540,7 +547,7 @@
                 parentCategory.childCategories?.forEach(
                     (childCategorie: Category) => {
                         if (
-                            childCategorie.key === dataKey &&
+                            childCategorie.key === catalogueGroupCode &&
                             (childCategorie.fieldType === "single-select" ||
                                 childCategorie.fieldType === "autocomplete" ||
                                 childCategorie.fieldType === "number")
