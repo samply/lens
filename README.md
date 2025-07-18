@@ -45,7 +45,7 @@ To set up a development environment for **samply.lens**, ensure you have [Node.j
     ```
 2. Install dependencies:
     ```shell
-    npm install
+    npm ci
     ```
 3. Start the development server:
     ```shell
