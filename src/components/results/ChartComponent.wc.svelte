@@ -440,16 +440,18 @@
             });
         }
 
-        /**
-         * set the labels of the chart
-         * if a legend mapping is set, use the legend mapping
-         */
-        chart.data.labels =
-            options?.legendMapping !== undefined
-                ? chartLabels.map(
-                      (label) => options.legendMapping?.[label] || "",
-                  )
-                : chartLabels;
+        // Set the chart labels, using either the legend mapping or the site mappings
+        if (options?.legendMapping !== undefined) {
+            chart.data.labels = chartLabels.map(
+                (label) => options.legendMapping?.[label] ?? label,
+            );
+        } else if (perSite && $lensOptions?.siteMappings !== undefined) {
+            chart.data.labels = chartLabels.map(
+                (label) => $lensOptions.siteMappings?.[label] ?? label,
+            );
+        } else {
+            chart.data.labels = chartLabels;
+        }
 
         let max = Math.max(
             ...chartData.data.map((dataset) => Math.max(...dataset.data)),
