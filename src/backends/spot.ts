@@ -27,7 +27,7 @@ export async function querySpot(
     url = url.endsWith("/") ? url : url + "/";
     const id = uuidv4();
 
-    const response = await fetch(`${url}beam?sites=${sites.join(",")}`, {
+    const response = await fetch(`${url}beam`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
