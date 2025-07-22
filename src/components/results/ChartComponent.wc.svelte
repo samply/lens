@@ -23,6 +23,7 @@
     import { lensOptions } from "../../stores/options";
     import type { ChartOption } from "../../types/options";
     import type { ChartDataSets } from "../../types/charts";
+    import { SvelteMap } from "svelte/reactivity";
 
     interface Props {
         title?: string; // e.g. 'Gender Distribution'
@@ -332,7 +333,7 @@
         divider: string,
         labels: string[],
     ): { labels: string[]; data: number[] } => {
-        const labelsToData = new Map<string, number>();
+        const labelsToData = new SvelteMap<string, number>();
         for (const label of labels) {
             const value = getStratum(responseGroupCode, label);
 
