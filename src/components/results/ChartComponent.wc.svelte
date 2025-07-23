@@ -188,14 +188,11 @@
         },
     };
 
-    const accumulateValues = (
-        valuesToAccumulate: string[],
-        datakey: string,
-    ): number => {
+    const accumulateValues = (valuesToAccumulate: string[]): number => {
         let aggregatedData = 0;
 
         valuesToAccumulate.forEach((value: string) => {
-            aggregatedData += getStratum(datakey, value);
+            aggregatedData += getStratum(dataKey, value);
         });
         return aggregatedData;
     };
@@ -272,7 +269,6 @@
             options.accumulatedValues.forEach((valueToAccumulate) => {
                 const aggregationCount: number = accumulateValues(
                     valueToAccumulate.values,
-                    dataKey,
                 );
                 if (aggregationCount > 0) {
                     combinedSubGroupData.data.push(aggregationCount);
