@@ -37,7 +37,7 @@
     }
 </script>
 
-{#if criterion.description != ""}
+{#if criterion.description}
     <abbr part="lens-singleselect-item-underline" title={criterion.description}
         >{criterion.name}</abbr
     >
