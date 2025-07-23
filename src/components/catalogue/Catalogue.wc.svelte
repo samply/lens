@@ -53,9 +53,15 @@
         lensOptions.subscribe((opts) => {
             if (opts !== undefined && !didRun) {
                 if (opts.facetCount) {
-                    fetchFacetCounts(opts.facetCount.backendUrl);
-                    didRun = true;
+                    if (!opts.spotUrl) {
+                        console.warn(
+                            "No Spot URL set in options, facet counts will not be fetched.",
+                        );
+                    } else {
+                        fetchFacetCounts(opts.spotUrl);
+                    }
                 }
+                didRun = true;
             }
         });
     });

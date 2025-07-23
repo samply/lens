@@ -1,14 +1,13 @@
 # Facet counts
 
-Lens can query facet counts from a backend and display them in the catalogue. Facet counts are roughly speaking the number of results one would get when only searching for that criteria.
+Lens can query facet counts from [Spot](https://github.com/samply/spot) and display them in the catalogue. Facet counts are the number of results one would get when only searching for that criteria.
 
 ![Example of facet counts](facet-counts.png)
 
-To enable facet counts add the following options:
+To enable facet counts add the following to the Lens options:
 
 ```json
 "facetCount": {
-    "backendUrl": "http://localhost:5124/prism",
     "hoverText": {
         "gender": "Matching patients for this criterion only",
         "diagnosis": "Total number of this diagnosis across all patients",
@@ -17,9 +16,13 @@ To enable facet counts add the following options:
 },
 ```
 
-`hoverText` controls the text that is displayed when hovering the mouse over the number chips.
+`hoverText` controls the text that is displayed when hovering the mouse over the number chips. You also have to set the Spot URL in the Lens options:
 
-Lens POSTs an array of sites (e.g. `{"sites": ["berlin", "munich"]}`) to the endpoint and expects facet counts in the following format:
+```json
+"spotUrl": "https://locator-dev.bbmri-eric.eu/backend"
+```
+
+Lens POSTs an array of sites (e.g. `{"sites": ["berlin", "munich"]}`) to the appropriate Spot endpoint and expects facet counts in the following format:
 
 ```json
 {
