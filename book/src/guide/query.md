@@ -155,7 +155,7 @@ window.addEventListener("lens-search-triggered", () => {
 });
 ```
 
-The [`querySpot`](https://samply.github.io/lens/docs/functions/querySpot.html) function requires that you set the Spot URL to the Lens options:
+The [`querySpot`](https://samply.github.io/lens/docs/functions/querySpot.html) function requires that you set the Spot URL in the Lens options:
 
 ```json
 "spotUrl": "https://locator-dev.bbmri-eric.eu/backend"
