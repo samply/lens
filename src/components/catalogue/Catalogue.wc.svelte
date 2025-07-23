@@ -6,7 +6,6 @@
 
 <script lang="ts">
     import { catalogue } from "../../stores/catalogue";
-    import type { Catalogue } from "../../types/catalogue";
     import DataTreeElement from "./DataTreeElement.svelte";
     import { onMount } from "svelte";
     import { lensOptions } from "../../stores/options";
@@ -14,7 +13,6 @@
     import { translate } from "../../helpers/translations";
 
     interface Props {
-        treeData?: Catalogue;
         /**
          * handle the toggle of the catalogue
          */
@@ -25,7 +23,6 @@
     }
 
     let {
-        treeData = [],
         toggle = {
             collapsable: true,
             open: false,
@@ -37,16 +34,6 @@
     const handleToggle = (): void => {
         isOpen = !isOpen;
     };
-
-    /**
-     * Initialize the catalogue store with the given tree data
-     * watch for changes from other components
-     */
-    $effect(() => {
-        if (treeData.length !== 0) {
-            $catalogue = treeData;
-        }
-    });
 
     onMount(() => {
         let didRun = false;
@@ -76,15 +63,15 @@
             onclick={handleToggle}
         >
             <div
-                part="toggle-button-icon {isOpen
+                part="lens-catalogue-toggle-button-icon {isOpen
                     ? ''
                     : 'lens-catalogue-toggle-button-closed-icon'}"
             >
                 &#9660;
             </div>
             <div
-                part="toggle-button-text {isOpen
-                    ? 'toggle-button-open-text'
+                part="lens-catalogue-toggle-button-text {isOpen
+                    ? 'lens-catalogue-toggle-button-open-text'
                     : ''}"
             >
                 {isOpen
@@ -125,10 +112,6 @@
     [part~="lens-catalogue-toggle-button-closed-icon"] {
         transform: rotate(180deg);
     }
-
-    /**
-  * Catalogue shared
-  */
 
     [part~="lens-catalogue-wrapper"] {
         display: grid;
