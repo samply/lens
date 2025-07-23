@@ -27,7 +27,6 @@
 
     interface Props {
         title?: string; // e.g. 'Gender Distribution'
-        catalogueGroupCode?: string; // e.g. "gender"
         indexAxis?: string;
         xAxisTitle?: string;
         yAxisTitle?: string;
@@ -36,6 +35,7 @@
         displayLegends?: boolean;
         chartType?: keyof ChartTypeRegistry;
         scaleType?: string;
+        dataKey: string;
         perSite?: boolean;
         groupRange?: number;
         groupingDivider?: string;
@@ -48,13 +48,13 @@
 
     let {
         title = "",
-        catalogueGroupCode = "",
         indexAxis = "x",
         xAxisTitle = "",
         yAxisTitle = "",
         clickToAddState = false,
         headers = new Map<string, string>(),
         displayLegends = false,
+        dataKey = "",
         chartType = "pie",
         scaleType = "linear",
         perSite = false,
@@ -88,15 +88,8 @@
         backgroundHoverColor = ["#aaaaaa"],
     }: Props = $props();
 
-    // This is undefined if the lens options are not loaded yet
     let options: ChartOption | undefined = $derived(
-        $lensOptions?.chartOptions?.[catalogueGroupCode],
-    );
-
-    let responseGroupCode: string = $derived(
-        new Map($lensOptions?.catalogueKeyToResponseKeyMap).get(
-            catalogueGroupCode,
-        ) || catalogueGroupCode,
+        $lensOptions?.chartOptions?.[dataKey],
     );
 
     /**
@@ -195,14 +188,11 @@
         },
     };
 
-    const accumulateValues = (
-        valuesToAccumulate: string[],
-        catalogueGroupCode: string,
-    ): number => {
+    const accumulateValues = (valuesToAccumulate: string[]): number => {
         let aggregatedData = 0;
 
         valuesToAccumulate.forEach((value: string) => {
-            aggregatedData += getStratum(catalogueGroupCode, value);
+            aggregatedData += getStratum(dataKey, value);
         });
         return aggregatedData;
     };
@@ -222,7 +212,7 @@
 
         if (perSite) {
             dataSet = chartLabels.map((label: string) =>
-                getSiteTotal(label, catalogueGroupCode),
+                getSiteTotal(label, dataKey),
             );
 
             let remove_indexes: number[] = [];
@@ -279,7 +269,6 @@
             options.accumulatedValues.forEach((valueToAccumulate) => {
                 const aggregationCount: number = accumulateValues(
                     valueToAccumulate.values,
-                    catalogueGroupCode,
                 );
                 if (aggregationCount > 0) {
                     combinedSubGroupData.data.push(aggregationCount);
@@ -335,7 +324,7 @@
     ): { labels: string[]; data: number[] } => {
         const labelsToData = new SvelteMap<string, number>();
         for (const label of labels) {
-            const value = getStratum(responseGroupCode, label);
+            const value = getStratum(dataKey, label);
 
             if (!label.includes(divider) || divider === "") {
                 /*
@@ -392,7 +381,7 @@
         if (perSite) {
             chartLabels.push(...siteStatus.keys());
         } else {
-            chartLabels = getStrata(responseGroupCode);
+            chartLabels = getStrata(dataKey);
         }
         chartLabels = filterRegexMatch(chartLabels);
         chartLabels.sort(customSort);
@@ -550,7 +539,7 @@
                 parentCategory.childCategories?.forEach(
                     (childCategorie: Category) => {
                         if (
-                            childCategorie.key === catalogueGroupCode &&
+                            childCategorie.key === dataKey &&
                             (childCategorie.fieldType === "single-select" ||
                                 childCategorie.fieldType === "autocomplete" ||
                                 childCategorie.fieldType === "number")

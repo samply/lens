@@ -8,7 +8,6 @@ export type LensOptions = {
     /** List of sites to query used by `querySpot` function and facet counts. If not set no sites are sent to Spot and Spot determines the sites to query. */
     sitesToQuery?: string[];
     chartOptions?: ChartOptions;
-    catalogueKeyToResponseKeyMap?: [string, string][];
     siteMappings?: { [key: string]: string };
     negotiateOptions?: NegotiateOptions;
     tableOptions?: TableOptions;
