@@ -3,6 +3,10 @@
 // `npm run schemagen` to update the JSON schema.
 
 export type LensOptions = {
+    /** URL of the Spot API endpoint used by `querySpot` function and facet counts. */
+    spotUrl?: string;
+    /** List of sites to query used by `querySpot` function and facet counts. If not set no sites are sent to Spot and Spot determines the sites to query. */
+    sitesToQuery?: string[];
     chartOptions?: ChartOptions;
     catalogueKeyToResponseKeyMap?: [string, string][];
     siteMappings?: { [key: string]: string };
@@ -20,8 +24,6 @@ export type LensOptions = {
 };
 
 export type FacetCountOptions = {
-    /** URL of the backend that provides facet counts */
-    backendUrl: string;
     /** Hover text for each stratifier in the catalogue */
     hoverText: Record<string, string>;
 };

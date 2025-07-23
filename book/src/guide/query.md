@@ -155,6 +155,18 @@ window.addEventListener("lens-search-triggered", () => {
 });
 ```
 
+The [`querySpot`](https://samply.github.io/lens/docs/functions/querySpot.html) function requires that you set the Spot URL in the Lens options:
+
+```json
+"spotUrl": "https://locator-dev.bbmri-eric.eu/backend"
+```
+
+Usually Spot determines the list of sites to query via its `SITES` environment variable. You can optionally override the list of sites in the Lens options:
+
+```json
+"sitesToQuery": ["lodz-test", "uppsala-test", "eric-test", "DNB-Test"]
+```
+
 Learn how to pass results to Lens in the [Showing results](./results.md) guide.
 
 ### Querying Focus with CQL

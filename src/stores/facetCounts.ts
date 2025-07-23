@@ -15,10 +15,9 @@ export const facetCounts = writable<Record<string, Record<string, number>>>({});
  * - Strips group from response, stores stratifier -> stratum -> number
  */
 export async function fetchFacetCounts(backendURL: string) {
-    const url = backendURL.replace(/\/$/, "") + "/criteria";
+    const url = backendURL.replace(/\/$/, "") + "/prism/criteria";
     const options = get(lensOptions);
-    // Try to get sites from siteMappings, fallback to empty array
-    const sites = Object.keys(options?.siteMappings || {});
+    const sites: string[] | undefined = options?.sitesToQuery;
     try {
         const response = await fetch(url, {
             method: "POST",
