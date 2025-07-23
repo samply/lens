@@ -22,15 +22,15 @@ export async function querySpot(
     signal: AbortSignal,
     resultCallback: (result: SpotResult) => void,
 ): Promise<void> {
-    let url = get(lensOptions)?.spotUrl;
+    const url = get(lensOptions)?.spotUrl?.replace(/\/$/, "");
     if (!url) {
         throw new Error("Spot URL is not set in options.");
     }
-    url = url.endsWith("/") ? url : url + "/";
+    // If sites are not defined, we don't send them and Spot determines the sites to query
     const sites = get(lensOptions)?.sitesToQuery;
     const id = uuidv4();
 
-    const response = await fetch(`${url}beam`, {
+    const response = await fetch(`${url}/beam`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -55,7 +55,7 @@ export async function querySpot(
     }
 
     const eventSource = new EventSource(
-        `${url}beam/${id}` +
+        `${url}/beam/${id}` +
             (sites !== undefined ? `?wait_count=${sites.length}` : ""),
         {
             withCredentials: true,
