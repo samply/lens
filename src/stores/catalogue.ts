@@ -328,6 +328,7 @@ export function setCatalogue(cat: Catalogue) {
     catalogue.set(cat);
     const ajv = new Ajv({
         allErrors: true,
+        removeAdditional: true,
     });
     addFormats(ajv);
     const valid = ajv.validate(catalogueSchema, cat);
