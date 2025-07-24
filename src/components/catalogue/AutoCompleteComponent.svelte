@@ -43,6 +43,8 @@
     };
 
     onMount(() => {
+        searchBarInput.focus();
+
         let subgroups: Criteria[] = [];
         criteria.forEach((element) => {
             if (element.subgroup != undefined) {
@@ -284,9 +286,9 @@
 </script>
 
 <div>
-    <div part="autocomplete-formfield">
+    <div part="lens-autocomplete-formfield">
         <input
-            part="autocomplete-formfield-input"
+            part="lens-autocomplete-formfield-input"
             type="text"
             bind:this={searchBarInput}
             bind:value={inputValue}
@@ -386,14 +388,14 @@
 </div>
 
 <style>
-    [part~="autocomplete-formfield"] {
+    [part~="lens-autocomplete-formfield"] {
         margin-bottom: var(--gap-xs);
         margin-top: var(--gap-xs);
         position: relative;
     }
 
     /* Input field styled to match the date input */
-    [part~="autocomplete-formfield-input"] {
+    [part~="lens-autocomplete-formfield-input"] {
         box-sizing: border-box;
         border: 1px solid var(--gray);
         border-radius: var(--gap-xs);
@@ -405,7 +407,7 @@
     }
 
     /* Focus state */
-    [part~="autocomplete-formfield-input"]:focus {
+    [part~="lens-autocomplete-formfield-input"]:focus {
         border-color: var(--blue);
     }
     [part~="autocomplete-options"] {

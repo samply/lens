@@ -6,26 +6,22 @@
 
 <script lang="ts">
     import { datarequestsStore } from "../../stores/datarequests";
-    import { negotiate } from "../../services/ccpProjectManager";
     import { bbmriNegotiate } from "../../services/bbmriNegotiate";
 
     interface Props {
         title?: string;
-        type: string;
+        type?: string;
     }
 
-    let { title = "Negotiate with biobanks", type }: Props = $props();
+    let { title = "Request Data", type }: Props = $props();
 
     /**
      *
      */
     function exec(): void {
+        window.dispatchEvent(new CustomEvent("lens-negotiate-triggered"));
         if (type == "Negotiator") {
             bbmriNegotiate($datarequestsStore);
-        } else if (type == "ProjectManager") {
-            negotiate($datarequestsStore);
-        } else {
-            console.error("No Service selected");
         }
     }
 </script>

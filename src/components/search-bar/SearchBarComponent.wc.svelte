@@ -18,10 +18,15 @@
     import type { AutoCompleteItem, QueryItem } from "../../types/queryData";
     import { v4 as uuidv4 } from "uuid";
     import StoreDeleteButtonComponent from "../buttons/StoreDeleteButtonComponent.svelte";
-    import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
     import { catalogue } from "../../stores/catalogue";
     import { facetCounts } from "../../stores/facetCounts";
     import { lensOptions } from "../../stores/options";
+    import QueryExplainButtonComponent from "../buttons/QueryExplainButtonComponent.wc.svelte";
+    import { onMount } from "svelte";
+    import { showErrorToast } from "../../stores/toasts";
+    import { translate } from "../../helpers/translations";
+    import { get } from "svelte/store";
+    import { SvelteURLSearchParams } from "svelte/reactivity";
 
     interface Props {
         /** The string to display when no matches are found */
@@ -349,6 +354,50 @@
         );
         return resultString;
     };
+
+    onMount(() => {
+        // load the query from the URL if it exists
+        const encodedQuery = new URLSearchParams(window.location.search).get(
+            "query",
+        );
+        if (encodedQuery !== null) {
+            try {
+                const query = JSON.parse(
+                    new TextDecoder().decode(
+                        Uint8Array.from(atob(encodedQuery), (c) =>
+                            c.charCodeAt(0),
+                        ),
+                    ),
+                );
+                queryStore.set(query);
+            } catch {
+                console.error("Failed to parse query from URL:", encodedQuery);
+                showErrorToast(translate("query_in_url_parse_error"));
+            }
+        }
+
+        // update the URL when the query changes
+        queryStore.subscribe(() => {
+            if (get(lensOptions)?.autoUpdateQueryInUrl ?? true) {
+                const query = get(queryStore);
+                const encodedQuery = btoa(
+                    String.fromCharCode(
+                        ...new TextEncoder().encode(JSON.stringify(query)),
+                    ),
+                );
+                const params = new SvelteURLSearchParams(
+                    window.location.search,
+                );
+                params.set("query", encodedQuery);
+                const newUrl =
+                    window.location.pathname +
+                    "?" +
+                    params.toString() +
+                    window.location.hash;
+                window.history.replaceState({}, "", newUrl);
+            }
+        });
+    });
 </script>
 
 <div part="lens-searchbar">
@@ -362,17 +411,13 @@
                     {#each queryItem.values as value (value.queryBindId)}
                         <span part="lens-searchbar-chip-item">
                             <span>{value.name}</span>
-                            <span part="lens-searchbar-chip-info-span">
-                                &nbsp;
-                                <InfoButtonComponent
-                                    showQuery={true}
-                                    onlyChildInfo={true}
-                                    queryItem={{
-                                        ...queryItem,
-                                        values: [value],
-                                    }}
-                                />
-                            </span>
+                            <QueryExplainButtonComponent
+                                queryItem={{
+                                    ...queryItem,
+                                    values: [value],
+                                }}
+                                inSearchBar={true}
+                            />
                             {#if queryItem.values.length > 1}
                                 <StoreDeleteButtonComponent
                                     itemToDelete={{
@@ -420,7 +465,7 @@
                     {#if inputOptions
                         .map((option) => option.name)
                         .indexOf(inputOption.name) === i}
-                        <div part="autocomplete-options-heading">
+                        <div part="lens-searchbar-autocomplete-options-heading">
                             <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                             {@html getBoldedText(inputOption.name)}
                         </div>
@@ -434,14 +479,16 @@
                             part="lens-searchbar-autocomplete-options-item lens-searchbar-autocomplete-options-item-focused"
                             onmousedown={() => selectItemByClick(inputOption)}
                         >
-                            <div part="autocomplete-options-item-name">
+                            <div
+                                part="lens-searchbar-autocomplete-options-item-name"
+                            >
                                 <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                                 {@html getBoldedText(
                                     inputOption.criterion.name,
                                 )}
                             </div>
                             <div
-                                part="autocomplete-options-item-description autocomplete-options-item-description-focused"
+                                part="lens-searchbar-autocomplete-options-item-description lens-searchbar-autocomplete-options-item-description-focused"
                             >
                                 {#if inputOption.criterion.description}
                                     <!-- eslint-disable-next-line svelte/no-at-html-tags -->
@@ -452,7 +499,7 @@
                             </div>
                             {#if $facetCounts[inputOption.key] !== undefined}
                                 <div
-                                    part="autocomplete-options-item-facet-count"
+                                    part="lens-searchbar-autocomplete-options-item-facet-count"
                                     title={$lensOptions?.facetCount
                                         ?.hoverText?.[inputOption.key] ?? ""}
                                 >
@@ -470,13 +517,17 @@
                             part="lens-searchbar-autocomplete-options-item"
                             onmousedown={() => selectItemByClick(inputOption)}
                         >
-                            <div part="autocomplete-options-item-name">
+                            <div
+                                part="lens-searchbar-autocomplete-options-item-name"
+                            >
                                 <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                                 {@html getBoldedText(
                                     inputOption.criterion.name,
                                 )}
                             </div>
-                            <div part="autocomplete-options-item-description">
+                            <div
+                                part="lens-searchbar-autocomplete-options-item-description"
+                            >
                                 {#if inputOption.criterion.description}
                                     <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                                     {@html getBoldedText(
@@ -486,7 +537,7 @@
                             </div>
                             {#if $facetCounts[inputOption.key] !== undefined}
                                 <div
-                                    part="autocomplete-options-item-facet-count"
+                                    part="lens-searchbar-autocomplete-options-item-facet-count"
                                     title={$lensOptions?.facetCount
                                         ?.hoverText?.[inputOption.key] ?? ""}
                                 >
@@ -507,13 +558,7 @@
             <li>{typeMoreMessage}</li>
         </ul>
     {/if}
-    <StoreDeleteButtonComponent
-        itemToDelete={{ type: "group", index }}
-        on:clear-search={() => {
-            inputValue = "";
-            focusedItemIndex = -1;
-        }}
-    />
+    <StoreDeleteButtonComponent itemToDelete={{ type: "group", index }} />
 </div>
 
 <style>
@@ -535,8 +580,7 @@
         background-color: var(--white);
         border: solid 1px var(--light-gray);
         border-radius: var(--border-radius-small);
-        padding-right: var(--gap-xs);
-        padding-left: var(--gap-xs);
+        padding: var(--gap-xxs) var(--gap-xs);
         display: flex;
         flex-wrap: wrap;
         width: -webkit-fill-available;
@@ -551,28 +595,29 @@
 
     [part~="lens-searchbar-chip-name"] {
         font-weight: bold;
-        padding-right: var(--gap-xs);
     }
 
     [part~="lens-searchbar-chip"] {
         background-color: var(--blue);
         color: var(--white);
         border-radius: var(--border-radius-small);
-        padding: 2px var(--gap-s) 2px var(--gap-xs);
+        padding: 5px var(--gap-s) 5px var(--gap-xs);
         display: flex;
         flex-flow: row wrap;
         align-items: center;
         position: relative;
+        gap: var(--gap-xs);
     }
 
     [part~="lens-searchbar-chip-item"] {
         display: inline-flex;
         align-items: center;
+        gap: var(--gap-xxs);
     }
 
     [part~="lens-searchbar-input"] {
         box-sizing: border-box;
-        padding: var(--gap-xs) var(--gap-s) var(--gap-xs) var(--gap-xs);
+        padding: var(--gap-xs);
         min-width: 200px;
         flex-grow: 1;
         outline: none;
@@ -618,7 +663,7 @@
         padding: var(--gap-xxs) var(--gap-xs);
     }
 
-    [part~="autocomplete-options-heading"] {
+    [part~="lens-searchbar-autocomplete-options-heading"] {
         font-weight: bold;
         grid-column: 1 / -1;
     }
@@ -634,14 +679,14 @@
         background-color: var(--light-gray);
     }
 
-    [part~="autocomplete-options-item-description"] {
+    [part~="lens-searchbar-autocomplete-options-item-description"] {
         color: var(--blue);
         font-size: var(--font-size-s);
     }
-    [part~="autocomplete-options-item-description-focused"] {
+    [part~="lens-searchbar-autocomplete-options-item-description-focused"] {
         color: var(--white);
     }
-    [part~="autocomplete-options-item-facet-count"] {
+    [part~="lens-searchbar-autocomplete-options-item-facet-count"] {
         color: #636363;
         font-size: 0.95em;
         justify-self: right;

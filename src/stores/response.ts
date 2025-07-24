@@ -1,192 +1,195 @@
-import { writable } from "svelte/store";
-import type { Site, SiteData } from "../types/response";
-import type { ResponseStore } from "../types/backend";
+import { writable, get } from "svelte/store";
+import type { FhirMeasureReport } from "../types/response";
 
-export const responseStore = writable<ResponseStore>(new Map<string, Site>());
-
-/**
- * emits an event every time the response store is updated
- */
-responseStore.subscribe(() => {
-    const event = new CustomEvent("lens-responses-updated");
-    window.dispatchEvent(event);
-});
+const siteResults = writable(new Map<string, LensResult>());
 
 /**
- * updates the response store with a given response
- * @param response - the response to update the store with
+ * This store contains the sites that have responded and their status.
+ *
+ * If the site has started processing the beam task, it will be marked as "claimed",
+ * and if a result is available, it will be marked as "succeeded".
  */
-export const updateResponseStore = (response: ResponseStore): void => {
-    let store: ResponseStore;
-    responseStore.subscribe((s: ResponseStore) => (store = s));
+export const siteStatus = writable(new Map<string, "claimed" | "succeeded">());
 
-    const changes = new Map<string, Site>();
+/**
+ * Site result contains the stratum counts for each stratifier (e.g gender) in the `stratifiers` field
+ * and the total count of patients, samples, etc. in the `totals` field.
+ *
+ * Example:
+ *
+ * ```
+ * {
+ *     "stratifiers": {
+ *         "gender": {
+ *             "female": 31,
+ *             "male": 43
+ *         },
+ *         "diagnosis": {
+ *             "C34.0": 26,
+ *             "C34.2": 28,
+ *             "C34.8": 25
+ *         },
+ *     },
+ *     "totals": {
+ *         "patients": 74,
+ *         "samples": 312
+ *     }
+ * }
+ * ```
+ */
+export type LensResult = {
+    stratifiers: Record<string, Record<string, number>>;
+    totals: Record<string, number>;
+};
 
-    response.forEach((value, key) => {
-        if (store.get(key)?.status === response.get(key)?.status) {
-            return;
-        }
-        changes.set(key, value);
+/**
+ * Call this when you receive a site result via beam.
+ */
+export function setSiteResult(site: string, result: LensResult) {
+    siteResults.update((results) => {
+        results.set(site, result);
+        return results;
     });
-
-    if (changes.size === 0) {
-        return;
-    }
-
-    responseStore.update((store: ResponseStore): ResponseStore => {
-        changes.forEach((value, key) => {
-            store.set(key, value);
-        });
-        return store;
+    siteStatus.update((status) => {
+        status.set(site, "succeeded");
+        return status;
     });
-};
-
-/*
- * clear the response store
- */
-export const clearResponseStore = () => {
-    responseStore.set(new Map<string, Site>());
-};
+}
 
 /**
- * @param store - the response store
- * @param code - the code to search for
- * @returns the aggregated population count for a given code
+ * Call this to indicate that the beam task has been claimed and a result will be available soon.
  */
-export const getAggregatedPopulation = (
-    store: ResponseStore,
-    code: string,
-): number => {
-    let population = 0;
-    for (const site of store.values()) {
-        if (site.status === "succeeded") {
-            population += getSitePopulationForCode(site.data, code);
+export function markSiteClaimed(site: string) {
+    siteStatus.update((sites) => {
+        sites.set(site, "claimed");
+        return sites;
+    });
+}
+
+export function measureReportToLensResult(
+    measureReport: FhirMeasureReport,
+): LensResult {
+    const result: LensResult = {
+        stratifiers: {},
+        totals: {},
+    };
+    for (const group of measureReport.group) {
+        const measureCode = group.code.text;
+        // Get total count
+        if (group.population && group.population.length > 0) {
+            result.totals[measureCode] = group.population[0].count;
         }
-    }
-    return population;
-};
-
-/**
- * @param site - data of the responding site
- * @param code - the code to search for
- * @returns the population count for a given code at a given site
- */
-export const getSitePopulationForCode = (
-    site: SiteData,
-    code: string,
-): number => {
-    let population = 0;
-    for (const group of site.group) {
-        if (group.code.text === code) {
-            population += group.population[0].count;
-        }
-    }
-    return population;
-};
-
-/**
- * @param store - the response store
- * @param stratumCode - the code to search for
- * @param stratifier - the stratifier code to define where the stratumCode should be searched
- * @returns the aggregated population count for a given stratum code
- * (stratum code is the value.text of a stratum item e.g.'male')
- */
-export const getAggregatedPopulationForStratumCode = (
-    store: ResponseStore,
-    stratumCode: string,
-    stratifier: string,
-): number => {
-    let population = 0;
-    for (const site of store.values()) {
-        if (site.status === "succeeded") {
-            population += getSitePopulationForStratumCode(
-                site.data,
-                stratumCode,
-                stratifier,
-            );
-        }
-    }
-    return population;
-};
-
-/**
- * @param site - data of the responding site
- * @param stratumCode - the code to search for
- * @param stratifier - the stratifier code to define where the stratumCode should be searched
- * @returns the population for a given stratum code for a given site
- */
-export const getSitePopulationForStratumCode = (
-    site: SiteData,
-    stratumCode: string,
-    stratifier: string,
-): number => {
-    for (const group of site.group) {
-        for (const stratifierItem of group.stratifier) {
-            if (
-                stratifierItem.code[0].text === stratifier &&
-                stratifierItem.stratum !== undefined
-            ) {
-                for (const stratumItem of stratifierItem.stratum) {
-                    if (
-                        stratumItem.value.text === stratumCode &&
-                        stratumItem.population !== undefined
-                    ) {
-                        return stratumItem.population[0].count;
+        // Get stratum counts
+        for (const stratifier of group.stratifier) {
+            const stratifierName = stratifier.code[0].text;
+            if (!result.stratifiers[stratifierName]) {
+                result.stratifiers[stratifierName] = {};
+            }
+            if (stratifier.stratum) {
+                for (const stratum of stratifier.stratum) {
+                    const stratumName = stratum.value.text;
+                    if (stratum.population && stratum.population.length > 0) {
+                        result.stratifiers[stratifierName][stratumName] =
+                            stratum.population[0].count;
                     }
                 }
             }
         }
     }
-    return 0;
-};
+    return result;
+}
+
+/*
+ * Clear all site results.
+ */
+export function clearSiteResults() {
+    siteResults.set(new Map());
+    siteStatus.set(new Map());
+}
 
 /**
- * @param store - the response store
- * @param code - the code to search for
- * @returns the stratifier codes for a given group code
+ * Get a total count across all sites.
+ *
+ * Example usage:
+ *
+ * ```ts
+ * getTotal('patients'); // total number of patients across all sites
+ * ```
  */
-export const getStratifierCodesForGroupCode = (
-    store: ResponseStore,
-    code: string,
-): string[] => {
-    const codes: Set<string> = new Set();
-    for (const site of store.values()) {
-        if (site.status === "succeeded") {
-            const siteCodes = getSiteStratifierCodesForGroupCode(
-                site.data,
-                code,
+export function getTotal(code: string): number {
+    let total = 0;
+    for (const siteResult of get(siteResults).values()) {
+        total += siteResult.totals[code] ?? 0;
+    }
+    return total;
+}
+
+/**
+ * Get a total count from a specific site.
+ *
+ * Example usage:
+ *
+ * ```ts
+ * getSiteTotal('berlin', 'patients'); // total number of patients in berlin
+ * ```
+ */
+export function getSiteTotal(site: string, code: string): number {
+    return get(siteResults).get(site)?.totals[code] ?? 0;
+}
+
+/**
+ * Get a stratum count across all sites.
+ *
+ * Example usage:
+ *
+ * ```ts
+ * getStratum('gender', 'female'); // number of females across all sites
+ * ```
+ */
+export function getStratum(stratifier: string, stratum: string): number {
+    let total = 0;
+    for (const siteResult of get(siteResults).values()) {
+        total += siteResult.stratifiers[stratifier]?.[stratum] ?? 0;
+    }
+    return total;
+}
+
+/**
+ * Get a stratum count for a specific site.
+ *
+ * Example usage:
+ *
+ * ```ts
+ * getSiteStratum('berlin', 'gender', 'female'); // number of females in berlin
+ * ```
+ */
+export function getSiteStratum(
+    site: string,
+    stratifier: string,
+    stratumCode: string,
+): number {
+    return (
+        get(siteResults).get(site)?.stratifiers[stratifier]?.[stratumCode] ?? 0
+    );
+}
+
+/**
+ * For a given stratifier, get all possible stratum codes across all sites.
+ *
+ * Example usage:
+ *
+ * ```ts
+ * getStrata('gender'); // example return value: ['female', 'male', 'other']
+ * ```
+ */
+export function getStrata(code: string): string[] {
+    const strataSet = new Set<string>();
+    for (const siteResult of get(siteResults).values()) {
+        if (siteResult.stratifiers[code]) {
+            Object.keys(siteResult.stratifiers[code]).forEach((stratum) =>
+                strataSet.add(stratum),
             );
-            for (const code of siteCodes) {
-                codes.add(code);
-            }
         }
     }
-    return Array.from(codes);
-};
-
-/**
- * @param site - data of the responding site
- * @param code - the code to search for
- * @returns the stratifier codes for a given group code for a single site
- */
-
-export const getSiteStratifierCodesForGroupCode = (
-    site: SiteData,
-    code: string,
-): string[] => {
-    const codes: string[] = [];
-    site.group.forEach((groupItem) => {
-        groupItem.stratifier.forEach((stratifierItem) => {
-            if (
-                stratifierItem.code[0].text === code &&
-                stratifierItem.stratum
-            ) {
-                stratifierItem.stratum.forEach((stratumItem) => {
-                    codes.push(stratumItem.value.text);
-                });
-            }
-        });
-    });
-
-    return codes;
-};
+    return Array.from(strataSet);
+}

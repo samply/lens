@@ -43,4 +43,16 @@ const lensTranslations: Texts = {
         en: "One of the search fields is empty. Please delete empty search fields or enter search criteria.",
         de: "Eine der Suchleisten ist leer. Löschen Sie leere Suchleisten oder fügen Sie Suchkriterien ein.",
     },
+    catalogue_expand: {
+        en: "Expand Catalogue",
+        de: "Katalog ausklappen",
+    },
+    catalogue_collapse: {
+        en: "Collapse Catalogue",
+        de: "Katalog einklappen",
+    },
+    query_in_url_parse_error: {
+        en: "Failed to parse the query parameter in the URL",
+        de: "Der Query-Parameter in der URL konnte nicht geparst werden",
+    },
 };

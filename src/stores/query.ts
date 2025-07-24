@@ -5,21 +5,15 @@
 import type { QueryItem, QueryValue } from "../types/queryData";
 import { writable, get } from "svelte/store";
 import { v4 as uuidv4 } from "uuid";
-import type { Category, Criteria } from "../types/catalogue";
 
 export const queryStore = writable<QueryItem[][]>([[]]);
 
-export const queryBase64Store = writable<string>("");
+export function getQueryStore(): QueryItem[][] {
+    return get(queryStore);
+}
 
-/**
- * when the url has a query as base64 string, this will be parsed and the queryStore will be updated
- */
-const urlParams: URLSearchParams = new URLSearchParams(window.location.search);
-const queryParam: string | null = urlParams.get("query");
-
-if (queryParam !== null) {
-    const queryParamDecoded: QueryItem[][] = JSON.parse(atob(queryParam));
-    queryStore.set(queryParamDecoded);
+export function setQueryStore(query: QueryItem[][]): void {
+    queryStore.set(query);
 }
 
 /**
@@ -32,10 +26,8 @@ export const activeQueryGroupIndex = writable<number>(0);
  */
 export const queryModified = writable<boolean>(false);
 
-/**
- * emits an event every time the value of the query store is updated
- */
 queryStore.subscribe(() => {
+    // emit an event when the query is updated
     const event = new CustomEvent("lens-query-updated");
     window.dispatchEvent(event);
 });
@@ -222,95 +214,6 @@ function findObjectsWithSameName(objectsArray: QueryItem[]): QueryItem[] {
 
     return duplicateObjects;
 }
-
-/**
- * adds a single stratifier to the query
- * numbers can be grouped together by setting the groupRange
- * @param label the value of the stratifier (e.g. "C31")
- * @param catalogue the catalogue where the stratifier is located
- * @param catalogueGroupCode the code of the group where the stratifier is located (e.g. "diagnosis")
- * @param queryGroupIndex the index of the query group where the stratifier should be added
- */
-
-export interface AddStratifierParams {
-    label: string;
-    catalogueGroupCode: string;
-    catalogue: Category[];
-    queryGroupIndex?: number;
-    groupRange?: number;
-    system?: string;
-}
-
-export const addStratifier = ({
-    label,
-    catalogue,
-    catalogueGroupCode,
-    queryGroupIndex = 0,
-    groupRange = 1,
-    system = "",
-}: AddStratifierParams): void => {
-    let queryItem: QueryItem;
-    catalogue.forEach((parentCategory: Category) => {
-        if ("childCategories" in parentCategory) {
-            parentCategory.childCategories?.forEach(
-                (childCategorie: Category) => {
-                    if (
-                        childCategorie.key === catalogueGroupCode &&
-                        (childCategorie.fieldType === "single-select" ||
-                            childCategorie.fieldType === "autocomplete" ||
-                            childCategorie.fieldType === "number")
-                    ) {
-                        let values: QueryValue[] = [];
-
-                        if (childCategorie.fieldType === "number") {
-                            values = [
-                                {
-                                    name: `${label}`,
-                                    value: {
-                                        min: parseInt(label),
-                                        max: parseInt(label) + groupRange - 1,
-                                    },
-                                    queryBindId: uuidv4(),
-                                },
-                            ];
-                        } else {
-                            childCategorie.criteria.forEach(
-                                (criterion: Criteria) => {
-                                    if (criterion.key === label) {
-                                        values[0] = {
-                                            name: criterion.name,
-                                            value: criterion.key,
-                                            queryBindId: uuidv4(),
-                                            description: criterion.description,
-                                        };
-                                    }
-                                },
-                            );
-                        }
-
-                        queryItem = {
-                            id: uuidv4(),
-                            key: childCategorie.key,
-                            name: childCategorie.name,
-                            system:
-                                "system" in childCategorie &&
-                                childCategorie.system !== ""
-                                    ? childCategorie.system
-                                    : system,
-                            type:
-                                "type" in childCategorie
-                                    ? childCategorie.type
-                                    : "BETWEEN",
-                            values: values,
-                        };
-
-                        addItemToQuery(queryItem, queryGroupIndex);
-                    }
-                },
-            );
-        }
-    });
-};
 
 /**
  * Adds an item to the currently active query group

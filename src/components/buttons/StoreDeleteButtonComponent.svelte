@@ -6,12 +6,13 @@
         queryModified,
     } from "../../stores/query";
     import type { QueryItem } from "../../types/queryData";
-    import { createEventDispatcher } from "svelte";
-    import { lensOptions } from "../../stores/options";
 
-    const dispatch = createEventDispatcher();
     interface Props {
-        itemToDelete: { type: string; index: number; item?: QueryItem };
+        itemToDelete: {
+            type: "item" | "group" | "value";
+            index: number;
+            item?: QueryItem;
+        };
     }
 
     let { itemToDelete }: Props = $props();
@@ -23,8 +24,6 @@
      * can be a group, item or value
      */
     const deleteItem = (): void => {
-        dispatch("clear-search");
-
         if (type === "group") {
             queryModified.set(true);
             queryStore.update((query) => {
@@ -45,18 +44,22 @@
 </script>
 
 <button
-    part="query-delete-button query-delete-button-{type}"
+    part="lens-query-delete-button lens-query-delete-button-{type}"
     onclick={deleteItem}
+    aria-label="Delete"
 >
-    {#if $lensOptions?.iconOptions?.deleteUrl}
-        <img
-            part="delete-button-icon delete-button-icon-{type}"
-            src={$lensOptions?.iconOptions?.deleteUrl}
-            alt="delete icon"
-        />
-    {:else}
-        &#x2715;
-    {/if}
+    <svg
+        width="16"
+        height="16"
+        viewBox="0 0 16 16"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="currentColor"
+        ><path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M8 8.707l3.646 3.647.708-.707L8.707 8l3.647-3.646-.707-.708L8 7.293 4.354 3.646l-.707.708L7.293 8l-3.646 3.646.707.708L8 8.707z"
+        /></svg
+    >
 </button>
 
 <style>
@@ -64,68 +67,38 @@
 * delete buttons in searchbar and chips
 */
 
-    [part~="query-delete-button"] {
-        background-color: var(--white);
+    [part~="lens-query-delete-button"] {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 18px;
+        width: 18px;
         color: var(--orange);
+        background-color: transparent;
         cursor: pointer;
         padding: 0;
         border-radius: 50%;
-        box-sizing: content-box;
-        height: calc(var(--font-size-xs) + 6px);
-        width: calc(var(--font-size-xs) + 6px);
+        border: 1px solid var(--white);
     }
 
-    [part~="query-delete-button"]:hover {
-        border: solid 1px var(--orange);
+    [part~="lens-query-delete-button"]:hover {
+        border: 1px solid var(--orange);
         color: var(--orange);
     }
 
-    [part~="query-delete-button-value"] {
-        font-size: var(--font-size-xxs);
+    [part~="lens-query-delete-button-value"] {
         color: var(--white);
-        margin: 0 var(--gap-xs) 0 var(--gap-xxs);
-        background-color: var(--blue);
-        border: var(--white) 1px solid;
-        transform: translatey(-1px);
     }
 
-    [part~="query-delete-button-item"] {
-        font-size: var(--font-size-xs);
+    [part~="lens-query-delete-button-item"] {
         position: absolute;
         top: -6px;
         right: -10px;
-        border: solid 1px var(--white);
-    }
-
-    [part~="query-delete-button-group"] {
-        font-size: var(--font-size-s);
-        height: calc(var(--font-size-s) + 10px);
-        width: calc(var(--font-size-s) + 10px);
         background-color: var(--white);
-        border: solid 1px var(--white);
     }
 
-    [part~="delete-button-icon-item"] {
-        filter: invert(41%) sepia(43%) saturate(4610%) hue-rotate(357deg)
-            brightness(96%) contrast(90%);
-        transform: translate(-1px, -1px);
-        width: 20px;
-    }
-
-    [part~="delete-button-icon-group"] {
-        filter: invert(41%) sepia(43%) saturate(4610%) hue-rotate(357deg)
-            brightness(96%) contrast(90%);
-        transform: translate(0px, 2px);
-        width: 20px;
-    }
-
-    [part~="delete-button-icon-value"] {
-        transform: translate(-1px, -1px);
-        width: 20px;
-    }
-
-    [part~="delete-button-icon-value"]:hover {
-        filter: invert(38%) sepia(78%) saturate(1321%) hue-rotate(352deg)
-            brightness(92%) contrast(99%);
+    [part~="lens-query-delete-button-group"] {
+        height: 24px;
+        width: 24px;
     }
 </style>

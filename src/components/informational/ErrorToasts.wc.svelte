@@ -6,15 +6,15 @@
 
 <script lang="ts">
     import { fade } from "svelte/transition";
-    import { errorToasts, removeToast } from "../stores/toasts";
+    import { errorToasts, removeToast } from "../../stores/toasts";
 </script>
 
-<div part="flex-container">
+<div part="lens-toast-flex-container">
     {#each $errorToasts as toast (toast.id)}
-        <div out:fade part="toast">
-            <div part="message">{toast.message}</div>
+        <div out:fade part="lens-toast">
+            <div part="lens-toast-message">{toast.message}</div>
             <button
-                part="close-button"
+                part="lens-toast-close-button"
                 onclick={() => {
                     removeToast(toast.id);
                 }}
@@ -40,7 +40,7 @@
 </div>
 
 <style>
-    [part~="flex-container"] {
+    [part~="lens-toast-flex-container"] {
         pointer-events: none;
         position: fixed;
         bottom: 0;
@@ -52,7 +52,7 @@
         padding: var(--gap-s);
     }
 
-    [part~="toast"] {
+    [part~="lens-toast"] {
         pointer-events: auto;
         border-radius: var(--border-radius-small);
         background-color: #ef9a9a;
@@ -61,11 +61,11 @@
         align-items: center;
     }
 
-    [part~="message"] {
+    [part~="lens-toast-message"] {
         padding: var(--gap-xs);
     }
 
-    [part~="close-button"] {
+    [part~="lens-toast-close-button"] {
         padding: var(--gap-xs);
         margin-left: auto; /* align right */
 

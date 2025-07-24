@@ -3,27 +3,26 @@
 // `npm run schemagen` to update the JSON schema.
 
 export type LensOptions = {
+    /** URL of the Spot API endpoint used by `querySpot` function and facet counts. */
+    spotUrl?: string;
+    /** List of sites to query used by `querySpot` function and facet counts. If not set no sites are sent to Spot and Spot determines the sites to query. */
+    sitesToQuery?: string[];
     chartOptions?: ChartOptions;
-    catalogueKeyToResponseKeyMap?: [string, string][];
     siteMappings?: { [key: string]: string };
     negotiateOptions?: NegotiateOptions;
-    projectmanagerOptions?: ProjectManagerOptions;
     tableOptions?: TableOptions;
     resultSummaryOptions?: ResultSummaryOptions;
-    /** Allows customizing icons by specifying image files */
-    iconOptions?: IconUrls;
     /** Two letter language code of the application language */
     language?: string;
     /** Allows to customize texts and add new translations */
     texts?: Texts;
-    backends?: BackendOptions;
     /** If set, fetch and display facet counts (number of results per discrete value) in the catalogue. */
     facetCount?: FacetCountOptions;
+    /** Whether to automatically update the query in the URL when it changes (default: true) */
+    autoUpdateQueryInUrl?: boolean;
 };
 
 export type FacetCountOptions = {
-    /** URL of the backend that provides facet counts */
-    backendUrl: string;
     /** Hover text for each stratifier in the catalogue */
     hoverText: Record<string, string>;
 };
@@ -56,17 +55,6 @@ export type NegotiateOptionsSiteMapping = {
     site_id: string;
     /** Name of the collection, e.g. "Collection of RWTH cBMB Broad Consent Aachen" */
     collection_name: string;
-};
-
-export type ProjectManagerOptionsSiteMapping = {
-    site: string;
-    collection: string;
-};
-
-export type ProjectManagerOptions = {
-    newProjectUrl: string;
-    editProjectUrl: string;
-    siteMappings: ProjectManagerOptionsSiteMapping[];
 };
 
 export type ChartOptions = {
@@ -102,17 +90,6 @@ export type HeaderData = {
     hintText?: string[];
 };
 
-export type IconUrls = {
-    /** Icon for an info button used in various places */
-    infoUrl?: string;
-    /** Icon for a delete button used in various places */
-    deleteUrl?: string;
-    /** Icon for the button that adds items from the catalogue to the search bar */
-    addIconUrl?: string;
-    /** Icon for the button that expands and collapses items in the catalogue */
-    toggleIconUrl?: string;
-};
-
 /**
  * A map of texts that are displayed in the application. The keys are used to
  * look up the text in the application code. The values are objects that map
@@ -122,24 +99,4 @@ export type Texts = {
     [key: string]: {
         [key: string]: string;
     };
-};
-
-export type BackendOptions = {
-    spots?: SpotOption[];
-    blazes?: BlazeOption[];
-    customAstBackends?: string[];
-};
-
-export type SpotOption = {
-    name: string;
-    backendMeasures: string;
-    url: string;
-    sites: string[];
-};
-
-export type BlazeOption = {
-    name: string;
-    url: string;
-    auth?: string;
-    backendMeasures: string;
 };

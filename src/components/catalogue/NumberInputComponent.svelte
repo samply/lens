@@ -57,8 +57,7 @@
                 values: [
                     {
                         name: buildName(),
-                        // TODO: 0 indicates absence of min/max, this should be changed so we can use 0 as a value
-                        value: { min: from ?? 0, max: to ?? 0 },
+                        value: { min: from ?? undefined, max: to ?? undefined },
                         queryBindId: uuidv4(),
                     },
                 ],
@@ -68,10 +67,10 @@
     }
 </script>
 
-<form part="number-input-form" {onsubmit}>
-    <div part="number-input-formfield-wrapper">
+<form part="lens-number-input-form" {onsubmit}>
+    <div part="lens-number-input-formfield-wrapper">
         <input
-            part="number-input-formfield"
+            part="lens-number-input-formfield"
             type="number"
             step="any"
             placeholder="min"
@@ -81,13 +80,15 @@
             bind:this={fromInput}
         />
         {#if element.unitText !== undefined}
-            <span part="number-input-formfield-unit">{element.unitText}</span>
+            <span part="lens-number-input-formfield-unit"
+                >{element.unitText}</span
+            >
         {/if}
     </div>
-    <span part="number-input-range-separator">-</span>
-    <div part="number-input-formfield-wrapper">
+    <span part="lens-number-input-range-separator">-</span>
+    <div part="lens-number-input-formfield-wrapper">
         <input
-            part="number-input-formfield"
+            part="lens-number-input-formfield"
             type="number"
             step="any"
             placeholder="max"
@@ -97,19 +98,21 @@
             bind:this={toInput}
         />
         {#if element.unitText !== undefined}
-            <span part="number-input-formfield-unit">{element.unitText}</span>
+            <span part="lens-number-input-formfield-unit"
+                >{element.unitText}</span
+            >
         {/if}
     </div>
     <AddButton />
 </form>
 
 <style>
-    [part~="number-input-form"] {
+    [part~="lens-number-input-form"] {
         display: flex;
         align-items: center;
         gap: var(--gap-xxs);
     }
-    [part~="number-input-formfield-wrapper"] {
+    [part~="lens-number-input-formfield-wrapper"] {
         display: flex;
         font-size: 10pt;
         border: 1px solid var(--gray);
@@ -117,17 +120,17 @@
         overflow: hidden;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
-    [part~="number-input-formfield-wrapper"]:focus-within {
+    [part~="lens-number-input-formfield-wrapper"]:focus-within {
         border-color: var(--blue);
     }
-    [part~="number-input-formfield"] {
+    [part~="lens-number-input-formfield"] {
         border: none;
         outline: none;
         padding: var(--gap-xxs) var(--gap-xs);
         width: 50px;
         font-size: var(--font-size-s);
     }
-    [part~="number-input-formfield-unit"] {
+    [part~="lens-number-input-formfield-unit"] {
         display: flex;
         align-items: center;
         border-left: 1px solid var(--gray);

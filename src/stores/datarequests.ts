@@ -1,4 +1,4 @@
-import { writable } from "svelte/store";
+import { get, writable } from "svelte/store";
 
 import { buildAstFromQuery } from "../helpers/ast-transformer";
 import type { AstElement, AstTopLayer } from "../types/ast";
@@ -6,6 +6,11 @@ import type { QueryItem } from "../types/queryData";
 import { queryStore } from "./query";
 
 export const datarequestsStore = writable<string[]>([]);
+
+/** Get the list of sites that the user has selected for negotiation in the results table. */
+export function getSelectedSites(): string[] {
+    return get(datarequestsStore);
+}
 
 /**
  * Recursively builds a human readable query string from the AST
@@ -40,10 +45,19 @@ export const buildHumanReadableRecursively = (
                 }
                 if (
                     typeof child.value === "object" &&
-                    "min" in child.value &&
-                    "max" in child.value
+                    !Array.isArray(child.value) &&
+                    ("min" in child.value || "max" in child.value)
                 ) {
-                    humanReadableQuery += `(${child.key} ${child.type} ${child.value.min} and ${child.value.max})`;
+                    if (
+                        child.value.min !== undefined &&
+                        child.value.max !== undefined
+                    ) {
+                        humanReadableQuery += `(${child.key} from ${child.value.min} to ${child.value.max})`;
+                    } else if (child.value.min !== undefined) {
+                        humanReadableQuery += `(${child.key} greater than or equal to ${child.value.min})`;
+                    } else if (child.value.max !== undefined) {
+                        humanReadableQuery += `(${child.key} less than or equal to ${child.value.max})`;
+                    }
                 }
             }
 

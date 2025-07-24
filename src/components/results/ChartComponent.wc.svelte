@@ -8,26 +8,25 @@
     import Chart, { type ChartTypeRegistry } from "chart.js/auto";
     import { onMount } from "svelte";
     import {
-        getAggregatedPopulation,
-        getAggregatedPopulationForStratumCode,
-        getStratifierCodesForGroupCode,
-        responseStore,
+        getTotal,
+        getStratum,
+        getStrata,
+        getSiteTotal,
+        siteStatus,
     } from "../../stores/response";
     import { v4 as uuidv4 } from "uuid";
     import { activeQueryGroupIndex, addItemToQuery } from "../../stores/query";
     import { catalogue } from "../../stores/catalogue";
     import type { QueryItem, QueryValue } from "../../types/queryData";
     import type { Category, Criteria } from "../../types/catalogue";
-    import type { ResponseStore } from "../../types/backend";
-    import type { Site } from "../../types/response";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
     import { lensOptions } from "../../stores/options";
     import type { ChartOption } from "../../types/options";
     import type { ChartDataSets } from "../../types/charts";
+    import { SvelteMap } from "svelte/reactivity";
 
     interface Props {
         title?: string; // e.g. 'Gender Distribution'
-        catalogueGroupCode?: string; // e.g. "gender"
         indexAxis?: string;
         xAxisTitle?: string;
         yAxisTitle?: string;
@@ -36,6 +35,7 @@
         displayLegends?: boolean;
         chartType?: keyof ChartTypeRegistry;
         scaleType?: string;
+        dataKey: string;
         perSite?: boolean;
         groupRange?: number;
         groupingDivider?: string;
@@ -48,13 +48,13 @@
 
     let {
         title = "",
-        catalogueGroupCode = "",
         indexAxis = "x",
         xAxisTitle = "",
         yAxisTitle = "",
         clickToAddState = false,
         headers = new Map<string, string>(),
         displayLegends = false,
+        dataKey = "",
         chartType = "pie",
         scaleType = "linear",
         perSite = false,
@@ -88,15 +88,8 @@
         backgroundHoverColor = ["#aaaaaa"],
     }: Props = $props();
 
-    // This is undefined if the lens options are not loaded yet
     let options: ChartOption | undefined = $derived(
-        $lensOptions?.chartOptions?.[catalogueGroupCode],
-    );
-
-    let responseGroupCode: string = $derived(
-        new Map($lensOptions?.catalogueKeyToResponseKeyMap).get(
-            catalogueGroupCode,
-        ) || "",
+        $lensOptions?.chartOptions?.[dataKey],
     );
 
     /**
@@ -195,33 +188,21 @@
         },
     };
 
-    const accumulateValues = (
-        responseStore: ResponseStore,
-        valuesToAccumulate: string[],
-        catalogueGroupCode: string,
-    ): number => {
+    const accumulateValues = (valuesToAccumulate: string[]): number => {
         let aggregatedData = 0;
 
         valuesToAccumulate.forEach((value: string) => {
-            aggregatedData += getAggregatedPopulationForStratumCode(
-                responseStore,
-                value,
-                catalogueGroupCode,
-            );
+            aggregatedData += getStratum(dataKey, value);
         });
         return aggregatedData;
     };
 
     /**
      * gets the aggregated population for a given stratum code
-     * @param responseStore - the response store
      * @param chartLabels - the labels for the chart
      * @returns an array of chart data sets from the response store
      */
-    const getChartDataSets = (
-        responseStore: ResponseStore,
-        chartLabels: string[],
-    ): ChartDataSets => {
+    const getChartDataSets = (chartLabels: string[]): ChartDataSets => {
         let dataSet: number[];
 
         // This is bad. For some reason the passed value is a string not a array of strings. With this conversion it does work!
@@ -230,16 +211,9 @@
         }
 
         if (perSite) {
-            dataSet = chartLabels.map((label: string) => {
-                const site: Site | undefined = responseStore.get(label);
-
-                if (site === undefined || site.status !== "succeeded") return 0;
-
-                let data = site?.data?.group?.find(
-                    (groupItem) => groupItem.code.text === catalogueGroupCode,
-                );
-                return data?.population[0]?.count || 0;
-            });
+            dataSet = chartLabels.map((label: string) =>
+                getSiteTotal(label, dataKey),
+            );
 
             let remove_indexes: number[] = [];
 
@@ -268,7 +242,6 @@
 
         const combinedSubGroupData = combineSubGroups(
             groupingDivider,
-            responseStore,
             chartLabels,
         );
 
@@ -278,10 +251,7 @@
          */
         if (options?.aggregations !== undefined) {
             options.aggregations.forEach((aggregation) => {
-                const aggregationCount = getAggregatedPopulation(
-                    responseStore,
-                    aggregation,
-                );
+                const aggregationCount = getTotal(aggregation);
                 combinedSubGroupData.data.push(aggregationCount);
                 combinedSubGroupData.labels.push(aggregation);
             });
@@ -298,9 +268,7 @@
         ) {
             options.accumulatedValues.forEach((valueToAccumulate) => {
                 const aggregationCount: number = accumulateValues(
-                    responseStore,
                     valueToAccumulate.values,
-                    catalogueGroupCode,
                 );
                 if (aggregationCount > 0) {
                     combinedSubGroupData.data.push(aggregationCount);
@@ -347,22 +315,16 @@
     /**
      * combines subgroups into their supergroups like C30, C31.1 and C31.2 into C31
      * @param divider the divider used to split the labels
-     * @param responseStore the response store
      * @param labels the labels to combine
      * @returns the combined labels and their data
      */
     const combineSubGroups = (
         divider: string,
-        responseStore: ResponseStore,
         labels: string[],
     ): { labels: string[]; data: number[] } => {
-        const labelsToData = new Map<string, number>();
+        const labelsToData = new SvelteMap<string, number>();
         for (const label of labels) {
-            const value = getAggregatedPopulationForStratumCode(
-                responseStore,
-                label,
-                responseGroupCode,
-            );
+            const value = getStratum(dataKey, label);
 
             if (!label.includes(divider) || divider === "") {
                 /*
@@ -407,22 +369,19 @@
      * watches the response store and updates the chart data
      * @param responseStore - the response store
      */
-    const setChartData = (responseStore: ResponseStore): void => {
-        if (responseStore.size === 0) {
+    const setChartData = (
+        siteStatus: Map<string, "claimed" | "succeeded">,
+    ): void => {
+        if (siteStatus.size === 0) {
             return;
         }
 
         let chartLabels: string[] = [];
 
         if (perSite) {
-            responseStore.forEach((value: Site, key: string) => {
-                chartLabels.push(key);
-            });
+            chartLabels.push(...siteStatus.keys());
         } else {
-            chartLabels = getStratifierCodesForGroupCode(
-                responseStore,
-                responseGroupCode,
-            );
+            chartLabels = getStrata(dataKey);
         }
         chartLabels = filterRegexMatch(chartLabels);
         chartLabels.sort(customSort);
@@ -439,16 +398,13 @@
          * will be aggregated in groups if a divider is set
          * eg. 'C30', 'C31.1', 'C31.2' -> 'C31' when divider is '.'
          */
-        let chartData: ChartDataSets = getChartDataSets(
-            responseStore,
-            chartLabels,
-        );
+        let chartData: ChartDataSets = getChartDataSets(chartLabels);
 
         // If the chart is empty and no responses are pending show "No Data Available"
         noDataAvailable =
             chartData.data[0].data.every((value) => value === 0) &&
-            !Array.from(responseStore.values()).some(
-                (response) => response.status === "claimed",
+            Array.from(siteStatus.values()).every(
+                (status) => status !== "claimed",
             );
 
         chart.data.datasets = chartData.data;
@@ -474,16 +430,18 @@
             });
         }
 
-        /**
-         * set the labels of the chart
-         * if a legend mapping is set, use the legend mapping
-         */
-        chart.data.labels =
-            options?.legendMapping !== undefined
-                ? chartLabels.map(
-                      (label) => options.legendMapping?.[label] || "",
-                  )
-                : chartLabels;
+        // Set the chart labels, using either the legend mapping or the site mappings
+        if (options?.legendMapping !== undefined) {
+            chart.data.labels = chartLabels.map(
+                (label) => options.legendMapping?.[label] ?? label,
+            );
+        } else if (perSite && $lensOptions?.siteMappings !== undefined) {
+            chart.data.labels = chartLabels.map(
+                (label) => $lensOptions.siteMappings?.[label] ?? label,
+            );
+        } else {
+            chart.data.labels = chartLabels;
+        }
 
         let max = Math.max(
             ...chartData.data.map((dataset) => Math.max(...dataset.data)),
@@ -581,7 +539,7 @@
                 parentCategory.childCategories?.forEach(
                     (childCategorie: Category) => {
                         if (
-                            childCategorie.key === catalogueGroupCode &&
+                            childCategorie.key === dataKey &&
                             (childCategorie.fieldType === "single-select" ||
                                 childCategorie.fieldType === "autocomplete" ||
                                 childCategorie.fieldType === "number")
@@ -650,40 +608,54 @@
     };
 
     $effect(() => {
-        setChartData($responseStore);
+        setChartData($siteStatus);
     });
 </script>
 
-<div part="chart-wrapper">
-    <h4 part="chart-title">{title}</h4>
+<div part="lens-chart-wrapper">
     {#if options?.hintText !== undefined}
-        <InfoButtonComponent message={options.hintText} />
-    {/if}
-
-    {#if noDataAvailable}
-        <div part="chart-overlay">
-            <p part="no-data-available">No Data Available</p>
+        <div part="lens-chart-info-button-wrapper">
+            <InfoButtonComponent
+                message={options.hintText}
+                alignDialogue="left"
+            />
         </div>
     {/if}
 
-    <canvas
-        part="chart-canvas"
-        bind:this={canvas}
-        id="chart"
-        onclick={handleClickOnStratifier}
-    ></canvas>
+    <h4 part="lens-chart-title">{title}</h4>
+
+    {#if noDataAvailable}
+        <div part="lens-chart-overlay">
+            <p part="lens-chart-no-data-available">No Data Available</p>
+        </div>
+    {/if}
+
+    <!-- For responsive charts, Charts.js requires a dedicated container for each canvas: https://www.chartjs.org/docs/latest/configuration/responsive.html#important-note -->
+    <!-- The container requires `min-width: 0` or it won't shrink: https://github.com/chartjs/Chart.js/issues/4156#issuecomment-295180128 -->
+    <div part="lens-chart-container-min-width-0">
+        <canvas
+            part="lens-chart-canvas"
+            bind:this={canvas}
+            id="chart"
+            onclick={handleClickOnStratifier}
+        ></canvas>
+    </div>
     <slot />
 </div>
 
 <style>
-    [part~="chart-wrapper"] {
+    [part~="lens-chart-container-min-width-0"] {
+        min-width: 0;
+    }
+
+    [part~="lens-chart-wrapper"] {
+        height: 100%;
         display: grid;
-        grid-template-rows: auto 1fr auto;
         position: relative;
         background-color: var(--white);
     }
 
-    [part~="chart-overlay"] {
+    [part~="lens-chart-overlay"] {
         position: absolute;
         width: 100%;
         height: 100%;
@@ -692,21 +664,27 @@
         justify-content: center;
     }
 
-    [part~="no-data-available"] {
+    [part~="lens-chart-no-data-available"] {
         font-weight: bold;
         color: var(--gray);
         background-color: var(--white);
         padding: 0.5em;
     }
 
-    [part~="chart-title"] {
+    [part~="lens-chart-title"] {
         text-align: center;
         margin: 0;
         padding-bottom: var(--gap-m);
     }
 
-    [part~="chart-canvas"] {
+    [part~="lens-chart-canvas"] {
         width: 100%;
         max-height: 400px;
+    }
+
+    [part~="lens-chart-info-button-wrapper"] {
+        position: absolute;
+        top: 0;
+        right: 0;
     }
 </style>

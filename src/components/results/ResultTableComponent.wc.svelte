@@ -7,9 +7,9 @@
 <script lang="ts">
     import { datarequestsStore } from "../../stores/datarequests";
     import {
-        getSitePopulationForCode,
-        getSitePopulationForStratumCode,
-        responseStore,
+        getSiteTotal,
+        getSiteStratum,
+        siteStatus,
     } from "../../stores/response";
     import TableItemComponent from "./TableItemComponent.svelte";
     import { lensOptions } from "../../stores/options";
@@ -32,8 +32,8 @@
     let tableRowData: TableRowData = $derived.by(() => {
         let tableRowData: TableRowData = [];
 
-        for (const [key, value] of $responseStore) {
-            if (!["claimed", "succeeded"].includes(value.status)) continue;
+        for (const [site, status] of $siteStatus) {
+            if (!["claimed", "succeeded"].includes(status)) continue;
 
             let tableRow: (string | number)[] = [];
 
@@ -46,41 +46,34 @@
                 // First column is the site name
                 if (index === 0) {
                     const name: string | undefined =
-                        $lensOptions?.siteMappings?.[key];
+                        $lensOptions?.siteMappings?.[site];
                     if (name === undefined) continue;
                     tableRow.push(name);
                     continue;
                 }
 
-                if (value.status === "claimed") {
+                if (status === "claimed") {
                     tableRow.push(translate("loading"));
-                } else if (value.status === "succeeded") {
+                } else if (status === "succeeded") {
                     if (header.dataKey !== undefined) {
-                        tableRow.push(
-                            getSitePopulationForCode(
-                                value.data,
-                                header.dataKey,
-                            ),
-                        );
+                        tableRow.push(getSiteTotal(site, header.dataKey));
                     } else if (header.aggregatedDataKeys !== undefined) {
                         let aggregatedPopulation = 0;
                         for (const dataKey of header.aggregatedDataKeys) {
                             if (dataKey.groupCode) {
-                                aggregatedPopulation +=
-                                    getSitePopulationForCode(
-                                        value.data,
-                                        dataKey.groupCode,
-                                    );
+                                aggregatedPopulation += getSiteTotal(
+                                    site,
+                                    dataKey.groupCode,
+                                );
                             } else if (
                                 dataKey.stratifierCode &&
                                 dataKey.stratumCode
                             ) {
-                                aggregatedPopulation +=
-                                    getSitePopulationForStratumCode(
-                                        value.data,
-                                        dataKey.stratumCode,
-                                        dataKey.stratifierCode,
-                                    );
+                                aggregatedPopulation += getSiteStratum(
+                                    site,
+                                    dataKey.stratifierCode,
+                                    dataKey.stratumCode,
+                                );
                             }
                         }
                         tableRow.push(aggregatedPopulation);
@@ -109,7 +102,7 @@
     /**
      * checks or unchecks all biobanks
      */
-    const checkAllBiobanks = (): void => {
+    const checkAllSites = (): void => {
         if (allChecked) {
             $datarequestsStore = [];
         } else {
@@ -196,22 +189,23 @@
     let pageSizeOption = $state(pageSizeOptions[0]);
 </script>
 
-<h4 part="result-table-title">{title}</h4>
-<table part="result-table">
-    <thead part="table-header">
-        <tr part="table-header-row">
-            <th part="table-header-cell table-header-cell-checkbox"
+<h4 part="lens-result-table-title">{title}</h4>
+<table part="lens-result-table">
+    <thead part="lens-result-table-header">
+        <tr part="lens-result-table-header-row">
+            <th
+                part="lens-result-table-header-cell lens-result-table-header-cell-checkbox"
                 ><input
-                    part="table-header-checkbox"
+                    part="lens-result-table-header-checkbox"
                     type="checkbox"
                     checked={allChecked}
-                    onchange={checkAllBiobanks}
+                    onchange={checkAllSites}
                 /></th
             >
             <!-- eslint-disable-next-line svelte/require-each-key -->
             {#each headerData as header, index}
                 <th
-                    part="table-header-cell table-header-datatype"
+                    part="lens-result-table-header-cell lens-result-table-header-datatype"
                     onclick={() => clickedOnColumnHeader(index)}
                 >
                     {header.title}
@@ -231,33 +225,33 @@
             {/each}
         </tr>
     </thead>
-    <tbody part="table-body">
+    <tbody part="lens-result-table-table-body">
         <!-- eslint-disable-next-line svelte/require-each-key -->
         {#each visibleRows as tableRow}
             <TableItemComponent {tableRow} />
         {/each}
     </tbody>
 </table>
-<slot name="above-pagination" />
-<div part="table-pagination">
+<slot name="lens-result-above-pagination" />
+<div part="lens-result-table-pagination">
     <button
-        part="table-pagination-button pagination-pagination-previous"
+        part="lens-result-table-pagination-button lens-result-pagination-pagination-previous"
         disabled={activePage === 1}
         onclick={() => (activePage -= 1)}>&#8592;</button
     >
-    <div part="table-pagination-pagenumber">
+    <div part="lens-result-table-pagination-pagenumber">
         {activePage} / {tableRowData.length === 0
             ? 1
             : Math.ceil(tableRowData.length / pageSize)}
     </div>
     <button
-        part="table-pagination-button pagination-pagination-next"
+        part="lens-result-table-pagination-button lens-result-pagination-pagination-next"
         disabled={activePage === Math.ceil(tableRowData.length / pageSize) ||
             tableRowData.length === 0}
         onclick={() => (activePage += 1)}>&#8594;</button
     >
     {#if pageSizeSwitcher === true}
-        <span part="table-pagination-switcher">
+        <span part="lens-result-table-pagination-switcher">
             Results per page:
             <select
                 bind:value={pageSizeOption}
@@ -275,13 +269,13 @@
 <slot name="beneath-pagination" />
 
 <style>
-    [part~="result-table-title"] {
+    [part~="lens-result-table-title"] {
         text-align: center;
         margin: 0;
         padding-bottom: var(--gap-m);
     }
 
-    [part~="result-table"] {
+    [part~="lens-result-table"] {
         border-collapse: collapse;
         width: 100%;
         border-spacing: 0 15px;
@@ -289,15 +283,15 @@
         overflow: scroll;
     }
 
-    [part~="table-header"] {
+    [part~="lens-result-table-header"] {
         border-bottom: solid 1px var(--gray);
     }
 
-    [part~="table-header-row"] {
+    [part~="lens-result-table-header-row"] {
         text-align: left;
     }
 
-    [part~="table-header-cell"] {
+    [part~="lens-result-table-header-cell"] {
         padding-bottom: var(--gap-xs);
         width: 32%;
         cursor: pointer;
@@ -305,12 +299,12 @@
         user-select: none;
     }
 
-    [part~="table-header-cell-checkbox"] {
+    [part~="lens-result-table-header-cell-checkbox"] {
         padding-bottom: var(--gap-xs);
         width: 4%;
     }
 
-    [part~="table-pagination"] {
+    [part~="lens-result-table-pagination"] {
         display: flex;
         justify-content: center;
         padding-top: var(--gap-m);
@@ -318,7 +312,7 @@
         align-items: flex-end;
     }
 
-    [part~="table-pagination-button"]:enabled {
+    [part~="lens-result-table-pagination-button"]:enabled {
         border: solid 1px var(--blue);
         background: var(--white);
         border-radius: var(--border-radius-small);
@@ -326,7 +320,7 @@
         cursor: pointer;
     }
 
-    [part~="table-pagination-button"]:disabled {
+    [part~="lens-result-table-pagination-button"]:disabled {
         border: solid 1px var(--light-gray);
         background: var(--white);
         border-radius: var(--border-radius-small);
@@ -334,7 +328,7 @@
         cursor: auto;
     }
 
-    [part~="table-pagination-switcher"] {
+    [part~="lens-result-table-pagination-switcher"] {
         margin-left: 20px;
     }
 </style>

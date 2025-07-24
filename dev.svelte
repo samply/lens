@@ -4,8 +4,10 @@
         setOptions,
         showErrorToast,
         translate,
+        setSiteResult,
+        getAst,
+        resetDiagrams,
     } from "./src/index";
-    import type { QueryEvent, Site } from "./src/index";
     import { facetCounts } from "./src/stores/facetCounts";
 
     setOptions({
@@ -20,10 +22,6 @@
             riverside: "Riverside",
             summit: "Summit",
         },
-        catalogueKeyToResponseKeyMap: [
-            ["gender", "Gender"],
-            ["diagnosis", "diagnosis-icd10"],
-        ],
         chartOptions: {
             gender: {
                 hintText: [
@@ -131,6 +129,11 @@
                 {
                     key: "B-",
                     name: "B-",
+                    description: "",
+                },
+                {
+                    key: "somethinglong",
+                    name: "This is a very long name for a blood group just to test the layout",
                     description: "",
                 },
             ],
@@ -254,7 +257,8 @@
                                 {
                                     key: "urn:dktk:code:3:2",
                                     name: "Gliom - Grad I",
-                                    description: "",
+                                    description:
+                                        "Diagnosis D43.% and Morph 9383/1,9384/1",
                                     aggregatedValue: [
                                         [
                                             {
@@ -313,254 +317,54 @@
         },
     });
 
-    function sleep(ms: number): Promise<void> {
-        return new Promise((resolve) => {
-            setTimeout(resolve, ms);
-        });
-    }
+    window.addEventListener("lens-search-triggered", () => {
+        resetDiagrams();
+        console.log("AST:", JSON.stringify(getAst()));
 
-    window.addEventListener("emit-lens-query", (event) => {
-        const detail = (event as QueryEvent).detail;
-        console.log("AST:", JSON.stringify(detail.ast));
-        sleep(3000).then(() => {
-            detail.updateResponse(new Map([["riverside", makeSite(5, 4, 0)]]));
-            detail.updateResponse(new Map([["summit", makeSite(12, 18, 3)]]));
-        });
+        setTimeout(() => {
+            setSiteResult("riverside", {
+                totals: {
+                    patients: 9,
+                },
+                stratifiers: {
+                    gender: {
+                        male: 5,
+                        female: 4,
+                        other: 0,
+                    },
+                    diagnosis: {
+                        C31: 40,
+                        "C31.0": 20,
+                        C41: 30,
+                        "41.0": 10,
+                    },
+                },
+            });
+
+            setSiteResult("summit", {
+                stratifiers: {
+                    gender: {
+                        male: 12,
+                        female: 18,
+                        other: 3,
+                    },
+                    diagnosis: {
+                        C31: 40,
+                        "C31.0": 20,
+                        C41: 30,
+                        "41.0": 10,
+                    },
+                },
+                totals: {
+                    patients: 33,
+                },
+            });
+        }, 1000);
     });
 
     function setLangAndReload(lang: string) {
         localStorage.setItem("language", lang);
         window.location.reload();
-    }
-
-    /**
-     * Create a mock {@link Site} response
-     */
-    function makeSite(male: number, female: number, other: number): Site {
-        return {
-            status: "succeeded",
-            data: {
-                date: "2025-03-13T09:39:22.238610329Z",
-                extension: [
-                    {
-                        url: "https://samply.github.io/blaze/fhir/StructureDefinition/eval-duration",
-                        valueQuantity: {
-                            code: "s",
-                            system: "http://unitsofmeasure.org",
-                            unit: "s",
-                            value: 7.755854268,
-                        },
-                        valueRatio: null,
-                    },
-                    {
-                        url: "https://samply.github.io/blaze/fhir/StructureDefinition/bloom-filter-ratio",
-                        valueQuantity: null,
-                        valueRatio: {
-                            denominator: {
-                                value: 0,
-                            },
-                            numerator: {
-                                value: 0,
-                            },
-                        },
-                    },
-                ],
-                group: [
-                    {
-                        code: {
-                            text: "patients",
-                        },
-                        population: [
-                            {
-                                code: {
-                                    coding: [
-                                        {
-                                            code: "initial-population",
-                                            system: "http://terminology.hl7.org/CodeSystem/measure-population",
-                                        },
-                                    ],
-                                },
-                                count: male + female + other,
-                            },
-                        ],
-                        stratifier: [
-                            {
-                                code: [
-                                    {
-                                        text: "Gender",
-                                    },
-                                ],
-                                stratum: [
-                                    {
-                                        population: [
-                                            {
-                                                code: {
-                                                    coding: [
-                                                        {
-                                                            code: "initial-population",
-                                                            system: "http://terminology.hl7.org/CodeSystem/measure-population",
-                                                        },
-                                                    ],
-                                                },
-                                                count: male,
-                                            },
-                                        ],
-                                        value: {
-                                            text: "male",
-                                        },
-                                    },
-                                    {
-                                        population: [
-                                            {
-                                                code: {
-                                                    coding: [
-                                                        {
-                                                            code: "initial-population",
-                                                            system: "http://terminology.hl7.org/CodeSystem/measure-population",
-                                                        },
-                                                    ],
-                                                },
-                                                count: female,
-                                            },
-                                        ],
-                                        value: {
-                                            text: "female",
-                                        },
-                                    },
-                                    {
-                                        population: [
-                                            {
-                                                code: {
-                                                    coding: [
-                                                        {
-                                                            code: "initial-population",
-                                                            system: "http://terminology.hl7.org/CodeSystem/measure-population",
-                                                        },
-                                                    ],
-                                                },
-                                                count: other,
-                                            },
-                                        ],
-                                        value: {
-                                            text: "other",
-                                        },
-                                    },
-                                ],
-                            },
-                        ],
-                    },
-                    {
-                        code: {
-                            text: "diagnosis-icd10",
-                        },
-                        population: [
-                            {
-                                code: {
-                                    coding: [
-                                        {
-                                            code: "initial-population",
-                                            system: "http://terminology.hl7.org/CodeSystem/measure-population",
-                                        },
-                                    ],
-                                },
-                                count: 100,
-                            },
-                        ],
-                        stratifier: [
-                            {
-                                code: [
-                                    {
-                                        text: "diagnosis-icd10",
-                                    },
-                                ],
-                                stratum: [
-                                    {
-                                        population: [
-                                            {
-                                                code: {
-                                                    coding: [
-                                                        {
-                                                            code: "initial-population",
-                                                            system: "http://terminology.hl7.org/CodeSystem/measure-population",
-                                                        },
-                                                    ],
-                                                },
-                                                count: 40,
-                                            },
-                                        ],
-                                        value: {
-                                            text: "C31",
-                                        },
-                                    },
-                                    {
-                                        population: [
-                                            {
-                                                code: {
-                                                    coding: [
-                                                        {
-                                                            code: "initial-population",
-                                                            system: "http://terminology.hl7.org/CodeSystem/measure-population",
-                                                        },
-                                                    ],
-                                                },
-                                                count: 20,
-                                            },
-                                        ],
-                                        value: {
-                                            text: "C31.0",
-                                        },
-                                    },
-                                    {
-                                        population: [
-                                            {
-                                                code: {
-                                                    coding: [
-                                                        {
-                                                            code: "initial-population",
-                                                            system: "http://terminology.hl7.org/CodeSystem/measure-population",
-                                                        },
-                                                    ],
-                                                },
-                                                count: 30,
-                                            },
-                                        ],
-                                        value: {
-                                            text: "C41",
-                                        },
-                                    },
-                                    {
-                                        population: [
-                                            {
-                                                code: {
-                                                    coding: [
-                                                        {
-                                                            code: "initial-population",
-                                                            system: "http://terminology.hl7.org/CodeSystem/measure-population",
-                                                        },
-                                                    ],
-                                                },
-                                                count: 10,
-                                            },
-                                        ],
-                                        value: {
-                                            text: "41.0",
-                                        },
-                                    },
-                                ],
-                            },
-                        ],
-                    },
-                ],
-                measure: "urn:uuid:19a1b508-eaa1-483a-b9a2-26f505509e6a",
-                period: {
-                    end: "2030",
-                    start: "2000",
-                },
-                resourceType: "MeasureReport",
-                status: "complete",
-                type: "summary",
-            },
-        };
     }
 </script>
 
@@ -568,12 +372,12 @@
     <h2 style="margin: 0;">Lens Dev</h2>
 </header>
 
-<div style="display: flex; padding: 10px; gap: 10px;">
+<div style="display: flex; padding: 10px; gap: 10px; align-items: center;">
     <div style="flex: 1">
         <lens-search-bar-multiple></lens-search-bar-multiple>
     </div>
-    <lens-info-button noQueryMessage="Empty Query" showQuery={true}
-    ></lens-info-button>
+    <lens-query-explain-button noQueryMessage="Empty Query"
+    ></lens-query-explain-button>
     <lens-search-button></lens-search-button>
     <lens-query-spinner></lens-query-spinner>
 </div>
@@ -585,30 +389,34 @@
     <div style="flex: 1">
         <lens-result-summary></lens-result-summary>
         <lens-negotiate-button title="Request Data"></lens-negotiate-button>
-        <lens-search-modified-display></lens-search-modified-display>
+        <lens-search-modified-display
+            >The query has changed!</lens-search-modified-display
+        >
         <lens-result-table></lens-result-table>
-        <lens-chart
-            title="Geschlecht"
-            catalogueGroupCode="gender"
-            chartType="pie"
-            displayLegends="true"
-        ></lens-chart>
-        <lens-chart
-            title="diagnosis"
-            catalogueGroupCode="diagnosis"
-            chartType="bar"
-            xAxisTitle="ICD-10-Codes"
-            yAxisTitle="Anzahl der Diagnosen"
-        ></lens-chart>
-        <lens-chart
-            title="diagnosis"
-            catalogueGroupCode="diagnosis"
-            indexAxis="y"
-            scaleType="logarithmic"
-            chartType="bar"
-            xAxisTitle="Anzahl der Diagnosen"
-            yAxisTitle="ICD-10-Codes"
-        ></lens-chart>
+        <div>
+            <lens-chart
+                title="Geschlecht"
+                dataKey="gender"
+                chartType="pie"
+                displayLegends="true"
+            ></lens-chart>
+            <lens-chart
+                title="diagnosis"
+                dataKey="diagnosis"
+                chartType="bar"
+                xAxisTitle="ICD-10-Codes"
+                yAxisTitle="Anzahl der Diagnosen"
+            ></lens-chart>
+            <lens-chart
+                title="diagnosis"
+                dataKey="diagnosis"
+                indexAxis="y"
+                scaleType="logarithmic"
+                chartType="bar"
+                xAxisTitle="Anzahl der Diagnosen"
+                yAxisTitle="ICD-10-Codes"
+            ></lens-chart>
+        </div>
     </div>
 </div>
 

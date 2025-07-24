@@ -14,11 +14,10 @@ export const facetCounts = writable<Record<string, Record<string, number>>>({});
  * - POSTs to /criteria with { sites: [...] }
  * - Strips group from response, stores stratifier -> stratum -> number
  */
-export async function fetchFacetCounts(backendURL: string) {
-    const url = backendURL.replace(/\/$/, "") + "/criteria";
-    const options = get(lensOptions);
-    // Try to get sites from siteMappings, fallback to empty array
-    const sites = Object.keys(options?.siteMappings || {});
+export async function fetchFacetCounts(spotUrl: string) {
+    const url = spotUrl.replace(/\/$/, "") + "/prism/criteria";
+    // If sites are not defined, we don't send them and Spot determines the sites to query
+    const sites = get(lensOptions)?.sitesToQuery;
     try {
         const response = await fetch(url, {
             method: "POST",
@@ -49,7 +48,6 @@ export async function fetchFacetCounts(backendURL: string) {
             }
         }
         facetCounts.set(data);
-        console.log("[facetCounts] updated:", data);
     } catch (e) {
         console.error("Error fetching facet counts", e);
     }

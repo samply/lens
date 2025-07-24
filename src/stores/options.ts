@@ -14,6 +14,7 @@ export function setOptions(options: LensOptions) {
     lensOptions.set(options);
     const ajv = new Ajv({
         allErrors: true,
+        removeAdditional: true,
     });
     addFormats(ajv);
     const valid = ajv.validate(optionsSchema, options);
