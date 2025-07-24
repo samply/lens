@@ -81,7 +81,7 @@ Now run `npm run dev` and open <http://localhost:5173/> in your browser. You sho
 
 Your application must pass two objects to Lens. The [LensOptions](https://samply.github.io/lens/docs/types/LensOptions.html) object contains general configuration options and the [Catalogue](https://samply.github.io/lens/docs/types/Catalogue.html) object describes what users can search for. You can define these objects in TypeScript but many applications in the Samply organization define them in JSON files.
 
-Assuming you are using JSON files, create the file `src/options.json` containing the empty object `{}` and the file `src/catalogue.json` with the following content:
+Assuming you are using JSON files, create the file `src/config/options.json` containing the empty object `{}` and the file `src/config/catalogue.json` with the following content:
 
 ```json
 [
@@ -116,8 +116,8 @@ Add the following to the top of `src/App.svelte` to load the JSON files and pass
         type LensOptions,
         type Catalogue,
     } from "@samply/lens";
-    import options from "./options.json";
-    import catalogue from "./catalogue.json";
+    import options from "./config/options.json";
+    import catalogue from "./config/catalogue.json";
     onMount(() => {
         setOptions(options as LensOptions);
         setCatalogue(catalogue as Catalogue);
@@ -136,8 +136,8 @@ Lens includes JSON schema definitions for the options and the catalogue type. Cr
 
 ```bash
 set -e # Return non-zero exit status if one of the validations fails
-npx ajv validate -c ajv-formats -s node_modules/@samply/lens/schema/options.schema.json -d src/options.json
-npx ajv validate -c ajv-formats -s node_modules/@samply/lens/schema/catalogue.schema.json -d src/catalogue.json
+npx ajv validate -c ajv-formats -s node_modules/@samply/lens/schema/options.schema.json -d src/config/options.json
+npx ajv validate -c ajv-formats -s node_modules/@samply/lens/schema/catalogue.schema.json -d src/config/catalogue.json
 ```
 
 Then install the required dependencies and test the script:
@@ -171,18 +171,28 @@ You can also configure VS Code to validate your JSON files against the schema de
 It is a common requirement to load different options in test and production. You can achieve this by using [a feature of SvelteKit](https://svelte.dev/tutorial/kit/env-dynamic-public) that makes environment variables from the server available in the browser. Applications in the Samply organization commonly accept the following environment variables:
 
 - `PUBLIC_ENVIRONMENT`: Accepts the name of the environment, e.g. `production` or `test`
-- `PUBLIC_BACKEND_URL`: Overwrites the URL of the backend that your application queries
+- `PUBLIC_SPOT_URL`: Overwrites the URL of the [Spot](https://github.com/samply/spot) backend that your application queries
 
-For example you could handle the `PUBLIC_ENVIRONMENT` variable as follows:
+For example you could handle the these variable as follows:
 
 ```html
 <script lang="ts">
-       import { env } from "$env/dynamic/public";
-       ...
+    import type { LensOptions } from "@samply/lens";
+    import { env } from "$env/dynamic/public";
+    import optionsProd from "./config/options.json";
+    import optionsTest from "./config/options-test.json";
+    ...
     onMount(() => {
-           setOptions(env.PUBLIC_ENVIRONMENT === "test" ? testOptions : prodOptions);
+        let options: LensOptions = optionsProd;
+        if (env.PUBLIC_ENVIRONMENT === 'test') {
+            options = optionsTest;
+        }
+        if (env.PUBLIC_SPOT_URL) {
+            options.spotUrl = env.PUBLIC_SPOT_URL;
+        }
+        setOptions(options);
     });
-       ...
+    ...
 </script>
 ```
 
