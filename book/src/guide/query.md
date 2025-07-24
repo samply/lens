@@ -171,7 +171,7 @@ Learn how to pass results to Lens in the [Showing results](./results.md) guide.
 
 ### Querying Focus with CQL
 
-Some applications send CQL queries to Focus. In this case you need AST to CQL translation code in your application. You can get started by copying and adjusting the [`ast-to-cql-translator.ts`](https://github.com/samply/ccp-explorer/blob/main/src/lib/ast-to-cql-translator.ts), [`cqlquery-mappings.ts`](https://github.com/samply/ccp-explorer/blob/main/src/lib/cqlquery-mappings.ts) and [`measures.ts`](https://github.com/samply/ccp-explorer/blob/main/src/measures.ts) files from the CCP explorer repository. Sending the query would then look as follows:
+Some applications send CQL queries to Focus. In this case you need AST to CQL translation code in your application. You can get started by copying and adjusting the [`ast-to-cql-translator.ts`](https://github.com/samply/ccp-explorer/blob/main/src/lib/ast-to-cql-translator.ts), [`cqlquery-mappings.ts`](https://github.com/samply/ccp-explorer/blob/main/src/lib/cqlquery-mappings.ts) and [`measures.ts`](https://github.com/samply/ccp-explorer/blob/main/src/lib/measures.ts) files from the CCP explorer repository. Sending the query would then look as follows:
 
 ```ts
 import {
