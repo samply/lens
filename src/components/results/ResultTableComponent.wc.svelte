@@ -45,10 +45,7 @@
             for (const [index, header] of headerData.entries()) {
                 // First column is the site name
                 if (index === 0) {
-                    const name: string | undefined =
-                        $lensOptions?.siteMappings?.[site];
-                    if (name === undefined) continue;
-                    tableRow.push(name);
+                    tableRow.push($lensOptions?.siteMappings?.[site] ?? site);
                     continue;
                 }
 
