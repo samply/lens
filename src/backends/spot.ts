@@ -41,15 +41,16 @@ export async function querySpot(
             sites,
             query,
         }),
+        redirect: "manual", // Used to detect redirects
     });
 
-    if (!response.ok) {
-        if (response.redirected) {
-            // If the response is a redirect the user is likely not logged in
-            // and we should reload the page to redirect them to the login page.
-            window.location.reload();
-        }
+    if (response.type === "opaqueredirect") {
+        // If the response is a redirect, it means the user is not logged in
+        // and we should reload the page to redirect them to the login page.
+        window.location.reload();
+    }
 
+    if (!response.ok) {
         const error = await response.text();
         throw new Error(`Failed to send query: ${error}`);
     }
