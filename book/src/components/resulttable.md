@@ -1,6 +1,6 @@
 # Result Table
 
-The `lens-result-table` component displays a paginated and sortable table of population metrics from the `LensResult`. It uses the configured Lens options and listens to the `ResultStore`.
+The `lens-result-table` component displays a paginated and sortable table of totals from the `LensResult`. It uses the configured Lens options and listens to the `ResultStore`.
 
 The table is automatically populated with data sources that are marked as **claimed** in the `ResultStore`. You can provide user-friendly labels for internal site keys via the `siteMappings` option. Columns are defined in the table options.
 

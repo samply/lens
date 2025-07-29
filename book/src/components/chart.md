@@ -2,23 +2,32 @@
 
 The `lens-chart` component provides a styled wrapper for visualizing data using Chart.js. It handles dynamic display behaviors like toggling chart visibility, showing hints, and rendering a fallback message when no data is available. Some Options are setable via [ChartOption](https://samply.github.io/lens/docs/types/ChartOption.html)
 
-- Displays a chart inside a responsive layout.
-- Renders a **title** above the chart.
-- Shows a `No Data Available` overlay when no data is present.
-- Optionally displays an info button with hint text.
-- Exposes a `<slot />` for additional content below the chart.
-- Handles chart click events via `handleClickOnStratifier`.
+The componnent is contsturced from a title, the graph. After the title and after the graph are each slots to input custome elements. Via the options you can toggle a
 
 ---
 
 ## Props
 
-| Name              | Type                | Default     | Description                                                    |
-| ----------------- | ------------------- | ----------- | -------------------------------------------------------------- |
-| `title`           | `string`            | `""`        | Title displayed above the chart.                               |
-| `options`         | `object`            | `undefined` | Optional config, e.g., `hintText`.                             |
-| `noDataAvailable` | `boolean`           | `false`     | Determines if the "No Data Available" message should be shown. |
-| `canvas`          | `HTMLCanvasElement` | –           | Bound canvas element for chart rendering.                      |
+| Name                   | Type                  | Default    | Description                                                                                                                                                                                                                                                                                      |
+| ---------------------- | --------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `title`                | `string`              | `""`       | Title displayed above the chart.                                                                                                                                                                                                                                                                 |
+| `indexAxis`            | `string`              | `"x"`      | Determes which axis is used to. With the input 'y' the render data will be flipped                                                                                                                                                                                                               |
+| `xAxisTitle`           | `string`              | `""`       | Title below the xasis.                                                                                                                                                                                                                                                                           |
+| `yAxisTitle`           | `string`              | `""`       | Title below the yasis.                                                                                                                                                                                                                                                                           |
+| `clickToAddState`      | `boolean`             | `"false"`  | With this prop set to true it will add the clicked item to the search. The rendered element must have the same name as the catalogue item.                                                                                                                                                       |
+| `headers`              | `Map<string, string>` | `""`       | TBD                                                                                                                                                                                                                                                                                              |
+| `displayLegends`       | `boolean`             | `""`       | With this option a legende of all data items is render below the graph.                                                                                                                                                                                                                          |
+| `chartType`            | `ChartTypeRegistry`   | `""`       | Which type of chart is rendered                                                                                                                                                                                                                                                                  |
+| `scaleType`            | `string`              | `"linear"` | Sets the scale type of the chart. Either "linear" or "logarithmic"                                                                                                                                                                                                                               |
+| `dataKey`              | `string`              | `""`       | Looks up the data in the Result store.                                                                                                                                                                                                                                                           |
+| `perSite`              | `boolean`             | `"false"`  | If true shows the total of the per of the datakey per lens result.                                                                                                                                                                                                                               |
+| `groupRange`           | `number`              | `""`       | ets the user define a range for the labels when only single values are used eg. '60' -> '60 - 69'.                                                                                                                                                                                               |
+| `groupingDivider`      | `string`              | `""`       | Is the char that combines subgroups into their supergroups like C30, C31.1 and C31.2 into C31                                                                                                                                                                                                    |
+| `filterRegex`          | `string`              | `""`       | Filters data according to the provied regular expression.                                                                                                                                                                                                                                        |
+| `groupingLabel`        | `string`              | `""`       | Sets divider for grouping stratifer together.                                                                                                                                                                                                                                                    |
+| `viewScales`           | `boolean`             | `"true"`   | Displayes the scales on the x and y axis.                                                                                                                                                                                                                                                        |
+| `backgroundColor`      | `string[]`            | `""`       | Expects an array with hex color strings. These colors will be set in the order which are provided. There is no posibillity to map results to certain colors. If no color is set, there are the lens default colors. If you provide more results then colors, they will repeat from the begining. |
+| `backgroundHoverColor` | `string[]`            | `""`       | Similar functionality as the backrgound color, instead the hover colors.                                                                                                                                                                                                                         |
 
 ---
 

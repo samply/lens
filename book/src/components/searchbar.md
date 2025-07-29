@@ -53,6 +53,19 @@ Triggered when the group clear button is clicked.
 
 ---
 
+---
+
+## Example
+
+```html
+<lens-search-bar
+    placeholderText="Search filters..."
+    noMatchesFoundMessage="No criteria match"
+    typeMoreMessage="Type at least 3 characters to search"
+    index="{1}"
+/>
+```
+
 ## Styling
 
 Custom styling is supported via `part` attributes. Key styling hooks include:
@@ -67,16 +80,3 @@ Custom styling is supported via `part` attributes. Key styling hooks include:
 | `lens-searchbar-autocomplete-options-item-focused`     | Highlighted result               |
 | `lens-searchbar-autocomplete-options-item-description` | Optional description             |
 | `lens-searchbar-autocomplete-options-item-facet-count` | Facet count badge                |
-
----
-
-## Example
-
-```html
-<lens-search-bar
-    placeholderText="Search filters..."
-    noMatchesFoundMessage="No criteria match"
-    typeMoreMessage="Type at least 3 characters to search"
-    index="{1}"
-/>
-```

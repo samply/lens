@@ -6,8 +6,6 @@ The `<lens-query-spinner>` component provides a visual indication that a query i
 
 ## Usage
 
-### Basic Example
-
 The spinner appears when a search is in progress and disappears once all site responses are received.
 
 ```html

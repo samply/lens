@@ -1,18 +1,10 @@
 # Search Button
 
-The `lens-search-bar` component triggers a search based on the current query. It is a visually styled button that emits an event when clicked. If the button is disabled, it cannot be interacted with.
+The `lens-search-bar` component triggers a search based on the current query. It is a visually styled button that emits an event when clicked. The button can be disabled via a prop, or will be disabled when a error state is entered in the searchbar.
 
 ## Features
 
-- Emits a global event when clicked:
-
-    ```ts
-    window.dispatchEvent(new CustomEvent("lens-search-triggered"));
-    ```
-
-- Resets the internal query modification state (`queryModified.set(false)`).
-- Customizable label via the `title` prop.
-- Disabled state support for UI control.
+- Emits a event `lens-search-triggered` when clicked. With this event you would trigger some sort of data request for data provider.
 
 ## Props
 
@@ -26,20 +18,6 @@ The `lens-search-bar` component triggers a search based on the current query. It
 ```html
 <lens-search-button></lens-search-button>
 ```
-
-With a custom label and disabled state:
-
-```html
-<lens-search-button title="Apply Filter" disabled="{true}"></lens-search-button>
-```
-
-## Behavior
-
-- When clicked, the button:
-    1. Resets the `queryModified` store to `false`.
-    2. Fires the event `lens-search-triggered`, which can be caught globally.
-
-- When `disabled` is `true`, the button is grayed out and does not respond to clicks.
 
 ## Styling
 
