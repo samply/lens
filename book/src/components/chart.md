@@ -44,7 +44,7 @@ The componnent is contsturced from a title, the graph. After the title and after
 
 ---
 
-## CSS Parts
+## Styling
 
 | Part Name                          | Description                                                   |
 | ---------------------------------- | ------------------------------------------------------------- |
