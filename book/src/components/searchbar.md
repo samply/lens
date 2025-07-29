@@ -1,8 +1,6 @@
 # Search Bar
 
-The `lens-searchbar` component offers an intuitive, interactive search bar for exploring a catalog of single-select items. It serves as the primary interface for users to search, apply, and adjust query criteria.
-
-Selected items appear as interactive chips within the component, giving users a clear visual of their active filters. Users can easily refine their search by removing individual values or entire criteria directly from the chip display.
+The `lens-searchbar` component offers an interface for exploring of all single-select items. It serves as the primary interface for users to search, apply, and adjust query criteria. Selected items appear as interactive chips within the component, giving users a clear visual of their active filters. Users can easily refine their search by removing individual values or entire criteria directly from the chip display.
 
 ---
 
