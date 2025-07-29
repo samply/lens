@@ -1,6 +1,6 @@
 # Search Button
 
-The `lens-search-bar` component triggers a search based on the current query. It is a visually styled button that emits an event when clicked. The button can be disabled via a prop, or will be disabled when a error state is entered in the searchbar.
+The `lens-search-button` component triggers a search based on the current query. It is a visually styled button that emits an event when clicked. The button can be disabled via a prop, or will be disabled when a error state is entered in the searchbar.
 
 ## Features
 
