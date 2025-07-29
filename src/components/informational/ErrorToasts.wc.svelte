@@ -6,7 +6,7 @@
 
 <script lang="ts">
     import { fade } from "svelte/transition";
-    import { errorToasts, removeToast } from "../stores/toasts";
+    import { errorToasts, removeToast } from "../../stores/toasts";
 </script>
 
 <div part="lens-toast-flex-container">

@@ -1,18 +1,4 @@
-export type Stratum = {
-    code: string;
-    population?: number;
-};
-
-export type Site =
-    | {
-          status: "succeeded";
-          data: SiteData;
-      }
-    | {
-          status: "claimed" | "tempfailed" | "permfailed";
-      };
-
-export type SiteData = {
+export type FhirMeasureReport = {
     date: string;
     extension: object[];
     group: {

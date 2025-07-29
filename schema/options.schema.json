@@ -63,10 +63,6 @@
     "FacetCountOptions": {
       "additionalProperties": false,
       "properties": {
-        "backendUrl": {
-          "description": "URL of the backend that provides facet counts",
-          "type": "string"
-        },
         "hoverText": {
           "additionalProperties": {
             "type": "string"
@@ -76,7 +72,6 @@
         }
       },
       "required": [
-        "backendUrl",
         "hoverText"
       ],
       "type": "object"
@@ -127,17 +122,6 @@
           "description": "Whether to automatically update the query in the URL when it changes (default: true)",
           "type": "boolean"
         },
-        "catalogueKeyToResponseKeyMap": {
-          "items": {
-            "items": {
-              "type": "string"
-            },
-            "maxItems": 2,
-            "minItems": 2,
-            "type": "array"
-          },
-          "type": "array"
-        },
         "chartOptions": {
           "$ref": "#/definitions/ChartOptions"
         },
@@ -160,6 +144,17 @@
             "type": "string"
           },
           "type": "object"
+        },
+        "sitesToQuery": {
+          "description": "List of sites to query used by `querySpot` function and facet counts. If not set no sites are sent to Spot and Spot determines the sites to query.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "spotUrl": {
+          "description": "URL of the Spot API endpoint used by `querySpot` function and facet counts.",
+          "type": "string"
         },
         "tableOptions": {
           "$ref": "#/definitions/TableOptions"

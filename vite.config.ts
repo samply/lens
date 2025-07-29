@@ -19,4 +19,8 @@ export default defineConfig({
             rollupTypes: true,
         }),
     ],
+    test: {
+        // Using jsdom, so window.dispatchEvent works in tests
+        environment: "jsdom",
+    },
 });

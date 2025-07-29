@@ -2,7 +2,8 @@
 
 - [User guide](guide/README.md)
     - [Creating a new application](guide/new-app.md)
-    - [Query](guide/query.md)
+    - [The catalogue](guide/catalogue.md)
+    - [Querying a backend](guide/query.md)
     - [Showing results](guide/results.md)
     - [Overwriting styles](guide/overwriting-styles.md)
     - [Translations](guide/translations.md)

@@ -6,43 +6,39 @@ export { setCatalogue } from "./stores/catalogue";
 export { setOptions } from "./stores/options";
 export { translate } from "./helpers/translations";
 export { showErrorToast } from "./stores/toasts";
-export { resetDiagrams } from "./services/reset";
+export { resetDiagrams } from "./helpers/reset";
 export {
     addItemToActiveQueryGroup,
     setQueryStore,
     getQueryStore,
-    addStratifierToQuery,
-    setQueryStoreFromAst,
 } from "./stores/query";
+export { setQueryStoreFromAst } from "./helpers/ast-to-query";
 export {
     setSiteResult,
     markSiteClaimed,
-    measureReportToSiteResult,
+    measureReportToLensResult,
     clearSiteResults,
-    type SiteResult,
+    type LensResult,
 } from "./stores/response";
 export { getAst } from "./helpers/ast-transformer";
-export { buildLibrary, buildMeasure } from "./helpers/cql-measure";
+export {
+    buildLibrary,
+    buildMeasure,
+    type BuildLibraryReturn,
+    type BuildMeasureReturn,
+} from "./helpers/cql-measure";
 export { getSelectedSites, getHumanReadableQuery } from "./stores/datarequests";
 
 // Export backends
-export { createBeamTask, type BeamResult } from "./backends/spot";
-export { Blaze } from "./backends/blaze";
+export { querySpot, type SpotResult } from "./backends/spot";
 
 // Export types
 export type * from "./types/ast";
 export type * from "./types/catalogue";
 export type * from "./types/options";
-export type {
-    MeasureItem,
-    Measure,
-    MeasureGroup,
-    ResponseStore,
-    MeasureStore,
-} from "./types/backend";
-export type { SiteData, Site } from "./types/response";
+export type { FhirMeasureItem, FhirMeasure } from "./types/backend";
+export type { FhirMeasureReport } from "./types/response";
 export type { QueryItem, QueryValue } from "./types/queryData";
-export type { AddStratifierParams } from "./stores/query";
 
 // Include custom elements (aka web components) in the bundle
 import "./components/catalogue/Catalogue.wc.svelte";
@@ -57,7 +53,7 @@ import "./components/buttons/InfoButtonComponent.wc.svelte";
 import "./components/buttons/QueryExplainButtonComponent.wc.svelte";
 import "./components/informational/ModifiedSearchComponent.wc.svelte";
 import "./components/informational/QuerySpinner.wc.svelte";
-import "./components/ErrorToasts.wc.svelte";
+import "./components/informational/ErrorToasts.wc.svelte";
 
 // Include CSS in the bundle
 import "./styles/index.css";

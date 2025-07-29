@@ -1,8 +1,7 @@
 import { writable, get } from "svelte/store";
-import type { SiteData } from "../types/response";
-import type { ResponseStore } from "../types/backend";
+import type { FhirMeasureReport } from "../types/response";
 
-const siteResults = writable(new Map<string, SiteResult>());
+const siteResults = writable(new Map<string, LensResult>());
 
 /**
  * This store contains the sites that have responded and their status.
@@ -38,7 +37,7 @@ export const siteStatus = writable(new Map<string, "claimed" | "succeeded">());
  * }
  * ```
  */
-export type SiteResult = {
+export type LensResult = {
     stratifiers: Record<string, Record<string, number>>;
     totals: Record<string, number>;
 };
@@ -46,7 +45,7 @@ export type SiteResult = {
 /**
  * Call this when you receive a site result via beam.
  */
-export function setSiteResult(site: string, result: SiteResult) {
+export function setSiteResult(site: string, result: LensResult) {
     siteResults.update((results) => {
         results.set(site, result);
         return results;
@@ -67,27 +66,14 @@ export function markSiteClaimed(site: string) {
     });
 }
 
-/**
- * Legacy function to update the response store.
- *
- * Prefer to use {@link setSiteResult} and {@link markSiteClaimed} instead.
- */
-export function legacyUpdateResponseStore(response: ResponseStore): void {
-    for (const [site, siteData] of response.entries()) {
-        if (siteData.status === "claimed") {
-            markSiteClaimed(site);
-        } else if (siteData.status === "succeeded") {
-            setSiteResult(site, measureReportToSiteResult(siteData.data));
-        }
-    }
-}
-
-export function measureReportToSiteResult(siteData: SiteData): SiteResult {
-    const result: SiteResult = {
+export function measureReportToLensResult(
+    measureReport: FhirMeasureReport,
+): LensResult {
+    const result: LensResult = {
         stratifiers: {},
         totals: {},
     };
-    for (const group of siteData.group) {
+    for (const group of measureReport.group) {
         const measureCode = group.code.text;
         // Get total count
         if (group.population && group.population.length > 0) {

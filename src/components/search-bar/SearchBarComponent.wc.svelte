@@ -26,6 +26,7 @@
     import { showErrorToast } from "../../stores/toasts";
     import { translate } from "../../helpers/translations";
     import { get } from "svelte/store";
+    import { SvelteURLSearchParams } from "svelte/reactivity";
 
     interface Props {
         /** The string to display when no matches are found */
@@ -384,7 +385,9 @@
                         ...new TextEncoder().encode(JSON.stringify(query)),
                     ),
                 );
-                const params = new URLSearchParams(window.location.search);
+                const params = new SvelteURLSearchParams(
+                    window.location.search,
+                );
                 params.set("query", encodedQuery);
                 const newUrl =
                     window.location.pathname +
@@ -555,13 +558,7 @@
             <li>{typeMoreMessage}</li>
         </ul>
     {/if}
-    <StoreDeleteButtonComponent
-        itemToDelete={{ type: "group", index }}
-        on:clear-search={() => {
-            inputValue = "";
-            focusedItemIndex = -1;
-        }}
-    />
+    <StoreDeleteButtonComponent itemToDelete={{ type: "group", index }} />
 </div>
 
 <style>
