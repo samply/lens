@@ -46,6 +46,14 @@ export type LensResult = {
  * Call this when you receive a site result via beam.
  */
 export function setSiteResult(site: string, result: LensResult) {
+    // This check was useful during the transition to the new result format
+    // to prevent the siteResults store from being set with the old format.
+    if ("resourceType" in result) {
+        throw new Error(
+            "setSiteResult expects a LensResult, not a FhirMeasureReport",
+        );
+    }
+
     siteResults.update((results) => {
         results.set(site, result);
         return results;
