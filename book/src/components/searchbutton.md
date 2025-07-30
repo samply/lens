@@ -21,15 +21,13 @@ The `lens-search-button` component triggers a search based on the current query.
 
 ## Styling
 
-This component uses `::part()` attributes to expose styling hooks.
-
 | Part name                             | Description                                                       |
 | ------------------------------------- | ----------------------------------------------------------------- |
 | `lens-search-button`                  | Main button container.                                            |
 | `lens-search-button-magnifying-glass` | Icon shown at the start of the button (rotated magnifying glass). |
 | `lens-search-button-title`            | Text label inside the button.                                     |
 
-### Example: Override button styles
+### Example
 
 ```css
 lens-search-button::part(lens-search-button) {

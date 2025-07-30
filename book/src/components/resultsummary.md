@@ -55,29 +55,3 @@ This component uses `::part()` selectors to expose internal styles for customiza
     background: #126154;
 }
 ```
-
-### Clases
-
-````css
-    [part~="lens-result-summary"] {
-        display: grid;
-        grid-template-columns: auto 1fr auto;
-        grid-gap: var(--gap-xl);
-        grid-column: 1/-1;
-        align-items: center;
-    }
-
-    [part~="lens-result-summary-content"] {
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-        gap: 10px;
-    }
-
-    [part~="lens-result-summary-header-title"] {
-        display: flex;
-        align-items: center;
-        gap: var(--gap-xs);
-    }
-    ```
-````

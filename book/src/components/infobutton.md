@@ -37,8 +37,6 @@ Or with multiple lines:
 
 ## Styling
 
-The component uses Shadow DOM parts to allow styling from outside:
-
 | Part name                                | Description                                    |
 | ---------------------------------------- | ---------------------------------------------- |
 | `lens-info-button`                       | Styles the button container.                   |
@@ -50,8 +48,6 @@ The component uses Shadow DOM parts to allow styling from outside:
 | `lens-info-button-dialogue-align-left`   | Tooltip left alignment.                        |
 | `lens-info-button-dialogue-align-right`  | Tooltip right alignment.                       |
 
-To override styles, you can use the `::part()` selector:
-
 ### Exmaple
 
 ```css
@@ -59,55 +55,3 @@ lens-info-button::part(lens-info-button-icon) {
     color: var(--primary-color);
 }
 ```
-
-### Classes
-
-````css
-    [part~="lens-info-button"] {
-        display: block;
-        position: relative;
-        cursor: pointer;
-        border: none;
-        padding: 0;
-        background-color: transparent;
-    }
-
-    [part~="lens-info-button-icon"]:hover {
-        stroke: currentColor;
-        stroke-width: 1;
-    }
-
-    [part~="lens-info-button-icon-in-search-bar"] {
-        color: var(--white);
-    }
-
-    [part~="lens-info-button-icon-in-search-bar"]:hover {
-        color: var(--orange);
-    }
-
-    [part~="lens-info-button-dialogue"] {
-        margin-top: var(--gap-xs);
-        cursor: auto;
-        position: absolute;
-        background-color: var(--white);
-        width: max-content;
-        z-index: 100;
-        padding: var(--gap-xs);
-        border: solid 1px var(--blue);
-        border-radius: var(--border-radius-small);
-    }
-
-    [part~="lens-info-button-dialogue-align-center"] {
-        left: 50%;
-        transform: translateX(-50%);
-    }
-
-    [part~="lens-info-button-dialogue-align-right"] {
-        left: 0;
-    }
-
-    [part~="lens-info-button-dialogue-align-left"] {
-        right: 0;
-    }
-    ```
-````

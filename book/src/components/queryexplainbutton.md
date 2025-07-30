@@ -18,8 +18,6 @@ The `lens-query-explain-button` is a wrapper around the `lens-info-button` that 
 
 ## Styling
 
-This component uses `::part()` selectors to expose internal styles for customization.
-
 | Part name                   | Description                                                                                                      |
 | --------------------------- | ---------------------------------------------------------------------------------------------------------------- |
 | `lens-query-explain-button` | Wrapper around the `InfoButtonComponent` when not in search bar mode. Useful for applying borders, padding, etc. |
@@ -32,19 +30,3 @@ lens-query-explain-button::part(lens-query-explain-button) {
     padding: 8px;
 }
 ```
-
-### Clases
-
-````css
-    [part~="lens-query-explain-button"] {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-sizing: border-box;
-        height: 100%;
-        padding: var(--gap-xxs);
-        border: solid 1px var(--light-blue);
-        border-radius: var(--border-radius-small);
-    }
-    ```
-````

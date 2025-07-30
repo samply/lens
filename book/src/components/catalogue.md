@@ -28,8 +28,6 @@ For a more in depth description of the structure see [catalogue guide](../guide/
 
 ## Styling
 
-The component uses `::part()` attributes for style customization:
-
 | Part Name                                  | Description                          |
 | ------------------------------------------ | ------------------------------------ |
 | `lens-catalogue`                           | Main container of the catalogue      |
@@ -38,12 +36,3 @@ The component uses `::part()` attributes for style customization:
 | `lens-catalogue-toggle-button-closed-icon` | Icon when the catalogue is collapsed |
 | `lens-catalogue-toggle-button-icon`        | The icon stlye                       |
 | `lens-catalogue-toggle-button-open-text`   | The label next to the icon           |
-
-### Classes
-
-```css
-lens-catalogue::part(lens-catalogue-toggle-button) {
-    background-color: var(--dark-blue);
-    color: white;
-}
-```

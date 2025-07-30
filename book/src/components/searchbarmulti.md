@@ -39,5 +39,3 @@ The component exposes styling hooks via `part` attributes for full control over 
 | `lens-searchbar-multiple-wrapper`      | Wrapper for each search bar row                |
 | `lens-searchbar-multiple-add-button`   | Add button to insert a new search bar group    |
 | `lens-searchbar-multiple-or-indicator` | Visual "or" indicator between search bars      |
-
-> Styles can be customized using the `::part()` pseudo-element.
