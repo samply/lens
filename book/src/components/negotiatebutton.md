@@ -39,8 +39,6 @@ Or with a custom label:
 
 ## Styling
 
-The component uses `::part()` attributes for theming and interaction states.
-
 | Part name                        | Description                                             |
 | -------------------------------- | ------------------------------------------------------- |
 | `lens-negotiate-button`          | Base button styling.                                    |
