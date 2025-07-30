@@ -63,7 +63,7 @@ Non of the props are required, however without `datakey` prop the chart does not
 
 ---
 
-## Styling
+### Classes
 
 ```css
 [part~="lens-chart-container-min-width-0"] {

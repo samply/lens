@@ -29,28 +29,6 @@ Each row includes a checkbox to select that data source for a data request. The 
 
 ---
 
-## CSS Parts
-
-| Part Name                                    | Description                                                              |
-| -------------------------------------------- | ------------------------------------------------------------------------ |
-| `lens-result-table-title`                    | The title heading above the table.                                       |
-| `lens-result-table`                          | The table element itself.                                                |
-| `lens-result-table-header`                   | The `<thead>` element.                                                   |
-| `lens-result-table-header-row`               | The header row `<tr>`.                                                   |
-| `lens-result-table-header-cell`              | Generic header cells.                                                    |
-| `lens-result-table-header-cell-checkbox`     | Header cell containing the "select all" checkbox.                        |
-| `lens-result-table-header-datatype`          | Header cells for data type columns (sortable, may include info buttons). |
-| `lens-result-table-header-checkbox`          | The checkbox used to select all rows.                                    |
-| `lens-result-table-table-body`               | The `<tbody>` containing the data rows.                                  |
-| `lens-result-table-pagination`               | Container for pagination controls.                                       |
-| `lens-result-table-pagination-button`        | Previous and next arrow buttons.                                         |
-| `lens-result-pagination-pagination-previous` | Specifically styles the "previous" button.                               |
-| `lens-result-pagination-pagination-next`     | Specifically styles the "next" button.                                   |
-| `lens-result-table-pagination-pagenumber`    | Displays the current page number and total page count.                   |
-| `lens-result-table-pagination-switcher`      | Container for the page size switcher dropdown.                           |
-
----
-
 ## Example
 
 To use the table, define the `tableOptions` and include the component in your HTML:
@@ -73,3 +51,27 @@ tableOptions: {
 ```svelte
 <lens-result-table title="Result Table" pageSize={25} pageSizeSwitcher={true} />
 ```
+
+---
+
+## Styling
+
+| Part Name                                    | Description                                                              |
+| -------------------------------------------- | ------------------------------------------------------------------------ |
+| `lens-result-table-title`                    | The title heading above the table.                                       |
+| `lens-result-table`                          | The table element itself.                                                |
+| `lens-result-table-header`                   | The `<thead>` element.                                                   |
+| `lens-result-table-header-row`               | The header row `<tr>`.                                                   |
+| `lens-result-table-header-cell`              | Generic header cells.                                                    |
+| `lens-result-table-header-cell-checkbox`     | Header cell containing the "select all" checkbox.                        |
+| `lens-result-table-header-datatype`          | Header cells for data type columns (sortable, may include info buttons). |
+| `lens-result-table-header-checkbox`          | The checkbox used to select all rows.                                    |
+| `lens-result-table-table-body`               | The `<tbody>` containing the data rows.                                  |
+| `lens-result-table-pagination`               | Container for pagination controls.                                       |
+| `lens-result-table-pagination-button`        | Previous and next arrow buttons.                                         |
+| `lens-result-pagination-pagination-previous` | Specifically styles the "previous" button.                               |
+| `lens-result-pagination-pagination-next`     | Specifically styles the "next" button.                                   |
+| `lens-result-table-pagination-pagenumber`    | Displays the current page number and total page count.                   |
+| `lens-result-table-pagination-switcher`      | Container for the page size switcher dropdown.                           |
+
+---

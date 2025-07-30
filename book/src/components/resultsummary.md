@@ -2,6 +2,8 @@
 
 The `lens-result-summary` component displays a compact summary of result metrics defined in the Lens options. It is typically used to show overall values, such as the total number of patients found across all data sources or how many sources responded successfully.
 
+---
+
 ## Example
 
 To use it, define the configuration in the Lens options and include the component in your HTML:
@@ -18,6 +20,12 @@ resultSummaryOptions: {
     ]
 }
 ```
+
+---
+
+## Usage
+
+The component doesn't use any props and is only set via the [options](https://samply.github.io/lens/docs/types/ResultSummaryOptions.html)
 
 ```svelte
 <lens-result-summary></lens-result-summary>
@@ -47,3 +55,29 @@ This component uses `::part()` selectors to expose internal styles for customiza
     background: #126154;
 }
 ```
+
+### Clases
+
+````css
+    [part~="lens-result-summary"] {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        grid-gap: var(--gap-xl);
+        grid-column: 1/-1;
+        align-items: center;
+    }
+
+    [part~="lens-result-summary-content"] {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        gap: 10px;
+    }
+
+    [part~="lens-result-summary-header-title"] {
+        display: flex;
+        align-items: center;
+        gap: var(--gap-xs);
+    }
+    ```
+````

@@ -24,7 +24,7 @@ Customize the component using the exposed part:
 | ------------------------------------- | ------------------------------------------------ |
 | `lens-query-modified-display-wrapper` | Wraps the content and applies border and spacing |
 
-### Example CSS
+### Example
 
 ```css
 lens-search-modified-display::part(lens-query-modified-display-wrapper) {
@@ -33,3 +33,17 @@ lens-search-modified-display::part(lens-query-modified-display-wrapper) {
     font-weight: bold;
 }
 ```
+
+### Classes
+
+````css
+    [part~="lens-query-modified-display-wrapper"] {
+        border: solid var(--light-orange) 1px;
+        border-radius: var(--border-radius-small);
+        padding: var(--gap-xxs) var(--gap-xs);
+        text-align: center;
+        width: max-content;
+        margin: var(--gap-xs) auto;
+    }
+    ```
+````

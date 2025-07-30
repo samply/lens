@@ -39,7 +39,7 @@ The component uses `::part()` attributes for style customization:
 | `lens-catalogue-toggle-button-icon`        | The icon stlye                       |
 | `lens-catalogue-toggle-button-open-text`   | The label next to the icon           |
 
-### Example
+### Classes
 
 ```css
 lens-catalogue::part(lens-catalogue-toggle-button) {
