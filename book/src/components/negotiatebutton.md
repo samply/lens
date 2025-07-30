@@ -9,7 +9,7 @@ Optionally integrates with the [BBMRI-ERIC Negotiator](https://www.bbmri-eric.eu
 | Prop    | Type     | Default          | Description                                                                                    |
 | ------- | -------- | ---------------- | ---------------------------------------------------------------------------------------------- |
 | `title` | `string` | `"Request Data"` | The label shown on the button.                                                                 |
-| `type`  | `string` | \_`""`           | Determines the negotiation behavior. Use `"Negotiator"` to enable integration with BBMRI-ERIC. |
+| `type`  | `string` | `""`           | Determines the negotiation behavior. Use `"Negotiator"` to enable integration with BBMRI-ERIC. |
 
 ## Behavior
 
