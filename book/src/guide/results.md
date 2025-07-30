@@ -54,3 +54,11 @@ querySpot(
     },
 );
 ```
+
+## Components
+
+Lens provides components to render results.
+
+- [Result Table](../components/resulttable.md)
+- [Result Summary](../components/resultsummary.md)
+- [Chart](../components/chart.md)
