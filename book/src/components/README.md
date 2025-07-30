@@ -5,7 +5,7 @@ Here we list all the Lens components:
 - [Catalogue](catalogue.md)
 - [Chart](chart.md)
 - [Info Button](infobutton.md)
-- [Search Modified Component](modifiedsearch.md)
+- [Search Modified Display](modifiedsearch.md)
 - [Negotiate Button](negotiatebutton.md)
 - [Query Explain Button](queryexplainbutton.md)
 - [Query Spinner](queryspinner.md)

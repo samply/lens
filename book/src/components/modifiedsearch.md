@@ -1,4 +1,4 @@
-# Search Modified Component
+# Search Modified Display
 
 `<lens-search-modified-display>` displays a visual cue when the current query has been modified. It listens to the `QueryStore` and only renders its slotted content if a change has occurred.
 
