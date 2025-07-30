@@ -36,15 +36,15 @@ Each row includes a checkbox to select that data source for a data request. The 
 To use the table, define the `tableOptions` and include the component in your HTML:
 
 ```json
-tableOptions: {
-    headerData: [
+"tableOptions": {
+    "headerData": [
         {
-            title: "Sites",
-            dataKey: "site"
+            "title": "Sites",
+            "dataKey": "site"
         },
         {
-            title: "Patients",
-            dataKey: "patients"
+            "title": "Patients",
+            "dataKey": "patients"
         }
     ]
 }

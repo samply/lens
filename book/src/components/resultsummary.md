@@ -9,16 +9,17 @@ The `lens-result-summary` component displays a compact summary of result metrics
 To use it, define the configuration in the Lens options and include the component in your HTML:
 
 ```json
-resultSummaryOptions: {
-    title: "Results",
-    infoButtonText: "This is a tooltip",
-    dataTypes: [
+"resultSummaryOptions": {
+    "title": "Results",
+    "infoButtonText": "This is a tooltip",
+    "dataTypes": [
         {
-            title: "Patients",
-            dataKey: "patients"
+            "title": "Patients",
+            "dataKey": "patients"
         }
     ]
 }
+
 ```
 
 ---
