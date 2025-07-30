@@ -53,8 +53,6 @@ Triggered when the group clear button is clicked.
 
 ---
 
----
-
 ## Example
 
 ```html
@@ -67,8 +65,6 @@ Triggered when the group clear button is clicked.
 ```
 
 ## Styling
-
-Custom styling is supported via `part` attributes. Key styling hooks include:
 
 | Part                                                   | Purpose                          |
 | ------------------------------------------------------ | -------------------------------- |
