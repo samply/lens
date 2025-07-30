@@ -2,9 +2,11 @@
 
 The `lens-result-table` component displays a paginated and sortable table of totals from the `LensResult`. It uses the configured Lens options and listens to the `ResultStore`.
 
-The table is automatically populated with data sources that are marked as **claimed** in the `ResultStore`. You can provide user-friendly labels for internal site keys via the `siteMappings` option. Columns are defined in the table options.
+The table is setup with some props and some via the [options](https://samply.github.io/lens/docs/types/TableOptions.html). For exmaple the Columns are defined in the table options.
 
-If a data source has not yet been fully claimed, the table shows a "loading" message. This message is customizable via the `translate` option.
+The table is automatically populated with data sources that are marked as [claimed](https://github.com/samply/lens/blob/64c88231bdaf40062998f72f92e2d49afe213755/src/stores/response.ts#L12C1-L13C1) in the `ResultStore`. You can provide user-friendly labels for internal site keys via the `siteMappings` [option](https://samply.github.io/lens/docs/types/LensOptions.html#sitemappings).
+
+If a data source has not yet been fully claimed, the table shows a "loading" message. This message is customizable via the translation key `loading`, see [translation](../guide/translations.md).
 
 Each row includes a checkbox to select that data source for a data request. The selection is tracked in the `DataRequestStore`.
 
