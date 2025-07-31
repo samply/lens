@@ -63,6 +63,8 @@ And add `src/routes/+page.ts`:
 export const ssr = false;
 ```
 
+Note that the route files `+page.svelte` and `+page.ts` require the `+` prefix.
+
 ## The application component
 
 Your main application code lives in the application component. Create the file `src/app.css` and leave it empty and create `src/App.svelte` with the following content:
