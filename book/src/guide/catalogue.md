@@ -9,14 +9,3 @@ The structure of the catalogue is defined in [schema](https://github.com/samply/
 The catalogue supports the definition of [subgroups](https://samply.github.io/lens/docs/types/Criteria.html#subgroup). For example, you might group all patients with diabetes at the top level, while also distinguishing between different types of diabetes. If a user wants to find patients with _any_ form of diabetes, this can be expressed using subgroups in the catalogue.
 
 Subgroups allow you to structure complex concepts in a way that supports both broad and narrow search criteria.
-
-## Recommended function for fetching:
-
-```ts
-async function fetchCatalogue() {
-    const catalogue: Catalogue = await fetch(catalogueUrl).then((response) =>
-        response.json(),
-    );
-    setCatalogue(catalogue);
-}
-```
