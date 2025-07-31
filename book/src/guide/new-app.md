@@ -33,13 +33,13 @@ The Prettier config created by `sv create` uses tabs and sets the print width to
 Typically your application will only use the root route at `src/routes`. We will import the Lens CSS and JS bundles and render the main application component. Because Lens uses Web Components we need to disable HMR and SSR. Change the content of `src/routes/+page.svelte` to:
 
 ```html
-<script>
+<script lang="ts">
     // Using hot module replacement (HMR) with custom elements (aka web
     // components) does not work because a custom element cannot be updated once
     // registered, see https://github.com/WICG/webcomponents/issues/820.
     // Therefore we do a full page reload instead of HMR.
     if (import.meta.hot) {
-        import.meta.hot.on('vite:beforeUpdate', () => {
+        import.meta.hot.on("vite:beforeUpdate", () => {
             window.location.reload();
         });
     }
@@ -48,7 +48,7 @@ Typically your application will only use the root route at `src/routes`. We will
     import "@samply/lens/style.css";
     import "@samply/lens";
 
-    import App from '../App.svelte';
+    import App from "../App.svelte";
 </script>
 
 <App />
@@ -62,6 +62,8 @@ And add `src/routes/+page.ts`:
 // component and converts all props to strings.
 export const ssr = false;
 ```
+
+Note that the route files `+page.svelte` and `+page.ts` require the `+` prefix.
 
 ## The application component
 
