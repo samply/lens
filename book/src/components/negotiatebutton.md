@@ -1,6 +1,6 @@
 # Negotiate Button
 
-The `lens-negotiate-button` component allows users to initiate a data request. It becomes active when one or more (site/data sources) are selected. Depending on the configuration, it either dispatches a general event or starts a negotiation through the BBMRI-ERIC Negotiator service. The button is disabled by default when no data source is selected. Fires a global `lens-negotiate-triggered` event when clicked.
+The `lens-negotiate-button` component allows users to initiate a data request. It becomes active when one or more (site/data sources) are selected. Depending on the configuration, it either dispatches a general event or starts a negotiation through the BBMRI-ERIC Negotiator service. The button is disabled by default when no data source is selected. It fires a global `lens-negotiate-triggered` event when clicked.
 
 Optionally integrates with the [BBMRI-ERIC Negotiator](https://www.bbmri-eric.eu/) when `type` is set to `"Negotiator"`.
 

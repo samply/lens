@@ -152,20 +152,18 @@ bash scripts/validate-json-schema.bash
 You can also configure VS Code to validate your JSON files against the schema definitions. This will show validation errors in your editor and provide IntelliSense. To do so add the following configuration to your projects `.vscode/settings.json`:
 
 ```json
-"json.schemas": [
-    {
-        "fileMatch": [
-            "catalogue*.json"
-        ],
-        "url": "./node_modules/@samply/lens/schema/catalogue.schema.json",
-    },
+{
+    "json.schemas": [
         {
-        "fileMatch": [
-            "options*.json"
-        ],
-        "url": "./node_modules/@samply/lens/schema/options.schema.json",
-    },
-]
+            "fileMatch": ["catalogue*.json"],
+            "url": "./node_modules/@samply/lens/schema/catalogue.schema.json"
+        },
+        {
+            "fileMatch": ["options*.json"],
+            "url": "./node_modules/@samply/lens/schema/options.schema.json"
+        }
+    ]
+}
 ```
 
 ### Test environment
@@ -175,7 +173,9 @@ It is a common requirement to load different options in test and production. You
 - `PUBLIC_ENVIRONMENT`: Accepts the name of the environment, e.g. `production` or `test`
 - `PUBLIC_SPOT_URL`: Overwrites the URL of the [Spot](https://github.com/samply/spot) backend that your application queries
 
-For example you could handle the these variable as follows:
+Just like you created a JSON file `src/config/options.json` containing the empty object `{}`, create a `src/config/options-test.json` containing the empty object `{}`.
+
+Now you can handle these variables as follows:
 
 ```html
 <script lang="ts">
