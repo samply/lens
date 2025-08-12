@@ -6,7 +6,7 @@ The `lens-result-summary` component displays a compact summary of result metrics
 
 ## Example
 
-To use it, define the configuration in the Lens options and include the component in your HTML:
+To use the component, define the configuration in the Lens [resultSummaryOptions](https://samply.github.io/lens/docs/types/ResultSummaryOptions.html) (in the `src/config/options.json` file as described in the [Options and catalogue](../guide/new-app.md#options-and-catalogue) section):
 
 ```json
 "resultSummaryOptions": {
@@ -19,14 +19,30 @@ To use it, define the configuration in the Lens options and include the componen
         }
     ]
 }
+```
 
+The `resultSummaryOptions` could also be set in JavaScript like this:
+
+```JavaScript
+let resultSummaryOptions = {
+  title: "Results",
+  infoButtonText: "This is a tooltip",
+  dataTypes: [
+    {
+      title: "Patients",
+      dataKey: "patients",
+    },
+    ],
+};
+
+options.resultSummaryOptions = resultSummaryOptions;
 ```
 
 ---
 
 ## Usage
 
-The component doesn't use any props and is only set via the [options](https://samply.github.io/lens/docs/types/ResultSummaryOptions.html)
+The component (which doesn't use any props) can then be included in your HTML:
 
 ```svelte
 <lens-result-summary></lens-result-summary>

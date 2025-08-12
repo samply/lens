@@ -33,7 +33,7 @@ Each row includes a checkbox to select that data source for a data request. The 
 
 ## Example
 
-To use the table, define the `tableOptions` and include the component in your HTML:
+To use the table, define the configuration in the Lens [tableOptions](https://samply.github.io/lens/docs/types/TableOptions.html) (in the `src/config/options.json` file as described in the [Options and catalogue](../guide/new-app.md#options-and-catalogue) section):
 
 ```json
 "tableOptions": {
@@ -50,8 +50,34 @@ To use the table, define the `tableOptions` and include the component in your HT
 }
 ```
 
+The `tableOptions` could also be set in JavaScript like this:
+
+```JavaScript
+let tableOptions = {
+  headerData: [
+    {
+      title: "Sites",
+      dataKey: "site",
+    },
+    {
+      title: "Patients",
+      dataKey: "patients",
+    },
+  ],
+};
+
+options.tableOptions = tableOptions;
+```
+
+---
+
+## Usage
+
+The component can then be included in your HTML:
+
 ```svelte
-<lens-result-table title="Result Table" pageSize={25} pageSizeSwitcher={true} />
+<lens-result-table title="Result Table" pageSize={25} pageSizeSwitcher={true}
+></lens-result-table>
 ```
 
 ---
