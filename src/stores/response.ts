@@ -1,7 +1,7 @@
-import { writable, get } from "svelte/store";
+import { writable } from "svelte/store";
 import type { FhirMeasureReport } from "../types/response";
 
-const siteResults = writable(new Map<string, LensResult>());
+export const siteResults = writable(new Map<string, LensResult>());
 
 /**
  * This store contains the sites that have responded and their status.
@@ -124,9 +124,12 @@ export function clearSiteResults() {
  * getTotal('patients'); // total number of patients across all sites
  * ```
  */
-export function getTotal(code: string): number {
+export function getTotal(
+    siteResults: Map<string, LensResult>,
+    code: string,
+): number {
     let total = 0;
-    for (const siteResult of get(siteResults).values()) {
+    for (const siteResult of siteResults.values()) {
         total += siteResult.totals[code] ?? 0;
     }
     return total;
@@ -138,11 +141,15 @@ export function getTotal(code: string): number {
  * Example usage:
  *
  * ```ts
- * getSiteTotal('berlin', 'patients'); // total number of patients in berlin
+ * getSiteTotal($siteResults, 'berlin', 'patients'); // total number of patients in berlin
  * ```
  */
-export function getSiteTotal(site: string, code: string): number {
-    return get(siteResults).get(site)?.totals[code] ?? 0;
+export function getSiteTotal(
+    siteResults: Map<string, LensResult>,
+    site: string,
+    code: string,
+): number {
+    return siteResults.get(site)?.totals[code] ?? 0;
 }
 
 /**
@@ -151,12 +158,16 @@ export function getSiteTotal(site: string, code: string): number {
  * Example usage:
  *
  * ```ts
- * getStratum('gender', 'female'); // number of females across all sites
+ * getStratum($siteResults, 'gender', 'female'); // number of females across all sites
  * ```
  */
-export function getStratum(stratifier: string, stratum: string): number {
+export function getStratum(
+    siteResults: Map<string, LensResult>,
+    stratifier: string,
+    stratum: string,
+): number {
     let total = 0;
-    for (const siteResult of get(siteResults).values()) {
+    for (const siteResult of siteResults.values()) {
         total += siteResult.stratifiers[stratifier]?.[stratum] ?? 0;
     }
     return total;
@@ -168,17 +179,16 @@ export function getStratum(stratifier: string, stratum: string): number {
  * Example usage:
  *
  * ```ts
- * getSiteStratum('berlin', 'gender', 'female'); // number of females in berlin
+ * getSiteStratum($siteResults, 'berlin', 'gender', 'female'); // number of females in berlin
  * ```
  */
 export function getSiteStratum(
+    siteResults: Map<string, LensResult>,
     site: string,
     stratifier: string,
     stratumCode: string,
 ): number {
-    return (
-        get(siteResults).get(site)?.stratifiers[stratifier]?.[stratumCode] ?? 0
-    );
+    return siteResults.get(site)?.stratifiers[stratifier]?.[stratumCode] ?? 0;
 }
 
 /**
@@ -187,12 +197,15 @@ export function getSiteStratum(
  * Example usage:
  *
  * ```ts
- * getStrata('gender'); // example return value: ['female', 'male', 'other']
+ * getStrata($siteResults, 'gender'); // example return value: ['female', 'male', 'other']
  * ```
  */
-export function getStrata(code: string): string[] {
+export function getStrata(
+    siteResults: Map<string, LensResult>,
+    code: string,
+): string[] {
     const strataSet = new Set<string>();
-    for (const siteResult of get(siteResults).values()) {
+    for (const siteResult of siteResults.values()) {
         if (siteResult.stratifiers[code]) {
             Object.keys(siteResult.stratifiers[code]).forEach((stratum) =>
                 strataSet.add(stratum),
