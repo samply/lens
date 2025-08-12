@@ -83,6 +83,8 @@ Now run `npm run dev` and open <http://localhost:5173/> in your browser. You sho
 
 Your application must pass two objects to Lens. The [LensOptions](https://samply.github.io/lens/docs/types/LensOptions.html) object contains general configuration options and the [Catalogue](https://samply.github.io/lens/docs/types/Catalogue.html) object describes what users can search for. You can define these objects in TypeScript but many applications in the Samply organization define them in JSON files.
 
+> **NOTE:** Whenever we talk about configuring Lens through a JSON file, we are talking about the below mentioned `options.json` file. This file is being initialized with an empty object for now, but will be populated in the later parts of this book.
+
 Assuming you are using JSON files, create the file `src/config/options.json` containing the empty object `{}` and the file `src/config/catalogue.json` with the following content:
 
 ```json
@@ -173,7 +175,7 @@ It is a common requirement to load different options in test and production. You
 - `PUBLIC_ENVIRONMENT`: Accepts the name of the environment, e.g. `production` or `test`
 - `PUBLIC_SPOT_URL`: Overwrites the URL of the [Spot](https://github.com/samply/spot) backend that your application queries
 
-Just like you created a JSON file `src/config/options.json` containing the empty object `{}`, create a `src/config/options-test.json` containing the empty object `{}`.
+Just like you created a JSON file `src/config/options.json`, create a `src/config/options-test.json` (to start with, it can also contain an empty object `{}`).
 
 Now you can handle these variables as follows:
 

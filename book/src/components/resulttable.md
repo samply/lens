@@ -33,7 +33,7 @@ Each row includes a checkbox to select that data source for a data request. The 
 
 ## Example
 
-To use the table, define the configuration in the Lens [tableOptions](https://samply.github.io/lens/docs/types/TableOptions.html) (in the `src/config/options.json` file as described in the [Options and catalogue](../guide/new-app.md#options-and-catalogue) section):
+To use the table, define the configuration in the Lens [tableOptions](https://samply.github.io/lens/docs/types/TableOptions.html) (as described in the [Options and catalogue](../guide/new-app.md#options-and-catalogue) section):
 
 ```json
 "tableOptions": {
@@ -48,25 +48,6 @@ To use the table, define the configuration in the Lens [tableOptions](https://sa
         }
     ]
 }
-```
-
-The `tableOptions` could also be set in JavaScript like this:
-
-```JavaScript
-let tableOptions = {
-  headerData: [
-    {
-      title: "Sites",
-      dataKey: "site",
-    },
-    {
-      title: "Patients",
-      dataKey: "patients",
-    },
-  ],
-};
-
-options.tableOptions = tableOptions;
 ```
 
 ---

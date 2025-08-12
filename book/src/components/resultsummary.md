@@ -6,7 +6,7 @@ The `lens-result-summary` component displays a compact summary of result metrics
 
 ## Example
 
-To use the component, define the configuration in the Lens [resultSummaryOptions](https://samply.github.io/lens/docs/types/ResultSummaryOptions.html) (in the `src/config/options.json` file as described in the [Options and catalogue](../guide/new-app.md#options-and-catalogue) section):
+To use the component, define the configuration in the Lens [resultSummaryOptions](https://samply.github.io/lens/docs/types/ResultSummaryOptions.html) (as described in the [Options and catalogue](../guide/new-app.md#options-and-catalogue) section):
 
 ```json
 "resultSummaryOptions": {
@@ -19,23 +19,6 @@ To use the component, define the configuration in the Lens [resultSummaryOptions
         }
     ]
 }
-```
-
-The `resultSummaryOptions` could also be set in JavaScript like this:
-
-```JavaScript
-let resultSummaryOptions = {
-  title: "Results",
-  infoButtonText: "This is a tooltip",
-  dataTypes: [
-    {
-      title: "Patients",
-      dataKey: "patients",
-    },
-    ],
-};
-
-options.resultSummaryOptions = resultSummaryOptions;
 ```
 
 ---
