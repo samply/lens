@@ -83,8 +83,6 @@ Now run `npm run dev` and open <http://localhost:5173/> in your browser. You sho
 
 Your application must pass two objects to Lens. The [LensOptions](https://samply.github.io/lens/docs/types/LensOptions.html) object contains general configuration options and the [Catalogue](https://samply.github.io/lens/docs/types/Catalogue.html) object describes what users can search for. You can define these objects in TypeScript but many applications in the Samply organization define them in JSON files.
 
-> **NOTE:** Whenever we talk about configuring Lens through a JSON file, we are talking about the below mentioned `options.json` file. This file is being initialized with an empty object for now, but will be populated in the later parts of this book.
-
 Assuming you are using JSON files, create the file `src/config/options.json` containing the empty object `{}` and the file `src/config/catalogue.json` with the following content:
 
 ```json
@@ -133,6 +131,8 @@ Add the following to the top of `src/App.svelte` to load the JSON files and pass
 ```
 
 When you run `npm run dev` you should see the search bar and the catalogue component with the "Rh factor" entry. Open the "Rh factor" entry and click the plus icons next to Rh+ and Rh- in order to add them to the search bar.
+
+**NOTE:** The `options.json` file is being initialized with an empty object for now, but will be populated in the later parts of this book. Whenever the book tells you to add something to the Lens options it is implied that you add it to this file.
 
 ### Schema validation
 
