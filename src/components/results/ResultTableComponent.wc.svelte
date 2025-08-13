@@ -10,6 +10,7 @@
         getSiteTotal,
         getSiteStratum,
         siteStatus,
+        siteResults,
     } from "../../stores/response";
     import TableItemComponent from "./TableItemComponent.svelte";
     import { lensOptions } from "../../stores/options";
@@ -53,12 +54,15 @@
                     tableRow.push(translate("loading"));
                 } else if (status === "succeeded") {
                     if (header.dataKey !== undefined) {
-                        tableRow.push(getSiteTotal(site, header.dataKey));
+                        tableRow.push(
+                            getSiteTotal($siteResults, site, header.dataKey),
+                        );
                     } else if (header.aggregatedDataKeys !== undefined) {
                         let aggregatedPopulation = 0;
                         for (const dataKey of header.aggregatedDataKeys) {
                             if (dataKey.groupCode) {
                                 aggregatedPopulation += getSiteTotal(
+                                    $siteResults,
                                     site,
                                     dataKey.groupCode,
                                 );
@@ -67,6 +71,7 @@
                                 dataKey.stratumCode
                             ) {
                                 aggregatedPopulation += getSiteStratum(
+                                    $siteResults,
                                     site,
                                     dataKey.stratifierCode,
                                     dataKey.stratumCode,

@@ -6,7 +6,9 @@ import {
     getStratum,
     getSiteStratum,
     getStrata,
+    siteResults,
 } from "./response";
+import { get } from "svelte/store";
 
 beforeAll(() => {
     // Mock site responses
@@ -25,31 +27,43 @@ beforeAll(() => {
 });
 
 test("getTotals", () => {
-    expect(getTotal("patients")).toBe(57630);
+    expect(getTotal(get(siteResults), "patients")).toBe(57630);
 });
 
 test("getSiteTotals", () => {
-    expect(getSiteTotal("mannheim", "patients")).toBe(31020);
-    expect(getSiteTotal("mainz", "patients")).toBe(26610);
+    expect(getSiteTotal(get(siteResults), "mannheim", "patients")).toBe(31020);
+    expect(getSiteTotal(get(siteResults), "mainz", "patients")).toBe(26610);
 });
 
 test("getStratum", () => {
-    expect(getStratum("gender", "male")).toEqual(36080);
-    expect(getStratum("gender", "female")).toEqual(21550);
-    expect(getStratum("gender", "unknown")).toEqual(10);
+    expect(getStratum(get(siteResults), "gender", "male")).toEqual(36080);
+    expect(getStratum(get(siteResults), "gender", "female")).toEqual(21550);
+    expect(getStratum(get(siteResults), "gender", "unknown")).toEqual(10);
 });
 
 test("getSiteStratum", () => {
-    expect(getSiteStratum("mannheim", "gender", "male")).toEqual(19130);
-    expect(getSiteStratum("mannheim", "gender", "female")).toEqual(11900);
-    expect(getSiteStratum("mannheim", "gender", "unknown")).toEqual(0);
-    expect(getSiteStratum("mainz", "gender", "male")).toEqual(16950);
-    expect(getSiteStratum("mainz", "gender", "female")).toEqual(9650);
-    expect(getSiteStratum("mainz", "gender", "unknown")).toEqual(10);
+    expect(
+        getSiteStratum(get(siteResults), "mannheim", "gender", "male"),
+    ).toEqual(19130);
+    expect(
+        getSiteStratum(get(siteResults), "mannheim", "gender", "female"),
+    ).toEqual(11900);
+    expect(
+        getSiteStratum(get(siteResults), "mannheim", "gender", "unknown"),
+    ).toEqual(0);
+    expect(getSiteStratum(get(siteResults), "mainz", "gender", "male")).toEqual(
+        16950,
+    );
+    expect(
+        getSiteStratum(get(siteResults), "mainz", "gender", "female"),
+    ).toEqual(9650);
+    expect(
+        getSiteStratum(get(siteResults), "mainz", "gender", "unknown"),
+    ).toEqual(10);
 });
 
 test("getStrata", () => {
-    expect(getStrata("gender").sort()).toEqual(
+    expect(getStrata(get(siteResults), "gender").sort()).toEqual(
         ["female", "male", "unknown"].sort(),
     );
 });
