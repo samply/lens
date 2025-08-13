@@ -132,6 +132,8 @@ Add the following to the top of `src/App.svelte` to load the JSON files and pass
 
 When you run `npm run dev` you should see the search bar and the catalogue component with the "Rh factor" entry. Open the "Rh factor" entry and click the plus icons next to Rh+ and Rh- in order to add them to the search bar.
 
+**NOTE:** The `options.json` file is being initialized with an empty object for now, but will be populated in the later parts of this book. Whenever the book tells you to add something to the Lens options it is implied that you add it to this file.
+
 ### Schema validation
 
 Lens includes JSON schema definitions for the options and the catalogue type. Create the script `scripts/validate-json-schema.bash` to validate your JSON files against the schema definitions:
@@ -152,20 +154,18 @@ bash scripts/validate-json-schema.bash
 You can also configure VS Code to validate your JSON files against the schema definitions. This will show validation errors in your editor and provide IntelliSense. To do so add the following configuration to your projects `.vscode/settings.json`:
 
 ```json
-"json.schemas": [
-    {
-        "fileMatch": [
-            "catalogue*.json"
-        ],
-        "url": "./node_modules/@samply/lens/schema/catalogue.schema.json",
-    },
+{
+    "json.schemas": [
         {
-        "fileMatch": [
-            "options*.json"
-        ],
-        "url": "./node_modules/@samply/lens/schema/options.schema.json",
-    },
-]
+            "fileMatch": ["catalogue*.json"],
+            "url": "./node_modules/@samply/lens/schema/catalogue.schema.json"
+        },
+        {
+            "fileMatch": ["options*.json"],
+            "url": "./node_modules/@samply/lens/schema/options.schema.json"
+        }
+    ]
+}
 ```
 
 ### Test environment
@@ -175,7 +175,9 @@ It is a common requirement to load different options in test and production. You
 - `PUBLIC_ENVIRONMENT`: Accepts the name of the environment, e.g. `production` or `test`
 - `PUBLIC_SPOT_URL`: Overwrites the URL of the [Spot](https://github.com/samply/spot) backend that your application queries
 
-For example you could handle the these variable as follows:
+Just like you created a JSON file `src/config/options.json`, create a `src/config/options-test.json` (to start with, it can also contain an empty object `{}`).
+
+Now you can handle these variables as follows:
 
 ```html
 <script lang="ts">
