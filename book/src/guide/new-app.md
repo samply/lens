@@ -226,7 +226,7 @@ Add the following to `src/App.svelte` to print the current query to the console 
 
 <lens-chart
     title="Gender distribution"
-    catalogueGroupCode="gender"
+    dataKey="gender"
     chartType="pie"
     displayLegends="{true}"
 ></lens-chart>

@@ -149,7 +149,7 @@ window.addEventListener("lens-search-triggered", () => {
             ),
         }),
     );
-    querySpot(backendUrl, siteList, query, abortController.signal, (result) => {
+    querySpot(query, abortController.signal, (result) => {
         // This is called once per site when its result is received.
     });
 });
@@ -208,7 +208,7 @@ window.addEventListener("lens-search-triggered", () => {
             measure,
         }),
     );
-    querySpot(backendUrl, siteList, query, abortController.signal, (result) => {
+    querySpot(query, abortController.signal, (result) => {
         // This is called once per site when its result is received.
     });
 });
