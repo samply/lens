@@ -79,6 +79,7 @@
                     style="user-select: text;"
                 >
                     {msg}
+                    <slot />
                 </div>
             {/each}
         </div>
