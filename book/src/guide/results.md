@@ -34,8 +34,6 @@ You pass results to Lens using the [`setSiteResult`](file:///home/tim/projects/l
 
 ```ts
 querySpot(
-    getBackendUrl(),
-    getSiteList(),
     query,
     abortController.signal,
     (result: SpotResult) => {
