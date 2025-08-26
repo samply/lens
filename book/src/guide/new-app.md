@@ -236,7 +236,7 @@ You can read more about [queries and the AST](./query.md) and about [showing res
 
 ## Deploying using Docker
 
-We recommend that projects in the Samply organization follow these deployment practices. We will use Node.js inside Docker. Run `npm install @sveltejs/adapter-node` and change the adapter in `svelte.config.js`:
+We recommend that projects in the Samply organization follow these deployment practices. We will use Node.js inside Docker. Run `npm i -D @sveltejs/adapter-node` and change the adapter in `svelte.config.js`:
 
 ```diff
 -import adapter from '@sveltejs/adapter-auto';
