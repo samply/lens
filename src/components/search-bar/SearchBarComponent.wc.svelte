@@ -26,7 +26,7 @@
     import { showErrorToast } from "../../stores/toasts";
     import { translate } from "../../helpers/translations";
     import { get } from "svelte/store";
-    import { SvelteURLSearchParams } from "svelte/reactivity";
+    import { SvelteURL } from "svelte/reactivity";
 
     interface Props {
         /** The string to display when no matches are found */
@@ -380,21 +380,20 @@
         queryStore.subscribe(() => {
             if (get(lensOptions)?.autoUpdateQueryInUrl ?? true) {
                 const query = get(queryStore);
-                const encodedQuery = btoa(
-                    String.fromCharCode(
-                        ...new TextEncoder().encode(JSON.stringify(query)),
-                    ),
-                );
-                const params = new SvelteURLSearchParams(
-                    window.location.search,
-                );
-                params.set("query", encodedQuery);
-                const newUrl =
-                    window.location.pathname +
-                    "?" +
-                    params.toString() +
-                    window.location.hash;
-                window.history.replaceState({}, "", newUrl);
+                const url = new SvelteURL(window.location.href);
+
+                if (query.flat().length === 0) {
+                    url.searchParams.delete("query");
+                } else {
+                    const encodedQuery = btoa(
+                        String.fromCharCode(
+                            ...new TextEncoder().encode(JSON.stringify(query)),
+                        ),
+                    );
+                    url.searchParams.set("query", encodedQuery);
+                }
+
+                window.history.replaceState({}, "", url.toString());
             }
         });
     });
