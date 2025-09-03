@@ -9,6 +9,7 @@
         getHumanReadableQuery,
         getParsedItem,
     } from "../../stores/datarequests";
+    import { queryStore } from "../../stores/query";
     import type {
         HumanReadableItem,
         HumanReadableQueryObject,
@@ -31,11 +32,14 @@
 
     let message: HumanReadableItem | undefined = $state();
     let humanreadableQueryObject: HumanReadableQueryObject | undefined =
-        $state();
+        $derived.by(() => {
+            return getHumanReadableQuery({
+                getObject: true,
+                queryStore: $queryStore,
+            });
+        });
 
-    if (queryItem === undefined) {
-        humanreadableQueryObject = getHumanReadableQuery({ getObject: true });
-    } else {
+    if (queryItem !== undefined) {
         message = getParsedItem(queryItem, true, false, true);
     }
 </script>
