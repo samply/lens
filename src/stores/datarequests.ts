@@ -1,6 +1,5 @@
 import { get, writable } from "svelte/store";
 import type { QueryItem } from "../types/queryData";
-import { queryStore } from "./query";
 import { catalogue, getCategoryFromKey } from "./catalogue";
 import type { AggregatedValue } from "../types/catalogue";
 import type {
@@ -21,29 +20,32 @@ export function getSelectedSites(): string[] {
  * When no parameters are parsed, it will return a complete string and will use only the name of the aggregated values
  * @param options.useFullAggregatedValues if true, the deep values of entities will be parsed and shown
  * @param options.getObject if true, the query will be returned as an object.
+ * @param options.queryStore the query store
  * @returns a human readable query either as string or as an object to render HTML
  */
 export function getHumanReadableQuery(options?: {
     useFullAggregatedValues?: boolean;
     getObject?: false;
+    queryStore: QueryItem[][];
 }): string;
+
 export function getHumanReadableQuery(options: {
     useFullAggregatedValues?: boolean;
     getObject: true;
+    queryStore: QueryItem[][];
 }): HumanReadableQueryObject;
 
-export function getHumanReadableQuery({
-    useFullAggregatedValues = false,
-    getObject = false,
-}: GetHumanReadableQuery = {}): string | HumanReadableQueryObject {
-    let parsedQuery!: HumanReadableQueryObject;
-
-    queryStore.subscribe((query: QueryItem[][]) => {
-        parsedQuery = {
-            header: "Search ANY of the following groups:",
-            groups: getParsedGroups(query, useFullAggregatedValues, getObject),
-        };
-    });
+export function getHumanReadableQuery(
+    {
+        useFullAggregatedValues = false,
+        getObject = false,
+        queryStore,
+    }: GetHumanReadableQuery = {} as GetHumanReadableQuery,
+): string | HumanReadableQueryObject {
+    const parsedQuery: HumanReadableQueryObject = {
+        header: "Search ANY of the following groups:",
+        groups: getParsedGroups(queryStore, useFullAggregatedValues, getObject),
+    };
 
     if (getObject) {
         return parsedQuery satisfies HumanReadableQueryObject;
@@ -153,7 +155,6 @@ const getParsedAggregatedValues = (
     getObject: boolean = false,
     getSingle: boolean = false,
 ): string | string[][] => {
-    console.log(aggregatedValue);
     let aggregatedGroups: string[][] = [];
 
     if (getObject) {
