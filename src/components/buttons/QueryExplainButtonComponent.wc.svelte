@@ -33,6 +33,7 @@
     let message: HumanReadableItem | undefined = $state();
     let humanreadableQueryObject: HumanReadableQueryObject | undefined =
         $derived.by(() => {
+            if ($queryStore.flat().length < 1) return undefined;
             return getHumanReadableQuery({
                 getObject: true,
                 queryStore: $queryStore,
