@@ -119,6 +119,7 @@
         padding: var(--gap-xs);
         border: solid 1px var(--blue);
         border-radius: var(--border-radius-small);
+        text-align-last: left;
     }
 
     [part~="lens-info-button-dialogue-align-center"] {

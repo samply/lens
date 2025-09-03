@@ -7,10 +7,13 @@
 <script lang="ts">
     import {
         getHumanReadableQuery,
-        type newHumanReadableQuery,
-    } from "../../stores/datarequestscopy";
+        getParsedItem,
+    } from "../../stores/datarequests";
+    import type {
+        HumanReadableItem,
+        HumanReadableQueryObject,
+    } from "../../types/humanReadable";
     import type { QueryItem } from "../../types/queryData";
-    import { queryStore } from "../../stores/query";
     import InfoButtonComponent from "./InfoButtonComponent.wc.svelte";
 
     interface Props {
@@ -26,48 +29,44 @@
         inSearchBar = false,
     }: Props = $props();
 
-    let message: newHumanReadableQuery = $state({
-        header: noQueryMessage,
-        groups: [],
-    });
-    let singleItemMessage: string | undefined;
+    let message: HumanReadableItem | undefined = $state();
+    let humanreadableQueryObject: HumanReadableQueryObject | undefined =
+        $state();
 
     if (queryItem === undefined) {
-        queryStore.subscribe(() => {
-            const readable = getHumanReadableQuery();
-            console.log("readable:", readable);
-            message = readable;
-        });
+        humanreadableQueryObject = getHumanReadableQuery({ getObject: true });
     } else {
-        // const childMessage = buildHumanReadableRecursively(
-        //     returnNestedValues(queryItem) as AstElement,
-        //     "",
-        // );
-        // singleItemMessage = childMessage.length > 0 ? childMessage : noQueryMessage;
+        message = getParsedItem(queryItem, true, false, true);
     }
 </script>
 
 {#if inSearchBar}
-    <InfoButtonComponent
-        message={singleItemMessage}
-        buttonSize="18px"
-        inSearchBar={true}
-    ></InfoButtonComponent>
+    <InfoButtonComponent buttonSize="18px" inSearchBar={true}>
+        {#if message?.name !== ""}
+            {message?.name}: {message?.values}
+        {:else}
+            <div part="multi-row-message">
+                {message.values}
+            </div>
+        {/if}
+    </InfoButtonComponent>
 {:else}
     <div part="lens-query-explain-button">
         <InfoButtonComponent buttonSize="25px" alignDialogue="left">
-            {#if message && message?.groups.length > 0}
-                <h3 part="lens-query-explain-header">{message.header}</h3>
+            {#if humanreadableQueryObject && humanreadableQueryObject?.groups.length > 0}
+                <h3 part="lens-query-explain-header">
+                    {humanreadableQueryObject.header}
+                </h3>
                 <ul part="lens-query-explain-groups">
-                    {#each message.groups as group (group.groupHeader)}
+                    {#each humanreadableQueryObject.groups as group (group.groupHeader)}
                         <li part="lens-query-explain-group-item">
                             <strong>{group.groupHeader}</strong>
                             <ul part="lens-query-explain-bottom-level-items">
-                                {#each group.groupItems as item (item)}
+                                {#each group.groupItems as item, index (item.name + index)}
                                     <li
                                         part="lens-query-explain-bottom-level-item"
                                     >
-                                        {item}
+                                        {item.name}: {item.values}
                                     </li>
                                 {/each}
                             </ul>
@@ -93,6 +92,9 @@
         border-radius: var(--border-radius-small);
     }
 
+    [part~="multi-row-message"] {
+        white-space: pre-wrap;
+    }
     [part~="lens-query-explain-header"] {
         font-weight: bold;
         margin-bottom: var(--gap-xs);
