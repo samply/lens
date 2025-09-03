@@ -9,21 +9,9 @@
 
     let { size = "20px" } = $props();
 
-    let loading = $state(false);
-
-    window.addEventListener("lens-search-triggered", function () {
-        loading = true;
-    });
-
-    $effect(() => {
-        if (
-            Array.from($siteStatus.values()).every(
-                (status) => status !== "claimed",
-            )
-        ) {
-            loading = false;
-        }
-    });
+    let loading = $derived.by(() =>
+        Array.from($siteStatus.values()).some((status) => status === "claimed"),
+    );
 </script>
 
 <div

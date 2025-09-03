@@ -13,6 +13,7 @@
         getStrata,
         getSiteTotal,
         siteStatus,
+        siteResults,
     } from "../../stores/response";
     import { v4 as uuidv4 } from "uuid";
     import { activeQueryGroupIndex, addItemToQuery } from "../../stores/query";
@@ -192,7 +193,7 @@
         let aggregatedData = 0;
 
         valuesToAccumulate.forEach((value: string) => {
-            aggregatedData += getStratum(dataKey, value);
+            aggregatedData += getStratum($siteResults, dataKey, value);
         });
         return aggregatedData;
     };
@@ -212,7 +213,7 @@
 
         if (perSite) {
             dataSet = chartLabels.map((label: string) =>
-                getSiteTotal(label, dataKey),
+                getSiteTotal($siteResults, label, dataKey),
             );
 
             let remove_indexes: number[] = [];
@@ -251,7 +252,7 @@
          */
         if (options?.aggregations !== undefined) {
             options.aggregations.forEach((aggregation) => {
-                const aggregationCount = getTotal(aggregation);
+                const aggregationCount = getTotal($siteResults, aggregation);
                 combinedSubGroupData.data.push(aggregationCount);
                 combinedSubGroupData.labels.push(aggregation);
             });
@@ -324,7 +325,7 @@
     ): { labels: string[]; data: number[] } => {
         const labelsToData = new SvelteMap<string, number>();
         for (const label of labels) {
-            const value = getStratum(dataKey, label);
+            const value = getStratum($siteResults, dataKey, label);
 
             if (!label.includes(divider) || divider === "") {
                 /*
@@ -381,7 +382,7 @@
         if (perSite) {
             chartLabels.push(...siteStatus.keys());
         } else {
-            chartLabels = getStrata(dataKey);
+            chartLabels = getStrata($siteResults, dataKey);
         }
         chartLabels = filterRegexMatch(chartLabels);
         chartLabels.sort(customSort);

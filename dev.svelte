@@ -7,6 +7,7 @@
         setSiteResult,
         getAst,
         resetDiagrams,
+        markSiteClaimed,
     } from "./src/index";
     import { facetCounts } from "./src/stores/facetCounts";
 
@@ -320,6 +321,8 @@
     window.addEventListener("lens-search-triggered", () => {
         resetDiagrams();
         console.log("AST:", JSON.stringify(getAst()));
+        markSiteClaimed("riverside");
+        markSiteClaimed("summit");
 
         setTimeout(() => {
             setSiteResult("riverside", {

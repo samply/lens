@@ -223,6 +223,7 @@
         border: none;
         background-color: unset;
         cursor: pointer;
+        text-align: left;
     }
 
     [part~="lens-data-tree-element-toggle-icon"] {

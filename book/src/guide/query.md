@@ -8,7 +8,7 @@ Once a user selects an element from the catalogue, it is added to the query stor
 
 ![Example of search bar](pics/search-bar-example.png)
 
-The query searches for patients with blood group A- and a body weight between 30 and 100 as well as patients with blood group B+ regardless of their body weight. In the query store this query is represented as follows:
+The query searches for patients with blood group A+ and a body weight between 30 and 100 as well as patients with blood group B+ regardless of their body weight. In the query store this query is represented as follows:
 
 ```json
 [
@@ -149,7 +149,7 @@ window.addEventListener("lens-search-triggered", () => {
             ),
         }),
     );
-    querySpot(backendUrl, siteList, query, abortController.signal, (result) => {
+    querySpot(query, abortController.signal, (result) => {
         // This is called once per site when its result is received.
     });
 });
@@ -208,7 +208,7 @@ window.addEventListener("lens-search-triggered", () => {
             measure,
         }),
     );
-    querySpot(backendUrl, siteList, query, abortController.signal, (result) => {
+    querySpot(query, abortController.signal, (result) => {
         // This is called once per site when its result is received.
     });
 });

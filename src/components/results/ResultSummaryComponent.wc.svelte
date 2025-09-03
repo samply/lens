@@ -6,7 +6,13 @@
 
 <script lang="ts">
     import { lensOptions } from "../../stores/options";
-    import { siteStatus, getTotal, getStratum } from "../../stores/response";
+    import {
+        siteStatus,
+        getTotal,
+        getStratum,
+        type LensResult,
+        siteResults,
+    } from "../../stores/response";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
     import type { HeaderData } from "../../types/options";
 
@@ -24,7 +30,7 @@
                     .dataTypes) {
                     populations.push({
                         title: type.title,
-                        population: getPopulation(type),
+                        population: getPopulation(type, $siteResults),
                     });
                 }
             }
@@ -37,7 +43,10 @@
      * @param type An element of the "dataTypes" array from the lens options
      * @returns This is the text that is displayed after the colon, e.g. "Standorte: 13 / 15"
      */
-    function getPopulation(type: HeaderData): string {
+    function getPopulation(
+        type: HeaderData,
+        siteResults: Map<string, LensResult>,
+    ): string {
         // If the type is collections, the population is the length of the store
         if (type.dataKey === "collections") {
             let sitesClaimed = 0;
@@ -55,16 +64,20 @@
 
         // if the type has only one dataKey, the population is the aggregated population of that dataKey
         if (type.dataKey) {
-            return getTotal(type.dataKey).toString();
+            return getTotal(siteResults, type.dataKey).toString();
         }
 
         // if the type has multiple dataKeys to aggregate, the population is the aggregated population of all dataKeys
         let aggregatedPopulation: number = 0;
         type.aggregatedDataKeys?.forEach((dataKey) => {
             if (dataKey.groupCode) {
-                aggregatedPopulation += getTotal(dataKey.groupCode);
+                aggregatedPopulation += getTotal(
+                    siteResults,
+                    dataKey.groupCode,
+                );
             } else if (dataKey.stratifierCode && dataKey.stratumCode) {
                 aggregatedPopulation += getStratum(
+                    siteResults,
                     dataKey.stratifierCode,
                     dataKey.stratumCode,
                 );

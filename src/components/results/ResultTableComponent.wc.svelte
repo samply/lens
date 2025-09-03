@@ -10,6 +10,7 @@
         getSiteTotal,
         getSiteStratum,
         siteStatus,
+        siteResults,
     } from "../../stores/response";
     import TableItemComponent from "./TableItemComponent.svelte";
     import { lensOptions } from "../../stores/options";
@@ -53,12 +54,15 @@
                     tableRow.push(translate("loading"));
                 } else if (status === "succeeded") {
                     if (header.dataKey !== undefined) {
-                        tableRow.push(getSiteTotal(site, header.dataKey));
+                        tableRow.push(
+                            getSiteTotal($siteResults, site, header.dataKey),
+                        );
                     } else if (header.aggregatedDataKeys !== undefined) {
                         let aggregatedPopulation = 0;
                         for (const dataKey of header.aggregatedDataKeys) {
                             if (dataKey.groupCode) {
                                 aggregatedPopulation += getSiteTotal(
+                                    $siteResults,
                                     site,
                                     dataKey.groupCode,
                                 );
@@ -67,6 +71,7 @@
                                 dataKey.stratumCode
                             ) {
                                 aggregatedPopulation += getSiteStratum(
+                                    $siteResults,
                                     site,
                                     dataKey.stratifierCode,
                                     dataKey.stratumCode,
@@ -154,8 +159,8 @@
 
         // paginate
         return tableRowsCopy.slice(
-            (activePage - 1) * pageSize,
-            activePage * pageSize,
+            (activePage - 1) * currentPageSize,
+            activePage * currentPageSize,
         );
     });
 
@@ -172,18 +177,10 @@
         }
     }
 
-    let pageSizeOptions: { size: number; text: string }[] = [
-        { size: 10, text: `10` },
-        { size: 25, text: `25` },
-        { size: 50, text: `50` },
-    ];
-
-    if (pageSize != 10 && pageSize != 25 && pageSize != 50) {
-        pageSizeOptions.push({ size: pageSize, text: String(pageSize) });
-        pageSizeOptions.sort((a, b) => a.size - b.size);
-    }
-
-    let pageSizeOption = $state(pageSizeOptions[0]);
+    const pageSizeOptions: number[] = Array.from(
+        new Set([10, 25, 50, pageSize]),
+    ).sort();
+    let currentPageSize = $state(pageSize);
 </script>
 
 <h4 part="lens-result-table-title">{title}</h4>
@@ -239,24 +236,22 @@
     <div part="lens-result-table-pagination-pagenumber">
         {activePage} / {tableRowData.length === 0
             ? 1
-            : Math.ceil(tableRowData.length / pageSize)}
+            : Math.ceil(tableRowData.length / currentPageSize)}
     </div>
     <button
         part="lens-result-table-pagination-button lens-result-pagination-pagination-next"
-        disabled={activePage === Math.ceil(tableRowData.length / pageSize) ||
+        disabled={activePage ===
+            Math.ceil(tableRowData.length / currentPageSize) ||
             tableRowData.length === 0}
         onclick={() => (activePage += 1)}>&#8594;</button
     >
     {#if pageSizeSwitcher === true}
         <span part="lens-result-table-pagination-switcher">
             Results per page:
-            <select
-                bind:value={pageSizeOption}
-                onchange={() => (pageSize = pageSizeOption.size)}
-            >
-                {#each pageSizeOptions as option (option.size)}
-                    <option value={option}>
-                        {option.text}
+            <select bind:value={currentPageSize}>
+                {#each pageSizeOptions as size (size)}
+                    <option value={size}>
+                        {size}
                     </option>
                 {/each}
             </select>
