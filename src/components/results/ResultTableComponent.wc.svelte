@@ -258,10 +258,7 @@
         <!-- Invisible rows for spacing -->
         {#if visibleRows.length < currentPageSize}
             {#each Array(currentPageSize - visibleRows.length).keys() as i (i)}
-                <tr
-                    part="lens-result-table-item-body-row lens-result-table-item-body-row-invisible"
-                    ><td>&nbsp;</td></tr
-                >
+                <tr part="lens-result-table-item-body-row"><td>&nbsp;</td></tr>
             {/each}
         {/if}
     </tbody>
@@ -367,9 +364,5 @@
     [part~="lens-result-table-item-body-row"] {
         border-bottom: solid 1px var(--light-gray);
         height: 2em;
-    }
-
-    [part~="lens-result-table-item-body-row-invisible"] {
-        border-bottom: solid 1px transparent;
     }
 </style>
