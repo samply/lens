@@ -438,6 +438,7 @@
         display: grid;
         grid-template-columns: subgrid;
         grid-column: 1 / -1; /* Full width */
+        align-items: center;
         gap: var(--gap-xs);
         cursor: pointer;
         padding: var(--gap-xxs) var(--gap-xs); /* Match input field’s padding */
