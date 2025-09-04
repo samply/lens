@@ -5,15 +5,9 @@
 />
 
 <script lang="ts">
-    import {
-        getHumanReadableQuery,
-        getParsedItem,
-    } from "../../stores/datarequests";
+    import { translate } from "../../helpers/translations";
+    import { catalogue, getCategoryFromKey } from "../../stores/catalogue";
     import { queryStore } from "../../stores/query";
-    import type {
-        HumanReadableItem,
-        HumanReadableQueryObject,
-    } from "../../types/humanReadable";
     import type { QueryItem } from "../../types/queryData";
     import InfoButtonComponent from "./InfoButtonComponent.wc.svelte";
 
@@ -29,51 +23,77 @@
         noQueryMessage = "Search for all results",
         inSearchBar = false,
     }: Props = $props();
-
-    let message: HumanReadableItem | undefined = $state();
-    let humanreadableQueryObject: HumanReadableQueryObject | undefined =
-        $derived.by(() => {
-            if ($queryStore.flat().length < 1) return undefined;
-            return getHumanReadableQuery({
-                getObject: true,
-                queryStore: $queryStore,
-            });
-        });
-
-    if (queryItem !== undefined) {
-        message = getParsedItem(queryItem, true, false, true);
-    }
 </script>
 
-{#if inSearchBar}
+{#if queryItem}
     <InfoButtonComponent buttonSize="18px" inSearchBar={true}>
-        {#if message?.name !== ""}
+        {#if typeof queryItem?.values[0].value === "string"}
             <div part="lens-query-explain-single-row-message">
-                {message?.name}: {message?.values}
+                {queryItem.name}: {queryItem.values[0].value}
             </div>
-        {:else}
+        {:else if Array.isArray(queryItem.values[0].value)}
             <div part="lens-query-explain-multi-row-message">
-                {message.values}
+                <div
+                    part="lens-query-explain-multi-row-message-heading lens-query-explain-multi-row-message-heading-top"
+                >
+                    {translate("query_item_multi_row_header_top")}
+                </div>
+                {#each queryItem.values[0].value as value, index (index)}
+                    {#if index > 0}
+                        <div
+                            part="lens-query-explain-multi-row-message-heading"
+                        >
+                            {translate("query_item_multi_row_header")}
+                        </div>
+                    {/if}
+                    <div part="lens-query-explain-multi-row-message-group">
+                        {#each value as valueItem (valueItem.value)}
+                            <div
+                                part="lens-query-explain-multi-row-message-group-item"
+                            >
+                                {getCategoryFromKey($catalogue, valueItem.value)
+                                    ?.name
+                                    ? getCategoryFromKey(
+                                          $catalogue,
+                                          valueItem.value,
+                                      )?.name
+                                    : valueItem.value}: {valueItem.name}
+                            </div>
+                        {/each}
+                    </div>
+                {/each}
             </div>
         {/if}
     </InfoButtonComponent>
 {:else}
     <div part="lens-query-explain-button">
-        <InfoButtonComponent buttonSize="25px" alignDialogue="left">
-            {#if humanreadableQueryObject && humanreadableQueryObject?.groups.length > 0}
+        <InfoButtonComponent
+            buttonSize="25px"
+            alignDialogue="left"
+            {inSearchBar}
+        >
+            {#if $queryStore.flat().length > 0}
                 <h3 part="lens-query-explain-header">
-                    {humanreadableQueryObject.header}
+                    {translate("query_info_header")}
                 </h3>
                 <ul part="lens-query-explain-groups">
-                    {#each humanreadableQueryObject.groups as group (group.groupHeader)}
+                    {#each $queryStore as group, index (index)}
                         <li part="lens-query-explain-group-item">
-                            <strong>{group.groupHeader}</strong>
                             <ul part="lens-query-explain-bottom-level-items">
-                                {#each group.groupItems as item, index (item.name + index)}
+                                <li
+                                    part="lens-query-explain-bottom-level-item lens-query-explain-bottom-level-item-header"
+                                >
+                                    {translate("query_info_group_header")}
+                                    {index + 1}
+                                </li>
+                                {#each group as item, index (item.name + index)}
                                     <li
-                                        part="lens-query-explain-bottom-level-item"
+                                        part="lens-query-explain-bottom-level-item lens-query-explain-bottom-level-item-entry"
                                     >
-                                        {item.name}: {item.values}
+                                        {item.name}:
+                                        {#each item.values as value, index (value.name)}
+                                            {index > 0 ? ", " : ""}{value.name}
+                                        {/each}
                                     </li>
                                 {/each}
                             </ul>
@@ -88,6 +108,12 @@
 {/if}
 
 <style>
+    /* [part~="lens-query-explain-multi-row-message-group"] {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    } */
+
     [part~="lens-query-explain-button"] {
         display: flex;
         align-items: center;
@@ -99,15 +125,24 @@
         border-radius: var(--border-radius-small);
     }
 
-    [part~="lens-query-explain-multi-row-message"] {
-        white-space: pre-wrap;
-    }
-
     [part~="lens-query-explain-single-row-message"] {
         text-align: left;
         line-break: anywhere;
     }
 
+    [part~="lens-query-explain-multi-row-message-heading"] {
+        font-weight: bold;
+        padding-bottom: var(--gap-xxs);
+        padding-top: var(--gap-xs);
+    }
+
+    [part~="lens-query-explain-multi-row-message-heading-top"] {
+        padding-top: 0;
+    }
+
+    [part~="lens-query-explain-multi-row-message-group"] {
+        padding-left: var(--gap-xs);
+    }
     [part~="lens-query-explain-header"] {
         font-weight: bold;
         margin-bottom: var(--gap-xs);
@@ -127,12 +162,20 @@
     }
 
     [part~="lens-query-explain-bottom-level-items"] {
-        margin-left: var(--gap-sm);
+        padding-left: var(--gap-xs);
         list-style: none;
     }
 
     [part~="lens-query-explain-bottom-level-item"] {
         margin-bottom: var(--gap-xxs);
         line-break: anywhere;
+    }
+
+    [part~="lens-query-explain-bottom-level-item-header"] {
+        font-weight: bold;
+    }
+
+    [part~="lens-query-explain-bottom-level-item-entry"] {
+        padding-left: var(--gap-xs);
     }
 </style>
