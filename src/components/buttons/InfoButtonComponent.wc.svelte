@@ -79,9 +79,9 @@
                     style="user-select: text;"
                 >
                     {msg}
-                    <slot />
                 </div>
             {/each}
+            <slot />
         </div>
     {/if}
 </button>
