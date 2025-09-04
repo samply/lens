@@ -1,17 +1,17 @@
 <svelte:options
     customElement={{
-        tag: "error-toasts",
+        tag: "lens-toast",
     }}
 />
 
 <script lang="ts">
     import { fade } from "svelte/transition";
-    import { errorToasts, removeToast } from "../../stores/toasts";
+    import { toasts, removeToast } from "../../stores/toasts";
 </script>
 
 <div part="lens-toast-flex-container">
-    {#each $errorToasts as toast (toast.id)}
-        <div out:fade part="lens-toast">
+    {#each $toasts as toast (toast.id)}
+        <div out:fade part="lens-toast lens-toast-{toast.typ}">
             <div part="lens-toast-message">{toast.message}</div>
             <button
                 part="lens-toast-close-button"
@@ -55,10 +55,19 @@
     [part~="lens-toast"] {
         pointer-events: auto;
         border-radius: var(--border-radius-small);
-        background-color: #ef9a9a;
-        border: solid 1px var(--red);
+
         display: flex;
         align-items: center;
+    }
+
+    [part~="lens-toast-error"] {
+        background-color: #ef9a9a;
+        border: solid 1px var(--red);
+    }
+
+    [part~="lens-toast-info"] {
+        background-color: #9ae4ef;
+        border: solid 1px var(--blue);
     }
 
     [part~="lens-toast-message"] {

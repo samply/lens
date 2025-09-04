@@ -2,10 +2,11 @@
     import {
         setCatalogue,
         setOptions,
-        showErrorToast,
         translate,
         setSiteResult,
         getAst,
+        LensToastTyp,
+        showToast,
         resetDiagrams,
         markSiteClaimed,
     } from "./src/index";
@@ -17,6 +18,10 @@
             "lens-dev-test-error": {
                 en: "Task failed successfully.",
                 de: "Aufgabe erfolgreich fehlgeschlagen.",
+            },
+            "lens-dev-test-info": {
+                en: "Task send successfully.",
+                de: "Aufgabe erfolgreich gesendet.",
             },
         },
         siteMappings: {
@@ -426,8 +431,15 @@
 <footer style="display: flex; padding: 10px; gap: 10px;">
     <button
         id="error-toast-test-button"
-        onclick={() => showErrorToast(translate("lens-dev-test-error"))}
+        onclick={() =>
+            showToast(translate("lens-dev-test-error"), LensToastTyp.ERROR)}
         >Error toast test</button
+    >
+    <button
+        id="info-toast-test-button"
+        onclick={() =>
+            showToast(translate("lens-dev-test-info"), LensToastTyp.INFO)}
+        >Info toast test</button
     >
     <button
         id="switch-language-to-german-button"
@@ -443,4 +455,4 @@
     >
 </footer>
 
-<error-toasts></error-toasts>
+<lens-toast></lens-toast>

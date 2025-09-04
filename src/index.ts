@@ -5,7 +5,7 @@
 export { setCatalogue } from "./stores/catalogue";
 export { setOptions } from "./stores/options";
 export { translate } from "./helpers/translations";
-export { showErrorToast } from "./stores/toasts";
+export { showToast } from "./stores/toasts";
 export { resetDiagrams } from "./helpers/reset";
 export {
     addItemToActiveQueryGroup,
@@ -39,6 +39,7 @@ export type * from "./types/options";
 export type { FhirMeasureItem, FhirMeasure } from "./types/backend";
 export type { FhirMeasureReport } from "./types/response";
 export type { QueryItem, QueryValue } from "./types/queryData";
+export { LensToastTyp } from "./stores/toasts";
 
 // Include custom elements (aka web components) in the bundle
 import "./components/catalogue/Catalogue.wc.svelte";
@@ -53,7 +54,7 @@ import "./components/buttons/InfoButtonComponent.wc.svelte";
 import "./components/buttons/QueryExplainButtonComponent.wc.svelte";
 import "./components/informational/ModifiedSearchComponent.wc.svelte";
 import "./components/informational/QuerySpinner.wc.svelte";
-import "./components/informational/ErrorToasts.wc.svelte";
+import "./components/informational/Toasts.wc.svelte";
 
 // Include CSS in the bundle
 import "./styles/index.css";
