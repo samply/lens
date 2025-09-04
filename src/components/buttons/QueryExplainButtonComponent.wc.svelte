@@ -48,9 +48,11 @@
 {#if inSearchBar}
     <InfoButtonComponent buttonSize="18px" inSearchBar={true}>
         {#if message?.name !== ""}
-            {message?.name}: {message?.values}
+            <div part="lens-query-explain-single-row-message">
+                {message?.name}: {message?.values}
+            </div>
         {:else}
-            <div part="multi-row-message">
+            <div part="lens-query-explain-multi-row-message">
                 {message.values}
             </div>
         {/if}
@@ -97,21 +99,29 @@
         border-radius: var(--border-radius-small);
     }
 
-    [part~="multi-row-message"] {
+    [part~="lens-query-explain-multi-row-message"] {
         white-space: pre-wrap;
     }
+
+    [part~="lens-query-explain-single-row-message"] {
+        text-align: left;
+        line-break: anywhere;
+    }
+
     [part~="lens-query-explain-header"] {
         font-weight: bold;
         margin-bottom: var(--gap-xs);
         margin-top: 0;
         text-align: left;
     }
+
     [part~="lens-query-explain-groups"] {
         list-style: none;
         padding: 0;
         margin: 0;
         text-align: left;
     }
+
     [part~="lens-query-explain-group-item"] {
         margin-bottom: var(--gap-xs);
     }
