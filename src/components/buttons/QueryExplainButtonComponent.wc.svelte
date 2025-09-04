@@ -110,7 +110,7 @@
         list-style: none;
         padding: 0;
         margin: 0;
-        text-align-last: left;
+        text-align: left;
     }
     [part~="lens-query-explain-group-item"] {
         margin-bottom: var(--gap-xs);
@@ -123,5 +123,6 @@
 
     [part~="lens-query-explain-bottom-level-item"] {
         margin-bottom: var(--gap-xxs);
+        line-break: anywhere;
     }
 </style>
