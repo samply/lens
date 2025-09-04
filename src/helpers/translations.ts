@@ -2,7 +2,11 @@ import { get } from "svelte/store";
 import type { Texts } from "../types/options";
 import { lensOptions } from "../stores/options";
 
-/** Translate a key into a human readable text. */
+/**
+ * Translate a key into a human readable text depending on the language set in options
+ * @param key the key to translate
+ * @returns the human readable text
+ */
 export function translate(key: string): string {
     const options = get(lensOptions);
     const language = options?.language ?? "en";
@@ -58,5 +62,21 @@ const lensTranslations: Texts = {
     query_modified: {
         en: "The query has been modified. Please re-run the search.",
         de: "Die Suchanfrage wurde geändert. Bitte die Suche erneut ausführen.",
+    },
+    query_info_header: {
+        en: "Search ANY of the following groups",
+        de: "Sucht EINE dieser Gruppen",
+    },
+    query_info_group_header: {
+        en: "Group",
+        de: "Gruppe",
+    },
+    query_item_multi_row_header_top: {
+        en: "Any of",
+        de: "Eines aus",
+    },
+    query_item_multi_row_header: {
+        en: "and any of",
+        de: "und eines aus",
     },
 };
