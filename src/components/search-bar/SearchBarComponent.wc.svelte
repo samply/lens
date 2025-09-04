@@ -409,7 +409,9 @@
                     >
                     {#each queryItem.values as value (value.queryBindId)}
                         <span part="lens-searchbar-chip-item">
-                            <span>{value.name}</span>
+                            <span part="lens-searchbar-chip-item-text"
+                                >{value.name}</span
+                            >
                             <QueryExplainButtonComponent
                                 queryItem={{
                                     ...queryItem,
@@ -609,11 +611,15 @@
     }
 
     [part~="lens-searchbar-chip-item"] {
-        display: inline-flex;
+        display: grid;
+        grid-template-columns: 1fr auto auto;
+        grid-gap: var(--gap-xxs);
         align-items: center;
-        gap: var(--gap-xxs);
     }
 
+    [part~="lens-searchbar-chip-item-text"] {
+        line-break: anywhere;
+    }
     [part~="lens-searchbar-input"] {
         box-sizing: border-box;
         padding: var(--gap-xs);
