@@ -11,7 +11,7 @@
 
 <div part="lens-toast-flex-container">
     {#each $toasts as toast (toast.id)}
-        <div out:fade part="lens-toast lens-toast-{toast.typ}">
+        <div out:fade part="lens-toast lens-toast-{toast.type}">
             <div part="lens-toast-message">{toast.message}</div>
             <button
                 part="lens-toast-close-button"
