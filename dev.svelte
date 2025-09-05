@@ -20,7 +20,7 @@
                 de: "Aufgabe erfolgreich fehlgeschlagen.",
             },
             "lens-dev-test-info": {
-                en: "Task send successfully.",
+                en: "Task sent successfully.",
                 de: "Aufgabe erfolgreich gesendet.",
             },
         },
