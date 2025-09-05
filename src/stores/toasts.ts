@@ -1,7 +1,7 @@
 import { writable } from "svelte/store";
 
 export const toasts = writable<
-    { id: number; typ: "error" | "info"; message: string }[]
+    { id: number; type: "error" | "info"; message: string }[]
 >([]);
 
 let nextId = 0;
@@ -9,7 +9,7 @@ let nextId = 0;
 /**
  * Show an toast
  * @param message The message
- * @param typ Which typ of toast should be shown, either error or info
+ * @param type Which type of toast should be shown, either error or info
  * @param timeout Timeout in milliseconds after which to remove the toast
  */
 export function showToast(
@@ -18,7 +18,7 @@ export function showToast(
     timeout = 8000,
 ): void {
     const id = nextId++;
-    toasts.update((toasts) => [...toasts, { id, typ, message }]);
+    toasts.update((toasts) => [...toasts, { id, type, message }]);
 
     // Auto-remove the toast after timeout
     setTimeout(() => {
