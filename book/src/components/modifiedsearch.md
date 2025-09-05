@@ -12,12 +12,14 @@ Include it like this:
 <lens-search-modified-display></lens-search-modified-display>
 ```
 
-Or customize the message as follows:
+You can customize the text using [translations](../guide/translations.md):
 
-```html
-<lens-search-modified-display>
-    You have unsaved changes. Please click "Search" to update results.
-</lens-search-modified-display>
+```
+"texts": {
+    "query_modified": {
+        "en": "My custom text"
+    }
+}
 ```
 
 ## Styling
