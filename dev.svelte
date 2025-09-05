@@ -5,7 +5,6 @@
         translate,
         setSiteResult,
         getAst,
-        LensToastTyp,
         showToast,
         resetDiagrams,
         markSiteClaimed,
@@ -431,14 +430,12 @@
 <footer style="display: flex; padding: 10px; gap: 10px;">
     <button
         id="error-toast-test-button"
-        onclick={() =>
-            showToast(translate("lens-dev-test-error"), LensToastTyp.ERROR)}
+        onclick={() => showToast(translate("lens-dev-test-error"), "error")}
         >Error toast test</button
     >
     <button
         id="info-toast-test-button"
-        onclick={() =>
-            showToast(translate("lens-dev-test-info"), LensToastTyp.INFO)}
+        onclick={() => showToast(translate("lens-dev-test-info"), "info")}
         >Info toast test</button
     >
     <button

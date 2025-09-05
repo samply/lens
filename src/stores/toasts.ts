@@ -1,12 +1,7 @@
 import { writable } from "svelte/store";
 
-export enum LensToastTyp {
-    ERROR = "error",
-    INFO = "info",
-}
-
 export const toasts = writable<
-    { id: number; typ: LensToastTyp; message: string }[]
+    { id: number; typ: "error" | "info"; message: string }[]
 >([]);
 
 let nextId = 0;
@@ -14,12 +9,12 @@ let nextId = 0;
 /**
  * Show an toast
  * @param message The message
- * @param typ Which typ of toast should be shown, either Error or Info
+ * @param typ Which typ of toast should be shown, either error or info
  * @param timeout Timeout in milliseconds after which to remove the toast
  */
 export function showToast(
     message: string,
-    typ: LensToastTyp,
+    typ: "error" | "info",
     timeout = 8000,
 ): void {
     const id = nextId++;

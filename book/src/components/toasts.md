@@ -15,21 +15,10 @@ The toast component uses fixed positioning to stack toasts at the bottom of the 
 Import the toast functions and show notifications:
 
 ```javascript
-import { showToast, LensToastTyp } from "./toast";
+import { showToast } from "./toast";
 
 // Show error notification
-showToast("Something went wrong!", LensToastTyp.ERROR);
-```
-
-## API Reference
-
-### Types
-
-```typescript
-enum LensToastTyp {
-    ERROR, // Red error notification
-    INFO, // Blue info notification
-}
+showToast("Something went wrong!", "error");
 ```
 
 ## Styling

@@ -39,7 +39,6 @@ export type * from "./types/options";
 export type { FhirMeasureItem, FhirMeasure } from "./types/backend";
 export type { FhirMeasureReport } from "./types/response";
 export type { QueryItem, QueryValue } from "./types/queryData";
-export { LensToastTyp } from "./stores/toasts";
 
 // Include custom elements (aka web components) in the bundle
 import "./components/catalogue/Catalogue.wc.svelte";
