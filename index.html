@@ -4,6 +4,17 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Lens Dev</title>
+        <style>
+            body {
+                margin: 0;
+            }
+
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+            }
+        </style>
     </head>
     <body>
         <div id="app"></div>
@@ -13,15 +24,4 @@
         import dev from "./dev.svelte";
         mount(dev, { target: document.getElementById("app") });
     </script>
-    <style>
-        body {
-            margin: 0;
-        }
-
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-        }
-    </style>
 </html>
