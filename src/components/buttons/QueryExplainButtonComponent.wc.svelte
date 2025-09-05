@@ -23,6 +23,17 @@
         noQueryMessage = "Search for all results",
         inSearchBar = false,
     }: Props = $props();
+
+    const getMinMax = (value: {
+        min?: string | number;
+        max?: string | number;
+    }): string => {
+        const { min, max } = value;
+
+        if (min && max) return `${min} - ${max}`;
+        if (!min) return `≤ ${max}`;
+        return `≥ ${min}`;
+    };
 </script>
 
 {#if queryItem}
@@ -30,6 +41,10 @@
         {#if typeof queryItem?.values[0].value === "string"}
             <div part="lens-query-explain-single-row-message">
                 {queryItem.name}: {queryItem.values[0].value}
+            </div>
+        {:else if "min" in queryItem.values[0].value || "max" in queryItem.values[0].value}
+            <div part="lens-query-explain-single-row-message">
+                {queryItem.name}: {getMinMax(queryItem.values[0].value)}
             </div>
         {:else if Array.isArray(queryItem.values[0].value)}
             <div part="lens-query-explain-multi-row-message">
@@ -47,7 +62,7 @@
                         </div>
                     {/if}
                     <div part="lens-query-explain-multi-row-message-group">
-                        {#each value as valueItem (valueItem.value)}
+                        {#each value as valueItem, i (valueItem.value + i)}
                             <div
                                 part="lens-query-explain-multi-row-message-group-item"
                             >
@@ -108,12 +123,6 @@
 {/if}
 
 <style>
-    /* [part~="lens-query-explain-multi-row-message-group"] {
-        list-style-type: none;
-        padding: 0;
-        margin: 0;
-    } */
-
     [part~="lens-query-explain-button"] {
         display: flex;
         align-items: center;
