@@ -55,4 +55,8 @@ const lensTranslations: Texts = {
         en: "Failed to parse the query parameter in the URL",
         de: "Der Query-Parameter in der URL konnte nicht geparst werden",
     },
+    query_modified: {
+        en: "The query has been modified. Please re-run the search.",
+        de: "Die Suchanfrage wurde geändert. Bitte die Suche erneut ausführen.",
+    },
 };
