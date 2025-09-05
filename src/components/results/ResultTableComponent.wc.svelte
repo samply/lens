@@ -12,7 +12,6 @@
         siteStatus,
         siteResults,
     } from "../../stores/response";
-    import TableItemComponent from "./TableItemComponent.svelte";
     import { lensOptions } from "../../stores/options";
     import type { HeaderData } from "../../types/options";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
@@ -115,6 +114,24 @@
     };
 
     /**
+     * adds and removes tableRows from the datarequestsStore whenever a checkbox is checked or unchecked
+     */
+    const updateStoreOnCheck = (tableRow: (string | number)[]): void => {
+        const siteId = tableRow[0] as string;
+        const isChecked = $datarequestsStore.includes(siteId);
+
+        if (!isChecked) {
+            datarequestsStore.update((store: string[]) => {
+                return [...store, siteId];
+            });
+        } else {
+            datarequestsStore.update((store: string[]) => {
+                return store.filter((site: string) => site !== siteId);
+            });
+        }
+    };
+
+    /**
      *  Configuration options for the result table.
      */
     interface Props {
@@ -179,7 +196,7 @@
 
     const pageSizeOptions: number[] = Array.from(
         new Set([10, 25, 50, pageSize]),
-    ).sort();
+    ).sort((a, b) => a - b);
     let currentPageSize = $state(pageSize);
 </script>
 
@@ -220,10 +237,34 @@
         </tr>
     </thead>
     <tbody part="lens-result-table-table-body">
-        <!-- eslint-disable-next-line svelte/require-each-key -->
-        {#each visibleRows as tableRow}
-            <TableItemComponent {tableRow} />
+        {#each visibleRows as tableRow (tableRow[0])}
+            <tr part="lens-result-table-item-body-row">
+                <td
+                    part="lens-result-table-item-body-cell lens-result-table-item-body-cell-checkbox"
+                    ><input
+                        part="lens-result-table-item-body-checkbox"
+                        type="checkbox"
+                        checked={$datarequestsStore.includes(
+                            tableRow[0] as string,
+                        )}
+                        onchange={() => updateStoreOnCheck(tableRow)}
+                    /></td
+                >
+                {#each tableRow as data, index (index)}
+                    <td part="lens-result-table-item-body-cell">{data}</td>
+                {/each}
+            </tr>
         {/each}
+        <!-- Invisible rows for spacing -->
+        {#if visibleRows.length < currentPageSize}
+            {#each Array(currentPageSize - visibleRows.length).keys() as i (i)}
+                <tr part="lens-result-table-item-body-row">
+                    {#each Array(headerData.length + 1).keys() as j (j)}
+                        <td part="lens-result-table-item-body-cell"></td>
+                    {/each}
+                </tr>
+            {/each}
+        {/if}
     </tbody>
 </table>
 <slot name="lens-result-above-pagination" />
@@ -322,5 +363,10 @@
 
     [part~="lens-result-table-pagination-switcher"] {
         margin-left: 20px;
+    }
+
+    [part~="lens-result-table-item-body-row"] {
+        border-bottom: solid 1px var(--light-gray);
+        height: 2em;
     }
 </style>

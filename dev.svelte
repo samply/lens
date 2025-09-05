@@ -327,6 +327,9 @@
         console.log("AST:", JSON.stringify(getAst()));
         markSiteClaimed("riverside");
         markSiteClaimed("summit");
+        for (const site of ["A", "B", "C", "D", "E"]) {
+            markSiteClaimed("Site " + site);
+        }
 
         setTimeout(() => {
             setSiteResult("riverside", {
@@ -366,6 +369,13 @@
                     patients: 33,
                 },
             });
+
+            for (const site of ["A", "B", "C", "D", "E"]) {
+                setSiteResult("Site " + site, {
+                    totals: {},
+                    stratifiers: {},
+                });
+            }
         }, 1000);
     });
 
@@ -399,7 +409,8 @@
         <lens-search-modified-display
             >The query has changed!</lens-search-modified-display
         >
-        <lens-result-table></lens-result-table>
+        <lens-result-table pageSize={5} pageSizeSwitcher={true}
+        ></lens-result-table>
         <div>
             <lens-chart
                 title="Geschlecht"
