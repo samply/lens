@@ -1,20 +1,24 @@
 # Search Modified Display
 
-`<lens-search-modified-display>` displays a visual cue when the current query has been modified. It listens to the `QueryStore` and only renders its slotted content if a change has occurred.
+`<lens-search-modified-display>` displays a visual cue when the current query has been modified:
 
----
+![Screenshot of the query modified component](pics/querymodified.png)
 
 ## Usage
 
-Use the default `<slot>` to pass in content:
+Include it like this:
+
+```
+<lens-search-modified-display></lens-search-modified-display>
+```
+
+Or customize the message as follows:
 
 ```html
 <lens-search-modified-display>
-    <b>You have unsaved changes. Please click "Search" to update results.</b>
+    You have unsaved changes. Please click "Search" to update results.
 </lens-search-modified-display>
 ```
-
----
 
 ## Styling
 
