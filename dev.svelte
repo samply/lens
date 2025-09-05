@@ -397,7 +397,7 @@
             </button>
             <button
                 onclick={() =>
-                    showToast(translate("lens-dev-test-error"), "info")}
+                    showToast(translate("lens-dev-test-info"), "info")}
             >
                 Info toast test
             </button>
