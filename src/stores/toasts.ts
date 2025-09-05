@@ -14,7 +14,7 @@ let nextId = 0;
  */
 export function showToast(
     message: string,
-    typ: "error" | "info",
+    type: "error" | "info",
     timeout = 8000,
 ): void {
     const id = nextId++;
