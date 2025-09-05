@@ -258,7 +258,11 @@
         <!-- Invisible rows for spacing -->
         {#if visibleRows.length < currentPageSize}
             {#each Array(currentPageSize - visibleRows.length).keys() as i (i)}
-                <tr part="lens-result-table-item-body-row"><td>&nbsp;</td></tr>
+                <tr part="lens-result-table-item-body-row">
+                    {#each Array(headerData.length + 1).keys() as j (j)}
+                        <td part="lens-result-table-item-body-cell">&nbsp;</td>
+                    {/each}
+                </tr>
             {/each}
         {/if}
     </tbody>
