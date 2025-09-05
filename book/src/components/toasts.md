@@ -6,6 +6,8 @@ The component automatically renders all toasts from the global toast store and h
 
 ## Usage
 
+The toast component uses fixed positioning to stack toasts at the bottom of the page. You should usually include it at the top level of your application DOM at the very end.
+
 ```html
 <lens-toast></lens-toast>
 ```
