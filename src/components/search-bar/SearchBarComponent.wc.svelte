@@ -23,7 +23,7 @@
     import { lensOptions } from "../../stores/options";
     import QueryExplainButtonComponent from "../buttons/QueryExplainButtonComponent.wc.svelte";
     import { onMount } from "svelte";
-    import { showErrorToast } from "../../stores/toasts";
+    import { showToast } from "../../stores/toasts";
     import { translate } from "../../helpers/translations";
     import { get } from "svelte/store";
     import { SvelteURL } from "svelte/reactivity";
@@ -372,7 +372,7 @@
                 queryStore.set(query);
             } catch {
                 console.error("Failed to parse query from URL:", encodedQuery);
-                showErrorToast(translate("query_in_url_parse_error"));
+                showToast(translate("query_in_url_parse_error"), "error");
             }
         }
 
