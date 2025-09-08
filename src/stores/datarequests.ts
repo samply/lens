@@ -3,6 +3,7 @@ import type { QueryItem } from "../types/queryData";
 import type { AggregatedValue } from "../types/catalogue";
 import { queryStore } from "./query";
 import { translate } from "../helpers/translations";
+import { catalogue, getCategoryFromKey } from "./catalogue";
 
 export const datarequestsStore = writable<string[]>([]);
 
@@ -14,6 +15,8 @@ export function getSelectedSites(): string[] {
 interface GetHumanReadableQueryAsFormattedString {
     printAggregatedValues?: boolean;
 }
+
+const catalogueForNameExtraction = get(catalogue);
 
 /**
  * Formats the query into a human-readable string.
@@ -126,7 +129,10 @@ const getParsedAggregatedStringValues = (
         valueArray.forEach((valueItem) => {
             valueItems.push(
                 "\t\t\t" +
-                    getCatalogueNameFromKey(valueItem.value) +
+                    getCategoryFromKey(
+                        catalogueForNameExtraction,
+                        valueItem.value,
+                    ) +
                     ": " +
                     valueItem.name,
             );
