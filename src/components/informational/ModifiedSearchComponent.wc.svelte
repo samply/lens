@@ -13,9 +13,7 @@
     part="lens-query-modified-display-wrapper"
     style="visibility: {$queryModified ? 'visible' : 'hidden'}"
 >
-    <slot>
-        {translate("query_modified")}
-    </slot>
+    {translate("query_modified")}
 </div>
 
 <style>
