@@ -1,13 +1,8 @@
 import { get, writable } from "svelte/store";
 import type { QueryItem } from "../types/queryData";
-import { catalogue, getCategoryFromKey } from "./catalogue";
 import type { AggregatedValue } from "../types/catalogue";
-import type {
-    GetHumanReadableQuery,
-    HumanReadableItem,
-    HumanReadableQueryObject,
-    HumanReadableGroup,
-} from "../types/humanReadable";
+import { queryStore } from "./query";
+import { translate } from "../helpers/translations";
 
 export const datarequestsStore = writable<string[]>([]);
 
@@ -16,182 +11,116 @@ export function getSelectedSites(): string[] {
     return get(datarequestsStore);
 }
 
-/**
- * When no parameters are parsed, it will return a complete string and will use only the name of the aggregated values
- * @param options.useFullAggregatedValues if true, the deep values of entities will be parsed and shown
- * @param options.getObject if true, the query will be returned as an object.
- * @param options.queryStore the query store
- * @returns a human readable query either as string or as an object to render HTML
- */
-export function getHumanReadableQuery(options?: {
-    useFullAggregatedValues?: boolean;
-    getObject?: false;
-    queryStore: QueryItem[][];
-}): string;
-
-export function getHumanReadableQuery(options: {
-    useFullAggregatedValues?: boolean;
-    getObject: true;
-    queryStore: QueryItem[][];
-}): HumanReadableQueryObject;
-
-export function getHumanReadableQuery(
-    {
-        useFullAggregatedValues = false,
-        getObject = false,
-        queryStore,
-    }: GetHumanReadableQuery = {} as GetHumanReadableQuery,
-): string | HumanReadableQueryObject {
-    const parsedQuery: HumanReadableQueryObject = {
-        header: "Search ANY of the following groups:",
-        groups: getParsedGroups(queryStore, useFullAggregatedValues, getObject),
-    };
-
-    if (getObject) {
-        return parsedQuery satisfies HumanReadableQueryObject;
-    }
-
-    return `${parsedQuery.header} ${parsedQuery.groups.map((group) => {
-        return `\n${group.groupHeader} ${group.groupItems.map((groupItem) => {
-            return `\n\t${groupItem.name}: ${groupItem.values}`;
-        })}`;
-    })}`;
+interface GetHumanReadableQueryAsFormattedString {
+    printAggregatedValues?: boolean;
 }
 
 /**
- * @param query the current query
- * @param useFullAggregatedValues sets wether to use just the top level name or all details of items with aggregated values
- * @param getObject sets wether to get an object for further formatting, or a formatted sting
- * @returns an array of objects containing a header and an array of group items for human readability
+ * Formats the query into a human-readable string.
+ * @param param0 options.printAggregatedValues if true, the deep values of entities will be parsed and shown
+ * @returns a formatted string representation of the query
  */
-const getParsedGroups = (
+export function getHumanReadableQueryAsFormattedString({
+    printAggregatedValues = false,
+}: GetHumanReadableQueryAsFormattedString = {}): string {
+    const query: QueryItem[][] = get(queryStore);
+
+    if (query.flat().length === 0) return "";
+
+    const parsedGroups = getParsedStringGroups(query, printAggregatedValues);
+
+    const humanReadable =
+        translate("query_info_header") + "\n\n" + parsedGroups.join("\n");
+
+    return humanReadable;
+}
+
+/**
+ * Parses the entire query into formatted strings for each group.
+ * @param query the current query
+ * @param printAggregatedValues if true, the deep values of entities will be parsed and shown
+ * @returns a formatted string representation of the query groups
+ */
+const getParsedStringGroups = (
     query: QueryItem[][],
-    useFullAggregatedValues: boolean,
-    getObject: boolean = false,
-): HumanReadableGroup[] => {
-    let parsedGroups = [] as HumanReadableGroup[];
-
-    parsedGroups = query.map((group, index): HumanReadableGroup => {
-        return {
-            groupHeader: `Group ${index + 1}`,
-            groupItems: getParsedGroup(
-                group,
-                useFullAggregatedValues,
-                getObject,
-            ),
-        };
-    });
-
+    printAggregatedValues: boolean,
+): string[] => {
+    const parsedGroups = query.map(
+        (group, index) =>
+            `${translate("query_info_group_header")} ${index + 1}\n` +
+            getParsedStringGroup(group, printAggregatedValues) +
+            "\n",
+    );
     return parsedGroups;
 };
 
 /**
- *
+ * Parses a query group into a formatted string.
  * @param group the query group to be parsed
- * @param useFullAggregatedValues sets wether to use just the top level name or all details of items with aggregated values
- * @param getObject sets wether to get an object for further formatting, or a formatted sting
- * @returns an array of objects for human readability with name and formatted values
+ * @param printAggregatedValues if true, the deep values of entities will be parsed and shown
+ * @returns a formatted string representation of the query group
  */
-const getParsedGroup = (
+const getParsedStringGroup = (
     group: QueryItem[],
-    useFullAggregatedValues: boolean,
-    getObject: boolean = false,
-): HumanReadableItem[] => {
-    return group.map((queryItem: QueryItem) => {
-        const parsedItem: HumanReadableItem = getParsedItem(
-            queryItem,
-            useFullAggregatedValues,
-            getObject,
-        );
-        return parsedItem;
-    });
+    printAggregatedValues: boolean,
+): string => {
+    if (group.length === 0) return "";
+
+    const parsedGroup =
+        "\t" +
+        group
+            .map((queryItem: QueryItem) => {
+                const parsedStringItem = getParsedStringItem(
+                    queryItem,
+                    printAggregatedValues,
+                );
+                return parsedStringItem;
+            })
+            .join("\n\t");
+
+    return parsedGroup;
 };
 
 /**
+ * Parses a query item into a formatted string.
  * @param queryItem the query item to be parsed
- * @param useFullAggregatedValues sets wether to use just the top level name or all details of items with aggregated values
- * @param getObject sets wether to get an object for further formatting, or a formatted sting
- * @param getSingle used for formatting. true will set indentation to the left. false will indent to match the group structure
- * @returns an object with the name of the queryItem and the formatted values
+ * @param printAggregatedValues if true, the deep values of entities will be parsed and shown
+ * @returns a formatted string with name and values of the query item
  */
-export const getParsedItem = (
+export const getParsedStringItem = (
     queryItem: QueryItem,
-    useFullAggregatedValues: boolean = false,
-    getObject: boolean = false,
-    getSingle: boolean = false,
-): HumanReadableItem => {
-    let parsedQueryItem: HumanReadableItem = { name: "", values: "" };
-    let name: string = "";
-    const values: string = queryItem.values
-        .map((valueItem) => {
-            if (Array.isArray(valueItem.value) && useFullAggregatedValues) {
-                if (!getObject && !getSingle) {
-                    name = queryItem.name;
-                }
-                return getParsedAggregatedValues(
-                    valueItem.value,
-                    getObject,
-                    getSingle,
-                );
-            } else {
-                name = queryItem.name;
-                return valueItem.name;
-            }
-        })
-        .join(", ");
+    printAggregatedValues: boolean,
+): string => {
+    const name: string = queryItem.name;
 
-    parsedQueryItem = { name, values };
-    return parsedQueryItem;
+    const values = queryItem.values.map((valueItem) => {
+        if (typeof valueItem.value === "string") {
+            return valueItem.value;
+        }
+
+        if (Array.isArray(valueItem.value)) {
+            if (printAggregatedValues) {
+                return `${valueItem.name}\n\t${getParsedAggregatedStringValues(valueItem.value)}`;
+            }
+            return valueItem.name;
+        }
+
+        return getMinMax(valueItem.value);
+    });
+
+    return `${name}: ${values.join(", ")}`;
 };
 
 /**
+ * Formats an array with an AND connection of string arrays with an OR connection.
  * @param aggregatedValue an array with an AND connection of string arrays with an OR connection
- * @param getObject sets wether the return value should be a string or an array of string arrays
- * @param getSingle used for formatting. true will set indentation to the left. false will indent to match the group structure
- * @returns the formatted values either as string or array of string arrays for further formattintg
+ * @returns the formatted values as string
  */
-const getParsedAggregatedValues = (
+const getParsedAggregatedStringValues = (
     aggregatedValue: AggregatedValue[][],
-    getObject: boolean = false,
-    getSingle: boolean = false,
-): string | string[][] => {
-    let aggregatedGroups: string[][] = [];
+): string => {
+    const aggregatedGroups: string[][] = [];
 
-    if (getObject) {
-        aggregatedGroups = aggregatedValue.map((value) => {
-            return value.map((val) => val.value + ": " + val.name);
-        });
-        return aggregatedGroups satisfies string[][];
-    }
-
-    /**
-     * formats the string to be displayed as standalone regarding indentation
-     */
-    if (getSingle) {
-        aggregatedValue.forEach((valueArray) => {
-            const valueItems: string[] = [];
-            valueArray.forEach((valueItem) => {
-                valueItems.push(
-                    "  " +
-                        getCatalogueNameFromKey(valueItem.value) +
-                        ": " +
-                        valueItem.name,
-                );
-            });
-            aggregatedGroups.push(valueItems);
-        });
-
-        const parsedAggregatedGroups = aggregatedGroups.map((aggregatedGroup) =>
-            aggregatedGroup.join("\n"),
-        );
-        const parsedAggregatedGroupsString =
-            `any of\n` + parsedAggregatedGroups.join("\n\nand any of\n");
-        return parsedAggregatedGroupsString;
-    }
-
-    /**
-     * formats the string to be displayed inside groups regarding indentation
-     */
     aggregatedValue.forEach((valueArray) => {
         const valueItems: string[] = [];
         valueArray.forEach((valueItem) => {
@@ -208,21 +137,30 @@ const getParsedAggregatedValues = (
     const parsedAggregatedGroups = aggregatedGroups.map((aggregatedGroup) =>
         aggregatedGroup.join("\n"),
     );
+
     const parsedAggregatedGroupsString =
-        `\n\t\tany of\n` + parsedAggregatedGroups.join("\n\t\tand any of\n");
+        `\t${translate("query_item_multi_row_header_top")} of\n` +
+        parsedAggregatedGroups.join(
+            `\n\t\t${translate("query_item_multi_row_header")}\n`,
+        );
     return parsedAggregatedGroupsString;
 };
 
 /**
- * gets the name of an element with the respective key
- * @param key key of the element to look up the name
- * @returns name of the element
+ * Format a min/max object as a string.
+ * @param {{min?: string | number, max?: string | number}} param0
+ *   min: The minimum value (string or number, optional).
+ *   max: The maximum value (string or number, optional).
+ * @returns {string} A string representation of the min/max range.
  */
-const getCatalogueNameFromKey = (key: string): string => {
-    let categoryName = undefined;
-    catalogue.subscribe((catalogue) => {
-        categoryName = getCategoryFromKey(catalogue, key)?.name;
-        if (categoryName === undefined) return;
-    });
-    return categoryName ? categoryName : key;
+export const getMinMax = ({
+    min,
+    max,
+}: {
+    min?: string | number;
+    max?: string | number;
+}): string => {
+    if (min && max) return `${min} - ${max}`;
+    if (!min) return `≤ ${max}`;
+    return `≥ ${min}`;
 };

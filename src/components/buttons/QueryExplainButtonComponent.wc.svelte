@@ -7,6 +7,7 @@
 <script lang="ts">
     import { translate } from "../../helpers/translations";
     import { catalogue, getCategoryFromKey } from "../../stores/catalogue";
+    import { getMinMax } from "../../stores/datarequests";
     import { queryStore } from "../../stores/query";
     import type { QueryItem } from "../../types/queryData";
     import InfoButtonComponent from "./InfoButtonComponent.wc.svelte";
@@ -23,25 +24,6 @@
         noQueryMessage = "Search for all results",
         inSearchBar = false,
     }: Props = $props();
-
-    /**
-     * Format a min/max object as a string.
-     * @param {{min?: string | number, max?: string | number}} param0
-     *   min: The minimum value (string or number, optional).
-     *   max: The maximum value (string or number, optional).
-     * @returns {string} A string representation of the min/max range.
-     */
-    const getMinMax = ({
-        min,
-        max,
-    }: {
-        min?: string | number;
-        max?: string | number;
-    }): string => {
-        if (min && max) return `${min} - ${max}`;
-        if (!min) return `≤ ${max}`;
-        return `≥ ${min}`;
-    };
 </script>
 
 {#if queryItem}
