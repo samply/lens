@@ -33,6 +33,18 @@
                 }
                 return query;
             });
+            /**
+             * sets the focus to the previous search bar input after deleting a group
+             */
+            const searchBarInputs = document
+                .querySelector(`lens-search-bar-multiple`)
+                ?.shadowRoot?.querySelectorAll(`input`);
+            if (searchBarInputs && index > 0) {
+                console.log(searchBarInputs[index - 1]);
+                searchBarInputs[index - 1]?.focus();
+            } else if (searchBarInputs) {
+                searchBarInputs[0]?.focus();
+            }
         }
         if (type === "item") {
             removeItemFromQuery(item!, index);
