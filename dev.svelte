@@ -441,19 +441,23 @@
 <footer style="display: flex; padding: 10px; gap: 10px;">
     <button
         id="error-toast-test-button"
+        style="cursor: pointer;"
         onclick={() => showToast(translate("lens-dev-test-error"), "error")}
         >Error toast test</button
     >
     <button
         id="info-toast-test-button"
+        style="cursor: pointer;"
         onclick={() => showToast(translate("lens-dev-test-info"), "info")}
         >Info toast test</button
     >
     <button
         id="switch-language-to-german-button"
+        style="cursor: pointer;"
         onclick={() => setLangAndReload("de")}>🇩🇪</button
     ><button
         id="switch-language-to-english-button"
+        style="cursor: pointer;"
         onclick={() => setLangAndReload("en")}>🇬🇧</button
     >
     <span
