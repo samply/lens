@@ -32,12 +32,13 @@
                 if (query.length === 0) {
                     query = [[]];
                 }
-                if (query.length === 1) {
-                    $activeQueryGroupIndex = 0;
-                } else if ($activeQueryGroupIndex === index) {
-                    $activeQueryGroupIndex = query.length - 1;
-                }
                 return query;
+            });
+            activeQueryGroupIndex.update((current) => {
+                if (index < current) {
+                    return current - 1;
+                }
+                return current;
             });
         }
         if (type === "item") {
