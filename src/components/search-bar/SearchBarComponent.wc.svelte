@@ -356,6 +356,10 @@
     };
 
     onMount(() => {
+        //sets focus in the new bar when added
+        searchBarInput.focus();
+        $activeQueryGroupIndex = index;
+
         // load the query from the URL if it exists
         const encodedQuery = new URLSearchParams(window.location.search).get(
             "query",
@@ -430,21 +434,25 @@
                                             values: [value],
                                         },
                                     }}
+                                    isInActiveSearchBar={$activeQueryGroupIndex ===
+                                        index}
                                 />
                             {/if}
                         </span>
                     {/each}
                     <StoreDeleteButtonComponent
                         itemToDelete={{ type: "item", index, item: queryItem }}
+                        isInActiveSearchBar={$activeQueryGroupIndex === index}
                     />
                 </div>
             {/each}
         </div>
     {/if}
     <input
-        part={`lens-searchbar-input ${
-            inputValue?.length > 0 ? "lens-searchbar-input-options-open" : ""
-        }`}
+        part={`lens-searchbar-input 
+            ${inputValue?.length > 0 ? "lens-searchbar-input-options-open" : ""}
+            ${index === $activeQueryGroupIndex ? "lens-searchbar-input-active" : ""}
+        `}
         type="text"
         bind:this={searchBarInput}
         bind:value={inputValue}
@@ -560,7 +568,10 @@
             <li>{typeMoreMessage}</li>
         </ul>
     {/if}
-    <StoreDeleteButtonComponent itemToDelete={{ type: "group", index }} />
+    <StoreDeleteButtonComponent
+        itemToDelete={{ type: "group", index }}
+        isInActiveSearchBar={$activeQueryGroupIndex === index}
+    />
 </div>
 
 <style>
@@ -586,10 +597,17 @@
         border-color: var(--blue);
     }
 
-    [part~="lens-searchbar-active"] {
-        background-color: #eff1ff;
+    [part~="lens-searchbar"]:focus-within {
+        border-color: var(--blue);
+        border: solid 1px var(--blue);
         border-radius: var(--border-radius-small);
         z-index: 2;
+    }
+
+    [part~="lens-searchbar-active"]
+    {
+        transform: scale(1.01);
+        box-shadow: 0px 0px 13px 4px rgba(0,0,0,0.3);
     }
 
     [part~="lens-searchbar-chips"] {

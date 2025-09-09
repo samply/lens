@@ -14,9 +14,10 @@
             index: number;
             item?: QueryItem;
         };
+        isInActiveSearchBar: boolean;
     }
 
-    let { itemToDelete }: Props = $props();
+    let { itemToDelete, isInActiveSearchBar = false }: Props = $props();
 
     const { type, index, item } = itemToDelete;
 
@@ -32,14 +33,27 @@
                 if (query.length === 0) {
                     query = [[]];
                 }
+
+                // handles focus and active group after deletion
+                if(index < $activeQueryGroupIndex) {
+                    $activeQueryGroupIndex -= 1;
+                }
+                if (index === $activeQueryGroupIndex && index === query.length) {
+                    $activeQueryGroupIndex = query.length - 1    
+                }
+
+                const searchBarInputs = document
+                    .querySelector(`lens-search-bar-multiple`)
+                    ?.shadowRoot?.querySelectorAll(`input`);
+
+                if(searchBarInputs) {
+                    searchBarInputs[$activeQueryGroupIndex].focus()
+                }
+
                 return query;
             });
-            activeQueryGroupIndex.update((current) => {
-                if (index < current) {
-                    return current - 1;
-                }
-                return current;
-            });
+
+            
         }
         if (type === "item") {
             removeItemFromQuery(item!, index);
@@ -51,7 +65,9 @@
 </script>
 
 <button
-    part="lens-query-delete-button lens-query-delete-button-{type}"
+    part="
+        lens-query-delete-button lens-query-delete-button-{type}
+        {isInActiveSearchBar && 'lens-query-delete-button-active-group'}"
     onclick={deleteItem}
     aria-label="Delete"
 >
@@ -81,13 +97,14 @@
         cursor: pointer;
         padding: 0;
         border-radius: 50%;
+        border: 1px solid transparent
     }
 
     [part~="lens-query-delete-button-value"] {
         color: var(--white);
         border: 1px solid var(--white);
     }
-
+    
     [part~="lens-query-delete-button-value"]:hover {
         border: 1px solid var(--orange);
         color: var(--orange);
@@ -98,22 +115,19 @@
         top: -6px;
         right: -8px;
         background-color: var(--white);
-        border: 1px solid var(--orange);
+        border: 1px solid var(--white);
     }
 
     [part~="lens-query-delete-button-item"]:hover {
-        background-color: var(--orange);
-        color: var(--white);
+        border-color: var(--orange);
     }
 
     [part~="lens-query-delete-button-group"] {
         height: 22px;
         width: 22px;
-        border: 1px solid var(--orange);
     }
 
     [part~="lens-query-delete-button-group"]:hover {
-        background-color: var(--orange);
-        color: var(--white);
+        border-color: var(--orange);
     }
 </style>
