@@ -4,6 +4,7 @@
         removeItemFromQuery,
         removeValueFromQuery,
         queryModified,
+        activeQueryGroupIndex,
     } from "../../stores/query";
     import type { QueryItem } from "../../types/queryData";
 
@@ -31,20 +32,13 @@
                 if (query.length === 0) {
                     query = [[]];
                 }
+                if (query.length === 1) {
+                    $activeQueryGroupIndex = 0;
+                } else if ($activeQueryGroupIndex === index) {
+                    $activeQueryGroupIndex = query.length - 1;
+                }
                 return query;
             });
-            /**
-             * sets the focus to the previous search bar input after deleting a group
-             */
-            const searchBarInputs = document
-                .querySelector(`lens-search-bar-multiple`)
-                ?.shadowRoot?.querySelectorAll(`input`);
-            if (searchBarInputs && index > 0) {
-                console.log(searchBarInputs[index - 1]);
-                searchBarInputs[index - 1]?.focus();
-            } else if (searchBarInputs) {
-                searchBarInputs[0]?.focus();
-            }
         }
         if (type === "item") {
             removeItemFromQuery(item!, index);

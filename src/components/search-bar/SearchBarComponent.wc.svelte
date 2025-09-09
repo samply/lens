@@ -399,7 +399,10 @@
     });
 </script>
 
-<div part="lens-searchbar">
+<div
+    part="lens-searchbar {index === $activeQueryGroupIndex &&
+        'lens-searchbar-active'}"
+>
     {#if queryGroup !== undefined && queryGroup.length > 0}
         <div part="lens-searchbar-chips">
             {#each queryGroup as queryItem (queryItem.id)}
@@ -565,13 +568,6 @@
     * Lens Search Bar
     */
 
-    [part~="lens-searchbar"]:focus-within {
-        border-color: var(--blue);
-        border: solid 1px var(--blue);
-        border-radius: var(--border-radius-small);
-        z-index: 2;
-    }
-
     [part~="lens-searchbar"] {
         position: relative;
         z-index: 1;
@@ -583,6 +579,13 @@
         display: flex;
         flex-wrap: wrap;
         width: -webkit-fill-available;
+    }
+
+    [part~="lens-searchbar-active"] {
+        border-color: var(--blue);
+        border: solid 1px var(--blue);
+        border-radius: var(--border-radius-small);
+        z-index: 2;
     }
 
     [part~="lens-searchbar-chips"] {
