@@ -579,11 +579,15 @@
         display: flex;
         flex-wrap: wrap;
         width: -webkit-fill-available;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    [part~="lens-searchbar"]:focus-within {
+        border-color: var(--blue);
     }
 
     [part~="lens-searchbar-active"] {
-        border-color: var(--blue);
-        border: solid 1px var(--blue);
+        background-color: #eff1ff;
         border-radius: var(--border-radius-small);
         z-index: 2;
     }
@@ -624,6 +628,7 @@
         flex-grow: 1;
         outline: none;
         border: none;
+        background-color: transparent;
     }
 
     /**
@@ -644,7 +649,7 @@
         border: solid 1px var(--blue);
         border-top: none;
         position: absolute;
-        top: 30px;
+        top: 40px;
         left: -1px;
         right: -1px;
         background-color: white;
