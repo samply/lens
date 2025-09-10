@@ -401,12 +401,19 @@
          */
         let chartData: ChartDataSets = getChartDataSets(chartLabels);
 
-        // If the chart is empty and no responses are pending show "No Data Available"
-        noDataAvailable =
-            chartData.data[0].data.every((value) => value === 0) &&
-            Array.from(siteStatus.values()).every(
-                (status) => status !== "claimed",
-            );
+        // If there is no data, show ghost chart and return early
+        if (chartData.data[0].data.every((value) => value === 0)) {
+            resetChart();
+            if (
+                !Array.from(siteStatus.values()).some(
+                    (status) => status === "claimed",
+                )
+            ) {
+                // Show "No Data Available" if no responses are pending
+                noDataAvailable = true;
+            }
+            return;
+        }
 
         chart.data.datasets = chartData.data;
         chartLabels = chartData.labels;

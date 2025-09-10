@@ -6,8 +6,8 @@
         setSiteResult,
         getAst,
         showToast,
-        resetDiagrams,
         markSiteClaimed,
+        clearSiteResults,
     } from "./src/index";
     import { facetCounts } from "./src/stores/facetCounts";
 
@@ -323,8 +323,8 @@
     });
 
     window.addEventListener("lens-search-triggered", () => {
-        resetDiagrams();
         console.log("AST:", JSON.stringify(getAst()));
+        clearSiteResults();
         markSiteClaimed("riverside");
         markSiteClaimed("summit");
         for (const site of ["A", "B", "C", "D", "E"]) {
