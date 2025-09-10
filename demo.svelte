@@ -327,7 +327,7 @@
         clearSiteResults();
         markSiteClaimed("riverside");
         markSiteClaimed("summit");
-        for (const site of ["A", "B", "C", "D", "E"]) {
+        for (const site of "ABCDEFGHIJ") {
             markSiteClaimed("Site " + site);
         }
 
@@ -370,7 +370,7 @@
                 },
             });
 
-            for (const site of ["A", "B", "C", "D", "E"]) {
+            for (const site of "ABCDEFGHIJ") {
                 setSiteResult("Site " + site, {
                     totals: {},
                     stratifiers: {},
@@ -385,86 +385,151 @@
     }
 </script>
 
-<header style="padding: 10px;">
-    <h2 style="margin: 0;">Lens Dev</h2>
-</header>
-
-<div style="display: flex; padding: 10px; gap: 10px; align-items: center;">
-    <div style="flex: 1">
-        <lens-search-bar-multiple></lens-search-bar-multiple>
-    </div>
-    <lens-query-explain-button noQueryMessage="Empty Query"
-    ></lens-query-explain-button>
-    <lens-search-button></lens-search-button>
-    <lens-query-spinner></lens-query-spinner>
-</div>
-
-<div style="display: flex; padding: 10px; gap: 10px;">
-    <div style="flex: 1">
-        <lens-catalogue toggle={{ open: true }}></lens-catalogue>
-    </div>
-    <div style="flex: 1">
-        <lens-result-summary></lens-result-summary>
-        <lens-negotiate-button title="Request Data"></lens-negotiate-button>
-        <lens-search-modified-display
-            >The query has changed!</lens-search-modified-display
-        >
-        <lens-result-table pageSize={5} pageSizeSwitcher={true}
-        ></lens-result-table>
+<div id="main-wrapper">
+    <header class="card">
+        <h1>Lens Demo</h1>
         <div>
-            <lens-chart
-                title="Geschlecht"
-                dataKey="gender"
-                chartType="pie"
-                displayLegends="true"
-            ></lens-chart>
-            <lens-chart
-                title="diagnosis"
-                dataKey="diagnosis"
-                chartType="bar"
-                xAxisTitle="ICD-10-Codes"
-                yAxisTitle="Anzahl der Diagnosen"
-            ></lens-chart>
-            <lens-chart
-                title="diagnosis"
-                dataKey="diagnosis"
-                indexAxis="y"
-                scaleType="logarithmic"
-                chartType="bar"
-                xAxisTitle="Anzahl der Diagnosen"
-                yAxisTitle="ICD-10-Codes"
-            ></lens-chart>
+            <button
+                onclick={() =>
+                    showToast(translate("lens-dev-test-error"), "error")}
+            >
+                Error toast test
+            </button>
+            <button
+                onclick={() =>
+                    showToast(translate("lens-dev-test-info"), "info")}
+            >
+                Info toast test
+            </button>
+            <button onclick={() => setLangAndReload("en")}>🇬🇧</button>
+            <button onclick={() => setLangAndReload("de")}>🇩🇪</button>
+        </div>
+    </header>
+    <div id="search-wrapper">
+        <lens-search-bar-multiple></lens-search-bar-multiple>
+        <lens-query-explain-button></lens-query-explain-button>
+        <lens-query-spinner></lens-query-spinner>
+        <lens-search-button></lens-search-button>
+    </div>
+    <div id="catalogue-and-grid-wrapper">
+        <div id="catalogue" class="card">
+            <lens-catalogue toggle={{ collapsable: false }}></lens-catalogue>
+        </div>
+        <div id="main-grid">
+            <div id="result-summary" class="card">
+                <lens-result-summary></lens-result-summary>
+                <lens-search-modified-display></lens-search-modified-display>
+            </div>
+            <div id="result-table" class="card">
+                <lens-result-table pageSizeSwitcher={true}></lens-result-table>
+                <lens-negotiate-button></lens-negotiate-button>
+            </div>
+            <div class="card">
+                <lens-chart
+                    title="Gender distribution"
+                    dataKey="gender"
+                    chartType="pie"
+                    displayLegends={true}
+                ></lens-chart>
+            </div>
+            <div class="card">
+                <lens-chart
+                    title="Diagnosis distribution"
+                    dataKey="diagnosis"
+                    chartType="bar"
+                    xAxisTitle="ICD-10 Code"
+                    yAxisTitle="Number of cases"
+                ></lens-chart>
+            </div>
+            <div class="card">
+                <lens-chart
+                    title="Diagnosis distribution (alternative)"
+                    dataKey="diagnosis"
+                    chartType="bar"
+                    indexAxis="y"
+                    scaleType="logarithmic"
+                    xAxisTitle="Number of cases"
+                    yAxisTitle="ICD-10 Code"
+                ></lens-chart>
+            </div>
         </div>
     </div>
+    <footer class="card">
+        <span>
+            Made with ♥ and
+            <a href="https://github.com/samply/lens">samply/lens</a>
+        </span>
+    </footer>
 </div>
 
-<footer style="display: flex; padding: 10px; gap: 10px;">
-    <button
-        id="error-toast-test-button"
-        style="cursor: pointer;"
-        onclick={() => showToast(translate("lens-dev-test-error"), "error")}
-        >Error toast test</button
-    >
-    <button
-        id="info-toast-test-button"
-        style="cursor: pointer;"
-        onclick={() => showToast(translate("lens-dev-test-info"), "info")}
-        >Info toast test</button
-    >
-    <button
-        id="switch-language-to-german-button"
-        style="cursor: pointer;"
-        onclick={() => setLangAndReload("de")}>🇩🇪</button
-    ><button
-        id="switch-language-to-english-button"
-        style="cursor: pointer;"
-        onclick={() => setLangAndReload("en")}>🇬🇧</button
-    >
-    <span
-        >Made with ♥ and <a href="https://github.com/samply/lens"
-            >samply/lens</a
-        >.</span
-    >
-</footer>
-
 <lens-toast></lens-toast>
+
+<style>
+    #main-wrapper {
+        padding: var(--gap-xs);
+        gap: var(--gap-xs);
+        background-color: #f8f8ff;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card {
+        background-color: white;
+        border-radius: var(--border-radius-small);
+        border: 1px solid var(--lightest-gray);
+        padding: var(--gap-xs);
+    }
+
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        h1 {
+            color: var(--blue);
+            margin: 0;
+        }
+    }
+
+    #search-wrapper {
+        display: flex;
+        gap: var(--gap-xs);
+        align-items: center;
+        lens-search-bar-multiple {
+            flex: 1;
+        }
+    }
+
+    #catalogue-and-grid-wrapper {
+        flex: 1;
+        overflow: hidden;
+        display: flex;
+        gap: var(--gap-xs);
+    }
+
+    #catalogue {
+        flex: 1;
+        max-width: 30rem;
+        overflow-y: auto;
+    }
+
+    #main-grid {
+        flex: 1;
+        overflow-y: auto;
+
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--gap-xs);
+
+        #result-summary {
+            grid-column: 1 / -1;
+        }
+    }
+
+    footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+</style>

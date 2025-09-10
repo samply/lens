@@ -234,6 +234,16 @@ Add the following to `src/App.svelte` to print the current query to the console 
 
 You can read more about [queries and the AST](./query.md) and about [showing results](./results.md) in the dedicated guides.
 
+## Layout and design
+
+We are maintaining a demo application in the Lens repository that showcases the layout and design of a typical application.
+
+![Demo application screenshot](pics/lens-demo.png)
+
+You can try out an interactive version [here](https://samply.github.io/lens/demo/) and find the source code in the [`demo.svelte`](https://github.com/samply/lens/blob/main/demo.svelte) file. The demo application uses a layout where the header and footer are always visible and the catalogue and main content areas are scrollable independently. You have the option to copy the layout or parts of the layout from the demo application and adapt them to your needs.
+
+It is also possible to customize the styles of Lens components using CSS, see the [overwriting styles](./overwriting-styles.md) guide for details.
+
 ## Deploying using Docker
 
 We recommend that projects in the Samply organization follow these deployment practices. We will use Node.js inside Docker. Run `npm i -D @sveltejs/adapter-node` and change the adapter in `svelte.config.js`:
