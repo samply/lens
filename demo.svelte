@@ -387,7 +387,7 @@
 
 <div id="main-wrapper">
     <header class="card">
-        <h1>Lens Dev</h1>
+        <h1>Lens Demo</h1>
         <div>
             <button
                 onclick={() =>
