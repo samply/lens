@@ -434,15 +434,12 @@
                                             values: [value],
                                         },
                                     }}
-                                    isInActiveSearchBar={$activeQueryGroupIndex ===
-                                        index}
                                 />
                             {/if}
                         </span>
                     {/each}
                     <StoreDeleteButtonComponent
                         itemToDelete={{ type: "item", index, item: queryItem }}
-                        isInActiveSearchBar={$activeQueryGroupIndex === index}
                     />
                 </div>
             {/each}
@@ -568,10 +565,7 @@
             <li>{typeMoreMessage}</li>
         </ul>
     {/if}
-    <StoreDeleteButtonComponent
-        itemToDelete={{ type: "group", index }}
-        isInActiveSearchBar={$activeQueryGroupIndex === index}
-    />
+    <StoreDeleteButtonComponent itemToDelete={{ type: "group", index }} />
 </div>
 
 <style>
@@ -604,10 +598,9 @@
         z-index: 2;
     }
 
-    [part~="lens-searchbar-active"]
-    {
+    [part~="lens-searchbar-active"] {
         transform: scale(1.01);
-        box-shadow: 0px 0px 13px 4px rgba(0,0,0,0.3);
+        box-shadow: 0px 0px 13px 4px rgba(0, 0, 0, 0.3);
     }
 
     [part~="lens-searchbar-chips"] {
