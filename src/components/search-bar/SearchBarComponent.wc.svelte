@@ -404,8 +404,9 @@
 </script>
 
 <div
-    part="lens-searchbar {index === $activeQueryGroupIndex &&
-        'lens-searchbar-active'}"
+    part="lens-searchbar {index === $activeQueryGroupIndex
+        ? 'lens-searchbar-active'
+        : ''}"
 >
     {#if queryGroup !== undefined && queryGroup.length > 0}
         <div part="lens-searchbar-chips">
@@ -589,13 +590,6 @@
 
     [part~="lens-searchbar"]:has(input:focus) {
         border-color: var(--blue);
-    }
-
-    [part~="lens-searchbar"]:focus-within {
-        border-color: var(--blue);
-        border: solid 1px var(--blue);
-        border-radius: var(--border-radius-small);
-        z-index: 2;
     }
 
     [part~="lens-searchbar-active"] {

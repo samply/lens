@@ -5,7 +5,7 @@
 />
 
 <script lang="ts">
-    import { activeQueryGroupIndex, queryStore } from "../../stores/query";
+    import { queryStore } from "../../stores/query";
     import SearchBarComponent from "./SearchBarComponent.wc.svelte";
     import type { QueryItem } from "../../types/queryData";
 
@@ -25,7 +25,6 @@
     const addSearchBar = (): void => {
         queryStore.update((queryStore: QueryItem[][]): QueryItem[][] => {
             queryStore.push([]);
-            $activeQueryGroupIndex = queryStore.length - 1;
             return queryStore;
         });
     };
