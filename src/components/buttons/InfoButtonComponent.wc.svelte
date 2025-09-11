@@ -91,6 +91,7 @@
         border: none;
         padding: 0;
         background-color: transparent;
+        flex-shrink: 0;
     }
 
     [part~="lens-info-button-icon"]:hover {
@@ -116,7 +117,7 @@
         padding: var(--gap-xs);
         border: solid 1px var(--blue);
         border-radius: var(--border-radius-small);
-        text-align-last: left;
+        text-align: left;
         user-select: text;
     }
 

@@ -16,13 +16,11 @@
         noQueryMessage?: string;
         queryItem?: QueryItem | undefined;
         /** Query explain button in the search bar is smaller, white, and has no border */
-        inSearchBar: boolean;
     }
 
     let {
         queryItem = undefined,
         noQueryMessage = "Search for all results",
-        inSearchBar = false,
     }: Props = $props();
 </script>
 
@@ -57,12 +55,7 @@
                                 part="lens-query-explain-multi-row-message-group-item"
                             >
                                 {getCategoryFromKey($catalogue, valueItem.value)
-                                    ?.name
-                                    ? getCategoryFromKey(
-                                          $catalogue,
-                                          valueItem.value,
-                                      )?.name
-                                    : valueItem.value}: {valueItem.name}
+                                    ?.name ?? valueItem.value}: {valueItem.name}
                             </div>
                         {/each}
                     </div>
@@ -72,11 +65,7 @@
     </InfoButtonComponent>
 {:else}
     <div part="lens-query-explain-button">
-        <InfoButtonComponent
-            buttonSize="25px"
-            alignDialogue="left"
-            {inSearchBar}
-        >
+        <InfoButtonComponent buttonSize="25px" alignDialogue="left">
             {#if $queryStore.flat().length > 0}
                 <h3 part="lens-query-explain-header">
                     {translate("query_info_header")}
@@ -126,7 +115,7 @@
 
     [part~="lens-query-explain-single-row-message"] {
         text-align: left;
-        line-break: anywhere;
+        overflow-wrap: anywhere; /* prefers breaking at spaces, but will break mid-word if needed */
     }
 
     [part~="lens-query-explain-multi-row-message-heading"] {
@@ -167,7 +156,7 @@
 
     [part~="lens-query-explain-bottom-level-item"] {
         margin-bottom: var(--gap-xxs);
-        line-break: anywhere;
+        overflow-wrap: anywhere; /* prefers breaking at spaces, but will break mid-word if needed */
     }
 
     [part~="lens-query-explain-bottom-level-item-header"] {

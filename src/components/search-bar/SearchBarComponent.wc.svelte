@@ -417,7 +417,6 @@
                                     ...queryItem,
                                     values: [value],
                                 }}
-                                inSearchBar={true}
                             />
                             {#if queryItem.values.length > 1}
                                 <StoreDeleteButtonComponent
@@ -611,9 +610,8 @@
     }
 
     [part~="lens-searchbar-chip-item"] {
-        display: grid;
-        grid-template-columns: 1fr auto auto;
-        grid-gap: var(--gap-xxs);
+        display: inline-flex;
+        gap: var(--gap-xxs);
         align-items: center;
     }
 

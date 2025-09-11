@@ -3,7 +3,6 @@ import type { Texts } from "../types/options";
 import { lensOptions } from "../stores/options";
 
 /**
- * Translate a key into a human readable text depending on the language set in options
  * @param key the key to translate
  * @returns the human readable text
  */
