@@ -4,7 +4,7 @@ Lens is a front-end library for building federated search tools in the medical s
 
 > What is the age distribution of patients with lung cancer across participating hospitals?
 
-It is used at Deutsches Krebsforschungszentrum to build tools for cancer research such as the [BBMRI-ERIC Locator](https://www.bbmri-eric.eu/news-events/locator-a-powerful-tool-to-enhance-visibility-and-findability-of-samples-and-data-in-europes-biobanks/) and the [CCP Explorer](https://dktk.dkfz.de/forschung/Plattformen-und-Technologie-Netzwerke/klinische-plattformen/ccp-explorer).
+It is used at Deutsches Krebsforschungszentrum to build tools for cancer research such as the [BBMRI-ERIC Locator](https://www.bbmri-eric.eu/news-events/locator-a-powerful-tool-to-enhance-visibility-and-findability-of-samples-and-data-in-europes-biobanks/) and the [CCP Explorer](https://dktk.dkfz.de/en/clinical-platform/ccp-explorer).
 
 You can try out the [interactive demo](https://samply.github.io/lens/demo/) that showcases the functionality of a typical Lens-based application. Note that in the demo results are hardcoded and do not reflect your query.
 
