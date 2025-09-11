@@ -111,8 +111,8 @@
 
     [part~="lens-query-delete-button-item"] {
         position: absolute;
-        top: -6px;
-        right: -8px;
+        top: -5px;
+        right: -9px;
         background-color: var(--white);
         border: 1px solid var(--white);
     }
@@ -128,8 +128,8 @@
 
     /* safari fix. somehow it won't display like the other types */
     [part~="lens-query-delete-button-group"] svg {
-        height: 20px;
-        width: 20px;
+        height: 100%;
+        width: 100%;
     }
 
     [part~="lens-query-delete-button-group"]:hover {
