@@ -586,6 +586,7 @@
         flex-wrap: wrap;
         width: -webkit-fill-available;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        flex: 1;
     }
 
     [part~="lens-searchbar"]:has(input:focus) {
