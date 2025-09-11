@@ -596,6 +596,7 @@
     [part~="lens-searchbar-active"] {
         transform: scale(1.01);
         box-shadow: 0px 0px 13px 4px rgba(0, 0, 0, 0.3);
+        z-index: 2;
     }
 
     [part~="lens-searchbar-chips"] {

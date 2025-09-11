@@ -126,6 +126,12 @@
         width: 22px;
     }
 
+    /* safari fix. somehow it won't display like the other types */
+    [part~="lens-query-delete-button-group"] svg {
+        height: 20px;
+        width: 20px;
+    }
+
     [part~="lens-query-delete-button-group"]:hover {
         border-color: var(--orange);
     }
