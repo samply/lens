@@ -27,7 +27,11 @@ export {
     type BuildLibraryReturn,
     type BuildMeasureReturn,
 } from "./helpers/cql-measure";
-export { getSelectedSites, getHumanReadableQuery } from "./stores/datarequests";
+export {
+    getSelectedSites,
+    getHumanReadableQuery,
+    getHumanReadableQueryAsFormattedString,
+} from "./stores/datarequests";
 
 // Export backends
 export { querySpot, type SpotResult } from "./backends/spot";
