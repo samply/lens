@@ -616,7 +616,7 @@
     }
 
     [part~="lens-searchbar-chip-item-text"] {
-        line-break: anywhere;
+        overflow-wrap: anywhere; /* prefers breaking at spaces, but will break mid-word if needed */
     }
     [part~="lens-searchbar-input"] {
         box-sizing: border-box;
