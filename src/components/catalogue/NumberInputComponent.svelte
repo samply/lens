@@ -5,6 +5,7 @@
     import { activeQueryGroupIndex, addItemToQuery } from "../../stores/query";
     import { onMount } from "svelte";
     import { translate } from "../../helpers/translations";
+    import { getMinMax } from "../../helpers/min-max-string-builder";
 
     let {
         element,
@@ -20,21 +21,6 @@
     onMount(() => {
         fromInput.focus();
     });
-
-    /**
-     * Build the string representation of the range.
-     */
-    function buildName(): string {
-        if (from !== null && to === null) {
-            return `≥ ${from}`;
-        } else if (from === null && to !== null) {
-            return `≤ ${to}`;
-        } else if (from !== null && to !== null && from == to) {
-            return `${from}`;
-        } else {
-            return `${from} - ${to}`;
-        }
-    }
 
     $effect(() => {
         if (from === null && to === null) {
@@ -56,7 +42,10 @@
                 type: element.type,
                 values: [
                     {
-                        name: buildName(),
+                        name: getMinMax({
+                            min: from as number,
+                            max: to as number,
+                        }),
                         value: { min: from ?? undefined, max: to ?? undefined },
                         queryBindId: uuidv4(),
                     },

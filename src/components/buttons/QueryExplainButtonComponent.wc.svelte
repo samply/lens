@@ -7,7 +7,7 @@
 <script lang="ts">
     import { translate } from "../../helpers/translations";
     import { catalogue, getCategoryFromKey } from "../../stores/catalogue";
-    import { getMinMax } from "../../stores/datarequests";
+    import { getMinMax } from "../../helpers/min-max-string-builder";
     import { queryStore } from "../../stores/query";
     import type { QueryItem } from "../../types/queryData";
     import InfoButtonComponent from "./InfoButtonComponent.wc.svelte";
