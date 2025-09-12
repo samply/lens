@@ -9,6 +9,7 @@
         markSiteClaimed,
         clearSiteResults,
     } from "./src/index";
+    import { getHumanReadableQueryAsFormattedString } from "./src/stores/datarequests";
     import { facetCounts } from "./src/stores/facetCounts";
 
     setOptions({
@@ -422,7 +423,17 @@
             </div>
             <div id="result-table" class="card">
                 <lens-result-table pageSizeSwitcher={true}></lens-result-table>
-                <lens-negotiate-button></lens-negotiate-button>
+                 <!-- <lens-negotiate-button title="Request Data"></lens-negotiate-button> -->
+                <button
+                    style="margin: 20px 0; padding: 10px 20px; border-radius: 5px; background: #0047b9; border: none"
+                >
+                    <a
+                        style="color:white; text-decoration: none; font-size: 16px"
+                        href="mailto:request@example.com?body={encodeURIComponent(
+                            getHumanReadableQueryAsFormattedString(),
+                        )}">Request Data</a
+                    >
+                </button>
             </div>
             <div class="card">
                 <lens-chart
