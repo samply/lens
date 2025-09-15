@@ -447,10 +447,7 @@
         </div>
     {/if}
     <input
-        part={`lens-searchbar-input 
-            ${inputValue?.length > 0 ? "lens-searchbar-input-options-open" : ""}
-            ${index === $activeQueryGroupIndex ? "lens-searchbar-input-active" : ""}
-        `}
+        part={`lens-searchbar-input ${inputValue?.length > 0 ? "lens-searchbar-input-options-open" : ""}`}
         type="text"
         bind:this={searchBarInput}
         bind:value={inputValue}
@@ -594,7 +591,6 @@
     }
 
     [part~="lens-searchbar-active"] {
-        transform: scaleY(1.02);
         box-shadow: 0px 0px 13px 4px rgba(0, 0, 0, 0.3);
         z-index: 2;
     }
