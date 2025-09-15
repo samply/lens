@@ -1,5 +1,7 @@
 # Summary
 
+[Lens](README.md)
+
 - [User guide](guide/README.md)
     - [Creating a new application](guide/new-app.md)
     - [The catalogue](guide/catalogue.md)
