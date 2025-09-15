@@ -7,7 +7,6 @@
 <script lang="ts">
     import { translate } from "../../helpers/translations";
     import { catalogue, getCategoryFromKey } from "../../stores/catalogue";
-    import { getMinMax } from "../../helpers/min-max-string-builder";
     import { queryStore } from "../../stores/query";
     import type { QueryItem } from "../../types/queryData";
     import InfoButtonComponent from "./InfoButtonComponent.wc.svelte";
@@ -32,7 +31,7 @@
             </div>
         {:else if "min" in queryItem.values[0].value || "max" in queryItem.values[0].value}
             <div part="lens-query-explain-single-row-message">
-                {queryItem.name}: {getMinMax(queryItem.values[0].value)}
+                {queryItem.name}: {queryItem.values[0].name}
             </div>
         {:else if Array.isArray(queryItem.values[0].value)}
             <div part="lens-query-explain-multi-row-message">
