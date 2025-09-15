@@ -356,6 +356,10 @@
     };
 
     onMount(() => {
+        //sets focus in the new bar when added
+        searchBarInput.focus();
+        $activeQueryGroupIndex = index;
+
         // load the query from the URL if it exists
         const encodedQuery = new URLSearchParams(window.location.search).get(
             "query",
@@ -399,7 +403,11 @@
     });
 </script>
 
-<div part="lens-searchbar">
+<div
+    part="lens-searchbar {index === $activeQueryGroupIndex
+        ? 'lens-searchbar-active'
+        : ''}"
+>
     {#if queryGroup !== undefined && queryGroup.length > 0}
         <div part="lens-searchbar-chips">
             {#each queryGroup as queryItem (queryItem.id)}
@@ -439,9 +447,7 @@
         </div>
     {/if}
     <input
-        part={`lens-searchbar-input ${
-            inputValue?.length > 0 ? "lens-searchbar-input-options-open" : ""
-        }`}
+        part={`lens-searchbar-input ${inputValue?.length > 0 ? "lens-searchbar-input-options-open" : ""}`}
         type="text"
         bind:this={searchBarInput}
         bind:value={inputValue}
@@ -565,13 +571,6 @@
     * Lens Search Bar
     */
 
-    [part~="lens-searchbar"]:focus-within {
-        border-color: var(--blue);
-        border: solid 1px var(--blue);
-        border-radius: var(--border-radius-small);
-        z-index: 2;
-    }
-
     [part~="lens-searchbar"] {
         position: relative;
         z-index: 1;
@@ -583,6 +582,17 @@
         display: flex;
         flex-wrap: wrap;
         width: -webkit-fill-available;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        flex: 1;
+    }
+
+    [part~="lens-searchbar"]:has(input:focus) {
+        border-color: var(--blue);
+    }
+
+    [part~="lens-searchbar-active"] {
+        box-shadow: 0px 0px 13px 4px rgba(0, 0, 0, 0.3);
+        z-index: 2;
     }
 
     [part~="lens-searchbar-chips"] {
@@ -621,6 +631,7 @@
         flex-grow: 1;
         outline: none;
         border: none;
+        background-color: transparent;
     }
 
     /**
@@ -641,7 +652,7 @@
         border: solid 1px var(--blue);
         border-top: none;
         position: absolute;
-        top: 30px;
+        top: 40px;
         left: -1px;
         right: -1px;
         background-color: white;
