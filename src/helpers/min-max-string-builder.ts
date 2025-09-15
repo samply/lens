@@ -5,15 +5,13 @@
  *   max: The maximum value (string or number, optional).
  * @returns {string} A string representation of the min/max range.
  */
-export const getMinMax = ({
-    min,
-    max,
-}: {
-    min?: string | number;
-    max?: string | number;
-}): string => {
-    if (min && max && min === max) return `${min}`;
-    if (min && max) return `${min} - ${max}`;
-    if (!min) return `≤ ${max}`;
-    return `≥ ${min}`;
+export const getMinMax = (
+    min: string | number | null,
+    max: string | number | null,
+): string => {
+    if (min !== null && max !== null && min === max) return `${min}`;
+    if (min !== null && max !== null) return `${min} - ${max}`;
+    if (min === null && max !== null) return `≤ ${max}`;
+    if (min !== null && max === null) return `≥ ${min}`;
+    return "";
 };

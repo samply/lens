@@ -42,7 +42,7 @@
                 type: element.type,
                 values: [
                     {
-                        name: getMinMax({ min: from, max: to }),
+                        name: getMinMax(from, to),
                         value: { min: from || undefined, max: to || undefined },
                         queryBindId: uuidv4(),
                     },

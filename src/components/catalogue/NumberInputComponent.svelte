@@ -42,10 +42,7 @@
                 type: element.type,
                 values: [
                     {
-                        name: getMinMax({
-                            min: from as number,
-                            max: to as number,
-                        }),
+                        name: getMinMax(from, to),
                         value: { min: from ?? undefined, max: to ?? undefined },
                         queryBindId: uuidv4(),
                     },
