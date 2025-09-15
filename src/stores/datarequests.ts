@@ -102,18 +102,14 @@ export const getHumanReadableQuery = (): string => {
     return humanReadableQuery;
 };
 
-interface GetHumanReadableQueryAsFormattedString {
-    printAggregatedValues?: boolean;
-}
-
 /**
  * Formats the query into a human-readable string.
  * @param param0 options.printAggregatedValues if true, the deep values of entities will be parsed and shown
  * @returns a formatted string representation of the query
  */
-export function getHumanReadableQueryAsFormattedString({
-    printAggregatedValues = false,
-}: GetHumanReadableQueryAsFormattedString = {}): string {
+export function getHumanReadableQueryAsFormattedString(
+    printAggregatedValues: boolean = false,
+): string {
     const query: QueryItem[][] = get(queryStore);
 
     if (query.flat().length === 0) return "";
