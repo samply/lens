@@ -1,6 +1,6 @@
 # samply.lens
 
-**samply.lens** is a front-end library that provides essential functionalities for building search, exploration, and visualization web applications. It offers a set of flexible building blocks while remaining open to user-specific extensions.
+**samply.lens** is a front-end web component library that provides essential functionalities for building search, exploration, and visualization web applications. It offers a set of flexible building blocks while remaining open to user-specific extensions.
 
 This library can be included in various ways. Below are some examples of tools built with samply.lens:
 
