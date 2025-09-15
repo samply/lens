@@ -387,7 +387,7 @@
 
     const sendQueryAsEmail = () => {
         const body = encodeURIComponent(
-            getHumanReadableQueryAsFormattedString(),
+            getHumanReadableQueryAsFormattedString(true),
         );
 
         const a = document.createElement("a");

@@ -14,8 +14,6 @@ export function getSelectedSites(): string[] {
     return get(datarequestsStore);
 }
 
-const catalogueForNameExtraction = get(catalogue);
-
 /**
  * Recursively builds a human readable query string from the AST
  * Legacy function, currently used for bbmri negotiator
@@ -211,15 +209,10 @@ const getParsedAggregatedStringValues = (
     aggregatedValue.forEach((valueArray) => {
         const valueItems: string[] = [];
         valueArray.forEach((valueItem) => {
-            valueItems.push(
-                "\t\t\t" +
-                    getCategoryFromKey(
-                        catalogueForNameExtraction,
-                        valueItem.value,
-                    ) +
-                    ": " +
-                    valueItem.name,
-            );
+            const categoryName: string =
+                getCategoryFromKey(get(catalogue), valueItem.value)?.name ??
+                valueItem.value;
+            valueItems.push("\t\t\t" + categoryName + ": " + valueItem.name);
         });
         aggregatedGroups.push(valueItems);
     });
