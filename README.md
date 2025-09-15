@@ -12,12 +12,12 @@ You can try out the [interactive demo](https://samply.github.io/lens/demo/) that
 
 ## Documentation
 
-Get started with Lens by following the [creating a new application](https://samply.github.io/lens/book/guide/new-app.html) guide. The guide is part of the [Lens Book](https://samply.github.io/lens/book/) which is split into chapters:
+Get started with Lens by following the [creating a new application](https://samply.github.io/lens/book/guide/new-app.html) guide. The guide is part of the [Lens Book](https://samply.github.io/lens/book/) which is split into these chapters:
 
 - [User Guide](https://samply.github.io/lens/book/guide/index.html) for users of the Lens library
 - [Development](https://samply.github.io/lens/book/development/index.html) for developers and contributors
-- [Components](https://samply.github.io/lens/book/components/index.html) documents individual web components
-- [Release notes](https://samply.github.io/lens/book/releases/index.html) with migration guides
+- [Components](https://samply.github.io/lens/book/components/index.html) with docs for the individual web components
+- [Release notes](https://samply.github.io/lens/book/releases/index.html) for releases and migration guides
 
 Documentation for the TypeScript API of Lens is available as [TypeDoc](https://samply.github.io/lens/docs/).
 
