@@ -384,6 +384,17 @@
         localStorage.setItem("language", lang);
         window.location.reload();
     }
+
+    const sendQueryAsEmail = () => {
+        const body = encodeURIComponent(
+            getHumanReadableQueryAsFormattedString(),
+        );
+
+        const a = document.createElement("a");
+        a.href = `mailto:request@example.com?body=${body}`;
+
+        a.click();
+    };
 </script>
 
 <div id="main-wrapper">
@@ -425,14 +436,10 @@
                 <lens-result-table pageSizeSwitcher={true}></lens-result-table>
                 <!-- <lens-negotiate-button title="Request Data"></lens-negotiate-button> -->
                 <button
-                    style="margin: 20px 0; padding: 10px 20px; border-radius: 5px; background: #0047b9; border: none"
+                    onclick={sendQueryAsEmail}
+                    style="margin: 20px 0; padding: 10px 20px; border-radius: 5px; background: #0047b9; border: none; color: white; cursor: pointer"
                 >
-                    <a
-                        style="color:white; text-decoration: none; font-size: 16px"
-                        href="mailto:request@example.com?body={encodeURIComponent(
-                            getHumanReadableQueryAsFormattedString(),
-                        )}">Request Data</a
-                    >
+                    Request Data
                 </button>
             </div>
             <div class="card">
