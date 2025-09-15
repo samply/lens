@@ -48,7 +48,10 @@ To use the table, define the configuration in the Lens [tableOptions](https://sa
 The component can then be included in your HTML:
 
 ```svelte
-<lens-result-table title="Result Table" pageSize={10}></lens-result-table>
+<!-- Table in unpaged mode shows all rows and grows dynamically with the number of rows -->
+<lens-result-table></lens-result-table>
+<!-- Table in paged mode limits the number of rows per page and has fixed height -->
+<lens-result-table pageSize={10}></lens-result-table>
 ```
 
 ## Styling
