@@ -102,7 +102,7 @@ export const getHumanReadableQuery = (): string => {
 
 /**
  * Formats the query into a human-readable string.
- * @param param0 options.printAggregatedValues if true, the deep values of entities will be parsed and shown
+ * @param printAggregatedValues if true, the deep values of entities will be parsed and shown
  * @returns a formatted string representation of the query
  */
 export function getHumanReadableQueryAsFormattedString(
@@ -115,7 +115,7 @@ export function getHumanReadableQueryAsFormattedString(
     const parsedGroups = getParsedStringGroups(query, printAggregatedValues);
 
     const humanReadable =
-        translate("query_info_header") + "\n\n" + parsedGroups.join("\n");
+        translate("query_info_header") + "\r\n\r\n" + parsedGroups.join("\r\n");
 
     return humanReadable;
 }
@@ -132,9 +132,9 @@ const getParsedStringGroups = (
 ): string[] => {
     const parsedGroups = query.map(
         (group, index) =>
-            `${translate("query_info_group_header")} ${index + 1}\n` +
+            `${translate("query_info_group_header")} ${index + 1}\r\n` +
             getParsedStringGroup(group, printAggregatedValues) +
-            "\n",
+            "\r\n",
     );
     return parsedGroups;
 };
@@ -152,7 +152,7 @@ const getParsedStringGroup = (
     if (group.length === 0) return "";
 
     const parsedGroup =
-        "\t" +
+        "    " +
         group
             .map((queryItem: QueryItem) => {
                 const parsedStringItem = getParsedStringItem(
@@ -161,7 +161,7 @@ const getParsedStringGroup = (
                 );
                 return parsedStringItem;
             })
-            .join("\n\t");
+            .join("\r\n    ");
 
     return parsedGroup;
 };
@@ -185,7 +185,7 @@ export const getParsedStringItem = (
 
         if (Array.isArray(valueItem.value)) {
             if (printAggregatedValues) {
-                return `${valueItem.name}\n\t${getParsedAggregatedStringValues(valueItem.value)}`;
+                return `${valueItem.name}\r\n    ${getParsedAggregatedStringValues(valueItem.value)}`;
             }
             return valueItem.name;
         }
@@ -212,19 +212,21 @@ const getParsedAggregatedStringValues = (
             const categoryName: string =
                 getCategoryFromKey(get(catalogue), valueItem.value)?.name ??
                 valueItem.value;
-            valueItems.push("\t\t\t" + categoryName + ": " + valueItem.name);
+            valueItems.push(
+                "            " + categoryName + ": " + valueItem.name,
+            );
         });
         aggregatedGroups.push(valueItems);
     });
 
     const parsedAggregatedGroups = aggregatedGroups.map((aggregatedGroup) =>
-        aggregatedGroup.join("\n"),
+        aggregatedGroup.join("\r\n"),
     );
 
     const parsedAggregatedGroupsString =
-        `\t${translate("query_item_multi_row_header_top")} of\n` +
+        `    ${translate("query_item_multi_row_header_top")}\r\n` +
         parsedAggregatedGroups.join(
-            `\n\t\t${translate("query_item_multi_row_header")}\n`,
+            `\r\n        ${translate("query_item_multi_row_header")}\r\n`,
         );
     return parsedAggregatedGroupsString;
 };

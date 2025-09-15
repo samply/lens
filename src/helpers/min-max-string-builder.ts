@@ -1,9 +1,8 @@
 /**
  * Format a min/max object as a string.
- * @param {{min?: string | number, max?: string | number}} param0
- *   min: The minimum value (string or number, optional).
- *   max: The maximum value (string or number, optional).
- * @returns {string} A string representation of the min/max range.
+ * @param min The minimum value
+ * @param max The maximum value
+ * @returns A string representation of the min/max range.
  */
 export const getMinMax = (
     min: string | number | null,
