@@ -1,6 +1,6 @@
 # Lens
 
-Lens is a front-end library for building federated search tools in the medical space to answer questions such as:
+Lens is a front-end library for building search tools in the medical space to answer questions such as:
 
 > What is the age distribution of patients with lung cancer across participating hospitals?
 
