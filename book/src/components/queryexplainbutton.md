@@ -1,7 +1,5 @@
 # Query Explain Button
 
-## Component Description
-
 The `lens-query-explain-button` is a wrapper around the `lens-info-button` that displays a human-readable version of the current query. When the QueryStore is empty, the `noQueryMessage` is shown. If a specific `queryItem` is passed as a prop, it will display only that part in depth, showing all child elements.
 
 ## Props
