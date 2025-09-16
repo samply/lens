@@ -434,8 +434,7 @@
             </div>
             <div id="result-table" class="card">
                 <lens-result-table pageSizeSwitcher={true}></lens-result-table>
-                <lens-negotiate-button title="Request Data"
-                ></lens-negotiate-button>
+                <lens-negotiate-button></lens-negotiate-button>
             </div>
             <div class="card">
                 <lens-chart
@@ -543,7 +542,7 @@
     #result-table {
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: var(--gap-s);
     }
 
     footer {
