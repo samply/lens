@@ -8,9 +8,9 @@ export const getMinMax = (
     min: string | number | null,
     max: string | number | null,
 ): string => {
-    if (min !== null && max !== null && min === max) return `${min}`;
-    if (min !== null && max !== null) return `${min} - ${max}`;
-    if (min === null && max !== null) return `≤ ${max}`;
-    if (min !== null && max === null) return `≥ ${min}`;
+    if (min && max && min === max) return `${min}`;
+    if (min && max) return `${min} - ${max}`;
+    if (!min && max) return `≤ ${max}`;
+    if (min && !max) return `≥ ${min}`;
     return "";
 };
