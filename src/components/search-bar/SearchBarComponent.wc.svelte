@@ -421,10 +421,8 @@
                                 >{value.name}</span
                             >
                             <QueryExplainButtonComponent
-                                queryItem={{
-                                    ...queryItem,
-                                    values: [value],
-                                }}
+                                queryItemName={queryItem.name}
+                                queryItemValue={value}
                             />
                             {#if queryItem.values.length > 1}
                                 <StoreDeleteButtonComponent
