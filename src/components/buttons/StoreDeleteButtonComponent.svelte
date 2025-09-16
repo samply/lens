@@ -4,6 +4,7 @@
         removeItemFromQuery,
         removeValueFromQuery,
         queryModified,
+        activeQueryGroupIndex,
     } from "../../stores/query";
     import type { QueryItem } from "../../types/queryData";
 
@@ -31,6 +32,26 @@
                 if (query.length === 0) {
                     query = [[]];
                 }
+
+                // handles focus and active group after deletion
+                if (index < $activeQueryGroupIndex) {
+                    $activeQueryGroupIndex -= 1;
+                }
+                if (
+                    index === $activeQueryGroupIndex &&
+                    index === query.length
+                ) {
+                    $activeQueryGroupIndex = query.length - 1;
+                }
+
+                const searchBarInputs = document
+                    .querySelector(`lens-search-bar-multiple`)
+                    ?.shadowRoot?.querySelectorAll(`input`);
+
+                if (searchBarInputs) {
+                    searchBarInputs[$activeQueryGroupIndex].focus();
+                }
+
                 return query;
             });
         }
@@ -44,20 +65,17 @@
 </script>
 
 <button
-    part="lens-query-delete-button lens-query-delete-button-{type}"
+    part="
+        lens-query-delete-button lens-query-delete-button-{type}"
     onclick={deleteItem}
     aria-label="Delete"
 >
     <svg
-        width="16"
-        height="16"
-        viewBox="0 0 16 16"
         xmlns="http://www.w3.org/2000/svg"
         fill="currentColor"
+        viewBox="0 -960 960 960"
         ><path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
-            d="M8 8.707l3.646 3.647.708-.707L8.707 8l3.647-3.646-.707-.708L8 7.293 4.354 3.646l-.707.708L7.293 8l-3.646 3.646.707.708L8 8.707z"
+            d="m336-280-56-56 144-144-144-143 56-56 144 144 143-144 56 56-144 143 144 144-56 56-143-144z"
         /></svg
     >
 </button>
@@ -78,27 +96,43 @@
         cursor: pointer;
         padding: 0;
         border-radius: 50%;
-        border: 1px solid var(--white);
-    }
-
-    [part~="lens-query-delete-button"]:hover {
-        border: 1px solid var(--orange);
-        color: var(--orange);
+        border: 1px solid transparent;
     }
 
     [part~="lens-query-delete-button-value"] {
         color: var(--white);
+        border: 1px solid var(--white);
+    }
+
+    [part~="lens-query-delete-button-value"]:hover {
+        border: 1px solid var(--orange);
+        color: var(--orange);
     }
 
     [part~="lens-query-delete-button-item"] {
         position: absolute;
-        top: -6px;
-        right: -10px;
+        top: -5px;
+        right: -9px;
         background-color: var(--white);
+        border: 1px solid var(--white);
+    }
+
+    [part~="lens-query-delete-button-item"]:hover {
+        border-color: var(--orange);
     }
 
     [part~="lens-query-delete-button-group"] {
-        height: 24px;
-        width: 24px;
+        height: 22px;
+        width: 22px;
+    }
+
+    /* safari fix. somehow it won't display like the other types */
+    [part~="lens-query-delete-button-group"] svg {
+        height: 100%;
+        width: 100%;
+    }
+
+    [part~="lens-query-delete-button-group"]:hover {
+        border-color: var(--orange);
     }
 </style>

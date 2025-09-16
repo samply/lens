@@ -137,27 +137,18 @@
     interface Props {
         /** The title to be displayed in the table header. */
         title?: string;
-        /** The number of rows to display per page. Defaults to 10. */
+        /** If set, limits the number of rows displayed and enables pagination. */
         pageSize?: number;
-        /** Whether to display a select box for changing the pagesize. If you set the pagesize otherthen 10,25,50 it will added as an option. */
-        pageSizeSwitcher?: boolean;
     }
 
-    let {
-        title = "",
-        pageSize = 10,
-        pageSizeSwitcher = false,
-    }: Props = $props();
+    let { title = "", pageSize }: Props = $props();
 
     let activePage = $state(1);
     let sortColumnIndex = $state(0);
     let sortAscending = $state(true);
     let visibleRows: TableRowData = $derived.by(() => {
-        // Array.sort sorts in place, so make a copy first
-        const tableRowsCopy = [...tableRowData];
-
-        // sort
-        tableRowsCopy.sort((a, b) => {
+        // Sort
+        const rows = [...tableRowData].sort((a, b) => {
             // Always sort loading text below everything else
             if (a[sortColumnIndex] === translate("loading")) {
                 return 1;
@@ -174,11 +165,15 @@
             return 0;
         });
 
-        // paginate
-        return tableRowsCopy.slice(
-            (activePage - 1) * currentPageSize,
-            activePage * currentPageSize,
-        );
+        // Paginate
+        if (pageSize === undefined) {
+            return rows;
+        } else {
+            return rows.slice(
+                (activePage - 1) * pageSize,
+                activePage * pageSize,
+            );
+        }
     });
 
     /**
@@ -193,11 +188,6 @@
             sortAscending = !sortAscending;
         }
     }
-
-    const pageSizeOptions: number[] = Array.from(
-        new Set([10, 25, 50, pageSize]),
-    ).sort((a, b) => a - b);
-    let currentPageSize = $state(pageSize);
 </script>
 
 <h4 part="lens-result-table-title">{title}</h4>
@@ -256,8 +246,8 @@
             </tr>
         {/each}
         <!-- Invisible rows for spacing -->
-        {#if visibleRows.length < currentPageSize}
-            {#each Array(currentPageSize - visibleRows.length).keys() as i (i)}
+        {#if pageSize !== undefined && visibleRows.length < pageSize}
+            {#each Array(pageSize - visibleRows.length).keys() as i (i)}
                 <tr part="lens-result-table-item-body-row">
                     {#each Array(headerData.length + 1).keys() as j (j)}
                         <td part="lens-result-table-item-body-cell"></td>
@@ -268,37 +258,27 @@
     </tbody>
 </table>
 <slot name="lens-result-above-pagination" />
-<div part="lens-result-table-pagination">
-    <button
-        part="lens-result-table-pagination-button lens-result-pagination-pagination-previous"
-        disabled={activePage === 1}
-        onclick={() => (activePage -= 1)}>&#8592;</button
-    >
-    <div part="lens-result-table-pagination-pagenumber">
-        {activePage} / {tableRowData.length === 0
-            ? 1
-            : Math.ceil(tableRowData.length / currentPageSize)}
+{#if pageSize !== undefined}
+    <div part="lens-result-table-pagination">
+        <button
+            part="lens-result-table-pagination-button lens-result-pagination-pagination-previous"
+            disabled={activePage === 1}
+            onclick={() => (activePage -= 1)}>&#8592;</button
+        >
+        <div part="lens-result-table-pagination-pagenumber">
+            {activePage} / {tableRowData.length === 0
+                ? 1
+                : Math.ceil(tableRowData.length / pageSize)}
+        </div>
+        <button
+            part="lens-result-table-pagination-button lens-result-pagination-pagination-next"
+            disabled={activePage ===
+                Math.ceil(tableRowData.length / pageSize) ||
+                tableRowData.length === 0}
+            onclick={() => (activePage += 1)}>&#8594;</button
+        >
     </div>
-    <button
-        part="lens-result-table-pagination-button lens-result-pagination-pagination-next"
-        disabled={activePage ===
-            Math.ceil(tableRowData.length / currentPageSize) ||
-            tableRowData.length === 0}
-        onclick={() => (activePage += 1)}>&#8594;</button
-    >
-    {#if pageSizeSwitcher === true}
-        <span part="lens-result-table-pagination-switcher">
-            Results per page:
-            <select bind:value={currentPageSize}>
-                {#each pageSizeOptions as size (size)}
-                    <option value={size}>
-                        {size}
-                    </option>
-                {/each}
-            </select>
-        </span>
-    {/if}
-</div>
+{/if}
 <slot name="beneath-pagination" />
 
 <style>
@@ -359,10 +339,6 @@
         border-radius: var(--border-radius-small);
         padding: var(--gap-xxs) var(--gap-s);
         cursor: auto;
-    }
-
-    [part~="lens-result-table-pagination-switcher"] {
-        margin-left: 20px;
     }
 
     [part~="lens-result-table-item-body-row"] {

@@ -433,7 +433,7 @@
                 <lens-search-modified-display></lens-search-modified-display>
             </div>
             <div id="result-table" class="card">
-                <lens-result-table pageSizeSwitcher={true}></lens-result-table>
+                <lens-result-table pageSize={10}></lens-result-table>
                 <lens-negotiate-button></lens-negotiate-button>
             </div>
             <div class="card">
