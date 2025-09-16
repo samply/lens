@@ -417,13 +417,14 @@
                     >
                     {#each queryItem.values as value (value.queryBindId)}
                         <span part="lens-searchbar-chip-item">
-                            <span>{value.name}</span>
+                            <span part="lens-searchbar-chip-item-text"
+                                >{value.name}</span
+                            >
                             <QueryExplainButtonComponent
                                 queryItem={{
                                     ...queryItem,
                                     values: [value],
                                 }}
-                                inSearchBar={true}
                             />
                             {#if queryItem.values.length > 1}
                                 <StoreDeleteButtonComponent
@@ -620,10 +621,13 @@
 
     [part~="lens-searchbar-chip-item"] {
         display: inline-flex;
-        align-items: center;
         gap: var(--gap-xxs);
+        align-items: center;
     }
 
+    [part~="lens-searchbar-chip-item-text"] {
+        overflow-wrap: anywhere; /* prefers breaking at spaces, but will break mid-word if needed */
+    }
     [part~="lens-searchbar-input"] {
         box-sizing: border-box;
         padding: var(--gap-xs);

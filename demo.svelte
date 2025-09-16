@@ -8,6 +8,7 @@
         showToast,
         markSiteClaimed,
         clearSiteResults,
+        getHumanReadableQueryAsFormattedString,
     } from "./src/index";
     import { facetCounts } from "./src/stores/facetCounts";
 
@@ -383,6 +384,17 @@
         localStorage.setItem("language", lang);
         window.location.reload();
     }
+
+    window.addEventListener("lens-negotiate-triggered", () => {
+        const body = encodeURIComponent(
+            getHumanReadableQueryAsFormattedString(true),
+        );
+
+        const a = document.createElement("a");
+        a.href = `mailto:request@example.com?body=${body}`;
+
+        a.click();
+    });
 </script>
 
 <div id="main-wrapper">
@@ -525,6 +537,12 @@
         #result-summary {
             grid-column: 1 / -1;
         }
+    }
+
+    #result-table {
+        display: flex;
+        flex-direction: column;
+        gap: var(--gap-s);
     }
 
     footer {
