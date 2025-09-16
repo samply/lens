@@ -14,7 +14,6 @@
     interface Props {
         noQueryMessage?: string;
         queryItem?: QueryItem | undefined;
-        /** Query explain button in the search bar is smaller, white, and has no border */
     }
 
     let {

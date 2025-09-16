@@ -385,7 +385,7 @@
         window.location.reload();
     }
 
-    const sendQueryAsEmail = () => {
+    window.addEventListener("lens-negotiate-triggered", () => {
         const body = encodeURIComponent(
             getHumanReadableQueryAsFormattedString(true),
         );
@@ -394,7 +394,7 @@
         a.href = `mailto:request@example.com?body=${body}`;
 
         a.click();
-    };
+    });
 </script>
 
 <div id="main-wrapper">
@@ -434,13 +434,8 @@
             </div>
             <div id="result-table" class="card">
                 <lens-result-table pageSizeSwitcher={true}></lens-result-table>
-                <!-- <lens-negotiate-button title="Request Data"></lens-negotiate-button> -->
-                <button
-                    onclick={sendQueryAsEmail}
-                    style="margin: 20px 0; padding: 10px 20px; border-radius: 5px; background: #0047b9; border: none; color: white; cursor: pointer"
-                >
-                    Request Data
-                </button>
+                <lens-negotiate-button title="Request Data"
+                ></lens-negotiate-button>
             </div>
             <div class="card">
                 <lens-chart
@@ -543,6 +538,12 @@
         #result-summary {
             grid-column: 1 / -1;
         }
+    }
+
+    #result-table {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
     }
 
     footer {
