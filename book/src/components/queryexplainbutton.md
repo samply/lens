@@ -4,10 +4,10 @@ The `lens-query-explain-button` is a wrapper around the `lens-info-button` that 
 
 ## Props
 
-| Prop             | Type                     | Default                    | Description                                                                                                                            |
-| ---------------- | ------------------------ | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | --- |
-| `queryItem`      | `QueryItem \| undefined` | `undefined`                | If provided, a human-readable explanation of this query item is displayed. If not, the current global query from `queryStore` is used. |
-| `noQueryMessage` | `string`                 | `"Search for all results"` | Message shown when no query is present.                                                                                                |     |
+| Prop             | Type        | Default                    | Description                                                                                                                            |
+| ---------------- | ----------- | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `queryItem`      | `QueryItem` | `undefined`                | If provided, a human-readable explanation of this query item is displayed. If not, the current global query from `queryStore` is used. |
+| `noQueryMessage` | `string`    | `"Search for all results"` | Message shown when no query is present.                                                                                                |
 
 ## Usage
 
