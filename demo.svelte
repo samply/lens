@@ -326,11 +326,14 @@
     window.addEventListener("lens-search-triggered", () => {
         console.log("AST:", JSON.stringify(getAst()));
         clearSiteResults();
-        markSiteClaimed("riverside");
-        markSiteClaimed("summit");
-        for (const site of "ABCDEFGHIJ") {
-            markSiteClaimed("Site " + site);
-        }
+
+        setTimeout(() => {
+            markSiteClaimed("riverside");
+            markSiteClaimed("summit");
+            for (const site of "ABCDEFGHIJ") {
+                markSiteClaimed("Site " + site);
+            }
+        }, 500);
 
         setTimeout(() => {
             setSiteResult("riverside", {
