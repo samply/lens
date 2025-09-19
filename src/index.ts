@@ -16,6 +16,7 @@ export { setQueryStoreFromAst } from "./helpers/ast-to-query";
 export {
     setSiteResult,
     markSiteClaimed,
+    hideFailedSite,
     measureReportToLensResult,
     clearSiteResults,
     type LensResult,

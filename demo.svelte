@@ -7,6 +7,7 @@
         getAst,
         showToast,
         markSiteClaimed,
+        hideFailedSite,
         clearSiteResults,
         getHumanReadableQueryAsFormattedString,
     } from "./src/index";
@@ -27,6 +28,7 @@
         siteMappings: {
             riverside: "Riverside",
             summit: "Summit",
+            failingsite: "Failing Site",
         },
         chartOptions: {
             gender: {
@@ -330,6 +332,7 @@
         setTimeout(() => {
             markSiteClaimed("riverside");
             markSiteClaimed("summit");
+            markSiteClaimed("failingsite");
             for (const site of "ABCDEFGHIJ") {
                 markSiteClaimed("Site " + site);
             }
@@ -373,6 +376,8 @@
                     patients: 33,
                 },
             });
+
+            hideFailedSite("failingsite");
 
             for (const site of "ABCDEFGHIJ") {
                 setSiteResult("Site " + site, {
