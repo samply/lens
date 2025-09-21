@@ -1,12 +1,13 @@
 import { writable, get } from "svelte/store";
 import { lensOptions } from "./options";
 import { getCriteria } from "../stores/catalogue";
+import type { FacetCounts } from "../types/faceCounts";
 
 /**
  * Facet counts store: stratifier -> stratum -> number
  * Example: { gender: { male: 123, female: 456 } }
  */
-export const facetCounts = writable<Record<string, Record<string, number>>>({});
+export const facetCounts = writable<FacetCounts>({});
 
 /**
  * Fetch facet counts from the backend and update the facetCounts store.
@@ -51,4 +52,11 @@ export async function fetchFacetCounts(spotUrl: string) {
     } catch (e) {
         console.error("Error fetching facet counts", e);
     }
+}
+
+/**
+ * Set the FacetCount Store.
+ */
+export function setFacetCounts(facet: FacetCounts) {
+    facetCounts.set(facet);
 }
