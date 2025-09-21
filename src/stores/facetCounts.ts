@@ -1,7 +1,7 @@
 import { writable, get } from "svelte/store";
 import { lensOptions } from "./options";
 import { getCriteria } from "../stores/catalogue";
-import type { FacetCounts } from "../types/faceCounts";
+import type { FacetCounts } from "../types/facetCounts";
 
 /**
  * Facet counts store: stratifier -> stratum -> number
