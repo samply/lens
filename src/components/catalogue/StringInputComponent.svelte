@@ -62,8 +62,7 @@
     }
 
     function handleKeyDown(event: KeyboardEvent) {
-        if (inSearchBar === false || resetToEmptySearchBar === undefined)
-            return;
+        if (inSearchBar === false) return;
 
         if (event.key === "Escape") {
             focusSearchbar();
