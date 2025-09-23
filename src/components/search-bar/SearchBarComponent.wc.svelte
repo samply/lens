@@ -9,24 +9,30 @@
         AggregatedValue,
         Category,
         Criteria,
+        NumericRangeCategory,
     } from "../../types/catalogue";
     import {
         addItemToQuery,
         queryStore,
         activeQueryGroupIndex,
     } from "../../stores/query";
-    import type { AutoCompleteItem, QueryItem } from "../../types/queryData";
+    import {
+        type AutoCompleteCriterionItem,
+        type AutoCompleteItem,
+        type QueryItem,
+    } from "../../types/queryData";
     import { v4 as uuidv4 } from "uuid";
     import StoreDeleteButtonComponent from "../buttons/StoreDeleteButtonComponent.svelte";
     import { catalogue } from "../../stores/catalogue";
     import { facetCounts } from "../../stores/facetCounts";
     import { lensOptions } from "../../stores/options";
     import QueryExplainButtonComponent from "../buttons/QueryExplainButtonComponent.wc.svelte";
-    import { onMount } from "svelte";
+    import { onMount, tick } from "svelte";
     import { showToast } from "../../stores/toasts";
     import { translate } from "../../helpers/translations";
     import { get } from "svelte/store";
     import { SvelteURL } from "svelte/reactivity";
+    import NumberInputComponent from "../catalogue/NumberInputComponent.svelte";
 
     interface Props {
         /** The string to display when no matches are found */
@@ -60,11 +66,12 @@
     const buildDatalistItemFromBottomCategoryRec = (
         category: Category,
         criterion: Criteria,
-    ): AutoCompleteItem[] => {
-        let autoCompleteItems: AutoCompleteItem[] = [];
+    ): AutoCompleteCriterionItem[] => {
+        let autoCompleteItems: AutoCompleteCriterionItem[] = [];
         if ("criteria" in category) {
             if (criterion.visible == undefined && !criterion.visible) {
                 autoCompleteItems.push({
+                    fieldType: "criterion",
                     name: category.name,
                     key: category.key,
                     type: category.type,
@@ -72,7 +79,7 @@
                     criterion: criterion,
                 });
             }
-            if (criterion.subgroup != undefined) {
+            if (criterion.subgroup !== undefined) {
                 criterion.subgroup.forEach((criterion: Criteria) => {
                     autoCompleteItems = autoCompleteItems.concat(
                         buildDatalistItemFromBottomCategoryRec(
@@ -90,10 +97,17 @@
         category: Category,
     ): AutoCompleteItem[] => {
         let autoCompleteItems: AutoCompleteItem[] = [];
-        if ("criteria" in category)
+        if (
+            category.fieldType === "autocomplete" ||
+            category.fieldType === "single-select"
+        ) {
             category.criteria.forEach((criterion: Criteria) => {
-                if (criterion.visible == undefined && !criterion.visible) {
+                if (
+                    criterion.visible === true ||
+                    criterion.visible === undefined
+                ) {
                     autoCompleteItems.push({
+                        fieldType: "criterion",
                         name: category.name,
                         key: category.key,
                         type: category.type,
@@ -112,6 +126,10 @@
                     });
                 }
             });
+        } else if (category.fieldType !== "group") {
+            autoCompleteItems.push(category);
+        }
+
         return autoCompleteItems;
     };
 
@@ -180,20 +198,27 @@
                 .replace(/^[0-9]*:/g, "")
                 .toLocaleLowerCase();
 
-            return (
-                item.name.toLowerCase().includes(clearedInputValue) ||
-                item.criterion.name.toLowerCase().includes(clearedInputValue) ||
-                item.criterion.description
-                    ?.toLowerCase()
-                    .includes(clearedInputValue)
-
-                /**
-                 * Discussion:
-                 * should it also be possible to search for the key?
-                 */
-                // item.key.toLocaleLowerCase().includes(clearedInputValue) ||
-                // item.criterion.key.toLowerCase().includes(clearedInputValue) ||
-            );
+            switch (item.fieldType) {
+                case "criterion": {
+                    return (
+                        item.name.toLowerCase().includes(clearedInputValue) ||
+                        item.criterion.name
+                            .toLowerCase()
+                            .includes(clearedInputValue) ||
+                        item.criterion.description
+                            ?.toLowerCase()
+                            .includes(clearedInputValue)
+                    );
+                }
+                case "number":
+                case "date":
+                case "string":
+                    return item.name
+                        .toLocaleLowerCase()
+                        .includes(clearedInputValue);
+                default:
+                    return false;
+            }
         });
     });
 
@@ -214,6 +239,14 @@
         inputItem: AutoCompleteItem,
         indexOfChosenStore: number = $queryStore.length,
     ): void => {
+        if (
+            !(
+                inputItem.fieldType === "autocomplete" ||
+                inputItem.fieldType === "single-select"
+            )
+        )
+            return;
+
         /**
          * transform inputItem to QueryItem
          */
@@ -258,7 +291,7 @@
     };
 
     /**
-     * handles keyboard events to make input options selectable
+     * handles keyboard events to make input options selectable and form elements tabable
      * @param event - the keyboard event
      */
     const handleKeyDown = (event: KeyboardEvent): void => {
@@ -286,7 +319,62 @@
                 extractTargetGroupFromInputValue(),
             );
         }
+        if (event.key === "Tab" && !event.shiftKey) {
+            if (activeDomElement) {
+                event.preventDefault();
+                focusInSearchBarOption(0, focusedItemIndex, activeDomElement);
+            }
+        }
     };
+
+    /**
+     * focuses an input element inside the search bar option
+     * @param inputIndex - the index of the form input element to focus
+     * @param newOptionIndex - the index of the option to focus
+     * @param newDomElement - the dom element of the option to focus
+     */
+    async function focusInSearchBarOption(
+        inputIndex: number,
+        newOptionIndex: number,
+        newDomElement: HTMLElement,
+    ): Promise<void> {
+        focusedItemIndex = newOptionIndex;
+        activeDomElement = newDomElement;
+
+        // needs to rerender first, otherwise element will be lost
+        await tick();
+        const inputs = Array.from(activeDomElement.querySelectorAll("input"));
+        inputs[inputIndex]?.focus();
+    }
+
+    function resetToEmptySearchBar(focus: boolean = true): void {
+        inputValue = "";
+        focusedItemIndex = -1;
+        activeDomElement = undefined;
+        if (focus) {
+            focusSearchbar();
+        }
+    }
+
+    // needed as function to be passed to children
+    function focusSearchbar(): void {
+        searchBarInput.focus();
+    }
+
+    const optionElements: HTMLElement[] = $state([]);
+
+    let searchBarContainer: HTMLElement;
+    let optionsList: HTMLUListElement;
+
+    function onFocusOutOfSearchBar(event: FocusEvent): void {
+        if (
+            event.relatedTarget instanceof HTMLElement &&
+            searchBarContainer.contains(event.relatedTarget)
+        ) {
+            return;
+        }
+        resetToEmptySearchBar(false);
+    }
 
     /**
      * scrolls the active dom element into view when it is out of view
@@ -318,14 +406,6 @@
             );
         }
     });
-
-    /**
-     * handles click events to make input options selectable
-     * @param inputOption - the input option to add to the query store
-     */
-    const selectItemByClick = (inputOption: AutoCompleteItem): void => {
-        addInputValueToStore(inputOption, extractTargetGroupFromInputValue());
-    };
 
     /**
      * returns the input option with the matched substring wrapped in <strong> tags
@@ -407,6 +487,7 @@
     part="lens-searchbar {index === $activeQueryGroupIndex
         ? 'lens-searchbar-active'
         : ''}"
+    bind:this={searchBarContainer}
 >
     {#if queryGroup !== undefined && queryGroup.length > 0}
         <div part="lens-searchbar-chips">
@@ -425,6 +506,7 @@
                                     ...queryItem,
                                     values: [value],
                                 }}
+                                onfocusout={onFocusOutOfSearchBar}
                             />
                             {#if queryItem.values.length > 1}
                                 <StoreDeleteButtonComponent
@@ -458,16 +540,14 @@
             autoCompleteOpen = true;
             activeQueryGroupIndex.set(index);
         }}
-        onfocusout={() => {
-            autoCompleteOpen = false;
-            inputValue = "";
-        }}
+        onfocusout={onFocusOutOfSearchBar}
     />
-    {#if autoCompleteOpen && inputValue.length > 2}
-        <ul part="lens-searchbar-autocomplete-options">
+    {#if autoCompleteOpen && inputValue.length}
+        <ul part="lens-searchbar-autocomplete-options" bind:this={optionsList}>
             {#if inputOptions?.length > 0}
                 <!-- eslint-disable-next-line svelte/require-each-key -->
-                {#each inputOptions as inputOption, i}
+                {#each inputOptions as inputOption, i (inputOption.key + i)}
+                    <!-- TODO: this double loop makes the autocomplete slow with big data loads. Is there a better way to make the category headers? -->
                     {#if inputOptions
                         .map((option) => option.name)
                         .indexOf(inputOption.name) === i}
@@ -476,83 +556,136 @@
                             {@html getBoldedText(inputOption.name)}
                         </div>
                     {/if}
-                    {#if i === focusedItemIndex}
-                        <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-                        <!-- onmousedown is chosen because the input looses focus when clicked outside, 
+                    {#if "criterion" in inputOption}
+                        {#if i === focusedItemIndex}
+                            <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+                            <!-- onmousedown is chosen because the input looses focus when clicked outside, 
                              which will close the options before the click is finshed -->
-                        <li
-                            bind:this={activeDomElement}
-                            part="lens-searchbar-autocomplete-options-item lens-searchbar-autocomplete-options-item-focused"
-                            onmousedown={() => selectItemByClick(inputOption)}
-                        >
-                            <div
-                                part="lens-searchbar-autocomplete-options-item-name"
+                            <li
+                                bind:this={activeDomElement}
+                                part="lens-searchbar-autocomplete-options-item lens-searchbar-autocomplete-options-item-focused"
+                                onmousedown={() =>
+                                    addInputValueToStore(
+                                        inputOption,
+                                        extractTargetGroupFromInputValue(),
+                                    )}
                             >
-                                <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-                                {@html getBoldedText(
-                                    inputOption.criterion.name,
-                                )}
-                            </div>
-                            <div
-                                part="lens-searchbar-autocomplete-options-item-description lens-searchbar-autocomplete-options-item-description-focused"
-                            >
-                                {#if inputOption.criterion.description}
+                                <div
+                                    part="lens-searchbar-autocomplete-options-item-name"
+                                >
                                     <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                                     {@html getBoldedText(
-                                        inputOption.criterion.description,
+                                        inputOption.criterion.name,
                                     )}
-                                {/if}
-                            </div>
-                            {#if $facetCounts[inputOption.key] !== undefined}
-                                <div
-                                    part="lens-searchbar-autocomplete-options-item-facet-count"
-                                    title={$lensOptions?.facetCount
-                                        ?.hoverText?.[inputOption.key] ?? ""}
-                                >
-                                    {$facetCounts[inputOption.key][
-                                        inputOption.criterion.key
-                                    ] ?? 0}
                                 </div>
-                            {/if}
-                        </li>
-                    {:else}
-                        <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-                        <!-- onmousedown is chosen because the input looses focus when clicked outside, 
+                                <div
+                                    part="lens-searchbar-autocomplete-options-item-description lens-searchbar-autocomplete-options-item-description-focused"
+                                >
+                                    {#if inputOption.criterion.description}
+                                        <!-- eslint-disable-next-line svelte/no-at-html-tags -->
+                                        {@html getBoldedText(
+                                            inputOption.criterion.description,
+                                        )}
+                                    {/if}
+                                </div>
+                                {#if $facetCounts[inputOption.key] !== undefined}
+                                    <div
+                                        part="lens-searchbar-autocomplete-options-item-facet-count"
+                                        title={$lensOptions?.facetCount
+                                            ?.hoverText?.[inputOption.key] ??
+                                            ""}
+                                    >
+                                        {$facetCounts[inputOption.key][
+                                            inputOption.criterion.key
+                                        ] ?? 0}
+                                    </div>
+                                {/if}
+                            </li>
+                        {:else}
+                            <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+                            <!-- onmousedown is chosen because the input looses focus when clicked outside, 
                              which will close the options before the click is finshed -->
-                        <li
-                            part="lens-searchbar-autocomplete-options-item"
-                            onmousedown={() => selectItemByClick(inputOption)}
-                        >
-                            <div
-                                part="lens-searchbar-autocomplete-options-item-name"
+                            <li
+                                part="lens-searchbar-autocomplete-options-item"
+                                onmousedown={() =>
+                                    addInputValueToStore(
+                                        inputOption,
+                                        extractTargetGroupFromInputValue(),
+                                    )}
                             >
-                                <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-                                {@html getBoldedText(
-                                    inputOption.criterion.name,
-                                )}
-                            </div>
-                            <div
-                                part="lens-searchbar-autocomplete-options-item-description"
-                            >
-                                {#if inputOption.criterion.description}
+                                <div
+                                    part="lens-searchbar-autocomplete-options-item-name"
+                                >
                                     <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                                     {@html getBoldedText(
-                                        inputOption.criterion.description,
+                                        inputOption.criterion.name,
                                     )}
-                                {/if}
-                            </div>
-                            {#if $facetCounts[inputOption.key] !== undefined}
-                                <div
-                                    part="lens-searchbar-autocomplete-options-item-facet-count"
-                                    title={$lensOptions?.facetCount
-                                        ?.hoverText?.[inputOption.key] ?? ""}
-                                >
-                                    {$facetCounts[inputOption.key][
-                                        inputOption.criterion.key
-                                    ] ?? 0}
                                 </div>
-                            {/if}
-                        </li>
+                                <div
+                                    part="lens-searchbar-autocomplete-options-item-description"
+                                >
+                                    {#if inputOption.criterion.description}
+                                        <!-- eslint-disable-next-line svelte/no-at-html-tags -->
+                                        {@html getBoldedText(
+                                            inputOption.criterion.description,
+                                        )}
+                                    {/if}
+                                </div>
+                                {#if $facetCounts[inputOption.key] !== undefined}
+                                    <div
+                                        part="lens-searchbar-autocomplete-options-item-facet-count"
+                                        title={$lensOptions?.facetCount
+                                            ?.hoverText?.[inputOption.key] ??
+                                            ""}
+                                    >
+                                        {$facetCounts[inputOption.key][
+                                            inputOption.criterion.key
+                                        ] ?? 0}
+                                    </div>
+                                {/if}
+                            </li>
+                        {/if}
+                    {/if}
+                    {#if inputOption.fieldType === "number"}
+                        {#if i === focusedItemIndex}
+                            <li
+                                bind:this={activeDomElement}
+                                bind:this={optionElements[i]}
+                                part="lens-searchbar-autocomplete-options-item lens-searchbar-autocomplete-options-item-focused"
+                            >
+                                <NumberInputComponent
+                                    element={inputOption as NumericRangeCategory}
+                                    inSearchBar={true}
+                                    focus={(elementIndex: number) =>
+                                        focusInSearchBarOption(
+                                            elementIndex,
+                                            i,
+                                            optionElements[i],
+                                        )}
+                                    {resetToEmptySearchBar}
+                                    {focusSearchbar}
+                                    {onFocusOutOfSearchBar}
+                                />
+                            </li>
+                        {:else}
+                            <li
+                                part="lens-searchbar-autocomplete-options-item"
+                                bind:this={optionElements[i]}
+                            >
+                                <NumberInputComponent
+                                    element={inputOption as NumericRangeCategory}
+                                    inSearchBar={true}
+                                    focus={(elementIndex: number) =>
+                                        focusInSearchBarOption(
+                                            elementIndex,
+                                            i,
+                                            optionElements[i],
+                                        )}
+                                    {resetToEmptySearchBar}
+                                    {focusSearchbar}
+                                />
+                            </li>
+                        {/if}
                     {/if}
                 {/each}
             {:else}
@@ -564,7 +697,10 @@
             <li>{typeMoreMessage}</li>
         </ul>
     {/if}
-    <StoreDeleteButtonComponent itemToDelete={{ type: "group", index }} />
+    <StoreDeleteButtonComponent
+        itemToDelete={{ type: "group", index }}
+        {onFocusOutOfSearchBar}
+    />
 </div>
 
 <style>
@@ -688,7 +824,7 @@
     }
 
     [part~="lens-searchbar-autocomplete-options-item"]:hover:not(
-            [part~="autocomplete-options-item-focused"]
+            [part~="lens-searchbar-autocomplete-options-item-focused"]
         ) {
         background-color: var(--light-gray);
     }

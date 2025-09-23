@@ -9,8 +9,18 @@
 
     let {
         element,
+        inSearchBar = false,
+        focus,
+        resetToEmptySearchBar = () => {},
+        focusSearchbar = () => {},
+        onFocusOutOfSearchBar = () => {},
     }: {
         element: NumericRangeCategory;
+        inSearchBar?: boolean;
+        focus?: (elementIndex: number) => void;
+        resetToEmptySearchBar?: (focus?: boolean) => void;
+        focusSearchbar?: () => void;
+        onFocusOutOfSearchBar?: (event: FocusEvent) => void;
     } = $props();
 
     let fromInput: HTMLInputElement;
@@ -19,18 +29,25 @@
     let to: number | null = $state(null);
 
     onMount(() => {
-        fromInput.focus();
+        if (inSearchBar === false) fromInput.focus();
     });
 
     $effect(() => {
+        validateForm();
+    });
+
+    function validateForm(): boolean {
         if (from === null && to === null) {
             fromInput.setCustomValidity(translate("cannot_both_be_empty"));
+            return false;
         } else if (from !== null && to !== null && from > to) {
             fromInput.setCustomValidity(translate("min_must_be_less_than_max"));
+            return false;
         } else {
             fromInput.setCustomValidity("");
+            return true;
         }
-    });
+    }
 
     function onsubmit(event: SubmitEvent): void {
         event.preventDefault();
@@ -50,12 +67,60 @@
             },
             $activeQueryGroupIndex,
         );
+        resetToEmptySearchBar();
     }
+
+    function handleKeyDown(event: KeyboardEvent) {
+        if (inSearchBar === false || resetToEmptySearchBar === undefined)
+            return;
+
+        if (event.key === "Escape") {
+            focusSearchbar();
+        }
+
+        if (!validateForm()) return;
+
+        if (event.key === "Enter") {
+            onsubmit(new SubmitEvent("submit"));
+        }
+    }
+
+    async function handleFormFocusIn(event: FocusEvent) {
+        if (!focus) return;
+
+        const relatedTargetOutside =
+            event.relatedTarget instanceof Node &&
+            !form.contains(event.relatedTarget);
+
+        // toInput can not be reached by tab when the focus is outside the form,
+        // so this can handle the focus via mouse click instead of using another event listener
+        if (event.target === toInput) {
+            focus(1);
+            return;
+        }
+
+        if (relatedTargetOutside) {
+            focus(0);
+        }
+    }
+
+    function handleFormFocusOut(event: FocusEvent) {
+        onFocusOutOfSearchBar(event);
+    }
+
+    let form: HTMLElement;
 </script>
 
-<form part="lens-number-input-form" {onsubmit}>
+<form
+    part="lens-number-input-form"
+    {onsubmit}
+    onfocusin={handleFormFocusIn}
+    bind:this={form}
+    onfocusout={handleFormFocusOut}
+>
     <div part="lens-number-input-formfield-wrapper">
         <input
+            onkeydown={handleKeyDown}
             part="lens-number-input-formfield"
             type="number"
             step="any"
@@ -74,6 +139,7 @@
     <span part="lens-number-input-range-separator">-</span>
     <div part="lens-number-input-formfield-wrapper">
         <input
+            onkeydown={handleKeyDown}
             part="lens-number-input-formfield"
             type="number"
             step="any"
@@ -89,7 +155,7 @@
             >
         {/if}
     </div>
-    <AddButton />
+    <AddButton {handleKeyDown} {inSearchBar} />
 </form>
 
 <style>
@@ -123,5 +189,6 @@
         padding: 0 var(--gap-xs);
         background-color: var(--lightest-gray);
         font-size: var(--font-size-xs);
+        color: var(--font-color);
     }
 </style>

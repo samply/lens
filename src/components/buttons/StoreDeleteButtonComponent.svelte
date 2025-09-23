@@ -14,9 +14,10 @@
             index: number;
             item?: QueryItem;
         };
+        onFocusOutOfSearchBar?: (event: FocusEvent) => void;
     }
 
-    let { itemToDelete }: Props = $props();
+    let { itemToDelete, onFocusOutOfSearchBar = () => {} }: Props = $props();
 
     const { type, index, item } = itemToDelete;
 
@@ -69,6 +70,7 @@
         lens-query-delete-button lens-query-delete-button-{type}"
     onclick={deleteItem}
     aria-label="Delete"
+    onfocusout={(event) => onFocusOutOfSearchBar(event)}
 >
     <svg
         xmlns="http://www.w3.org/2000/svg"

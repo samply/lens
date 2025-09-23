@@ -12,6 +12,7 @@
         dialogueMaxWidth?: string;
         /** Info button in search bar is white and orange on hover */
         inSearchBar?: boolean;
+        [key: string]: unknown;
     }
 
     let {
@@ -20,6 +21,7 @@
         alignDialogue = "center",
         dialogueMaxWidth = "300px",
         inSearchBar = false,
+        ...props
     }: Props = $props();
 
     /**
@@ -51,6 +53,7 @@
     onclick={(e) => displayQueryInfo(e)}
     onfocusout={onFocusOut}
     style="width: {buttonSize}; height: {buttonSize};"
+    {...props}
 >
     <div
         part={inSearchBar

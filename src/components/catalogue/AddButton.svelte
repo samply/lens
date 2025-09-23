@@ -1,8 +1,18 @@
 <script lang="ts">
-    let { ...props } = $props();
+    interface Props {
+        inSearchBar: boolean;
+        [key: string]: unknown;
+    }
+    let { inSearchBar, ...props }: Props = $props();
 </script>
 
-<button aria-label="Add to query" part="lens-add-to-query-button" {...props}>
+<button
+    aria-label="Add to query"
+    part="lens-add-to-query-button {inSearchBar
+        ? 'lens-add-to-query-button-searchbar'
+        : ''}"
+    {...props}
+>
     <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
@@ -30,5 +40,12 @@
     }
     [part~="lens-add-to-query-button"]:hover svg {
         color: var(--light-blue);
+    }
+
+    [part~="lens-add-to-query-button-searchbar"] svg {
+        color: var(--white);
+    }
+    [part~="lens-add-to-query-button-searchbar"]:hover svg {
+        color: var(--light-gray);
     }
 </style>
