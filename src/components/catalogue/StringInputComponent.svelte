@@ -1,26 +1,43 @@
 <script lang="ts">
-    /**
-     * This component is part of the query tree.
-     *
-     * It allows a user to enter an arbitrary string.
-     */
     import { v4 as uuidv4 } from "uuid";
     import { activeQueryGroupIndex, addItemToQuery } from "../../stores/query";
     import type { StringCategory } from "../../types/catalogue";
     import AddButton from "./AddButton.svelte";
     import { onMount } from "svelte";
+    import { translate } from "../../helpers/translations";
 
-    interface Props {
+    let {
+        element,
+        inSearchBar = false,
+        focus = () => {},
+        resetToEmptySearchBar = () => {},
+        focusSearchbar = () => {},
+        onFocusOutOfSearchBar = () => {},
+    }: {
         element: StringCategory;
-    }
-
-    let { element }: Props = $props();
+        inSearchBar?: boolean;
+        focus?: (elementIndex: number) => void;
+        resetToEmptySearchBar?: (focus?: boolean) => void;
+        focusSearchbar?: () => void;
+        onFocusOutOfSearchBar?: (event: FocusEvent) => void;
+    } = $props();
 
     let input: HTMLInputElement;
+    let value: string | null = $state(null);
 
     onMount(() => {
-        input.focus();
+        if (inSearchBar === false) input.focus();
     });
+
+    function validateForm(): boolean {
+        if (!input.value) {
+            input.setCustomValidity(translate("cannot_be_empty"));
+            return false;
+        } else {
+            input.setCustomValidity("");
+            return true;
+        }
+    }
 
     function onsubmit(event: Event) {
         event.preventDefault();
@@ -41,17 +58,57 @@
             },
             $activeQueryGroupIndex,
         );
+        resetToEmptySearchBar();
     }
+
+    function handleKeyDown(event: KeyboardEvent) {
+        if (inSearchBar === false || resetToEmptySearchBar === undefined)
+            return;
+
+        if (event.key === "Escape") {
+            focusSearchbar();
+        }
+
+        if (!validateForm()) return;
+
+        if (event.key === "Enter") {
+            onsubmit(new SubmitEvent("submit"));
+        }
+    }
+
+    async function handleFormFocusIn(event: FocusEvent) {
+        const relatedTargetOutside =
+            event.relatedTarget instanceof Node &&
+            !form.contains(event.relatedTarget);
+
+        if (relatedTargetOutside) {
+            focus(0);
+        }
+    }
+
+    function handleFormFocusOut(event: FocusEvent) {
+        onFocusOutOfSearchBar(event);
+    }
+
+    let form: HTMLElement;
 </script>
 
-<form part="lens-string-form" {onsubmit}>
+<form
+    part="lens-string-form"
+    {onsubmit}
+    bind:this={form}
+    onfocusin={handleFormFocusIn}
+    onfocusout={handleFormFocusOut}
+>
     <input
+        onkeydown={handleKeyDown}
         part="lens-string-formfield"
         type="text"
         bind:this={input}
+        bind:value
         placeholder="Enter filter term"
     />
-    <AddButton />
+    <AddButton {handleKeyDown} {inSearchBar} />
 </form>
 
 <style>

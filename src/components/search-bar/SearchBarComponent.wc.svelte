@@ -11,6 +11,7 @@
         Criteria,
         DateRangeCategory,
         NumericRangeCategory,
+        StringCategory,
     } from "../../types/catalogue";
     import {
         addItemToQuery,
@@ -35,6 +36,7 @@
     import { SvelteURL } from "svelte/reactivity";
     import NumberInputComponent from "../catalogue/NumberInputComponent.svelte";
     import DatePickerComponent from "../catalogue/DatePickerComponent.svelte";
+    import StringInputComponent from "../catalogue/StringInputComponent.svelte";
 
     interface Props {
         /** The string to display when no matches are found */
@@ -717,6 +719,47 @@
                             >
                                 <DatePickerComponent
                                     element={inputOption as DateRangeCategory}
+                                    inSearchBar={true}
+                                    focus={(elementIndex: number) =>
+                                        focusInSearchBarOption(
+                                            elementIndex,
+                                            i,
+                                            optionElements[i],
+                                        )}
+                                    {resetToEmptySearchBar}
+                                    {focusSearchbar}
+                                />
+                            </li>
+                        {/if}
+                    {/if}
+                    {#if inputOption.fieldType === "string"}
+                        {#if i === focusedItemIndex}
+                            <li
+                                bind:this={activeDomElement}
+                                bind:this={optionElements[i]}
+                                part="lens-searchbar-autocomplete-options-item lens-searchbar-autocomplete-options-item-focused"
+                            >
+                                <StringInputComponent
+                                    element={inputOption as StringCategory}
+                                    inSearchBar={true}
+                                    focus={(elementIndex: number) =>
+                                        focusInSearchBarOption(
+                                            elementIndex,
+                                            i,
+                                            optionElements[i],
+                                        )}
+                                    {resetToEmptySearchBar}
+                                    {focusSearchbar}
+                                    {onFocusOutOfSearchBar}
+                                />
+                            </li>
+                        {:else}
+                            <li
+                                part="lens-searchbar-autocomplete-options-item"
+                                bind:this={optionElements[i]}
+                            >
+                                <StringInputComponent
+                                    element={inputOption as StringCategory}
                                     inSearchBar={true}
                                     focus={(elementIndex: number) =>
                                         focusInSearchBarOption(

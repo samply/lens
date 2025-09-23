@@ -10,7 +10,7 @@
     let {
         element,
         inSearchBar = false,
-        focus,
+        focus = () => {},
         resetToEmptySearchBar = () => {},
         focusSearchbar = () => {},
         onFocusOutOfSearchBar = () => {},
@@ -86,8 +86,6 @@
     }
 
     async function handleFormFocusIn(event: FocusEvent) {
-        if (!focus) return;
-
         const relatedTargetOutside =
             event.relatedTarget instanceof Node &&
             !form.contains(event.relatedTarget);

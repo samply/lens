@@ -241,6 +241,14 @@
                     type: "BETWEEN",
                     system: "",
                 },
+                {
+                    fieldType: "date",
+                    key: "date-of-diagnosis",
+                    name: "Date of diagnosis",
+                    type: "BETWEEN",
+                    system: "",
+                    max: "2025-09-04",
+                },
             ],
         },
         {

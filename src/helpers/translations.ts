@@ -14,6 +14,10 @@ export function translate(key: string): string {
 }
 
 const lensTranslations: Texts = {
+    cannot_be_empty: {
+        en: "Cannot be empty",
+        de: "Darf nicht leer sein",
+    },
     cannot_both_be_empty: {
         en: "Cannot both be empty",
         de: "Es können nicht beide Felder leer sein",
