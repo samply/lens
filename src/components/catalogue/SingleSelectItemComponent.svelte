@@ -54,7 +54,7 @@
 {:else}
     <span></span>
 {/if}
-<AddButton {onclick} />
+<AddButton inSearchBar={false} {onclick} />
 
 <style>
     [part~="lens-single-select-facet-count"] {

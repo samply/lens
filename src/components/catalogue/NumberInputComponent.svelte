@@ -114,8 +114,8 @@
 <form
     part="lens-number-input-form"
     {onsubmit}
-    onfocusin={handleFormFocusIn}
     bind:this={form}
+    onfocusin={handleFormFocusIn}
     onfocusout={handleFormFocusOut}
 >
     <div part="lens-number-input-formfield-wrapper">
