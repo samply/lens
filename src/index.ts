@@ -42,7 +42,7 @@ export { querySpot, type SpotResult } from "./backends/spot";
 export type * from "./types/ast";
 export type * from "./types/catalogue";
 export type * from "./types/options";
-export type * from "./types/facetCounts";
+export type { FacetCounts } from "./stores/facetCounts";
 export type { FhirMeasureItem, FhirMeasure } from "./types/backend";
 export type { FhirMeasureReport } from "./types/response";
 export type { QueryItem, QueryValue } from "./types/queryData";
