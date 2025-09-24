@@ -13,14 +13,12 @@
         focus = () => {},
         resetToEmptySearchBar = () => {},
         focusSearchbar = () => {},
-        onFocusOutOfSearchBar = () => {},
     }: {
         element: NumericRangeCategory;
         inSearchBar?: boolean;
         focus?: (elementIndex: number) => void;
         resetToEmptySearchBar?: (focus?: boolean) => void;
         focusSearchbar?: () => void;
-        onFocusOutOfSearchBar?: (event: FocusEvent) => void;
     } = $props();
 
     let fromInput: HTMLInputElement;
@@ -96,13 +94,11 @@
             return;
         }
 
+        // sets focus to the first element of another input component inside the
+        // searchbar for easier reverse tabing between inputs
         if (relatedTargetOutside) {
             focus(0);
         }
-    }
-
-    function handleFormFocusOut(event: FocusEvent) {
-        onFocusOutOfSearchBar(event);
     }
 
     let form: HTMLElement;
@@ -113,7 +109,6 @@
     {onsubmit}
     bind:this={form}
     onfocusin={handleFormFocusIn}
-    onfocusout={handleFormFocusOut}
 >
     <div part="lens-number-input-formfield-wrapper">
         <input

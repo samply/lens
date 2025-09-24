@@ -495,7 +495,7 @@
     }
 
     .card {
-        background-color: white;
+        background-color: var(--white);
         border-radius: var(--border-radius-small);
         border: 1px solid var(--lightest-gray);
         padding: var(--gap-xs);

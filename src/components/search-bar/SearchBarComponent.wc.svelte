@@ -243,13 +243,7 @@
         inputItem: AutoCompleteItem,
         indexOfChosenStore: number = $queryStore.length,
     ): void => {
-        if (
-            !(
-                inputItem.fieldType === "autocomplete" ||
-                inputItem.fieldType === "single-select"
-            )
-        )
-            return;
+        if (!(inputItem.fieldType === "criterion")) return;
 
         /**
          * transform inputItem to QueryItem
@@ -275,9 +269,7 @@
         };
 
         addItemToQuery(queryItem, indexOfChosenStore);
-
-        inputValue = "";
-        focusedItemIndex = 0;
+        resetToEmptySearchBar();
     };
 
     /**
@@ -354,7 +346,6 @@
     function resetToEmptySearchBar(focus: boolean = true): void {
         inputValue = "";
         focusedItemIndex = -1;
-        activeDomElement = undefined;
         if (focus) {
             focusSearchbar();
         }
@@ -369,16 +360,6 @@
 
     let searchBarContainer: HTMLElement;
     let optionsList: HTMLUListElement;
-
-    function onFocusOutOfSearchBar(event: FocusEvent): void {
-        if (
-            event.relatedTarget instanceof HTMLElement &&
-            searchBarContainer.contains(event.relatedTarget)
-        ) {
-            return;
-        }
-        resetToEmptySearchBar(false);
-    }
 
     /**
      * scrolls the active dom element into view when it is out of view
@@ -484,6 +465,60 @@
                 window.history.replaceState({}, "", url.toString());
             }
         });
+
+        let clickInsideFlag = false;
+
+        searchBarContainer.addEventListener("mousedown", (event) => {
+            // handles criterion items
+            if (event.target instanceof HTMLElement) {
+                const criterionItems = Array.from(
+                    searchBarContainer.querySelectorAll(".criterion-item"),
+                );
+
+                criterionItems.forEach((criterionItem, index) => {
+                    if (
+                        criterionItem === event.target ||
+                        criterionItem.contains(event.target as HTMLElement)
+                    ) {
+                        addInputValueToStore(
+                            inputOptions[index],
+                            extractTargetGroupFromInputValue(),
+                        );
+                    }
+                });
+            }
+            //differenciates clicks outside from inside with next mousedown event listener
+            clickInsideFlag = true;
+            setTimeout(() => {
+                clickInsideFlag = false;
+            }, 200);
+        });
+
+        document.addEventListener("mousedown", () => {
+            if (!clickInsideFlag) {
+                autoCompleteOpen = false;
+            }
+        });
+
+        searchBarContainer.addEventListener("focusout", (event) => {
+            //differenciates clicks outside from inside with next focus event listener
+            if (searchBarContainer.contains(event.relatedTarget as Node)) {
+                clickInsideFlag = true;
+                setTimeout(() => {
+                    clickInsideFlag = false;
+                }, 200);
+            }
+        });
+
+        searchBarContainer.addEventListener("focusout", () => {
+            if (!clickInsideFlag) {
+                autoCompleteOpen = false;
+            }
+        });
+
+        searchBarContainer.addEventListener("focusin", () => {
+            autoCompleteOpen = true;
+        });
     });
 </script>
 
@@ -510,7 +545,6 @@
                                     ...queryItem,
                                     values: [value],
                                 }}
-                                onfocusout={onFocusOutOfSearchBar}
                             />
                             {#if queryItem.values.length > 1}
                                 <StoreDeleteButtonComponent
@@ -544,7 +578,6 @@
             autoCompleteOpen = true;
             activeQueryGroupIndex.set(index);
         }}
-        onfocusout={onFocusOutOfSearchBar}
     />
     {#if autoCompleteOpen && inputValue.length}
         <ul part="lens-searchbar-autocomplete-options" bind:this={optionsList}>
@@ -562,17 +595,10 @@
                     {/if}
                     {#if "criterion" in inputOption}
                         {#if i === focusedItemIndex}
-                            <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-                            <!-- onmousedown is chosen because the input looses focus when clicked outside, 
-                             which will close the options before the click is finshed -->
                             <li
+                                class="criterion-item"
                                 bind:this={activeDomElement}
                                 part="lens-searchbar-autocomplete-options-item lens-searchbar-autocomplete-options-item-focused"
-                                onmousedown={() =>
-                                    addInputValueToStore(
-                                        inputOption,
-                                        extractTargetGroupFromInputValue(),
-                                    )}
                             >
                                 <div
                                     part="lens-searchbar-autocomplete-options-item-name"
@@ -606,16 +632,9 @@
                                 {/if}
                             </li>
                         {:else}
-                            <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-                            <!-- onmousedown is chosen because the input looses focus when clicked outside, 
-                             which will close the options before the click is finshed -->
                             <li
+                                class="criterion-item"
                                 part="lens-searchbar-autocomplete-options-item"
-                                onmousedown={() =>
-                                    addInputValueToStore(
-                                        inputOption,
-                                        extractTargetGroupFromInputValue(),
-                                    )}
                             >
                                 <div
                                     part="lens-searchbar-autocomplete-options-item-name"
@@ -668,7 +687,6 @@
                                         )}
                                     {resetToEmptySearchBar}
                                     {focusSearchbar}
-                                    {onFocusOutOfSearchBar}
                                 />
                             </li>
                         {:else}
@@ -708,8 +726,6 @@
                                             optionElements[i],
                                         )}
                                     {resetToEmptySearchBar}
-                                    {focusSearchbar}
-                                    {onFocusOutOfSearchBar}
                                 />
                             </li>
                         {:else}
@@ -750,7 +766,6 @@
                                         )}
                                     {resetToEmptySearchBar}
                                     {focusSearchbar}
-                                    {onFocusOutOfSearchBar}
                                 />
                             </li>
                         {:else}
@@ -783,10 +798,7 @@
             <li>{typeMoreMessage}</li>
         </ul>
     {/if}
-    <StoreDeleteButtonComponent
-        itemToDelete={{ type: "group", index }}
-        {onFocusOutOfSearchBar}
-    />
+    <StoreDeleteButtonComponent itemToDelete={{ type: "group", index }} />
 </div>
 
 <style>
@@ -881,7 +893,7 @@
         top: 40px;
         left: -1px;
         right: -1px;
-        background-color: white;
+        background-color: var(--white);
         color: var(--font-color);
         border-bottom-left-radius: var(--border-radius-small);
         border-bottom-right-radius: var(--border-radius-small);
