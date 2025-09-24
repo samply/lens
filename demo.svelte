@@ -7,10 +7,10 @@
         getAst,
         showToast,
         markSiteClaimed,
+        setFacetCounts,
         clearSiteResults,
         getHumanReadableQueryAsFormattedString,
     } from "./src/index";
-    import { facetCounts } from "./src/stores/facetCounts";
 
     setOptions({
         language: localStorage.getItem("language") || "en",
@@ -308,7 +308,7 @@
         },
     ]);
 
-    facetCounts.set({
+    setFacetCounts({
         "blood-group": {
             "A+": 10,
             "A-": 5,
