@@ -491,7 +491,7 @@
             clickInsideFlag = true;
             setTimeout(() => {
                 clickInsideFlag = false;
-            }, 200);
+            }, 10);
         });
 
         document.addEventListener("mousedown", () => {
@@ -506,7 +506,7 @@
                 clickInsideFlag = true;
                 setTimeout(() => {
                     clickInsideFlag = false;
-                }, 200);
+                }, 10);
             }
         });
 
