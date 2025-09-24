@@ -1,7 +1,11 @@
 import { writable, get } from "svelte/store";
 import { lensOptions } from "./options";
 import { getCriteria } from "../stores/catalogue";
-import type { FacetCounts } from "../types/facetCounts";
+
+/**
+ * Represents aggregated counts for facets (badges) in a searchbar or Catalogue.
+ */
+export type FacetCounts = Record<string, Record<string, number>>;
 
 /**
  * Facet counts store: stratifier -> stratum -> number
