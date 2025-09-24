@@ -598,7 +598,7 @@
                             <li
                                 class="criterion-item"
                                 bind:this={activeDomElement}
-                                part="lens-searchbar-autocomplete-options-item lens-searchbar-autocomplete-options-item-focused"
+                                part="lens-searchbar-autocomplete-options-item lens-searchbar-autocomplete-options-item-focused lens-searchbar-autocomplete-options-item-criterion"
                             >
                                 <div
                                     part="lens-searchbar-autocomplete-options-item-name"
@@ -905,10 +905,13 @@
         display: grid;
         grid-template-columns: subgrid;
         grid-column: 1 / -1; /* Full width */
-        cursor: pointer;
         transition: background-color 0.2s ease;
         gap: var(--gap-xs);
         padding: var(--gap-xxs) var(--gap-xs);
+    }
+
+    [part~="lens-searchbar-autocomplete-options-item-criterion"] {
+        cursor: pointer;
     }
 
     [part~="lens-searchbar-autocomplete-options-heading"] {
