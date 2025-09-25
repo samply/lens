@@ -520,6 +520,13 @@
             autoCompleteOpen = true;
         });
     });
+
+    window.addEventListener("reset-all-searchbar-inputs", () => {
+        resetToEmptySearchBar(false);
+        if (index === $activeQueryGroupIndex) {
+            focusSearchbar();
+        }
+    });
 </script>
 
 <div

@@ -6,7 +6,7 @@ export { setCatalogue } from "./stores/catalogue";
 export { setOptions } from "./stores/options";
 export { translate } from "./helpers/translations";
 export { showToast } from "./stores/toasts";
-export { resetDiagrams } from "./helpers/reset";
+export { resetDiagrams, resetSearchBarTextInputs } from "./helpers/reset";
 export {
     addItemToActiveQueryGroup,
     setQueryStore,
