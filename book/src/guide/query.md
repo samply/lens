@@ -141,10 +141,14 @@ window.addEventListener("lens-search-triggered", () => {
     abortController = new AbortController();
     clearSiteResults();
 
-    const query = btoa(
+    /** Helper function to base64 encode a UTF-8 string */
+    const base64Encode = (utf8String: string) =>
+        btoa(String.fromCharCode(...new TextEncoder().encode(utf8String)));
+
+    const query = base64Encode(
         JSON.stringify({
             lang: "ast",
-            payload: btoa(
+            payload: base64Encode(
                 JSON.stringify({ ast: getAst(), id: crypto.randomUUID() }),
             ),
         }),
@@ -200,8 +204,12 @@ window.addEventListener("lens-search-triggered", () => {
         measures.map((m) => m.measure),
     );
 
+    /** Helper function to base64 encode a UTF-8 string */
+    const base64Encode = (utf8String: string) =>
+        btoa(String.fromCharCode(...new TextEncoder().encode(utf8String)));
+
     clearSiteResults();
-    const query = btoa(
+    const query = base64Encode(
         JSON.stringify({
             lang: "cql",
             lib,
