@@ -1,7 +1,6 @@
 # Facet counts
 
-Lens can query facet counts from [Spot](https://github.com/samply/spot) and display them in the catalogue. Facet counts are the number of results one would get when only searching for that criteria.
-
+Interace for displaying facet counts - the number of search results that would be returned when filtering by specific criteria. These counts are also displayed in the catalogue. Data can be populated using `setFacetCounts()` or sourced directly from a [Spot](https://github.com/samply/spot) instance.
 ![Example of facet counts](pics/facet-counts.png)
 
 To enable facet counts add the following to the Lens options:
