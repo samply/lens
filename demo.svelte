@@ -7,6 +7,7 @@
         getAst,
         showToast,
         markSiteClaimed,
+        hideFailedSite,
         setFacetCounts,
         clearSiteResults,
         getHumanReadableQueryAsFormattedString,
@@ -27,6 +28,7 @@
         siteMappings: {
             riverside: "Riverside",
             summit: "Summit",
+            failingsite: "Failing Site",
         },
         chartOptions: {
             gender: {
@@ -326,11 +328,15 @@
     window.addEventListener("lens-search-triggered", () => {
         console.log("AST:", JSON.stringify(getAst()));
         clearSiteResults();
-        markSiteClaimed("riverside");
-        markSiteClaimed("summit");
-        for (const site of "ABCDEFGHIJ") {
-            markSiteClaimed("Site " + site);
-        }
+
+        setTimeout(() => {
+            markSiteClaimed("riverside");
+            markSiteClaimed("summit");
+            markSiteClaimed("failingsite");
+            for (const site of "ABCDEFGHIJ") {
+                markSiteClaimed("Site " + site);
+            }
+        }, 500);
 
         setTimeout(() => {
             setSiteResult("riverside", {
@@ -370,6 +376,8 @@
                     patients: 33,
                 },
             });
+
+            hideFailedSite("failingsite");
 
             for (const site of "ABCDEFGHIJ") {
                 setSiteResult("Site " + site, {
