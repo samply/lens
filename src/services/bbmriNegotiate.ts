@@ -1,7 +1,7 @@
 import { get } from "svelte/store";
 import { lensOptions } from "../stores/options";
 import { getHumanReadableQuery } from "../stores/datarequests";
-import { showErrorToast } from "../stores/toasts";
+import { showToast } from "../stores/toasts";
 import { translate } from "../helpers/translations";
 
 /**
@@ -119,7 +119,7 @@ async function sendRequestToNegotiator(
         });
     } catch (error) {
         console.error(error);
-        showErrorToast(translate("network_error"));
+        showToast(translate("network_error"), "error");
         return;
     }
 
@@ -131,6 +131,6 @@ async function sendRequestToNegotiator(
         console.error(
             `Expected HTTP status 201 from BBMRI Negotiator but got ${response.status} with response body: ${await response.text()}`,
         );
-        showErrorToast(translate("negotiate_error"));
+        showToast(translate("negotiate_error"), "error");
     }
 }

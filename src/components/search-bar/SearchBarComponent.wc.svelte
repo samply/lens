@@ -23,7 +23,7 @@
     import { lensOptions } from "../../stores/options";
     import QueryExplainButtonComponent from "../buttons/QueryExplainButtonComponent.wc.svelte";
     import { onMount } from "svelte";
-    import { showErrorToast } from "../../stores/toasts";
+    import { showToast } from "../../stores/toasts";
     import { translate } from "../../helpers/translations";
     import { get } from "svelte/store";
     import { SvelteURL } from "svelte/reactivity";
@@ -356,6 +356,10 @@
     };
 
     onMount(() => {
+        //sets focus in the new bar when added
+        searchBarInput.focus();
+        $activeQueryGroupIndex = index;
+
         // load the query from the URL if it exists
         const encodedQuery = new URLSearchParams(window.location.search).get(
             "query",
@@ -372,7 +376,7 @@
                 queryStore.set(query);
             } catch {
                 console.error("Failed to parse query from URL:", encodedQuery);
-                showErrorToast(translate("query_in_url_parse_error"));
+                showToast(translate("query_in_url_parse_error"), "error");
             }
         }
 
@@ -399,7 +403,11 @@
     });
 </script>
 
-<div part="lens-searchbar">
+<div
+    part="lens-searchbar {index === $activeQueryGroupIndex
+        ? 'lens-searchbar-active'
+        : ''}"
+>
     {#if queryGroup !== undefined && queryGroup.length > 0}
         <div part="lens-searchbar-chips">
             {#each queryGroup as queryItem (queryItem.id)}
@@ -409,13 +417,12 @@
                     >
                     {#each queryItem.values as value (value.queryBindId)}
                         <span part="lens-searchbar-chip-item">
-                            <span>{value.name}</span>
+                            <span part="lens-searchbar-chip-item-text"
+                                >{value.name}</span
+                            >
                             <QueryExplainButtonComponent
-                                queryItem={{
-                                    ...queryItem,
-                                    values: [value],
-                                }}
-                                inSearchBar={true}
+                                queryItemName={queryItem.name}
+                                queryItemValue={value}
                             />
                             {#if queryItem.values.length > 1}
                                 <StoreDeleteButtonComponent
@@ -439,9 +446,7 @@
         </div>
     {/if}
     <input
-        part={`lens-searchbar-input ${
-            inputValue?.length > 0 ? "lens-searchbar-input-options-open" : ""
-        }`}
+        part={`lens-searchbar-input ${inputValue?.length > 0 ? "lens-searchbar-input-options-open" : ""}`}
         type="text"
         bind:this={searchBarInput}
         bind:value={inputValue}
@@ -565,13 +570,6 @@
     * Lens Search Bar
     */
 
-    [part~="lens-searchbar"]:focus-within {
-        border-color: var(--blue);
-        border: solid 1px var(--blue);
-        border-radius: var(--border-radius-small);
-        z-index: 2;
-    }
-
     [part~="lens-searchbar"] {
         position: relative;
         z-index: 1;
@@ -583,6 +581,17 @@
         display: flex;
         flex-wrap: wrap;
         width: -webkit-fill-available;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        flex: 1;
+    }
+
+    [part~="lens-searchbar"]:has(input:focus) {
+        border-color: var(--blue);
+    }
+
+    [part~="lens-searchbar-active"] {
+        box-shadow: 0px 0px 13px 4px rgba(0, 0, 0, 0.3);
+        z-index: 2;
     }
 
     [part~="lens-searchbar-chips"] {
@@ -610,10 +619,13 @@
 
     [part~="lens-searchbar-chip-item"] {
         display: inline-flex;
-        align-items: center;
         gap: var(--gap-xxs);
+        align-items: center;
     }
 
+    [part~="lens-searchbar-chip-item-text"] {
+        overflow-wrap: anywhere; /* prefers breaking at spaces, but will break mid-word if needed */
+    }
     [part~="lens-searchbar-input"] {
         box-sizing: border-box;
         padding: var(--gap-xs);
@@ -621,6 +633,7 @@
         flex-grow: 1;
         outline: none;
         border: none;
+        background-color: transparent;
     }
 
     /**
@@ -641,7 +654,7 @@
         border: solid 1px var(--blue);
         border-top: none;
         position: absolute;
-        top: 30px;
+        top: 40px;
         left: -1px;
         right: -1px;
         background-color: white;

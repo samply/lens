@@ -21,21 +21,6 @@
         fromInput.focus();
     });
 
-    /**
-     * Build the string representation of the range.
-     */
-    function buildName(): string {
-        if (from !== null && to === null) {
-            return `≥ ${from}`;
-        } else if (from === null && to !== null) {
-            return `≤ ${to}`;
-        } else if (from !== null && to !== null && from == to) {
-            return `${from}`;
-        } else {
-            return `${from} - ${to}`;
-        }
-    }
-
     $effect(() => {
         if (from === null && to === null) {
             fromInput.setCustomValidity(translate("cannot_both_be_empty"));
@@ -45,6 +30,14 @@
             fromInput.setCustomValidity("");
         }
     });
+
+    function getMinMax(min: number | null, max: number | null): string {
+        if (min !== null && max !== null && min === max) return `${min}`;
+        if (min !== null && max !== null) return `${min} - ${max}`;
+        if (min === null && max !== null) return `≤ ${max}`;
+        if (min !== null && max === null) return `≥ ${min}`;
+        return "";
+    }
 
     function onsubmit(event: SubmitEvent): void {
         event.preventDefault();
@@ -56,7 +49,7 @@
                 type: element.type,
                 values: [
                     {
-                        name: buildName(),
+                        name: getMinMax(from, to),
                         value: { min: from ?? undefined, max: to ?? undefined },
                         queryBindId: uuidv4(),
                     },

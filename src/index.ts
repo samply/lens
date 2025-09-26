@@ -5,7 +5,7 @@
 export { setCatalogue } from "./stores/catalogue";
 export { setOptions } from "./stores/options";
 export { translate } from "./helpers/translations";
-export { showErrorToast } from "./stores/toasts";
+export { showToast } from "./stores/toasts";
 export { resetDiagrams } from "./helpers/reset";
 export {
     addItemToActiveQueryGroup,
@@ -16,6 +16,7 @@ export { setQueryStoreFromAst } from "./helpers/ast-to-query";
 export {
     setSiteResult,
     markSiteClaimed,
+    hideFailedSite,
     measureReportToLensResult,
     clearSiteResults,
     type LensResult,
@@ -27,7 +28,13 @@ export {
     type BuildLibraryReturn,
     type BuildMeasureReturn,
 } from "./helpers/cql-measure";
-export { getSelectedSites, getHumanReadableQuery } from "./stores/datarequests";
+export {
+    getSelectedSites,
+    getHumanReadableQuery,
+    getHumanReadableQueryAsFormattedString,
+} from "./stores/datarequests";
+
+export { setFacetCounts } from "./stores/facetCounts";
 
 // Export backends
 export { querySpot, type SpotResult } from "./backends/spot";
@@ -36,6 +43,7 @@ export { querySpot, type SpotResult } from "./backends/spot";
 export type * from "./types/ast";
 export type * from "./types/catalogue";
 export type * from "./types/options";
+export type { FacetCounts } from "./stores/facetCounts";
 export type { FhirMeasureItem, FhirMeasure } from "./types/backend";
 export type { FhirMeasureReport } from "./types/response";
 export type { QueryItem, QueryValue } from "./types/queryData";
@@ -53,7 +61,7 @@ import "./components/buttons/InfoButtonComponent.wc.svelte";
 import "./components/buttons/QueryExplainButtonComponent.wc.svelte";
 import "./components/informational/ModifiedSearchComponent.wc.svelte";
 import "./components/informational/QuerySpinner.wc.svelte";
-import "./components/informational/ErrorToasts.wc.svelte";
+import "./components/informational/Toasts.wc.svelte";
 
 // Include CSS in the bundle
 import "./styles/index.css";

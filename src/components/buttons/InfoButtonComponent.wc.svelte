@@ -31,16 +31,16 @@
         tooltipOpen = false;
     };
 
+    let dialogue!: HTMLElement;
+
     const displayQueryInfo = (e: MouseEvent): void => {
         if (typeof message == "string") {
             message = message.split(",");
         }
 
         const target: HTMLElement = e.target as HTMLElement;
-        if (
-            target.getAttribute("part") !== "lens-info-button-dialogue" &&
-            target.getAttribute("part") !== "lens-info-button-dialogue-message"
-        ) {
+
+        if (!dialogue?.contains(target)) {
             tooltipOpen = !tooltipOpen;
         }
     };
@@ -69,18 +69,16 @@
     </div>
     {#if tooltipOpen}
         <div
+            bind:this={dialogue}
             part="lens-info-button-dialogue {`lens-info-button-dialogue-align-${alignDialogue}`}"
-            style="user-select: text; top: {buttonSize}; max-width: {dialogueMaxWidth};"
+            style="top: {buttonSize}; max-width: {dialogueMaxWidth};"
         >
-            <!-- eslint-disable-next-line svelte/require-each-key -->
-            {#each message as msg}
-                <div
-                    part="lens-info-button-dialogue-message"
-                    style="user-select: text;"
-                >
+            {#each message as msg, index (msg + index)}
+                <div part="lens-info-button-dialogue-message">
                     {msg}
                 </div>
             {/each}
+            <slot />
         </div>
     {/if}
 </button>
@@ -93,6 +91,7 @@
         border: none;
         padding: 0;
         background-color: transparent;
+        flex-shrink: 0;
     }
 
     [part~="lens-info-button-icon"]:hover {
@@ -118,6 +117,8 @@
         padding: var(--gap-xs);
         border: solid 1px var(--blue);
         border-radius: var(--border-radius-small);
+        text-align: left;
+        user-select: text;
     }
 
     [part~="lens-info-button-dialogue-align-center"] {
@@ -131,5 +132,10 @@
 
     [part~="lens-info-button-dialogue-align-left"] {
         right: 0;
+    }
+
+    [part~="lens-info-button-dialogue-message"] {
+        text-align: left;
+        user-select: text;
     }
 </style>

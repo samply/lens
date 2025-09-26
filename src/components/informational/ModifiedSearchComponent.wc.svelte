@@ -5,14 +5,16 @@
 />
 
 <script lang="ts">
+    import { translate } from "../../helpers/translations";
     import { queryModified } from "../../stores/query";
 </script>
 
-{#if $queryModified}
-    <div part="lens-query-modified-display-wrapper">
-        <slot></slot>
-    </div>
-{/if}
+<div
+    part="lens-query-modified-display-wrapper"
+    style="visibility: {$queryModified ? 'visible' : 'hidden'}"
+>
+    {translate("query_modified")}
+</div>
 
 <style>
     [part~="lens-query-modified-display-wrapper"] {

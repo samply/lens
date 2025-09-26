@@ -12,7 +12,6 @@
         siteStatus,
         siteResults,
     } from "../../stores/response";
-    import TableItemComponent from "./TableItemComponent.svelte";
     import { lensOptions } from "../../stores/options";
     import type { HeaderData } from "../../types/options";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
@@ -115,32 +114,41 @@
     };
 
     /**
+     * adds and removes tableRows from the datarequestsStore whenever a checkbox is checked or unchecked
+     */
+    const updateStoreOnCheck = (tableRow: (string | number)[]): void => {
+        const siteId = tableRow[0] as string;
+        const isChecked = $datarequestsStore.includes(siteId);
+
+        if (!isChecked) {
+            datarequestsStore.update((store: string[]) => {
+                return [...store, siteId];
+            });
+        } else {
+            datarequestsStore.update((store: string[]) => {
+                return store.filter((site: string) => site !== siteId);
+            });
+        }
+    };
+
+    /**
      *  Configuration options for the result table.
      */
     interface Props {
         /** The title to be displayed in the table header. */
         title?: string;
-        /** The number of rows to display per page. Defaults to 10. */
+        /** If set, limits the number of rows displayed and enables pagination. */
         pageSize?: number;
-        /** Whether to display a select box for changing the pagesize. If you set the pagesize otherthen 10,25,50 it will added as an option. */
-        pageSizeSwitcher?: boolean;
     }
 
-    let {
-        title = "",
-        pageSize = 10,
-        pageSizeSwitcher = false,
-    }: Props = $props();
+    let { title = "", pageSize }: Props = $props();
 
     let activePage = $state(1);
     let sortColumnIndex = $state(0);
     let sortAscending = $state(true);
     let visibleRows: TableRowData = $derived.by(() => {
-        // Array.sort sorts in place, so make a copy first
-        const tableRowsCopy = [...tableRowData];
-
-        // sort
-        tableRowsCopy.sort((a, b) => {
+        // Sort
+        const rows = [...tableRowData].sort((a, b) => {
             // Always sort loading text below everything else
             if (a[sortColumnIndex] === translate("loading")) {
                 return 1;
@@ -157,11 +165,15 @@
             return 0;
         });
 
-        // paginate
-        return tableRowsCopy.slice(
-            (activePage - 1) * currentPageSize,
-            activePage * currentPageSize,
-        );
+        // Paginate
+        if (pageSize === undefined) {
+            return rows;
+        } else {
+            return rows.slice(
+                (activePage - 1) * pageSize,
+                activePage * pageSize,
+            );
+        }
     });
 
     /**
@@ -176,11 +188,6 @@
             sortAscending = !sortAscending;
         }
     }
-
-    const pageSizeOptions: number[] = Array.from(
-        new Set([10, 25, 50, pageSize]),
-    ).sort();
-    let currentPageSize = $state(pageSize);
 </script>
 
 <h4 part="lens-result-table-title">{title}</h4>
@@ -220,44 +227,58 @@
         </tr>
     </thead>
     <tbody part="lens-result-table-table-body">
-        <!-- eslint-disable-next-line svelte/require-each-key -->
-        {#each visibleRows as tableRow}
-            <TableItemComponent {tableRow} />
+        {#each visibleRows as tableRow (tableRow[0])}
+            <tr part="lens-result-table-item-body-row">
+                <td
+                    part="lens-result-table-item-body-cell lens-result-table-item-body-cell-checkbox"
+                    ><input
+                        part="lens-result-table-item-body-checkbox"
+                        type="checkbox"
+                        checked={$datarequestsStore.includes(
+                            tableRow[0] as string,
+                        )}
+                        onchange={() => updateStoreOnCheck(tableRow)}
+                    /></td
+                >
+                {#each tableRow as data, index (index)}
+                    <td part="lens-result-table-item-body-cell">{data}</td>
+                {/each}
+            </tr>
         {/each}
+        <!-- Invisible rows for spacing -->
+        {#if pageSize !== undefined && visibleRows.length < pageSize}
+            {#each Array(pageSize - visibleRows.length).keys() as i (i)}
+                <tr part="lens-result-table-item-body-row">
+                    {#each Array(headerData.length + 1).keys() as j (j)}
+                        <td part="lens-result-table-item-body-cell"></td>
+                    {/each}
+                </tr>
+            {/each}
+        {/if}
     </tbody>
 </table>
 <slot name="lens-result-above-pagination" />
-<div part="lens-result-table-pagination">
-    <button
-        part="lens-result-table-pagination-button lens-result-pagination-pagination-previous"
-        disabled={activePage === 1}
-        onclick={() => (activePage -= 1)}>&#8592;</button
-    >
-    <div part="lens-result-table-pagination-pagenumber">
-        {activePage} / {tableRowData.length === 0
-            ? 1
-            : Math.ceil(tableRowData.length / currentPageSize)}
+{#if pageSize !== undefined}
+    <div part="lens-result-table-pagination">
+        <button
+            part="lens-result-table-pagination-button lens-result-pagination-pagination-previous"
+            disabled={activePage === 1}
+            onclick={() => (activePage -= 1)}>&#8592;</button
+        >
+        <div part="lens-result-table-pagination-pagenumber">
+            {activePage} / {tableRowData.length === 0
+                ? 1
+                : Math.ceil(tableRowData.length / pageSize)}
+        </div>
+        <button
+            part="lens-result-table-pagination-button lens-result-pagination-pagination-next"
+            disabled={activePage ===
+                Math.ceil(tableRowData.length / pageSize) ||
+                tableRowData.length === 0}
+            onclick={() => (activePage += 1)}>&#8594;</button
+        >
     </div>
-    <button
-        part="lens-result-table-pagination-button lens-result-pagination-pagination-next"
-        disabled={activePage ===
-            Math.ceil(tableRowData.length / currentPageSize) ||
-            tableRowData.length === 0}
-        onclick={() => (activePage += 1)}>&#8594;</button
-    >
-    {#if pageSizeSwitcher === true}
-        <span part="lens-result-table-pagination-switcher">
-            Results per page:
-            <select bind:value={currentPageSize}>
-                {#each pageSizeOptions as size (size)}
-                    <option value={size}>
-                        {size}
-                    </option>
-                {/each}
-            </select>
-        </span>
-    {/if}
-</div>
+{/if}
 <slot name="beneath-pagination" />
 
 <style>
@@ -320,7 +341,8 @@
         cursor: auto;
     }
 
-    [part~="lens-result-table-pagination-switcher"] {
-        margin-left: 20px;
+    [part~="lens-result-table-item-body-row"] {
+        border-bottom: solid 1px var(--light-gray);
+        height: 2em;
     }
 </style>

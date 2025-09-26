@@ -1,0 +1,35 @@
+# Toast Notifications
+
+The `<lens-toast>` component provides user notifications to inform about success or failure states. It supports two types of toasts: error notifications for failures and info notifications for successful operations. Backend components use this system to communicate status changes to users.
+
+The component automatically renders all toasts from the global toast store and handles their lifecycle.
+
+## Usage
+
+The toast component uses fixed positioning to stack toasts at the bottom of the page. You should usually include it at the top level of your application DOM at the very end.
+
+```html
+<lens-toast></lens-toast>
+```
+
+Import the toast functions and show notifications:
+
+```javascript
+import { showToast } from "./toast";
+
+// Show error notification
+showToast("Something went wrong!", "error");
+```
+
+## Styling
+
+The component uses CSS parts for customization:
+
+| Part name                   | Description                             |
+| --------------------------- | --------------------------------------- |
+| `lens-toast`                | Fixed container for the toast stack     |
+| `lens-toast-flex-container` | Main flexbox container for toast layout |
+| `lens-toast-error`          | Error toast styling (red theme)         |
+| `lens-toast-info`           | Info toast styling (blue theme)         |
+| `lens-toast-message`        | Text content styling                    |
+| `lens-toast-close-button`   | Close button styling                    |
