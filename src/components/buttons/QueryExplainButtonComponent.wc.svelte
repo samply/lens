@@ -8,40 +8,32 @@
     import { translate } from "../../helpers/translations";
     import { catalogue, getCategoryFromKey } from "../../stores/catalogue";
     import { queryStore } from "../../stores/query";
-    import type { QueryItem } from "../../types/queryData";
+    import type { QueryValue } from "../../types/queryData";
     import InfoButtonComponent from "./InfoButtonComponent.wc.svelte";
 
     interface Props {
         noQueryMessage?: string;
-        queryItem?: QueryItem | undefined;
-        [key: string]: unknown;
+        queryItemName?: string | undefined;
+        queryItemValue?: QueryValue | undefined;
     }
 
     let {
-        queryItem = undefined,
+        queryItemName = undefined,
+        queryItemValue = undefined,
         noQueryMessage = "Search for all results",
-        ...props
     }: Props = $props();
 </script>
 
-{#if queryItem}
-    <InfoButtonComponent buttonSize="18px" inSearchBar={true} {...props}>
-        {#if typeof queryItem?.values[0].value === "string"}
-            <div part="lens-query-explain-single-row-message">
-                {queryItem.name}: {queryItem.values[0].value}
-            </div>
-        {:else if "min" in queryItem.values[0].value || "max" in queryItem.values[0].value}
-            <div part="lens-query-explain-single-row-message">
-                {queryItem.name}: {queryItem.values[0].name}
-            </div>
-        {:else if Array.isArray(queryItem.values[0].value)}
+{#if queryItemName !== undefined && queryItemValue !== undefined}
+    <InfoButtonComponent buttonSize="18px" inSearchBar={true}>
+        {#if Array.isArray(queryItemValue.value)}
             <div part="lens-query-explain-multi-row-message">
                 <div
                     part="lens-query-explain-multi-row-message-heading lens-query-explain-multi-row-message-heading-top"
                 >
                     {translate("query_item_multi_row_header_top")}
                 </div>
-                {#each queryItem.values[0].value as value, index (index)}
+                {#each queryItemValue.value as value, index (index)}
                     {#if index > 0}
                         <div
                             part="lens-query-explain-multi-row-message-heading"
@@ -61,11 +53,15 @@
                     </div>
                 {/each}
             </div>
+        {:else}
+            <div part="lens-query-explain-single-row-message">
+                {queryItemName}: {queryItemValue.name}
+            </div>
         {/if}
     </InfoButtonComponent>
 {:else}
     <div part="lens-query-explain-button">
-        <InfoButtonComponent buttonSize="25px" alignDialogue="left" {...props}>
+        <InfoButtonComponent buttonSize="25px" alignDialogue="left">
             {#if $queryStore.flat().length > 0}
                 <h3 part="lens-query-explain-header">
                     {translate("query_info_header")}

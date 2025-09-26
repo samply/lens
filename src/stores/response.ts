@@ -74,6 +74,21 @@ export function markSiteClaimed(site: string) {
     });
 }
 
+/** Call this to hide a failed site from the results. */
+export function hideFailedSite(site: string) {
+    siteStatus.update((sites) => {
+        sites.delete(site);
+        return sites;
+    });
+    // Usually this is not necessary, as a failed site would not have a result.
+    // But in case an application first calls setSiteResult and then
+    // later decides to hide the site, we also remove the result here.
+    siteResults.update((results) => {
+        results.delete(site);
+        return results;
+    });
+}
+
 export function measureReportToLensResult(
     measureReport: FhirMeasureReport,
 ): LensResult {

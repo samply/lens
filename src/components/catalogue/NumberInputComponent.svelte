@@ -5,7 +5,6 @@
     import { activeQueryGroupIndex, addItemToQuery } from "../../stores/query";
     import { onMount } from "svelte";
     import { translate } from "../../helpers/translations";
-    import { getMinMax } from "../../helpers/min-max-string-builder";
 
     let {
         element,
@@ -45,6 +44,14 @@
             fromInput.setCustomValidity("");
             return true;
         }
+    }
+
+    function getMinMax(min: number | null, max: number | null): string {
+        if (min !== null && max !== null && min === max) return `${min}`;
+        if (min !== null && max !== null) return `${min} - ${max}`;
+        if (min === null && max !== null) return `≤ ${max}`;
+        if (min !== null && max === null) return `≥ ${min}`;
+        return "";
     }
 
     function onsubmit(event: SubmitEvent): void {

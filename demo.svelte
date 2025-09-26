@@ -7,10 +7,11 @@
         getAst,
         showToast,
         markSiteClaimed,
+        hideFailedSite,
+        setFacetCounts,
         clearSiteResults,
         getHumanReadableQueryAsFormattedString,
     } from "./src/index";
-    import { facetCounts } from "./src/stores/facetCounts";
 
     setOptions({
         language: localStorage.getItem("language") || "en",
@@ -27,6 +28,7 @@
         siteMappings: {
             riverside: "Riverside",
             summit: "Summit",
+            failingsite: "Failing Site",
         },
         chartOptions: {
             gender: {
@@ -316,7 +318,7 @@
         },
     ]);
 
-    facetCounts.set({
+    setFacetCounts({
         "blood-group": {
             "A+": 10,
             "A-": 5,
@@ -334,11 +336,15 @@
     window.addEventListener("lens-search-triggered", () => {
         console.log("AST:", JSON.stringify(getAst()));
         clearSiteResults();
-        markSiteClaimed("riverside");
-        markSiteClaimed("summit");
-        for (const site of "ABCDEFGHIJ") {
-            markSiteClaimed("Site " + site);
-        }
+
+        setTimeout(() => {
+            markSiteClaimed("riverside");
+            markSiteClaimed("summit");
+            markSiteClaimed("failingsite");
+            for (const site of "ABCDEFGHIJ") {
+                markSiteClaimed("Site " + site);
+            }
+        }, 500);
 
         setTimeout(() => {
             setSiteResult("riverside", {
@@ -378,6 +384,8 @@
                     patients: 33,
                 },
             });
+
+            hideFailedSite("failingsite");
 
             for (const site of "ABCDEFGHIJ") {
                 setSiteResult("Site " + site, {

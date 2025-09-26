@@ -30,7 +30,7 @@ The `totals` field contains the total number of patients, samples, etc. The `str
 
 ## Passing results to Lens
 
-You pass results to Lens using the [`setSiteResult`](file:///home/tim/projects/lens/docs/functions/setSiteResult.html) function. Before you pass a result you may call [`markSiteClaimed`](https://samply.github.io/lens/docs/functions/markSiteClaimed.html) to indicate that the site is available and will deliver results soon. This examples shows how you would pass results from Focus to Lens.
+You pass results to Lens using the [`setSiteResult`](file:///home/tim/projects/lens/docs/functions/setSiteResult.html) function. Before you pass a result you may call [`markSiteClaimed`](https://samply.github.io/lens/docs/functions/markSiteClaimed.html) to indicate that the site is available and will deliver results soon. If a site that was claimed fails you can use [`hideFailedSite`](https://samply.github.io/lens/docs/functions/hideFailedSite.html) to hide the site from the result summary and result table. This examples shows how you would pass results from Focus to Lens.
 
 ```ts
 querySpot(query, abortController.signal, (result: SpotResult) => {
@@ -41,6 +41,7 @@ querySpot(query, abortController.signal, (result: SpotResult) => {
         const siteResult = JSON.parse(atob(result.body));
         setSiteResult(site, siteResult);
     } else {
+        hideFailedSite(site);
         console.error(
             `Site ${site} failed with status ${result.status}:`,
             result.body,
