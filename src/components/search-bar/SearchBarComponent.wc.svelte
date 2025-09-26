@@ -641,7 +641,7 @@
                         {:else}
                             <li
                                 class="criterion-item"
-                                part="lens-searchbar-autocomplete-options-item"
+                                part="lens-searchbar-autocomplete-options-item lens-searchbar-autocomplete-options-item-criterion"
                             >
                                 <div
                                     part="lens-searchbar-autocomplete-options-item-name"
@@ -681,7 +681,7 @@
                             <li
                                 bind:this={activeDomElement}
                                 bind:this={optionElements[i]}
-                                part="lens-searchbar-autocomplete-options-item lens-searchbar-autocomplete-options-item-focused"
+                                part="lens-searchbar-autocomplete-options-item lens-searchbar-autocomplete-options-item-focused lens-searchbar-autocomplete-options-item-numeric"
                             >
                                 <NumberInputComponent
                                     element={inputOption as NumericRangeCategory}
@@ -698,7 +698,7 @@
                             </li>
                         {:else}
                             <li
-                                part="lens-searchbar-autocomplete-options-item"
+                                part="lens-searchbar-autocomplete-options-item lens-searchbar-autocomplete-options-item-numeric"
                                 bind:this={optionElements[i]}
                             >
                                 <NumberInputComponent
@@ -721,7 +721,7 @@
                             <li
                                 bind:this={activeDomElement}
                                 bind:this={optionElements[i]}
-                                part="lens-searchbar-autocomplete-options-item lens-searchbar-autocomplete-options-item-focused"
+                                part="lens-searchbar-autocomplete-options-item lens-searchbar-autocomplete-options-item-focused lens-searchbar-autocomplete-options-item-date"
                             >
                                 <DatePickerComponent
                                     element={inputOption as DateRangeCategory}
@@ -737,7 +737,7 @@
                             </li>
                         {:else}
                             <li
-                                part="lens-searchbar-autocomplete-options-item"
+                                part="lens-searchbar-autocomplete-options-item lens-searchbar-autocomplete-options-item-date"
                                 bind:this={optionElements[i]}
                             >
                                 <DatePickerComponent
@@ -760,7 +760,7 @@
                             <li
                                 bind:this={activeDomElement}
                                 bind:this={optionElements[i]}
-                                part="lens-searchbar-autocomplete-options-item lens-searchbar-autocomplete-options-item-focused"
+                                part="lens-searchbar-autocomplete-options-item lens-searchbar-autocomplete-options-item-focused lens-searchbar-autocomplete-options-item-string"
                             >
                                 <StringInputComponent
                                     element={inputOption as StringCategory}
@@ -777,7 +777,7 @@
                             </li>
                         {:else}
                             <li
-                                part="lens-searchbar-autocomplete-options-item"
+                                part="lens-searchbar-autocomplete-options-item lens-searchbar-autocomplete-options-item-string"
                                 bind:this={optionElements[i]}
                             >
                                 <StringInputComponent
@@ -801,7 +801,9 @@
             {/if}
         </ul>
     {:else if autoCompleteOpen && inputValue.length > 0 && inputValue.length < 3}
-        <ul part="lens-searchbar-autocomplete-options">
+        <ul
+            part="lens-searchbar-autocomplete-options lens-searchbar-autocomplete-options-type-more-message"
+        >
             <li>{typeMoreMessage}</li>
         </ul>
     {/if}
@@ -837,6 +839,16 @@
         z-index: 2;
     }
 
+    [part~="lens-searchbar-input"] {
+        box-sizing: border-box;
+        padding: var(--gap-xs);
+        min-width: 200px;
+        flex-grow: 1;
+        outline: none;
+        border: none;
+        background-color: transparent;
+    }
+
     [part~="lens-searchbar-chips"] {
         display: flex;
         flex-wrap: wrap;
@@ -868,15 +880,6 @@
 
     [part~="lens-searchbar-chip-item-text"] {
         overflow-wrap: anywhere; /* prefers breaking at spaces, but will break mid-word if needed */
-    }
-    [part~="lens-searchbar-input"] {
-        box-sizing: border-box;
-        padding: var(--gap-xs);
-        min-width: 200px;
-        flex-grow: 1;
-        outline: none;
-        border: none;
-        background-color: transparent;
     }
 
     /**
