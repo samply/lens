@@ -543,7 +543,7 @@
             activeQueryGroupIndex.set(index);
         }}
     />
-    {#if autoCompleteOpen && inputValue.length}
+    {#if autoCompleteOpen && inputValue.length > 1}
         <ul part="lens-searchbar-autocomplete-options" bind:this={optionsList}>
             {#if inputOptions?.length > 0}
                 {#each inputOptions as inputOption, i (inputOption.key + i)}
