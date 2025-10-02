@@ -40,7 +40,7 @@ export type SendableQuery = {
 };
 
 export type AutoCompleteCriterionItem = {
-    fieldType: string;
+    fieldType: "criterion";
     name: string;
     key: string;
     system?: string;
