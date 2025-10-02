@@ -398,33 +398,42 @@
     });
 
     /**
-     * returns the input option with the matched substring wrapped in <strong> tags
      * @param inputOption - the input option to bold
      * @returns the input option with the matched substring wrapped in <strong> tags
      */
     const getBoldedText = (inputOption: string): string => {
-        // Use a regular expression to find all occurrences of the substring
+        const query: string = (inputValue ?? "").trim();
 
-        const inputValueLength: number = inputValue.length;
-        const indexOfSubStringStart: number = inputOption
-            .toLocaleLowerCase()
-            .indexOf(inputValue.toLocaleLowerCase());
-        const indexOfSubStringEnd: number =
-            indexOfSubStringStart + inputValueLength;
-        const subString: string = inputOption.slice(
-            indexOfSubStringStart,
-            indexOfSubStringEnd,
-        );
-        const regex: RegExp = new RegExp(subString, "g");
+        // safety layer for passing html via name attribute in catalogue
+        inputOption = escapeHtml(inputOption);
+        if (!query) return inputOption;
 
-        // Replace each occurrence with the same substring wrapped in <strong> tags
-        const resultString: string = inputOption.replace(
-            regex,
-            `<strong>${subString}</strong>`,
+        const pattern: RegExp = new RegExp(escapeRegExp(query), "gi");
+        if (!pattern.test(inputOption)) return inputOption;
+
+        return inputOption.replace(
+            pattern,
+            (match) => `<strong>${escapeHtml(match)}</strong>`,
         );
-        console.log(resultString);
-        return resultString;
     };
+
+    function escapeRegExp(string: string): string {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    }
+
+    function escapeHtml(string: string): string {
+        return string.replace(
+            /[&<>"']/g,
+            (c) =>
+                ({
+                    "&": "&amp;",
+                    "<": "&lt;",
+                    ">": "&gt;",
+                    '"': "&quot;",
+                    "'": "&#39;",
+                })[c]!,
+        );
+    }
 
     onMount(() => {
         //sets focus in the new bar when added
