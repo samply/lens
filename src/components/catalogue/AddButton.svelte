@@ -1,9 +1,14 @@
 <script lang="ts">
+    import type {
+        KeyboardEventHandler,
+        MouseEventHandler,
+    } from "svelte/elements";
     interface Props {
         inSearchBar: boolean;
-        [key: string]: unknown;
+        onkeydown?: KeyboardEventHandler<HTMLButtonElement>;
+        onclick?: MouseEventHandler<HTMLButtonElement>;
     }
-    let { inSearchBar, ...props }: Props = $props();
+    let { inSearchBar, onkeydown, onclick }: Props = $props();
 </script>
 
 <button
@@ -11,7 +16,9 @@
     part="lens-add-to-query-button {inSearchBar
         ? 'lens-add-to-query-button-searchbar'
         : ''}"
-    {...props}
+    {onkeydown}
+    {onclick}
+    type="button"
 >
     <svg
         xmlns="http://www.w3.org/2000/svg"

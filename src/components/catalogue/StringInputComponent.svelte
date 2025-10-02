@@ -9,13 +9,13 @@
     let {
         element,
         inSearchBar = false,
-        focus = () => {},
+        setActiveElement = () => {},
         resetToEmptySearchBar = () => {},
         focusSearchbar = () => {},
     }: {
         element: StringCategory;
         inSearchBar?: boolean;
-        focus?: (elementIndex: number) => void;
+        setActiveElement?: (activate?: boolean) => void;
         resetToEmptySearchBar?: (focus?: boolean) => void;
         focusSearchbar?: () => void;
     } = $props();
@@ -27,18 +27,23 @@
         if (inSearchBar === false) input.focus();
     });
 
-    function validateForm(): boolean {
-        if (!input.value) {
+    let formValid = $derived(validateForm(value));
+
+    function validateForm(value: string | null): boolean {
+        input.setCustomValidity("");
+        if (!value) {
             input.setCustomValidity(translate("cannot_be_empty"));
             return false;
-        } else {
-            input.setCustomValidity("");
-            return true;
         }
+        return true;
     }
 
-    function onsubmit(event: Event) {
-        event.preventDefault();
+    function addItem() {
+        if (!formValid) {
+            input.reportValidity();
+            return;
+        }
+
         addItemToQuery(
             {
                 id: uuidv4(),
@@ -56,6 +61,7 @@
             },
             $activeQueryGroupIndex,
         );
+
         resetToEmptySearchBar();
     }
 
@@ -66,34 +72,33 @@
             focusSearchbar();
         }
 
-        if (!validateForm()) return;
-
         if (event.key === "Enter") {
-            onsubmit(new SubmitEvent("submit"));
+            addItem();
         }
     }
 
     // sets focus to the first element of another input component inside the
     // searchbar for easier reverse tabing between inputs
-    async function handleFormFocusIn(event: FocusEvent) {
+    function onfocusin(event: FocusEvent) {
+        if (!inSearchBar) return;
+        setActiveElement();
         const relatedTargetOutside =
             event.relatedTarget instanceof Node &&
             !form.contains(event.relatedTarget);
 
         if (relatedTargetOutside) {
-            focus(0);
+            input.focus();
         }
+    }
+
+    function onfocusout() {
+        setActiveElement(false);
     }
 
     let form: HTMLElement;
 </script>
 
-<form
-    part="lens-string-form"
-    {onsubmit}
-    bind:this={form}
-    onfocusin={handleFormFocusIn}
->
+<form part="lens-string-form" bind:this={form} {onfocusin} {onfocusout}>
     <input
         onkeydown={handleKeyDown}
         part="lens-string-formfield"
@@ -102,7 +107,7 @@
         bind:value
         placeholder="Enter filter term"
     />
-    <AddButton {handleKeyDown} {inSearchBar} />
+    <AddButton onclick={addItem} onkeydown={handleKeyDown} {inSearchBar} />
 </form>
 
 <style>

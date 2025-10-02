@@ -11,21 +11,14 @@
     interface Props {
         title?: string;
         disabled?: boolean;
-        resetSearchBarTextInputs?: boolean;
     }
 
-    let {
-        title = translate("search"),
-        disabled = false,
-        resetSearchBarTextInputs = true,
-    }: Props = $props();
+    let { title = translate("search"), disabled = false }: Props = $props();
 
     const onclick = (): void => {
         queryModified.set(false);
         window.dispatchEvent(new CustomEvent("lens-search-triggered"));
-        if (resetSearchBarTextInputs) {
-            window.dispatchEvent(new CustomEvent("reset-all-searchbar-inputs"));
-        }
+        window.dispatchEvent(new CustomEvent("reset-all-searchbar-inputs"));
     };
 </script>
 

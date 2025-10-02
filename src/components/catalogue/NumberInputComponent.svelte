@@ -9,17 +9,18 @@
     let {
         element,
         inSearchBar = false,
-        focus = () => {},
+        setActiveElement = () => {},
         resetToEmptySearchBar = () => {},
         focusSearchbar = () => {},
     }: {
         element: NumericRangeCategory;
         inSearchBar?: boolean;
-        focus?: (elementIndex: number) => void;
+        setActiveElement?: (activate?: boolean) => void;
         resetToEmptySearchBar?: (focus?: boolean) => void;
         focusSearchbar?: () => void;
     } = $props();
 
+    let form: HTMLFormElement;
     let fromInput: HTMLInputElement;
     let toInput: HTMLInputElement;
     let from: number | null = $state(null);
@@ -29,21 +30,18 @@
         if (inSearchBar === false) fromInput.focus();
     });
 
-    $effect(() => {
-        validateForm();
-    });
+    let formVlaid = $derived(validateForm(from, to));
 
-    function validateForm(): boolean {
+    function validateForm(from: number | null, to: number | null): boolean {
+        fromInput.setCustomValidity("");
         if (from === null && to === null) {
             fromInput.setCustomValidity(translate("cannot_both_be_empty"));
             return false;
         } else if (from !== null && to !== null && from > to) {
             fromInput.setCustomValidity(translate("min_must_be_less_than_max"));
             return false;
-        } else {
-            fromInput.setCustomValidity("");
-            return true;
         }
+        return true;
     }
 
     function getMinMax(min: number | null, max: number | null): string {
@@ -54,8 +52,12 @@
         return "";
     }
 
-    function onsubmit(event: SubmitEvent): void {
-        event.preventDefault();
+    function addItem(): void {
+        if (!formVlaid) {
+            fromInput.reportValidity();
+            return;
+        }
+
         addItemToQuery(
             {
                 id: uuidv4(),
@@ -72,6 +74,7 @@
             },
             $activeQueryGroupIndex,
         );
+
         resetToEmptySearchBar();
     }
 
@@ -82,41 +85,33 @@
             focusSearchbar();
         }
 
-        if (!validateForm()) return;
-
         if (event.key === "Enter") {
-            onsubmit(new SubmitEvent("submit"));
+            addItem();
         }
     }
 
-    async function handleFormFocusIn(event: FocusEvent) {
+    function onfocusin(event: FocusEvent) {
+        if (!inSearchBar) return;
+        setActiveElement();
+        // toInput can not be reached by tab when the focus is outside the form,
+        // so this can handle the focus via mouse click instead of using another event listener
+        if (event.target === toInput) return;
+
         const relatedTargetOutside =
             event.relatedTarget instanceof Node &&
             !form.contains(event.relatedTarget);
 
-        // toInput can not be reached by tab when the focus is outside the form,
-        // so this can handle the focus via mouse click instead of using another event listener
-        if (event.target === toInput) {
-            focus(1);
-            return;
-        }
-
-        // sets focus to the first element of another input component inside the
-        // searchbar for easier reverse tabing between inputs
         if (relatedTargetOutside) {
-            focus(0);
+            fromInput.focus();
         }
     }
 
-    let form: HTMLElement;
+    function onfocusout() {
+        setActiveElement(false);
+    }
 </script>
 
-<form
-    part="lens-number-input-form"
-    {onsubmit}
-    bind:this={form}
-    onfocusin={handleFormFocusIn}
->
+<form part="lens-number-input-form" bind:this={form} {onfocusin} {onfocusout}>
     <div part="lens-number-input-formfield-wrapper">
         <input
             onkeydown={handleKeyDown}
@@ -154,7 +149,7 @@
             >
         {/if}
     </div>
-    <AddButton {handleKeyDown} {inSearchBar} />
+    <AddButton onclick={addItem} onkeydown={handleKeyDown} {inSearchBar} />
 </form>
 
 <style>
