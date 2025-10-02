@@ -480,10 +480,17 @@
                 window.history.replaceState({}, "", url.toString());
             }
         });
+
+        window.addEventListener("reset-all-searchbar-inputs", () => {
+            inputValue = "";
+        });
+
+        window.addEventListener("mouseup", () => {
+            handleClickOutside();
+        });
     });
 </script>
 
-<svelte:window onmouseup={handleClickOutside} />
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
     part="lens-searchbar {index === $activeQueryGroupIndex

@@ -13,8 +13,3 @@ export function resetDiagrams() {
         chart.resetChart?.();
     });
 }
-
-export function resetSearchBarTextInputs() {
-    const event = new CustomEvent("reset-all-searchbar-inputs");
-    window.dispatchEvent(event);
-}
