@@ -274,6 +274,7 @@
 
         addItemToQuery(queryItem, indexOfChosenStore);
         resetToEmptySearchBar();
+        autoCompleteOpen = false;
     };
 
     /**
@@ -332,8 +333,8 @@
     }
 
     function handleFocusOut(event: FocusEvent) {
-        if (searchBarContainer.contains(event.relatedTarget as Node)) return;
-
+        if (searchBarContainer.contains(event.relatedTarget as Node) || inside)
+            return;
         autoCompleteOpen = false;
     }
 
@@ -364,7 +365,6 @@
     }
 
     let searchBarContainer: HTMLElement;
-    let optionsList: HTMLUListElement;
 
     /**
      * scrolls the active dom element into view when it is out of view
@@ -497,8 +497,8 @@
         ? 'lens-searchbar-active'
         : ''}"
     bind:this={searchBarContainer}
-    onmousedown={handleClickInside}
     onfocusin={handleFocusIn}
+    onmousedown={handleClickInside}
     onfocusout={handleFocusOut}
 >
     {#if queryGroup !== undefined && queryGroup.length > 0}
@@ -550,8 +550,8 @@
             activeQueryGroupIndex.set(index);
         }}
     />
-    {#if autoCompleteOpen && inputValue.length > 1}
-        <ul part="lens-searchbar-autocomplete-options" bind:this={optionsList}>
+    {#if autoCompleteOpen && inputValue.length > -1}
+        <ul part="lens-searchbar-autocomplete-options">
             {#if inputOptions?.length > 0}
                 {#each inputOptions as inputOption, i (inputOption.key + i)}
                     <!-- TODO: this double loop makes the autocomplete slow with big data loads. Is there a better way to make the category headers? -->
