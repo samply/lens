@@ -704,7 +704,10 @@
             <li>{typeMoreMessage}</li>
         </ul>
     {/if}
-    <StoreDeleteButtonComponent itemToDelete={{ type: "group", index }} />
+    <StoreDeleteButtonComponent
+        itemToDelete={{ type: "group", index }}
+        {resetToEmptySearchBar}
+    />
 </div>
 
 <style>

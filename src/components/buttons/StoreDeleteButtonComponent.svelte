@@ -14,9 +14,10 @@
             index: number;
             item?: QueryItem;
         };
+        resetToEmptySearchBar?: () => void;
     }
 
-    let { itemToDelete }: Props = $props();
+    let { itemToDelete, resetToEmptySearchBar = () => {} }: Props = $props();
 
     const { type, index, item } = itemToDelete;
 
@@ -51,7 +52,7 @@
                 if (searchBarInputs) {
                     searchBarInputs[$activeQueryGroupIndex].focus();
                 }
-
+                resetToEmptySearchBar();
                 return query;
             });
         }
