@@ -5,5 +5,5 @@ title = "Lens Book"
 
 [output.html]
 git-repository-url = "https://github.com/samply/lens/tree/develop/book"
-git-repository-icon = "fa-github"
+git-repository-icon = "fab-github"
 edit-url-template = "https://github.com/samply/lens/edit/develop/book/{path}"
