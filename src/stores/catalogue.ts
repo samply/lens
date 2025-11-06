@@ -322,7 +322,7 @@ export const getCriteriaFromKey = (
 };
 
 /**
- * Set the catalogue. A warning is logged to the browser console if the catalogue does not match the JSON schema. Note that function makes a deep copy of the catalogue so modifying the original object has no effect.
+ * Set the catalogue. A warning is logged to the browser console if the catalogue does not match the JSON schema. Note that the function makes a deep copy of the catalogue so modifying the original object has no effect.
  */
 export function setCatalogue(newCatalogue: Catalogue) {
     // Make a copy to avoid modifying the original object
