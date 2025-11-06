@@ -8,7 +8,7 @@ import optionsSchema from "../../schema/options.schema.json";
 export const lensOptions = writable<LensOptions | undefined>();
 
 /**
- * Set the options. A warning is logged to the browser console if the options do not match the JSON schema. Note that function makes a deep copy of the options so modifying the original object has no effect.
+ * Set the options. A warning is logged to the browser console if the options do not match the JSON schema. Note that the function makes a deep copy of the options so modifying the original object has no effect.
  */
 export function setOptions(newOptions: LensOptions) {
     // Make a copy to avoid modifying the original object
