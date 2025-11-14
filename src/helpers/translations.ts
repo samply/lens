@@ -82,4 +82,8 @@ const lensTranslations: Texts = {
         en: "and any of",
         de: "und eines aus",
     },
+    type_more_message: {
+        en: "Search begins with 2 characters",
+        de: "Suche beginnt mit 2 Zeichen",
+    },
 };

@@ -48,7 +48,7 @@
 
     let {
         noMatchesFoundMessage = "No matches found",
-        typeMoreMessage = "Search will start with 3 inserted letters",
+        typeMoreMessage = translate("type_more_message"),
         placeholderText = "Type to filter conditions",
         index = 0,
     }: Props = $props();
@@ -710,7 +710,7 @@
                 <li>{noMatchesFoundMessage}</li>
             {/if}
         </ul>
-    {:else if autoCompleteOpen && inputValue.length > 0 && inputValue.length < 3}
+    {:else if autoCompleteOpen && inputValue.length > 0 && inputValue.length < 2}
         <ul
             part="lens-searchbar-autocomplete-options lens-searchbar-autocomplete-options-type-more-message"
         >
