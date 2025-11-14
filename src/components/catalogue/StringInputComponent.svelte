@@ -9,15 +9,11 @@
     let {
         element,
         inSearchBar = false,
-        setActiveElement = () => {},
         resetToEmptySearchBar = () => {},
-        focusSearchbar = () => {},
     }: {
         element: StringCategory;
         inSearchBar?: boolean;
-        setActiveElement?: (activate?: boolean) => void;
         resetToEmptySearchBar?: (focus?: boolean) => void;
-        focusSearchbar?: () => void;
     } = $props();
 
     let input: HTMLInputElement;
@@ -65,49 +61,25 @@
         resetToEmptySearchBar();
     }
 
-    function handleKeyDown(event: KeyboardEvent) {
-        if (inSearchBar === false) return;
-
-        if (event.key === "Escape") {
-            focusSearchbar();
+    function onkeydown(event: KeyboardEvent) {
+        if (event.key === "ArrowUp" || event.key === "ArrowDown") {
+            event.preventDefault();
         }
-
-        if (event.key === "Enter") {
-            addItem();
-        }
-    }
-
-    // sets focus to the first element of another input component inside the
-    // searchbar for easier reverse tabing between inputs
-    function onfocusin(event: FocusEvent) {
-        if (!inSearchBar) return;
-        setActiveElement();
-        const relatedTargetOutside =
-            event.relatedTarget instanceof Node &&
-            !form.contains(event.relatedTarget);
-
-        if (relatedTargetOutside) {
-            input.focus();
-        }
-    }
-
-    function onfocusout() {
-        setActiveElement(false);
     }
 
     let form: HTMLElement;
 </script>
 
-<form part="lens-string-form" bind:this={form} {onfocusin} {onfocusout}>
+<form part="lens-string-form" bind:this={form}>
     <input
-        onkeydown={handleKeyDown}
         part="lens-string-formfield"
         type="text"
         bind:this={input}
         bind:value
         placeholder="Enter filter term"
+        {onkeydown}
     />
-    <AddButton onclick={addItem} onkeydown={handleKeyDown} {inSearchBar} />
+    <AddButton onclick={addItem} {onkeydown} {inSearchBar} />
 </form>
 
 <style>
