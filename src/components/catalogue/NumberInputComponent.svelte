@@ -48,9 +48,7 @@
         return "";
     }
 
-    function addItem(event: MouseEvent | KeyboardEvent): void {
-        if ("key" in event && event.key !== "Enter") return;
-
+    function addItem(): void {
         if (!formVlaid) {
             fromInput.reportValidity();
             return;
@@ -77,6 +75,12 @@
     }
 
     function onkeydown(event: KeyboardEvent) {
+        if (inSearchBar === false) return;
+
+        if (event.key === "Enter") {
+            addItem();
+        }
+
         if (event.key === "ArrowUp" || event.key === "ArrowDown") {
             event.preventDefault();
         }

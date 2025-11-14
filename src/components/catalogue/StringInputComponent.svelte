@@ -62,6 +62,12 @@
     }
 
     function onkeydown(event: KeyboardEvent) {
+        if (inSearchBar === false) return;
+
+        if (event.key === "Enter") {
+            addItem();
+        }
+
         if (event.key === "ArrowUp" || event.key === "ArrowDown") {
             event.preventDefault();
         }
