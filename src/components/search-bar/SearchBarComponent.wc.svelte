@@ -59,7 +59,7 @@
      * handles the focus state of the input element
      * closes options when clicked outside
      */
-    let autoCompleteOpen = $state(false);
+    let autoCompleteOpen = $state(true);
 
     /**
      * Build a full list of autocomplete items and saves it to 'criteria'
@@ -522,7 +522,7 @@
     onfocusout={handleFocusOut}
     onkeydown={handleKeyDown}
 >
-    {#if queryGroup !== undefined && queryGroup.length > 0}
+    {#if queryGroup !== undefined && queryGroup.length > 1}
         <div part="lens-searchbar-chips">
             {#each queryGroup as queryItem (queryItem.id)}
                 <div part="lens-searchbar-chip">
@@ -813,7 +813,7 @@
         border: solid 1px var(--blue);
         border-top: none;
         position: absolute;
-        top: 40px;
+        top: calc(100% - 5px);
         left: -1px;
         right: -1px;
         background-color: var(--white);
