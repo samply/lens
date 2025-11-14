@@ -9,15 +9,11 @@
     let {
         element,
         inSearchBar = false,
-        setActiveElement = () => {},
         resetToEmptySearchBar = () => {},
-        focusSearchbar = () => {},
     }: {
         element: DateRangeCategory;
         inSearchBar?: boolean;
-        setActiveElement?: (activate?: boolean) => void;
         resetToEmptySearchBar?: (focus?: boolean) => void;
-        focusSearchbar?: () => void;
     } = $props();
 
     let form: HTMLFormElement;
@@ -78,21 +74,20 @@
         resetToEmptySearchBar();
     }
 
-    function handleKeyDown(event: KeyboardEvent) {
+    function onkeydown(event: KeyboardEvent) {
         if (inSearchBar === false) return;
-
-        if (event.key === "Escape") {
-            focusSearchbar();
-        }
 
         if (event.key === "Enter") {
             addItem();
+        }
+
+        if (event.key === "ArrowUp" || event.key === "ArrowDown") {
+            event.preventDefault();
         }
     }
 
     function onfocusin(event: FocusEvent) {
         if (!inSearchBar) return;
-        setActiveElement();
         // toInput can not be reached by tab when the focus is outside the form,
         // so this can handle the focus via mouse click instead of using another event listener
         if (event.target === toInput) return;
@@ -105,33 +100,29 @@
             fromInput.focus();
         }
     }
-
-    function onfocusout() {
-        setActiveElement(false);
-    }
 </script>
 
-<form part="lens-date-input-form" bind:this={form} {onfocusin} {onfocusout}>
+<form part="lens-date-input-form" bind:this={form} {onfocusin}>
     <input
-        onkeydown={handleKeyDown}
         part="lens-date-input-formfield"
         type="date"
         min={element.min}
         max={element.max}
         bind:value={from}
         bind:this={fromInput}
+        {onkeydown}
     />
     <span part="date-input-range-separator">-</span>
     <input
-        onkeydown={handleKeyDown}
         part="lens-date-input-formfield"
         type="date"
         min={element.min}
         max={element.max}
         bind:value={to}
         bind:this={toInput}
+        {onkeydown}
     />
-    <AddButton onclick={addItem} onkeydown={handleKeyDown} {inSearchBar} />
+    <AddButton onclick={addItem} {onkeydown} {inSearchBar} />
 </form>
 
 <style>

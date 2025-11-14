@@ -274,7 +274,6 @@
 
         addItemToQuery(queryItem, indexOfChosenStore);
         resetToEmptySearchBar();
-        autoCompleteOpen = false;
     };
 
     /**
@@ -291,15 +290,23 @@
         return index;
     };
 
+    let searchBarInputHasFoucs = $state(true);
+
     /**
      * handles keyboard events to make input options selectable and form elements tabable
      * @param event - the keyboard event
      */
     const handleKeyDown = (event: KeyboardEvent): void => {
-        if (inputValue.length === 0 || event.key === "Escape") {
+        if (
+            (inputValue.length === 0 || event.key === "Escape") &&
+            searchBarInputHasFoucs
+        ) {
             inputValue = "";
             focusedItemIndex = -1;
             return;
+        }
+        if (event.key === "Escape") {
+            searchBarInput.focus();
         }
         if (event.key === "ArrowDown") {
             event.preventDefault();
@@ -320,16 +327,29 @@
                 extractTargetGroupFromInputValue(),
             );
         }
-        if (event.key === "Tab" && !event.shiftKey) {
-            if (activeDomElement?.querySelector("input")) {
+        if (event.key === "Tab") {
+            let focusedListItem = optionElements.find(
+                (element) => element && element.matches(":focus-within"),
+            );
+            if (
+                activeDomElement &&
+                focusedListItem &&
+                activeDomElement !== focusedListItem
+            ) {
                 event.preventDefault();
-                activeDomElement?.querySelector("input")?.focus();
+                activeDomElement.querySelector("input")?.focus();
             }
         }
     };
 
     function handleFocusIn() {
         autoCompleteOpen = true;
+        let focusedListItem = optionElements.find(
+            (element) => element && element.matches(":focus-within"),
+        );
+        if (focusedListItem) {
+            focusedItemIndex = optionElements.indexOf(focusedListItem);
+        }
     }
 
     function handleFocusOut(event: FocusEvent) {
@@ -500,6 +520,7 @@
     onfocusin={handleFocusIn}
     onmousedown={handleClickInside}
     onfocusout={handleFocusOut}
+    onkeydown={handleKeyDown}
 >
     {#if queryGroup !== undefined && queryGroup.length > 0}
         <div part="lens-searchbar-chips">
@@ -543,14 +564,15 @@
         type="text"
         bind:this={searchBarInput}
         bind:value={inputValue}
-        onkeydown={handleKeyDown}
         placeholder={placeholderText}
         onfocusin={() => {
             autoCompleteOpen = true;
             activeQueryGroupIndex.set(index);
+            searchBarInputHasFoucs = true;
         }}
+        onfocusout={() => (searchBarInputHasFoucs = false)}
     />
-    {#if autoCompleteOpen && inputValue.length > -1}
+    {#if autoCompleteOpen && inputValue.length > 1}
         <ul part="lens-searchbar-autocomplete-options">
             {#if inputOptions?.length > 0}
                 {#each inputOptions as inputOption, i (inputOption.key + i)}
@@ -633,10 +655,7 @@
                             <NumberInputComponent
                                 element={inputOption as NumericRangeCategory}
                                 inSearchBar={true}
-                                setActiveElement={(activate: boolean = true) =>
-                                    (focusedItemIndex = activate ? i : -1)}
                                 {resetToEmptySearchBar}
-                                {focusSearchbar}
                             />
                         </li>
                     {/if}
@@ -659,10 +678,7 @@
                             <DatePickerComponent
                                 element={inputOption as DateRangeCategory}
                                 inSearchBar={true}
-                                setActiveElement={(activate: boolean = true) =>
-                                    (focusedItemIndex = activate ? i : -1)}
                                 {resetToEmptySearchBar}
-                                {focusSearchbar}
                             />
                         </li>
                     {/if}
@@ -685,10 +701,7 @@
                             <StringInputComponent
                                 element={inputOption as StringCategory}
                                 inSearchBar={true}
-                                setActiveElement={(activate: boolean = true) =>
-                                    (focusedItemIndex = activate ? i : -1)}
                                 {resetToEmptySearchBar}
-                                {focusSearchbar}
                             />
                         </li>
                     {/if}
