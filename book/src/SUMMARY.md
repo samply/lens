@@ -29,6 +29,7 @@
     - [Search Bar Multiple](components/searchbarmulti.md)
     - [Search Button](components/searchbutton.md)
 - [Release notes](releases/README.md)
+    - [Version 0.6.3](releases/v0.6.3.md)
     - [Version 0.6.2](releases/v0.6.2.md)
     - [Version 0.6.1](releases/v0.6.1.md)
     - [Version 0.6.0](releases/v0.6.0.md)
