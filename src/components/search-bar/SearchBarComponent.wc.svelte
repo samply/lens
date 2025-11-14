@@ -333,7 +333,7 @@
             );
             if (
                 activeDomElement &&
-                focusedListItem &&
+                (focusedListItem || searchBarInputHasFoucs || event.shiftKey) &&
                 activeDomElement !== focusedListItem
             ) {
                 event.preventDefault();
@@ -522,7 +522,7 @@
     onfocusout={handleFocusOut}
     onkeydown={handleKeyDown}
 >
-    {#if queryGroup !== undefined && queryGroup.length > 1}
+    {#if queryGroup !== undefined && queryGroup.length > 0}
         <div part="lens-searchbar-chips">
             {#each queryGroup as queryItem (queryItem.id)}
                 <div part="lens-searchbar-chip">
