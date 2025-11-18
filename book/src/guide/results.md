@@ -50,6 +50,36 @@ querySpot(query, abortController.signal, (result: SpotResult) => {
 });
 ```
 
+### Handling Empty Query Results
+
+Sometimes a query may succeed but return no data, with totals of `0` and empty stratifiers. In these cases, it’s recommended to check for an empty result and inform the user.
+
+Include this function:
+
+```ts
+export function isLensResultEmpty(result: LensResult): boolean {
+    // Check for non-empty stratifiers
+    for (const stratifier of Object.values(result.stratifiers)) {
+        if (Object.keys(stratifier).length > 0) return false;
+    }
+
+    // Check for non-zero totals
+    for (const value of Object.values(result.totals)) {
+        if (value !== 0) return false;
+    }
+
+    return true;
+}
+```
+
+And check in your result function:
+
+```ts
+if (isLensResultEmpty(result)) {
+    showToast("No results found for your query", "info");
+}
+```
+
 ## Components
 
 Lens provides components to render results.
