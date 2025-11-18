@@ -221,6 +221,10 @@
                                 ▼
                             {/if}
                         </span>
+                    {:else}
+                        <span style="font-size: 0.3em; opacity: 0.5;">
+                            ▲▼
+                        </span>
                     {/if}
                 </th>
             {/each}
