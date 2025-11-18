@@ -12,6 +12,7 @@
 </script>
 
 <button
+    tabindex="0"
     aria-label="Add to query"
     part="lens-add-to-query-button {inSearchBar
         ? 'lens-add-to-query-button-searchbar'

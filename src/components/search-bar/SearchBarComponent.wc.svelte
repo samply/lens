@@ -335,13 +335,49 @@
                 document.activeElement?.shadowRoot?.activeElement?.closest(
                     "li",
                 );
-            if (
-                activeDomElement &&
+
+            // safari doesn't allow to check focus inside the date input
+            // this functionallity is less intuitive in the ui in some minor points but does the job.
+            // to work, safari's tab index behaviour had to be altered to tab onto the Add-Button,
+            // opposed to natively jumping over buttons
+            const isSafari: boolean =
+                /^((?!chrome|chromium|android).)*safari/i.test(
+                    navigator.userAgent,
+                );
+
+            if (isSafari) {
+                if (activeDomElement && activeDomElement !== focusedListItem) {
+                    event.preventDefault();
+                    activeDomElement.querySelector("input")?.focus();
+                    return;
+                }
+                if (searchBarInputHasFoucs) {
+                    const firstInput = optionElements
+                        .find((element) => element.querySelector("input"))
+                        ?.closest("li");
+                    focusedItemIndex = firstInput
+                        ? optionElements.indexOf(firstInput)
+                        : -1;
+                } else {
+                    const isNextListItem =
+                        document.activeElement?.shadowRoot?.activeElement
+                            ?.tagName === "BUTTON";
+                    if (!isNextListItem) return;
+                    const nextInput = optionElements
+                        .slice(focusedItemIndex + 1)
+                        .find((element) => element.querySelector("input"))
+                        ?.closest("li");
+                    focusedItemIndex = nextInput
+                        ? optionElements.indexOf(nextInput)
+                        : -1;
+                }
+                return;
+            } else if (
                 (focusedListItem || searchBarInputHasFoucs || event.shiftKey) &&
                 activeDomElement !== focusedListItem
             ) {
                 event.preventDefault();
-                activeDomElement.querySelector("input")?.focus();
+                activeDomElement?.querySelector("input")?.focus();
             }
         }
     };
