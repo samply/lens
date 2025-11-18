@@ -328,9 +328,10 @@
             );
         }
         if (event.key === "Tab") {
-            let focusedListItem = optionElements.find(
-                (element) => element && element.matches(":focus-within"),
-            );
+            let focusedListItem =
+                document.activeElement?.shadowRoot?.activeElement?.closest(
+                    "li",
+                );
             if (
                 activeDomElement &&
                 (focusedListItem || searchBarInputHasFoucs || event.shiftKey) &&
@@ -344,9 +345,8 @@
 
     function handleFocusIn() {
         autoCompleteOpen = true;
-        let focusedListItem = optionElements.find(
-            (element) => element && element.matches(":focus-within"),
-        );
+        let focusedListItem =
+            document.activeElement?.shadowRoot?.activeElement?.closest("li");
         if (focusedListItem) {
             focusedItemIndex = optionElements.indexOf(focusedListItem);
         }
@@ -507,6 +507,10 @@
 
         window.addEventListener("mouseup", () => {
             handleClickOutside();
+        });
+
+        searchBarContainer.addEventListener("focus", (event) => {
+            console.log(event);
         });
     });
 </script>
