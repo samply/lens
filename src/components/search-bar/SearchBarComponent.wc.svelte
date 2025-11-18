@@ -328,6 +328,9 @@
             );
         }
         if (event.key === "Tab") {
+            if (searchBarInputHasFoucs && event.shiftKey) {
+                return;
+            }
             let focusedListItem =
                 document.activeElement?.shadowRoot?.activeElement?.closest(
                     "li",
