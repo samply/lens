@@ -134,7 +134,6 @@ const resolveAstSubgroupsRec = (query: AstElement): AstElement => {
                     elements.push({
                         key: query.key,
                         type: query.type,
-                        system: query.system,
                         value: x,
                     });
                 });

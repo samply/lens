@@ -89,7 +89,6 @@ export const addItemToQuery = (
                 key: duplicateObjects[0].key,
                 name: duplicateObjects[0].name,
                 type: duplicateObjects[0].type,
-                system: duplicateObjects[0].system,
                 values: [],
             };
             duplicateObjects.forEach((obj: QueryItem) => {

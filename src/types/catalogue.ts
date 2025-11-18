@@ -58,7 +58,6 @@ export type SingleSelectCategory = {
     key: string;
     /** The item's user-facing display name */
     name: string;
-    system: string;
     type: "EQUALS";
     /** The list of criteria the user can select from */
     criteria: Criteria[];
@@ -84,7 +83,6 @@ export type AutocompleteCategory = {
     key: string;
     /** The item's user-facing display name */
     name: string;
-    system: string;
     type: "EQUALS";
     /** The list of criteria the user can select from */
     criteria: Criteria[];
@@ -103,7 +101,6 @@ export type NumericRangeCategory = {
     key: string;
     /** The item's user-facing display name */
     name: string;
-    system: string;
     type: "BETWEEN";
     /** The smallest value that the user can enter */
     min?: number;
@@ -126,7 +123,6 @@ export type DateRangeCategory = {
     key: string;
     /** The item's user-facing display name */
     name: string;
-    system: string;
     type: "BETWEEN";
     /**
      * The earliest date that the user can pick
@@ -150,7 +146,6 @@ export type StringCategory = {
     key: string;
     /** The item's user-facing display name */
     name: string;
-    system: string;
     type: "EQUALS";
     /** Optional text that is accessed by clicking a "ⓘ" button next to the display name */
     infoButtonText?: string[];

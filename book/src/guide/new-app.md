@@ -90,7 +90,6 @@ Assuming you are using JSON files, create the file `src/config/options.json` con
     {
         "key": "rh_factor",
         "name": "Rh factor",
-        "system": "",
         "fieldType": "single-select",
         "type": "EQUALS",
         "criteria": [

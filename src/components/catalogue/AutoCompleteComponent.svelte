@@ -127,7 +127,6 @@
             name: element.name,
             key: element.key,
             type: element.type,
-            system: element.system,
             values: [
                 {
                     value: inputItem.key,
