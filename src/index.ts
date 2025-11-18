@@ -62,6 +62,7 @@ import "./components/buttons/QueryExplainButtonComponent.wc.svelte";
 import "./components/informational/ModifiedSearchComponent.wc.svelte";
 import "./components/informational/QuerySpinner.wc.svelte";
 import "./components/informational/Toasts.wc.svelte";
+import "./components/informational/aboutLensComponent.svelte";
 
 // Include CSS in the bundle
 import "./styles/index.css";
