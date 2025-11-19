@@ -14,7 +14,7 @@
 <div part="lens-info-wrapper">
     <InfoButtonComponent
         buttonSize={20}
-        alignDialogue={["top", "right"]}
+        alignDialogue="top-right"
         dialogueMaxWidth="250px"
     >
         <h4 part="lens-info-header">Ablut Lens</h4>

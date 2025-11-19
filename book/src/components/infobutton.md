@@ -6,13 +6,13 @@ This component is commonly used across various other components in Lens.
 
 ## Props
 
-| Prop               | Type                              | Default   | Description                                                                                            |
-| ------------------ | --------------------------------- | --------- | ------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------- |
-| `message`          | `string` or `string[]`            | `""`      | Text to display inside the tooltip. If an array is passed, each string will be rendered on a new line. |
-| `buttonSize`       | `number`                          | `16`      | Sets both the width and height of the button (e.g., `"24px"`).                                         |
-| `alignDialogue`    | `"left" \| "right" \| "center" \  | `"top"`   | `"center"`                                                                                             | Controls where the tooltip appears relative to the button. |
-| `dialogueMaxWidth` | `string`                          | `"300px"` | Maximum width of the tooltip container.                                                                |
-| `inSearchBar`      | `boolean`                         | `false`   | Applies special styling when used inside a search bar (e.g., white icon with orange hover).            |
+| Prop               | Type                                                                                               | Default    | Description                                                                                            |
+| ------------------ | -------------------------------------------------------------------------------------------------- | ---------- | ------------------------------------------------------------------------------------------------------ |
+| `message`          | `string` or `string[]`                                                                             | `""`       | Text to display inside the tooltip. If an array is passed, each string will be rendered on a new line. |
+| `buttonSize`       | `number`                                                                                           | `16`       | Sets both the width and height of the button in px (e.g., `"20px"`).                                   |
+| `alignDialogue`    | `"top-left" \| "top-center" \| "top-right" \| "bottom-left" \| "bottom-center" \| "bottom-right" ` | `"center"` | Controls where the tooltip appears relative to the button.                                             |
+| `dialogueMaxWidth` | `string`                                                                                           | `"300px"`  | Maximum width of the tooltip container.                                                                |
+| `inSearchBar`      | `boolean`                                                                                          | `false`    | Applies special styling when used inside a search bar (e.g., white icon with orange hover).            |
 
 ## Usage
 
