@@ -61,7 +61,7 @@
     </InfoButtonComponent>
 {:else}
     <div part="lens-query-explain-button">
-        <InfoButtonComponent buttonSize="25px" alignDialogue={["left"]}>
+        <InfoButtonComponent buttonSize={25} alignDialogue={["left"]}>
             {#if $queryStore.flat().length > 0}
                 <h3 part="lens-query-explain-header">
                     {translate("query_info_header")}

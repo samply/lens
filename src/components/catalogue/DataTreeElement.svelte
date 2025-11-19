@@ -152,7 +152,7 @@
         {#if element.infoButtonText}
             <InfoButtonComponent
                 message={element.infoButtonText}
-                buttonSize="18px"
+                buttonSize={18}
             />
         {/if}
 
