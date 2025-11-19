@@ -79,7 +79,6 @@
                     name: category.name,
                     key: category.key,
                     type: category.type,
-                    system: category.system,
                     criterion: criterion,
                 });
             }
@@ -115,7 +114,6 @@
                         name: category.name,
                         key: category.key,
                         type: category.type,
-                        system: category.system,
                         criterion: criterion,
                     });
                 }
@@ -257,7 +255,6 @@
             name: inputItem.name,
             key: inputItem.key,
             type: "type" in inputItem ? inputItem.type : "",
-            system: "system" in inputItem ? inputItem.system : "",
             values: [
                 {
                     value:

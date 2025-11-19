@@ -90,7 +90,6 @@ Assuming you are using JSON files, create the file `src/config/options.json` con
     {
         "key": "rh_factor",
         "name": "Rh factor",
-        "system": "",
         "fieldType": "single-select",
         "type": "EQUALS",
         "criteria": [
@@ -279,71 +278,20 @@ EXPOSE 3000
 CMD ["node", "build"]
 ```
 
-To automatically build Docker images and publish them to Docker Hub when a branch changes, we recommend to use the [Samply Docker CI](https://github.com/samply/github-workflows/blob/main/.github/workflows/docker-ci.yml) workflow for GitHub Actions. Use the [workflow template](https://github.com/samply/.github/blob/main/workflow-templates/docker-ci-template.yml) or copy the following into `.github/workflows/docker.yml`:
+## GitHub Actions
 
-```yml
-# This workflow builds a Docker image from the Dockerfile and publishes the
-# image to Docker Hub. How the image tags are chosen is documented here:
-# https://github.com/samply/github-workflows/blob/main/.github/workflows/docker-ci.yml
-#
-# This file is copied and adapted from:
-# https://github.com/samply/.github/blob/main/workflow-templates/docker-ci-template.yml
+You can use GitHub Actions to automatically run lints and build a Docker image when a pull request is opened or code is pushed. You can copy the following into `.github/workflows/ci.yml` and adjust it to your needs. It runs Prettier, ESLint, svelte-check (checks for TypeScript errors) and validates your catalogue and options JSON files. If these checks are successful it uses the [Samply Docker CI](https://github.com/samply/github-workflows/blob/main/.github/workflows/docker-ci.yml) to build a Docker image and push it to Docker Hub or the GitHub Container Registry.
 
-name: Docker CI
+```yaml
+name: CI
 
 on:
-    push:
-        branches:
-            - main
-            - develop
-        # Build when a new version is tagged
-        tags:
-            - "v*.*.*"
     pull_request:
-        branches:
-            - main
-            - develop
-jobs:
-    build:
-        # This workflow defines how a samply docker image is built, tested and published.
-        # Visit: https://github.com/samply/github-workflows/blob/main/.github/workflows/docker-ci.yml, for more information
-        uses: samply/github-workflows/.github/workflows/docker-ci.yml@main
-        with:
-            # The Docker Hub Repository you want eventually push to, e.g samply/share-client
-            image-name: "samply/your-project"
-            # Where to push your images ("dockerhub", "ghcr", "both" or "none")
-            push-to: dockerhub
-        # This passes the secrets from calling workflow to the called workflow
-        secrets:
-            DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-            DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-```
-
-## Linting in GitHub Actions
-
-You can use GitHub Actions to run the following checks on pull requests:
-
-- [svelte-check](https://www.npmjs.com/package/svelte-check) to check for TypeScript compiler errors
-- Prettier
-- ESLint
-- Test that the build works
-- Validate catalogue and options
-
-To do so create `.github/workflows/linting.yml` with the following content:
-
-```yml
-name: Linting
-on:
-    pull_request:
-        branches:
-            - main
-            - develop
     push:
-        branches:
-            - develop
+    workflow_dispatch:
 
 jobs:
-    verify-code:
+    linting:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
@@ -351,7 +299,19 @@ jobs:
             - run: npm ci
             - run: npx prettier --check .
             - run: npx eslint .
-            - run: npm run check
-            - run: npm run build
+            - run: npx svelte-check
             - run: bash scripts/validate-json-schema.bash
+
+    docker:
+        needs: linting
+        uses: samply/github-workflows/.github/workflows/docker-ci.yml@main
+        with:
+            image-name: "samply/your-project"
+            #push-to: auto
+            #build-context: '.'
+            #build-file: './Dockerfile'
+            #build-platforms: "linux/amd64"
+        secrets:
+            DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+            DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 ```

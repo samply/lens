@@ -10,7 +10,6 @@ export type QueryItem = {
     key: string;
     name: string;
     type: string;
-    system?: string;
     values: QueryValue[];
     description?: string;
 };
@@ -43,7 +42,6 @@ export type AutoCompleteCriterionItem = {
     fieldType: "criterion";
     name: string;
     key: string;
-    system?: string;
     type: string;
     criterion: {
         key: string;

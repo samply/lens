@@ -33,10 +33,9 @@
         "test": "vitest"
     },
     "devDependencies": {
-        "@commitlint/cli": "^19.8.0",
-        "@commitlint/config-conventional": "^19.8.0",
         "@eslint/js": "^9.22.0",
         "@sveltejs/vite-plugin-svelte": "^6.0.0",
+        "@types/node": "^24.10.0",
         "@types/uuid": "^11.0.0",
         "ajv-cli": "^5.0.0",
         "eslint": "^9.22.0",
@@ -57,7 +56,7 @@
         "typescript-eslint": "^8.26.1",
         "vite": "^7.0.0",
         "vite-plugin-dts": "^4.5.3",
-        "vitest": "^3.2.4"
+        "vitest": "^4.0.9"
     },
     "dependencies": {
         "ajv": "^8.17.1",
@@ -70,20 +69,5 @@
             "eslint --fix",
             "prettier --ignore-unknown --write"
         ]
-    },
-    "commitlint": {
-        "extends": [
-            "@commitlint/config-conventional"
-        ],
-        "rules": {
-            "body-max-line-length": [
-                0,
-                "always"
-            ],
-            "footer-max-line-length": [
-                0,
-                "always"
-            ]
-        }
     }
 }

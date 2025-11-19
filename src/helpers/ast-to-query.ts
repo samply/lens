@@ -81,7 +81,6 @@ const convertCriteria = (criteria: AstTopLayer): QueryItem | undefined => {
         key: checkedValues[0].key,
         name: catalogueCategory != undefined ? catalogueCategory.name : "",
         type: checkedValues[0].type,
-        system: checkedValues[0].system,
         values: convertedValues,
     };
     return convertedCriteria;
@@ -103,7 +102,6 @@ const convertComplexCriteria = (criteria: AstTopLayer): QueryItem => {
         name: criteriaCategory != undefined ? criteriaCategory.name : "",
         // NOTE: Assuming hard coding here, proof me wrong
         type: "EQUALS",
-        system: "",
         values: convertedValues,
     };
 };

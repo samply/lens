@@ -13,7 +13,6 @@ export type AstTopLayer = {
 export type AstBottomLayerValue = {
     key: string;
     type: string;
-    system?: string;
     value:
         | string
         | boolean

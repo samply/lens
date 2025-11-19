@@ -7,7 +7,7 @@
         getAst,
         showToast,
         markSiteClaimed,
-        hideFailedSite,
+        removeFaileSite,
         setFacetCounts,
         clearSiteResults,
         getHumanReadableQueryAsFormattedString,
@@ -76,7 +76,6 @@
             key: "diagnosis",
             name: "Diagnosis",
             type: "EQUALS",
-            system: "http://fhir.de/CodeSystem/dimdi/icd-10-gm",
             infoButtonText: ["Diagnosis"],
             criteria: [
                 {
@@ -117,7 +116,6 @@
             key: "blood-group",
             name: "Blood group",
             type: "EQUALS",
-            system: "",
             criteria: [
                 {
                     key: "A+",
@@ -151,7 +149,6 @@
             key: "body_weight",
             name: "Body weight",
             type: "BETWEEN",
-            system: "",
             min: 0,
             unitText: "kg",
         },
@@ -160,7 +157,6 @@
             key: "date-of-birth",
             name: "Date of birth",
             type: "BETWEEN",
-            system: "",
             max: "2025-09-04",
         },
         {
@@ -168,7 +164,6 @@
             key: "first-name",
             name: "First name",
             type: "EQUALS",
-            system: "",
         },
         {
             fieldType: "group",
@@ -180,7 +175,6 @@
                     name: "Gender",
                     fieldType: "single-select",
                     type: "EQUALS",
-                    system: "",
                     criteria: [
                         {
                             key: "male",
@@ -209,7 +203,6 @@
                     name: "Diagnosis ICD-10",
                     fieldType: "autocomplete",
                     type: "EQUALS",
-                    system: "http://fhir.de/CodeSystem/dimdi/icd-10-gm",
                     criteria: [
                         {
                             key: "C31",
@@ -241,7 +234,6 @@
                     name: "Diagnosis age",
                     fieldType: "number",
                     type: "BETWEEN",
-                    system: "",
                 },
                 {
                     fieldType: "date",
@@ -268,7 +260,6 @@
                             name: "Gliome, alle Gruppen",
                             fieldType: "single-select",
                             type: "EQUALS",
-                            system: "",
                             criteria: [
                                 {
                                     key: "urn:dktk:code:3:2",
@@ -314,7 +305,6 @@
             name: "Sample ID",
             infoButtonText: ["Sample ID"],
             type: "EQUALS",
-            system: "",
         },
     ]);
 
@@ -385,7 +375,7 @@
                 },
             });
 
-            hideFailedSite("failingsite");
+            removeFaileSite("failingsite");
 
             for (const site of "ABCDEFGHIJ") {
                 setSiteResult("Site " + site, {
