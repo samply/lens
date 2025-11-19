@@ -7,8 +7,8 @@
 <script lang="ts">
     interface Props {
         message?: string[] | string;
-        buttonSize?: string;
-        alignDialogue?: "left" | "right" | "center" | "top";
+        buttonSize?: number;
+        alignDialogue?: ("left" | "right" | "center" | "top")[];
         dialogueMaxWidth?: string;
         /** Info button in search bar is white and orange on hover */
         inSearchBar?: boolean;
@@ -16,8 +16,8 @@
 
     let {
         message = "",
-        buttonSize = "16px",
-        alignDialogue = "center",
+        buttonSize = 16,
+        alignDialogue = ["center"],
         dialogueMaxWidth = "300px",
         inSearchBar = false,
     }: Props = $props();
@@ -45,16 +45,24 @@
         }
     };
 
-    let dialogueTop = $derived.by(() => {
-        return alignDialogue === "top" ? `-80px` : buttonSize;
-    });
+    const alignDialoguePartList = alignDialogue
+        ? alignDialogue
+              .map(
+                  (alignment: string) =>
+                      alignment !== "top" &&
+                      `lens-info-button-dialogue-align-${alignment}`,
+              )
+              .join()
+              .replace(/,/g, " ")
+        : "";
+    const top = alignDialogue.includes("top") ? `bottom: ${buttonSize}px;` : "";
 </script>
 
 <button
     part="lens-info-button"
     onclick={(e) => displayQueryInfo(e)}
     onfocusout={onFocusOut}
-    style="width: {buttonSize}; height: {buttonSize};"
+    style="height: {buttonSize}px; width: {buttonSize}px;"
 >
     <div
         part={inSearchBar
@@ -74,8 +82,8 @@
     {#if tooltipOpen}
         <div
             bind:this={dialogue}
-            part="lens-info-button-dialogue {`lens-info-button-dialogue-align-${alignDialogue}`}"
-            style="top: {dialogueTop}; max-width: {dialogueMaxWidth};"
+            part="lens-info-button-dialogue {alignDialoguePartList}"
+            style="{top} max-width: {dialogueMaxWidth};"
         >
             {#each message as msg, index (msg + index)}
                 <div part="lens-info-button-dialogue-message">
@@ -113,6 +121,7 @@
 
     [part~="lens-info-button-dialogue"] {
         margin-top: var(--gap-xs);
+        margin-bottom: var(--gap-xs);
         cursor: auto;
         position: absolute;
         background-color: var(--white);
@@ -128,10 +137,6 @@
     [part~="lens-info-button-dialogue-align-center"] {
         left: 50%;
         transform: translateX(-50%);
-    }
-
-    [part~="lens-info-button-dialogue-align-top"] {
-        top: -80px;
     }
 
     [part~="lens-info-button-dialogue-align-right"] {

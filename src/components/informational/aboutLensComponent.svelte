@@ -9,34 +9,17 @@
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
 
     let version = $state(pkg.version);
-
-    let open: boolean = $state(false);
-    let root: HTMLElement;
-
-    // handle click outside
-    // prevent event listeners stacking
-    $effect(() => {
-        if (!open) return;
-        const onClick = (e: MouseEvent) => {
-            const path = e.composedPath();
-            if (!path.includes(root)) {
-                open = false;
-            }
-        };
-        window.addEventListener("click", onClick, { capture: true });
-        return () => {
-            window.removeEventListener("click", onClick, { capture: true });
-        };
-    });
 </script>
 
-<div part="lens-info-wrapper" bind:this={root}>
+<div part="lens-info-wrapper">
     <InfoButtonComponent
-        message={["About Lens", `Lens Version: ${version}`]}
-        buttonSize="20px"
-        alignDialogue="top"
+        buttonSize={20}
+        alignDialogue={["top", "right"]}
         dialogueMaxWidth="250px"
-    ></InfoButtonComponent>
+    >
+        <h4 part="lens-info-header">Ablut Lens</h4>
+        <div part="lens-info-body">Lens Version: {version}</div>
+    </InfoButtonComponent>
     <span part="lens-info-made-with">
         Made with ♥ and
         <a href="https://github.com/samply/lens">samply/lens</a>
@@ -49,5 +32,10 @@
         display: flex;
         align-items: center;
         gap: 5px;
+    }
+
+    [part~="lens-info-header"] {
+        margin-top: 0;
+        margin-bottom: var(--gap-xxs);
     }
 </style>
