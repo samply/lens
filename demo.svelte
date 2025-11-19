@@ -465,10 +465,7 @@
         </div>
     </div>
     <footer class="card">
-        <span>
-            Made with ♥ and
-            <a href="https://github.com/samply/lens">samply/lens</a>
-        </span>
+        <lens-about></lens-about>
     </footer>
 </div>
 

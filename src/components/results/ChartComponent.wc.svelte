@@ -621,7 +621,7 @@
         <div part="lens-chart-info-button-wrapper">
             <InfoButtonComponent
                 message={options.hintText}
-                alignDialogue="left"
+                alignDialogue="bottom-left"
             />
         </div>
     {/if}

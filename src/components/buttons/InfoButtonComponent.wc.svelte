@@ -7,8 +7,14 @@
 <script lang="ts">
     interface Props {
         message?: string[] | string;
-        buttonSize?: string;
-        alignDialogue?: "left" | "right" | "center";
+        buttonSize?: number;
+        alignDialogue?:
+            | "top-left"
+            | "top-center"
+            | "top-right"
+            | "bottom-left"
+            | "bottom-center"
+            | "bottom-right";
         dialogueMaxWidth?: string;
         /** Info button in search bar is white and orange on hover */
         inSearchBar?: boolean;
@@ -16,8 +22,8 @@
 
     let {
         message = "",
-        buttonSize = "16px",
-        alignDialogue = "center",
+        buttonSize = 16,
+        alignDialogue = "bottom-center",
         dialogueMaxWidth = "300px",
         inSearchBar = false,
     }: Props = $props();
@@ -44,13 +50,20 @@
             tooltipOpen = !tooltipOpen;
         }
     };
+
+    const top =
+        alignDialogue === "top-left" ||
+        alignDialogue === "top-right" ||
+        alignDialogue === "top-center"
+            ? `bottom: ${buttonSize}px;`
+            : "";
 </script>
 
 <button
     part="lens-info-button"
     onclick={(e) => displayQueryInfo(e)}
     onfocusout={onFocusOut}
-    style="width: {buttonSize}; height: {buttonSize};"
+    style="height: {buttonSize}px; width: {buttonSize}px;"
 >
     <div
         part={inSearchBar
@@ -70,8 +83,8 @@
     {#if tooltipOpen}
         <div
             bind:this={dialogue}
-            part="lens-info-button-dialogue {`lens-info-button-dialogue-align-${alignDialogue}`}"
-            style="top: {buttonSize}; max-width: {dialogueMaxWidth};"
+            part="lens-info-button-dialogue lens-info-button-dialogue-align-{alignDialogue}"
+            style="{top} max-width: {dialogueMaxWidth};"
         >
             {#each message as msg, index (msg + index)}
                 <div part="lens-info-button-dialogue-message">
@@ -109,6 +122,7 @@
 
     [part~="lens-info-button-dialogue"] {
         margin-top: var(--gap-xs);
+        margin-bottom: var(--gap-xs);
         cursor: auto;
         position: absolute;
         background-color: var(--white);
@@ -121,17 +135,20 @@
         user-select: text;
     }
 
-    [part~="lens-info-button-dialogue-align-center"] {
+    [part~="lens-info-button-dialogue-align-top-left"],
+    [part~="lens-info-button-dialogue-align-bottom-left"] {
+        right: 0;
+    }
+
+    [part~="lens-info-button-dialogue-align-top-center"],
+    [part~="lens-info-button-dialogue-align-bottom-center"] {
         left: 50%;
         transform: translateX(-50%);
     }
 
-    [part~="lens-info-button-dialogue-align-right"] {
+    [part~="lens-info-button-dialogue-align-top-right"],
+    [part~="lens-info-button-dialogue-align-bottom-right"] {
         left: 0;
-    }
-
-    [part~="lens-info-button-dialogue-align-left"] {
-        right: 0;
     }
 
     [part~="lens-info-button-dialogue-message"] {
