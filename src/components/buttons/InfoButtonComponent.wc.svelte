@@ -8,7 +8,7 @@
     interface Props {
         message?: string[] | string;
         buttonSize?: string;
-        alignDialogue?: "left" | "right" | "center";
+        alignDialogue?: "left" | "right" | "center" | "top";
         dialogueMaxWidth?: string;
         /** Info button in search bar is white and orange on hover */
         inSearchBar?: boolean;
@@ -124,6 +124,10 @@
     [part~="lens-info-button-dialogue-align-center"] {
         left: 50%;
         transform: translateX(-50%);
+    }
+
+    [part~="lens-info-button-dialogue-align-top"] {
+        top: -80px;
     }
 
     [part~="lens-info-button-dialogue-align-right"] {
