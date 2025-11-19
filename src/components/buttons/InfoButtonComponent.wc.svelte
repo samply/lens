@@ -37,7 +37,7 @@
         tooltipOpen = false;
     };
 
-    let dialogue!: HTMLElement;
+    let dialogue: HTMLElement | undefined = $state();
 
     const displayQueryInfo = (e: MouseEvent): void => {
         if (typeof message == "string") {

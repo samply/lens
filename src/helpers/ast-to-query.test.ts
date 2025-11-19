@@ -27,7 +27,6 @@ test("setQueryStoreFromAst: single select", () => {
                             {
                                 key: "blood-group",
                                 type: "EQUALS",
-                                system: "",
                                 value: "A+",
                             },
                         ],
@@ -50,13 +49,11 @@ test("setQueryStoreFromAst: single select", () => {
                             {
                                 key: "blood-group",
                                 type: "EQUALS",
-                                system: "",
                                 value: "A+",
                             },
                             {
                                 key: "blood-group",
                                 type: "EQUALS",
-                                system: "",
                                 value: "B+",
                             },
                         ],
@@ -82,7 +79,6 @@ test("setQueryStoreFromAst: numeric range", () => {
                             {
                                 key: "body_weight",
                                 type: "BETWEEN",
-                                system: "",
                                 value: { min: 30, max: 50 },
                             },
                         ],
@@ -105,7 +101,6 @@ test("setQueryStoreFromAst: numeric range", () => {
                             {
                                 key: "body_weight",
                                 type: "BETWEEN",
-                                system: "",
                                 value: { min: 30 },
                             },
                         ],
@@ -131,7 +126,6 @@ test("setQueryStoreFromAst: date range", () => {
                             {
                                 key: "date-of-birth",
                                 type: "BETWEEN",
-                                system: "",
                                 value: { min: "2014-01-01", max: "2024-01-01" },
                             },
                         ],
@@ -154,7 +148,6 @@ test("setQueryStoreFromAst: date range", () => {
                             {
                                 key: "date-of-birth",
                                 type: "BETWEEN",
-                                system: "",
                                 value: { min: "2014-01-01" },
                             },
                         ],
@@ -179,7 +172,6 @@ test("setQueryStoreFromAst: string value", () => {
                             {
                                 key: "sample-id",
                                 type: "EQUALS",
-                                system: "",
                                 value: "blabliblub",
                             },
                         ],

@@ -594,10 +594,6 @@
                                 id: uuidv4(),
                                 key: childCategorie.key,
                                 name: childCategorie.name,
-                                system:
-                                    "system" in childCategorie
-                                        ? childCategorie.system
-                                        : "",
                                 type:
                                     "type" in childCategorie
                                         ? childCategorie.type

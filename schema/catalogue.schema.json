@@ -48,9 +48,6 @@
           "description": "The item's user-facing display name",
           "type": "string"
         },
-        "system": {
-          "type": "string"
-        },
         "type": {
           "const": "EQUALS",
           "type": "string"
@@ -60,7 +57,6 @@
         "fieldType",
         "key",
         "name",
-        "system",
         "type",
         "criteria"
       ],
@@ -301,9 +297,6 @@
           "description": "The item's user-facing display name",
           "type": "string"
         },
-        "system": {
-          "type": "string"
-        },
         "type": {
           "const": "BETWEEN",
           "type": "string"
@@ -313,7 +306,6 @@
         "fieldType",
         "key",
         "name",
-        "system",
         "type"
       ],
       "type": "object"
@@ -349,9 +341,6 @@
           "description": "The item's user-facing display name",
           "type": "string"
         },
-        "system": {
-          "type": "string"
-        },
         "type": {
           "const": "BETWEEN",
           "type": "string"
@@ -365,7 +354,6 @@
         "fieldType",
         "key",
         "name",
-        "system",
         "type"
       ],
       "type": "object"
@@ -404,9 +392,6 @@
           "description": "This overwrites the display name in the catalogue component only. The intended use-case is to have multiple catalogue items with the same key and name but different subCategoryName. They will appear as different collapsable entries in the catalogue but will be grouped together in the same chip in the search bar.",
           "type": "string"
         },
-        "system": {
-          "type": "string"
-        },
         "type": {
           "const": "EQUALS",
           "type": "string"
@@ -416,7 +401,6 @@
         "fieldType",
         "key",
         "name",
-        "system",
         "type",
         "criteria"
       ],
@@ -445,9 +429,6 @@
           "description": "The item's user-facing display name",
           "type": "string"
         },
-        "system": {
-          "type": "string"
-        },
         "type": {
           "const": "EQUALS",
           "type": "string"
@@ -457,7 +438,6 @@
         "fieldType",
         "key",
         "name",
-        "system",
         "type"
       ],
       "type": "object"
