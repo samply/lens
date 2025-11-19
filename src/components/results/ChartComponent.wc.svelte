@@ -378,7 +378,7 @@
     const setChartData = (
         siteStatus: Map<string, "claimed" | "succeeded">,
         sortBy: string,
-        sortOrder: string,
+        sortOrder: "asc" | "desc",
     ): void => {
         if (siteStatus.size === 0) {
             return;
