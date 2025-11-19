@@ -44,6 +44,10 @@
             tooltipOpen = !tooltipOpen;
         }
     };
+
+    let dialogueTop = $derived.by(() => {
+        return alignDialogue === "top" ? `-80px` : buttonSize;
+    });
 </script>
 
 <button
@@ -71,7 +75,7 @@
         <div
             bind:this={dialogue}
             part="lens-info-button-dialogue {`lens-info-button-dialogue-align-${alignDialogue}`}"
-            style="top: {buttonSize}; max-width: {dialogueMaxWidth};"
+            style="top: {dialogueTop}; max-width: {dialogueMaxWidth};"
         >
             {#each message as msg, index (msg + index)}
                 <div part="lens-info-button-dialogue-message">

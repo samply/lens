@@ -32,7 +32,7 @@
 
 <div part="lens-info-wrapper" bind:this={root}>
     <InfoButtonComponent
-        message={["About Lens", "Lens Version: " + { version }]}
+        message={["About Lens", `Lens Version: ${version}`]}
         buttonSize="20px"
         alignDialogue="top"
         dialogueMaxWidth="250px"
