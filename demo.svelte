@@ -440,6 +440,7 @@
                     dataKey="gender"
                     chartType="pie"
                     displayLegends={true}
+                    enableSorting={false}
                 ></lens-chart>
             </div>
             <div class="card">

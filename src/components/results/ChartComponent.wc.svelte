@@ -37,6 +37,7 @@
         chartType?: keyof ChartTypeRegistry;
         scaleType?: string;
         dataKey: string;
+        enableSorting: boolean;
         perSite?: boolean;
         groupRange?: number;
         groupingDivider?: string;
@@ -58,6 +59,7 @@
         dataKey = "",
         chartType = "pie",
         scaleType = "linear",
+        enableSorting = true,
         perSite = false,
         groupRange = $bindable(0),
         groupingDivider = "",
@@ -102,6 +104,9 @@
     let canvas: HTMLCanvasElement;
 
     let chart: Chart;
+
+    let sortBy: string = $state("alpha"); // 'value' or 'alpha'
+    let sortOrder: "asc" | "desc" = $state("asc"); // 'asc' or 'desc'
 
     // TODO: Use ChartConfiguration type here instead of "any"
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -372,6 +377,8 @@
      */
     const setChartData = (
         siteStatus: Map<string, "claimed" | "succeeded">,
+        sortBy: string,
+        sortOrder: string,
     ): void => {
         if (siteStatus.size === 0) {
             return;
@@ -385,7 +392,26 @@
             chartLabels = getStrata($siteResults, dataKey);
         }
         chartLabels = filterRegexMatch(chartLabels);
-        chartLabels.sort(customSort);
+
+        /**
+         * lets the user define a range for the labels when only single values are used eg. '60' -> '60 - 69'
+         */
+        if (groupRange !== undefined && groupRange !== 0) {
+            chartLabels = chartLabels.map((label) => {
+                /**
+                 * check if label doesn't parse to a number
+                 */
+                if (isNaN(parseInt(label))) return label;
+
+                return `${parseInt(label)} - ${
+                    parseInt(label) + groupRange - 1
+                }`;
+            });
+        }
+
+        if (sortBy === "alpha") {
+            chartLabels.sort(SortLabels);
+        }
 
         /**
          * remove labels and their corresponding data if the label is an empty string or null
@@ -415,27 +441,15 @@
             return;
         }
 
+        if (sortBy === "value") {
+            chartData = sortChartData(chartData, sortOrder);
+        }
+
         chart.data.datasets = chartData.data;
         chartLabels = chartData.labels;
 
         if (typeof groupRange == "string") {
             groupRange = Number(groupRange);
-        }
-
-        /**
-         * lets the user define a range for the labels when only single values are used eg. '60' -> '60 - 69'
-         */
-        if (groupRange !== undefined && groupRange !== 0) {
-            chartLabels = chartLabels.map((label) => {
-                /**
-                 * check if label doesn't parse to a number
-                 */
-                if (isNaN(parseInt(label))) return label;
-
-                return `${parseInt(label)} - ${
-                    parseInt(label) + groupRange - 1
-                }`;
-            });
         }
 
         // Set the chart labels, using either the legend mapping or the site mappings
@@ -510,7 +524,35 @@
         chart = new Chart(canvas, initialChartData); // Store the Chart instance
     });
 
-    const customSort = (a: string, b: string): number => {
+    function sortChartData(
+        chartData: ChartDataSets,
+        sortOrder: "asc" | "desc",
+    ): ChartDataSets {
+        const indices = chartData.labels.map((_, index) => index);
+
+        // Sort indices based on the sorting criteria
+        indices.sort((a, b) => {
+            let comparison = 0;
+            const valueA = chartData.data[0]?.data[a] ?? 0;
+            const valueB = chartData.data[0]?.data[b] ?? 0;
+            comparison = valueA - valueB;
+
+            return sortOrder === "asc" ? comparison : -comparison;
+        });
+
+        return {
+            labels: indices.map((i) => chartData.labels[i]),
+            data: chartData.data.map((dataset) => ({
+                data: indices.map((i) => dataset.data[i]),
+                backgroundColor: indices.map((i) => dataset.backgroundColor[i]),
+                backgroundHoverColor: indices.map(
+                    (i) => dataset.backgroundHoverColor[i],
+                ),
+            })),
+        };
+    }
+
+    const SortLabels = (a: string, b: string): number => {
         // "unknown" should come after numeric values
         if (a === "unknown" && b !== "unknown") {
             return 1;
@@ -523,10 +565,18 @@
         if (!isNaN(parseInt(a)) && !isNaN(parseInt(b))) {
             const aNum = parseInt(a, 10);
             const bNum = parseInt(b, 10);
-            return aNum > bNum ? 1 : -1;
+            if (sortOrder === "asc") {
+                return aNum > bNum ? 1 : -1;
+            } else {
+                return aNum < bNum ? 1 : -1;
+            }
         }
 
-        return a > b ? 1 : -1;
+        if (sortOrder === "asc") {
+            return a > b ? 1 : -1;
+        } else {
+            return a < b ? 1 : -1;
+        }
     };
 
     /**
@@ -612,8 +662,16 @@
     };
 
     $effect(() => {
-        setChartData($siteStatus);
+        setChartData($siteStatus, sortBy, sortOrder);
     });
+
+    function toggleSortBy(type: string) {
+        if (sortBy === type) {
+            sortOrder = sortOrder === "asc" ? "desc" : "asc";
+        } else {
+            sortBy = type;
+        }
+    }
 </script>
 
 <div part="lens-chart-wrapper">
@@ -625,6 +683,92 @@
             />
         </div>
     {/if}
+    {#if enableSorting}
+        <div part="lens-chart-sort-buttons">
+            <button
+                part="lens-chart-sort-button"
+                class:active={sortBy === "value"}
+                onclick={() => toggleSortBy("value")}
+                title="Sort by value"
+                aria-label="Sort by value {sortBy === 'value'
+                    ? sortOrder === 'asc'
+                        ? 'ascending'
+                        : 'descending'
+                    : ''}"
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24px"
+                    viewBox="0 -960 960 960"
+                    width="24px"
+                    fill="#e3e3e3"
+                    ><path
+                        d="M120-240v-80h240v80H120Zm0-200v-80h480v80H120Zm0-200v-80h720v80H120Z"
+                    /></svg
+                >
+                <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                >
+                    {#if sortBy === "value" && sortOrder === "asc"}
+                        <!-- Arrow up for ascending -->
+                        <line x1="12" y1="19" x2="12" y2="5"></line>
+                        <polyline points="5 12 12 5 19 12"></polyline>
+                    {:else}
+                        <!-- Arrow down for descending (default) -->
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <polyline points="19 12 12 19 5 12"></polyline>
+                    {/if}
+                    <!-- Bar chart icon -->
+                </svg>
+            </button>
+
+            <button
+                part="lens-chart-sort-button"
+                class:active={sortBy === "alpha"}
+                onclick={() => toggleSortBy("alpha")}
+                title="Sort alphabetically"
+                aria-label="Sort alphabetically {sortBy === 'alpha'
+                    ? sortOrder === 'asc'
+                        ? 'ascending'
+                        : 'descending'
+                    : ''}"
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24px"
+                    viewBox="0 -960 960 960"
+                    width="24px"
+                    fill="#e3e3e3"
+                    ><path
+                        d="m80-280 150-400h86l150 400h-82l-34-96H196l-32 96H80Zm140-164h104l-48-150h-6l-50 150Zm328 164v-76l202-252H556v-72h282v76L638-352h202v72H548ZM360-760l120-120 120 120H360ZM480-80 360-200h240L480-80Z"
+                    /></svg
+                >
+                <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                >
+                    {#if sortBy === "alpha" && sortOrder === "asc"}
+                        <!-- Arrow up for ascending -->
+                        <line x1="12" y1="19" x2="12" y2="5"></line>
+                        <polyline points="5 12 12 5 19 12"></polyline>
+                    {:else}
+                        <!-- Arrow down for descending (default) -->
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <polyline points="19 12 12 19 5 12"></polyline>
+                    {/if}
+                </svg>
+            </button>
+        </div>
+    {/if}
 
     <h4 part="lens-chart-title">{title}</h4>
 
@@ -634,8 +778,6 @@
         </div>
     {/if}
 
-    <!-- For responsive charts, Charts.js requires a dedicated container for each canvas: https://www.chartjs.org/docs/latest/configuration/responsive.html#important-note -->
-    <!-- The container requires `min-width: 0` or it won't shrink: https://github.com/chartjs/Chart.js/issues/4156#issuecomment-295180128 -->
     <div part="lens-chart-container-min-width-0">
         <canvas
             part="lens-chart-canvas"
@@ -690,5 +832,43 @@
         position: absolute;
         top: 0;
         right: 0;
+    }
+
+    [part~="lens-chart-sort-buttons"] {
+        position: absolute;
+        top: 0;
+        right: 25px; /* Adjust based on info button width */
+        display: flex;
+        gap: 4px;
+        z-index: 1;
+    }
+
+    [part~="lens-chart-sort-button"] {
+        background: transparent;
+        border: 1px solid var(--gray, #ccc);
+        border-radius: 4px;
+        padding: 4px 6px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+        color: var(--gray, #666);
+    }
+
+    [part~="lens-chart-sort-button"]:hover {
+        background-color: var(--light-gray, #f5f5f5);
+        border-color: var(--dark-gray, #999);
+    }
+
+    [part~="lens-chart-sort-button"].active {
+        background-color: var(--primary-color, #007bff);
+        border-color: var(--primary-color, #007bff);
+        color: white;
+    }
+
+    [part~="lens-chart-sort-button"]:focus {
+        outline: 2px solid var(--focus-color, #007bff);
+        outline-offset: 2px;
     }
 </style>
