@@ -14,6 +14,10 @@ export function translate(key: string): string {
 }
 
 const lensTranslations: Texts = {
+    cannot_be_empty: {
+        en: "Cannot be empty",
+        de: "Darf nicht leer sein",
+    },
     cannot_both_be_empty: {
         en: "Cannot both be empty",
         de: "Es können nicht beide Felder leer sein",
@@ -77,5 +81,9 @@ const lensTranslations: Texts = {
     query_item_multi_row_header: {
         en: "and any of",
         de: "und eines aus",
+    },
+    type_more_message: {
+        en: "Search begins with 2 characters",
+        de: "Suche beginnt mit 2 Zeichen",
     },
 };

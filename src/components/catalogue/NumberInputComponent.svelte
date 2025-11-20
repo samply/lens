@@ -8,28 +8,37 @@
 
     let {
         element,
+        inSearchBar = false,
+        resetToEmptySearchBar = () => {},
     }: {
         element: NumericRangeCategory;
+        inSearchBar?: boolean;
+        resetToEmptySearchBar?: (focus?: boolean) => void;
     } = $props();
 
+    let form: HTMLFormElement;
     let fromInput: HTMLInputElement;
     let toInput: HTMLInputElement;
     let from: number | null = $state(null);
     let to: number | null = $state(null);
 
     onMount(() => {
-        fromInput.focus();
+        if (inSearchBar === false) fromInput.focus();
     });
 
-    $effect(() => {
+    let formVlaid = $derived(validateForm(from, to));
+
+    function validateForm(from: number | null, to: number | null): boolean {
+        fromInput.setCustomValidity("");
         if (from === null && to === null) {
             fromInput.setCustomValidity(translate("cannot_both_be_empty"));
+            return false;
         } else if (from !== null && to !== null && from > to) {
             fromInput.setCustomValidity(translate("min_must_be_less_than_max"));
-        } else {
-            fromInput.setCustomValidity("");
+            return false;
         }
-    });
+        return true;
+    }
 
     function getMinMax(min: number | null, max: number | null): string {
         if (min !== null && max !== null && min === max) return `${min}`;
@@ -39,8 +48,12 @@
         return "";
     }
 
-    function onsubmit(event: SubmitEvent): void {
-        event.preventDefault();
+    function addItem(): void {
+        if (!formVlaid) {
+            fromInput.reportValidity();
+            return;
+        }
+
         addItemToQuery(
             {
                 id: uuidv4(),
@@ -57,10 +70,39 @@
             },
             $activeQueryGroupIndex,
         );
+
+        resetToEmptySearchBar();
+    }
+
+    function onkeydown(event: KeyboardEvent) {
+        if (inSearchBar === false) return;
+
+        if (event.key === "Enter") {
+            addItem();
+        }
+
+        if (event.key === "ArrowUp" || event.key === "ArrowDown") {
+            event.preventDefault();
+        }
+    }
+
+    function onfocusin(event: FocusEvent) {
+        if (!inSearchBar) return;
+        // toInput can not be reached by tab when the focus is outside the form,
+        // so this can handle the focus via mouse click instead of using another event listener
+        if (event.target === toInput) return;
+
+        const relatedTargetOutside =
+            event.relatedTarget instanceof Node &&
+            !form.contains(event.relatedTarget);
+
+        if (relatedTargetOutside) {
+            fromInput.focus();
+        }
     }
 </script>
 
-<form part="lens-number-input-form" {onsubmit}>
+<form part="lens-number-input-form" bind:this={form} {onfocusin}>
     <div part="lens-number-input-formfield-wrapper">
         <input
             part="lens-number-input-formfield"
@@ -71,6 +113,7 @@
             max={element.max}
             bind:value={from}
             bind:this={fromInput}
+            {onkeydown}
         />
         {#if element.unitText !== undefined}
             <span part="lens-number-input-formfield-unit"
@@ -89,6 +132,7 @@
             max={element.max}
             bind:value={to}
             bind:this={toInput}
+            {onkeydown}
         />
         {#if element.unitText !== undefined}
             <span part="lens-number-input-formfield-unit"
@@ -96,7 +140,7 @@
             >
         {/if}
     </div>
-    <AddButton />
+    <AddButton onclick={addItem} {onkeydown} {inSearchBar} />
 </form>
 
 <style>
@@ -130,5 +174,6 @@
         padding: 0 var(--gap-xs);
         background-color: var(--lightest-gray);
         font-size: var(--font-size-xs);
+        color: var(--font-color);
     }
 </style>
