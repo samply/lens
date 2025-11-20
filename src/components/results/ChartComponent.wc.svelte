@@ -105,7 +105,7 @@
 
     let chart: Chart;
 
-    let sortBy: string = $state("alpha"); // 'value' or 'alpha'
+    let sortBy: "alpha" | "value" = $state("alpha"); // 'value' or 'alpha'
     let sortOrder: "asc" | "desc" = $state("asc"); // 'asc' or 'desc'
 
     // TODO: Use ChartConfiguration type here instead of "any"
@@ -377,7 +377,7 @@
      */
     const setChartData = (
         siteStatus: Map<string, "claimed" | "succeeded">,
-        sortBy: string,
+        sortBy: "alpha" | "value",
         sortOrder: "asc" | "desc",
     ): void => {
         if (siteStatus.size === 0) {
@@ -665,7 +665,7 @@
         setChartData($siteStatus, sortBy, sortOrder);
     });
 
-    function toggleSortBy(type: string) {
+    function toggleSortBy(type: "alpha" | "value") {
         if (sortBy === type) {
             sortOrder = sortOrder === "asc" ? "desc" : "asc";
         } else {
@@ -716,11 +716,11 @@
                 >
                     {#if sortBy === "value" && sortOrder === "asc"}
                         <!-- Arrow up for ascending -->
-                        <line x1="12" y1="19" x2="12" y2="5"></line>
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
                         <polyline points="5 12 12 5 19 12"></polyline>
                     {:else}
                         <!-- Arrow down for descending (default) -->
-                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="12" y1="19" x2="12" y2="5"></line>
                         <polyline points="19 12 12 19 5 12"></polyline>
                     {/if}
                     <!-- Bar chart icon -->
@@ -839,14 +839,14 @@
         top: 0;
         right: 25px; /* Adjust based on info button width */
         display: flex;
-        gap: 4px;
+        gap: var(--gap-xxs);
         z-index: 1;
     }
 
     [part~="lens-chart-sort-button"] {
         background: transparent;
-        border: 1px solid var(--gray, #ccc);
-        border-radius: 4px;
+        border: none;
+        border-radius: var(--border-radius-small);
         padding: 4px 6px;
         cursor: pointer;
         display: flex;
