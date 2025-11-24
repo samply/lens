@@ -670,107 +670,126 @@
             sortOrder = sortOrder === "asc" ? "desc" : "asc";
         } else {
             sortBy = type;
+            sortOrder = "asc";
         }
     }
 </script>
 
 <div part="lens-chart-wrapper">
-    {#if options?.hintText !== undefined}
-        <div part="lens-chart-info-button-wrapper">
-            <InfoButtonComponent
-                message={options.hintText}
-                alignDialogue="left"
-            />
-        </div>
-    {/if}
-    {#if enableSorting}
-        <div part="lens-chart-sort-buttons">
-            <button
-                part="lens-chart-sort-button"
-                class:active={sortBy === "value"}
-                onclick={() => toggleSortBy("value")}
-                title="Sort by value"
-                aria-label="Sort by value {sortBy === 'value'
-                    ? sortOrder === 'asc'
-                        ? 'ascending'
-                        : 'descending'
-                    : ''}"
-            >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    height="24px"
-                    viewBox="0 -960 960 960"
-                    width="24px"
-                    fill="#e3e3e3"
-                    ><path
-                        d="M120-240v-80h240v80H120Zm0-200v-80h480v80H120Zm0-200v-80h720v80H120Z"
-                    /></svg
-                >
-                <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                >
-                    {#if sortBy === "value" && sortOrder === "asc"}
-                        <!-- Arrow up for ascending -->
-                        <line x1="12" y1="5" x2="12" y2="19"></line>
-                        <polyline points="5 12 12 5 19 12"></polyline>
-                    {:else}
-                        <!-- Arrow down for descending (default) -->
-                        <line x1="12" y1="19" x2="12" y2="5"></line>
-                        <polyline points="19 12 12 19 5 12"></polyline>
-                    {/if}
-                    <!-- Bar chart icon -->
-                </svg>
-            </button>
+    <div part="lens-chart-header">
+        <h4 part="lens-chart-title">{title}</h4>
+        <div part="lens-chart-buttons">
+            {#if options?.hintText !== undefined}
+                <div part="lens-chart-info-button-wrapper">
+                    <InfoButtonComponent
+                        message={options.hintText}
+                        alignDialogue="left"
+                    />
+                </div>
+            {/if}
+            {#if enableSorting}
+                <div part="lens-chart-sort-buttons">
+                    <button
+                        part="lens-chart-sort-button"
+                        class:active={sortBy === "value"}
+                        onclick={() => toggleSortBy("value")}
+                        title="Sort by value"
+                        aria-label="Sort by value {sortBy === 'value'
+                            ? sortOrder === 'asc'
+                                ? 'ascending'
+                                : 'descending'
+                            : ''}"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="24px"
+                            viewBox="0 -960 960 960"
+                            width="24px"
+                            fill="#e3e3e3"
+                            ><path
+                                d="M120-240v-80h240v80H120Zm0-200v-80h480v80H120Zm0-200v-80h720v80H120Z"
+                            /></svg
+                        >
+                        <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        >
+                            {#if sortBy === "value"}
+                                {#if sortOrder === "asc"}
+                                    <!-- Arrow up for ascending -->
+                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                    <polyline points="5 12 12 5 19 12"
+                                    ></polyline>
+                                {:else}
+                                    <!-- Arrow down for descending -->
+                                    <line x1="12" y1="19" x2="12" y2="5"></line>
+                                    <polyline points="19 12 12 19 5 12"
+                                    ></polyline>
+                                {/if}
+                            {:else}
+                                <!-- When inactive, show up arrow (indicates it will sort ascending when clicked) -->
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <polyline points="5 12 12 5 19 12"></polyline>
+                            {/if}
+                        </svg>
+                    </button>
 
-            <button
-                part="lens-chart-sort-button"
-                class:active={sortBy === "alpha"}
-                onclick={() => toggleSortBy("alpha")}
-                title="Sort alphabetically"
-                aria-label="Sort alphabetically {sortBy === 'alpha'
-                    ? sortOrder === 'asc'
-                        ? 'ascending'
-                        : 'descending'
-                    : ''}"
-            >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    height="24px"
-                    viewBox="0 -960 960 960"
-                    width="24px"
-                    fill="#e3e3e3"
-                    ><path
-                        d="m80-280 150-400h86l150 400h-82l-34-96H196l-32 96H80Zm140-164h104l-48-150h-6l-50 150Zm328 164v-76l202-252H556v-72h282v76L638-352h202v72H548ZM360-760l120-120 120 120H360ZM480-80 360-200h240L480-80Z"
-                    /></svg
-                >
-                <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                >
-                    {#if sortBy === "alpha" && sortOrder === "asc"}
-                        <!-- Arrow up for ascending -->
-                        <line x1="12" y1="19" x2="12" y2="5"></line>
-                        <polyline points="5 12 12 5 19 12"></polyline>
-                    {:else}
-                        <!-- Arrow down for descending (default) -->
-                        <line x1="12" y1="5" x2="12" y2="19"></line>
-                        <polyline points="19 12 12 19 5 12"></polyline>
-                    {/if}
-                </svg>
-            </button>
+                    <button
+                        part="lens-chart-sort-button"
+                        class:active={sortBy === "alpha"}
+                        onclick={() => toggleSortBy("alpha")}
+                        title="Sort alphabetically"
+                        aria-label="Sort alphabetically {sortBy === 'alpha'
+                            ? sortOrder === 'asc'
+                                ? 'ascending'
+                                : 'descending'
+                            : ''}"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="24px"
+                            viewBox="0 -960 960 960"
+                            width="24px"
+                            fill="#e3e3e3"
+                            ><path
+                                d="m80-280 150-400h86l150 400h-82l-34-96H196l-32 96H80Zm140-164h104l-48-150h-6l-50 150Zm328 164v-76l202-252H556v-72h282v76L638-352h202v72H548ZM360-760l120-120 120 120H360ZM480-80 360-200h240L480-80Z"
+                            /></svg
+                        >
+                        <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        >
+                            {#if sortBy === "alpha"}
+                                {#if sortOrder === "asc"}
+                                    <!-- Arrow up for ascending -->
+                                    <line x1="12" y1="19" x2="12" y2="5"></line>
+                                    <polyline points="5 12 12 5 19 12"
+                                    ></polyline>
+                                {:else}
+                                    <!-- Arrow down for descending -->
+                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                    <polyline points="19 12 12 19 5 12"
+                                    ></polyline>
+                                {/if}
+                            {:else}
+                                <!-- When inactive, show up arrow (indicates it will sort ascending when clicked) -->
+                                <line x1="12" y1="19" x2="12" y2="5"></line>
+                                <polyline points="5 12 12 5 19 12"></polyline>
+                            {/if}
+                        </svg>
+                    </button>
+                </div>
+            {/if}
         </div>
-    {/if}
-
-    <h4 part="lens-chart-title">{title}</h4>
+    </div>
 
     {#if noDataAvailable}
         <div part="lens-chart-overlay">
@@ -792,6 +811,23 @@
 <style>
     [part~="lens-chart-container-min-width-0"] {
         min-width: 0;
+    }
+
+    [part~="lens-chart-buttons"] {
+        margin-left: auto; /* pushes buttons to the right */
+        display: flex;
+        flex-wrap: wrap; /* allows stacking when needed */
+        gap: 5px;
+        flex: 1 1 auto; /* lets buttons wrap nicely */
+        min-width: 80px;
+    }
+
+    [part~="lens-chart-header"] {
+        display: flex;
+        justify-content: center; /* centers the title */
+        align-items: center;
+        position: relative; /* allows absolute-position-like layout */
+        padding: 10px;
     }
 
     [part~="lens-chart-wrapper"] {
@@ -818,9 +854,10 @@
     }
 
     [part~="lens-chart-title"] {
-        text-align: center;
         margin: 0;
-        padding-bottom: var(--gap-m);
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
     }
 
     [part~="lens-chart-canvas"] {
@@ -829,18 +866,9 @@
     }
 
     [part~="lens-chart-info-button-wrapper"] {
-        position: absolute;
-        top: 0;
-        right: 0;
     }
 
     [part~="lens-chart-sort-buttons"] {
-        position: absolute;
-        top: 0;
-        right: 25px; /* Adjust based on info button width */
-        display: flex;
-        gap: var(--gap-xxs);
-        z-index: 1;
     }
 
     [part~="lens-chart-sort-button"] {
@@ -865,10 +893,5 @@
         background-color: var(--primary-color, #007bff);
         border-color: var(--primary-color, #007bff);
         color: white;
-    }
-
-    [part~="lens-chart-sort-button"]:focus {
-        outline: 2px solid var(--focus-color, #007bff);
-        outline-offset: 2px;
     }
 </style>
