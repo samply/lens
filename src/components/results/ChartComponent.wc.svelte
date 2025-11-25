@@ -677,7 +677,6 @@
 
 <div part="lens-chart-wrapper">
     <div part="lens-chart-header">
-        <h4 part="lens-chart-title">{title}</h4>
         {#if options?.hintText !== undefined}
             <div part="lens-chart-info-button-wrapper">
                 <InfoButtonComponent
@@ -686,6 +685,7 @@
                 />
             </div>
         {/if}
+        <h4 part="lens-chart-title">{title}</h4>
         {#if enableSorting}
             <div part="lens-chart-sort-buttons">
                 <button
@@ -807,12 +807,6 @@
         min-width: 0;
     }
 
-    [part~="lens-chart-header"] {
-        display: grid;
-        grid-template-columns: auto 1fr auto;
-        padding-bottom: var(--gap-m);
-    }
-
     [part~="lens-chart-wrapper"] {
         height: 100%;
         display: grid;
@@ -820,42 +814,39 @@
         background-color: var(--white);
     }
 
-    [part~="lens-chart-overlay"] {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    [part~="lens-chart-no-data-available"] {
-        font-weight: bold;
-        color: var(--gray);
-        background-color: var(--white);
-        padding: 0.5em;
+    [part~="lens-chart-header"] {
+        display: grid;
+        grid-template-columns: 24px 1fr max(60px, 25%);
+        padding-bottom: var(--gap-m);
     }
 
     [part~="lens-chart-title"] {
+        grid-column: 1/4;
+        grid-row: 1/2;
+        text-align: center;
         margin: 0;
         margin-top: 6px;
-        margin-left: var(--gap-xxs);
-    }
-
-    [part~="lens-chart-canvas"] {
-        width: 100%;
-        max-height: 400px;
+        width: max(50%, calc(50% - 60px));
+        margin-right: max(60px, 25%);
+        margin-left: auto;
     }
 
     [part~="lens-chart-info-button-wrapper"] {
         padding-top: 9px;
         padding-left: var(--gap-xxs);
-        justify-self: end;
+        justify-self: start;
+        grid-column: 1/2;
+        grid-row: 1/2;
     }
 
     [part~="lens-chart-sort-buttons"] {
-        padding-left: var(--gap-xs);
-        justify-self: end;
+        grid-column: 3/4;
+        grid-row: 1/2;
+        display: flex;
+        align-items: baseline;
+        flex-wrap: wrap;
+        justify-content: end;
+        grid-gap: 5px;
     }
 
     [part~="lens-chart-sort-button"] {
@@ -880,5 +871,25 @@
         background-color: var(--primary-color, #007bff);
         border-color: var(--primary-color, #007bff);
         color: white;
+    }
+    [part~="lens-chart-overlay"] {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    [part~="lens-chart-no-data-available"] {
+        font-weight: bold;
+        color: var(--gray);
+        background-color: var(--white);
+        padding: 0.5em;
+    }
+
+    [part~="lens-chart-canvas"] {
+        width: 100%;
+        max-height: 400px;
     }
 </style>
