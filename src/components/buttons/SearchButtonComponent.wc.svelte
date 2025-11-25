@@ -18,6 +18,7 @@
     const onclick = (): void => {
         queryModified.set(false);
         window.dispatchEvent(new CustomEvent("lens-search-triggered"));
+        window.dispatchEvent(new CustomEvent("reset-all-searchbar-inputs"));
     };
 </script>
 

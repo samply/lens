@@ -235,6 +235,13 @@
                     fieldType: "number",
                     type: "BETWEEN",
                 },
+                {
+                    fieldType: "date",
+                    key: "date-of-diagnosis",
+                    name: "Date of diagnosis",
+                    type: "BETWEEN",
+                    max: "2025-09-04",
+                },
             ],
         },
         {
@@ -466,10 +473,7 @@
         </div>
     </div>
     <footer class="card">
-        <span>
-            Made with ♥ and
-            <a href="https://github.com/samply/lens">samply/lens</a>
-        </span>
+        <lens-about></lens-about>
     </footer>
 </div>
 
@@ -486,7 +490,7 @@
     }
 
     .card {
-        background-color: white;
+        background-color: var(--white);
         border-radius: var(--border-radius-small);
         border: 1px solid var(--lightest-gray);
         padding: var(--gap-xs);
