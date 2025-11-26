@@ -139,9 +139,15 @@
         title?: string;
         /** If set, limits the number of rows displayed and enables pagination. */
         pageSize?: number;
+        /** Visually indicate that values are approximate (e.g., with a tilde). */
+        indicateApproximation?: boolean;
     }
 
-    let { title = "", pageSize }: Props = $props();
+    let {
+        title = "",
+        pageSize,
+        indicateApproximation = false,
+    }: Props = $props();
 
     let activePage = $state(1);
     let sortColumnIndex = $state(0);
@@ -247,7 +253,12 @@
                     /></td
                 >
                 {#each tableRow as data, index (index)}
-                    <td part="lens-result-table-item-body-cell">{data}</td>
+                    <td part="lens-result-table-item-body-cell">
+                        {#if indicateApproximation && index !== 0 && typeof data === "number"}
+                            ≈
+                        {/if}
+                        {data}
+                    </td>
                 {/each}
             </tr>
         {/each}
