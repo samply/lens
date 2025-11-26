@@ -7,7 +7,7 @@
         getAst,
         showToast,
         markSiteClaimed,
-        removeFaileSite,
+        removeFailedSite,
         setFacetCounts,
         clearSiteResults,
         getHumanReadableQueryAsFormattedString,
@@ -374,7 +374,7 @@
                 },
             });
 
-            removeFaileSite("failingsite");
+            removeFailedSite("failingsite");
 
             for (const site of "ABCDEFGHIJ") {
                 setSiteResult("Site " + site, {
