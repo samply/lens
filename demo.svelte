@@ -456,6 +456,7 @@
                     chartType="bar"
                     xAxisTitle="ICD-10 Code"
                     yAxisTitle="Number of cases"
+                    enableSorting={false}
                 ></lens-chart>
             </div>
             <div class="card">
