@@ -17,7 +17,7 @@
     import type { HeaderData } from "../../types/options";
 
     interface Props {
-        /** Visually indicate that values are approximate (e.g., with a tilde). */
+        /** Visually indicate that values are approximations (e.g., with a tilde). */
         indicateApproximation?: boolean;
     }
     let { indicateApproximation = false }: Props = $props();

@@ -139,7 +139,7 @@
         title?: string;
         /** If set, limits the number of rows displayed and enables pagination. */
         pageSize?: number;
-        /** Visually indicate that values are approximate (e.g., with a tilde). */
+        /** Visually indicate that values are approximations (e.g., with a tilde). */
         indicateApproximation?: boolean;
     }
 

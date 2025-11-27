@@ -12,10 +12,11 @@ Each row includes a checkbox to select that data source for a data request. The 
 
 ## Props
 
-| Prop       | Type     | Default | Description                                                         |
-| ---------- | -------- | ------- | ------------------------------------------------------------------- |
-| `title`    | `string` | `""`    | Optional title displayed above the table.                           |
-| `pageSize` | `number` |         | If set, limits the number of rows displayed and enables pagination. |
+| Prop                    | Type      | Default | Description                                                            |
+| ----------------------- | --------- | ------- | ---------------------------------------------------------------------- |
+| `title`                 | `string`  | `""`    | Optional title displayed above the table.                              |
+| `pageSize`              | `number`  |         | If set, limits the number of rows displayed and enables pagination.    |
+| `indicateApproximation` | `boolean` | `false` | Visually indicate that values are approximations (e.g., with a tilde). |
 
 ## Slots
 
