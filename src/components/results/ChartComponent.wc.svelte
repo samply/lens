@@ -393,22 +393,6 @@
         }
         chartLabels = filterRegexMatch(chartLabels);
 
-        /**
-         * lets the user define a range for the labels when only single values are used eg. '60' -> '60 - 69'
-         */
-        if (groupRange !== undefined && groupRange !== 0) {
-            chartLabels = chartLabels.map((label) => {
-                /**
-                 * check if label doesn't parse to a number
-                 */
-                if (isNaN(parseInt(label))) return label;
-
-                return `${parseInt(label)} - ${
-                    parseInt(label) + groupRange - 1
-                }`;
-            });
-        }
-
         if (sortBy === "alpha") {
             chartLabels.sort(SortLabels);
         }
@@ -447,6 +431,22 @@
 
         chart.data.datasets = chartData.data;
         chartLabels = chartData.labels;
+
+        /**
+         * lets the user define a range for the labels when only single values are used eg. '60' -> '60 - 69'
+         */
+        if (groupRange !== undefined && groupRange !== 0) {
+            chartLabels = chartLabels.map((label) => {
+                /**
+                 * check if label doesn't parse to a number
+                 */
+                if (isNaN(parseInt(label))) return label;
+
+                return `${parseInt(label)} - ${
+                    parseInt(label) + groupRange - 1
+                }`;
+            });
+        }
 
         // Set the chart labels, using either the legend mapping or the site mappings
         if (options?.legendMapping !== undefined) {
