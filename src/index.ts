@@ -30,6 +30,8 @@ export {
 } from "./helpers/cql-measure";
 export {
     getSelectedSites,
+    setSiteAsSelected,
+    removeSelectedSite,
     getHumanReadableQuery,
     getHumanReadableQueryAsFormattedString,
 } from "./stores/datarequests";
