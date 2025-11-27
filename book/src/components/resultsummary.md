@@ -4,6 +4,12 @@ The `lens-result-summary` component displays a compact summary of result metrics
 
 ---
 
+## Props
+
+| Prop                    | Type      | Default | Description                                                            |
+| ----------------------- | --------- | ------- | ---------------------------------------------------------------------- |
+| `indicateApproximation` | `boolean` | `false` | Visually indicate that values are approximations (e.g., with a tilde). |
+
 ## Example
 
 To use the component, define the configuration in the Lens [resultSummaryOptions](https://samply.github.io/lens/docs/types/ResultSummaryOptions.html) (as described in the [Options and catalogue](../guide/new-app.md#options-and-catalogue) section):

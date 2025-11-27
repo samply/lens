@@ -16,6 +16,12 @@
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
     import type { HeaderData } from "../../types/options";
 
+    interface Props {
+        /** Visually indicate that values are approximations (e.g., with a tilde). */
+        indicateApproximation?: boolean;
+    }
+    let { indicateApproximation = false }: Props = $props();
+
     // This is derived from lensOptions and from responseStore
     const populations: { title: string; population: string }[] = $derived.by(
         () => {
@@ -62,32 +68,35 @@
             return `${sitesWithData} / ${sitesClaimed}`;
         }
 
-        // if the type has only one dataKey, the population is the aggregated population of that dataKey
+        let population: number;
         if (type.dataKey) {
-            return getTotal(siteResults, type.dataKey).toString();
+            // if the type has only one dataKey, the population is the aggregated population of that dataKey
+            population = getTotal(siteResults, type.dataKey);
+        } else {
+            // if the type has multiple dataKeys to aggregate, the population is the aggregated population of all dataKeys
+            population = 0;
+            type.aggregatedDataKeys?.forEach((dataKey) => {
+                if (dataKey.groupCode) {
+                    population += getTotal(siteResults, dataKey.groupCode);
+                } else if (dataKey.stratifierCode && dataKey.stratumCode) {
+                    population += getStratum(
+                        siteResults,
+                        dataKey.stratifierCode,
+                        dataKey.stratumCode,
+                    );
+                }
+                /**
+                 * TODO: add support for stratifiers if needed?
+                 * needs to be implemented in response.ts
+                 */
+            });
         }
 
-        // if the type has multiple dataKeys to aggregate, the population is the aggregated population of all dataKeys
-        let aggregatedPopulation: number = 0;
-        type.aggregatedDataKeys?.forEach((dataKey) => {
-            if (dataKey.groupCode) {
-                aggregatedPopulation += getTotal(
-                    siteResults,
-                    dataKey.groupCode,
-                );
-            } else if (dataKey.stratifierCode && dataKey.stratumCode) {
-                aggregatedPopulation += getStratum(
-                    siteResults,
-                    dataKey.stratifierCode,
-                    dataKey.stratumCode,
-                );
-            }
-            /**
-             * TODO: add support for stratifiers if needed?
-             * needs to be implemented in response.ts
-             */
-        });
-        return aggregatedPopulation.toString();
+        if (indicateApproximation) {
+            return `≈ ${population}`;
+        } else {
+            return population.toString();
+        }
     }
 </script>
 
