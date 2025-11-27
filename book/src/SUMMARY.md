@@ -19,6 +19,7 @@
     - [Catalogue](components/catalogue.md)
     - [Chart](components/chart.md)
     - [Info Button](components/infobutton.md)
+    - [About Lens](components/aboutlens.md)
     - [Search Modified Display](components/modifiedsearch.md)
     - [Negotiate Button](components/negotiatebutton.md)
     - [Query Explain Button](components/queryexplainbutton.md)
