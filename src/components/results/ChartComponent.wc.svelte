@@ -61,7 +61,7 @@
         scaleType = "linear",
         enableSorting = true,
         perSite = false,
-        groupRange = $bindable(0),
+        groupRange = undefined,
         groupingDivider = "",
         filterRegex = "",
         groupingLabel = "",
@@ -448,10 +448,6 @@
         chart.data.datasets = chartData.data;
         chartLabels = chartData.labels;
 
-        if (typeof groupRange == "string") {
-            groupRange = Number(groupRange);
-        }
-
         // Set the chart labels, using either the legend mapping or the site mappings
         if (options?.legendMapping !== undefined) {
             chart.data.labels = chartLabels.map(
@@ -615,7 +611,7 @@
                                             min: parseInt(label),
                                             max:
                                                 parseInt(label) +
-                                                groupRange -
+                                                (groupRange ?? 0) -
                                                 1,
                                         },
                                         queryBindId: uuidv4(),
