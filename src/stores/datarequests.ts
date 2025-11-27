@@ -14,6 +14,13 @@ export function getSelectedSites(): string[] {
     return get(datarequestsStore);
 }
 
+/** Adds a site to the `datarequestsStore`.
+ * @param site which the user wants to request
+ */
+export function setSiteAsSelected(site: string) {
+    datarequestsStore.update((list) => [...list, site]);
+}
+
 /**
  * Recursively builds a human readable query string from the AST
  * Legacy function, currently used for bbmri negotiator
