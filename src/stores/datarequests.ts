@@ -15,20 +15,20 @@ export function getSelectedSites(): string[] {
 }
 
 /**
- * Adds a site to the datarequestsStore if it is not already present.
+ * Adds a site as selected for a data request.
  * @param site The site to select.
  */
-export function setSiteAsSelected(site: string) {
+export function selectSite(site: string) {
     datarequestsStore.update((list) =>
         list.includes(site) ? list : [...list, site],
     );
 }
 
 /**
- * Removes a site from datarequestsStore.
+ * Unselect a site for a data requesst.
  * @param site The site to remove.
  */
-export function removeSelectedSite(site: string) {
+export function unselectSite(site: string) {
     datarequestsStore.update((list) => list.filter((s) => s !== site));
 }
 
