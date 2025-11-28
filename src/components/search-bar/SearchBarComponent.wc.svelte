@@ -537,7 +537,8 @@
             }
         });
 
-        window.addEventListener("reset-all-searchbar-inputs", () => {
+        // Reset input value when a search is triggered
+        window.addEventListener("lens-search-triggered", () => {
             inputValue = "";
         });
 
