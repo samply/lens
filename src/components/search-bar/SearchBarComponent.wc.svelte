@@ -371,6 +371,7 @@
                 return;
             } else if (
                 (focusedListItem || searchBarInputHasFoucs || event.shiftKey) &&
+                activeDomElement &&
                 activeDomElement !== focusedListItem
             ) {
                 event.preventDefault();
