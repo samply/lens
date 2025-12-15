@@ -44,8 +44,8 @@
         filterRegex?: string;
         groupingLabel?: string;
         viewScales?: boolean;
-        backgroundColor?: string[] | string;
-        backgroundHoverColor?: string[];
+        backgroundColor?: string[];
+        hoverBackgroundColor?: string[];
     }
 
     let {
@@ -88,7 +88,7 @@
             "#89a54e",
             "#80699b",
         ]),
-        backgroundHoverColor = ["#aaaaaa"],
+        hoverBackgroundColor = ["#aaaaaa"],
     }: Props = $props();
 
     let options: ChartOption | undefined = $derived(
@@ -211,11 +211,6 @@
     const getChartDataSets = (chartLabels: string[]): ChartDataSets => {
         let dataSet: number[];
 
-        // This is bad. For some reason the passed value is a string not a array of strings. With this conversion it does work!
-        if (typeof backgroundColor == "string") {
-            backgroundColor = backgroundColor.split(",");
-        }
-
         if (perSite) {
             dataSet = chartLabels.map((label: string) =>
                 getSiteTotal($siteResults, label, dataKey),
@@ -240,7 +235,7 @@
                     {
                         data: dataSet,
                         backgroundColor,
-                        backgroundHoverColor,
+                        hoverBackgroundColor,
                     },
                 ],
             };
@@ -302,7 +297,7 @@
                 {
                     data: combinedSubGroupData.data,
                     backgroundColor,
-                    backgroundHoverColor,
+                    hoverBackgroundColor,
                 },
             ],
         };
@@ -540,9 +535,17 @@
             labels: indices.map((i) => chartData.labels[i]),
             data: chartData.data.map((dataset) => ({
                 data: indices.map((i) => dataset.data[i]),
-                backgroundColor: indices.map((i) => dataset.backgroundColor[i]),
-                backgroundHoverColor: indices.map(
-                    (i) => dataset.backgroundHoverColor[i],
+                backgroundColor: indices.map(
+                    (i, index) =>
+                        dataset.backgroundColor[
+                            index % dataset.backgroundColor.length
+                        ],
+                ),
+                hoverBackgroundColor: indices.map(
+                    (i, index) =>
+                        dataset.hoverBackgroundColor[
+                            index % dataset.hoverBackgroundColor.length
+                        ],
                 ),
             })),
         };
