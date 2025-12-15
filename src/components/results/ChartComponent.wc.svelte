@@ -44,7 +44,7 @@
         filterRegex?: string;
         groupingLabel?: string;
         viewScales?: boolean;
-        backgroundColor?: string[] | string;
+        backgroundColor?: string[];
         backgroundHoverColor?: string[];
     }
 
@@ -210,11 +210,6 @@
      */
     const getChartDataSets = (chartLabels: string[]): ChartDataSets => {
         let dataSet: number[];
-
-        // This is bad. For some reason the passed value is a string not a array of strings. With this conversion it does work!
-        if (typeof backgroundColor == "string") {
-            backgroundColor = backgroundColor.split(",");
-        }
 
         if (perSite) {
             dataSet = chartLabels.map((label: string) =>
@@ -540,9 +535,17 @@
             labels: indices.map((i) => chartData.labels[i]),
             data: chartData.data.map((dataset) => ({
                 data: indices.map((i) => dataset.data[i]),
-                backgroundColor: indices.map((i) => dataset.backgroundColor[i]),
+                backgroundColor: indices.map(
+                    (i, index) =>
+                        dataset.backgroundColor[
+                            index % dataset.backgroundColor.length
+                        ],
+                ),
                 backgroundHoverColor: indices.map(
-                    (i) => dataset.backgroundHoverColor[i],
+                    (i, index) =>
+                        dataset.backgroundHoverColor[
+                            index % dataset.backgroundHoverColor.length
+                        ],
                 ),
             })),
         };

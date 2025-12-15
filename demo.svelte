@@ -13,6 +13,9 @@
         getHumanReadableQueryAsFormattedString,
     } from "./src/index";
 
+    const barChartBackgroundColors: string[] = ["#052c65", "#0d6efd"];
+    const barChartHoverColors: string[] = ["#344256"];
+
     setOptions({
         language: localStorage.getItem("language") || "en",
         texts: {
@@ -468,6 +471,8 @@
                     scaleType="logarithmic"
                     xAxisTitle="Number of cases"
                     yAxisTitle="ICD-10 Code"
+                    backgroundColor={barChartBackgroundColors}
+                    backgroundHoverColor={barChartHoverColors}
                 ></lens-chart>
             </div>
         </div>
