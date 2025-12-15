@@ -45,7 +45,7 @@
         groupingLabel?: string;
         viewScales?: boolean;
         backgroundColor?: string[];
-        backgroundHoverColor?: string[];
+        hoverBackgroundColor?: string[];
     }
 
     let {
@@ -88,7 +88,7 @@
             "#89a54e",
             "#80699b",
         ]),
-        backgroundHoverColor = ["#aaaaaa"],
+        hoverBackgroundColor = ["#aaaaaa"],
     }: Props = $props();
 
     let options: ChartOption | undefined = $derived(
@@ -235,7 +235,7 @@
                     {
                         data: dataSet,
                         backgroundColor,
-                        backgroundHoverColor,
+                        hoverBackgroundColor,
                     },
                 ],
             };
@@ -297,7 +297,7 @@
                 {
                     data: combinedSubGroupData.data,
                     backgroundColor,
-                    backgroundHoverColor,
+                    hoverBackgroundColor,
                 },
             ],
         };
@@ -541,10 +541,10 @@
                             index % dataset.backgroundColor.length
                         ],
                 ),
-                backgroundHoverColor: indices.map(
+                hoverBackgroundColor: indices.map(
                     (i, index) =>
-                        dataset.backgroundHoverColor[
-                            index % dataset.backgroundHoverColor.length
+                        dataset.hoverBackgroundColor[
+                            index % dataset.hoverBackgroundColor.length
                         ],
                 ),
             })),

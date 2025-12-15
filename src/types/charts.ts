@@ -3,6 +3,6 @@ export type ChartDataSets = {
     data: {
         data: number[];
         backgroundColor: string[];
-        backgroundHoverColor: string[];
+        hoverBackgroundColor: string[];
     }[];
 };
