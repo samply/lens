@@ -450,6 +450,7 @@
                     dataKey="gender"
                     chartType="pie"
                     displayLegends={true}
+                    enableSorting={true}
                 ></lens-chart>
             </div>
             <div class="card">
@@ -459,7 +460,6 @@
                     chartType="bar"
                     xAxisTitle="ICD-10 Code"
                     yAxisTitle="Number of cases"
-                    enableSorting={false}
                 ></lens-chart>
             </div>
             <div class="card">
@@ -471,6 +471,7 @@
                     scaleType="logarithmic"
                     xAxisTitle="Number of cases"
                     yAxisTitle="ICD-10 Code"
+                    enableSorting={true}
                     backgroundColor={barChartBackgroundColors}
                     hoverBackgroundColor={barChartHoverColors}
                 ></lens-chart>

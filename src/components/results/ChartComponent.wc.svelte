@@ -59,7 +59,7 @@
         dataKey = "",
         chartType = "pie",
         scaleType = "linear",
-        enableSorting = true,
+        enableSorting = false,
         perSite = false,
         groupRange = undefined,
         groupingDivider = "",
