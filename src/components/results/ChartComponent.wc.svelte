@@ -59,7 +59,7 @@
         dataKey = "",
         chartType = "pie",
         scaleType = "linear",
-        enableSorting = true,
+        enableSorting = false,
         perSite = false,
         groupRange = undefined,
         groupingDivider = "",
@@ -676,17 +676,17 @@
 
 <div part="lens-chart-wrapper">
     <div part="lens-chart-header">
-        {#if options?.hintText !== undefined}
-            <div part="lens-chart-info-button-wrapper">
+        <div part="lens-chart-info-button-wrapper">
+            {#if options?.hintText !== undefined}
                 <InfoButtonComponent
                     message={options.hintText}
                     alignDialogue="bottom-left"
                 />
-            </div>
-        {/if}
+            {/if}
+        </div>
         <h4 part="lens-chart-title">{title}</h4>
-        {#if enableSorting}
-            <div part="lens-chart-sort-buttons">
+        <div part="lens-chart-sort-buttons">
+            {#if enableSorting}
                 <button
                     part="lens-chart-sort-button"
                     class:active={sortBy === "value"}
@@ -780,8 +780,8 @@
                         {/if}
                     </svg>
                 </button>
-            </div>
-        {/if}
+            {/if}
+        </div>
     </div>
 
     {#if noDataAvailable}
@@ -814,38 +814,24 @@
     }
 
     [part~="lens-chart-header"] {
-        display: grid;
-        grid-template-columns: 24px 1fr max(60px, 25%);
+        display: flex;
+        align-items: center;
+        gap: var(--gap-s);
         padding-bottom: var(--gap-m);
     }
 
     [part~="lens-chart-title"] {
-        grid-column: 1/4;
-        grid-row: 1/2;
-        text-align: center;
-        margin: 0;
-        margin-top: 6px;
-        width: max(50%, calc(50% - 60px));
-        margin-right: max(60px, 25%);
-        margin-left: auto;
+        margin: var(--gap-xs) 0;
     }
 
     [part~="lens-chart-info-button-wrapper"] {
-        padding-top: 9px;
-        padding-left: var(--gap-xxs);
-        justify-self: start;
-        grid-column: 1/2;
-        grid-row: 1/2;
+        flex: 1;
     }
 
     [part~="lens-chart-sort-buttons"] {
-        grid-column: 3/4;
-        grid-row: 1/2;
+        flex: 1;
+        justify-content: flex-end;
         display: flex;
-        align-items: baseline;
-        flex-wrap: wrap;
-        justify-content: end;
-        grid-gap: 5px;
     }
 
     [part~="lens-chart-sort-button"] {
