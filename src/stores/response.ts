@@ -74,8 +74,8 @@ export function markSiteClaimed(site: string) {
     });
 }
 
-/** Call this to hide a failed site from the results. */
-export function hideFailedSite(site: string) {
+/** Call this to hide and remove a failed site from the results. */
+export function removeFailedSite(site: string) {
     siteStatus.update((sites) => {
         sites.delete(site);
         return sites;

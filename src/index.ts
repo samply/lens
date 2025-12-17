@@ -16,7 +16,7 @@ export { setQueryStoreFromAst } from "./helpers/ast-to-query";
 export {
     setSiteResult,
     markSiteClaimed,
-    hideFailedSite,
+    removeFailedSite,
     measureReportToLensResult,
     clearSiteResults,
     type LensResult,
@@ -30,6 +30,8 @@ export {
 } from "./helpers/cql-measure";
 export {
     getSelectedSites,
+    selectSite,
+    unselectSite,
     getHumanReadableQuery,
     getHumanReadableQueryAsFormattedString,
 } from "./stores/datarequests";
@@ -62,6 +64,7 @@ import "./components/buttons/QueryExplainButtonComponent.wc.svelte";
 import "./components/informational/ModifiedSearchComponent.wc.svelte";
 import "./components/informational/QuerySpinner.wc.svelte";
 import "./components/informational/Toasts.wc.svelte";
+import "./components/informational/AboutLensComponent.svelte";
 
 // Include CSS in the bundle
 import "./styles/index.css";

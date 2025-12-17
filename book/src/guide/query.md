@@ -18,7 +18,6 @@ The query searches for patients with blood group A+ and a body weight between 30
             "key": "blood-group",
             "name": "Blood group",
             "type": "EQUALS",
-            "system": "",
             "values": [
                 {
                     "name": "A+",
@@ -50,7 +49,6 @@ The query searches for patients with blood group A+ and a body weight between 30
             "key": "blood-group",
             "name": "Blood group",
             "type": "EQUALS",
-            "system": "",
             "values": [
                 {
                     "name": "B+",
@@ -83,7 +81,6 @@ To allow external systems such as databases and APIs to understand the query, th
                         {
                             "key": "blood-group",
                             "type": "EQUALS",
-                            "system": "",
                             "value": "A+"
                         }
                     ]
@@ -95,7 +92,6 @@ To allow external systems such as databases and APIs to understand the query, th
                         {
                             "key": "body_weight",
                             "type": "BETWEEN",
-                            "system": "",
                             "value": {
                                 "min": 30,
                                 "max": 100
@@ -115,7 +111,6 @@ To allow external systems such as databases and APIs to understand the query, th
                         {
                             "key": "blood-group",
                             "type": "EQUALS",
-                            "system": "",
                             "value": "B+"
                         }
                     ]

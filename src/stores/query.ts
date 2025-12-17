@@ -12,8 +12,11 @@ export function getQueryStore(): QueryItem[][] {
     return get(queryStore);
 }
 
+/**
+ * Set the query store. Note that the function makes a deep copy of the query store so modifying the original object has no effect.
+ */
 export function setQueryStore(query: QueryItem[][]): void {
-    queryStore.set(query);
+    queryStore.set(structuredClone(query));
 }
 
 /**
@@ -86,7 +89,6 @@ export const addItemToQuery = (
                 key: duplicateObjects[0].key,
                 name: duplicateObjects[0].name,
                 type: duplicateObjects[0].type,
-                system: duplicateObjects[0].system,
                 values: [],
             };
             duplicateObjects.forEach((obj: QueryItem) => {
@@ -216,10 +218,10 @@ function findObjectsWithSameName(objectsArray: QueryItem[]): QueryItem[] {
 }
 
 /**
- * Adds an item to the currently active query group
+ * Adds an item to the currently active query group. Note that the function makes a deep copy of the query item so modifying the original object has no effect.
  * @param queryObject - the object to be added to the store
  */
 export const addItemToActiveQueryGroup = (queryObject: QueryItem): void => {
     const groupIndex = get(activeQueryGroupIndex);
-    addItemToQuery(queryObject, groupIndex);
+    addItemToQuery(structuredClone(queryObject), groupIndex);
 };

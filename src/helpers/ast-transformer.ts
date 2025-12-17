@@ -37,7 +37,7 @@ export const buildAstFromQuery = (queryStore: QueryItem[][]): AstTopLayer => {
  * recursive function to return nested values of the query store as AST children
  * @param item - the current item of the query store
  * @param operand - the operand of the top layer
- * @param topLayerItem - the next higher layer of the query store. Used to get the key, type and system of the current item
+ * @param topLayerItem - the next higher layer of the query store. Used to get the key and type of the current item
  * @returns AstElement
  */
 export const returnNestedValues = (
@@ -102,7 +102,6 @@ export const returnNestedValues = (
         return {
             key: topLayerItem.key,
             type: topLayerItem.type,
-            system: topLayerItem.system || "",
             value: item.value,
         };
     }
@@ -114,7 +113,6 @@ export const returnNestedValues = (
         return {
             key: item.value,
             type: "EQUALS",
-            system: "",
             value: item.name,
         };
     }

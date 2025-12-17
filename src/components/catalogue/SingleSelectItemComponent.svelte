@@ -20,7 +20,6 @@
                 key: element.key,
                 name: element.name,
                 type: element.type,
-                system: "system" in element ? element.system : "",
                 values: [
                     {
                         name: criterion.name,
@@ -54,7 +53,7 @@
 {:else}
     <span></span>
 {/if}
-<AddButton {onclick} />
+<AddButton inSearchBar={false} {onclick} />
 
 <style>
     [part~="lens-single-select-facet-count"] {

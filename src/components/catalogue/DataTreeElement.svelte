@@ -109,7 +109,6 @@
                 id: uuidv4(),
                 key: element.key,
                 name: element.name,
-                system: "system" in element ? element.system : "",
                 type: "type" in element ? element.type : "",
                 values: [
                     {
@@ -152,7 +151,7 @@
         {#if element.infoButtonText}
             <InfoButtonComponent
                 message={element.infoButtonText}
-                buttonSize="18px"
+                buttonSize={18}
             />
         {/if}
 

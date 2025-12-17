@@ -139,9 +139,15 @@
         title?: string;
         /** If set, limits the number of rows displayed and enables pagination. */
         pageSize?: number;
+        /** Visually indicate that values are approximations (e.g., with a tilde). */
+        indicateApproximation?: boolean;
     }
 
-    let { title = "", pageSize }: Props = $props();
+    let {
+        title = "",
+        pageSize,
+        indicateApproximation = false,
+    }: Props = $props();
 
     let activePage = $state(1);
     let sortColumnIndex = $state(0);
@@ -214,12 +220,18 @@
                         <InfoButtonComponent message={header.hintText} />
                     {/if}
                     {#if index === sortColumnIndex}
-                        <span style="font-size: 0.8em;">
+                        <span style="font-size: clamp(12px, 0.8rem, 32px);">
                             {#if sortAscending}
                                 ▲
                             {:else}
                                 ▼
                             {/if}
+                        </span>
+                    {:else}
+                        <span
+                            style="font-size: clamp(10px, 0.4rem, 22px); opacity: 0.5;"
+                        >
+                            ▲▼
                         </span>
                     {/if}
                 </th>
@@ -241,7 +253,12 @@
                     /></td
                 >
                 {#each tableRow as data, index (index)}
-                    <td part="lens-result-table-item-body-cell">{data}</td>
+                    <td part="lens-result-table-item-body-cell">
+                        {#if indicateApproximation && index !== 0 && typeof data === "number"}
+                            ≈
+                        {/if}
+                        {data}
+                    </td>
                 {/each}
             </tr>
         {/each}

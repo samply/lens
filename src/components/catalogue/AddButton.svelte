@@ -1,8 +1,26 @@
 <script lang="ts">
-    let { ...props } = $props();
+    import type {
+        KeyboardEventHandler,
+        MouseEventHandler,
+    } from "svelte/elements";
+    interface Props {
+        inSearchBar: boolean;
+        onkeydown?: KeyboardEventHandler<HTMLButtonElement>;
+        onclick?: MouseEventHandler<HTMLButtonElement>;
+    }
+    let { inSearchBar, onkeydown, onclick }: Props = $props();
 </script>
 
-<button aria-label="Add to query" part="lens-add-to-query-button" {...props}>
+<button
+    tabindex="0"
+    aria-label="Add to query"
+    part="lens-add-to-query-button {inSearchBar
+        ? 'lens-add-to-query-button-searchbar'
+        : ''}"
+    {onkeydown}
+    {onclick}
+    type="button"
+>
     <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
@@ -30,5 +48,12 @@
     }
     [part~="lens-add-to-query-button"]:hover svg {
         color: var(--light-blue);
+    }
+
+    [part~="lens-add-to-query-button-searchbar"] svg {
+        color: var(--white);
+    }
+    [part~="lens-add-to-query-button-searchbar"]:hover svg {
+        color: var(--light-gray);
     }
 </style>

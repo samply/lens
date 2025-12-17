@@ -15,6 +15,24 @@ export function getSelectedSites(): string[] {
 }
 
 /**
+ * Adds a site as selected for a data request.
+ * @param site The site to select.
+ */
+export function selectSite(site: string) {
+    datarequestsStore.update((list) =>
+        list.includes(site) ? list : [...list, site],
+    );
+}
+
+/**
+ * Unselect a site for a data requesst.
+ * @param site The site to remove.
+ */
+export function unselectSite(site: string) {
+    datarequestsStore.update((list) => list.filter((s) => s !== site));
+}
+
+/**
  * Recursively builds a human readable query string from the AST
  * Legacy function, currently used for bbmri negotiator
  * prints out logical structure of the query, not the formatted version

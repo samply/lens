@@ -30,7 +30,7 @@ The `totals` field contains the total number of patients, samples, etc. The `str
 
 ## Passing results to Lens
 
-You pass results to Lens using the [`setSiteResult`](file:///home/tim/projects/lens/docs/functions/setSiteResult.html) function. Before you pass a result you may call [`markSiteClaimed`](https://samply.github.io/lens/docs/functions/markSiteClaimed.html) to indicate that the site is available and will deliver results soon. If a site that was claimed fails you can use [`hideFailedSite`](https://samply.github.io/lens/docs/functions/hideFailedSite.html) to hide the site from the result summary and result table. This examples shows how you would pass results from Focus to Lens.
+You pass results to Lens using the [`setSiteResult`](file:///home/tim/projects/lens/docs/functions/setSiteResult.html) function. Before you pass a result you may call [`markSiteClaimed`](https://samply.github.io/lens/docs/functions/markSiteClaimed.html) to indicate that the site is available and will deliver results soon. If a site that was claimed fails you can use [`removeFailedSite`](https://samply.github.io/lens/docs/functions/removeFailedSite.html) to hide the site from the result summary and result table and remove the site out of the resultstore. This examples shows how you would pass results from Focus to Lens.
 
 ```ts
 querySpot(query, abortController.signal, (result: SpotResult) => {
@@ -41,13 +41,43 @@ querySpot(query, abortController.signal, (result: SpotResult) => {
         const siteResult = JSON.parse(atob(result.body));
         setSiteResult(site, siteResult);
     } else {
-        hideFailedSite(site);
+        removeFailedSite(site);
         console.error(
             `Site ${site} failed with status ${result.status}:`,
             result.body,
         );
     }
 });
+```
+
+### Handling Empty Query Results
+
+Sometimes a query may succeed but return no data, with totals of `0` and empty stratifiers. In these cases, it’s recommended to check for an empty result and inform the user.
+
+Include this function:
+
+```ts
+export function isLensResultEmpty(result: LensResult): boolean {
+    // Check for non-empty stratifiers
+    for (const stratifier of Object.values(result.stratifiers)) {
+        if (Object.keys(stratifier).length > 0) return false;
+    }
+
+    // Check for non-zero totals
+    for (const value of Object.values(result.totals)) {
+        if (value !== 0) return false;
+    }
+
+    return true;
+}
+```
+
+And check in your result function:
+
+```ts
+if (isLensResultEmpty(result)) {
+    showToast("No results found for your query", "info");
+}
 ```
 
 ## Components

@@ -1,6 +1,6 @@
 # Search Bar
 
-The `lens-searchbar` component offers an interface for exploring of all single-select items. It serves as the primary interface for users to search, apply, and adjust query criteria. Selected items appear as interactive chips within the component, giving users a clear visual of their active filters. Users can easily refine their search by removing individual values or entire criteria directly from the chip display.
+The `lens-searchbar` component offers an interface for exploring of all catalogue items. It serves as the primary interface for users to search, apply, and adjust query criteria. Selected items appear as interactive chips within the component, giving users a clear visual of their active filters. Users can easily refine their search by removing individual values or entire criteria directly from the chip display.
 
 ---
 
@@ -41,18 +41,6 @@ The `lens-searchbar` component offers an interface for exploring of all single-s
 
 ---
 
-## Events
-
-### `on:clear-search`
-
-Triggered when the group clear button is clicked.
-
-```svelte
-<lens-search-bar on:clear-search={handleClear} />
-```
-
----
-
 ## Example
 
 ```html
@@ -66,13 +54,27 @@ Triggered when the group clear button is clicked.
 
 ## Styling
 
-| Part                                                   | Purpose                          |
-| ------------------------------------------------------ | -------------------------------- |
-| `lens-searchbar`                                       | Wrapper for the entire component |
-| `lens-searchbar-input`                                 | Main input element               |
-| `lens-searchbar-chip`, `chip-name`, `chip-item`        | Visual query chips               |
-| `lens-searchbar-autocomplete-options`                  | Autocomplete container           |
-| `lens-searchbar-autocomplete-options-item`             | Individual result                |
-| `lens-searchbar-autocomplete-options-item-focused`     | Highlighted result               |
-| `lens-searchbar-autocomplete-options-item-description` | Optional description             |
-| `lens-searchbar-autocomplete-options-item-facet-count` | Facet count badge                |
+| Part                                                           | Purpose                              |
+| -------------------------------------------------------------- | ------------------------------------ |
+| `lens-searchbar`                                               | Wrapper for the entire component     |
+| `lens-searchbar-active`                                        | Active searchbar                     |
+| `lens-searchbar-chips`                                         | Visual query chip wrapper            |
+| `lens-searchbar-chip`                                          | Query chip                           |
+| `lens-searchbar-chip-name`                                     | Query chip criterion name            |
+| `lens-searchbar-chip-item`                                     | Query chip values wrapper            |
+| `lens-searchbar-chip-item-text`                                | Query chip singular value            |
+| `lens-searchbar-input`                                         | Main input element                   |
+| `lens-searchbar-input-options-open`                            | Main input when autocomplete is open |
+| `lens-searchbar-autocomplete-options`                          | Autocomplete container               |
+| `lens-searchbar-autocomplete-options-heading`                  | Autocomplete group heading           |
+| `lens-searchbar-autocomplete-options-item`                     | Individual result                    |
+| `lens-searchbar-autocomplete-options-item-focused`             | Highlighted result                   |
+| `lens-searchbar-autocomplete-options-item-criterion`           | Single select result                 |
+| `lens-searchbar-autocomplete-options-item-numeric`             | Numeric result input wrapper         |
+| `lens-searchbar-autocomplete-options-item-date`                | Date result input wrapper            |
+| `lens-searchbar-autocomplete-options-item-string`              | String result input wrapper          |
+| `lens-searchbar-autocomplete-options-item-name`                | Option name                          |
+| `lens-searchbar-autocomplete-options-item-description`         | Optional description                 |
+| `lens-searchbar-autocomplete-options-item-description-focused` | Focused optional description         |
+| `lens-searchbar-autocomplete-options-item-facet-count`         | Facet count badge                    |
+| `lens-searchbar-autocomplete-options-type-more-message`        | Wrapper for type more message        |
