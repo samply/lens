@@ -5,7 +5,7 @@
     "license": "Apache-2.0",
     "repository": {
         "type": "git",
-        "url": "https://github.com/samply/lens.git"
+        "url": "git+https://github.com/samply/lens.git"
     },
     "//": "Settings recommended by Vite but without CommonJS exports, see https://vite.dev/guide/build#library-mode",
     "type": "module",

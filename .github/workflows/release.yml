@@ -1,9 +1,14 @@
 name: "Samply.Lens Github Workflow"
+
 on:
     push:
         tags:
             # This is not a regex: https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#filter-pattern-cheat-sheet
             - "v[0-9]+.[0-9]+.[0-9]+*"
+
+permissions:
+    id-token: write # Required for OIDC
+    contents: read
 
 jobs:
     build-and-publish:
