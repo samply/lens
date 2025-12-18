@@ -27,7 +27,7 @@ jobs:
             - name: "Build @samply/lens"
               run: npm run build
             - name: "Publish @samply/lens"
-              run: npm publish
+              run: npm publish --access public
 
     release:
         needs: build-and-publish
