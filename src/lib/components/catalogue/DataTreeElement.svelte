@@ -9,7 +9,7 @@
     import { v4 as uuidv4 } from "uuid";
     import { openTreeNodes } from "../../stores/catalogue";
     import type { QueryItem } from "../../types/queryData";
-    import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
+    import InfoButtonComponent from "../buttons/InfoButtonComponent.svelte";
     import DatePickerComponent from "./DatePickerComponent.svelte";
     import { translate } from "../../helpers/translations";
 

@@ -1,9 +1,3 @@
-<svelte:options
-    customElement={{
-        tag: "lens-info-button",
-    }}
-/>
-
 <script lang="ts">
     interface Props {
         message?: string[] | string;

@@ -1,14 +1,5 @@
-<svelte:options
-    customElement={{
-        tag: "lens-about",
-    }}
-/>
-
 <script lang="ts">
-    import pkg from "../../../package.json";
-    import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
-
-    let version = $state(pkg.version);
+    import InfoButtonComponent from "../buttons/InfoButtonComponent.svelte";
 </script>
 
 <div part="lens-info-wrapper">
@@ -18,7 +9,7 @@
         dialogueMaxWidth="250px"
     >
         <h4 part="lens-info-header">Ablut Lens</h4>
-        <div part="lens-info-body">Lens Version: {version}</div>
+        <div part="lens-info-body">Lens Version: {__LIB_VERSION__}</div>
     </InfoButtonComponent>
     <span part="lens-info-made-with">
         Made with ♥ and

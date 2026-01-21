@@ -1,9 +1,3 @@
-<svelte:options
-    customElement={{
-        tag: "lens-chart",
-    }}
-/>
-
 <script lang="ts">
     import Chart, { type ChartTypeRegistry } from "chart.js/auto";
     import { onMount } from "svelte";
@@ -20,7 +14,7 @@
     import { catalogue } from "../../stores/catalogue";
     import type { QueryItem, QueryValue } from "../../types/queryData";
     import type { Category, Criteria } from "../../types/catalogue";
-    import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
+    import InfoButtonComponent from "../buttons/InfoButtonComponent.svelte";
     import { lensOptions } from "../../stores/options";
     import type { ChartOption } from "../../types/options";
     import type { ChartDataSets } from "../../types/charts";
@@ -37,7 +31,7 @@
         chartType?: keyof ChartTypeRegistry;
         scaleType?: string;
         dataKey: string;
-        enableSorting: boolean;
+        enableSorting?: boolean;
         perSite?: boolean;
         groupRange?: number;
         groupingDivider?: string;

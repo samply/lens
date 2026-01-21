@@ -2,7 +2,7 @@
 
 The catalogue contains all possible query elements used in your search or exploration application. Lens expects a catalogue to be provided during initialization — even an empty one is valid.
 
-The structure of the catalogue is defined in [schema](https://github.com/samply/lens/blob/develop/schema/catalogue.schema.json) and [type](https://samply.github.io/lens/docs/types/Catalogue.html). Validating your catalogue can be done within VS Code with the schema, see [here](./new-app.md#schema-validation).
+The structure of the catalogue is defined in [schema](https://github.com/samply/lens/blob/develop/src/lib/schema/catalogue.schema.json) and [type](https://samply.github.io/lens/docs/types/Catalogue.html). Validating your catalogue can be done within VS Code with the schema, see [here](./new-app.md#schema-validation).
 
 ## Subgroups
 

@@ -1,15 +1,9 @@
-<svelte:options
-    customElement={{
-        tag: "lens-query-explain-button",
-    }}
-/>
-
 <script lang="ts">
     import { translate } from "../../helpers/translations";
     import { catalogue, getCategoryFromKey } from "../../stores/catalogue";
     import { queryStore } from "../../stores/query";
     import type { QueryValue } from "../../types/queryData";
-    import InfoButtonComponent from "./InfoButtonComponent.wc.svelte";
+    import InfoButtonComponent from "./InfoButtonComponent.svelte";
 
     interface Props {
         noQueryMessage?: string;

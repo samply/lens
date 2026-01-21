@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { onMount } from "svelte";
     import {
         setCatalogue,
         setOptions,
@@ -11,69 +12,82 @@
         setFacetCounts,
         clearSiteResults,
         getHumanReadableQueryAsFormattedString,
-    } from "./src/index";
+        SearchBarMultiple,
+        QueryExplainButton,
+        QuerySpinner,
+        SearchButton,
+        Catalogue,
+        ResultSummary,
+        SearchModifiedDisplay,
+        ResultTable,
+        NegotiateButton,
+        Chart,
+        AboutLens,
+        Toasts,
+    } from "$lib/index.js";
 
     const barChartBackgroundColors: string[] = ["#052c65", "#0d6efd"];
     const barChartHoverColors: string[] = ["#000000"];
 
-    setOptions({
-        language: localStorage.getItem("language") || "en",
-        texts: {
-            "lens-dev-test-error": {
-                en: "Task failed successfully.",
-                de: "Aufgabe erfolgreich fehlgeschlagen.",
+    onMount(() => {
+        setOptions({
+            language: localStorage.getItem("language") || "en",
+            texts: {
+                "lens-dev-test-error": {
+                    en: "Task failed successfully.",
+                    de: "Aufgabe erfolgreich fehlgeschlagen.",
+                },
+                "lens-dev-test-info": {
+                    en: "Task sent successfully.",
+                    de: "Aufgabe erfolgreich gesendet.",
+                },
             },
-            "lens-dev-test-info": {
-                en: "Task sent successfully.",
-                de: "Aufgabe erfolgreich gesendet.",
+            siteMappings: {
+                riverside: "Riverside",
+                summit: "Summit",
+                failingsite: "Failing Site",
             },
-        },
-        siteMappings: {
-            riverside: "Riverside",
-            summit: "Summit",
-            failingsite: "Failing Site",
-        },
-        chartOptions: {
-            gender: {
-                hintText: [
-                    "This pie chart shows the proportion of males to females in our [population/data set]. The size of each section represents the percentage of individuals who identify as male or female.",
+            chartOptions: {
+                gender: {
+                    hintText: [
+                        "This pie chart shows the proportion of males to females in our [population/data set]. The size of each section represents the percentage of individuals who identify as male or female.",
+                    ],
+                    legendMapping: {
+                        male: "Männlich",
+                        female: "Weiblich",
+                        other: "Divers",
+                    },
+                },
+            },
+            tableOptions: {
+                headerData: [
+                    {
+                        title: "Standorte",
+                        dataKey: "site",
+                    },
+                    {
+                        title: "Patienten",
+                        dataKey: "patients",
+                    },
                 ],
-                legendMapping: {
-                    male: "Männlich",
-                    female: "Weiblich",
-                    other: "Divers",
-                },
             },
-        },
-        tableOptions: {
-            headerData: [
-                {
-                    title: "Standorte",
-                    dataKey: "site",
-                },
-                {
-                    title: "Patienten",
-                    dataKey: "patients",
-                },
-            ],
-        },
-        resultSummaryOptions: {
-            title: "Ergebnisse",
-            infoButtonText: "This is a tooltip",
-            dataTypes: [
-                {
-                    title: "Standorte",
-                    dataKey: "collections",
-                },
-                {
-                    title: "Patienten",
-                    dataKey: "patients",
-                },
-            ],
-        },
-    });
+            resultSummaryOptions: {
+                title: "Ergebnisse",
+                infoButtonText: "This is a tooltip",
+                dataTypes: [
+                    {
+                        title: "Standorte",
+                        dataKey: "collections",
+                    },
+                    {
+                        title: "Patienten",
+                        dataKey: "patients",
+                    },
+                ],
+            },
+        });
 
-    setCatalogue([
+        setCatalogue([
         {
             fieldType: "autocomplete",
             key: "diagnosis",
@@ -310,99 +324,100 @@
         },
     ]);
 
-    setFacetCounts({
-        "blood-group": {
-            "A+": 10,
-            "A-": 5,
-            "B+": 8,
-            "B-": 2,
-        },
-        diagnosis: {
-            C31: 40,
-            "C31.0": 20,
-            C41: 30,
-            "C41.0": 10,
-        },
-    });
+        setFacetCounts({
+            "blood-group": {
+                "A+": 10,
+                "A-": 5,
+                "B+": 8,
+                "B-": 2,
+            },
+            diagnosis: {
+                C31: 40,
+                "C31.0": 20,
+                C41: 30,
+                "C41.0": 10,
+            },
+        });
 
-    window.addEventListener("lens-search-triggered", () => {
-        console.log("AST:", JSON.stringify(getAst()));
-        clearSiteResults();
+        window.addEventListener("lens-search-triggered", () => {
+            console.log("AST:", JSON.stringify(getAst()));
+            clearSiteResults();
 
-        setTimeout(() => {
-            markSiteClaimed("riverside");
-            markSiteClaimed("summit");
-            markSiteClaimed("failingsite");
-            for (const site of "ABCDEFGHIJ") {
-                markSiteClaimed("Site " + site);
-            }
-        }, 500);
+            setTimeout(() => {
+                markSiteClaimed("riverside");
+                markSiteClaimed("summit");
+                markSiteClaimed("failingsite");
+                for (const site of "ABCDEFGHIJ") {
+                    markSiteClaimed("Site " + site);
+                }
+            }, 500);
 
-        setTimeout(() => {
-            setSiteResult("riverside", {
-                totals: {
-                    patients: 9,
-                },
-                stratifiers: {
-                    gender: {
-                        male: 5,
-                        female: 4,
-                        other: 0,
+            setTimeout(() => {
+                setSiteResult("riverside", {
+                    totals: {
+                        patients: 9,
                     },
-                    diagnosis: {
-                        C31: 40,
-                        "C31.0": 20,
-                        C41: 30,
-                        "41.0": 10,
+                    stratifiers: {
+                        gender: {
+                            male: 5,
+                            female: 4,
+                            other: 0,
+                        },
+                        diagnosis: {
+                            C31: 40,
+                            "C31.0": 20,
+                            C41: 30,
+                            "41.0": 10,
+                        },
                     },
-                },
-            });
-
-            setSiteResult("summit", {
-                stratifiers: {
-                    gender: {
-                        male: 12,
-                        female: 18,
-                        other: 3,
-                    },
-                    diagnosis: {
-                        C31: 40,
-                        "C31.0": 20,
-                        C41: 30,
-                        "41.0": 10,
-                    },
-                },
-                totals: {
-                    patients: 33,
-                },
-            });
-
-            removeFailedSite("failingsite");
-
-            for (const site of "ABCDEFGHIJ") {
-                setSiteResult("Site " + site, {
-                    totals: {},
-                    stratifiers: {},
                 });
-            }
-        }, 1000);
+
+                setSiteResult("summit", {
+                    stratifiers: {
+                        gender: {
+                            male: 12,
+                            female: 18,
+                            other: 3,
+                        },
+                        diagnosis: {
+                            C31: 40,
+                            "C31.0": 20,
+                            C41: 30,
+                            "41.0": 10,
+                        },
+                    },
+                    totals: {
+                        patients: 33,
+                    },
+                });
+
+                removeFailedSite("failingsite");
+
+                for (const site of "ABCDEFGHIJ") {
+                    setSiteResult("Site " + site, {
+                        totals: {},
+                        stratifiers: {},
+                    });
+                }
+            }, 1000);
+        });
+
+        window.addEventListener("lens-negotiate-triggered", () => {
+            const body = encodeURIComponent(
+                getHumanReadableQueryAsFormattedString(true),
+            );
+
+            const a = document.createElement("a");
+            a.href = `mailto:request@example.com?body=${body}`;
+
+            a.click();
+        });
     });
 
     function setLangAndReload(lang: string) {
         localStorage.setItem("language", lang);
         window.location.reload();
     }
-
-    window.addEventListener("lens-negotiate-triggered", () => {
-        const body = encodeURIComponent(
-            getHumanReadableQueryAsFormattedString(true),
-        );
-
-        const a = document.createElement("a");
-        a.href = `mailto:request@example.com?body=${body}`;
-
-        a.click();
-    });
 </script>
 
 <div id="main-wrapper">
@@ -426,44 +441,46 @@
         </div>
     </header>
     <div id="search-wrapper">
-        <lens-search-bar-multiple></lens-search-bar-multiple>
-        <lens-query-explain-button></lens-query-explain-button>
-        <lens-query-spinner></lens-query-spinner>
-        <lens-search-button></lens-search-button>
+        <div class="search-bar-wrapper">
+            <SearchBarMultiple />
+        </div>
+        <QueryExplainButton />
+        <QuerySpinner />
+        <SearchButton />
     </div>
     <div id="catalogue-and-grid-wrapper">
         <div id="catalogue" class="card">
-            <lens-catalogue toggle={{ collapsable: false }}></lens-catalogue>
+            <Catalogue toggle={{ collapsable: false }} />
         </div>
         <div id="main-grid">
             <div id="result-summary" class="card">
-                <lens-result-summary></lens-result-summary>
-                <lens-search-modified-display></lens-search-modified-display>
+                <ResultSummary />
+                <SearchModifiedDisplay />
             </div>
             <div id="result-table" class="card">
-                <lens-result-table pageSize={10}></lens-result-table>
-                <lens-negotiate-button></lens-negotiate-button>
+                <ResultTable pageSize={10} />
+                <NegotiateButton />
             </div>
             <div class="card">
-                <lens-chart
+                <Chart
                     title="Gender distribution"
                     dataKey="gender"
                     chartType="pie"
                     displayLegends={true}
                     enableSorting={true}
-                ></lens-chart>
+                />
             </div>
             <div class="card">
-                <lens-chart
+                <Chart
                     title="Diagnosis distribution"
                     dataKey="diagnosis"
                     chartType="bar"
                     xAxisTitle="ICD-10 Code"
                     yAxisTitle="Number of cases"
-                ></lens-chart>
+                />
             </div>
             <div class="card">
-                <lens-chart
+                <Chart
                     title="Diagnosis distribution (alternative)"
                     dataKey="diagnosis"
                     chartType="bar"
@@ -474,16 +491,16 @@
                     enableSorting={true}
                     backgroundColor={barChartBackgroundColors}
                     hoverBackgroundColor={barChartHoverColors}
-                ></lens-chart>
+                />
             </div>
         </div>
     </div>
     <footer class="card">
-        <lens-about></lens-about>
+        <AboutLens />
     </footer>
 </div>
 
-<lens-toast></lens-toast>
+<Toasts />
 
 <style>
     #main-wrapper {
@@ -517,9 +534,10 @@
         display: flex;
         gap: var(--gap-xs);
         align-items: center;
-        lens-search-bar-multiple {
-            flex: 1;
-        }
+    }
+
+    .search-bar-wrapper {
+        flex: 1;
     }
 
     #catalogue-and-grid-wrapper {

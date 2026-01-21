@@ -1,6 +1,6 @@
 # Lens
 
-Lens is a front-end web component library for building search tools in the medical space to answer questions such as:
+Lens is a front-end Svelte component library for building search tools in the medical space to answer questions such as:
 
 > What is the age distribution of patients with lung cancer across participating hospitals?
 
@@ -16,7 +16,7 @@ Get started with Lens by following the [creating a new application](https://samp
 
 - [User Guide](https://samply.github.io/lens/book/guide/index.html) for users of the Lens library
 - [Development](https://samply.github.io/lens/book/development/index.html) for developers and contributors
-- [Components](https://samply.github.io/lens/book/components/index.html) with docs for the individual web components
+- [Components](https://samply.github.io/lens/book/components/index.html) with docs for the individual Svelte components
 - [Release notes](https://samply.github.io/lens/book/releases/index.html) for releases and migration guides
 
 Documentation for the TypeScript API of Lens is available as [TypeDoc](https://samply.github.io/lens/docs/).
@@ -30,6 +30,6 @@ npm install
 npm run dev
 ```
 
-This will start the demo application that you can use to test your changes to the web components and library.
+This will start the demo application that you can use to test your changes to the Svelte components and library.
 
 Refer to the [development chapter](https://samply.github.io/lens/book/development/index.html) of the Lens Book for more information.

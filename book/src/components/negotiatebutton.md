@@ -1,6 +1,6 @@
 # Negotiate Button
 
-The `lens-negotiate-button` component allows users to initiate a data request. It becomes active when one or more (site/data sources) are selected. Depending on the configuration, it either dispatches a general event or starts a negotiation through the BBMRI-ERIC Negotiator service. The button is disabled by default when no data source is selected. It fires a global `lens-negotiate-triggered` event when clicked.
+The `NegotiateButton` component allows users to initiate a data request. It becomes active when one or more (site/data sources) are selected. Depending on the configuration, it either dispatches a general event or starts a negotiation through the BBMRI-ERIC Negotiator service. The button is disabled by default when no data source is selected. It fires a global `lens-negotiate-triggered` event when clicked.
 
 Optionally integrates with the [BBMRI-ERIC Negotiator](https://www.bbmri-eric.eu/) when `type` is set to `"Negotiator"`.
 
@@ -24,17 +24,14 @@ Optionally integrates with the [BBMRI-ERIC Negotiator](https://www.bbmri-eric.eu
 
 ## Usage
 
-```html
-<lens-negotiate-button type="Negotiator"></lens-negotiate-button>
+```svelte
+<NegotiateButton type="Negotiator" />
 ```
 
 Or with a custom label:
 
-```html
-<lens-negotiate-button
-    type="Custom"
-    title="Start Request"
-></lens-negotiate-button>
+```svelte
+<NegotiateButton type="Custom" title="Start Request" />
 ```
 
 ## Styling
@@ -49,7 +46,7 @@ Or with a custom label:
 ### Example
 
 ```css
-lens-negotiate-button::part(lens-negotiate-button-active) {
+NegotiateButton::part(lens-negotiate-button-active) {
     background-color: var(--custom-green);
 }
 ```

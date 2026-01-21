@@ -1,9 +1,3 @@
-<svelte:options
-    customElement={{
-        tag: "lens-catalogue",
-    }}
-/>
-
 <script lang="ts">
     import { catalogue } from "../../stores/catalogue";
     import DataTreeElement from "./DataTreeElement.svelte";

@@ -1,12 +1,6 @@
-<svelte:options
-    customElement={{
-        tag: "lens-search-bar-multiple",
-    }}
-/>
-
 <script lang="ts">
     import { queryStore } from "../../stores/query";
-    import SearchBarComponent from "./SearchBarComponent.wc.svelte";
+    import SearchBarComponent from "./SearchBarComponent.svelte";
     import type { QueryItem } from "../../types/queryData";
 
     interface Props {

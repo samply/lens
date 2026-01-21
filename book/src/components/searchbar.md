@@ -1,6 +1,6 @@
 # Search Bar
 
-The `lens-searchbar` component offers an interface for exploring of all catalogue items. It serves as the primary interface for users to search, apply, and adjust query criteria. Selected items appear as interactive chips within the component, giving users a clear visual of their active filters. Users can easily refine their search by removing individual values or entire criteria directly from the chip display.
+The `SearchBar` component offers an interface for exploring of all catalogue items. It serves as the primary interface for users to search, apply, and adjust query criteria. Selected items appear as interactive chips within the component, giving users a clear visual of their active filters. Users can easily refine their search by removing individual values or entire criteria directly from the chip display.
 
 ---
 
@@ -43,12 +43,12 @@ The `lens-searchbar` component offers an interface for exploring of all catalogu
 
 ## Example
 
-```html
-<lens-search-bar
+```svelte
+<SearchBar
     placeholderText="Search filters..."
     noMatchesFoundMessage="No criteria match"
     typeMoreMessage="Type at least 3 characters to search"
-    index="{1}"
+    index={1}
 />
 ```
 

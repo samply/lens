@@ -1,9 +1,3 @@
-<svelte:options
-    customElement={{
-        tag: "lens-negotiate-button",
-    }}
-/>
-
 <script lang="ts">
     import { datarequestsStore } from "../../stores/datarequests";
     import { bbmriNegotiate } from "../../services/bbmriNegotiate";

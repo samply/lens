@@ -1,6 +1,6 @@
 # Info Button
 
-The `lens-info-button` component displays a tooltip-style popup that provides users with helpful information or guidance. The popup is toggled by clicking the button.
+The `InfoButton` component displays a tooltip-style popup that provides users with helpful information or guidance. The popup is toggled by clicking the button.
 
 This component is commonly used across various other components in Lens.
 
@@ -16,23 +16,21 @@ This component is commonly used across various other components in Lens.
 
 ## Usage
 
-Here's a basic example of how to use the `<lens-info-button>` component:
+Here's a basic example of how to use the `<InfoButton>` component:
 
-```html
-<lens-info-button message="This will inform the user about the app!">
-</lens-info-button>
+```svelte
+<InfoButton message="This will inform the user about the app!" />
 ```
 
 Or with multiple lines:
 
-```html
-<lens-info-button
-    message='["Line one", "Line two", "Line three"]'
-    buttonSize="{20}"
+```svelte
+<InfoButton
+    message={["Line one", "Line two", "Line three"]}
+    buttonSize={20}
     alignDialogue="top-right"
     dialogueMaxWidth="250px"
->
-</lens-info-button>
+/>
 ```
 
 ## Styling
@@ -51,7 +49,7 @@ Or with multiple lines:
 ### Example
 
 ```css
-lens-info-button::part(lens-info-button-icon) {
+InfoButton::part(lens-info-button-icon) {
     color: var(--primary-color);
 }
 ```

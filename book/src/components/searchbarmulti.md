@@ -1,6 +1,6 @@
-# Seach Bar Multiple
+# Search Bar Multiple
 
-The `lens-search-bar-multiple` is a wrapper for multitple [searchbars](./searchbar.md).
+The `SearchBarMultiple` is a wrapper for multiple [searchbars](./searchbar.md).
 
 Each search bar is visually separated by an **"or"** indicator, and users can append additional bars using a dedicated **add button**. It is primarily used for **OR-based query logic** where each search bar represents an independent branch of the search criteria.
 
@@ -21,10 +21,10 @@ A default `<slot />` is provided to insert additional UI elements, such as a **s
 
 You may also include a search button using the default slot:
 
-```html
-<lens-search-bar-multiple>
-    <lens-search-button title="Apply Filter"></lens-search-button>
-</lens-search-bar-multiple>
+```svelte
+<SearchBarMultiple>
+    <SearchButton title="Apply Filter" />
+</SearchBarMultiple>
 ```
 
 ---

@@ -50,21 +50,20 @@ export type { FhirMeasureItem, FhirMeasure } from "./types/backend";
 export type { FhirMeasureReport } from "./types/response";
 export type { QueryItem, QueryValue } from "./types/queryData";
 
-// Include custom elements (aka web components) in the bundle
-import "./components/catalogue/Catalogue.wc.svelte";
-import "./components/search-bar/SearchBarComponent.wc.svelte";
-import "./components/buttons/SearchButtonComponent.wc.svelte";
-import "./components/results/ChartComponent.wc.svelte";
-import "./components/results/ResultSummaryComponent.wc.svelte";
-import "./components/results/ResultTableComponent.wc.svelte";
-import "./components/search-bar/SearchBarMultipleComponent.wc.svelte";
-import "./components/buttons/NegotiateButtonComponent.wc.svelte";
-import "./components/buttons/InfoButtonComponent.wc.svelte";
-import "./components/buttons/QueryExplainButtonComponent.wc.svelte";
-import "./components/informational/ModifiedSearchComponent.wc.svelte";
-import "./components/informational/QuerySpinner.wc.svelte";
-import "./components/informational/Toasts.wc.svelte";
-import "./components/informational/AboutLensComponent.svelte";
+// Export Svelte components
+export { default as Catalogue } from "./components/catalogue/Catalogue.svelte";
+export { default as SearchBar } from "./components/search-bar/SearchBarComponent.svelte";
+export { default as SearchButton } from "./components/buttons/SearchButtonComponent.svelte";
+export { default as Chart } from "./components/results/ChartComponent.svelte";
+export { default as ResultSummary } from "./components/results/ResultSummaryComponent.svelte";
+export { default as ResultTable } from "./components/results/ResultTableComponent.svelte";
+export { default as SearchBarMultiple } from "./components/search-bar/SearchBarMultipleComponent.svelte";
+export { default as NegotiateButton } from "./components/buttons/NegotiateButtonComponent.svelte";
+export { default as InfoButton } from "./components/buttons/InfoButtonComponent.svelte";
+export { default as QueryExplainButton } from "./components/buttons/QueryExplainButtonComponent.svelte";
+export { default as SearchModifiedDisplay } from "./components/informational/ModifiedSearchComponent.svelte";
+export { default as QuerySpinner } from "./components/informational/QuerySpinner.svelte";
+export { default as Toasts } from "./components/informational/Toasts.svelte";
+export { default as AboutLens } from "./components/informational/AboutLensComponent.svelte";
 
-// Include CSS in the bundle
 import "./styles/index.css";

@@ -30,9 +30,11 @@ export const activeQueryGroupIndex = writable<number>(0);
 export const queryModified = writable<boolean>(false);
 
 queryStore.subscribe(() => {
-    // emit an event when the query is updated
-    const event = new CustomEvent("lens-query-updated");
-    window.dispatchEvent(event);
+    // emit an event when the query is updated (only in browser environment)
+    if (typeof window !== "undefined") {
+        const event = new CustomEvent("lens-query-updated");
+        window.dispatchEvent(event);
+    }
 });
 
 /**

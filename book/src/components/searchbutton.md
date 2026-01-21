@@ -1,6 +1,6 @@
 # Search Button
 
-The `lens-search-button` component triggers a search based on the current query. It is a visually styled button that emits an event when clicked. The button can be disabled via a prop, or will be disabled when a error state is entered in the searchbar.
+The `SearchButton` component triggers a search based on the current query. It is a visually styled button that emits an event when clicked. The button can be disabled via a prop, or will be disabled when an error state is entered in the searchbar.
 
 ## Features
 
@@ -15,8 +15,8 @@ The `lens-search-button` component triggers a search based on the current query.
 
 ## Usage
 
-```html
-<lens-search-button></lens-search-button>
+```svelte
+<SearchButton />
 ```
 
 ## Styling
@@ -30,11 +30,11 @@ The `lens-search-button` component triggers a search based on the current query.
 ### Example
 
 ```css
-lens-search-button::part(lens-search-button) {
+SearchButton::part(lens-search-button) {
     background-color: var(--primary-color);
 }
 
-lens-search-button::part(lens-search-button-magnifying-glass) {
+SearchButton::part(lens-search-button-magnifying-glass) {
     font-size: 1.5rem;
     color: var(--highlight);
 }

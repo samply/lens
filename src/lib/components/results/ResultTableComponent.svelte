@@ -1,9 +1,3 @@
-<svelte:options
-    customElement={{
-        tag: "lens-result-table",
-    }}
-/>
-
 <script lang="ts">
     import { datarequestsStore } from "../../stores/datarequests";
     import {
@@ -14,7 +8,7 @@
     } from "../../stores/response";
     import { lensOptions } from "../../stores/options";
     import type { HeaderData } from "../../types/options";
-    import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
+    import InfoButtonComponent from "../buttons/InfoButtonComponent.svelte";
     import { translate } from "../../helpers/translations";
 
     /**

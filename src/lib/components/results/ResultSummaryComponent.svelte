@@ -1,9 +1,3 @@
-<svelte:options
-    customElement={{
-        tag: "lens-result-summary",
-    }}
-/>
-
 <script lang="ts">
     import { lensOptions } from "../../stores/options";
     import {
@@ -13,7 +7,7 @@
         type LensResult,
         siteResults,
     } from "../../stores/response";
-    import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
+    import InfoButtonComponent from "../buttons/InfoButtonComponent.svelte";
     import type { HeaderData } from "../../types/options";
 
     interface Props {

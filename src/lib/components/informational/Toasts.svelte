@@ -1,9 +1,3 @@
-<svelte:options
-    customElement={{
-        tag: "lens-toast",
-    }}
-/>
-
 <script lang="ts">
     import { fade } from "svelte/transition";
     import { toasts, removeToast } from "../../stores/toasts";

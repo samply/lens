@@ -1,9 +1,3 @@
-<svelte:options
-    customElement={{
-        tag: "lens-search-button",
-    }}
-/>
-
 <script lang="ts">
     import { translate } from "../../helpers/translations";
     import { queryModified } from "../../stores/query";

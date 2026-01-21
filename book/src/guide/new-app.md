@@ -1,6 +1,6 @@
 # Creating a new application
 
-Lens is framework agnostic, so there are many ways to build and deploy your application. This guide focuses on compatibility with other projects in the [Samply organization](https://github.com/samply), so we use SvelteKit as the frontend framework and Docker for deployment.
+Lens is a Svelte component library that works best with SvelteKit applications. This guide focuses on compatibility with other projects in the [Samply organization](https://github.com/samply), so we use SvelteKit as the frontend framework and Docker for deployment.
 
 To create a new SvelteKit application run `npx sv create my-app`. Use the minimal template with TypeScript syntax and select Prettier and ESLint when prompted.
 
@@ -30,23 +30,12 @@ The Prettier config created by `sv create` uses tabs and sets the print width to
 
 ## Configuring the root route
 
-Typically your application will only use the root route at `src/routes`. We will import the Lens CSS and JS bundles and render the main application component. Because Lens uses Web Components we need to disable HMR and SSR. Change the content of `src/routes/+page.svelte` to:
+Typically your application will only use the root route at `src/routes`. We will import the Lens CSS bundle and render the main application component. Change the content of `src/routes/+page.svelte` to:
 
 ```html
 <script lang="ts">
-    // Using hot module replacement (HMR) with custom elements (aka web
-    // components) does not work because a custom element cannot be updated once
-    // registered, see https://github.com/WICG/webcomponents/issues/820.
-    // Therefore we do a full page reload instead of HMR.
-    if (import.meta.hot) {
-        import.meta.hot.on("vite:beforeUpdate", () => {
-            window.location.reload();
-        });
-    }
-
-    // Import Lens CSS and JS bundles
-    import "@samply/lens/style.css";
-    import "@samply/lens";
+    // Import Lens CSS bundle
+    import "@samply/lens/styles/index.css";
 
     import App from "../App.svelte";
 </script>
@@ -54,16 +43,7 @@ Typically your application will only use the root route at `src/routes`. We will
 <App />
 ```
 
-And add `src/routes/+page.ts`:
-
-```ts
-// Using server-side rendering (SSR) with custom elements (aka web components)
-// causes issues because the server does not know that an element is a Svelte
-// component and converts all props to strings.
-export const ssr = false;
-```
-
-Note that the route files `+page.svelte` and `+page.ts` require the `+` prefix.
+Note that the route file `+page.svelte` requires the `+` prefix.
 
 ## The application component
 
@@ -72,9 +52,10 @@ Your main application code lives in the application component. Create the file `
 ```html
 <script lang="ts">
     import "./app.css";
+    import { SearchButton } from "@samply/lens";
 </script>
 
-<lens-search-button></lens-search-button>
+<SearchButton />
 ```
 
 Now run `npm run dev` and open <http://localhost:5173/> in your browser. You should see a search button in the top left corner of the page.
@@ -114,19 +95,21 @@ Add the following to the top of `src/App.svelte` to load the JSON files and pass
     import {
         setOptions,
         setCatalogue,
+        SearchBar,
+        Catalogue,
         type LensOptions,
-        type Catalogue,
+        type Catalogue as CatalogueType,
     } from "@samply/lens";
     import options from "./config/options.json";
     import catalogue from "./config/catalogue.json";
     onMount(() => {
         setOptions(options as LensOptions);
-        setCatalogue(catalogue as Catalogue);
+        setCatalogue(catalogue as CatalogueType);
     });
 </script>
 
-<lens-search-bar></lens-search-bar>
-<lens-catalogue></lens-catalogue>
+<SearchBar />
+<Catalogue />
 ```
 
 When you run `npm run dev` you should see the search bar and the catalogue component with the "Rh factor" entry. Open the "Rh factor" entry and click the plus icons next to Rh+ and Rh- in order to add them to the search bar.
@@ -139,8 +122,8 @@ Lens includes JSON schema definitions for the options and the catalogue type. Cr
 
 ```bash
 set -e # Return non-zero exit status if one of the validations fails
-npx ajv validate -c ajv-formats -s node_modules/@samply/lens/schema/options.schema.json -d src/config/options.json
-npx ajv validate -c ajv-formats -s node_modules/@samply/lens/schema/catalogue.schema.json -d src/config/catalogue.json
+npx ajv validate -c ajv-formats -s node_modules/@samply/lens/dist/schema/options.schema.json -d src/config/options.json
+npx ajv validate -c ajv-formats -s node_modules/@samply/lens/dist/schema/catalogue.schema.json -d src/config/catalogue.json
 ```
 
 Then install the required dependencies and test the script:
@@ -157,11 +140,11 @@ You can also configure VS Code to validate your JSON files against the schema de
     "json.schemas": [
         {
             "fileMatch": ["catalogue*.json"],
-            "url": "./node_modules/@samply/lens/schema/catalogue.schema.json"
+            "url": "./node_modules/@samply/lens/dist/schema/catalogue.schema.json"
         },
         {
             "fileMatch": ["options*.json"],
-            "url": "./node_modules/@samply/lens/schema/options.schema.json"
+            "url": "./node_modules/@samply/lens/dist/schema/options.schema.json"
         }
     ]
 }
@@ -207,7 +190,7 @@ Add the following to `src/App.svelte` to print the current query to the console 
 
 ```html
 <script lang="ts">
-    import { getAst, setSiteResult } from "@samply/lens";
+    import { getAst, setSiteResult, Chart } from "@samply/lens";
     window.addEventListener("lens-search-triggered", () => {
         console.log("AST:", JSON.stringify(getAst()));
 
@@ -223,12 +206,12 @@ Add the following to `src/App.svelte` to print the current query to the console 
     });
 </script>
 
-<lens-chart
+<Chart
     title="Gender distribution"
     dataKey="gender"
     chartType="pie"
-    displayLegends="{true}"
-></lens-chart>
+    displayLegends={true}
+/>
 ```
 
 You can read more about [queries and the AST](./query.md) and about [showing results](./results.md) in the dedicated guides.

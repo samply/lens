@@ -1,6 +1,6 @@
 # Chart
 
-The `lens-chart` component provides a styled wrapper for visualizing data using Chart.js. It handles dynamic display behaviors like toggling chart visibility, showing hints, and rendering a fallback message when no data is available. Some Options are set via [ChartOption](https://samply.github.io/lens/docs/types/ChartOption.html) and some are set via props.
+The `Chart` component provides a styled wrapper for visualizing data using Chart.js. It handles dynamic display behaviors like toggling chart visibility, showing hints, and rendering a fallback message when no data is available. Some Options are set via [ChartOption](https://samply.github.io/lens/docs/types/ChartOption.html) and some are set via props.
 
 ![Example of a lens chart](pics/chart1.png)
 
@@ -40,12 +40,12 @@ Non of the props are required, however without `datakey` prop the chart does not
 ## Example
 
 ```svelte
-<lens-chart
+<Chart
     title="Gender"
     datakey="gender"
     chartType="pie"
-    displayLegends="true"
-></lens-chart>
+    displayLegends={true}
+/>
 ```
 
 ---

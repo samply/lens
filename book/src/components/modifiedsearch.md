@@ -1,6 +1,6 @@
 # Search Modified Display
 
-`<lens-search-modified-display>` displays a visual cue when the current query has been modified:
+`<SearchModifiedDisplay>` displays a visual cue when the current query has been modified:
 
 ![Screenshot of the query modified component](pics/querymodified.png)
 
@@ -8,8 +8,8 @@
 
 Include it like this:
 
-```
-<lens-search-modified-display></lens-search-modified-display>
+```svelte
+<SearchModifiedDisplay />
 ```
 
 You can customize the text using [translations](../guide/translations.md):
@@ -31,7 +31,7 @@ You can customize the text using [translations](../guide/translations.md):
 ### Example
 
 ```css
-lens-search-modified-display::part(lens-query-modified-display-wrapper) {
+SearchModifiedDisplay::part(lens-query-modified-display-wrapper) {
     background-color: var(--light-orange);
     color: var(--dark-orange);
     font-weight: bold;

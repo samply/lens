@@ -1,9 +1,3 @@
-<svelte:options
-    customElement={{
-        tag: "lens-search-bar",
-    }}
-/>
-
 <script lang="ts">
     import type {
         AggregatedValue,
@@ -28,7 +22,7 @@
     import { catalogue } from "../../stores/catalogue";
     import { facetCounts } from "../../stores/facetCounts";
     import { lensOptions } from "../../stores/options";
-    import QueryExplainButtonComponent from "../buttons/QueryExplainButtonComponent.wc.svelte";
+    import QueryExplainButtonComponent from "../buttons/QueryExplainButtonComponent.svelte";
     import { onMount } from "svelte";
     import { showToast } from "../../stores/toasts";
     import { translate } from "../../helpers/translations";

@@ -1,6 +1,6 @@
 # Query Explain Button
 
-The `lens-query-explain-button` is a wrapper around the `lens-info-button` that displays a human-readable version of the current query. When the QueryStore is empty, the `noQueryMessage` is shown. If a specific `queryItem` is passed as a prop, it will display only that part in depth, showing all child elements.
+The `QueryExplainButton` is a wrapper around the `InfoButton` that displays a human-readable version of the current query. When the QueryStore is empty, the `noQueryMessage` is shown. If a specific `queryItem` is passed as a prop, it will display only that part in depth, showing all child elements.
 
 ## Props
 
@@ -11,8 +11,8 @@ The `lens-query-explain-button` is a wrapper around the `lens-info-button` that 
 
 ## Usage
 
-```html
-<lens-query-explain-button></lens-query-explain-button>
+```svelte
+<QueryExplainButton />
 ```
 
 ## Styling
@@ -35,7 +35,7 @@ The `lens-query-explain-button` is a wrapper around the `lens-info-button` that 
 ### Example
 
 ```css
-lens-query-explain-button::part(lens-query-explain-button) {
+QueryExplainButton::part(lens-query-explain-button) {
     border-color: var(--primary-color);
     padding: 8px;
 }

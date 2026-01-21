@@ -1,6 +1,6 @@
 # About Lens
 
-The `lens-about` component is optional but recommended for your application. It displays:
+The `AboutLens` component is optional but recommended for your application. It displays:
 
 - A link to the Lens repository
 - A short message: “Made with ♥”

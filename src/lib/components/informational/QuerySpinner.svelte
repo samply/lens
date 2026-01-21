@@ -1,9 +1,3 @@
-<svelte:options
-    customElement={{
-        tag: "lens-query-spinner",
-    }}
-/>
-
 <script lang="ts">
     import { siteStatus } from "../../stores/response";
 

@@ -1,39 +1,42 @@
 {
     "name": "@samply/lens",
-    "description": "A web component library for clinical data search and visualisation",
+    "description": "A Svelte library for clinical data search and visualisation",
     "version": "0.6.4",
     "license": "Apache-2.0",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/samply/lens.git"
     },
-    "//": "Settings recommended by Vite but without CommonJS exports, see https://vite.dev/guide/build#library-mode",
     "type": "module",
     "files": [
-        "dist",
-        "schema"
+        "dist"
     ],
-    "module": "dist/lens.js",
-    "types": "dist/lens.d.ts",
+    "svelte": "./dist/index.js",
+    "types": "./dist/index.d.ts",
     "exports": {
-        ".": "./dist/lens.js",
-        "./style.css": "./dist/lens.css"
+        ".": {
+            "types": "./dist/index.d.ts",
+            "svelte": "./dist/index.js"
+        }
     },
     "scripts": {
         "dev": "vite dev",
-        "build": "vite build",
-        "build:demo": " vite build --config vite.config.demo.js",
+        "build": "svelte-package",
+        "build:demo": "vite build",
         "check": "svelte-check",
-        "prepublishOnly": "vite build",
+        "prepublishOnly": "npm run build",
         "prepare": "husky",
         "version": "npm version -m \"chore: release %s\"",
         "schemagen": "bash scripts/generate-json-schema.bash",
         "book": "mdbook serve book --open",
-        "typedoc": "typedoc src/index.ts --watch",
+        "typedoc": "typedoc src/lib/index.ts --watch",
         "test": "vitest"
     },
     "devDependencies": {
         "@eslint/js": "^9.39.2",
+        "@sveltejs/adapter-static": "^3.0.10",
+        "@sveltejs/kit": "^2.50.0",
+        "@sveltejs/package": "^2.5.7",
         "@sveltejs/vite-plugin-svelte": "^6.2.4",
         "@types/node": "^25.0.9",
         "@types/uuid": "^11.0.0",
@@ -64,6 +67,12 @@
         "chart.js": "^4.5.1",
         "uuid": "^13.0.0"
     },
+    "peerDependencies": {
+        "svelte": "^5.0.0"
+    },
+    "sideEffects": [
+        "**/*.css"
+    ],
     "lint-staged": {
         "*": [
             "eslint --fix",

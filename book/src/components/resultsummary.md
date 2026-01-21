@@ -1,6 +1,6 @@
 # Result Summary
 
-The `lens-result-summary` component displays a compact summary of result metrics defined in the Lens options. It is typically used to show overall values, such as the total number of patients found across all data sources or how many sources responded successfully.
+The `ResultSummary` component displays a compact summary of result metrics defined in the Lens options. It is typically used to show overall values, such as the total number of patients found across all data sources or how many sources responded successfully.
 
 ---
 
@@ -31,10 +31,10 @@ To use the component, define the configuration in the Lens [resultSummaryOptions
 
 ## Usage
 
-The component (which doesn't use any props) can then be included in your HTML:
+The component (which doesn't use any props) can then be included in your Svelte file:
 
 ```svelte
-<lens-result-summary></lens-result-summary>
+<ResultSummary />
 ```
 
 ---

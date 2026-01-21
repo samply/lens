@@ -1,6 +1,6 @@
 # Toast Notifications
 
-The `<lens-toast>` component provides user notifications to inform about success or failure states. It supports two types of toasts: error notifications for failures and info notifications for successful operations. Backend components use this system to communicate status changes to users.
+The `<Toasts>` component provides user notifications to inform about success or failure states. It supports two types of toasts: error notifications for failures and info notifications for successful operations. Backend components use this system to communicate status changes to users.
 
 The component automatically renders all toasts from the global toast store and handles their lifecycle.
 
@@ -8,8 +8,8 @@ The component automatically renders all toasts from the global toast store and h
 
 The toast component uses fixed positioning to stack toasts at the bottom of the page. You should usually include it at the top level of your application DOM at the very end.
 
-```html
-<lens-toast></lens-toast>
+```svelte
+<Toasts />
 ```
 
 Import the toast functions and show notifications:

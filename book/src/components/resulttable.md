@@ -1,6 +1,6 @@
 # Result Table
 
-The `lens-result-table` component displays a paginated and sortable table of totals from the `LensResult`. It uses the configured Lens options and listens to the `ResultStore`.
+The `ResultTable` component displays a paginated and sortable table of totals from the `LensResult`. It uses the configured Lens options and listens to the `ResultStore`.
 
 The table is setup with some props and some via the [options](https://samply.github.io/lens/docs/types/TableOptions.html). For example the columns are defined in the table options.
 
@@ -46,13 +46,13 @@ To use the table, define the configuration in the Lens [tableOptions](https://sa
 
 ## Usage
 
-The component can then be included in your HTML:
+The component can then be included in your Svelte file:
 
 ```svelte
 <!-- Table in unpaged mode shows all rows and grows dynamically with the number of rows -->
-<lens-result-table></lens-result-table>
+<ResultTable />
 <!-- Table in paged mode limits the number of rows per page and has fixed height -->
-<lens-result-table pageSize={10}></lens-result-table>
+<ResultTable pageSize={10} />
 ```
 
 ## Styling
