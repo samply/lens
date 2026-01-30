@@ -6,7 +6,7 @@ Lens tries to be very customizable and thus all built-in styles should be overri
 <button part="lens-search-button"></button>
 ```
 
-This enables applications to [override styles](./guide/overwriting-styles.md) from the outside as follows:
+This enables applications to [override styles](../guide/overwriting-styles.md) from the outside as follows:
 
 ```css
 ::part(lens-search-button) {

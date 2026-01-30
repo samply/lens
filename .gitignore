@@ -13,7 +13,8 @@ dist
 dist-ssr
 *.local
 TODO
-book/book
+book/.vitepress/dist
+book/.vitepress/cache
 docs
 demo
 

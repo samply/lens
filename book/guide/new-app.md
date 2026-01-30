@@ -77,7 +77,7 @@ Your main application code lives in the application component. Create the file `
 <lens-search-button></lens-search-button>
 ```
 
-Now run `npm run dev` and open <http://localhost:5173/> in your browser. You should see a search button in the top left corner of the page.
+Now run `npm run dev` and open `http://localhost:5173/` in your browser. You should see a search button in the top left corner of the page.
 
 ## Options and catalogue
 
