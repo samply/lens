@@ -1,4 +1,6 @@
 <script lang="ts">
+    import type { Snippet } from "svelte";
+    import { untrack } from "svelte";
     import Chart, { type ChartTypeRegistry } from "chart.js/auto";
     import { onMount } from "svelte";
     import {
@@ -40,6 +42,7 @@
         viewScales?: boolean;
         backgroundColor?: string[];
         hoverBackgroundColor?: string[];
+        children?: Snippet;
     }
 
     let {
@@ -83,6 +86,7 @@
             "#80699b",
         ]),
         hoverBackgroundColor = ["#aaaaaa"],
+        children,
     }: Props = $props();
 
     let options: ChartOption | undefined = $derived(
@@ -103,90 +107,94 @@
     let sortOrder: "asc" | "desc" = $state("asc"); // 'asc' or 'desc'
 
     // TODO: Use ChartConfiguration type here instead of "any"
+    // Using $state.raw because Chart.js modifies property descriptors on arrays
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let initialChartData: any = {
-        type: chartType,
-        data: {
-            labels: ["", "", "", ""],
-            datasets: [
-                {
-                    data: [3, 1, 2, 5],
-                    backgroundColor: ["#E6E6E6"],
-                    backgroundHoverColor: ["#E6E6E6"],
-                },
-            ],
-        },
-        options: {
-            indexAxis: indexAxis,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: displayLegends,
-                    position: "bottom",
-                },
-                tooltip: {
-                    callbacks: {
-                        title: (
-                            context: {
-                                [key: string]: unknown;
-                                label: string;
-                            }[],
-                        ) => {
-                            const key = context[0].label || "";
-                            let result =
-                                options?.tooltips !== undefined &&
-                                options.tooltips[key] !== undefined
-                                    ? options.tooltips[key]
-                                    : key;
-                            return result;
+    let initialChartData: any = $state.raw(
+        untrack(() => ({
+            type: chartType,
+            data: {
+                labels: ["", "", "", ""],
+                datasets: [
+                    {
+                        data: [3, 1, 2, 5],
+                        backgroundColor: ["#E6E6E6"],
+                        backgroundHoverColor: ["#E6E6E6"],
+                    },
+                ],
+            },
+            options: {
+                indexAxis: indexAxis,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: displayLegends,
+                        position: "bottom",
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: (
+                                context: {
+                                    [key: string]: unknown;
+                                    label: string;
+                                }[],
+                            ) => {
+                                const key = context[0].label || "";
+                                let result =
+                                    options?.tooltips !== undefined &&
+                                    options.tooltips[key] !== undefined
+                                        ? options.tooltips[key]
+                                        : key;
+                                return result;
+                            },
                         },
                     },
                 },
-            },
-            scales: {
-                y: {
-                    display: viewScales,
-                    suggestedMax: 6,
-                    title: {
-                        display: true,
-                        text: yAxisTitle,
+                scales: {
+                    y: {
+                        display: viewScales,
+                        suggestedMax: 6,
+                        title: {
+                            display: true,
+                            text: yAxisTitle,
+                        },
+                    },
+                    x: {
+                        display: viewScales,
+                        suggestedMax: 6,
+                        title: {
+                            display: true,
+                            text: xAxisTitle,
+                        },
+                        ticks:
+                            chartType === "bar"
+                                ? {
+                                      callback: (val: string | number) => {
+                                          if (indexAxis === "y")
+                                              return val.toString();
+                                          if (typeof val === "string")
+                                              return val;
+                                          const key: unknown =
+                                              initialChartData.data.labels[
+                                                  val
+                                              ] !== undefined
+                                                  ? initialChartData.data
+                                                        .labels[val]
+                                                  : val.toString();
+                                          if (typeof key !== "string")
+                                              return val.toString();
+                                          let result = headers.get(key)
+                                              ? headers.get(key)
+                                              : key;
+                                          return result;
+                                      },
+                                  }
+                                : [],
+                        type: undefined,
                     },
                 },
-                x: {
-                    display: viewScales,
-                    suggestedMax: 6,
-                    title: {
-                        display: true,
-                        text: xAxisTitle,
-                    },
-                    ticks:
-                        chartType === "bar"
-                            ? {
-                                  callback: (val: string | number) => {
-                                      if (indexAxis === "y")
-                                          return val.toString();
-                                      if (typeof val === "string") return val;
-                                      const key: unknown =
-                                          initialChartData.data.labels[val] !==
-                                          undefined
-                                              ? initialChartData.data.labels[
-                                                    val
-                                                ]
-                                              : val.toString();
-                                      if (typeof key !== "string")
-                                          return val.toString();
-                                      let result = headers.get(key)
-                                          ? headers.get(key)
-                                          : key;
-                                      return result;
-                                  },
-                              }
-                            : [],
-                    type: undefined,
-                },
             },
-        },
-    };
+        })),
+    );
 
     const accumulateValues = (valuesToAccumulate: string[]): number => {
         let aggregatedData = 0;
@@ -792,7 +800,7 @@
             onclick={handleClickOnStratifier}
         ></canvas>
     </div>
-    <slot />
+    {@render children?.()}
 </div>
 
 <style>

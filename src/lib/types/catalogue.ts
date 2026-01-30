@@ -11,7 +11,7 @@
  * the catalogue as a collapsable tree and allows the user to add items from the
  * catalogue to the search bar.
  */
-export type Catalogue = Category[];
+export type LensCatalogue = Category[];
 
 // The @discriminator annotation tells ts-json-schema-generator to represent
 // this type as a discriminated union in the generated JSON schema.

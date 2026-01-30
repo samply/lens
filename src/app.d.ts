@@ -8,6 +8,9 @@ declare global {
         // interface PageState {}
         // interface Platform {}
     }
+
+    /** Library version injected by Vite at build time */
+    const __LIB_VERSION__: string;
 }
 
 export {};

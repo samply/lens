@@ -210,7 +210,7 @@ Add the following to `src/App.svelte` to print the current query to the console 
     title="Gender distribution"
     dataKey="gender"
     chartType="pie"
-    displayLegends={true}
+    displayLegends="{true}"
 />
 ```
 

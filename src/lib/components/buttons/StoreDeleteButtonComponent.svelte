@@ -19,7 +19,9 @@
 
     let { itemToDelete, resetToEmptySearchBar = () => {} }: Props = $props();
 
-    const { type, index, item } = itemToDelete;
+    const type = $derived(itemToDelete.type);
+    const index = $derived(itemToDelete.index);
+    const item = $derived(itemToDelete.item);
 
     /**
      * deletes the given item from the query

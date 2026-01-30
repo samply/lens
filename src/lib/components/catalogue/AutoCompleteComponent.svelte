@@ -11,6 +11,8 @@
     import { facetCounts } from "../../stores/facetCounts";
     import { lensOptions } from "../../stores/options";
 
+    import { untrack } from "svelte";
+
     /**
      * mockdata to get from texts store
      */
@@ -24,9 +26,9 @@
     let { element }: Props = $props();
 
     /**
-     * list of criteria
+     * list of criteria - intentionally captures initial value only
      */
-    let criteria: Criteria[] = $state(element.criteria);
+    let criteria: Criteria[] = $state(untrack(() => [...element.criteria]));
 
     const resolvesubgroup = (criterion: Criteria): Criteria[] => {
         let subgroups: Criteria[] = [];

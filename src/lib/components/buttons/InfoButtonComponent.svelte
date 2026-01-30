@@ -1,4 +1,6 @@
 <script lang="ts">
+    import type { Snippet } from "svelte";
+
     interface Props {
         message?: string[] | string;
         buttonSize?: number;
@@ -12,6 +14,7 @@
         dialogueMaxWidth?: string;
         /** Info button in search bar is white and orange on hover */
         inSearchBar?: boolean;
+        children?: Snippet;
     }
 
     let {
@@ -20,6 +23,7 @@
         alignDialogue = "bottom-center",
         dialogueMaxWidth = "300px",
         inSearchBar = false,
+        children,
     }: Props = $props();
 
     /**
@@ -45,12 +49,13 @@
         }
     };
 
-    const top =
+    const top = $derived(
         alignDialogue === "top-left" ||
-        alignDialogue === "top-right" ||
-        alignDialogue === "top-center"
+            alignDialogue === "top-right" ||
+            alignDialogue === "top-center"
             ? `bottom: ${buttonSize}px;`
-            : "";
+            : "",
+    );
 </script>
 
 <button
@@ -85,7 +90,7 @@
                     {msg}
                 </div>
             {/each}
-            <slot />
+            {@render children?.()}
         </div>
     {/if}
 </button>

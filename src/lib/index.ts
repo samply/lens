@@ -65,5 +65,6 @@ export { default as SearchModifiedDisplay } from "./components/informational/Mod
 export { default as QuerySpinner } from "./components/informational/QuerySpinner.svelte";
 export { default as Toasts } from "./components/informational/Toasts.svelte";
 export { default as AboutLens } from "./components/informational/AboutLensComponent.svelte";
+export { default as Tooltip } from "./components/informational/Tooltip.svelte";
 
 import "./styles/index.css";

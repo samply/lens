@@ -1,4 +1,5 @@
 <script lang="ts">
+    import type { Snippet } from "svelte";
     import { queryStore } from "../../stores/query";
     import SearchBarComponent from "./SearchBarComponent.svelte";
     import type { QueryItem } from "../../types/queryData";
@@ -6,11 +7,13 @@
     interface Props {
         noMatchesFoundMessage?: string;
         placeholderText?: string;
+        children?: Snippet;
     }
 
     let {
         noMatchesFoundMessage = "No matches found",
         placeholderText = "Type to filter conditions",
+        children,
     }: Props = $props();
 
     /**
@@ -43,7 +46,7 @@
         </div>
     {/each}
     <!-- here is a slot mainly for the search button if whished to place in this component -->
-    <slot />
+    {@render children?.()}
 </div>
 
 <style>

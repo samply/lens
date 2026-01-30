@@ -1,7 +1,7 @@
 <script lang="ts">
     import { catalogue } from "../../stores/catalogue";
     import DataTreeElement from "./DataTreeElement.svelte";
-    import { onMount } from "svelte";
+    import { onMount, untrack } from "svelte";
     import { lensOptions } from "../../stores/options";
     import { fetchFacetCounts } from "../../stores/facetCounts";
     import { translate } from "../../helpers/translations";
@@ -23,7 +23,7 @@
         },
     }: Props = $props();
 
-    let isOpen = $state(toggle.open);
+    let isOpen = $state(untrack(() => toggle.open));
 
     const handleToggle = (): void => {
         isOpen = !isOpen;

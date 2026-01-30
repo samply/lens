@@ -1,4 +1,5 @@
 <script lang="ts">
+    import type { Snippet } from "svelte";
     import { datarequestsStore } from "../../stores/datarequests";
     import {
         getSiteTotal,
@@ -44,7 +45,7 @@
                 }
 
                 if (status === "claimed") {
-                    tableRow.push(translate("loading"));
+                    tableRow.push("claimed");
                 } else if (status === "succeeded") {
                     if (header.dataKey !== undefined) {
                         tableRow.push(
@@ -133,14 +134,23 @@
         title?: string;
         /** If set, limits the number of rows displayed and enables pagination. */
         pageSize?: number;
-        /** Visually indicate that values are approximations (e.g., with a tilde). */
-        indicateApproximation?: boolean;
+        /** Custom snippet for rendering the site column (first column). Receives the site ID and display name. */
+        formatSite?: Snippet<[string, string]>;
+        /** Custom snippet for rendering number columns. Receives the number value, or "claimed" if the site is still loading. */
+        formatNumber?: Snippet<[number | "claimed"]>;
+        /** Slot content to render above pagination */
+        "lens-result-above-pagination"?: Snippet;
+        /** Slot content to render below pagination */
+        "beneath-pagination"?: Snippet;
     }
 
     let {
         title = "",
         pageSize,
-        indicateApproximation = false,
+        formatSite,
+        formatNumber,
+        "lens-result-above-pagination": lensResultAbovePagination,
+        "beneath-pagination": beneathPagination,
     }: Props = $props();
 
     let activePage = $state(1);
@@ -248,10 +258,15 @@
                 >
                 {#each tableRow as data, index (index)}
                     <td part="lens-result-table-item-body-cell">
-                        {#if indicateApproximation && index !== 0 && typeof data === "number"}
-                            ≈
+                        {#if index === 0 && formatSite}
+                            {@render formatSite(String(tableRow[0]), String(data))}
+                        {:else if index > 0 && formatNumber}
+                            {@render formatNumber(data === "claimed" ? "claimed" : Number(data))}
+                        {:else if data === "claimed"}
+                            {translate("loading")}
+                        {:else}
+                            {data}
                         {/if}
-                        {data}
                     </td>
                 {/each}
             </tr>
@@ -268,7 +283,7 @@
         {/if}
     </tbody>
 </table>
-<slot name="lens-result-above-pagination" />
+{@render lensResultAbovePagination?.()}
 {#if pageSize !== undefined}
     <div part="lens-result-table-pagination">
         <button
@@ -290,7 +305,7 @@
         >
     </div>
 {/if}
-<slot name="beneath-pagination" />
+{@render beneathPagination?.()}
 
 <style>
     [part~="lens-result-table-title"] {

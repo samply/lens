@@ -40,12 +40,7 @@ Non of the props are required, however without `datakey` prop the chart does not
 ## Example
 
 ```svelte
-<Chart
-    title="Gender"
-    datakey="gender"
-    chartType="pie"
-    displayLegends={true}
-/>
+<Chart title="Gender" datakey="gender" chartType="pie" displayLegends={true} />
 ```
 
 ---

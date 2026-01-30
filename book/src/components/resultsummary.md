@@ -6,9 +6,7 @@ The `ResultSummary` component displays a compact summary of result metrics defin
 
 ## Props
 
-| Prop                    | Type      | Default | Description                                                            |
-| ----------------------- | --------- | ------- | ---------------------------------------------------------------------- |
-| `indicateApproximation` | `boolean` | `false` | Visually indicate that values are approximations (e.g., with a tilde). |
+This component does not accept any props.
 
 ## Example
 

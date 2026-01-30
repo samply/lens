@@ -12,11 +12,12 @@ Each row includes a checkbox to select that data source for a data request. The 
 
 ## Props
 
-| Prop                    | Type      | Default | Description                                                            |
-| ----------------------- | --------- | ------- | ---------------------------------------------------------------------- |
-| `title`                 | `string`  | `""`    | Optional title displayed above the table.                              |
-| `pageSize`              | `number`  |         | If set, limits the number of rows displayed and enables pagination.    |
-| `indicateApproximation` | `boolean` | `false` | Visually indicate that values are approximations (e.g., with a tilde). |
+| Prop           | Type                                                     | Default | Description                                                                                    |
+| -------------- | -------------------------------------------------------- | ------- | ---------------------------------------------------------------------------------------------- |
+| `title`        | `string`                                                 | `""`    | Optional title displayed above the table.                                                      |
+| `pageSize`     | `number`                                                 |         | If set, limits the number of rows displayed and enables pagination.                            |
+| `formatSite`   | `Snippet<[{ siteId: string; siteName: string }]>`       |         | Custom snippet for rendering the site column (first column). Receives the site ID and name.    |
+| `formatNumber` | `Snippet<[{ count: string \| number }]>` |         | Custom snippet for rendering number columns. Receives the count value for each numeric column. |
 
 ## Slots
 
@@ -53,6 +54,16 @@ The component can then be included in your Svelte file:
 <ResultTable />
 <!-- Table in paged mode limits the number of rows per page and has fixed height -->
 <ResultTable pageSize={10} />
+
+<!-- Custom formatting for site and number columns -->
+<ResultTable 
+    formatSite={(props) => {
+        <a href="/site/{props.siteId}">{props.siteName}</a>
+    }}
+    formatNumber={(props) => {
+        <strong>≈ {props.count}</strong>
+    }}
+/>
 ```
 
 ## Styling

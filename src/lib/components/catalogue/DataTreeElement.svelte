@@ -27,12 +27,13 @@
 
     let { element, layer = 1, treeOpen = false }: Props = $props();
 
-    const subCategoryName: string | null =
+    const subCategoryName: string | null = $derived(
         "subCategoryName" in element &&
-        element.subCategoryName !== undefined &&
-        element.subCategoryName !== null
+            element.subCategoryName !== undefined &&
+            element.subCategoryName !== null
             ? element.subCategoryName
-            : null;
+            : null,
+    );
 
     /**
      * watches the open tree nodes store to update the open state of the subcategorys
@@ -94,12 +95,13 @@
         });
     };
 
-    let finalParent: boolean =
+    let finalParent: boolean = $derived(
         !("childCategories" in element) &&
-        (!("fieldType" in element) ||
-            ("fieldType" in element &&
-                typeof element.fieldType === "string" &&
-                element.fieldType == "single-select"));
+            (!("fieldType" in element) ||
+                ("fieldType" in element &&
+                    typeof element.fieldType === "string" &&
+                    element.fieldType == "single-select")),
+    );
 
     const selectAllOptions = (): void => {
         if (!("criteria" in element)) return;
@@ -156,7 +158,7 @@
         {/if}
 
         {#if "infoLink" in element && element.infoLink !== undefined}
-            <a href={element.infoLink.link} target="_blank"
+            <a href={element.infoLink.link} target="_blank" rel="external"
                 >{element.infoLink.display}</a
             >
         {/if}

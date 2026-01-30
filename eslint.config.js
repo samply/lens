@@ -7,13 +7,20 @@ import svelte from "eslint-plugin-svelte";
 import svelteConfig from "./svelte.config.js";
 
 export default defineConfig([
-    globalIgnores(["dist", "book", "docs/assets"]),
+    globalIgnores(["dist", "book", "docs/assets", ".svelte-kit"]),
     // Recommended JavaScript and TypeScript lints
     pluginJs.configs.recommended,
     ...tseslint.configs.recommended,
     // Configure ESLint for use with Svelte, see https://github.com/sveltejs/eslint-plugin-svelte#typescript-project
     ...svelte.configs.recommended,
-    { languageOptions: { globals: globals.browser } },
+    {
+        languageOptions: {
+            globals: {
+                ...globals.browser,
+                __LIB_VERSION__: "readonly",
+            },
+        },
+    },
     {
         files: ["**/*.svelte", "**/*.svelte.ts", "**/*.svelte.js"],
         languageOptions: {

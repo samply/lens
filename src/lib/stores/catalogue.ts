@@ -1,5 +1,5 @@
 import { writable } from "svelte/store";
-import type { Catalogue, Criteria, Category } from "../types/catalogue";
+import type { LensCatalogue, Criteria, Category } from "../types/catalogue";
 import {
     isBottomLayer,
     isTopLayer,
@@ -17,7 +17,7 @@ import catalogueSchema from "../schema/catalogue.schema.json";
  * there could be some corner cases for that
  */
 
-export const catalogue = writable<Catalogue>([]);
+export const catalogue = writable<LensCatalogue>([]);
 
 const resolveSubgroupBottomLayer = (criteria: Criteria[]): string[] => {
     let collectedCriteria: string[] = [];
@@ -179,7 +179,7 @@ export const getCriteria = (category: string): string[] => {
 
     catalogue.subscribe((catalogue) => {
         bottomLevelItems = getCriteriaValuesOfCategoryWithKey(
-            catalogue as Catalogue,
+            catalogue as LensCatalogue,
             category,
         );
     });
@@ -323,7 +323,7 @@ export const getCriteriaFromKey = (
 /**
  * Set the catalogue. A warning is logged to the browser console if the catalogue does not match the JSON schema. Note that the function makes a deep copy of the catalogue so modifying the original object has no effect.
  */
-export function setCatalogue(newCatalogue: Catalogue) {
+export function setCatalogue(newCatalogue: LensCatalogue) {
     // Make a copy to avoid modifying the original object
     const catalogueCopy = structuredClone(newCatalogue);
     const ajv = new Ajv({
