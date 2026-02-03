@@ -19,6 +19,7 @@ export {
     removeFailedSite,
     measureReportToLensResult,
     clearSiteResults,
+    getSiteResultById,
     type LensResult,
 } from "./stores/response";
 export { getAst } from "./helpers/ast-transformer";

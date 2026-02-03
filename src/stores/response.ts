@@ -42,6 +42,23 @@ export type LensResult = {
     totals: Record<string, number>;
 };
 
+export function getSiteResultById(site: string) {
+    let result: LensResult | undefined;
+    siteResults.subscribe((results) => {
+        console.log("allResults: ", results);
+        result = results.get(site);
+    });
+    if (result === undefined || result === null) {
+        console.error(`No result found for site: ${site}`);
+        return;
+    }
+    if (Object.keys(result).length === 0) {
+        console.log(`Empty results: ${site}`);
+    }
+    console.log(result);
+    return result;
+}
+
 /**
  * Call this when you receive a site result via beam.
  */
