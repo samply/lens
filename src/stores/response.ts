@@ -42,7 +42,12 @@ export type LensResult = {
     totals: Record<string, number>;
 };
 
-export function getSiteResultById(site: string) {
+/**
+ * Call this when you want to get the result for a specific site.
+ * @param site id of the site to get results
+ * @returns result of the requested site or undefined
+ */
+export function getSiteResultById(site: string): LensResult | undefined {
     let result: LensResult | undefined;
     siteResults.subscribe((results) => {
         console.log("allResults: ", results);
@@ -52,10 +57,6 @@ export function getSiteResultById(site: string) {
         console.error(`No result found for site: ${site}`);
         return;
     }
-    if (Object.keys(result).length === 0) {
-        console.log(`Empty results: ${site}`);
-    }
-    console.log(result);
     return result;
 }
 

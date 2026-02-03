@@ -80,6 +80,14 @@ if (isLensResultEmpty(result)) {
 }
 ```
 
+### Getting values of a single site
+
+Use this function if you want to get the data from a single site.
+
+```ts
+getSiteResultById("your-site-id");
+```
+
 ## Components
 
 Lens provides components to render results.
