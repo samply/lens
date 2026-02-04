@@ -18,6 +18,9 @@
     const onclick = (): void => {
         queryModified.set(false);
         $queryStore = $queryStore.filter((queryGroup) => queryGroup.length > 0);
+        if ($queryStore.length === 0) {
+            $queryStore = [[]];
+        }
         window.dispatchEvent(new CustomEvent("lens-search-triggered"));
     };
 </script>
