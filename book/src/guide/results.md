@@ -85,7 +85,7 @@ if (isLensResultEmpty(result)) {
 Use this function if you want to get the data from a single site.
 
 ```ts
-const siteResult = getSiteResultById("your-site-id");
+const siteResult = getSiteResult("your-site-id");
 ```
 
 ## Components

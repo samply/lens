@@ -1,4 +1,4 @@
-import { writable } from "svelte/store";
+import { writable, get } from "svelte/store";
 import type { FhirMeasureReport } from "../types/response";
 
 export const siteResults = writable(new Map<string, LensResult>());
@@ -47,16 +47,8 @@ export type LensResult = {
  * @param site id of the site to get results
  * @returns result of the requested site or undefined
  */
-export function getSiteResultById(site: string): LensResult | undefined {
-    let result: LensResult | undefined;
-    siteResults.subscribe((results) => {
-        result = results.get(site);
-    });
-    if (result === undefined || result === null) {
-        console.error(`No result found for site: ${site}`);
-        return;
-    }
-    return result;
+export function getSiteResult(site: string): LensResult | undefined {
+    return get(siteResults).get(site);
 }
 
 /**
