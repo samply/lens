@@ -50,7 +50,6 @@ export type LensResult = {
 export function getSiteResultById(site: string): LensResult | undefined {
     let result: LensResult | undefined;
     siteResults.subscribe((results) => {
-        console.log("allResults: ", results);
         result = results.get(site);
     });
     if (result === undefined || result === null) {
