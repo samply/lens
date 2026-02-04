@@ -1,4 +1,4 @@
-import { writable } from "svelte/store";
+import { writable, get } from "svelte/store";
 import type { FhirMeasureReport } from "../types/response";
 
 export const siteResults = writable(new Map<string, LensResult>());
@@ -41,6 +41,15 @@ export type LensResult = {
     stratifiers: Record<string, Record<string, number>>;
     totals: Record<string, number>;
 };
+
+/**
+ * Call this when you want to get the result for a specific site.
+ * @param site id of the site to get results
+ * @returns result of the requested site or undefined
+ */
+export function getSiteResult(site: string): LensResult | undefined {
+    return get(siteResults).get(site);
+}
 
 /**
  * Call this when you receive a site result via beam.
