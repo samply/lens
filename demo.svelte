@@ -441,7 +441,24 @@
                 <lens-search-modified-display></lens-search-modified-display>
             </div>
             <div id="result-table" class="card">
-                <lens-result-table pageSize={10}></lens-result-table>
+                <lens-result-table pageSize={10}>
+                    <h2 slot="beneath-pagination">beneath-pagination</h2>
+                    <span class="cell" slot="cell-template">
+                        <span class="col-1">
+                            <span class="data"></span>
+                        </span>
+                        <span class="col-2">
+                            <span class="data"></span>
+                            <span>👍</span>
+                        </span>
+                    </span>
+                    <style slot="cell-template-style">
+                        .col-1 {
+                            color: var(--blue);
+                        }
+                    </style>
+                </lens-result-table>
+
                 <lens-negotiate-button></lens-negotiate-button>
             </div>
             <div class="card">

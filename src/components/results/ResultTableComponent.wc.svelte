@@ -139,15 +139,9 @@
         title?: string;
         /** If set, limits the number of rows displayed and enables pagination. */
         pageSize?: number;
-        /** Visually indicate that values are approximations (e.g., with a tilde). */
-        indicateApproximation?: boolean;
     }
 
-    let {
-        title = "",
-        pageSize,
-        indicateApproximation = false,
-    }: Props = $props();
+    let { title = "", pageSize }: Props = $props();
 
     let activePage = $state(1);
     let sortColumnIndex = $state(0);
@@ -194,109 +188,180 @@
             sortAscending = !sortAscending;
         }
     }
+
+    /**
+     * Provides a template for the values which is inserted via the 'celltemplate' slot.
+     * Each column must get it's own template, marked with a class like `class="row-1"`,
+     * otherwise the default value will be shown without extra markup.
+     */
+    let cellTemplate: HTMLElement;
+    let cellTemplateContents = $state<HTMLElement>();
+
+    $effect(() => {
+        const cellTemplateSlot = cellTemplate.querySelector(
+            "slot[name=cell-template]",
+        ) as HTMLSlotElement | null;
+        if (!cellTemplateSlot) return;
+        cellTemplateContents =
+            cellTemplateSlot.assignedElements()[0] as HTMLElement;
+    });
+
+    interface MountCell {
+        data: string | number;
+        index: number;
+    }
+    function mountCell(node: HTMLElement, value: MountCell) {
+        const { data, index } = value;
+
+        function render(value: string | number, index: number) {
+            const templateClone = cellTemplateContents?.cloneNode(
+                true,
+            ) as HTMLElement;
+            const column = templateClone?.querySelector(
+                `.col-${index + 1}`,
+            ) as HTMLElement;
+            const valueElement = column?.querySelector(".data");
+            if (!valueElement) {
+                node.textContent = `${value}`;
+                return;
+            }
+            valueElement.innerHTML = `${value}`;
+            node.replaceChildren(column);
+        }
+
+        render(data, index);
+
+        return {
+            update({ data, index }: MountCell) {
+                render(data, index);
+            },
+        };
+    }
+
+    /**
+     * Slots can't pass the styles to a web component slot due to the shadow dom restrictions.
+     * Therefore another slot is provided where CSS can be passed in a regular HTML style tag.
+     */
+    let tableWrapper: HTMLElement;
+    let cellTemplateStyle: HTMLElement;
+
+    $effect(() => {
+        const cellTemplateStyleElement = cellTemplateStyle?.querySelector(
+            "slot[name=cell-template-style]",
+        ) as HTMLSlotElement | null;
+        const styleSheet = cellTemplateStyleElement?.assignedElements()[0];
+        if (!styleSheet || !tableWrapper) return;
+        tableWrapper.getRootNode().appendChild(styleSheet);
+    });
 </script>
 
-<h4 part="lens-result-table-title">{title}</h4>
-<table part="lens-result-table">
-    <thead part="lens-result-table-header">
-        <tr part="lens-result-table-header-row">
-            <th
-                part="lens-result-table-header-cell lens-result-table-header-cell-checkbox"
-                ><input
-                    part="lens-result-table-header-checkbox"
-                    type="checkbox"
-                    checked={allChecked}
-                    onchange={checkAllSites}
-                /></th
-            >
-            <!-- eslint-disable-next-line svelte/require-each-key -->
-            {#each headerData as header, index}
+<div part="lens-result-table-wrapper" bind:this={tableWrapper}>
+    <div bind:this={cellTemplate} hidden>
+        <slot name="cell-template" />
+    </div>
+    <div bind:this={cellTemplateStyle} hidden>
+        <slot name="cell-template-style" />
+    </div>
+
+    <h4 part="lens-result-table-title">{title}</h4>
+    <table part="lens-result-table">
+        <thead part="lens-result-table-header">
+            <tr part="lens-result-table-header-row">
                 <th
-                    part="lens-result-table-header-cell lens-result-table-header-datatype"
-                    onclick={() => clickedOnColumnHeader(index)}
-                >
-                    {header.title}
-                    {#if header.hintText}
-                        <InfoButtonComponent message={header.hintText} />
-                    {/if}
-                    {#if index === sortColumnIndex}
-                        <span style="font-size: clamp(12px, 0.8rem, 32px);">
-                            {#if sortAscending}
-                                ▲
-                            {:else}
-                                ▼
-                            {/if}
-                        </span>
-                    {:else}
-                        <span
-                            style="font-size: clamp(10px, 0.4rem, 22px); opacity: 0.5;"
-                        >
-                            ▲▼
-                        </span>
-                    {/if}
-                </th>
-            {/each}
-        </tr>
-    </thead>
-    <tbody part="lens-result-table-table-body">
-        {#each visibleRows as tableRow (tableRow[0])}
-            <tr part="lens-result-table-item-body-row">
-                <td
-                    part="lens-result-table-item-body-cell lens-result-table-item-body-cell-checkbox"
+                    part="lens-result-table-header-cell lens-result-table-header-cell-checkbox"
                     ><input
-                        part="lens-result-table-item-body-checkbox"
+                        part="lens-result-table-header-checkbox"
                         type="checkbox"
-                        checked={$datarequestsStore.includes(
-                            tableRow[0] as string,
-                        )}
-                        onchange={() => updateStoreOnCheck(tableRow)}
-                    /></td
+                        checked={allChecked}
+                        onchange={checkAllSites}
+                    /></th
                 >
-                {#each tableRow as data, index (index)}
-                    <td part="lens-result-table-item-body-cell">
-                        {#if indicateApproximation && index !== 0 && typeof data === "number"}
-                            ≈
+                <!-- eslint-disable-next-line svelte/require-each-key -->
+                {#each headerData as header, index}
+                    <th
+                        part="lens-result-table-header-cell lens-result-table-header-datatype"
+                        onclick={() => clickedOnColumnHeader(index)}
+                    >
+                        {header.title}
+                        {#if header.hintText}
+                            <InfoButtonComponent message={header.hintText} />
                         {/if}
-                        {data}
-                    </td>
+                        {#if index === sortColumnIndex}
+                            <span style="font-size: clamp(12px, 0.8rem, 32px);">
+                                {#if sortAscending}
+                                    ▲
+                                {:else}
+                                    ▼
+                                {/if}
+                            </span>
+                        {:else}
+                            <span
+                                style="font-size: clamp(10px, 0.4rem, 22px); opacity: 0.5;"
+                            >
+                                ▲▼
+                            </span>
+                        {/if}
+                    </th>
                 {/each}
             </tr>
-        {/each}
-        <!-- Invisible rows for spacing -->
-        {#if pageSize !== undefined && visibleRows.length < pageSize}
-            {#each Array(pageSize - visibleRows.length).keys() as i (i)}
+        </thead>
+        <tbody part="lens-result-table-table-body">
+            {#each visibleRows as tableRow (tableRow[0])}
                 <tr part="lens-result-table-item-body-row">
-                    {#each Array(headerData.length + 1).keys() as j (j)}
-                        <td part="lens-result-table-item-body-cell"></td>
+                    <td
+                        part="lens-result-table-item-body-cell lens-result-table-item-body-cell-checkbox"
+                        ><input
+                            part="lens-result-table-item-body-checkbox"
+                            type="checkbox"
+                            checked={$datarequestsStore.includes(
+                                tableRow[0] as string,
+                            )}
+                            onchange={() => updateStoreOnCheck(tableRow)}
+                        /></td
+                    >
+                    {#each tableRow as data, index (index)}
+                        <td part="lens-result-table-item-body-cell">
+                            <span use:mountCell={{ data, index }}></span>
+                        </td>
                     {/each}
                 </tr>
             {/each}
-        {/if}
-    </tbody>
-</table>
-<slot name="lens-result-above-pagination" />
-{#if pageSize !== undefined}
-    <div part="lens-result-table-pagination">
-        <button
-            part="lens-result-table-pagination-button lens-result-pagination-pagination-previous"
-            disabled={activePage === 1}
-            onclick={() => (activePage -= 1)}>&#8592;</button
-        >
-        <div part="lens-result-table-pagination-pagenumber">
-            {activePage} / {tableRowData.length === 0
-                ? 1
-                : Math.ceil(tableRowData.length / pageSize)}
+            <!-- Invisible rows for spacing -->
+            {#if pageSize !== undefined && visibleRows.length < pageSize}
+                {#each Array(pageSize - visibleRows.length).keys() as i (i)}
+                    <tr part="lens-result-table-item-body-row">
+                        {#each Array(headerData.length + 1).keys() as j (j)}
+                            <td part="lens-result-table-item-body-cell"></td>
+                        {/each}
+                    </tr>
+                {/each}
+            {/if}
+        </tbody>
+    </table>
+    <slot name="lens-result-above-pagination" />
+    {#if pageSize !== undefined}
+        <div part="lens-result-table-pagination">
+            <button
+                part="lens-result-table-pagination-button lens-result-pagination-pagination-previous"
+                disabled={activePage === 1}
+                onclick={() => (activePage -= 1)}>&#8592;</button
+            >
+            <div part="lens-result-table-pagination-pagenumber">
+                {activePage} / {tableRowData.length === 0
+                    ? 1
+                    : Math.ceil(tableRowData.length / pageSize)}
+            </div>
+            <button
+                part="lens-result-table-pagination-button lens-result-pagination-pagination-next"
+                disabled={activePage ===
+                    Math.ceil(tableRowData.length / pageSize) ||
+                    tableRowData.length === 0}
+                onclick={() => (activePage += 1)}>&#8594;</button
+            >
         </div>
-        <button
-            part="lens-result-table-pagination-button lens-result-pagination-pagination-next"
-            disabled={activePage ===
-                Math.ceil(tableRowData.length / pageSize) ||
-                tableRowData.length === 0}
-            onclick={() => (activePage += 1)}>&#8594;</button
-        >
-    </div>
-{/if}
-<slot name="beneath-pagination" />
+    {/if}
+    <slot name="beneath-pagination" />
+</div>
 
 <style>
     [part~="lens-result-table-title"] {
