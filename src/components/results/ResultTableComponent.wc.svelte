@@ -15,6 +15,7 @@
     import { lensOptions } from "../../stores/options";
     import type { HeaderData } from "../../types/options";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
+    import Tooltip from "../informational/Tooltip.svelte";
     import { translate } from "../../helpers/translations";
 
     /**
@@ -139,15 +140,11 @@
         title?: string;
         /** If set, limits the number of rows displayed and enables pagination. */
         pageSize?: number;
-        /** Visually indicate that values are approximations (e.g., with a tilde). */
-        indicateApproximation?: boolean;
+        /** Callback that returns a tooltip message for a given number. If defined, adds a tooltip to numeric cells with the returned message. */
+        showRoundedTo?: (value: number) => string;
     }
 
-    let {
-        title = "",
-        pageSize,
-        indicateApproximation = false,
-    }: Props = $props();
+    let { title = "", pageSize, showRoundedTo }: Props = $props();
 
     let activePage = $state(1);
     let sortColumnIndex = $state(0);
@@ -254,10 +251,13 @@
                 >
                 {#each tableRow as data, index (index)}
                     <td part="lens-result-table-item-body-cell">
-                        {#if indicateApproximation && index !== 0 && typeof data === "number"}
-                            ≈
+                        {#if showRoundedTo && index !== 0 && typeof data === "number"}
+                            <Tooltip message={showRoundedTo(data)}>
+                                {data}
+                            </Tooltip>
+                        {:else}
+                            {data}
                         {/if}
-                        {data}
                     </td>
                 {/each}
             </tr>

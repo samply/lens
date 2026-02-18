@@ -12,11 +12,11 @@ Each row includes a checkbox to select that data source for a data request. The 
 
 ## Props
 
-| Prop                    | Type      | Default | Description                                                            |
-| ----------------------- | --------- | ------- | ---------------------------------------------------------------------- |
-| `title`                 | `string`  | `""`    | Optional title displayed above the table.                              |
-| `pageSize`              | `number`  |         | If set, limits the number of rows displayed and enables pagination.    |
-| `indicateApproximation` | `boolean` | `false` | Visually indicate that values are approximations (e.g., with a tilde). |
+| Prop            | Type                        | Default | Description                                                                                                                        |
+| --------------- | --------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `title`         | `string`                    | `""`    | Optional title displayed above the table.                                                                                          |
+| `pageSize`      | `number`                    |         | If set, limits the number of rows displayed and enables pagination.                                                                |
+| `showRoundedTo` | `(value: number) => string` |         | Callback that returns a tooltip message for a given number. If defined, adds a tooltip to numeric cells with the returned message. |
 
 ## Slots
 
@@ -53,6 +53,17 @@ The component can then be included in your HTML:
 <lens-result-table></lens-result-table>
 <!-- Table in paged mode limits the number of rows per page and has fixed height -->
 <lens-result-table pageSize={10}></lens-result-table>
+<!-- Table with rounding tooltip -->
+<lens-result-table showRoundedTo={() => "Rounded to the nearest multiple of 10"}
+></lens-result-table>
+<!-- Table with dynamic rounding tooltip based on value magnitude -->
+<lens-result-table
+    showRoundedTo={(value) => {
+        if (value < 10) return "Exact value";
+        if (value < 100) return "Rounded to the nearest multiple of 10";
+        return "Rounded to the nearest multiple of 100";
+    }}
+></lens-result-table>
 ```
 
 ## Styling
