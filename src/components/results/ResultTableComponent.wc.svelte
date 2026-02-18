@@ -44,9 +44,9 @@
              * the following items are the population for each data type (single or aggregated)
              */
             for (const [index, header] of headerData.entries()) {
-                // First column is the site name
+                // First column is the site
                 if (index === 0) {
-                    tableRow.push($lensOptions?.siteMappings?.[site] ?? site);
+                    tableRow.push(site);
                     continue;
                 }
 
@@ -251,7 +251,29 @@
                 >
                 {#each tableRow as data, index (index)}
                     <td part="lens-result-table-item-body-cell">
-                        {#if showRoundedTo && index !== 0 && typeof data === "number"}
+                        {#if index === 0}
+                            {@const siteInfo =
+                                $lensOptions?.siteMappings?.[data]}
+                            {@const siteName =
+                                typeof siteInfo === "string"
+                                    ? siteInfo
+                                    : siteInfo?.displayName || data}
+                            {@const collectionId =
+                                typeof siteInfo === "object"
+                                    ? siteInfo.collectionId
+                                    : undefined}
+                            {#if collectionId && $lensOptions?.collectionBaseUrl}
+                                <a
+                                    href={`${$lensOptions?.collectionBaseUrl}${collectionId}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    {siteName}
+                                </a>
+                            {:else}
+                                {siteName}
+                            {/if}
+                        {:else if index !== 0 && showRoundedTo && typeof data === "number"}
                             <Tooltip message={showRoundedTo(data)}>
                                 {data}
                             </Tooltip>

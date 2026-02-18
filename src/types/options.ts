@@ -8,7 +8,10 @@ export type LensOptions = {
     /** List of sites to query used by `querySpot` function and facet counts. If not set no sites are sent to Spot and Spot determines the sites to query. */
     sitesToQuery?: string[];
     chartOptions?: ChartOptions;
-    siteMappings?: { [key: string]: string };
+    /** Maps site ID to site info or string (display name only) for backwards compatibility. */
+    siteMappings?: { [key: string]: string | SiteInfo };
+    /** Base URL of the collections in the BBMRI-ERIC Directory. If set, collection IDs in the "siteMappings" are appended to this base URL to create the full URL of the collection in the BBMRI-ERIC Directory. */
+    collectionBaseUrl?: string;
     negotiateOptions?: NegotiateOptions;
     tableOptions?: TableOptions;
     resultSummaryOptions?: ResultSummaryOptions;
@@ -20,6 +23,13 @@ export type LensOptions = {
     facetCount?: FacetCountOptions;
     /** Whether to automatically update the query in the URL when it changes (default: true) */
     autoUpdateQueryInUrl?: boolean;
+};
+
+export type SiteInfo = {
+    /** Display name in the results table */
+    displayName: string;
+    /** Collection ID in the BBMRI-ERIC Directory */
+    collectionId?: string;
 };
 
 export type FacetCountOptions = {
@@ -36,25 +46,6 @@ export type NegotiateOptions = {
     url: string;
     /** The value of the Authorization header for the POST request. */
     authorizationHeader: string;
-    /**
-     * Maps the site names in the results table to the unique identifiers
-     * expected by the BBMRI Negotiator.
-     */
-    siteMappings: NegotiateOptionsSiteMapping[];
-};
-
-export type NegotiateOptionsSiteMapping = {
-    /**
-     * Name of the site, e.g. "Aachen". This must correspond to the site names
-     * as they are displayed in the results table.
-     */
-    site: string;
-    /** Unique identifier of the collection, e.g. "bbmri-eric:ID:DE_RWTHCBMB:collection:RWTHCBMB_BC" */
-    collection: string;
-    /** Unique identifier of the site, e.g. "bbmri-eric:ID:DE_RWTHCBMB" */
-    site_id: string;
-    /** Name of the collection, e.g. "Collection of RWTH cBMB Broad Consent Aachen" */
-    collection_name: string;
 };
 
 export type ChartOptions = {
