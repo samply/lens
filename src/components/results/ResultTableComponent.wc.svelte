@@ -264,6 +264,7 @@
                                     : undefined}
                             {#if collectionId && $lensOptions?.collectionBaseUrl}
                                 <a
+                                    part="lens-result-table-item-body-cell-link"
                                     href={`${$lensOptions?.collectionBaseUrl}${collectionId}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
@@ -383,5 +384,13 @@
     [part~="lens-result-table-item-body-row"] {
         border-bottom: solid 1px var(--light-gray);
         height: 2em;
+    }
+
+    [part~="lens-result-table-item-body-cell-link"] {
+        color: var(--blue);
+        text-decoration: none;
+        &:hover {
+            text-decoration: underline;
+        }
     }
 </style>
