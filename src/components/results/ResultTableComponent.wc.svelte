@@ -16,6 +16,10 @@
     import type { HeaderData } from "../../types/options";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
     import { translate } from "../../helpers/translations";
+    import { onMount } from "svelte";
+    import { showToast } from "../../stores/toasts";
+    import { get } from "svelte/store";
+    import { SvelteURL } from "svelte/reactivity";
 
     /**
      * data-types for the table
@@ -130,6 +134,57 @@
             });
         }
     };
+
+    onMount(() => {
+        // load datarequests from the URL if they exist
+        const encodedDatarequests = new URLSearchParams(
+            window.location.search,
+        ).get("datarequests");
+        if (encodedDatarequests !== null) {
+            try {
+                const datarequests = JSON.parse(
+                    new TextDecoder().decode(
+                        Uint8Array.from(atob(encodedDatarequests), (c) =>
+                            c.charCodeAt(0),
+                        ),
+                    ),
+                );
+                datarequestsStore.set(datarequests);
+            } catch {
+                console.error(
+                    "Failed to parse datarequests from URL:",
+                    encodedDatarequests,
+                );
+                showToast(
+                    translate("datarequests_in_url_parse_error"),
+                    "error",
+                );
+            }
+        }
+
+        // update the URL when the query changes
+        datarequestsStore.subscribe(() => {
+            if (get(lensOptions)?.autoUpdateDatarequestsInUrl ?? true) {
+                const datarequests = get(datarequestsStore);
+                const url = new SvelteURL(window.location.href);
+
+                if (datarequests.flat().length === 0) {
+                    url.searchParams.delete("datarequests");
+                } else {
+                    const encodedDatarequests = btoa(
+                        String.fromCharCode(
+                            ...new TextEncoder().encode(
+                                JSON.stringify(datarequests),
+                            ),
+                        ),
+                    );
+                    url.searchParams.set("datarequests", encodedDatarequests);
+                }
+
+                window.history.replaceState({}, "", url.toString());
+            }
+        });
+    });
 
     /**
      *  Configuration options for the result table.
