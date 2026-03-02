@@ -129,6 +129,7 @@ In the samply organization [Focus](https://github.com/samply/focus) is commonly 
 
 ```ts
 import { getAst, clearSiteResults, querySpot } from "@samply/lens";
+import { v4 as uuidv4 } from "uuid";
 
 let abortController = new AbortController();
 window.addEventListener("lens-search-triggered", () => {
@@ -144,7 +145,7 @@ window.addEventListener("lens-search-triggered", () => {
         JSON.stringify({
             lang: "ast",
             payload: base64Encode(
-                JSON.stringify({ ast: getAst(), id: crypto.randomUUID() }),
+                JSON.stringify({ ast: getAst(), id: uuidv4() }),
             ),
         }),
     );
