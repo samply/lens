@@ -16,12 +16,6 @@
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
     import type { HeaderData } from "../../types/options";
 
-    interface Props {
-        /** Visually indicate that values are approximations (e.g., with a tilde). */
-        indicateApproximation?: boolean;
-    }
-    let { indicateApproximation = false }: Props = $props();
-
     // This is derived from lensOptions and from responseStore
     const populations: { title: string; population: string }[] = $derived.by(
         () => {
@@ -92,11 +86,7 @@
             });
         }
 
-        if (indicateApproximation) {
-            return `≈ ${population}`;
-        } else {
-            return population.toString();
-        }
+        return population.toString();
     }
 </script>
 

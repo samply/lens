@@ -125,6 +125,10 @@
         "chartOptions": {
           "$ref": "#/definitions/ChartOptions"
         },
+        "collectionBaseUrl": {
+          "description": "Base URL of the collections in the BBMRI-ERIC Directory. If set, collection IDs in the \"siteMappings\" are appended to this base URL to create the full URL of the collection in the BBMRI-ERIC Directory.",
+          "type": "string"
+        },
         "facetCount": {
           "$ref": "#/definitions/FacetCountOptions",
           "description": "If set, fetch and display facet counts (number of results per discrete value) in the catalogue."
@@ -141,8 +145,16 @@
         },
         "siteMappings": {
           "additionalProperties": {
-            "type": "string"
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "$ref": "#/definitions/SiteInfo"
+              }
+            ]
           },
+          "description": "Maps site ID to site info or string (display name only) for backwards compatibility.",
           "type": "object"
         },
         "sitesToQuery": {
@@ -173,13 +185,6 @@
           "description": "The value of the Authorization header for the POST request.",
           "type": "string"
         },
-        "siteMappings": {
-          "description": "Maps the site names in the results table to the unique identifiers expected by the BBMRI Negotiator.",
-          "items": {
-            "$ref": "#/definitions/NegotiateOptionsSiteMapping"
-          },
-          "type": "array"
-        },
         "url": {
           "description": "The URL of the BBMRI Negotiator API endpoint that creates a request to apply for access. The URL path is typically /api/v3/requests. Lens will send a POST request to the URL to start the application process.",
           "type": "string"
@@ -187,36 +192,7 @@
       },
       "required": [
         "url",
-        "authorizationHeader",
-        "siteMappings"
-      ],
-      "type": "object"
-    },
-    "NegotiateOptionsSiteMapping": {
-      "additionalProperties": false,
-      "properties": {
-        "collection": {
-          "description": "Unique identifier of the collection, e.g. \"bbmri-eric:ID:DE_RWTHCBMB:collection:RWTHCBMB_BC\"",
-          "type": "string"
-        },
-        "collection_name": {
-          "description": "Name of the collection, e.g. \"Collection of RWTH cBMB Broad Consent Aachen\"",
-          "type": "string"
-        },
-        "site": {
-          "description": "Name of the site, e.g. \"Aachen\". This must correspond to the site names as they are displayed in the results table.",
-          "type": "string"
-        },
-        "site_id": {
-          "description": "Unique identifier of the site, e.g. \"bbmri-eric:ID:DE_RWTHCBMB\"",
-          "type": "string"
-        }
-      },
-      "required": [
-        "site",
-        "collection",
-        "site_id",
-        "collection_name"
+        "authorizationHeader"
       ],
       "type": "object"
     },
@@ -238,6 +214,23 @@
       },
       "required": [
         "dataTypes"
+      ],
+      "type": "object"
+    },
+    "SiteInfo": {
+      "additionalProperties": false,
+      "properties": {
+        "collectionId": {
+          "description": "Collection ID in the BBMRI-ERIC Directory",
+          "type": "string"
+        },
+        "displayName": {
+          "description": "Display name in the results table",
+          "type": "string"
+        }
+      },
+      "required": [
+        "displayName"
       ],
       "type": "object"
     },

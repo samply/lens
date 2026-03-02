@@ -56,22 +56,24 @@ export async function bbmriNegotiate(
 
     const bbmriCollectionResources: BbmriCollectionResource[] = [];
     for (const site of sitesToNegotiate) {
-        const siteMapping =
-            currentLensOptions.negotiateOptions.siteMappings.find(
-                (siteMapping) => siteMapping.site === site,
-            );
-        if (siteMapping === undefined) {
+        const siteInfo = currentLensOptions.siteMappings?.[site];
+        const collectionId =
+            typeof siteInfo === "object" ? siteInfo.collectionId : undefined;
+        if (!collectionId) {
             console.error(
-                `Site "${site}" is missing from negotiateOptions.siteMappings in the lens options`,
+                `Site '${site}' is missing a collection ID in the lens options "siteMappings", skipping it for BBMRI Negotiator request. Please add the collection ID for this site to the lens options to include it in the BBMRI Negotiator request.`,
             );
         } else {
             bbmriCollectionResources.push({
-                id: siteMapping.collection,
-                name: siteMapping.collection,
+                id: collectionId,
+                name: collectionId,
                 organization: {
                     id: 0,
-                    externalId: siteMapping.site_id,
-                    name: siteMapping.site,
+                    externalId: collectionId.split(":collection:")[0],
+                    name:
+                        typeof siteInfo === "string"
+                            ? siteInfo
+                            : siteInfo?.displayName || site,
                 },
             });
         }
