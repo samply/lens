@@ -29,6 +29,13 @@
           },
           "type": "array"
         },
+        "domains": {
+          "description": "Optional list of domain keys this item belongs to. If omitted the item is considered to be available in all domains.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
         "fieldType": {
           "const": "autocomplete",
           "type": "string"
@@ -269,6 +276,13 @@
       "additionalProperties": false,
       "description": "A catalogue item that lets the user specify a date range by picking an earliest and a latest date. The user can omit one of the dates to express earlier than or later than constraints.",
       "properties": {
+        "domains": {
+          "description": "Optional list of domain keys this item belongs to. If omitted the item is considered to be available in all domains.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
         "fieldType": {
           "const": "date",
           "type": "string"
@@ -314,6 +328,13 @@
       "additionalProperties": false,
       "description": "A catalogue item that lets the user specify a numeric range by entering a minimum and a maximum value. The user can omit one of the values to express less than or greater than constraints.",
       "properties": {
+        "domains": {
+          "description": "Optional list of domain keys this item belongs to. If omitted the item is considered to be available in all domains.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
         "fieldType": {
           "const": "number",
           "type": "string"
@@ -369,6 +390,13 @@
           },
           "type": "array"
         },
+        "domains": {
+          "description": "Optional list of domain keys this item belongs to. If omitted the item is considered to be available in all domains.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
         "fieldType": {
           "const": "single-select",
           "type": "string"
@@ -410,6 +438,13 @@
       "additionalProperties": false,
       "description": "A catalogue item that lets the user to specify a string.",
       "properties": {
+        "domains": {
+          "description": "Optional list of domain keys this item belongs to. If omitted the item is considered to be available in all domains.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
         "fieldType": {
           "const": "string",
           "type": "string"

@@ -86,4 +86,16 @@ const lensTranslations: Texts = {
         en: "Search begins with 2 characters",
         de: "Suche beginnt mit 2 Zeichen",
     },
+    domain_chip_all: {
+        en: "all",
+        de: "alle",
+    },
+    domain_summary_label: {
+        en: "Searched domains:",
+        de: "Durchsuchte Domänen:",
+    },
+    domain_summary_conflict: {
+        en: "No domain matches all criteria",
+        de: "Keine Domäne erfüllt alle Kriterien",
+    },
 };

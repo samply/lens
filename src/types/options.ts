@@ -5,6 +5,13 @@
 export type LensOptions = {
     /** URL of the Spot API endpoint used by `querySpot` function and facet counts. */
     spotUrl?: string;
+    /**
+     * Optional map of domain keys to their display configuration. When set,
+     * catalogue items will show domain chips indicating which domains they
+     * belong to. Items without a `domains` field are considered to be
+     * available in all domains and will show an "all" chip.
+     */
+    domains?: { [key: string]: DomainConfig };
     /** List of sites to query used by `querySpot` function and facet counts. If not set no sites are sent to Spot and Spot determines the sites to query. */
     sitesToQuery?: string[];
     chartOptions?: ChartOptions;
@@ -30,6 +37,16 @@ export type SiteInfo = {
     displayName: string;
     /** Collection ID in the BBMRI-ERIC Directory */
     collectionId?: string;
+};
+
+/**
+ * Display configuration for a single domain.
+ */
+export type DomainConfig = {
+    /** The user-facing display name for the domain */
+    name: string;
+    /** Hex color code for the domain chip, e.g. "#0047b9" */
+    color: string;
 };
 
 export type FacetCountOptions = {

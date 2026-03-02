@@ -18,6 +18,11 @@
 
     setOptions({
         language: localStorage.getItem("language") || "en",
+        domains: {
+            oncology: { name: "Oncology", color: "#0047b9" },
+            cardiology: { name: "Cardiology", color: "#00882d" },
+            rare_diseases: { name: "Rare Diseases", color: "#b90000" },
+        },
         texts: {
             "lens-dev-test-error": {
                 en: "Task failed successfully.",
@@ -80,6 +85,7 @@
             name: "Diagnosis",
             type: "EQUALS",
             infoButtonText: ["Diagnosis"],
+            domains: ["oncology", "rare_diseases"],
             criteria: [
                 {
                     key: "C31",
@@ -119,6 +125,7 @@
             key: "blood-group",
             name: "Blood group",
             type: "EQUALS",
+            domains: ["cardiology"],
             criteria: [
                 {
                     key: "A+",
@@ -159,6 +166,7 @@
             fieldType: "date",
             key: "date-of-birth",
             name: "Date of birth",
+            domains: ["cardiology", "oncology"],
             type: "BETWEEN",
             max: "2025-09-04",
         },
@@ -427,6 +435,7 @@
     </header>
     <div id="search-wrapper">
         <lens-search-bar-multiple></lens-search-bar-multiple>
+        <lens-domain-summary></lens-domain-summary>
         <lens-query-explain-button></lens-query-explain-button>
         <lens-query-spinner></lens-query-spinner>
         <lens-search-button></lens-search-button>

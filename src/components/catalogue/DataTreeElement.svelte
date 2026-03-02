@@ -12,6 +12,7 @@
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
     import DatePickerComponent from "./DatePickerComponent.svelte";
     import { translate } from "../../helpers/translations";
+    import { lensOptions } from "../../stores/options";
 
     interface Props {
         element: Category;
@@ -27,12 +28,13 @@
 
     let { element, layer = 1, treeOpen = false }: Props = $props();
 
-    const subCategoryName: string | null =
+    const subCategoryName = $derived(
         "subCategoryName" in element &&
-        element.subCategoryName !== undefined &&
-        element.subCategoryName !== null
+            element.subCategoryName !== undefined &&
+            element.subCategoryName !== null
             ? element.subCategoryName
-            : null;
+            : null,
+    );
 
     /**
      * watches the open tree nodes store to update the open state of the subcategorys
@@ -93,13 +95,40 @@
             return store;
         });
     };
-
-    let finalParent: boolean =
+    /**
+     * Resolved domain chips to render for this element.
+     * Returns an array of { key, name, color } for domain chips,
+     * or a single { key: "__all__", name: "all", color: null } sentinel
+     * when no specific domains are set but the feature is active.
+     */
+    const domainChips = $derived.by(() => {
+        const opts = $lensOptions;
+        if (!opts?.domains || Object.keys(opts.domains).length === 0) return [];
+        if (element.fieldType === "group") return [];
+        const elementDomains =
+            "domains" in element ? (element.domains ?? []) : [];
+        if (elementDomains.length === 0) {
+            return [
+                {
+                    key: "__all__",
+                    name: translate("domain_chip_all"),
+                    color: null,
+                },
+            ];
+        }
+        return elementDomains.map((d) => ({
+            key: d,
+            name: opts.domains![d]?.name ?? d,
+            color: opts.domains![d]?.color ?? null,
+        }));
+    });
+    const finalParent = $derived(
         !("childCategories" in element) &&
-        (!("fieldType" in element) ||
-            ("fieldType" in element &&
-                typeof element.fieldType === "string" &&
-                element.fieldType == "single-select"));
+            (!("fieldType" in element) ||
+                ("fieldType" in element &&
+                    typeof element.fieldType === "string" &&
+                    element.fieldType == "single-select")),
+    );
 
     const selectAllOptions = (): void => {
         if (!("criteria" in element)) return;
@@ -159,6 +188,25 @@
             <a href={element.infoLink.link} target="_blank"
                 >{element.infoLink.display}</a
             >
+        {/if}
+
+        {#if domainChips.length > 0}
+            <div part="lens-data-tree-domain-chips">
+                {#each domainChips as chip (chip.key)}
+                    {#if chip.color !== null}
+                        <span
+                            part="lens-data-tree-domain-chip"
+                            style="--domain-chip-color: {chip.color}; background-color: {chip.color};"
+                            >{chip.name}</span
+                        >
+                    {:else}
+                        <span
+                            part="lens-data-tree-domain-chip lens-data-tree-domain-chip-all"
+                            >{chip.name}</span
+                        >
+                    {/if}
+                {/each}
+            </div>
         {/if}
 
         {#if finalParent && open}
@@ -260,5 +308,31 @@
         padding-left: var(--gap-m);
         padding-top: var(--gap-xs);
         padding-bottom: var(--gap-xs);
+    }
+
+    [part~="lens-data-tree-domain-chips"] {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        margin-left: auto;
+    }
+
+    [part~="lens-data-tree-domain-chip"] {
+        display: inline-flex;
+        align-items: center;
+        padding: 1px 7px;
+        border-radius: 10px;
+        font-size: var(--font-size-xxs);
+        font-family: var(--font-family);
+        font-weight: 600;
+        white-space: nowrap;
+        color: #ffffff;
+        line-height: 1.6;
+    }
+
+    [part~="lens-data-tree-domain-chip-all"] {
+        background-color: var(--light-gray);
+        color: var(--gray);
+        font-weight: 400;
     }
 </style>

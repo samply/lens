@@ -69,6 +69,11 @@ export type SingleSelectCategory = {
      * collapsable entries in the catalogue but will be grouped together in the
      * same chip in the search bar. */
     subCategoryName?: string;
+    /**
+     * Optional list of domain keys this item belongs to. If omitted the item
+     * is considered to be available in all domains.
+     */
+    domains?: string[];
 };
 
 /**
@@ -88,6 +93,11 @@ export type AutocompleteCategory = {
     criteria: Criteria[];
     /** Optional text that is accessed by clicking a "ⓘ" button next to the display name */
     infoButtonText?: string[];
+    /**
+     * Optional list of domain keys this item belongs to. If omitted the item
+     * is considered to be available in all domains.
+     */
+    domains?: string[];
 };
 
 /**
@@ -97,6 +107,11 @@ export type AutocompleteCategory = {
  */
 export type NumericRangeCategory = {
     fieldType: "number";
+    /**
+     * Optional list of domain keys this item belongs to. If omitted the item
+     * is considered to be available in all domains.
+     */
+    domains?: string[];
     /** A key that uniquely identifies the catalogue item. It is typically used to look up the CQL snippet for that item. */
     key: string;
     /** The item's user-facing display name */
@@ -135,6 +150,11 @@ export type DateRangeCategory = {
      */
     max?: string;
     infoButtonText?: string[];
+    /**
+     * Optional list of domain keys this item belongs to. If omitted the item
+     * is considered to be available in all domains.
+     */
+    domains?: string[];
 };
 
 /**
@@ -149,6 +169,11 @@ export type StringCategory = {
     type: "EQUALS";
     /** Optional text that is accessed by clicking a "ⓘ" button next to the display name */
     infoButtonText?: string[];
+    /**
+     * Optional list of domain keys this item belongs to. If omitted the item
+     * is considered to be available in all domains.
+     */
+    domains?: string[];
 };
 
 /**
