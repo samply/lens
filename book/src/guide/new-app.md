@@ -296,6 +296,8 @@ jobs:
         steps:
             - uses: actions/checkout@v4
             - uses: actions/setup-node@v6
+              with:
+                  node-version: latest
             - run: npm ci
             - run: npx prettier --check .
             - run: npx eslint .

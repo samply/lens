@@ -6,9 +6,7 @@ The `lens-result-summary` component displays a compact summary of result metrics
 
 ## Props
 
-| Prop                    | Type      | Default | Description                                                            |
-| ----------------------- | --------- | ------- | ---------------------------------------------------------------------- |
-| `indicateApproximation` | `boolean` | `false` | Visually indicate that values are approximations (e.g., with a tilde). |
+The result summary component does not have any props.
 
 ## Example
 

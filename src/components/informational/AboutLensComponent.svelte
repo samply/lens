@@ -17,7 +17,7 @@
         alignDialogue="top-right"
         dialogueMaxWidth="250px"
     >
-        <h4 part="lens-info-header">Ablut Lens</h4>
+        <h4 part="lens-info-header">About Lens</h4>
         <div part="lens-info-body">Lens Version: {version}</div>
     </InfoButtonComponent>
     <span part="lens-info-made-with">

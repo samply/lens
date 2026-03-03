@@ -17,8 +17,10 @@ jobs:
             pages: write # To push to a GitHub Pages site
             id-token: write # To update the deployment status
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v6
             - uses: actions/setup-node@v6
+              with:
+                  node-version: latest
             - run: npm ci
             - run: npx typedoc src/index.ts
             - name: Install latest mdbook
@@ -37,5 +39,5 @@ jobs:
                   mv docs _site
                   mv demo _site
             - uses: actions/configure-pages@v5
-            - uses: actions/upload-pages-artifact@v3
+            - uses: actions/upload-pages-artifact@v4
             - uses: actions/deploy-pages@v4
