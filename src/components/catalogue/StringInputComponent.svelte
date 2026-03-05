@@ -1,7 +1,6 @@
 <script lang="ts">
-    import { v4 as uuidv4 } from "uuid";
     import { activeQueryGroupIndex, addItemToQuery } from "../../stores/query";
-    import type { StringCategory } from "../../types/catalogue";
+    import type { FreeTextElement } from "../../types/catalogue";
     import AddButton from "./AddButton.svelte";
     import { onMount } from "svelte";
     import { translate } from "../../helpers/translations";
@@ -11,7 +10,7 @@
         inSearchBar = false,
         resetToEmptySearchBar = () => {},
     }: {
-        element: StringCategory;
+        element: FreeTextElement;
         inSearchBar?: boolean;
         resetToEmptySearchBar?: (focus?: boolean) => void;
     } = $props();
@@ -42,17 +41,10 @@
 
         addItemToQuery(
             {
-                id: uuidv4(),
+                type: "SetItem",
                 key: element.key,
-                name: element.name,
-                type: element.type,
-                values: [
-                    {
-                        name: input.value,
-                        value: input.value,
-                        queryBindId: uuidv4(),
-                    },
-                ],
+                negated: false,
+                values: [input.value],
             },
             $activeQueryGroupIndex,
         );

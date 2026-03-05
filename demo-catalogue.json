@@ -1,0 +1,190 @@
+[
+    {
+        "type": "AutocompleteElement",
+        "key": "diagnosis",
+        "name": "Diagnosis",
+        "infoButtonText": ["Diagnosis"],
+        "options": [
+            {
+                "value": "C31",
+                "name": "C31",
+                "description": "Malignant neoplasm of accessory sinuses"
+            },
+            {
+                "value": "C31.0",
+                "name": "C31.0",
+                "description": "Malignant neoplasm: Maxillary sinus"
+            },
+            {
+                "value": "C41",
+                "name": "C41",
+                "description": "Malignant neoplasm of bone and articular cartilage of other and unspecified sites"
+            },
+            {
+                "value": "C41.0",
+                "name": "C41.0",
+                "description": "Malignant neoplasm: Bones of skull and face"
+            },
+            {
+                "value": "C41.1",
+                "name": "C41.1",
+                "description": "Malignant neoplasm: Bones of vertebrae"
+            },
+            {
+                "value": "C41.2",
+                "name": "C41.2",
+                "description": "Malignant neoplasm: Bones of pelvis"
+            }
+        ]
+    },
+    {
+        "type": "SelectElement",
+        "key": "blood-group",
+        "name": "Blood group",
+        "options": [
+            {
+                "value": "A+",
+                "name": "A+",
+                "description": ""
+            },
+            {
+                "value": "A-",
+                "name": "A-",
+                "description": ""
+            },
+            {
+                "value": "B+",
+                "name": "B+",
+                "description": ""
+            },
+            {
+                "value": "B-",
+                "name": "B-",
+                "description": ""
+            },
+            {
+                "value": "somethinglong",
+                "name": "This is a very long name for a blood group just to test the layout",
+                "description": ""
+            }
+        ]
+    },
+    {
+        "type": "NumericRangeElement",
+        "key": "body_weight",
+        "name": "Body weight",
+        "min": 0,
+        "unitText": "kg"
+    },
+    {
+        "type": "DateRangeElement",
+        "key": "date-of-birth",
+        "name": "Date of birth",
+        "max": "2025-09-04"
+    },
+    {
+        "type": "FreeTextElement",
+        "key": "first-name",
+        "name": "First name"
+    },
+    {
+        "type": "CatalogueGroup",
+        "name": "Donor/Clinical Information",
+        "elements": [
+            {
+                "type": "SelectElement",
+                "key": "gender",
+                "name": "Gender",
+                "options": [
+                    {
+                        "value": "male",
+                        "name": "male",
+                        "description": ""
+                    },
+                    {
+                        "value": "female",
+                        "name": "female",
+                        "description": ""
+                    },
+                    {
+                        "value": "other",
+                        "name": "other",
+                        "description": ""
+                    },
+                    {
+                        "value": "sex_uncharted",
+                        "name": "sex uncharted",
+                        "description": ""
+                    }
+                ]
+            },
+            {
+                "type": "NumericRangeElement",
+                "key": "age_at_diagnosis",
+                "name": "Diagnosis age"
+            },
+            {
+                "type": "DateRangeElement",
+                "key": "date-of-diagnosis",
+                "name": "Date of diagnosis",
+                "max": "2025-09-04"
+            }
+        ]
+    },
+    {
+        "type": "CatalogueGroup",
+        "name": "Tumorentität",
+        "elements": [
+            {
+                "type": "CatalogueGroup",
+                "name": "Neuroonkologie",
+                "elements": [
+                    {
+                        "type": "SelectElement",
+                        "key": "gliom_all_groups",
+                        "name": "Gliome, alle Gruppen",
+                        "options": [
+                            {
+                                "value": "urn:dktk:code:3:2",
+                                "name": "Gliom - Grad I",
+                                "description": "Diagnosis D43.% and Morph 9383/1,9384/1",
+                                "aggregatedValue": [
+                                    [
+                                        {
+                                            "key": "diagnosis",
+                                            "value": "D43.%"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "key": "59847-4",
+                                            "value": "9383/1"
+                                        },
+                                        {
+                                            "key": "59847-4",
+                                            "value": "9384/1"
+                                        },
+                                        {
+                                            "key": "59847-4",
+                                            "value": "9394/1"
+                                        },
+                                        {
+                                            "key": "59847-4",
+                                            "value": "9421/1"
+                                        }
+                                    ]
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "type": "FreeTextElement",
+        "key": "sample-id",
+        "name": "Sample ID",
+        "infoButtonText": ["Sample ID"]
+    }
+]

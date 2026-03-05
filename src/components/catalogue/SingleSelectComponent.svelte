@@ -1,9 +1,9 @@
 <script lang="ts">
-    import type { SingleSelectCategory } from "../../types/catalogue";
+    import type { SelectElement } from "../../types/catalogue";
     import SingleSelectItemComponent from "./SingleSelectItemComponent.svelte";
 
     interface Props {
-        element: SingleSelectCategory;
+        element: SelectElement;
     }
 
     let { element }: Props = $props();
@@ -11,8 +11,8 @@
 
 <div part="lens-single-select-wrapper">
     <!-- eslint-disable-next-line svelte/require-each-key -->
-    {#each element.criteria as criterion}
-        <SingleSelectItemComponent {element} {criterion} />
+    {#each element.options as option}
+        <SingleSelectItemComponent {element} {option} />
     {/each}
 </div>
 

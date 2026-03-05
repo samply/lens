@@ -1,128 +1,87 @@
-import { isTopLayer, type AstElement, type AstTopLayer } from "../types/ast";
-import type { QueryItem, queryStoreItem } from "../types/queryData";
-import { resolveAstSubgroups } from "../stores/catalogue";
+import type { AstNode, OrOperator, AndOperator } from "../types/ast";
+import type { Query, QueryItem } from "../types/query";
+import { resolveOptionAst } from "../stores/catalogue";
 import { get } from "svelte/store";
 import { queryStore } from "../stores/query";
 
 /**
- * builds an AST from the query store
- * @param queryStore - the query store
- * @returns Ast: the AST will later be converted to a query language of choice
+ * Convert a QueryItem to an AstNode. SetItems resolve suboptions and
+ * aggregatedValue expansions via the catalogue's option map.
  */
-export const buildAstFromQuery = (queryStore: QueryItem[][]): AstTopLayer => {
-    let ast = returnNestedValues(queryStore) as AstTopLayer;
+function queryItemToAst(item: QueryItem): AstNode {
+    let node: AstNode;
 
-    // The empty query is currently a special case because focus and potentially other consumers want it like this
-    // Instead of:
-    // {"operand":"OR","children":[{"operand":"AND","children":[]}]}
-    // We return:
-    // {"operand":"OR","children":[]}
-    if (ast.children.length === 1) {
-        const onlyChild = ast.children[0];
-        if (isTopLayer(onlyChild) && onlyChild.children.length === 0) {
-            return {
-                operand: "OR",
-                children: [],
-            };
+    switch (item.type) {
+        case "SetItem": {
+            if (item.values.length === 1) {
+                node = resolveOptionAst(item.key, item.values[0]);
+            } else {
+                const operands = item.values.map((value) =>
+                    resolveOptionAst(item.key, value),
+                );
+                node = { type: "OrOperator", operands };
+            }
+            break;
         }
+        case "NumericRangeItem":
+            node = {
+                type: "NumericRangeFilter",
+                key: item.key,
+                min: item.min,
+                max: item.max,
+            };
+            break;
+        case "DateRangeItem":
+            node = {
+                type: "DateRangeFilter",
+                key: item.key,
+                min: item.min,
+                max: item.max,
+            };
+            break;
     }
 
-    // Resolving subgroups means e.g. replacing C50.% with C50.1, C50.2, etc.
-    ast = resolveAstSubgroups(ast);
-
-    return ast;
-};
+    if (item.negated) {
+        return { type: "NotOperator", operand: node };
+    }
+    return node;
+}
 
 /**
- * recursive function to return nested values of the query store as AST children
- * @param item - the current item of the query store
- * @param operand - the operand of the top layer
- * @param topLayerItem - the next higher layer of the query store. Used to get the key and type of the current item
- * @returns AstElement
+ * Build an AST from the query.
+ *
+ * Query → OrOperator over bars
+ *   QueryBar → AndOperator over items
+ *     QueryItem → filter node (possibly wrapped in NotOperator)
  */
-export const returnNestedValues = (
-    item: queryStoreItem | QueryItem[][],
-    operand?: "AND" | "OR",
-    topLayerItem?: queryStoreItem | QueryItem[][],
-): AstElement => {
-    /**
-     * sets the operand for the current layer
-     * starts with 'OR' from the top layer and switches to the opposite each layer
-     */
-    operand = operand === "OR" ? "AND" : "OR";
-
-    /**
-     * handles first layer of the store (QueryItem[])
-     * or entities (aggregatedValue)
-     */
-    if (Array.isArray(item)) {
-        return {
-            operand: operand,
-            children: item.map((value) => {
-                return returnNestedValues(value, operand, item);
-            }),
-        };
+export function buildAstFromQuery(query: Query): AstNode {
+    if (query.bars.length === 1 && query.bars[0].items.length === 0) {
+        return { type: "OrOperator", operands: [] } satisfies OrOperator;
     }
 
-    /**
-     * handles second layer of the store (queryItem)
-     */
-    if ("values" in item && Array.isArray(item.values)) {
-        return {
-            key: item.key,
-            operand: operand,
-            children: item.values.map((value) => {
-                return returnNestedValues(value, operand, item);
-            }),
-        };
-    }
+    const barNodes: AstNode[] = query.bars
+        .filter((bar) => bar.items.length > 0)
+        .map((bar) => {
+            const itemNodes = bar.items.map(queryItemToAst);
+            if (itemNodes.length === 1) return itemNodes[0];
+            return {
+                type: "AndOperator",
+                operands: itemNodes,
+            } satisfies AndOperator;
+        });
 
-    /**
-     * handles the third layer of store when the value of the QueryItem is an entity (aggregatedValue)
-     */
-    if ("value" in item && Array.isArray(item.value)) {
-        return {
-            key: item.name,
-            operand: operand,
-            children: item.value.map((value) => {
-                return returnNestedValues(value, operand, item);
-            }),
-        };
+    if (barNodes.length === 0) {
+        return { type: "OrOperator", operands: [] } satisfies OrOperator;
     }
-
-    /**
-     * return bottom level object of other QueryValues (string | {min: number, max: number})
-     */
-    if (
-        "value" in item &&
-        topLayerItem !== undefined &&
-        "key" in topLayerItem &&
-        !Array.isArray(item.value)
-    ) {
-        return {
-            key: topLayerItem.key,
-            type: topLayerItem.type,
-            value: item.value,
-        };
+    if (barNodes.length === 1) {
+        return barNodes[0];
     }
-
-    /**
-     * return bottom level object of an entity (aggregatedValue)
-     */
-    if ("value" in item && typeof item.value === "string") {
-        return {
-            key: item.value,
-            type: "EQUALS",
-            value: item.name,
-        };
-    }
-
-    throw new Error("This should be unreachable");
-};
+    return { type: "OrOperator", operands: barNodes } satisfies OrOperator;
+}
 
 /**
  * Get the AST representing the query that is currently in the search bar.
  */
-export function getAst(): AstTopLayer {
+export function getAst(): AstNode {
     return buildAstFromQuery(get(queryStore));
 }
