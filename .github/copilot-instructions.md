@@ -1,0 +1,5 @@
+- New components and styles must use Tailwind CSS with `@reference "tailwindcss"` in the `<style>` block, using utility classes in the template for styling. Do not use the legacy CSS variables (`--blue`, `--light-blue`, etc.) in new code. Two color scales are available: `primary` and `danger` (e.g. `bg-primary-500`, `text-danger-700`). Do not use Tailwind's built-in color palette (`blue-500`, `red-600`, etc.). Previously we used `part` attributes and `[part~="lens-*"]` selectors to let consumers override styles via `::part()`. New components should not use this pattern. Consumer customisation happens only through CSS custom properties on `:root`.
+- Use icons from `lucide-svelte` instead of Unicode symbols or inline SVG.
+- Do not use decorative section-delimiter comments (e.g. `// ======== Section ========` or `/* --- helpers --- */`).
+- Prefer `for...of` loops over `.forEach()`.
+- Use the `function` keyword for top-level function declarations instead of `const fn = () =>` arrow expressions.
