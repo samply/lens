@@ -1,4 +1,9 @@
 :root {
+    /* Lens theme: consumers override these to customize the palette */
+    --lens-primary: oklch(0.55 0.17 258);
+    --lens-danger: oklch(0.55 0.2 29);
+
+    /* Legacy color aliases (deprecated, use Tailwind tokens instead) */
     --white: #ffffff;
     --black: #000000;
     --gray: #a7a7a7;
