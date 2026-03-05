@@ -27,7 +27,6 @@
     import { showToast } from "../../stores/toasts";
     import { translate } from "../../helpers/translations";
     import { get } from "svelte/store";
-    import { SvelteURL } from "svelte/reactivity";
     import NumberInputComponent from "../catalogue/NumberInputComponent.svelte";
     import DatePickerComponent from "../catalogue/DatePickerComponent.svelte";
     import StringInputComponent from "../catalogue/StringInputComponent.svelte";
@@ -389,21 +388,15 @@
         searchBarInput.focus();
         $activeQueryGroupIndex = index;
 
-        const encodedQuery = new URLSearchParams(window.location.search).get(
+        const queryParam = new URLSearchParams(window.location.search).get(
             "query",
         );
-        if (encodedQuery !== null) {
+        if (queryParam !== null) {
             try {
-                const query = JSON.parse(
-                    new TextDecoder().decode(
-                        Uint8Array.from(atob(encodedQuery), (c) =>
-                            c.charCodeAt(0),
-                        ),
-                    ),
-                );
+                const query = JSON.parse(queryParam);
                 queryStore.set(query);
             } catch {
-                console.error("Failed to parse query from URL:", encodedQuery);
+                console.error("Failed to parse query from URL:", queryParam);
                 showToast(translate("query_in_url_parse_error"), "error");
             }
         }
@@ -411,20 +404,28 @@
         queryStore.subscribe(() => {
             if (get(lensOptions)?.autoUpdateQueryInUrl ?? true) {
                 const query = get(queryStore);
-                const url = new SvelteURL(window.location.href);
+                const url = new URL(window.location.href);
 
                 if (query.bars.every((b) => b.items.length === 0)) {
                     url.searchParams.delete("query");
+                    window.history.replaceState({}, "", url.toString());
                 } else {
-                    const encodedQuery = btoa(
-                        String.fromCharCode(
-                            ...new TextEncoder().encode(JSON.stringify(query)),
-                        ),
+                    url.searchParams.delete("query");
+                    // Encode only characters meaningful in URL query
+                    // strings (&, #, +, =, %) so the JSON stays
+                    // human-readable in the address bar.
+                    const json = JSON.stringify(query).replace(
+                        /[%&#+=]/g,
+                        encodeURIComponent,
                     );
-                    url.searchParams.set("query", encodedQuery);
+                    const serialized = url.toString();
+                    const sep = url.searchParams.size > 0 ? "&" : "?";
+                    window.history.replaceState(
+                        {},
+                        "",
+                        `${serialized}${sep}query=${json}`,
+                    );
                 }
-
-                window.history.replaceState({}, "", url.toString());
             }
         });
 
