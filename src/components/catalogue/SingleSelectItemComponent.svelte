@@ -1,54 +1,43 @@
 <script lang="ts">
-    import { v4 as uuidv4 } from "uuid";
-    import type { SingleSelectCategory, Criteria } from "../../types/catalogue";
+    import type { SelectElement, CatalogueOption } from "../../types/catalogue";
     import AddButton from "./AddButton.svelte";
     import { activeQueryGroupIndex, addItemToQuery } from "../../stores/query";
     import { facetCounts } from "../../stores/facetCounts";
     import { lensOptions } from "../../stores/options";
 
     interface Props {
-        element: SingleSelectCategory;
-        criterion: Criteria;
+        element: SelectElement;
+        option: CatalogueOption;
     }
 
-    let { element, criterion }: Props = $props();
+    let { element, option }: Props = $props();
 
     function onclick() {
         addItemToQuery(
             {
-                id: uuidv4(),
+                type: "SetItem",
                 key: element.key,
-                name: element.name,
-                type: element.type,
-                values: [
-                    {
-                        name: criterion.name,
-                        value:
-                            criterion.aggregatedValue !== undefined
-                                ? criterion.aggregatedValue
-                                : criterion.key,
-                        queryBindId: uuidv4(),
-                    },
-                ],
+                negated: false,
+                values: [option.value],
             },
             $activeQueryGroupIndex,
         );
     }
 </script>
 
-{#if criterion.description}
-    <abbr part="lens-singleselect-item-underline" title={criterion.description}
-        >{criterion.name}</abbr
+{#if option.description}
+    <abbr part="lens-singleselect-item-underline" title={option.description}
+        >{option.name}</abbr
     >
 {:else}
-    <span>{criterion.name}</span>
+    <span>{option.name}</span>
 {/if}
 {#if $facetCounts[element.key] !== undefined}
     <span
         part="lens-single-select-facet-count"
         title={$lensOptions?.facetCount?.hoverText?.[element.key] ?? ""}
     >
-        {$facetCounts[element.key][criterion.key] ?? 0}
+        {$facetCounts[element.key][option.value] ?? 0}
     </span>
 {:else}
     <span></span>

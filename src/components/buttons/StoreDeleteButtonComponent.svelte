@@ -6,43 +6,37 @@
         queryModified,
         activeQueryGroupIndex,
     } from "../../stores/query";
-    import type { QueryItem } from "../../types/queryData";
+
+    type ItemToDelete =
+        | { type: "group"; barIndex: number }
+        | { type: "item"; barIndex: number; key: string; itemType: string }
+        | { type: "value"; barIndex: number; key: string; value: string };
 
     interface Props {
-        itemToDelete: {
-            type: "item" | "group" | "value";
-            index: number;
-            item?: QueryItem;
-        };
+        itemToDelete: ItemToDelete;
         resetToEmptySearchBar?: () => void;
     }
 
     let { itemToDelete, resetToEmptySearchBar = () => {} }: Props = $props();
 
-    const { type, index, item } = itemToDelete;
-
-    /**
-     * deletes the given item from the query
-     * can be a group, item or value
-     */
     const deleteItem = (): void => {
-        if (type === "group") {
+        if (itemToDelete.type === "group") {
+            const barIndex = itemToDelete.barIndex;
             queryModified.set(true);
             queryStore.update((query) => {
-                query = query.filter((group, i) => i !== index);
-                if (query.length === 0) {
-                    query = [[]];
+                query.bars = query.bars.filter((_bar, i) => i !== barIndex);
+                if (query.bars.length === 0) {
+                    query.bars = [{ items: [] }];
                 }
 
-                // handles focus and active group after deletion
-                if (index < $activeQueryGroupIndex) {
+                if (barIndex < $activeQueryGroupIndex) {
                     $activeQueryGroupIndex -= 1;
                 }
                 if (
-                    index === $activeQueryGroupIndex &&
-                    index === query.length
+                    barIndex === $activeQueryGroupIndex &&
+                    barIndex === query.bars.length
                 ) {
-                    $activeQueryGroupIndex = query.length - 1;
+                    $activeQueryGroupIndex = query.bars.length - 1;
                 }
 
                 const searchBarInputs = document
@@ -56,18 +50,26 @@
                 return query;
             });
         }
-        if (type === "item") {
-            removeItemFromQuery(item!, index);
+        if (itemToDelete.type === "item") {
+            removeItemFromQuery(
+                itemToDelete.key,
+                itemToDelete.itemType,
+                itemToDelete.barIndex,
+            );
         }
-        if (type === "value") {
-            removeValueFromQuery(item!, index);
+        if (itemToDelete.type === "value") {
+            removeValueFromQuery(
+                itemToDelete.key,
+                itemToDelete.value,
+                itemToDelete.barIndex,
+            );
         }
     };
 </script>
 
 <button
     part="
-        lens-query-delete-button lens-query-delete-button-{type}"
+        lens-query-delete-button lens-query-delete-button-{itemToDelete.type}"
     onclick={deleteItem}
     aria-label="Delete"
 >

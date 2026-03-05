@@ -1,110 +1,62 @@
 <script lang="ts">
     import { addItemToQuery, activeQueryGroupIndex } from "../../stores/query";
-    import type { Category } from "../../types/catalogue";
+    import type {
+        CatalogueElement,
+        SelectElement,
+        CatalogueOption,
+    } from "../../types/catalogue";
     import DataTreeElement from "./DataTreeElement.svelte";
     import NumberInputComponent from "./NumberInputComponent.svelte";
     import StringInputComponent from "./StringInputComponent.svelte";
     import AutocompleteComponent from "./AutoCompleteComponent.svelte";
     import SingleSelectComponent from "./SingleSelectComponent.svelte";
-    import { v4 as uuidv4 } from "uuid";
     import { openTreeNodes } from "../../stores/catalogue";
-    import type { QueryItem } from "../../types/queryData";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
     import DatePickerComponent from "./DatePickerComponent.svelte";
     import { translate } from "../../helpers/translations";
     import { lensOptions } from "../../stores/options";
 
     interface Props {
-        element: Category;
-        /**
-         * defines the layer of the element in the tree
-         */
+        element: CatalogueElement;
         layer?: number;
-        /**
-         * defines if the subcategorys are open, iterates over the whole tree
-         */
         treeOpen?: boolean;
     }
 
     let { element, layer = 1, treeOpen = false }: Props = $props();
 
-    const subCategoryName = $derived(
-        "subCategoryName" in element &&
-            element.subCategoryName !== undefined &&
-            element.subCategoryName !== null
-            ? element.subCategoryName
-            : null,
-    );
-
-    /**
-     * watches the open tree nodes store to update the open state of the subcategorys
-     */
     let open = $derived.by(() => {
-        if (subCategoryName) {
-            return (
-                $openTreeNodes
-                    .get(element.key)!
-                    .subCategoryNames?.includes(subCategoryName) || false
-            );
-        } else {
-            return $openTreeNodes.get(element.key) ? true : false;
+        if (
+            element.type !== "CatalogueGroup" &&
+            $openTreeNodes.get(element.key)
+        ) {
+            return true;
         }
+        if (
+            element.type === "CatalogueGroup" &&
+            $openTreeNodes.get(element.name)
+        ) {
+            return true;
+        }
+        return false;
     });
 
-    /**
-     * adds and removes the subcategorys from the open tree nodes store
-     */
     const toggleChildren = (): void => {
+        const nodeKey =
+            element.type === "CatalogueGroup" ? element.name : element.key;
         openTreeNodes.update((store) => {
-            let storeTreeNode = store.get(element.key);
-
-            if (!storeTreeNode) {
-                store.set(element.key, {
-                    key: element.key,
-                    subCategoryNames: null,
-                });
-                return store;
+            if (store.has(nodeKey)) {
+                store.delete(nodeKey);
+            } else {
+                store.set(nodeKey, { key: nodeKey, opened: true });
             }
-
-            if (subCategoryName === null) {
-                store.delete(element.key);
-                return store;
-            }
-
-            if (storeTreeNode.subCategoryNames === null) {
-                storeTreeNode.subCategoryNames = [subCategoryName];
-                store.set(element.key, storeTreeNode);
-                return store;
-            }
-
-            if (storeTreeNode.subCategoryNames.includes(subCategoryName)) {
-                storeTreeNode.subCategoryNames =
-                    storeTreeNode.subCategoryNames.filter(
-                        (name) => name !== subCategoryName,
-                    );
-                store.set(element.key, storeTreeNode);
-                return store;
-            }
-
-            if (!storeTreeNode.subCategoryNames.includes(subCategoryName)) {
-                storeTreeNode.subCategoryNames.push(subCategoryName);
-                store.set(element.key, storeTreeNode);
-                return store;
-            }
-
             return store;
         });
     };
-    /**
-     * Resolved domain chips to render for this element.
-     * Returns an array of { key, name, color } for domain chips,
-     * or a single { key: "__all__", name: "all", color: null } sentinel
-     * when no specific domains are set but the feature is active.
-     */
+
     const domainChips = $derived.by(() => {
         const opts = $lensOptions;
         if (!opts?.domains || Object.keys(opts.domains).length === 0) return [];
-        if (element.fieldType === "group") return [];
+        if (element.type === "CatalogueGroup") return [];
         const elementDomains =
             "domains" in element ? (element.domains ?? []) : [];
         if (elementDomains.length === 0) {
@@ -122,34 +74,23 @@
             color: opts.domains![d]?.color ?? null,
         }));
     });
-    const finalParent = $derived(
-        !("childCategories" in element) &&
-            (!("fieldType" in element) ||
-                ("fieldType" in element &&
-                    typeof element.fieldType === "string" &&
-                    element.fieldType == "single-select")),
-    );
+
+    const isSelectElement = $derived(element.type === "SelectElement");
 
     const selectAllOptions = (): void => {
-        if (!("criteria" in element)) return;
+        if (element.type !== "SelectElement") return;
+        const sel = element as SelectElement;
 
-        element.criteria.forEach((criterion) => {
-            const queryItem: QueryItem = {
-                id: uuidv4(),
-                key: element.key,
-                name: element.name,
-                type: "type" in element ? element.type : "",
-                values: [
-                    {
-                        name: criterion.name,
-                        value: criterion.aggregatedValue
-                            ? criterion.aggregatedValue
-                            : criterion.key,
-                        queryBindId: uuidv4(),
-                    },
-                ],
-            };
-            addItemToQuery(queryItem, $activeQueryGroupIndex);
+        sel.options.forEach((option: CatalogueOption) => {
+            addItemToQuery(
+                {
+                    type: "SetItem",
+                    key: sel.key,
+                    negated: false,
+                    values: [option.value],
+                },
+                $activeQueryGroupIndex,
+            );
         });
     };
 </script>
@@ -173,9 +114,7 @@
                     stroke-width="2"><path d="m9 18 6-6-6-6" /></svg
                 >
             </div>
-            {"subCategoryName" in element && element.subCategoryName
-                ? element.subCategoryName
-                : element.name}
+            {element.name}
         </button>
         {#if element.infoButtonText}
             <InfoButtonComponent
@@ -188,6 +127,15 @@
             <a href={element.infoLink.link} target="_blank"
                 >{element.infoLink.display}</a
             >
+        {/if}
+
+        {#if isSelectElement && open}
+            <button
+                part="lens-data-tree-add-all-options-button"
+                onclick={selectAllOptions}
+            >
+                {translate("add_all")}
+            </button>
         {/if}
 
         {#if domainChips.length > 0}
@@ -208,21 +156,12 @@
                 {/each}
             </div>
         {/if}
-
-        {#if finalParent && open}
-            <button
-                part="lens-data-tree-add-all-options-button"
-                onclick={selectAllOptions}
-            >
-                {translate("add_all")}
-            </button>
-        {/if}
     </div>
 
     {#if open}
-        {#if "childCategories" in element}
+        {#if element.type === "CatalogueGroup"}
             <!-- eslint-disable-next-line svelte/require-each-key -->
-            {#each element.childCategories as child}
+            {#each element.elements as child}
                 <div
                     part={`lens-data-tree-element-child-category lens-data-tree-element-child-category-layer-${layer}`}
                 >
@@ -235,15 +174,15 @@
             {/each}
         {:else}
             <div part="lens-data-tree-element-last-child-options">
-                {#if element.fieldType === "single-select"}
+                {#if element.type === "SelectElement"}
                     <SingleSelectComponent {element} />
-                {:else if element.fieldType === "autocomplete"}
+                {:else if element.type === "AutocompleteElement"}
                     <AutocompleteComponent {element} />
-                {:else if element.fieldType === "number"}
+                {:else if element.type === "NumericRangeElement"}
                     <NumberInputComponent {element} />
-                {:else if element.fieldType === "string"}
+                {:else if element.type === "FreeTextElement"}
                     <StringInputComponent {element} />
-                {:else if element.fieldType === "date"}
+                {:else if element.type === "DateRangeElement"}
                     <DatePickerComponent {element} />
                 {/if}
             </div>

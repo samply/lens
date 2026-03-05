@@ -83,8 +83,8 @@
     {#if isOpen || !toggle.collapsable}
         <div part="lens-catalogue-wrapper">
             <!-- eslint-disable-next-line svelte/require-each-key -->
-            {#each $catalogue as Category}
-                <DataTreeElement element={Category} treeOpen={isOpen} />
+            {#each $catalogue as element}
+                <DataTreeElement {element} treeOpen={isOpen} />
             {/each}
         </div>
     {/if}

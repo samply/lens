@@ -6,26 +6,20 @@
 
 <script lang="ts">
     import type {
-        AggregatedValue,
-        Category,
-        Criteria,
-        DateRangeCategory,
-        NumericRangeCategory,
-        StringCategory,
+        CatalogueElement,
+        CatalogueOption,
+        NumericRangeElement,
+        DateRangeElement,
+        FreeTextElement,
     } from "../../types/catalogue";
+    import type { QueryItem } from "../../types/query";
     import {
         addItemToQuery,
         queryStore,
         activeQueryGroupIndex,
     } from "../../stores/query";
-    import {
-        type AutoCompleteCriterionItem,
-        type AutoCompleteItem,
-        type QueryItem,
-    } from "../../types/queryData";
-    import { v4 as uuidv4 } from "uuid";
     import StoreDeleteButtonComponent from "../buttons/StoreDeleteButtonComponent.svelte";
-    import { catalogue } from "../../stores/catalogue";
+    import { catalogue, elementMap, optionMap } from "../../stores/catalogue";
     import { facetCounts } from "../../stores/facetCounts";
     import { lensOptions } from "../../stores/options";
     import QueryExplainButtonComponent from "../buttons/QueryExplainButtonComponent.wc.svelte";
@@ -38,8 +32,33 @@
     import DatePickerComponent from "../catalogue/DatePickerComponent.svelte";
     import StringInputComponent from "../catalogue/StringInputComponent.svelte";
 
+    type SearchBarOptionItem = {
+        itemType: "option";
+        elementKey: string;
+        elementName: string;
+        option: CatalogueOption;
+    };
+
+    type SearchBarElementItem = {
+        itemType: "element";
+        element: NumericRangeElement | DateRangeElement | FreeTextElement;
+    };
+
+    type SearchBarItem = SearchBarOptionItem | SearchBarElementItem;
+
+    function getItemName(item: SearchBarItem): string {
+        return item.itemType === "option"
+            ? item.elementName
+            : item.element.name;
+    }
+
+    function getItemKey(item: SearchBarItem): string {
+        return item.itemType === "option"
+            ? `${item.elementKey}.${item.option.value}`
+            : item.element.key;
+    }
+
     interface Props {
-        /** The string to display when no matches are found */
         noMatchesFoundMessage?: string;
         typeMoreMessage?: string;
         placeholderText?: string;
@@ -53,180 +72,86 @@
         index = 0,
     }: Props = $props();
 
-    let queryGroup = $derived($queryStore[index]);
+    let queryBar = $derived($queryStore.bars[index]);
 
-    /**
-     * handles the focus state of the input element
-     * closes options when clicked outside
-     */
     let autoCompleteOpen = $state(true);
 
     /**
-     * Build a full list of autocomplete items and saves it to 'criteria'
-     * @param category - a bottom layer of the category tree
-     * @param criterion - the criterion
-     * @returns an item that can be used in the autocomplete list
+     * Flatten the catalogue tree into a list of searchable items.
      */
-    const buildDatalistItemFromBottomCategoryRec = (
-        category: Category,
-        criterion: Criteria,
-    ): AutoCompleteCriterionItem[] => {
-        let autoCompleteItems: AutoCompleteCriterionItem[] = [];
-        if ("criteria" in category) {
-            if (criterion.visible == undefined && !criterion.visible) {
-                autoCompleteItems.push({
-                    fieldType: "criterion",
-                    name: category.name,
-                    key: category.key,
-                    type: category.type,
-                    criterion: criterion,
-                });
-            }
-            if (criterion.subgroup !== undefined) {
-                criterion.subgroup.forEach((criterion: Criteria) => {
-                    autoCompleteItems = autoCompleteItems.concat(
-                        buildDatalistItemFromBottomCategoryRec(
-                            category,
-                            criterion,
-                        ),
-                    );
-                });
-            }
-        }
-        return autoCompleteItems;
-    };
-
-    const buildDatalistItemFromBottomCategory = (
-        category: Category,
-    ): AutoCompleteItem[] => {
-        let autoCompleteItems: AutoCompleteItem[] = [];
-        if (
-            category.fieldType === "autocomplete" ||
-            category.fieldType === "single-select"
-        ) {
-            category.criteria.forEach((criterion: Criteria) => {
-                if (
-                    criterion.visible === true ||
-                    criterion.visible === undefined
-                ) {
-                    autoCompleteItems.push({
-                        fieldType: "criterion",
-                        name: category.name,
-                        key: category.key,
-                        type: category.type,
-                        criterion: criterion,
-                    });
+    const flattenCatalogue = (
+        elements: CatalogueElement[],
+    ): SearchBarItem[] => {
+        const items: SearchBarItem[] = [];
+        for (const el of elements) {
+            if (el.type === "CatalogueGroup") {
+                items.push(...flattenCatalogue(el.elements));
+            } else if (
+                el.type === "SelectElement" ||
+                el.type === "AutocompleteElement"
+            ) {
+                for (const option of el.options) {
+                    if (option.visible !== false) {
+                        items.push({
+                            itemType: "option",
+                            elementKey: el.key,
+                            elementName: el.name,
+                            option,
+                        });
+                    }
+                    if (option.suboptions) {
+                        for (const sub of option.suboptions) {
+                            if (sub.visible !== false) {
+                                items.push({
+                                    itemType: "option",
+                                    elementKey: el.key,
+                                    elementName: el.name,
+                                    option: sub,
+                                });
+                            }
+                        }
+                    }
                 }
-                if (criterion.subgroup != undefined) {
-                    criterion.subgroup.forEach((criterion: Criteria) => {
-                        autoCompleteItems = autoCompleteItems.concat(
-                            buildDatalistItemFromBottomCategoryRec(
-                                category,
-                                criterion,
-                            ),
-                        );
-                    });
-                }
-            });
-        } else if (category.fieldType !== "group") {
-            autoCompleteItems.push(category);
-        }
-
-        return autoCompleteItems;
-    };
-
-    /**
-     * Build a full list of autocomplete items from a given Category tree
-     * @param treeData - a category tree
-     * @returns an array of items that can be used in the autocomplete list
-     */
-    const buildDatalistItems = (treeData: Category[]): AutoCompleteItem[] => {
-        /**
-         * FIX ME:
-         *  there seems to be a race condition where the catalogue is not yet loaded and the function is called right away
-         *  the data being a string probably comes from the data being passed as a json string
-         */
-        let autoCompleteItems: AutoCompleteItem[] = [];
-
-        if (typeof treeData === "string") {
-            return autoCompleteItems;
-        }
-        treeData.forEach((category: Category) => {
-            if ("childCategories" in category) {
-                autoCompleteItems = [
-                    ...autoCompleteItems,
-                    ...buildDatalistItems(
-                        category.childCategories as Category[],
-                    ),
-                ];
             } else {
-                if (buildDatalistItemFromBottomCategory(category))
-                    autoCompleteItems = [
-                        ...autoCompleteItems,
-                        ...buildDatalistItemFromBottomCategory(category),
-                    ];
+                items.push({ itemType: "element", element: el });
             }
-        });
-
-        return autoCompleteItems;
+        }
+        return items;
     };
 
-    /**
-     * stores the full list of autocomplete items
-     * structuredClone is used to prevent the store from being mutated when the .% is added to the criteria
-     */
-    let criteria: AutoCompleteItem[] = $derived(
-        buildDatalistItems(structuredClone($state.snapshot($catalogue))) || [],
+    let searchItems: SearchBarItem[] = $derived(
+        flattenCatalogue(structuredClone($state.snapshot($catalogue))) || [],
     );
 
-    /**
-     * input element binds to this variable. Used to focus the input element
-     */
     let searchBarInput: HTMLInputElement;
-    /**
-     * watches the input value and updates the input options
-     */
     let inputValue: string = $state("");
 
-    /**
-     * stores the filtered list of autocomplete items
-     */
-    let inputOptions: AutoCompleteItem[] = $derived.by(() => {
-        return criteria.filter((item: AutoCompleteItem) => {
-            /**
-             * lets the user use a number followed by a colon to specify the search group. nice to have for the power users
-             */
+    let inputOptions: SearchBarItem[] = $derived.by(() => {
+        return searchItems.filter((item: SearchBarItem) => {
             const clearedInputValue = inputValue
                 .replace(/^[0-9]*:/g, "")
                 .toLocaleLowerCase();
 
-            switch (item.fieldType) {
-                case "criterion": {
-                    return (
-                        item.name.toLowerCase().includes(clearedInputValue) ||
-                        item.criterion.name
-                            .toLowerCase()
-                            .includes(clearedInputValue) ||
-                        item.criterion.description
-                            ?.toLowerCase()
-                            .includes(clearedInputValue)
-                    );
-                }
-                case "number":
-                case "date":
-                case "string":
-                    return item.name
-                        .toLocaleLowerCase()
-                        .includes(clearedInputValue);
-                default:
-                    return false;
+            if (item.itemType === "option") {
+                return (
+                    item.elementName
+                        .toLowerCase()
+                        .includes(clearedInputValue) ||
+                    item.option.name
+                        .toLowerCase()
+                        .includes(clearedInputValue) ||
+                    item.option.description
+                        ?.toLowerCase()
+                        .includes(clearedInputValue)
+                );
+            } else {
+                return item.element.name
+                    .toLocaleLowerCase()
+                    .includes(clearedInputValue);
             }
         });
     });
 
-    /**
-     * keeps track of the focused item
-     */
     let focusedItemIndex: number = $state(-1);
 
     const optionElements: HTMLElement[] = $state([]);
@@ -235,49 +160,24 @@
         focusedItemIndex >= 0 ? optionElements[focusedItemIndex] : undefined,
     );
 
-    /**
-     * transforms the inputvalue to a QueryItem, adds it to the query store
-     * and resets the input value and the focused item index
-     * @param inputItem - the item to add to the query store
-     * @param indexOfChosenStore - the index of the query store to add the item to
-     */
     const addInputValueToStore = (
-        inputItem: AutoCompleteItem,
-        indexOfChosenStore: number = $queryStore.length,
+        inputItem: SearchBarItem,
+        indexOfChosenStore: number = $queryStore.bars.length,
     ): void => {
-        if (!(inputItem.fieldType === "criterion")) return;
+        if (inputItem.itemType !== "option") return;
 
-        /**
-         * transform inputItem to QueryItem
-         */
-        const queryItem: QueryItem = {
-            id: uuidv4(),
-            name: inputItem.name,
-            key: inputItem.key,
-            type: "type" in inputItem ? inputItem.type : "",
-            values: [
-                {
-                    value:
-                        "aggregatedValue" in inputItem.criterion
-                            ? (inputItem.criterion
-                                  .aggregatedValue as AggregatedValue[][])
-                            : inputItem.criterion.key,
-                    name: inputItem.criterion.name,
-                    description: inputItem.criterion.description,
-                    queryBindId: uuidv4(),
-                },
-            ],
-        };
-
-        addItemToQuery(queryItem, indexOfChosenStore);
+        addItemToQuery(
+            {
+                type: "SetItem",
+                key: inputItem.elementKey,
+                negated: false,
+                values: [inputItem.option.value],
+            },
+            indexOfChosenStore,
+        );
         resetToEmptySearchBar();
     };
 
-    /**
-     * extracts the group index from the input value
-     * the user may specify the group index by typing a number followed by a colon
-     * @returns the group index
-     */
     const extractTargetGroupFromInputValue = (): number => {
         const splitInputValue = inputValue.split(":");
         if (splitInputValue.length > 1) {
@@ -289,10 +189,6 @@
 
     let searchBarInputHasFoucs = $state(true);
 
-    /**
-     * handles keyboard events to make input options selectable and form elements tabable
-     * @param event - the keyboard event
-     */
     const handleKeyDown = (event: KeyboardEvent): void => {
         if (
             (inputValue.length === 0 || event.key === "Escape") &&
@@ -333,10 +229,6 @@
                     "li",
                 );
 
-            // safari doesn't allow to check focus inside the date input
-            // this functionallity is less intuitive in the ui in some minor points but does the job.
-            // to work, safari's tab index behaviour had to be altered to tab onto the Add-Button,
-            // opposed to natively jumping over buttons
             const isSafari: boolean =
                 /^((?!chrome|chromium|android).)*safari/i.test(
                     navigator.userAgent,
@@ -416,17 +308,12 @@
         }
     }
 
-    // needed as function to be passed to children
     function focusSearchbar(): void {
         searchBarInput.focus();
     }
 
     let searchBarContainer: HTMLElement;
 
-    /**
-     * scrolls the active dom element into view when it is out of view
-     * @param activeDomElement - the active dom element
-     */
     const scrollInsideContainerWhenActiveDomElementIsOutOfView = (
         activeDomElement: HTMLElement,
     ): void => {
@@ -454,14 +341,9 @@
         }
     });
 
-    /**
-     * @param inputOption - the input option to bold
-     * @returns the input option with the matched substring wrapped in <strong> tags
-     */
     const getBoldedText = (inputOption: string): string => {
         const query: string = (inputValue ?? "").trim();
 
-        // safety layer for passing html via name attribute in catalogue
         inputOption = escapeHtml(inputOption);
         if (!query) return inputOption;
 
@@ -492,12 +374,21 @@
         );
     }
 
+    function formatChipValue(item: QueryItem): string {
+        switch (item.type) {
+            case "NumericRangeItem":
+                return `${item.min ?? "∞"} – ${item.max ?? "∞"}`;
+            case "DateRangeItem":
+                return `${item.min ?? "∞"} – ${item.max ?? "∞"}`;
+            default:
+                return "";
+        }
+    }
+
     onMount(() => {
-        //sets focus in the new bar when added
         searchBarInput.focus();
         $activeQueryGroupIndex = index;
 
-        // load the query from the URL if it exists
         const encodedQuery = new URLSearchParams(window.location.search).get(
             "query",
         );
@@ -517,13 +408,12 @@
             }
         }
 
-        // update the URL when the query changes
         queryStore.subscribe(() => {
             if (get(lensOptions)?.autoUpdateQueryInUrl ?? true) {
                 const query = get(queryStore);
                 const url = new SvelteURL(window.location.href);
 
-                if (query.flat().length === 0) {
+                if (query.bars.every((b) => b.items.length === 0)) {
                     url.searchParams.delete("query");
                 } else {
                     const encodedQuery = btoa(
@@ -538,7 +428,6 @@
             }
         });
 
-        // Reset input value when a search is triggered
         window.addEventListener("lens-search-triggered", () => {
             inputValue = "";
         });
@@ -564,38 +453,53 @@
     onfocusout={handleFocusOut}
     onkeydown={handleKeyDown}
 >
-    {#if queryGroup !== undefined && queryGroup.length > 0}
+    {#if queryBar !== undefined && queryBar.items.length > 0}
         <div part="lens-searchbar-chips">
-            {#each queryGroup as queryItem (queryItem.id)}
+            {#each queryBar.items as item (item.key + item.type)}
                 <div part="lens-searchbar-chip">
                     <span part="lens-searchbar-chip-name"
-                        >{queryItem.name}:</span
+                        >{$elementMap.get(item.key)?.name ?? item.key}:</span
                     >
-                    {#each queryItem.values as value (value.queryBindId)}
+                    {#if item.type === "SetItem"}
+                        {#each item.values as value (value)}
+                            <span part="lens-searchbar-chip-item">
+                                <span part="lens-searchbar-chip-item-text"
+                                    >{$optionMap.get(`${item.key}.${value}`)
+                                        ?.name ?? value}</span
+                                >
+                                <QueryExplainButtonComponent
+                                    queryItemName={$elementMap.get(item.key)
+                                        ?.name ?? item.key}
+                                    queryItemValueName={$optionMap.get(
+                                        `${item.key}.${value}`,
+                                    )?.name ?? value}
+                                />
+                                {#if item.values.length > 1}
+                                    <StoreDeleteButtonComponent
+                                        itemToDelete={{
+                                            type: "value",
+                                            barIndex: index,
+                                            key: item.key,
+                                            value,
+                                        }}
+                                    />
+                                {/if}
+                            </span>
+                        {/each}
+                    {:else}
                         <span part="lens-searchbar-chip-item">
                             <span part="lens-searchbar-chip-item-text"
-                                >{value.name}</span
+                                >{formatChipValue(item)}</span
                             >
-                            <QueryExplainButtonComponent
-                                queryItemName={queryItem.name}
-                                queryItemValue={value}
-                            />
-                            {#if queryItem.values.length > 1}
-                                <StoreDeleteButtonComponent
-                                    itemToDelete={{
-                                        type: "value",
-                                        index,
-                                        item: {
-                                            ...queryItem,
-                                            values: [value],
-                                        },
-                                    }}
-                                />
-                            {/if}
                         </span>
-                    {/each}
+                    {/if}
                     <StoreDeleteButtonComponent
-                        itemToDelete={{ type: "item", index, item: queryItem }}
+                        itemToDelete={{
+                            type: "item",
+                            barIndex: index,
+                            key: item.key,
+                            itemType: item.type,
+                        }}
                     />
                 </div>
             {/each}
@@ -617,20 +521,17 @@
     {#if autoCompleteOpen && inputValue.length > 1}
         <ul part="lens-searchbar-autocomplete-options">
             {#if inputOptions?.length > 0}
-                {#each inputOptions as inputOption, i (inputOption.key + i)}
-                    <!-- TODO: this double loop makes the autocomplete slow with big data loads. Is there a better way to make the category headers? -->
+                {#each inputOptions as inputOption, i (getItemKey(inputOption) + i)}
                     {#if inputOptions
-                        .map((option) => option.name)
-                        .indexOf(inputOption.name) === i}
+                        .map((option) => getItemName(option))
+                        .indexOf(getItemName(inputOption)) === i}
                         <div part="lens-searchbar-autocomplete-options-heading">
                             <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-                            {@html getBoldedText(inputOption.name)}
+                            {@html getBoldedText(getItemName(inputOption))}
                         </div>
                     {/if}
-                    {#if "criterion" in inputOption}
+                    {#if inputOption.itemType === "option"}
                         <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-                        <!-- onmousedown is chosen because the input looses focus when clicked outside, 
-                             which will close the options before the click is finshed -->
                         <li
                             class="criterion-item"
                             bind:this={optionElements[i]}
@@ -648,9 +549,7 @@
                                 part="lens-searchbar-autocomplete-options-item-name"
                             >
                                 <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-                                {@html getBoldedText(
-                                    inputOption.criterion.name,
-                                )}
+                                {@html getBoldedText(inputOption.option.name)}
                             </div>
                             <div
                                 part="lens-searchbar-autocomplete-options-item-description {focusedItemIndex ===
@@ -658,90 +557,64 @@
                                     ? 'lens-searchbar-autocomplete-options-item-description-focused'
                                     : ''}"
                             >
-                                {#if inputOption.criterion.description}
+                                {#if inputOption.option.description}
                                     <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                                     {@html getBoldedText(
-                                        inputOption.criterion.description,
+                                        inputOption.option.description,
                                     )}
                                 {/if}
                             </div>
-                            {#if $facetCounts[inputOption.key] !== undefined}
+                            {#if $facetCounts[inputOption.elementKey] !== undefined}
                                 <div
                                     part="lens-searchbar-autocomplete-options-item-facet-count"
                                     title={$lensOptions?.facetCount
-                                        ?.hoverText?.[inputOption.key] ?? ""}
+                                        ?.hoverText?.[inputOption.elementKey] ??
+                                        ""}
                                 >
-                                    {$facetCounts[inputOption.key][
-                                        inputOption.criterion.key
+                                    {$facetCounts[inputOption.elementKey][
+                                        inputOption.option.value
                                     ] ?? 0}
                                 </div>
                             {/if}
                         </li>
-                    {/if}
-                    {#if inputOption.fieldType === "number"}
-                        <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-                        <!-- onmousedown is chosen because the input looses focus when clicked outside, 
-                             which will close the options before the click is finshed -->
+                    {:else if inputOption.element.type === "NumericRangeElement"}
                         <li
                             bind:this={optionElements[i]}
-                            onmousedown={() =>
-                                addInputValueToStore(
-                                    inputOption,
-                                    extractTargetGroupFromInputValue(),
-                                )}
                             part="lens-searchbar-autocomplete-options-item {focusedItemIndex ===
                             i
                                 ? 'lens-searchbar-autocomplete-options-item-focused'
                                 : ''} lens-searchbar-autocomplete-options-item-numeric"
                         >
                             <NumberInputComponent
-                                element={inputOption as NumericRangeCategory}
+                                element={inputOption.element as NumericRangeElement}
                                 inSearchBar={true}
                                 {resetToEmptySearchBar}
                             />
                         </li>
-                    {/if}
-                    {#if inputOption.fieldType === "date"}
-                        <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-                        <!-- onmousedown is chosen because the input looses focus when clicked outside, 
-                             which will close the options before the click is finshed -->
+                    {:else if inputOption.element.type === "DateRangeElement"}
                         <li
                             bind:this={optionElements[i]}
-                            onmousedown={() =>
-                                addInputValueToStore(
-                                    inputOption,
-                                    extractTargetGroupFromInputValue(),
-                                )}
                             part="lens-searchbar-autocomplete-options-item {focusedItemIndex ===
                             i
                                 ? 'lens-searchbar-autocomplete-options-item-focused'
                                 : ''} lens-searchbar-autocomplete-options-item-date"
                         >
                             <DatePickerComponent
-                                element={inputOption as DateRangeCategory}
+                                element={inputOption.element as DateRangeElement}
                                 inSearchBar={true}
                                 {resetToEmptySearchBar}
                             />
                         </li>
-                    {/if}
-                    {#if inputOption.fieldType === "string"}
-                        <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-                        <!-- onmousedown is chosen because the input looses focus when clicked outside, 
-                             which will close the options before the click is finshed -->
+                    {:else if inputOption.element.type === "FreeTextElement"}
                         <li
                             bind:this={optionElements[i]}
-                            onmousedown={() =>
-                                addInputValueToStore(
-                                    inputOption,
-                                    extractTargetGroupFromInputValue(),
-                                )}
                             part="lens-searchbar-autocomplete-options-item {focusedItemIndex ===
                             i
                                 ? 'lens-searchbar-autocomplete-options-item-focused'
                                 : ''} lens-searchbar-autocomplete-options-item-date"
                         >
                             <StringInputComponent
-                                element={inputOption as StringCategory}
+                                element={inputOption.element as FreeTextElement}
                                 inSearchBar={true}
                                 {resetToEmptySearchBar}
                             />
@@ -760,7 +633,7 @@
         </ul>
     {/if}
     <StoreDeleteButtonComponent
-        itemToDelete={{ type: "group", index }}
+        itemToDelete={{ type: "group", barIndex: index }}
         {resetToEmptySearchBar}
     />
 </div>
