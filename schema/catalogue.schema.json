@@ -163,6 +163,10 @@
           "description": "The element's user-facing display name.",
           "type": "string"
         },
+        "negatable": {
+          "description": "When true, a danger-coloured minus button is shown next to the element, allowing the user to add a negated (NOT) filter.",
+          "type": "boolean"
+        },
         "options": {
           "items": {
             "$ref": "#/definitions/CatalogueOption"
@@ -421,6 +425,10 @@
           "description": "The element's user-facing display name.",
           "type": "string"
         },
+        "negatable": {
+          "description": "When true, a danger-coloured minus button is shown next to the element, allowing the user to add a negated (NOT) filter.",
+          "type": "boolean"
+        },
         "type": {
           "const": "DateRangeElement",
           "type": "string"
@@ -500,6 +508,10 @@
         "name": {
           "description": "The element's user-facing display name.",
           "type": "string"
+        },
+        "negatable": {
+          "description": "When true, a danger-coloured minus button is shown next to the element, allowing the user to add a negated (NOT) filter.",
+          "type": "boolean"
         },
         "type": {
           "const": "FreeTextElement",
@@ -587,6 +599,10 @@
         "name": {
           "description": "The element's user-facing display name.",
           "type": "string"
+        },
+        "negatable": {
+          "description": "When true, a danger-coloured minus button is shown next to the element, allowing the user to add a negated (NOT) filter.",
+          "type": "boolean"
         },
         "type": {
           "const": "NumericRangeElement",
@@ -690,6 +706,10 @@
         "name": {
           "description": "The element's user-facing display name.",
           "type": "string"
+        },
+        "negatable": {
+          "description": "When true, a danger-coloured minus button is shown next to the element, allowing the user to add a negated (NOT) filter.",
+          "type": "boolean"
         },
         "options": {
           "items": {

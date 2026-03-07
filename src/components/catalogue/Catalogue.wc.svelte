@@ -1,10 +1,12 @@
 <svelte:options
     customElement={{
         tag: "lens-catalogue",
+        extend: withTailwind,
     }}
 />
 
 <script lang="ts">
+    import { withTailwind } from "../../helpers/tailwind";
     import { catalogue } from "../../stores/catalogue";
     import DataTreeElement from "./DataTreeElement.svelte";
     import { onMount } from "svelte";

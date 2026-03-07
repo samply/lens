@@ -6,13 +6,13 @@
         CatalogueOption,
     } from "../../types/catalogue";
     import DataTreeElement from "./DataTreeElement.svelte";
-    import NumberInputComponent from "./NumberInputComponent.svelte";
-    import StringInputComponent from "./StringInputComponent.svelte";
-    import AutocompleteComponent from "./AutoCompleteComponent.svelte";
-    import SingleSelectComponent from "./SingleSelectComponent.svelte";
-    import { openTreeNodes } from "../../stores/catalogue";
+    import AutocompleteInput from "./AutocompleteInput.svelte";
+    import OptionInput from "./OptionInput.svelte";
+    import NumericRangeInput from "./NumericRangeInput.svelte";
+    import DateRangeInput from "./DateRangeInput.svelte";
+    import FreeTextInput from "./FreeTextInput.svelte";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
-    import DatePickerComponent from "./DatePickerComponent.svelte";
+    import { openTreeNodes } from "../../stores/catalogue";
     import { translate } from "../../helpers/translations";
     import { lensOptions } from "../../stores/options";
 
@@ -173,17 +173,22 @@
                 </div>
             {/each}
         {:else}
-            <div part="lens-data-tree-element-last-child-options">
+            <div
+                part="lens-data-tree-element-last-child-options"
+                style="display:grid;grid-template-columns:auto max-content max-content max-content max-content"
+            >
                 {#if element.type === "SelectElement"}
-                    <SingleSelectComponent {element} />
+                    {#each element.options as option (option.value)}
+                        <OptionInput {element} {option} />
+                    {/each}
                 {:else if element.type === "AutocompleteElement"}
-                    <AutocompleteComponent {element} />
+                    <AutocompleteInput {element} />
                 {:else if element.type === "NumericRangeElement"}
-                    <NumberInputComponent {element} />
-                {:else if element.type === "FreeTextElement"}
-                    <StringInputComponent {element} />
+                    <NumericRangeInput {element} />
                 {:else if element.type === "DateRangeElement"}
-                    <DatePickerComponent {element} />
+                    <DateRangeInput {element} />
+                {:else if element.type === "FreeTextElement"}
+                    <FreeTextInput {element} />
                 {/if}
             </div>
         {/if}

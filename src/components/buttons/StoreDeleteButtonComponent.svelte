@@ -14,10 +14,9 @@
 
     interface Props {
         itemToDelete: ItemToDelete;
-        resetToEmptySearchBar?: () => void;
     }
 
-    let { itemToDelete, resetToEmptySearchBar = () => {} }: Props = $props();
+    let { itemToDelete }: Props = $props();
 
     const deleteItem = (): void => {
         if (itemToDelete.type === "group") {
@@ -46,7 +45,6 @@
                 if (searchBarInputs) {
                     searchBarInputs[$activeQueryGroupIndex].focus();
                 }
-                resetToEmptySearchBar();
                 return query;
             });
         }

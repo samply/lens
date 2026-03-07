@@ -23,7 +23,7 @@ const lensTranslations: Texts = {
         de: "Es können nicht beide Felder leer sein",
     },
     min_must_be_less_than_max: {
-        en: "min must be less than max",
+        en: "The first value must be less than the second value",
         de: "Der erste Wert muss kleiner sein",
     },
     loading: {
@@ -82,9 +82,17 @@ const lensTranslations: Texts = {
         en: "and any of",
         de: "und eines aus",
     },
-    type_more_message: {
-        en: "Search begins with 2 characters",
-        de: "Suche beginnt mit 2 Zeichen",
+    search_placeholder: {
+        en: "Type to search",
+        de: "Suchbegriff eingeben",
+    },
+    no_matches_found: {
+        en: "No matches found",
+        de: "Keine Treffer gefunden",
+    },
+    enter_filter_term: {
+        en: "Enter filter term",
+        de: "Suchbegriff eingeben",
     },
     domain_chip_all: {
         en: "all",

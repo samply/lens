@@ -1,22 +1,14 @@
 <svelte:options
     customElement={{
         tag: "lens-search-bar-multiple",
+        extend: withTailwind,
     }}
 />
 
 <script lang="ts">
+    import { withTailwind } from "../../helpers/tailwind";
     import { queryStore } from "../../stores/query";
     import SearchBarComponent from "./SearchBarComponent.wc.svelte";
-
-    interface Props {
-        noMatchesFoundMessage?: string;
-        placeholderText?: string;
-    }
-
-    let {
-        noMatchesFoundMessage = "No matches found",
-        placeholderText = "Type to filter conditions",
-    }: Props = $props();
 
     /**
      * Adds a new search bar to the query store
@@ -32,11 +24,7 @@
 <div part="lens-searchbar-multiple">
     {#each $queryStore.bars, index}
         <div part="lens-searchbar-multiple-wrapper">
-            <SearchBarComponent
-                {noMatchesFoundMessage}
-                {placeholderText}
-                {index}
-            />
+            <SearchBarComponent {index} />
             {#if index === $queryStore.bars.length - 1}
                 <button
                     part="lens-searchbar-multiple-add-button"

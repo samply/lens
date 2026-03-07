@@ -21,6 +21,11 @@ type BaseElement = {
      * If omitted the element is available in all domains.
      */
     domains?: string[];
+    /**
+     * When true, a danger-coloured minus button is shown next to the element,
+     * allowing the user to add a negated (NOT) filter.
+     */
+    negatable?: boolean;
 };
 
 /** @discriminator type */
@@ -31,6 +36,9 @@ export type CatalogueElement =
     | NumericRangeElement
     | DateRangeElement
     | FreeTextElement;
+
+/** All leaf catalogue element types (excludes CatalogueGroup). */
+export type LeafCatalogueElement = Exclude<CatalogueElement, CatalogueGroup>;
 
 /** The top-level catalogue type passed to Lens. */
 export type LensCatalogue = CatalogueElement[];
