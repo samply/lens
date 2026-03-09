@@ -209,6 +209,7 @@
           "type": "object"
         },
         "key": {
+          "description": "A key that uniquely identifies the catalogue item. It is typically used to look up the CQL snippet for that item.",
           "type": "string"
         },
         "name": {
@@ -274,6 +275,7 @@
           "type": "string"
         },
         "infoButtonText": {
+          "description": "Optional text that is accessed by clicking a \"ⓘ\" button next to the display name",
           "items": {
             "type": "string"
           },
