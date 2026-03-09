@@ -15,6 +15,7 @@
     import { lensOptions } from "../../stores/options";
     import type { HeaderData } from "../../types/options";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
+    import Tooltip from "../informational/Tooltip.svelte";
     import { translate } from "../../helpers/translations";
     import { onMount } from "svelte";
     import { showToast } from "../../stores/toasts";
@@ -47,9 +48,9 @@
              * the following items are the population for each data type (single or aggregated)
              */
             for (const [index, header] of headerData.entries()) {
-                // First column is the site name
+                // First column is the site
                 if (index === 0) {
-                    tableRow.push($lensOptions?.siteMappings?.[site] ?? site);
+                    tableRow.push(site);
                     continue;
                 }
 
@@ -194,15 +195,11 @@
         title?: string;
         /** If set, limits the number of rows displayed and enables pagination. */
         pageSize?: number;
-        /** Visually indicate that values are approximations (e.g., with a tilde). */
-        indicateApproximation?: boolean;
+        /** Callback that returns a tooltip message for a given number. If defined, adds a tooltip to numeric cells with the returned message. */
+        showRoundedTo?: (value: number) => string;
     }
 
-    let {
-        title = "",
-        pageSize,
-        indicateApproximation = false,
-    }: Props = $props();
+    let { title = "", pageSize, showRoundedTo }: Props = $props();
 
     let activePage = $state(1);
     let sortColumnIndex = $state(0);
@@ -309,10 +306,56 @@
                 >
                 {#each tableRow as data, index (index)}
                     <td part="lens-result-table-item-body-cell">
-                        {#if indicateApproximation && index !== 0 && typeof data === "number"}
-                            ≈
+                        {#if index === 0}
+                            {@const siteInfo =
+                                $lensOptions?.siteMappings?.[data]}
+                            {@const siteName =
+                                typeof siteInfo === "string"
+                                    ? siteInfo
+                                    : siteInfo?.displayName || data}
+                            {@const collectionId =
+                                typeof siteInfo === "object"
+                                    ? siteInfo.collectionId
+                                    : undefined}
+                            {#if collectionId && $lensOptions?.collectionBaseUrl}
+                                <a
+                                    part="lens-result-table-item-body-cell-link"
+                                    href={`${$lensOptions?.collectionBaseUrl}${collectionId}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    {siteName}
+                                    <svg
+                                        style="width: 0.9em; height: 0.9em;"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        ><path
+                                            d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
+                                        /><polyline
+                                            points="15 3 21 3 21 9"
+                                        /><line
+                                            x1="10"
+                                            y1="14"
+                                            x2="21"
+                                            y2="3"
+                                        /></svg
+                                    >
+                                </a>
+                            {:else}
+                                {siteName}
+                            {/if}
+                        {:else if index !== 0 && showRoundedTo && typeof data === "number"}
+                            <Tooltip message={showRoundedTo(data)}>
+                                {data}
+                            </Tooltip>
+                        {:else}
+                            {data}
                         {/if}
-                        {data}
                     </td>
                 {/each}
             </tr>
@@ -416,5 +459,13 @@
     [part~="lens-result-table-item-body-row"] {
         border-bottom: solid 1px var(--light-gray);
         height: 2em;
+    }
+
+    [part~="lens-result-table-item-body-cell-link"] {
+        color: var(--blue);
+        text-decoration: none;
+        &:hover {
+            text-decoration: underline;
+        }
     }
 </style>

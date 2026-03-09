@@ -441,7 +441,15 @@
                 <lens-search-modified-display></lens-search-modified-display>
             </div>
             <div id="result-table" class="card">
-                <lens-result-table pageSize={10}></lens-result-table>
+                <lens-result-table
+                    pageSize={10}
+                    showRoundedTo={(value: number) => {
+                        if (value < 10) return "Exact value";
+                        if (value < 100)
+                            return "Rounded to the nearest multiple of 10";
+                        return "Rounded to the nearest multiple of 100";
+                    }}
+                ></lens-result-table>
                 <lens-negotiate-button></lens-negotiate-button>
             </div>
             <div class="card">

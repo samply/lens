@@ -1,7 +1,7 @@
 {
     "name": "@samply/lens",
     "description": "A web component library for clinical data search and visualisation",
-    "version": "0.6.4",
+    "version": "0.6.5",
     "license": "Apache-2.0",
     "repository": {
         "type": "git",
@@ -43,7 +43,7 @@
         "eslint-plugin-svelte": "^3.14.0",
         "globals": "^17.0.0",
         "husky": "^9.1.7",
-        "jsdom": "^27.4.0",
+        "jsdom": "^28.1.0",
         "lint-staged": "^16.2.7",
         "prettier": "^3.8.0",
         "prettier-plugin-svelte": "^3.4.1",
