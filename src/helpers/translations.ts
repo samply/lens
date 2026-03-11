@@ -86,8 +86,4 @@ const lensTranslations: Texts = {
         en: "Search begins with 2 characters",
         de: "Suche beginnt mit 2 Zeichen",
     },
-    datarequests_in_url_parse_error: {
-        en: "Failed to parse the datarequests parameter in the URL",
-        de: "Der Datarequests-Parameter in der URL konnte nicht geparst werden",
-    },
 };

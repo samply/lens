@@ -18,7 +18,6 @@
     import Tooltip from "../informational/Tooltip.svelte";
     import { translate } from "../../helpers/translations";
     import { onMount } from "svelte";
-    import { showToast } from "../../stores/toasts";
     import { get } from "svelte/store";
     import { SvelteURL } from "svelte/reactivity";
 
@@ -155,10 +154,6 @@
                 console.error(
                     "Failed to parse datarequests from URL:",
                     encodedDatarequests,
-                );
-                showToast(
-                    translate("datarequests_in_url_parse_error"),
-                    "error",
                 );
             }
         }
