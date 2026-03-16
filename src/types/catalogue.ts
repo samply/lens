@@ -1,6 +1,6 @@
 // Note: The JSON schema file catalogue.schema.json is automatically generated
 // from the type definitions in this file. After making changes to this file run
-// `npm run schemagen` to update the JSON schema.
+// `npm run schema:generate` to update the JSON schema.
 
 import type { AstNode } from "./ast";
 

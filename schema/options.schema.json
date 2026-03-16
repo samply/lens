@@ -1,106 +1,217 @@
 {
-  "$ref": "#/definitions/LensOptions",
   "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/LensOptions",
   "definitions": {
-    "ChartOption": {
-      "additionalProperties": false,
+    "LensOptions": {
+      "type": "object",
       "properties": {
-        "accumulatedValues": {
+        "spotUrl": {
+          "type": "string",
+          "description": "URL of the Spot API endpoint used by `querySpot` function and facet counts."
+        },
+        "domains": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/DomainConfig"
+          },
+          "description": "Optional map of domain keys to their display configuration. When set, catalogue items will show domain chips indicating which domains they belong to. Items without a `domains` field are considered to be available in all domains and will show an \"all\" chip."
+        },
+        "sitesToQuery": {
+          "type": "array",
           "items": {
-            "additionalProperties": false,
-            "properties": {
-              "name": {
+            "type": "string"
+          },
+          "description": "List of sites to query used by `querySpot` function and facet counts. If not set no sites are sent to Spot and Spot determines the sites to query."
+        },
+        "chartOptions": {
+          "$ref": "#/definitions/ChartOptions"
+        },
+        "siteMappings": {
+          "type": "object",
+          "additionalProperties": {
+            "anyOf": [
+              {
                 "type": "string"
               },
-              "values": {
-                "items": {
-                  "type": "string"
-                },
-                "type": "array"
+              {
+                "$ref": "#/definitions/SiteInfo"
               }
-            },
-            "required": [
-              "name",
-              "values"
-            ],
-            "type": "object"
+            ]
           },
-          "type": "array"
+          "description": "Maps site ID to site info or string (display name only) for backwards compatibility."
         },
-        "aggregations": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
+        "collectionBaseUrl": {
+          "type": "string",
+          "description": "Base URL of the collections in the BBMRI-ERIC Directory. If set, collection IDs in the \"siteMappings\" are appended to this base URL to create the full URL of the collection in the BBMRI-ERIC Directory."
         },
-        "hintText": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
+        "negotiateOptions": {
+          "$ref": "#/definitions/NegotiateOptions"
         },
-        "legendMapping": {
-          "additionalProperties": {
-            "type": "string"
-          },
-          "type": "object"
+        "tableOptions": {
+          "$ref": "#/definitions/TableOptions"
         },
-        "tooltips": {
-          "additionalProperties": {
-            "type": "string"
-          },
-          "type": "object"
+        "resultSummaryOptions": {
+          "$ref": "#/definitions/ResultSummaryOptions"
+        },
+        "language": {
+          "type": "string",
+          "description": "Two letter language code of the application language"
+        },
+        "texts": {
+          "$ref": "#/definitions/Texts",
+          "description": "Allows to customize texts and add new translations"
+        },
+        "facetCount": {
+          "$ref": "#/definitions/FacetCountOptions",
+          "description": "If set, fetch and display facet counts (number of results per discrete value) in the catalogue."
+        },
+        "autoUpdateQueryInUrl": {
+          "type": "boolean",
+          "description": "Whether to automatically update the query in the URL when it changes (default: true)"
         }
       },
-      "type": "object"
-    },
-    "ChartOptions": {
-      "additionalProperties": {
-        "$ref": "#/definitions/ChartOption"
-      },
-      "type": "object"
+      "additionalProperties": false
     },
     "DomainConfig": {
-      "additionalProperties": false,
-      "description": "Display configuration for a single domain.",
+      "type": "object",
       "properties": {
-        "color": {
-          "description": "Hex color code for the domain chip, e.g. \"#0047b9\"",
-          "type": "string"
-        },
         "name": {
-          "description": "The user-facing display name for the domain",
-          "type": "string"
+          "type": "string",
+          "description": "The user-facing display name for the domain"
+        },
+        "color": {
+          "type": "string",
+          "description": "Hex color code for the domain chip, e.g. \"#0047b9\""
         }
       },
       "required": [
         "name",
         "color"
       ],
-      "type": "object"
-    },
-    "FacetCountOptions": {
       "additionalProperties": false,
+      "description": "Display configuration for a single domain."
+    },
+    "ChartOptions": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/ChartOption"
+      }
+    },
+    "ChartOption": {
+      "type": "object",
       "properties": {
-        "hoverText": {
+        "legendMapping": {
+          "type": "object",
           "additionalProperties": {
             "type": "string"
-          },
-          "description": "Hover text for each stratifier in the catalogue",
-          "type": "object"
+          }
+        },
+        "hintText": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "aggregations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tooltips": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "accumulatedValues": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "values": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "name",
+              "values"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "SiteInfo": {
+      "type": "object",
+      "properties": {
+        "displayName": {
+          "type": "string",
+          "description": "Display name in the results table"
+        },
+        "collectionId": {
+          "type": "string",
+          "description": "Collection ID in the BBMRI-ERIC Directory"
         }
       },
       "required": [
-        "hoverText"
+        "displayName"
       ],
-      "type": "object"
+      "additionalProperties": false
+    },
+    "NegotiateOptions": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "The URL of the BBMRI Negotiator API endpoint that creates a request to apply for access. The URL path is typically /api/v3/requests. Lens will send a POST request to the URL to start the application process."
+        },
+        "authorizationHeader": {
+          "type": "string",
+          "description": "The value of the Authorization header for the POST request."
+        }
+      },
+      "required": [
+        "url",
+        "authorizationHeader"
+      ],
+      "additionalProperties": false
+    },
+    "TableOptions": {
+      "type": "object",
+      "properties": {
+        "headerData": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/HeaderData"
+          }
+        }
+      },
+      "required": [
+        "headerData"
+      ],
+      "additionalProperties": false
     },
     "HeaderData": {
-      "additionalProperties": false,
+      "type": "object",
       "properties": {
+        "title": {
+          "type": "string"
+        },
+        "dataKey": {
+          "type": "string"
+        },
         "aggregatedDataKeys": {
+          "type": "array",
           "items": {
-            "additionalProperties": false,
+            "type": "object",
             "properties": {
               "groupCode": {
                 "type": "string"
@@ -112,179 +223,67 @@
                 "type": "string"
               }
             },
-            "type": "object"
-          },
-          "type": "array"
-        },
-        "dataKey": {
-          "type": "string"
+            "additionalProperties": false
+          }
         },
         "hintText": {
+          "type": "array",
           "items": {
             "type": "string"
-          },
-          "type": "array"
-        },
-        "title": {
-          "type": "string"
+          }
         }
       },
       "required": [
         "title"
       ],
-      "type": "object"
-    },
-    "LensOptions": {
-      "additionalProperties": false,
-      "properties": {
-        "autoUpdateQueryInUrl": {
-          "description": "Whether to automatically update the query in the URL when it changes (default: true)",
-          "type": "boolean"
-        },
-        "chartOptions": {
-          "$ref": "#/definitions/ChartOptions"
-        },
-        "collectionBaseUrl": {
-          "description": "Base URL of the collections in the BBMRI-ERIC Directory. If set, collection IDs in the \"siteMappings\" are appended to this base URL to create the full URL of the collection in the BBMRI-ERIC Directory.",
-          "type": "string"
-        },
-        "domains": {
-          "additionalProperties": {
-            "$ref": "#/definitions/DomainConfig"
-          },
-          "description": "Optional map of domain keys to their display configuration. When set, catalogue items will show domain chips indicating which domains they belong to. Items without a `domains` field are considered to be available in all domains and will show an \"all\" chip.",
-          "type": "object"
-        },
-        "facetCount": {
-          "$ref": "#/definitions/FacetCountOptions",
-          "description": "If set, fetch and display facet counts (number of results per discrete value) in the catalogue."
-        },
-        "language": {
-          "description": "Two letter language code of the application language",
-          "type": "string"
-        },
-        "negotiateOptions": {
-          "$ref": "#/definitions/NegotiateOptions"
-        },
-        "resultSummaryOptions": {
-          "$ref": "#/definitions/ResultSummaryOptions"
-        },
-        "siteMappings": {
-          "additionalProperties": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "$ref": "#/definitions/SiteInfo"
-              }
-            ]
-          },
-          "description": "Maps site ID to site info or string (display name only) for backwards compatibility.",
-          "type": "object"
-        },
-        "sitesToQuery": {
-          "description": "List of sites to query used by `querySpot` function and facet counts. If not set no sites are sent to Spot and Spot determines the sites to query.",
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
-        },
-        "spotUrl": {
-          "description": "URL of the Spot API endpoint used by `querySpot` function and facet counts.",
-          "type": "string"
-        },
-        "tableOptions": {
-          "$ref": "#/definitions/TableOptions"
-        },
-        "texts": {
-          "$ref": "#/definitions/Texts",
-          "description": "Allows to customize texts and add new translations"
-        }
-      },
-      "type": "object"
-    },
-    "NegotiateOptions": {
-      "additionalProperties": false,
-      "properties": {
-        "authorizationHeader": {
-          "description": "The value of the Authorization header for the POST request.",
-          "type": "string"
-        },
-        "url": {
-          "description": "The URL of the BBMRI Negotiator API endpoint that creates a request to apply for access. The URL path is typically /api/v3/requests. Lens will send a POST request to the URL to start the application process.",
-          "type": "string"
-        }
-      },
-      "required": [
-        "url",
-        "authorizationHeader"
-      ],
-      "type": "object"
+      "additionalProperties": false
     },
     "ResultSummaryOptions": {
-      "additionalProperties": false,
+      "type": "object",
       "properties": {
-        "dataTypes": {
-          "items": {
-            "$ref": "#/definitions/HeaderData"
-          },
-          "type": "array"
+        "title": {
+          "type": "string"
         },
         "infoButtonText": {
           "type": "string"
         },
-        "title": {
-          "type": "string"
+        "dataTypes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/HeaderData"
+          }
         }
       },
       "required": [
         "dataTypes"
       ],
-      "type": "object"
-    },
-    "SiteInfo": {
-      "additionalProperties": false,
-      "properties": {
-        "collectionId": {
-          "description": "Collection ID in the BBMRI-ERIC Directory",
-          "type": "string"
-        },
-        "displayName": {
-          "description": "Display name in the results table",
-          "type": "string"
-        }
-      },
-      "required": [
-        "displayName"
-      ],
-      "type": "object"
-    },
-    "TableOptions": {
-      "additionalProperties": false,
-      "properties": {
-        "headerData": {
-          "items": {
-            "$ref": "#/definitions/HeaderData"
-          },
-          "type": "array"
-        }
-      },
-      "required": [
-        "headerData"
-      ],
-      "type": "object"
+      "additionalProperties": false
     },
     "Texts": {
+      "type": "object",
       "additionalProperties": {
+        "type": "object",
         "additionalProperties": {
           "type": "string"
-        },
-        "type": "object"
+        }
       },
-      "description": "A map of texts that are displayed in the application. The keys are used to look up the text in the application code. The values are objects that map two letter language codes to the actual text.",
-      "type": "object"
+      "description": "A map of texts that are displayed in the application. The keys are used to look up the text in the application code. The values are objects that map two letter language codes to the actual text."
+    },
+    "FacetCountOptions": {
+      "type": "object",
+      "properties": {
+        "hoverText": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Hover text for each stratifier in the catalogue"
+        }
+      },
+      "required": [
+        "hoverText"
+      ],
+      "additionalProperties": false
     }
   }
 }
-

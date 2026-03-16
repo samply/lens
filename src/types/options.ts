@@ -1,6 +1,6 @@
 // Note: The JSON schema file options.schema.json is automatically generated
 // from the type definitions in this file. After making changes to this file run
-// `npm run schemagen` to update the JSON schema.
+// `npm run schema:generate` to update the JSON schema.
 
 export type LensOptions = {
     /** URL of the Spot API endpoint used by `querySpot` function and facet counts. */
