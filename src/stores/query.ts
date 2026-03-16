@@ -26,9 +26,10 @@ queryStore.subscribe(() => {
 });
 
 /**
- * Add an item to the query. If an item with the same key and type already
- * exists in the target bar, the values are merged (for SetItems, values are
- * deduplicated). If the bar index is out of range, a new bar is created.
+ * Add an item to the query. If an item with the same key, type and negation
+ * state already exists in the target bar, the values are merged (for
+ * SetItems, values are deduplicated). If the bar index is out of range, a
+ * new bar is created.
  */
 export const addItemToQuery = (
     queryObject: QueryItem,
@@ -46,9 +47,34 @@ export const addItemToQuery = (
         }
 
         const bar = query.bars[barIndex];
+
+        // Keep positive and negated variants mutually exclusive for the same
+        // field/type by removing conflicts from the opposite side first.
+        const oppositeIndex = bar.items.findIndex(
+            (item) =>
+                item.key === queryObject.key &&
+                item.type === queryObject.type &&
+                item.negated !== queryObject.negated,
+        );
+
+        if (oppositeIndex !== -1 && queryObject.type === "SetItem") {
+            const opposite = bar.items[oppositeIndex] as SetItem;
+            const incoming = queryObject as SetItem;
+            opposite.values = opposite.values.filter(
+                (value) => !incoming.values.includes(value),
+            );
+            if (opposite.values.length === 0) {
+                bar.items.splice(oppositeIndex, 1);
+            }
+        } else if (oppositeIndex !== -1) {
+            bar.items.splice(oppositeIndex, 1);
+        }
+
         const existingIndex = bar.items.findIndex(
             (item) =>
-                item.key === queryObject.key && item.type === queryObject.type,
+                item.key === queryObject.key &&
+                item.type === queryObject.type &&
+                item.negated === queryObject.negated,
         );
 
         if (existingIndex !== -1 && queryObject.type === "SetItem") {
@@ -76,6 +102,7 @@ export const addItemToQuery = (
 export const removeValueFromQuery = (
     key: string,
     value: string,
+    negated: boolean,
     barIndex: number,
 ): void => {
     queryModified.set(true);
@@ -87,6 +114,9 @@ export const removeValueFromQuery = (
         bar.items = bar.items
             .map((item) => {
                 if (item.key === key && item.type === "SetItem") {
+                    if (item.negated !== negated) {
+                        return item;
+                    }
                     const setItem = item as SetItem;
                     return {
                         ...setItem,
@@ -112,6 +142,7 @@ export const removeValueFromQuery = (
 export const removeItemFromQuery = (
     key: string,
     type: string,
+    negated: boolean,
     barIndex: number,
 ): void => {
     queryModified.set(true);
@@ -121,7 +152,12 @@ export const removeItemFromQuery = (
         if (!bar) return query;
 
         bar.items = bar.items.filter(
-            (item) => !(item.key === key && item.type === type),
+            (item) =>
+                !(
+                    item.key === key &&
+                    item.type === type &&
+                    item.negated === negated
+                ),
         );
 
         return query;

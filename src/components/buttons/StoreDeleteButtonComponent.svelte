@@ -9,8 +9,20 @@
 
     type ItemToDelete =
         | { type: "group"; barIndex: number }
-        | { type: "item"; barIndex: number; key: string; itemType: string }
-        | { type: "value"; barIndex: number; key: string; value: string };
+        | {
+              type: "item";
+              barIndex: number;
+              key: string;
+              itemType: string;
+              negated: boolean;
+          }
+        | {
+              type: "value";
+              barIndex: number;
+              key: string;
+              value: string;
+              negated: boolean;
+          };
 
     interface Props {
         itemToDelete: ItemToDelete;
@@ -52,6 +64,7 @@
             removeItemFromQuery(
                 itemToDelete.key,
                 itemToDelete.itemType,
+                itemToDelete.negated,
                 itemToDelete.barIndex,
             );
         }
@@ -59,6 +72,7 @@
             removeValueFromQuery(
                 itemToDelete.key,
                 itemToDelete.value,
+                itemToDelete.negated,
                 itemToDelete.barIndex,
             );
         }

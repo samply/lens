@@ -178,10 +178,12 @@
 >
     {#if queryBar !== undefined && queryBar.items.length > 0}
         <div part="lens-searchbar-chips" class="flex flex-wrap gap-2 pr-2">
-            {#each queryBar.items as item (item.key + item.type)}
+            {#each queryBar.items as item (item.key + item.type + item.negated)}
                 <div
                     part="lens-searchbar-chip"
-                    class="bg-primary-500 text-white rounded py-1.25 pr-3 pl-2 flex flex-row flex-wrap items-center relative gap-2"
+                    class="text-white rounded py-1.25 pr-3 pl-2 flex flex-row flex-wrap items-center relative gap-2 {item.negated
+                        ? 'bg-danger-500'
+                        : 'bg-primary-500'}"
                 >
                     <span part="lens-searchbar-chip-name" class="font-bold"
                         >{$elementMap.get(item.key)?.name ?? item.key}:</span
@@ -212,6 +214,7 @@
                                             barIndex: index,
                                             key: item.key,
                                             value,
+                                            negated: item.negated,
                                         }}
                                     />
                                 {/if}
@@ -235,6 +238,7 @@
                             barIndex: index,
                             key: item.key,
                             itemType: item.type,
+                            negated: item.negated,
                         }}
                     />
                 </div>
