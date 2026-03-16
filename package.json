@@ -25,7 +25,6 @@
         "build:demo": " vite build --config vite.config.demo.ts",
         "check": "svelte-check",
         "prepublishOnly": "vite build",
-        "prepare": "husky",
         "version": "npm version -m \"chore: release %s\"",
         "schemagen": "bash scripts/generate-json-schema.bash",
         "test": "vitest",
@@ -45,9 +44,7 @@
         "eslint-config-prettier": "^10.1.8",
         "eslint-plugin-svelte": "^3.14.0",
         "globals": "^17.0.0",
-        "husky": "^9.1.7",
         "jsdom": "^28.1.0",
-        "lint-staged": "^16.2.7",
         "prettier": "^3.8.0",
         "prettier-plugin-svelte": "^3.4.1",
         "rollup": "^4.55.1",
@@ -69,11 +66,5 @@
         "chart.js": "^4.5.1",
         "lucide-svelte": "^0.577.0",
         "uuid": "^13.0.0"
-    },
-    "lint-staged": {
-        "*": [
-            "eslint --fix",
-            "prettier --ignore-unknown --write"
-        ]
     }
 }

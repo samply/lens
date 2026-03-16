@@ -52,7 +52,6 @@ export default defineConfig({
                 text: "Development",
                 items: [
                     { text: "Overview", link: "/development/" },
-                    { text: "Git Hooks", link: "/development/git-hooks" },
                     { text: "Styling", link: "/development/styling" },
                     {
                         text: "Making a Release",
