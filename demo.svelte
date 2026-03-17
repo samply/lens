@@ -7,16 +7,38 @@
         getAst,
         showToast,
         markSiteClaimed,
-        removeFailedSite,
         setFacetCounts,
         clearSiteResults,
         getHumanReadableQueryAsFormattedString,
         type LensCatalogue,
     } from "./src/index";
     import catalogue from "./demo-catalogue.json";
+    import demoResults from "./demo-results.json";
 
-    const barChartBackgroundColors: string[] = ["#052c65", "#0d6efd"];
-    const barChartHoverColors: string[] = ["#000000"];
+    type DemoSiteResult = {
+        id: string;
+        name: string;
+        domains: string[];
+        totals: {
+            patients: number;
+            samples: number;
+        };
+        stratifiers: {
+            gender: Record<string, number>;
+            age_bucket: Record<string, number>;
+            diagnosis_icd10: Record<string, number>;
+            procedure_category: Record<string, number>;
+        };
+    };
+
+    type DemoResults = {
+        sites: DemoSiteResult[];
+    };
+
+    const results = demoResults as DemoResults;
+    const siteMappings = Object.fromEntries(
+        results.sites.map((site) => [site.id, site.name]),
+    );
 
     setOptions({
         language: localStorage.getItem("language") || "en",
@@ -30,45 +52,43 @@
                 de: "Aufgabe erfolgreich gesendet.",
             },
         },
-        siteMappings: {
-            riverside: "Riverside",
-            summit: "Summit",
-            failingsite: "Failing Site",
-        },
+        siteMappings,
         chartOptions: {
             gender: {
-                hintText: [
-                    "This pie chart shows the proportion of males to females in our [population/data set]. The size of each section represents the percentage of individuals who identify as male or female.",
-                ],
                 legendMapping: {
-                    male: "Männlich",
-                    female: "Weiblich",
-                    other: "Divers",
+                    male: "Male",
+                    female: "Female",
+                    other: "Other",
                 },
             },
         },
         tableOptions: {
             headerData: [
                 {
-                    title: "Standorte",
+                    title: "Sites",
                     dataKey: "site",
                 },
                 {
-                    title: "Patienten",
+                    title: "Patients",
                     dataKey: "patients",
+                },
+                {
+                    title: "Samples",
+                    dataKey: "samples",
                 },
             ],
         },
         resultSummaryOptions: {
-            title: "Ergebnisse",
-            infoButtonText: "This is a tooltip",
+            title: "Results",
+            infoButtonText:
+                "Demo notice: results are static for demonstration purposes and do not reflect the active query.",
             dataTypes: [
                 {
-                    title: "Standorte",
+                    title: "Sites",
                     dataKey: "collections",
                 },
                 {
-                    title: "Patienten",
+                    title: "Patients",
                     dataKey: "patients",
                 },
             ],
@@ -78,17 +98,19 @@
     setCatalogue(catalogue as LensCatalogue);
 
     setFacetCounts({
-        "blood-group": {
-            "A+": 10,
-            "A-": 5,
-            "B+": 8,
-            "B-": 2,
+        diagnosis_icd10: {
+            C34: 254,
+            C50: 132,
+            C18: 70,
+            C61: 41,
+            C25: 20,
         },
-        diagnosis: {
-            C31: 40,
-            "C31.0": 20,
-            C41: 30,
-            "C41.0": 10,
+        procedure_category: {
+            surgery: 167,
+            "systemic-therapy": 175,
+            radiotherapy: 93,
+            "diagnostic-procedure": 59,
+            other: 23,
         },
     });
 
@@ -97,59 +119,16 @@
         clearSiteResults();
 
         setTimeout(() => {
-            markSiteClaimed("riverside");
-            markSiteClaimed("summit");
-            markSiteClaimed("failingsite");
-            for (const site of "ABCDEFGHIJ") {
-                markSiteClaimed("Site " + site);
+            for (const site of results.sites) {
+                markSiteClaimed(site.id);
             }
         }, 500);
 
         setTimeout(() => {
-            setSiteResult("riverside", {
-                totals: {
-                    patients: 9,
-                },
-                stratifiers: {
-                    gender: {
-                        male: 5,
-                        female: 4,
-                        other: 0,
-                    },
-                    diagnosis: {
-                        C31: 40,
-                        "C31.0": 20,
-                        C41: 30,
-                        "41.0": 10,
-                    },
-                },
-            });
-
-            setSiteResult("summit", {
-                stratifiers: {
-                    gender: {
-                        male: 12,
-                        female: 18,
-                        other: 3,
-                    },
-                    diagnosis: {
-                        C31: 40,
-                        "C31.0": 20,
-                        C41: 30,
-                        "41.0": 10,
-                    },
-                },
-                totals: {
-                    patients: 33,
-                },
-            });
-
-            removeFailedSite("failingsite");
-
-            for (const site of "ABCDEFGHIJ") {
-                setSiteResult("Site " + site, {
-                    totals: {},
-                    stratifiers: {},
+            for (const site of results.sites) {
+                setSiteResult(site.id, {
+                    totals: site.totals,
+                    stratifiers: site.stratifiers,
                 });
             }
         }, 1000);
@@ -209,7 +188,6 @@
             </div>
             <div id="result-table" class="card">
                 <lens-result-table
-                    pageSize={10}
                     showRoundedTo={(value: number) => {
                         if (value < 10) return "Exact value";
                         if (value < 100)
@@ -230,25 +208,23 @@
             </div>
             <div class="card">
                 <lens-chart
-                    title="Diagnosis distribution"
-                    dataKey="diagnosis"
+                    title="Age distribution"
+                    dataKey="age_bucket"
                     chartType="bar"
-                    xAxisTitle="ICD-10 Code"
-                    yAxisTitle="Number of cases"
+                    xAxisTitle="Age bucket"
+                    yAxisTitle="Patients"
                 ></lens-chart>
             </div>
             <div class="card">
                 <lens-chart
-                    title="Diagnosis distribution (alternative)"
-                    dataKey="diagnosis"
+                    title="ICD-10-GM diagnoses"
+                    dataKey="diagnosis_icd10"
                     chartType="bar"
                     indexAxis="y"
                     scaleType="logarithmic"
-                    xAxisTitle="Number of cases"
-                    yAxisTitle="ICD-10 Code"
+                    xAxisTitle="Cases"
+                    yAxisTitle="ICD-10 code"
                     enableSorting={true}
-                    backgroundColor={barChartBackgroundColors}
-                    hoverBackgroundColor={barChartHoverColors}
                 ></lens-chart>
             </div>
         </div>

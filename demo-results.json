@@ -1,0 +1,194 @@
+{
+    "sites": [
+        {
+            "id": "northbridge",
+            "name": "Northbridge University Hospital",
+            "domains": ["Oncology Domain", "Biobank Domain", "Consent Domain"],
+            "totals": {
+                "patients": 148,
+                "samples": 312
+            },
+            "stratifiers": {
+                "gender": {
+                    "male": 82,
+                    "female": 62,
+                    "other": 4
+                },
+                "age_bucket": {
+                    "0-17": 2,
+                    "18-39": 21,
+                    "40-49": 28,
+                    "50-59": 39,
+                    "60-69": 37,
+                    "70+": 21
+                },
+                "diagnosis_icd10": {
+                    "C34": 92,
+                    "C50": 31,
+                    "C18": 14,
+                    "C61": 7,
+                    "C25": 4
+                },
+                "procedure_category": {
+                    "surgery": 46,
+                    "systemic-therapy": 51,
+                    "radiotherapy": 29,
+                    "diagnostic-procedure": 17,
+                    "other": 5
+                }
+            }
+        },
+        {
+            "id": "stisolde",
+            "name": "St. Isolde Oncology Center",
+            "domains": ["Oncology Domain", "Consent Domain"],
+            "totals": {
+                "patients": 119,
+                "samples": 241
+            },
+            "stratifiers": {
+                "gender": {
+                    "male": 51,
+                    "female": 64,
+                    "other": 4
+                },
+                "age_bucket": {
+                    "0-17": 1,
+                    "18-39": 18,
+                    "40-49": 24,
+                    "50-59": 33,
+                    "60-69": 28,
+                    "70+": 15
+                },
+                "diagnosis_icd10": {
+                    "C34": 61,
+                    "C50": 38,
+                    "C18": 11,
+                    "C61": 6,
+                    "C25": 3
+                },
+                "procedure_category": {
+                    "surgery": 34,
+                    "systemic-therapy": 47,
+                    "radiotherapy": 22,
+                    "diagnostic-procedure": 11,
+                    "other": 5
+                }
+            }
+        },
+        {
+            "id": "westhaven",
+            "name": "Westhaven Clinical Campus",
+            "domains": ["Biobank Domain"],
+            "totals": {
+                "patients": 96,
+                "samples": 187
+            },
+            "stratifiers": {
+                "gender": {
+                    "male": 55,
+                    "female": 38,
+                    "other": 3
+                },
+                "age_bucket": {
+                    "0-17": 0,
+                    "18-39": 14,
+                    "40-49": 19,
+                    "50-59": 28,
+                    "60-69": 22,
+                    "70+": 13
+                },
+                "diagnosis_icd10": {
+                    "C34": 44,
+                    "C50": 22,
+                    "C18": 16,
+                    "C61": 10,
+                    "C25": 4
+                },
+                "procedure_category": {
+                    "surgery": 41,
+                    "systemic-therapy": 25,
+                    "radiotherapy": 12,
+                    "diagnostic-procedure": 13,
+                    "other": 5
+                }
+            }
+        },
+        {
+            "id": "aldermoor",
+            "name": "Aldermoor Medical Institute",
+            "domains": ["Oncology Domain"],
+            "totals": {
+                "patients": 83,
+                "samples": 159
+            },
+            "stratifiers": {
+                "gender": {
+                    "male": 39,
+                    "female": 41,
+                    "other": 3
+                },
+                "age_bucket": {
+                    "0-17": 0,
+                    "18-39": 9,
+                    "40-49": 16,
+                    "50-59": 24,
+                    "60-69": 20,
+                    "70+": 14
+                },
+                "diagnosis_icd10": {
+                    "C34": 33,
+                    "C50": 21,
+                    "C18": 15,
+                    "C61": 9,
+                    "C25": 5
+                },
+                "procedure_category": {
+                    "surgery": 27,
+                    "systemic-therapy": 29,
+                    "radiotherapy": 14,
+                    "diagnostic-procedure": 9,
+                    "other": 4
+                }
+            }
+        },
+        {
+            "id": "harborlight",
+            "name": "Harborlight Cancer Clinic",
+            "domains": ["Oncology Domain", "Biobank Domain"],
+            "totals": {
+                "patients": 71,
+                "samples": 134
+            },
+            "stratifiers": {
+                "gender": {
+                    "male": 37,
+                    "female": 32,
+                    "other": 2
+                },
+                "age_bucket": {
+                    "0-17": 0,
+                    "18-39": 7,
+                    "40-49": 13,
+                    "50-59": 19,
+                    "60-69": 18,
+                    "70+": 14
+                },
+                "diagnosis_icd10": {
+                    "C34": 24,
+                    "C50": 20,
+                    "C18": 14,
+                    "C61": 9,
+                    "C25": 4
+                },
+                "procedure_category": {
+                    "surgery": 19,
+                    "systemic-therapy": 23,
+                    "radiotherapy": 16,
+                    "diagnostic-procedure": 9,
+                    "other": 4
+                }
+            }
+        }
+    ]
+}

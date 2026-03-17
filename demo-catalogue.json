@@ -1,99 +1,7 @@
 [
     {
-        "type": "AutocompleteElement",
-        "key": "diagnosis",
-        "name": "Diagnosis",
-        "infoButtonText": ["Diagnosis"],
-        "domains": ["Oncology", "Rare Diseases"],
-        "options": [
-            {
-                "value": "C31",
-                "name": "C31",
-                "description": "Malignant neoplasm of accessory sinuses"
-            },
-            {
-                "value": "C31.0",
-                "name": "C31.0",
-                "description": "Malignant neoplasm: Maxillary sinus"
-            },
-            {
-                "value": "C41",
-                "name": "C41",
-                "description": "Malignant neoplasm of bone and articular cartilage of other and unspecified sites"
-            },
-            {
-                "value": "C41.0",
-                "name": "C41.0",
-                "description": "Malignant neoplasm: Bones of skull and face"
-            },
-            {
-                "value": "C41.1",
-                "name": "C41.1",
-                "description": "Malignant neoplasm: Bones of vertebrae"
-            },
-            {
-                "value": "C41.2",
-                "name": "C41.2",
-                "description": "Malignant neoplasm: Bones of pelvis"
-            }
-        ]
-    },
-    {
-        "type": "SelectElement",
-        "key": "blood-group",
-        "name": "Blood group",
-        "negatable": true,
-        "domains": ["Cardiology"],
-        "options": [
-            {
-                "value": "A+",
-                "name": "A+",
-                "description": ""
-            },
-            {
-                "value": "A-",
-                "name": "A-",
-                "description": ""
-            },
-            {
-                "value": "B+",
-                "name": "B+",
-                "description": ""
-            },
-            {
-                "value": "B-",
-                "name": "B-",
-                "description": ""
-            },
-            {
-                "value": "somethinglong",
-                "name": "This is a very long name for a blood group just to test the layout",
-                "description": ""
-            }
-        ]
-    },
-    {
-        "type": "NumericRangeElement",
-        "key": "body_weight",
-        "name": "Body weight",
-        "min": 0,
-        "unitText": "kg"
-    },
-    {
-        "type": "DateRangeElement",
-        "key": "date-of-birth",
-        "name": "Date of birth",
-        "max": "2025-09-04",
-        "domains": ["Cardiology", "Oncology"]
-    },
-    {
-        "type": "FreeTextElement",
-        "key": "first-name",
-        "name": "First name"
-    },
-    {
         "type": "CatalogueGroup",
-        "name": "Donor/Clinical Information",
+        "name": "Person",
         "elements": [
             {
                 "type": "SelectElement",
@@ -102,102 +10,247 @@
                 "options": [
                     {
                         "value": "male",
-                        "name": "male",
-                        "description": ""
+                        "name": "male"
                     },
                     {
                         "value": "female",
-                        "name": "female",
-                        "description": ""
+                        "name": "female"
                     },
                     {
                         "value": "other",
-                        "name": "other",
-                        "description": ""
-                    },
-                    {
-                        "value": "sex_uncharted",
-                        "name": "sex uncharted",
-                        "description": ""
+                        "name": "other"
                     }
                 ]
             },
             {
-                "type": "NumericRangeElement",
-                "key": "age_at_diagnosis",
-                "name": "Diagnosis age"
+                "type": "DateRangeElement",
+                "key": "birth_date",
+                "name": "Date of birth",
+                "max": "2026-03-17"
             },
             {
-                "type": "DateRangeElement",
-                "key": "date-of-diagnosis",
-                "name": "Date of diagnosis",
-                "max": "2025-09-04"
+                "type": "SelectElement",
+                "key": "vital_status",
+                "name": "Vital status",
+                "options": [
+                    {
+                        "value": "alive",
+                        "name": "alive"
+                    },
+                    {
+                        "value": "deceased",
+                        "name": "deceased"
+                    },
+                    {
+                        "value": "unknown",
+                        "name": "unknown"
+                    }
+                ]
             }
         ]
     },
     {
         "type": "CatalogueGroup",
-        "name": "Tumorentität",
+        "name": "Diagnosis",
         "elements": [
             {
-                "type": "CatalogueGroup",
-                "name": "Neuroonkologie",
-                "elements": [
+                "type": "AutocompleteElement",
+                "key": "diagnosis_icd10",
+                "name": "Diagnosis ICD-10-GM",
+                "negatable": true,
+                "options": [
                     {
-                        "type": "SelectElement",
-                        "key": "gliom_all_groups",
-                        "name": "Gliome, alle Gruppen",
-                        "options": [
-                            {
-                                "value": "urn:dktk:code:3:2",
-                                "name": "Gliom - Grad I",
-                                "description": "Diagnosis D43.% and Morph 9383/1,9384/1",
-                                "ast": {
-                                    "type": "OrOperator",
-                                    "operands": [
-                                        {
-                                            "type": "SetFilter",
-                                            "key": "diagnosis",
-                                            "values": ["D43.%"]
-                                        },
-                                        {
-                                            "type": "AndOperator",
-                                            "operands": [
-                                                {
-                                                    "type": "SetFilter",
-                                                    "key": "59847-4",
-                                                    "values": ["9383/1"]
-                                                },
-                                                {
-                                                    "type": "SetFilter",
-                                                    "key": "59847-4",
-                                                    "values": ["9384/1"]
-                                                },
-                                                {
-                                                    "type": "SetFilter",
-                                                    "key": "59847-4",
-                                                    "values": ["9394/1"]
-                                                },
-                                                {
-                                                    "type": "SetFilter",
-                                                    "key": "59847-4",
-                                                    "values": ["9421/1"]
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
-                            }
-                        ]
+                        "value": "C34",
+                        "name": "C34",
+                        "description": "Malignant neoplasm of bronchus and lung"
+                    },
+                    {
+                        "value": "C50",
+                        "name": "C50",
+                        "description": "Malignant neoplasm of breast"
+                    },
+                    {
+                        "value": "C18",
+                        "name": "C18",
+                        "description": "Malignant neoplasm of colon"
+                    },
+                    {
+                        "value": "C61",
+                        "name": "C61",
+                        "description": "Malignant neoplasm of prostate"
+                    },
+                    {
+                        "value": "C25",
+                        "name": "C25",
+                        "description": "Malignant neoplasm of pancreas"
+                    }
+                ]
+            },
+            {
+                "type": "DateRangeElement",
+                "key": "diagnosis_date",
+                "name": "Diagnosis date",
+                "max": "2026-03-17"
+            },
+            {
+                "type": "NumericRangeElement",
+                "key": "age_at_diagnosis",
+                "name": "Age at diagnosis",
+                "min": 0,
+                "max": 120,
+                "unitText": "years"
+            },
+            {
+                "type": "SelectElement",
+                "key": "tumor_entity",
+                "name": "Tumor entity",
+                "domains": ["Oncology Domain"],
+                "options": [
+                    {
+                        "value": "lung",
+                        "name": "Lung"
+                    },
+                    {
+                        "value": "breast",
+                        "name": "Breast"
+                    },
+                    {
+                        "value": "colorectal",
+                        "name": "Colorectal"
+                    },
+                    {
+                        "value": "prostate",
+                        "name": "Prostate"
                     }
                 ]
             }
         ]
     },
     {
-        "type": "FreeTextElement",
-        "key": "sample-id",
-        "name": "Sample ID",
-        "infoButtonText": ["Sample ID"]
+        "type": "CatalogueGroup",
+        "name": "Procedure",
+        "elements": [
+            {
+                "type": "AutocompleteElement",
+                "key": "procedure_code",
+                "name": "Procedure code",
+                "negatable": true,
+                "options": [
+                    {
+                        "value": "5-340",
+                        "name": "5-340",
+                        "description": "Resection of lung tissue"
+                    },
+                    {
+                        "value": "8-52",
+                        "name": "8-52",
+                        "description": "Systemic chemotherapy"
+                    },
+                    {
+                        "value": "8-53",
+                        "name": "8-53",
+                        "description": "Radiotherapy procedures"
+                    },
+                    {
+                        "value": "3-20",
+                        "name": "3-20",
+                        "description": "Computed tomography"
+                    }
+                ]
+            },
+            {
+                "type": "SelectElement",
+                "key": "procedure_category",
+                "name": "Procedure category",
+                "negatable": true,
+                "options": [
+                    {
+                        "value": "surgery",
+                        "name": "surgery"
+                    },
+                    {
+                        "value": "systemic-therapy",
+                        "name": "systemic therapy"
+                    },
+                    {
+                        "value": "radiotherapy",
+                        "name": "radiotherapy"
+                    },
+                    {
+                        "value": "diagnostic-procedure",
+                        "name": "diagnostic procedure"
+                    },
+                    {
+                        "value": "other",
+                        "name": "other"
+                    }
+                ]
+            },
+            {
+                "type": "DateRangeElement",
+                "key": "procedure_date",
+                "name": "Procedure date",
+                "max": "2026-03-17"
+            }
+        ]
+    },
+    {
+        "type": "CatalogueGroup",
+        "name": "Sample",
+        "elements": [
+            {
+                "type": "SelectElement",
+                "key": "sample_availability",
+                "name": "Sample availability",
+                "domains": ["Biobank Domain"],
+                "options": [
+                    {
+                        "value": "available",
+                        "name": "available"
+                    },
+                    {
+                        "value": "reserved",
+                        "name": "reserved"
+                    },
+                    {
+                        "value": "depleted",
+                        "name": "depleted"
+                    }
+                ]
+            },
+            {
+                "type": "SelectElement",
+                "key": "sample_material_type",
+                "name": "Sample material type",
+                "domains": ["Biobank Domain"],
+                "options": [
+                    {
+                        "value": "blood",
+                        "name": "blood"
+                    },
+                    {
+                        "value": "tissue",
+                        "name": "tissue"
+                    },
+                    {
+                        "value": "serum",
+                        "name": "serum"
+                    },
+                    {
+                        "value": "plasma",
+                        "name": "plasma"
+                    }
+                ]
+            },
+            {
+                "type": "NumericRangeElement",
+                "key": "sample_storage_age_years",
+                "name": "Sample storage age",
+                "domains": ["Biobank Domain"],
+                "min": 0,
+                "max": 30,
+                "unitText": "years"
+            }
+        ]
     }
 ]
