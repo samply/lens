@@ -5,3 +5,4 @@
 - Prefer `for...of` loops over `.forEach()`.
 - Use the `function` keyword for top-level function declarations instead of `const fn = () =>` arrow expressions.
 - Use `translate()` (imported from `../../helpers/translations`) for all user-facing strings. Add new keys to `lensTranslations` in `src/helpers/translations.ts` with at least `en` and `de` translations. Do not hardcode English strings in templates.
+- Keep documentation in `book/` in sync with code and behavior changes whenever implementation is updated.
