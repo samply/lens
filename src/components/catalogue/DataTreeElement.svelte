@@ -3,7 +3,6 @@
     import type {
         CatalogueElement,
         SelectElement,
-        CatalogueOption,
     } from "../../types/catalogue";
     import DataTreeElement from "./DataTreeElement.svelte";
     import AutocompleteInput from "./AutocompleteInput.svelte";
@@ -56,14 +55,7 @@
         if (element.type === "CatalogueGroup") return [];
         const elementDomains =
             "domains" in element ? (element.domains ?? []) : [];
-        if (elementDomains.length === 0) {
-            return [
-                {
-                    key: "__all__",
-                    name: translate("domain_chip_all"),
-                },
-            ];
-        }
+        if (elementDomains.length === 0) return [];
         return elementDomains.map((d) => ({
             key: d,
             name: d,
@@ -136,7 +128,11 @@
         {#if domainChips.length > 0}
             <div part="lens-data-tree-domain-chips">
                 {#each domainChips as chip (chip.key)}
-                    <span part="lens-data-tree-domain-chip">{chip.name}</span>
+                    <span
+                        part="lens-data-tree-domain-chip"
+                        class="inline-flex items-center rounded-full border border-primary-300 bg-primary-50 px-2 py-0.5 text-[11px] font-semibold leading-5 text-primary-900"
+                        >{chip.name}</span
+                    >
                 {/each}
             </div>
         {/if}
@@ -254,8 +250,9 @@
         font-family: var(--font-family);
         font-weight: 500;
         white-space: nowrap;
-        color: var(--gray);
-        background-color: var(--light-gray);
+        color: var(--font-color);
+        background-color: var(--white);
+        border: solid 1px var(--gray);
         line-height: 1.6;
     }
 </style>

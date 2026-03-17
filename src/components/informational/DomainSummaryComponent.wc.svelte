@@ -1,12 +1,16 @@
 <svelte:options
     customElement={{
         tag: "lens-domain-summary",
+        extend: withTailwind,
     }}
 />
 
 <script lang="ts">
+    import { TriangleAlert } from "lucide-svelte";
+    import { withTailwind } from "../../helpers/tailwind";
     import { catalogue } from "../../stores/catalogue";
     import { queryStore } from "../../stores/query";
+    import Tooltip from "./Tooltip.svelte";
     import type {
         CatalogueElement,
         LensCatalogue,
@@ -41,14 +45,16 @@
     function collectAllDomains(
         domainMap: Record<string, string[] | undefined>,
     ): string[] {
-        const set = new Set<string>();
+        const domainsList: string[] = [];
         for (const domains of Object.values(domainMap)) {
             if (!domains) continue;
             for (const domain of domains) {
-                set.add(domain);
+                if (!domainsList.includes(domain)) {
+                    domainsList.push(domain);
+                }
             }
         }
-        return [...set];
+        return domainsList;
     }
 
     /**
@@ -71,7 +77,7 @@
         return current.length > 0 ? current : null;
     }
 
-    type Chip = { key: string; name: string };
+    type Chip = { key: string; name: string; isActive: boolean };
 
     const chips = $derived.by((): Chip[] => {
         const domainMap = buildDomainMap($catalogue);
@@ -79,10 +85,15 @@
         if (allDomains.length === 0) return [];
 
         const hasItems = $queryStore.bars.some((b) => b.items.length > 0);
-        if (!hasItems) return [];
+        if (!hasItems) {
+            return allDomains.map((k) => ({
+                key: k,
+                name: k,
+                isActive: true,
+            }));
+        }
 
-        let searchedKeys: string[] = [];
-        let allBarsConflict = true;
+        const activeKeys: string[] = [];
 
         for (const bar of $queryStore.bars) {
             if (bar.items.length === 0) continue;
@@ -92,78 +103,51 @@
                 allDomains,
             );
             if (barResult !== null) {
-                allBarsConflict = false;
                 for (const k of barResult) {
-                    if (!searchedKeys.includes(k)) searchedKeys.push(k);
+                    if (!activeKeys.includes(k)) {
+                        activeKeys.push(k);
+                    }
                 }
             }
         }
 
-        if (allBarsConflict) {
-            return [
-                {
-                    key: "__conflict__",
-                    name:
-                        translate("domain_summary_conflict") ??
-                        "No domain matches criteria",
-                },
-            ];
-        }
-
-        return allDomains
-            .filter((k) => searchedKeys.includes(k))
-            .map((k) => ({
-                key: k,
-                name: k,
-            }));
+        return allDomains.map((k) => ({
+            key: k,
+            name: k,
+            isActive: activeKeys.includes(k),
+        }));
     });
+
+    const hasActiveDomains = $derived(chips.some((chip) => chip.isActive));
 </script>
 
 {#if chips.length > 0}
-    <div part="lens-domain-summary">
-        <span part="lens-domain-summary-label"
+    <div class="flex flex-wrap items-center gap-2">
+        <span class="text-sm text-(--font-color)"
             >{translate("domain_summary_label") ?? "Searched domains:"}</span
         >
-        <div part="lens-domain-summary-chips">
+        <div class="flex flex-wrap gap-1">
             {#each chips as chip (chip.key)}
-                <span part="lens-domain-summary-chip">{chip.name}</span>
+                <span
+                    class={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold leading-5 ${
+                        chip.isActive
+                            ? "border-(--font-color) bg-(--font-color) text-white"
+                            : "border-(--light-gray) bg-transparent text-(--gray) opacity-50"
+                    }`}
+                >
+                    {chip.name}
+                </span>
             {/each}
         </div>
+        {#if !hasActiveDomains}
+            <Tooltip message={translate("domain_summary_conflict")}>
+                <span
+                    class="inline-flex text-(--orange,#f59e0b)"
+                    aria-label={translate("domain_summary_conflict")}
+                >
+                    <TriangleAlert size={16} aria-hidden="true" />
+                </span>
+            </Tooltip>
+        {/if}
     </div>
 {/if}
-
-<style>
-    [part~="lens-domain-summary"] {
-        display: flex;
-        align-items: center;
-        gap: var(--gap-xs);
-        flex-wrap: wrap;
-    }
-
-    [part~="lens-domain-summary-label"] {
-        font-family: var(--font-family);
-        font-size: var(--font-size-s);
-        color: var(--gray);
-        white-space: nowrap;
-    }
-
-    [part~="lens-domain-summary-chips"] {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 4px;
-    }
-
-    [part~="lens-domain-summary-chip"] {
-        display: inline-flex;
-        align-items: center;
-        padding: 2px 10px;
-        border-radius: 10px;
-        font-size: var(--font-size-xs);
-        font-family: var(--font-family);
-        font-weight: 500;
-        white-space: nowrap;
-        color: var(--gray);
-        background-color: var(--light-gray);
-        line-height: 1.6;
-    }
-</style>
