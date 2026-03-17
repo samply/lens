@@ -112,18 +112,17 @@
     onmousedown={(e) => {
         if (!(e.target instanceof HTMLInputElement)) e.preventDefault();
     }}
-    class="list-none m-0 p-0 overflow-y-auto"
-    style="display:grid; grid-template-columns: auto max-content max-content max-content max-content"
+    class="grid list-none m-0 p-0 overflow-y-auto"
+    style="grid-template-columns: max-content minmax(0, 1fr) max-content max-content max-content"
 >
     {#each items as item, i (i)}
         {#if item.type === "heading"}
-            <li class="font-bold py-1.25 px-2.5" style="grid-column: 1 / -1">
+            <li class="font-bold py-1 px-2" style="grid-column: 1 / -1">
                 {item.label}
             </li>
         {:else}
             <li
-                class="items-center py-1.25 px-2.5 cursor-pointer {i ===
-                focusedIndex
+                class="items-center py-1 px-2 cursor-pointer {i === focusedIndex
                     ? 'bg-gray-200'
                     : ''}"
                 style="grid-column: 1 / -1; display: grid; grid-template-columns: subgrid;"

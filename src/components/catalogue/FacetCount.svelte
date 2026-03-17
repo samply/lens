@@ -25,7 +25,7 @@
 
 {#if facetCount !== null}
     <span
-        class="text-gray-500 text-sm bg-indigo-50 px-1.5 py-px rounded-full"
+        class="text-gray-500 text-sm bg-gray-100 px-1.5 py-px rounded-full"
         title={facetCountTitle}
     >
         {facetCount}

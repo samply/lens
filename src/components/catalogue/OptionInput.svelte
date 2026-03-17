@@ -44,7 +44,7 @@
             <span>{option.name}</span>
         {/if}
     </div>
-    <div class="flex items-center text-xs text-primary-600">
+    <div class="flex items-center text-xs text-primary-600 px-1">
         {#if showDescription && option.description}
             {option.description}
         {/if}
