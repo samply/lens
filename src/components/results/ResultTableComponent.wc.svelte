@@ -1,10 +1,13 @@
 <svelte:options
     customElement={{
         tag: "lens-result-table",
+        extend: withTailwind,
     }}
 />
 
 <script lang="ts">
+    import { Info } from "lucide-svelte";
+    import { withTailwind } from "../../helpers/tailwind";
     import { datarequestsStore } from "../../stores/datarequests";
     import {
         getSiteTotal,
@@ -296,6 +299,7 @@
                             {/if}
                         {:else if index !== 0 && showRoundedTo && typeof data === "number"}
                             <Tooltip message={showRoundedTo(data)}>
+                                <Info class="size-4 text-gray-500" />
                                 {data}
                             </Tooltip>
                         {:else}
