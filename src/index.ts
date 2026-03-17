@@ -70,7 +70,6 @@ import "./components/buttons/NegotiateButtonComponent.wc.svelte";
 import "./components/buttons/InfoButtonComponent.wc.svelte";
 import "./components/buttons/QueryExplainButtonComponent.wc.svelte";
 import "./components/informational/ModifiedSearchComponent.wc.svelte";
-import "./components/informational/QuerySpinner.wc.svelte";
 import "./components/informational/Toasts.wc.svelte";
 import "./components/informational/AboutLensComponent.svelte";
 import "./components/informational/DomainSummaryComponent.wc.svelte";

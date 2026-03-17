@@ -8,7 +8,6 @@ Here we list all the Lens components:
 - [Search Modified Display](modifiedsearch.md)
 - [Negotiate Button](negotiatebutton.md)
 - [Query Explain Button](queryexplainbutton.md)
-- [Query Spinner](queryspinner.md)
 - [Result Summary](resultsummary.md)
 - [Result Table](resulttable.md)
 - [Search Bar](searchbar.md)

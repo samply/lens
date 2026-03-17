@@ -196,7 +196,6 @@
         <lens-search-bar-multiple></lens-search-bar-multiple>
         <lens-domain-summary></lens-domain-summary>
         <lens-query-explain-button></lens-query-explain-button>
-        <lens-query-spinner></lens-query-spinner>
         <lens-search-button></lens-search-button>
     </div>
     <div id="catalogue-and-grid-wrapper">
