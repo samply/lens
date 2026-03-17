@@ -194,10 +194,10 @@
     </header>
     <div id="search-wrapper">
         <lens-search-bar-multiple></lens-search-bar-multiple>
-        <lens-domain-summary></lens-domain-summary>
-        <lens-query-explain-button></lens-query-explain-button>
+        <!-- <lens-query-explain-button></lens-query-explain-button> -->
         <lens-search-button></lens-search-button>
     </div>
+    <lens-domain-summary></lens-domain-summary>
     <div id="catalogue-and-grid-wrapper">
         <div id="catalogue" class="card">
             <lens-catalogue toggle={{ collapsable: false }}></lens-catalogue>

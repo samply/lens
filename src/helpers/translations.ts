@@ -46,6 +46,14 @@ const lensTranslations: Texts = {
         en: "Search",
         de: "Suchen",
     },
+    search_bar_add: {
+        en: "Add search bar",
+        de: "Suchleiste hinzufügen",
+    },
+    search_bar_or: {
+        en: "or",
+        de: "oder",
+    },
     search_bar_error: {
         en: "One of the search fields is empty. Please delete empty search fields or enter search criteria.",
         de: "Eine der Suchleisten ist leer. Löschen Sie leere Suchleisten oder fügen Sie Suchkriterien ein.",

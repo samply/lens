@@ -6,6 +6,8 @@
 />
 
 <script lang="ts">
+    import { CirclePlus } from "lucide-svelte";
+    import { translate } from "../../helpers/translations";
     import { withTailwind } from "../../helpers/tailwind";
     import { queryStore } from "../../stores/query";
     import SearchBarComponent from "./SearchBarComponent.wc.svelte";
@@ -21,61 +23,35 @@
     };
 </script>
 
-<div part="lens-searchbar-multiple">
+<div
+    part="lens-searchbar-multiple"
+    class="grid w-full grid-cols-1 auto-rows-max gap-2"
+>
     {#each $queryStore.bars, index}
-        <div part="lens-searchbar-multiple-wrapper">
-            <SearchBarComponent {index} />
-            {#if index === $queryStore.bars.length - 1}
-                <button
-                    part="lens-searchbar-multiple-add-button"
-                    onclick={addSearchBar}>+</button
-                >
-            {:else}
-                <span part="lens-searchbar-multiple-or-indicator">or</span>
-            {/if}
+        <div part="lens-searchbar-multiple-wrapper" class="block w-full">
+            <div class="flex w-full items-center gap-2">
+                <div class="min-w-0 flex-1">
+                    <SearchBarComponent {index} />
+                </div>
+                {#if index === $queryStore.bars.length - 1}
+                    <button
+                        part="lens-searchbar-multiple-add-button"
+                        class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-gray-300 bg-gray-100 text-gray-500 transition-colors hover:bg-gray-200 hover:text-gray-700"
+                        type="button"
+                        aria-label={translate("search_bar_add")}
+                        title={translate("search_bar_add")}
+                        onclick={addSearchBar}
+                    >
+                        <CirclePlus size={16} />
+                    </button>
+                {:else}
+                    <span
+                        part="lens-searchbar-multiple-or-indicator"
+                        class="inline-flex h-8 w-8 shrink-0 items-center justify-center text-xs text-gray-500"
+                        >{translate("search_bar_or")}</span
+                    >
+                {/if}
+            </div>
         </div>
     {/each}
-    <!-- here is a slot mainly for the search button if whished to place in this component -->
-    <slot />
 </div>
-
-<style>
-    [part~="lens-searchbar-multiple"] {
-        display: flex;
-        flex-wrap: wrap;
-        gap: var(--gap-xs);
-        align-items: center;
-    }
-
-    [part~="lens-searchbar-multiple-wrapper"] {
-        display: flex;
-        align-items: center;
-        min-width: calc(50% - 5px);
-        flex-grow: 1;
-    }
-
-    [part~="lens-searchbar-multiple-or-indicator"] {
-        margin-left: var(--gap-xs);
-        text-align: center;
-        width: 40px;
-    }
-
-    [part~="lens-searchbar-multiple-add-button"] {
-        background-color: var(--green);
-        color: var(--white);
-        border: none;
-        border-radius: var(--border-radius-small);
-        padding: 0;
-        font-size: var(--font-size-m);
-        cursor: pointer;
-        align-self: normal;
-        line-height: 22px;
-        width: 40px;
-        margin-left: var(--gap-xs);
-    }
-
-    ::part(lens-search-button) {
-        margin-left: auto;
-        margin-right: 45px;
-    }
-</style>
