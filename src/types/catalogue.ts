@@ -17,7 +17,7 @@ type BaseElement = {
         display: string;
     };
     /**
-     * Optional list of domain keys this element belongs to.
+     * Optional list of domain display names this element belongs to.
      * If omitted the element is available in all domains.
      */
     domains?: string[];

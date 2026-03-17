@@ -9,13 +9,6 @@
           "type": "string",
           "description": "URL of the Spot API endpoint used by `querySpot` function and facet counts."
         },
-        "domains": {
-          "type": "object",
-          "additionalProperties": {
-            "$ref": "#/definitions/DomainConfig"
-          },
-          "description": "Optional map of domain keys to their display configuration. When set, catalogue items will show domain chips indicating which domains they belong to. Items without a `domains` field are considered to be available in all domains and will show an \"all\" chip."
-        },
         "sitesToQuery": {
           "type": "array",
           "items": {
@@ -71,25 +64,6 @@
         }
       },
       "additionalProperties": false
-    },
-    "DomainConfig": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string",
-          "description": "The user-facing display name for the domain"
-        },
-        "color": {
-          "type": "string",
-          "description": "Hex color code for the domain chip, e.g. \"#0047b9\""
-        }
-      },
-      "required": [
-        "name",
-        "color"
-      ],
-      "additionalProperties": false,
-      "description": "Display configuration for a single domain."
     },
     "ChartOptions": {
       "type": "object",

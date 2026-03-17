@@ -7,7 +7,6 @@
 <script lang="ts">
     import { catalogue } from "../../stores/catalogue";
     import { queryStore } from "../../stores/query";
-    import { lensOptions } from "../../stores/options";
     import type {
         CatalogueElement,
         LensCatalogue,
@@ -22,17 +21,34 @@
         nodes: LensCatalogue,
     ): Record<string, string[] | undefined> {
         const map: Record<string, string[] | undefined> = {};
-        const visit = (node: CatalogueElement): void => {
+        function visit(node: CatalogueElement): void {
             if (node.type === "CatalogueGroup") {
-                node.elements.forEach(visit);
+                for (const element of node.elements) {
+                    visit(element);
+                }
             } else {
                 const domains =
                     "domains" in node ? (node.domains ?? undefined) : undefined;
                 map[node.key] = domains;
             }
-        };
-        nodes.forEach(visit);
+        }
+        for (const node of nodes) {
+            visit(node);
+        }
         return map;
+    }
+
+    function collectAllDomains(
+        domainMap: Record<string, string[] | undefined>,
+    ): string[] {
+        const set = new Set<string>();
+        for (const domains of Object.values(domainMap)) {
+            if (!domains) continue;
+            for (const domain of domains) {
+                set.add(domain);
+            }
+        }
+        return [...set];
     }
 
     /**
@@ -55,14 +71,12 @@
         return current.length > 0 ? current : null;
     }
 
-    type Chip = { key: string; name: string; color: string | null };
+    type Chip = { key: string; name: string };
 
     const chips = $derived.by((): Chip[] => {
-        const opts = $lensOptions;
-        if (!opts?.domains || Object.keys(opts.domains).length === 0) return [];
-
-        const allDomainKeys = Object.keys(opts.domains);
         const domainMap = buildDomainMap($catalogue);
+        const allDomains = collectAllDomains(domainMap);
+        if (allDomains.length === 0) return [];
 
         const hasItems = $queryStore.bars.some((b) => b.items.length > 0);
         if (!hasItems) return [];
@@ -75,7 +89,7 @@
             const barResult = intersectBarDomains(
                 bar.items,
                 domainMap,
-                allDomainKeys,
+                allDomains,
             );
             if (barResult !== null) {
                 allBarsConflict = false;
@@ -92,17 +106,15 @@
                     name:
                         translate("domain_summary_conflict") ??
                         "No domain matches criteria",
-                    color: null,
                 },
             ];
         }
 
-        return allDomainKeys
+        return allDomains
             .filter((k) => searchedKeys.includes(k))
             .map((k) => ({
                 key: k,
-                name: opts.domains![k]?.name ?? k,
-                color: opts.domains![k]?.color ?? null,
+                name: k,
             }));
     });
 </script>
@@ -114,18 +126,7 @@
         >
         <div part="lens-domain-summary-chips">
             {#each chips as chip (chip.key)}
-                {#if chip.key === "__conflict__"}
-                    <span
-                        part="lens-domain-summary-chip lens-domain-summary-chip-conflict"
-                        >{chip.name}</span
-                    >
-                {:else}
-                    <span
-                        part="lens-domain-summary-chip"
-                        style="background-color: {chip.color ?? 'var(--gray)'};"
-                        >{chip.name}</span
-                    >
-                {/if}
+                <span part="lens-domain-summary-chip">{chip.name}</span>
             {/each}
         </div>
     </div>
@@ -159,14 +160,10 @@
         border-radius: 10px;
         font-size: var(--font-size-xs);
         font-family: var(--font-family);
-        font-weight: 600;
+        font-weight: 500;
         white-space: nowrap;
-        color: #ffffff;
+        color: var(--gray);
+        background-color: var(--light-gray);
         line-height: 1.6;
-    }
-
-    [part~="lens-domain-summary-chip-conflict"] {
-        background-color: var(--red);
-        font-weight: 400;
     }
 </style>

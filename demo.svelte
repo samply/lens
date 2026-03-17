@@ -20,11 +20,6 @@
 
     setOptions({
         language: localStorage.getItem("language") || "en",
-        domains: {
-            oncology: { name: "Oncology", color: "#0047b9" },
-            cardiology: { name: "Cardiology", color: "#00882d" },
-            rare_diseases: { name: "Rare Diseases", color: "#b90000" },
-        },
         texts: {
             "lens-dev-test-error": {
                 en: "Task failed successfully.",

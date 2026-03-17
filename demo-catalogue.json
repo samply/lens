@@ -4,7 +4,7 @@
         "key": "diagnosis",
         "name": "Diagnosis",
         "infoButtonText": ["Diagnosis"],
-        "domains": ["oncology", "rare_diseases"],
+        "domains": ["Oncology", "Rare Diseases"],
         "options": [
             {
                 "value": "C31",
@@ -43,7 +43,7 @@
         "key": "blood-group",
         "name": "Blood group",
         "negatable": true,
-        "domains": ["cardiology"],
+        "domains": ["Cardiology"],
         "options": [
             {
                 "value": "A+",
@@ -84,7 +84,7 @@
         "key": "date-of-birth",
         "name": "Date of birth",
         "max": "2025-09-04",
-        "domains": ["cardiology", "oncology"]
+        "domains": ["Cardiology", "Oncology"]
     },
     {
         "type": "FreeTextElement",

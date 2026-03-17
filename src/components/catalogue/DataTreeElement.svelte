@@ -14,7 +14,6 @@
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
     import { openTreeNodes } from "../../stores/catalogue";
     import { translate } from "../../helpers/translations";
-    import { lensOptions } from "../../stores/options";
 
     interface Props {
         element: CatalogueElement;
@@ -54,8 +53,6 @@
     };
 
     const domainChips = $derived.by(() => {
-        const opts = $lensOptions;
-        if (!opts?.domains || Object.keys(opts.domains).length === 0) return [];
         if (element.type === "CatalogueGroup") return [];
         const elementDomains =
             "domains" in element ? (element.domains ?? []) : [];
@@ -64,14 +61,12 @@
                 {
                     key: "__all__",
                     name: translate("domain_chip_all"),
-                    color: null,
                 },
             ];
         }
         return elementDomains.map((d) => ({
             key: d,
-            name: opts.domains![d]?.name ?? d,
-            color: opts.domains![d]?.color ?? null,
+            name: d,
         }));
     });
 
@@ -81,7 +76,7 @@
         if (element.type !== "SelectElement") return;
         const sel = element as SelectElement;
 
-        sel.options.forEach((option: CatalogueOption) => {
+        for (const option of sel.options) {
             addItemToQuery(
                 {
                     type: "SetItem",
@@ -91,7 +86,7 @@
                 },
                 $activeQueryGroupIndex,
             );
-        });
+        }
     };
 </script>
 
@@ -141,18 +136,7 @@
         {#if domainChips.length > 0}
             <div part="lens-data-tree-domain-chips">
                 {#each domainChips as chip (chip.key)}
-                    {#if chip.color !== null}
-                        <span
-                            part="lens-data-tree-domain-chip"
-                            style="--domain-chip-color: {chip.color}; background-color: {chip.color};"
-                            >{chip.name}</span
-                        >
-                    {:else}
-                        <span
-                            part="lens-data-tree-domain-chip lens-data-tree-domain-chip-all"
-                            >{chip.name}</span
-                        >
-                    {/if}
+                    <span part="lens-data-tree-domain-chip">{chip.name}</span>
                 {/each}
             </div>
         {/if}
@@ -268,15 +252,10 @@
         border-radius: 10px;
         font-size: var(--font-size-xxs);
         font-family: var(--font-family);
-        font-weight: 600;
+        font-weight: 500;
         white-space: nowrap;
-        color: #ffffff;
-        line-height: 1.6;
-    }
-
-    [part~="lens-data-tree-domain-chip-all"] {
-        background-color: var(--light-gray);
         color: var(--gray);
-        font-weight: 400;
+        background-color: var(--light-gray);
+        line-height: 1.6;
     }
 </style>
