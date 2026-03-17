@@ -1,9 +1,5 @@
 <script lang="ts">
-    import { addItemToQuery, activeQueryGroupIndex } from "../../stores/query";
-    import type {
-        CatalogueElement,
-        SelectElement,
-    } from "../../types/catalogue";
+    import type { CatalogueElement } from "../../types/catalogue";
     import DataTreeElement from "./DataTreeElement.svelte";
     import AutocompleteInput from "./AutocompleteInput.svelte";
     import OptionInput from "./OptionInput.svelte";
@@ -12,7 +8,6 @@
     import FreeTextInput from "./FreeTextInput.svelte";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
     import { openTreeNodes } from "../../stores/catalogue";
-    import { translate } from "../../helpers/translations";
 
     interface Props {
         element: CatalogueElement;
@@ -61,25 +56,6 @@
             name: d,
         }));
     });
-
-    const isSelectElement = $derived(element.type === "SelectElement");
-
-    const selectAllOptions = (): void => {
-        if (element.type !== "SelectElement") return;
-        const sel = element as SelectElement;
-
-        for (const option of sel.options) {
-            addItemToQuery(
-                {
-                    type: "SetItem",
-                    key: sel.key,
-                    negated: false,
-                    values: [option.value],
-                },
-                $activeQueryGroupIndex,
-            );
-        }
-    };
 </script>
 
 <div part="data-tree-element">
@@ -114,15 +90,6 @@
             <a href={element.infoLink.link} target="_blank"
                 >{element.infoLink.display}</a
             >
-        {/if}
-
-        {#if isSelectElement && open}
-            <button
-                part="lens-data-tree-add-all-options-button"
-                onclick={selectAllOptions}
-            >
-                {translate("add_all")}
-            </button>
         {/if}
 
         {#if domainChips.length > 0}
@@ -208,15 +175,6 @@
 
     [part~="data-tree-element-toggle-icon-open"] {
         transform: rotate(90deg);
-    }
-
-    [part~="lens-data-tree-add-all-options-button"] {
-        background-color: var(--button-background-color);
-        border-radius: var(--border-radius-small);
-        color: var(--button-color);
-        padding: 3px 8px;
-        cursor: pointer;
-        border: none;
     }
 
     [part~="lens-data-tree-element-child-category"] {
