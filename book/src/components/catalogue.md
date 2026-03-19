@@ -20,26 +20,6 @@ This component loads all elements from the _catalogue store_ and [lensOptions](h
 
 The catalogue is a tree-like data structure that describes what the user can search for. The application passes the catalogue to lens as a JSON string via the `<lens-options>` component. Lens validates the JSON against a JSON schema that is automatically generated from this type definition. Many components of lens use the catalogue. Most notably the `<lens-catalogue>` component renders the catalogue as a collapsable tree and allows the user to add items from the catalogue to the search bar.
 
-### AggregatedValue
-
-| Properties | Description |
-| ---------- | ----------- |
-| `name`     |             |
-| `value`    |             |
-
-### Criteria
-
-A criterion that can be selected in a single-select or autocomplete catalogue item.
-
-| Properties         | Description                                                                        |
-| ------------------ | ---------------------------------------------------------------------------------- |
-| `aggregatedValue?` | [AggregatedValue](#aggregatedvalue)                                                |
-| `description?`     | Optional description that is shown next to the display name during autocompletion. |
-| `key`              | A key that uniquely identifies the criterion.                                      |
-| `name`             | The criterion's user-facing display name.                                          |
-| `subgroup?`        | [Criteria](#criteria)                                                              |
-| `visible?`         |                                                                                    |
-
 ### Category
 
 | `fieldType`     | Category Type                                 |
@@ -58,7 +38,7 @@ A logical grouping of catalogue items that is rendered as a collapsable entry in
 | Properties        | Description                                                                                                       |
 | ----------------- | ----------------------------------------------------------------------------------------------------------------- |
 | `childCategories` | The list of catalogue items in the group.                                                                         |
-| `fieldType`       | `group`                                                                                                           |
+| `fieldType`       | default is `group`                                                                                                |
 | `infoButtonText?` | Optional text that is accessed by clicking a "ⓘ" button next to the display name.                                 |
 | `infoLink?`       | Optional hyperlink shown next to the display name. `display`: The link text. `link`: The link URL.                |
 | `key`             | A key that uniquely identifies the catalogue item. It is typically used to look up the CQL snippet for that item. |
@@ -71,7 +51,7 @@ A catalogue item that lets the user select one or more criteria from a predefine
 | Properties         | Description                                                                                                                                                                                                                                                                                                               |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `criteria`         | The list of criteria the user can select from. ([Criteria](#criteria))                                                                                                                                                                                                                                                    |
-| `fieldType`        | `single-select`                                                                                                                                                                                                                                                                                                           |
+| `fieldType`        | default is `single-select`                                                                                                                                                                                                                                                                                                |
 | `infoButtonText?`  | Optional text that is accessed by clicking a "ⓘ" button next to the display name.                                                                                                                                                                                                                                         |
 | `key`              | A key that uniquely identifies the catalogue item. It is typically used to look up the CQL snippet for that item.                                                                                                                                                                                                         |
 | `name`             | The item's user-facing display name.                                                                                                                                                                                                                                                                                      |
@@ -85,7 +65,7 @@ A catalogue item that lets the user select one or more criteria from a predefine
 | Properties        | Description                                                                                                       |
 | ----------------- | ----------------------------------------------------------------------------------------------------------------- |
 | `criteria`        | The list of criteria the user can select from. ([Criteria](#criteria))                                            |
-| `fieldType`       | `autocomplete`                                                                                                    |
+| `fieldType`       | default is `autocomplete`                                                                                         |
 | `infoButtonText?` | Optional text that is accessed by clicking a "ⓘ" button next to the display name.                                 |
 | `key`             | A key that uniquely identifies the catalogue item. It is typically used to look up the CQL snippet for that item. |
 | `name`            | The item's user-facing display name.                                                                              |
@@ -97,7 +77,7 @@ A catalogue item that lets the user specify a numeric range by entering a minimu
 
 | Properties        | Description                                                                                                       |
 | ----------------- | ----------------------------------------------------------------------------------------------------------------- |
-| `fieldType`       | `number`                                                                                                          |
+| `fieldType`       | default is `number`                                                                                               |
 | `infoButtonText?` | Optional text that is accessed by clicking a "ⓘ" button next to the display name.                                 |
 | `key`             | A key that uniquely identifies the catalogue item. It is typically used to look up the CQL snippet for that item. |
 | `max?`            | The largest value that the user can enter.                                                                        |
@@ -112,7 +92,7 @@ A catalogue item that lets the user specify a date range by picking an earliest 
 
 | Properties        | Description                                                                                                       |
 | ----------------- | ----------------------------------------------------------------------------------------------------------------- |
-| `fieldType`       | `date`                                                                                                            |
+| `fieldType`       | default is `date`                                                                                                 |
 | `infoButtonText?` | Optional text that is accessed by clicking a "ⓘ" button next to the display name.                                 |
 | `key`             | A key that uniquely identifies the catalogue item. It is typically used to look up the CQL snippet for that item. |
 | `max?`            | The latest date that the user can pick.                                                                           |
@@ -126,11 +106,33 @@ A catalogue item that lets the user to specify a string.
 
 | Properties        | Description                                                                                                       |
 | ----------------- | ----------------------------------------------------------------------------------------------------------------- |
-| `fieldType`       | `string`                                                                                                          |
+| `fieldType`       | default is `string`                                                                                               |
 | `infoButtonText?` | Optional text that is accessed by clicking a "ⓘ" button next to the display name.                                 |
 | `key`             | A key that uniquely identifies the catalogue item. It is typically used to look up the CQL snippet for that item. |
 | `name`            | The item's user-facing display name.                                                                              |
 | `type`            | `EQUALS`                                                                                                          |
+
+### Criteria
+
+A criterion that can be selected in a single-select or autocomplete catalogue item.
+
+| Properties         | Description                                                                             |
+| ------------------ | --------------------------------------------------------------------------------------- |
+| `aggregatedValue?` | [AggregatedValue](#aggregatedvalue)                                                     |
+| `description?`     | Optional description that is shown next to the display name during autocompletion.      |
+| `key`              | A key that uniquely identifies the criterion.                                           |
+| `name`             | The criterion's user-facing display name.                                               |
+| `subgroup?`        | [Criteria](#criteria)                                                                   |
+| `visible?`         | Optional flag that allows values to be in the catalogue without showing it to the user. |
+
+### AggregatedValue
+
+A combination of values that are in the catalogue.
+
+| Properties | Description                                          |
+| ---------- | ---------------------------------------------------- |
+| `name`     | A key that uniquely identifies the aggregated value. |
+| `value`    | Combination of values.                               |
 
 ---
 
