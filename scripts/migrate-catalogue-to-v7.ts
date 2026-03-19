@@ -1,9 +1,9 @@
 /**
- * Converts an old-format Lens catalogue JSON to the new format.
+ * Converts an old v5 catalogue to the new v7 format.
  *
  * Usage:
- *   node scripts/migrate-catalogue.ts < old-catalogue.json > new-catalogue.json
- *   node scripts/migrate-catalogue.ts old-catalogue.json > new-catalogue.json
+ *   node scripts/migrate-catalogue-to-v7.ts < old-catalogue.json > new-catalogue.json
+ *   node scripts/migrate-catalogue-to-v7.ts old-catalogue.json > new-catalogue.json
  */
 
 import { readFileSync } from "fs";
