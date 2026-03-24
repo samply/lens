@@ -2,8 +2,8 @@
 // re-exported here appears in the bundle and is part of the public API.
 
 // Export functions
-export { setCatalogue } from "./stores/catalogue";
-export { setOptions } from "./stores/options";
+export { setCatalogue, getCatalogue } from "./stores/catalogue";
+export { setOptions, getOptions } from "./stores/options";
 export { translate } from "./helpers/translations";
 export { showToast } from "./stores/toasts";
 export { resetDiagrams } from "./helpers/reset";

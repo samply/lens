@@ -116,7 +116,7 @@
       "type": "object"
     },
     "LensOptions": {
-      "additionalProperties": false,
+      "additionalProperties": {},
       "properties": {
         "autoUpdateDatarequestsInUrl": {
           "description": "Whether to automatically update datarequests in the URL when they change (default: true)",

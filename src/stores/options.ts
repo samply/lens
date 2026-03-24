@@ -1,4 +1,4 @@
-import { writable } from "svelte/store";
+import { get, writable } from "svelte/store";
 import type { LensOptions } from "../types/options";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
@@ -26,4 +26,9 @@ export function setOptions(newOptions: LensOptions) {
         );
     }
     lensOptions.set(optionsCopy);
+}
+
+/** Returns the current options from the store, or undefined if not set yet. */
+export function getOptions(): LensOptions | undefined {
+    return get(lensOptions);
 }
