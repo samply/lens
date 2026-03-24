@@ -23,6 +23,10 @@ export type LensOptions = {
     facetCount?: FacetCountOptions;
     /** Whether to automatically update the query in the URL when it changes (default: true) */
     autoUpdateQueryInUrl?: boolean;
+    /** Whether to automatically update datarequests in the URL when they change (default: true) */
+    autoUpdateDatarequestsInUrl?: boolean;
+    // Allow additional properties for application extensions without breaking the schema validation
+    [key: string]: unknown;
 };
 
 export type SiteInfo = {
