@@ -1,4 +1,4 @@
-import { writable } from "svelte/store";
+import { get, writable } from "svelte/store";
 import type { Catalogue, Criteria, Category } from "../types/catalogue";
 import {
     isBottomLayer,
@@ -339,4 +339,9 @@ export function setCatalogue(newCatalogue: Catalogue) {
         );
     }
     catalogue.set(catalogueCopy);
+}
+
+/** Returns the current catalogue from the store. */
+export function getCatalogue(): Catalogue {
+    return get(catalogue);
 }

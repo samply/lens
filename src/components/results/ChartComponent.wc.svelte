@@ -449,9 +449,16 @@
                 (label) => options.legendMapping?.[label] ?? label,
             );
         } else if (perSite && $lensOptions?.siteMappings !== undefined) {
-            chart.data.labels = chartLabels.map(
-                (label) => $lensOptions.siteMappings?.[label] ?? label,
-            );
+            chart.data.labels = chartLabels.map((label) => {
+                const siteInfo = $lensOptions?.siteMappings?.[label];
+                if (typeof siteInfo === "object") {
+                    return siteInfo.displayName;
+                } else if (typeof siteInfo === "string") {
+                    return siteInfo;
+                } else {
+                    return label;
+                }
+            });
         } else {
             chart.data.labels = chartLabels;
         }
