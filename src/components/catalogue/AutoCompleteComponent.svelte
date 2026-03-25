@@ -1,60 +1,56 @@
 <script lang="ts">
-    import type { AutocompleteCategory, Criteria } from "../../types/catalogue";
-    import { v4 as uuidv4 } from "uuid";
+    import type {
+        AutocompleteElement,
+        CatalogueOption,
+    } from "../../types/catalogue";
     import {
         activeQueryGroupIndex,
         addItemToQuery,
         queryStore,
     } from "../../stores/query";
-    import type { QueryItem, QueryValue } from "../../types/queryData";
+    import type { Query, SetItem } from "../../types/query";
     import { onMount } from "svelte";
     import { facetCounts } from "../../stores/facetCounts";
     import { lensOptions } from "../../stores/options";
 
-    /**
-     * mockdata to get from texts store
-     */
     let placeholderText: string = "Type to filter conditions";
     let noMatchesFoundMessage: string = "No matches found";
 
     interface Props {
-        element: AutocompleteCategory;
+        element: AutocompleteElement;
     }
 
     let { element }: Props = $props();
 
-    /**
-     * list of criteria
-     */
-    let criteria: Criteria[] = $state(element.criteria);
+    let options: CatalogueOption[] = $derived(element.options);
 
-    const resolvesubgroup = (criterion: Criteria): Criteria[] => {
-        let subgroups: Criteria[] = [];
-        if (criterion.visible == undefined && !criterion.visible) {
-            subgroups.push(criterion);
+    const resolveSuboptions = (option: CatalogueOption): CatalogueOption[] => {
+        let collected: CatalogueOption[] = [];
+        if (option.selectable == undefined && !option.selectable) {
+            collected.push(option);
         }
 
-        if (criterion.subgroup != undefined) {
-            criterion.subgroup.forEach((criterion: Criteria) => {
-                subgroups = subgroups.concat(resolvesubgroup(criterion));
+        if (option.suboptions != undefined) {
+            option.suboptions.forEach((sub: CatalogueOption) => {
+                collected = collected.concat(resolveSuboptions(sub));
             });
         }
-        return subgroups;
+        return collected;
     };
 
     onMount(() => {
         searchBarInput.focus();
 
-        let subgroups: Criteria[] = [];
-        criteria.forEach((element) => {
-            if (element.subgroup != undefined) {
-                element.subgroup.forEach((criterion: Criteria) => {
-                    subgroups = subgroups.concat(resolvesubgroup(criterion));
+        let suboptions: CatalogueOption[] = [];
+        options.forEach((opt) => {
+            if (opt.suboptions != undefined) {
+                opt.suboptions.forEach((sub: CatalogueOption) => {
+                    suboptions = suboptions.concat(resolveSuboptions(sub));
                 });
             }
         });
 
-        criteria = criteria.concat(subgroups);
+        options = options.concat(suboptions);
     });
 
     /**
@@ -72,23 +68,13 @@
      */
     let autoCompleteOpen = $state(false);
 
-    const getChosenOptionsFromQueryStore = (
-        queryStore: QueryItem[][],
-    ): QueryItem[] => {
-        return queryStore
-            .flat()
-            .map((queryItem: QueryItem) => {
-                const queryItemValues = queryItem.values.map(
-                    (queryValue: QueryValue) => {
-                        return {
-                            ...queryItem,
-                            values: [queryValue],
-                        };
-                    },
-                );
-                return queryItemValues;
-            })
-            .flat();
+    const getChosenValuesFromQueryStore = (query: Query): string[] => {
+        return query.bars
+            .flatMap((bar) => bar.items)
+            .filter(
+                (item) => item.key === element.key && item.type === "SetItem",
+            )
+            .flatMap((item) => (item as SetItem).values);
     };
 
     /**
@@ -105,42 +91,27 @@
      * @param indexOfChosenStore - the index of the chosen store to add the input item to
      */
     const addInputValueToStore = (
-        inputItem: Criteria,
+        inputItem: CatalogueOption,
         indexOfChosenStore: number,
     ): void => {
-        /**
-         * check if option is allready present in the query store
-         */
-        const optionAllreadyPresent = chosenOptions.find((option) => {
-            return option.values[0].value === inputItem.key;
-        });
+        const optionAlreadyPresent = chosenValues.includes(inputItem.value);
 
-        if (optionAllreadyPresent) {
+        if (optionAlreadyPresent) {
             return;
         }
 
-        /**
-         * transform inputItem to QueryItem
-         */
-        const queryItem: QueryItem = {
-            id: uuidv4(),
-            name: element.name,
-            key: element.key,
-            type: element.type,
-            values: [
-                {
-                    value: inputItem.key,
-                    name: inputItem.name,
-                    description: inputItem.description,
-                    queryBindId: uuidv4(),
-                },
-            ],
-        };
+        addItemToQuery(
+            {
+                type: "SetItem",
+                key: element.key,
+                negated: false,
+                values: [inputItem.value],
+            },
+            indexOfChosenStore,
+        );
 
         inputValue = "";
         focusedItemIndex = 0;
-
-        addItemToQuery(queryItem, indexOfChosenStore);
     };
 
     /**
@@ -178,7 +149,7 @@
      * adds the input option to the query store
      * @param inputOption - the input option to add to the query store
      */
-    const selectItemByClick = (inputOption: Criteria): void => {
+    const selectItemByClick = (inputOption: CatalogueOption): void => {
         addInputValueToStore(inputOption, $activeQueryGroupIndex);
     };
 
@@ -235,22 +206,16 @@
     /**
      * stores the filtered list of autocomplete items
      */
-    let inputOptions: Criteria[] = $derived.by(() => {
-        return criteria.filter((item: Criteria) => {
+    let inputOptions: CatalogueOption[] = $derived.by(() => {
+        return options.filter((item: CatalogueOption) => {
             const clearedInputValue = inputValue
                 .replace(/^[0-9]*:/g, "")
                 .toLocaleLowerCase();
 
             return (
                 item.name.toLowerCase().includes(clearedInputValue) ||
-                item.key.toLowerCase().includes(clearedInputValue) ||
+                item.value.toLowerCase().includes(clearedInputValue) ||
                 item.description?.toLowerCase().includes(clearedInputValue)
-                /**
-                 * FIX ME:
-                 * should only take names. This needs a catalogue fix
-                 */
-                // item.key.toLocaleLowerCase().includes(clearedInputValue) ||
-                // item.criterion.key.toLowerCase().includes(clearedInputValue) ||
             );
         });
     });
@@ -260,20 +225,7 @@
      * chosenOptions are constructed from the query store and has no duplicates
      * if an option is put into the store from anywhere it will update
      */
-    let chosenOptions = $derived(
-        getChosenOptionsFromQueryStore($queryStore).reduce(
-            (acc: QueryItem[], queryItem: QueryItem) => {
-                const optionAllreadyPresent = acc.find((option: QueryItem) => {
-                    return option.values[0].value === queryItem.values[0].value;
-                });
-                if (optionAllreadyPresent || queryItem.key !== element.key) {
-                    return acc;
-                }
-                return [...acc, queryItem];
-            },
-            [],
-        ),
-    );
+    let chosenValues = $derived(getChosenValuesFromQueryStore($queryStore));
 
     $effect(() => {
         if (activeDomElement) {
@@ -334,7 +286,7 @@
                                             ?.hoverText?.[element.key] ?? ""}
                                     >
                                         {$facetCounts[element.key][
-                                            inputOption.key
+                                            inputOption.value
                                         ] ?? 0}
                                     </div>
                                 {/if}
@@ -367,7 +319,7 @@
                                             ?.hoverText?.[element.key] ?? ""}
                                     >
                                         {$facetCounts[element.key][
-                                            inputOption.key
+                                            inputOption.value
                                         ] ?? 0}
                                     </div>
                                 {/if}

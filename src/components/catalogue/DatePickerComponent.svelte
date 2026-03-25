@@ -1,7 +1,6 @@
 <script lang="ts">
     import AddButton from "./AddButton.svelte";
-    import type { DateRangeCategory } from "../../types/catalogue";
-    import { v4 as uuidv4 } from "uuid";
+    import type { DateRangeElement } from "../../types/catalogue";
     import { activeQueryGroupIndex, addItemToQuery } from "../../stores/query";
     import { onMount } from "svelte";
     import { translate } from "../../helpers/translations";
@@ -11,7 +10,7 @@
         inSearchBar = false,
         resetToEmptySearchBar = () => {},
     }: {
-        element: DateRangeCategory;
+        element: DateRangeElement;
         inSearchBar?: boolean;
         resetToEmptySearchBar?: (focus?: boolean) => void;
     } = $props();
@@ -40,14 +39,6 @@
         return true;
     }
 
-    function getMinMax(min: string | null, max: string | null): string {
-        if (min && max && min === max) return `${min}`;
-        if (min && max) return `${min} - ${max}`;
-        if (!min && max) return `≤ ${max}`;
-        if (min && !max) return `≥ ${min}`;
-        return "";
-    }
-
     function addItem(): void {
         if (!formVlaid) {
             fromInput.reportValidity();
@@ -56,17 +47,11 @@
 
         addItemToQuery(
             {
-                id: uuidv4(),
+                type: "DateRangeItem",
                 key: element.key,
-                name: element.name,
-                type: element.type,
-                values: [
-                    {
-                        name: getMinMax(from, to),
-                        value: { min: from || undefined, max: to || undefined },
-                        queryBindId: uuidv4(),
-                    },
-                ],
+                negated: false,
+                min: from || undefined,
+                max: to || undefined,
             },
             $activeQueryGroupIndex,
         );

@@ -6,34 +6,69 @@
 
 <script lang="ts">
     import { translate } from "../../helpers/translations";
-    import { catalogue, getCategoryFromKey } from "../../stores/catalogue";
+    import { elementMap, optionMap } from "../../stores/catalogue";
     import { queryStore } from "../../stores/query";
-    import type { QueryValue } from "../../types/queryData";
+    import type { AggregatedValue } from "../../types/catalogue";
+    import type { QueryItem } from "../../types/query";
     import InfoButtonComponent from "./InfoButtonComponent.wc.svelte";
 
     interface Props {
         noQueryMessage?: string;
         queryItemName?: string | undefined;
-        queryItemValue?: QueryValue | undefined;
+        queryItemKey?: string | undefined;
+        queryItemValue?: string | undefined;
     }
 
     let {
         queryItemName = undefined,
+        queryItemKey = undefined,
         queryItemValue = undefined,
         noQueryMessage = "Search for all results",
     }: Props = $props();
+
+    function getAggregatedValue(
+        key: string,
+        value: string,
+    ): AggregatedValue[][] | undefined {
+        return $optionMap.get(`${key}.${value}`)?.aggregatedValue;
+    }
+
+    function getElementName(key: string): string {
+        return $elementMap.get(key)?.name ?? key;
+    }
+
+    function getOptionName(key: string, value: string): string {
+        return $optionMap.get(`${key}.${value}`)?.name ?? value;
+    }
+
+    function formatItem(item: QueryItem): string {
+        switch (item.type) {
+            case "SetItem":
+                return item.values
+                    .map((v) => $optionMap.get(`${item.key}.${v}`)?.name ?? v)
+                    .join(", ");
+            case "NumericRangeItem":
+                return `${item.min ?? "∞"} – ${item.max ?? "∞"}`;
+            case "DateRangeItem":
+                return `${item.min ?? "∞"} – ${item.max ?? "∞"}`;
+        }
+    }
 </script>
 
-{#if queryItemName !== undefined && queryItemValue !== undefined}
+{#if queryItemName !== undefined && queryItemKey !== undefined && queryItemValue !== undefined}
     <InfoButtonComponent buttonSize={18} inSearchBar={true}>
-        {#if Array.isArray(queryItemValue.value)}
+        {@const aggregatedValue = getAggregatedValue(
+            queryItemKey,
+            queryItemValue,
+        )}
+        {#if Array.isArray(aggregatedValue) && aggregatedValue.length > 0}
             <div part="lens-query-explain-multi-row-message">
                 <div
                     part="lens-query-explain-multi-row-message-heading lens-query-explain-multi-row-message-heading-top"
                 >
                     {translate("query_item_multi_row_header_top")}
                 </div>
-                {#each queryItemValue.value as value, index (index)}
+                {#each aggregatedValue as group, index (index)}
                     {#if index > 0}
                         <div
                             part="lens-query-explain-multi-row-message-heading"
@@ -42,12 +77,12 @@
                         </div>
                     {/if}
                     <div part="lens-query-explain-multi-row-message-group">
-                        {#each value as valueItem, i (valueItem.value + i)}
+                        {#each group as valueItem, i (`${valueItem.key}.${valueItem.value}.${i}`)}
                             <div
                                 part="lens-query-explain-multi-row-message-group-item"
                             >
-                                {getCategoryFromKey($catalogue, valueItem.value)
-                                    ?.name ?? valueItem.value}: {valueItem.name}
+                                {getElementName(valueItem.key)}:
+                                {getOptionName(valueItem.key, valueItem.value)}
                             </div>
                         {/each}
                     </div>
@@ -55,35 +90,34 @@
             </div>
         {:else}
             <div part="lens-query-explain-single-row-message">
-                {queryItemName}: {queryItemValue.name}
+                {queryItemName}: {getOptionName(queryItemKey, queryItemValue)}
             </div>
         {/if}
     </InfoButtonComponent>
 {:else}
     <div part="lens-query-explain-button">
         <InfoButtonComponent buttonSize={25} alignDialogue="bottom-left">
-            {#if $queryStore.flat().length > 0}
+            {#if $queryStore.bars.some((b) => b.items.length > 0)}
                 <h3 part="lens-query-explain-header">
                     {translate("query_info_header")}
                 </h3>
                 <ul part="lens-query-explain-groups">
-                    {#each $queryStore as group, index (index)}
+                    {#each $queryStore.bars as bar, barIndex (barIndex)}
                         <li part="lens-query-explain-group-item">
                             <ul part="lens-query-explain-bottom-level-items">
                                 <li
                                     part="lens-query-explain-bottom-level-item lens-query-explain-bottom-level-item-header"
                                 >
                                     {translate("query_info_group_header")}
-                                    {index + 1}
+                                    {barIndex + 1}
                                 </li>
-                                {#each group as item, index (item.name + index)}
+                                {#each bar.items as item (item.key + item.type)}
                                     <li
                                         part="lens-query-explain-bottom-level-item lens-query-explain-bottom-level-item-entry"
                                     >
-                                        {item.name}:
-                                        {#each item.values as value, index (value.name)}
-                                            {index > 0 ? ", " : ""}{value.name}
-                                        {/each}
+                                        {$elementMap.get(item.key)?.name ??
+                                            item.key}:
+                                        {formatItem(item)}
                                     </li>
                                 {/each}
                             </ul>
@@ -127,6 +161,7 @@
     [part~="lens-query-explain-multi-row-message-group"] {
         padding-left: var(--gap-xs);
     }
+
     [part~="lens-query-explain-header"] {
         font-weight: bold;
         margin-bottom: var(--gap-xs);

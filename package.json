@@ -7,7 +7,6 @@
         "type": "git",
         "url": "git+https://github.com/samply/lens.git"
     },
-    "//": "Settings recommended by Vite but without CommonJS exports, see https://vite.dev/guide/build#library-mode",
     "type": "module",
     "files": [
         "dist",
@@ -22,15 +21,17 @@
     "scripts": {
         "dev": "vite dev",
         "build": "vite build",
-        "build:demo": " vite build --config vite.config.demo.js",
-        "check": "svelte-check",
-        "prepublishOnly": "vite build",
-        "prepare": "husky",
-        "version": "npm version -m \"chore: release %s\"",
-        "schemagen": "bash scripts/generate-json-schema.bash",
-        "book": "mdbook serve book --open",
-        "typedoc": "typedoc src/index.ts --watch",
-        "test": "vitest"
+        "demo:build": " vite build --config vite.config.demo.ts",
+        "demo:preview": "vite preview --config vite.config.demo.ts",
+        "check": "svelte-check --tsconfig ./tsconfig.json",
+        "lint": "prettier --check . && eslint .",
+        "format": "prettier --write .",
+        "test": "vitest --run",
+        "schema:generate": "node scripts/generate-json-schema.ts",
+        "schema:check": "node scripts/generate-json-schema.ts --check",
+        "schema:validate": "node scripts/validate-json-files.ts",
+        "typedoc:dev": "typedoc src/index.ts --watch",
+        "typedoc:build": "typedoc src/index.ts"
     },
     "devDependencies": {
         "@eslint/js": "^9.39.2",
@@ -42,9 +43,7 @@
         "eslint-config-prettier": "^10.1.8",
         "eslint-plugin-svelte": "^3.14.0",
         "globals": "^17.0.0",
-        "husky": "^9.1.7",
         "jsdom": "^28.1.0",
-        "lint-staged": "^16.2.7",
         "prettier": "^3.8.0",
         "prettier-plugin-svelte": "^3.4.1",
         "rollup": "^4.55.1",
@@ -63,11 +62,5 @@
         "ajv-formats": "^3.0.1",
         "chart.js": "^4.5.1",
         "uuid": "^13.0.0"
-    },
-    "lint-staged": {
-        "*": [
-            "eslint --fix",
-            "prettier --ignore-unknown --write"
-        ]
     }
 }

@@ -15,11 +15,9 @@
         siteStatus,
         siteResults,
     } from "../../stores/response";
-    import { v4 as uuidv4 } from "uuid";
     import { activeQueryGroupIndex, addItemToQuery } from "../../stores/query";
-    import { catalogue } from "../../stores/catalogue";
-    import type { QueryItem, QueryValue } from "../../types/queryData";
-    import type { Category, Criteria } from "../../types/catalogue";
+    import { elementMap } from "../../stores/catalogue";
+    import type { QueryItem } from "../../types/query";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
     import { lensOptions } from "../../stores/options";
     import type { ChartOption } from "../../types/options";
@@ -589,82 +587,45 @@
      * adds stratifier as a search parameter when clicked
      */
     const handleClickOnStratifier = (): void => {
-        /**
-         * the clicked stratifier
-         */
         const stratifier = chart.getActiveElements()[0];
         if (!stratifier || !clickToAddState) return;
         const label: string = chart.data.labels
             ? (chart.data.labels[stratifier.index] as string)
             : "";
-        let queryItem!: QueryItem;
-        $catalogue.forEach((parentCategory: Category) => {
-            if ("childCategories" in parentCategory) {
-                parentCategory.childCategories?.forEach(
-                    (childCategorie: Category) => {
-                        if (
-                            childCategorie.key === dataKey &&
-                            (childCategorie.fieldType === "single-select" ||
-                                childCategorie.fieldType === "autocomplete" ||
-                                childCategorie.fieldType === "number")
-                        ) {
-                            let values: QueryValue[] = [];
 
-                            if (childCategorie.fieldType === "number") {
-                                /**
-                                 * TODO: add customisation for the step size
-                                 */
-                                values = [
-                                    {
-                                        name: `${label}`,
-                                        value: {
-                                            min: parseInt(label),
-                                            max:
-                                                parseInt(label) +
-                                                (groupRange ?? 0) -
-                                                1,
-                                        },
-                                        queryBindId: uuidv4(),
-                                    },
-                                ];
-                            } else {
-                                childCategorie.criteria.forEach(
-                                    (criterion: Criteria) => {
-                                        if (
-                                            criterion.key === label ||
-                                            criterion.name === label
-                                        ) {
-                                            values[0] = {
-                                                name: criterion.name,
-                                                value: criterion.key,
-                                                queryBindId: uuidv4(),
-                                                description:
-                                                    criterion.description,
-                                            };
-                                        }
-                                    },
-                                );
-                            }
+        const element = $elementMap.get(dataKey);
+        if (!element || element.type === "CatalogueGroup") return;
 
-                            queryItem = {
-                                id: uuidv4(),
-                                key: childCategorie.key,
-                                name: childCategorie.name,
-                                type:
-                                    "type" in childCategorie
-                                        ? childCategorie.type
-                                        : "BETWEEN",
-                                values: values,
-                            };
+        let queryItem: QueryItem | undefined;
 
-                            addItemToQuery(queryItem, $activeQueryGroupIndex);
-                        }
-                    },
-                );
+        if (element.type === "NumericRangeElement") {
+            queryItem = {
+                type: "NumericRangeItem",
+                key: element.key,
+                negated: false,
+                min: parseInt(label),
+                max: parseInt(label) + (groupRange ?? 0) - 1,
+            };
+        } else if (
+            element.type === "SelectElement" ||
+            element.type === "AutocompleteElement"
+        ) {
+            const matchedOption = element.options.find(
+                (o) => o.value === label || o.name === label,
+            );
+            if (matchedOption) {
+                queryItem = {
+                    type: "SetItem",
+                    key: element.key,
+                    negated: false,
+                    values: [matchedOption.value],
+                };
             }
-        });
+        }
 
-        addItemToQuery(queryItem, $activeQueryGroupIndex);
+        if (queryItem) {
+            addItemToQuery(queryItem, $activeQueryGroupIndex);
+        }
     };
 
     $effect(() => {

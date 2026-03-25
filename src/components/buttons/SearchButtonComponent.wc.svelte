@@ -17,9 +17,11 @@
 
     const onclick = (): void => {
         queryModified.set(false);
-        $queryStore = $queryStore.filter((queryGroup) => queryGroup.length > 0);
-        if ($queryStore.length === 0) {
-            $queryStore = [[]];
+        $queryStore = {
+            bars: $queryStore.bars.filter((bar) => bar.items.length > 0),
+        };
+        if ($queryStore.bars.length === 0) {
+            $queryStore = { bars: [{ items: [] }] };
         }
         window.dispatchEvent(new CustomEvent("lens-search-triggered"));
     };
