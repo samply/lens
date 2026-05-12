@@ -10,6 +10,7 @@ export default defineConfig([
     globalIgnores([
         "dist",
         "demo",
+        "book/book",
         "book/.vitepress/dist",
         "book/.vitepress/cache",
         "docs",
