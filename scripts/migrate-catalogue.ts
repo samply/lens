@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /**
  * Converts an old-format Lens catalogue JSON to the new format.
  *
