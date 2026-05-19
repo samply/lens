@@ -528,10 +528,9 @@
 
         // Sort indices based on the sorting criteria
         indices.sort((a, b) => {
-            let comparison = 0;
             const valueA = chartData.data[0]?.data[a] ?? 0;
             const valueB = chartData.data[0]?.data[b] ?? 0;
-            comparison = valueA - valueB;
+            let comparison = valueA - valueB;
 
             return sortOrder === "asc" ? comparison : -comparison;
         });

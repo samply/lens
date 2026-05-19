@@ -35,7 +35,6 @@ export async function querySpot(
         headers: {
             "Content-Type": "application/json",
         },
-        credentials: "include",
         body: JSON.stringify({
             id,
             sites,
@@ -58,9 +57,6 @@ export async function querySpot(
     const eventSource = new EventSource(
         `${url}/beam/${id}` +
             (sites !== undefined ? `?wait_count=${sites.length}` : ""),
-        {
-            withCredentials: true,
-        },
     );
 
     eventSource.addEventListener("error", () => {
