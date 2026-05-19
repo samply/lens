@@ -12,6 +12,7 @@ export {
     setQueryStore,
     getQueryStore,
 } from "./stores/query";
+export { setQueryStoreFromAst } from "./helpers/ast-to-query";
 export {
     setSiteResult,
     markSiteClaimed,
@@ -44,11 +45,11 @@ export { querySpot, type SpotResult } from "./backends/spot";
 // Export types
 export type * from "./types/ast";
 export type * from "./types/catalogue";
-export type * from "./types/query";
 export type * from "./types/options";
 export type { FacetCounts } from "./stores/facetCounts";
 export type { FhirMeasureItem, FhirMeasure } from "./types/backend";
 export type { FhirMeasureReport } from "./types/response";
+export type { QueryItem, QueryValue } from "./types/queryData";
 
 // Include custom elements (aka web components) in the bundle
 import "./components/catalogue/Catalogue.wc.svelte";

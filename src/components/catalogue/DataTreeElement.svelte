@@ -1,73 +1,126 @@
 <script lang="ts">
     import { addItemToQuery, activeQueryGroupIndex } from "../../stores/query";
-    import type {
-        CatalogueElement,
-        SelectElement,
-        CatalogueOption,
-    } from "../../types/catalogue";
+    import type { Category } from "../../types/catalogue";
     import DataTreeElement from "./DataTreeElement.svelte";
     import NumberInputComponent from "./NumberInputComponent.svelte";
     import StringInputComponent from "./StringInputComponent.svelte";
     import AutocompleteComponent from "./AutoCompleteComponent.svelte";
     import SingleSelectComponent from "./SingleSelectComponent.svelte";
+    import { v4 as uuidv4 } from "uuid";
     import { openTreeNodes } from "../../stores/catalogue";
+    import type { QueryItem } from "../../types/queryData";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
     import DatePickerComponent from "./DatePickerComponent.svelte";
     import { translate } from "../../helpers/translations";
 
     interface Props {
-        element: CatalogueElement;
+        element: Category;
+        /**
+         * defines the layer of the element in the tree
+         */
         layer?: number;
+        /**
+         * defines if the subcategorys are open, iterates over the whole tree
+         */
         treeOpen?: boolean;
     }
 
     let { element, layer = 1, treeOpen = false }: Props = $props();
 
+    const subCategoryName: string | null =
+        "subCategoryName" in element &&
+        element.subCategoryName !== undefined &&
+        element.subCategoryName !== null
+            ? element.subCategoryName
+            : null;
+
+    /**
+     * watches the open tree nodes store to update the open state of the subcategorys
+     */
     let open = $derived.by(() => {
-        if (
-            element.type !== "CatalogueGroup" &&
-            $openTreeNodes.get(element.key)
-        ) {
-            return true;
+        if (subCategoryName) {
+            return (
+                $openTreeNodes
+                    .get(element.key)!
+                    .subCategoryNames?.includes(subCategoryName) || false
+            );
+        } else {
+            return $openTreeNodes.get(element.key) ? true : false;
         }
-        if (
-            element.type === "CatalogueGroup" &&
-            $openTreeNodes.get(element.name)
-        ) {
-            return true;
-        }
-        return false;
     });
 
+    /**
+     * adds and removes the subcategorys from the open tree nodes store
+     */
     const toggleChildren = (): void => {
-        const nodeKey =
-            element.type === "CatalogueGroup" ? element.name : element.key;
         openTreeNodes.update((store) => {
-            if (store.has(nodeKey)) {
-                store.delete(nodeKey);
-            } else {
-                store.set(nodeKey, { key: nodeKey, opened: true });
+            let storeTreeNode = store.get(element.key);
+
+            if (!storeTreeNode) {
+                store.set(element.key, {
+                    key: element.key,
+                    subCategoryNames: null,
+                });
+                return store;
             }
+
+            if (subCategoryName === null) {
+                store.delete(element.key);
+                return store;
+            }
+
+            if (storeTreeNode.subCategoryNames === null) {
+                storeTreeNode.subCategoryNames = [subCategoryName];
+                store.set(element.key, storeTreeNode);
+                return store;
+            }
+
+            if (storeTreeNode.subCategoryNames.includes(subCategoryName)) {
+                storeTreeNode.subCategoryNames =
+                    storeTreeNode.subCategoryNames.filter(
+                        (name) => name !== subCategoryName,
+                    );
+                store.set(element.key, storeTreeNode);
+                return store;
+            }
+
+            if (!storeTreeNode.subCategoryNames.includes(subCategoryName)) {
+                storeTreeNode.subCategoryNames.push(subCategoryName);
+                store.set(element.key, storeTreeNode);
+                return store;
+            }
+
             return store;
         });
     };
 
-    const isSelectElement = $derived(element.type === "SelectElement");
+    let finalParent: boolean =
+        !("childCategories" in element) &&
+        (!("fieldType" in element) ||
+            ("fieldType" in element &&
+                typeof element.fieldType === "string" &&
+                element.fieldType == "single-select"));
 
     const selectAllOptions = (): void => {
-        if (element.type !== "SelectElement") return;
-        const sel = element as SelectElement;
+        if (!("criteria" in element)) return;
 
-        sel.options.forEach((option: CatalogueOption) => {
-            addItemToQuery(
-                {
-                    type: "SetItem",
-                    key: sel.key,
-                    negated: false,
-                    values: [option.value],
-                },
-                $activeQueryGroupIndex,
-            );
+        element.criteria.forEach((criterion) => {
+            const queryItem: QueryItem = {
+                id: uuidv4(),
+                key: element.key,
+                name: element.name,
+                type: "type" in element ? element.type : "",
+                values: [
+                    {
+                        name: criterion.name,
+                        value: criterion.aggregatedValue
+                            ? criterion.aggregatedValue
+                            : criterion.key,
+                        queryBindId: uuidv4(),
+                    },
+                ],
+            };
+            addItemToQuery(queryItem, $activeQueryGroupIndex);
         });
     };
 </script>
@@ -91,7 +144,9 @@
                     stroke-width="2"><path d="m9 18 6-6-6-6" /></svg
                 >
             </div>
-            {element.name}
+            {"subCategoryName" in element && element.subCategoryName
+                ? element.subCategoryName
+                : element.name}
         </button>
         {#if element.infoButtonText}
             <InfoButtonComponent
@@ -106,7 +161,7 @@
             >
         {/if}
 
-        {#if isSelectElement && open}
+        {#if finalParent && open}
             <button
                 part="lens-data-tree-add-all-options-button"
                 onclick={selectAllOptions}
@@ -117,9 +172,9 @@
     </div>
 
     {#if open}
-        {#if element.type === "CatalogueGroup"}
+        {#if "childCategories" in element}
             <!-- eslint-disable-next-line svelte/require-each-key -->
-            {#each element.elements as child}
+            {#each element.childCategories as child}
                 <div
                     part={`lens-data-tree-element-child-category lens-data-tree-element-child-category-layer-${layer}`}
                 >
@@ -132,15 +187,15 @@
             {/each}
         {:else}
             <div part="lens-data-tree-element-last-child-options">
-                {#if element.type === "SelectElement"}
+                {#if element.fieldType === "single-select"}
                     <SingleSelectComponent {element} />
-                {:else if element.type === "AutocompleteElement"}
+                {:else if element.fieldType === "autocomplete"}
                     <AutocompleteComponent {element} />
-                {:else if element.type === "NumericRangeElement"}
+                {:else if element.fieldType === "number"}
                     <NumberInputComponent {element} />
-                {:else if element.type === "FreeTextElement"}
+                {:else if element.fieldType === "string"}
                     <StringInputComponent {element} />
-                {:else if element.type === "DateRangeElement"}
+                {:else if element.fieldType === "date"}
                     <DatePickerComponent {element} />
                 {/if}
             </div>

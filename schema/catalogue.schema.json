@@ -1,315 +1,204 @@
 {
+  "$ref": "#/definitions/Catalogue",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$ref": "#/definitions/LensCatalogue",
   "definitions": {
-    "LensCatalogue": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/CatalogueElement"
-      },
-      "description": "The top-level catalogue type passed to Lens."
-    },
-    "CatalogueElement": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "enum": [
-            "CatalogueGroup",
-            "SelectElement",
-            "AutocompleteElement",
-            "NumericRangeElement",
-            "DateRangeElement",
-            "FreeTextElement"
-          ]
-        }
-      },
-      "required": [
-        "type"
-      ],
-      "allOf": [
-        {
-          "if": {
-            "properties": {
-              "type": {
-                "type": "string",
-                "const": "CatalogueGroup"
-              }
-            }
-          },
-          "then": {
-            "$ref": "#/definitions/CatalogueGroup"
-          }
-        },
-        {
-          "if": {
-            "properties": {
-              "type": {
-                "type": "string",
-                "const": "SelectElement"
-              }
-            }
-          },
-          "then": {
-            "$ref": "#/definitions/SelectElement"
-          }
-        },
-        {
-          "if": {
-            "properties": {
-              "type": {
-                "type": "string",
-                "const": "AutocompleteElement"
-              }
-            }
-          },
-          "then": {
-            "$ref": "#/definitions/AutocompleteElement"
-          }
-        },
-        {
-          "if": {
-            "properties": {
-              "type": {
-                "type": "string",
-                "const": "NumericRangeElement"
-              }
-            }
-          },
-          "then": {
-            "$ref": "#/definitions/NumericRangeElement"
-          }
-        },
-        {
-          "if": {
-            "properties": {
-              "type": {
-                "type": "string",
-                "const": "DateRangeElement"
-              }
-            }
-          },
-          "then": {
-            "$ref": "#/definitions/DateRangeElement"
-          }
-        },
-        {
-          "if": {
-            "properties": {
-              "type": {
-                "type": "string",
-                "const": "FreeTextElement"
-              }
-            }
-          },
-          "then": {
-            "$ref": "#/definitions/FreeTextElement"
-          }
-        }
-      ]
-    },
-    "CatalogueGroup": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string",
-          "const": "CatalogueGroup"
-        },
-        "name": {
-          "type": "string",
-          "description": "The group's user-facing display name."
-        },
-        "elements": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/CatalogueElement"
-          },
-          "description": "The list of catalogue elements in the group."
-        },
-        "infoButtonText": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "description": "Optional text accessed by clicking a \"ⓘ\" button."
-        },
-        "infoLink": {
-          "type": "object",
-          "properties": {
-            "link": {
-              "type": "string"
-            },
-            "display": {
-              "type": "string"
-            }
-          },
-          "required": [
-            "link",
-            "display"
-          ],
-          "additionalProperties": false,
-          "description": "Optional hyperlink shown next to the display name."
-        }
-      },
-      "required": [
-        "type",
-        "name",
-        "elements"
-      ],
-      "additionalProperties": false,
-      "description": "A logical grouping of catalogue elements rendered as a collapsible entry in the catalogue tree."
-    },
-    "SelectElement": {
-      "type": "object",
+    "AggregatedValue": {
       "additionalProperties": false,
       "properties": {
-        "type": {
-          "type": "string",
-          "const": "SelectElement"
-        },
-        "options": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/CatalogueOption"
-          }
-        },
-        "key": {
-          "type": "string",
-          "description": "A key that uniquely identifies the catalogue element."
-        },
         "name": {
-          "type": "string",
-          "description": "The element's user-facing display name."
+          "type": "string"
         },
-        "infoButtonText": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "description": "Optional text accessed by clicking a \"ⓘ\" button next to the display name."
-        },
-        "infoLink": {
-          "type": "object",
-          "properties": {
-            "link": {
-              "type": "string"
-            },
-            "display": {
-              "type": "string"
-            }
-          },
-          "required": [
-            "link",
-            "display"
-          ],
-          "additionalProperties": false,
-          "description": "Optional hyperlink shown next to the display name."
-        }
-      },
-      "required": [
-        "key",
-        "name",
-        "options",
-        "type"
-      ],
-      "description": "A catalogue element that lets the user select one or more options from a predefined list rendered in the catalogue tree."
-    },
-    "CatalogueOption": {
-      "type": "object",
-      "properties": {
         "value": {
-          "type": "string",
-          "description": "The catalogue option's value identifier."
-        },
-        "name": {
-          "type": "string",
-          "description": "The catalogue option's user-facing display name."
-        },
-        "description": {
-          "type": "string",
-          "description": "Optional description shown during autocompletion."
-        },
-        "aggregatedValue": {
-          "type": "array",
-          "items": {
-            "type": "array",
-            "items": {
-              "$ref": "#/definitions/AggregatedValue"
-            }
-          },
-          "description": "Optional aggregate expansion represented as a nested list: outer array = AND, inner array = OR."
-        },
-        "suboptions": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/CatalogueOption"
-          },
-          "description": "Nested sub-options."
-        },
-        "selectable": {
-          "type": "boolean",
-          "description": "Whether this option can be selected by the user. Defaults to true."
+          "type": "string"
         }
       },
       "required": [
         "value",
         "name"
       ],
-      "additionalProperties": false
+      "type": "object"
     },
-    "AggregatedValue": {
-      "type": "object",
+    "AutocompleteCategory": {
+      "additionalProperties": false,
+      "description": "A catalogue item that lets the user select one or more criteria from a predefined list. The list of criteria is not rendered. Instead the user can find and select items by typing into an autocomplete text box. The resulting query matches any of the selected criteria.",
       "properties": {
-        "key": {
-          "type": "string",
-          "description": "Catalogue element key referenced by this aggregated value entry."
+        "criteria": {
+          "description": "The list of criteria the user can select from",
+          "items": {
+            "$ref": "#/definitions/Criteria"
+          },
+          "type": "array"
         },
-        "value": {
-          "type": "string",
-          "description": "Catalogue option value referenced by this aggregated value entry."
+        "fieldType": {
+          "const": "autocomplete",
+          "type": "string"
+        },
+        "infoButtonText": {
+          "description": "Optional text that is accessed by clicking a \"ⓘ\" button next to the display name",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "key": {
+          "description": "A key that uniquely identifies the catalogue item. It is typically used to look up the CQL snippet for that item.",
+          "type": "string"
+        },
+        "name": {
+          "description": "The item's user-facing display name",
+          "type": "string"
+        },
+        "type": {
+          "const": "EQUALS",
+          "type": "string"
         }
       },
       "required": [
+        "fieldType",
         "key",
-        "value"
+        "name",
+        "type",
+        "criteria"
       ],
-      "additionalProperties": false
+      "type": "object"
     },
-    "AutocompleteElement": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "type": {
-          "type": "string",
-          "const": "AutocompleteElement"
-        },
-        "options": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/CatalogueOption"
+    "Catalogue": {
+      "description": "The catalogue is a tree-like data structure that describes what the user can search for. The application passes the catalogue to lens as a JSON string via the <lens-options> component. Lens validates the JSON against a JSON schema that is automatically generated from this type definition. Many components of lens use the catalogue. Most notably the <lens-catalogue> component renders the catalogue as a collapsable tree and allows the user to add items from the catalogue to the search bar.",
+      "items": {
+        "$ref": "#/definitions/Category"
+      },
+      "type": "array"
+    },
+    "Category": {
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "fieldType": {
+                "const": "group",
+                "type": "string"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/definitions/CategoryGroup"
           }
         },
-        "key": {
-          "type": "string",
-          "description": "A key that uniquely identifies the catalogue element."
+        {
+          "if": {
+            "properties": {
+              "fieldType": {
+                "const": "single-select",
+                "type": "string"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/definitions/SingleSelectCategory"
+          }
         },
-        "name": {
-          "type": "string",
-          "description": "The element's user-facing display name."
+        {
+          "if": {
+            "properties": {
+              "fieldType": {
+                "const": "autocomplete",
+                "type": "string"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/definitions/AutocompleteCategory"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "fieldType": {
+                "const": "number",
+                "type": "string"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/definitions/NumericRangeCategory"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "fieldType": {
+                "const": "date",
+                "type": "string"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/definitions/DateRangeCategory"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "fieldType": {
+                "const": "string",
+                "type": "string"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/definitions/StringCategory"
+          }
+        }
+      ],
+      "properties": {
+        "fieldType": {
+          "enum": [
+            "group",
+            "single-select",
+            "autocomplete",
+            "number",
+            "date",
+            "string"
+          ]
+        }
+      },
+      "required": [
+        "fieldType"
+      ],
+      "type": "object"
+    },
+    "CategoryGroup": {
+      "additionalProperties": false,
+      "description": "A logical grouping of catalogue items that is rendered as a collapsable entry in the catalogue tree.",
+      "properties": {
+        "childCategories": {
+          "description": "The list of catalogue items in the group",
+          "items": {
+            "$ref": "#/definitions/Category"
+          },
+          "type": "array"
+        },
+        "fieldType": {
+          "const": "group",
+          "type": "string"
         },
         "infoButtonText": {
-          "type": "array",
+          "description": "Optional text that is accessed by clicking a \"ⓘ\" button next to the display name",
           "items": {
             "type": "string"
           },
-          "description": "Optional text accessed by clicking a \"ⓘ\" button next to the display name."
+          "type": "array"
         },
         "infoLink": {
-          "type": "object",
+          "additionalProperties": false,
+          "description": "Optional hyperlink shown next to the display name",
           "properties": {
-            "link": {
+            "display": {
+              "description": "The link text",
               "type": "string"
             },
-            "display": {
+            "link": {
+              "description": "The link URL",
               "type": "string"
             }
           },
@@ -317,183 +206,242 @@
             "link",
             "display"
           ],
-          "additionalProperties": false,
-          "description": "Optional hyperlink shown next to the display name."
+          "type": "object"
+        },
+        "key": {
+          "type": "string"
+        },
+        "name": {
+          "description": "The group's user-facing display name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "fieldType",
+        "key",
+        "name",
+        "childCategories"
+      ],
+      "type": "object"
+    },
+    "Criteria": {
+      "additionalProperties": false,
+      "description": "A criterion that can be selected in a single-select or autocomplete catalogue item.",
+      "properties": {
+        "aggregatedValue": {
+          "items": {
+            "items": {
+              "$ref": "#/definitions/AggregatedValue"
+            },
+            "type": "array"
+          },
+          "type": "array"
+        },
+        "description": {
+          "description": "Optional description that is shown next to the display name during autocompletion",
+          "type": "string"
+        },
+        "key": {
+          "description": "A key that uniquely identifies the criterion",
+          "type": "string"
+        },
+        "name": {
+          "description": "The criterion's user-facing display name",
+          "type": "string"
+        },
+        "subgroup": {
+          "items": {
+            "$ref": "#/definitions/Criteria"
+          },
+          "type": "array"
+        },
+        "visible": {
+          "type": "boolean"
         }
       },
       "required": [
         "key",
-        "name",
-        "options",
-        "type"
+        "name"
       ],
-      "description": "A catalogue element that lets the user find and select options via an autocomplete text box."
+      "type": "object"
     },
-    "NumericRangeElement": {
-      "type": "object",
+    "DateRangeCategory": {
       "additionalProperties": false,
+      "description": "A catalogue item that lets the user specify a date range by picking an earliest and a latest date. The user can omit one of the dates to express earlier than or later than constraints.",
       "properties": {
-        "type": {
-          "type": "string",
-          "const": "NumericRangeElement"
+        "fieldType": {
+          "const": "date",
+          "type": "string"
         },
-        "min": {
-          "type": "number",
-          "description": "The smallest value the user can enter."
+        "infoButtonText": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "key": {
+          "description": "A key that uniquely identifies the catalogue item. It is typically used to look up the CQL snippet for that item.",
+          "type": "string"
         },
         "max": {
-          "type": "number",
-          "description": "The largest value the user can enter."
+          "description": "The latest date that the user can pick",
+          "format": "date",
+          "type": "string"
+        },
+        "min": {
+          "description": "The earliest date that the user can pick",
+          "format": "date",
+          "type": "string"
+        },
+        "name": {
+          "description": "The item's user-facing display name",
+          "type": "string"
+        },
+        "type": {
+          "const": "BETWEEN",
+          "type": "string"
+        }
+      },
+      "required": [
+        "fieldType",
+        "key",
+        "name",
+        "type"
+      ],
+      "type": "object"
+    },
+    "NumericRangeCategory": {
+      "additionalProperties": false,
+      "description": "A catalogue item that lets the user specify a numeric range by entering a minimum and a maximum value. The user can omit one of the values to express less than or greater than constraints.",
+      "properties": {
+        "fieldType": {
+          "const": "number",
+          "type": "string"
+        },
+        "infoButtonText": {
+          "description": "Optional text that is accessed by clicking a \"ⓘ\" button next to the display name",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "key": {
+          "description": "A key that uniquely identifies the catalogue item. It is typically used to look up the CQL snippet for that item.",
+          "type": "string"
+        },
+        "max": {
+          "description": "The largest value that the user can enter",
+          "type": "number"
+        },
+        "min": {
+          "description": "The smallest value that the user can enter",
+          "type": "number"
+        },
+        "name": {
+          "description": "The item's user-facing display name",
+          "type": "string"
+        },
+        "type": {
+          "const": "BETWEEN",
+          "type": "string"
         },
         "unitText": {
-          "type": "string",
-          "description": "Optional unit text shown next to the input field, e.g. \"kg\"."
-        },
-        "key": {
-          "type": "string",
-          "description": "A key that uniquely identifies the catalogue element."
-        },
-        "name": {
-          "type": "string",
-          "description": "The element's user-facing display name."
-        },
-        "infoButtonText": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "description": "Optional text accessed by clicking a \"ⓘ\" button next to the display name."
-        },
-        "infoLink": {
-          "type": "object",
-          "properties": {
-            "link": {
-              "type": "string"
-            },
-            "display": {
-              "type": "string"
-            }
-          },
-          "required": [
-            "link",
-            "display"
-          ],
-          "additionalProperties": false,
-          "description": "Optional hyperlink shown next to the display name."
+          "description": "Optional text that is shown next to the input field, e.g. \"kg\"",
+          "type": "string"
         }
       },
       "required": [
+        "fieldType",
         "key",
         "name",
         "type"
       ],
-      "description": "A catalogue element that lets the user specify a numeric range."
+      "type": "object"
     },
-    "DateRangeElement": {
-      "type": "object",
+    "SingleSelectCategory": {
       "additionalProperties": false,
+      "description": "A catalogue item that lets the user select one or more criteria from a predefined list. The list of criteria is rendered in the catalogue tree and the user can select criteria by clicking a \"->\" button. The resulting query matches any of the selected criteria.",
       "properties": {
-        "type": {
-          "type": "string",
-          "const": "DateRangeElement"
+        "criteria": {
+          "description": "The list of criteria the user can select from",
+          "items": {
+            "$ref": "#/definitions/Criteria"
+          },
+          "type": "array"
         },
-        "min": {
-          "type": "string",
-          "description": "The earliest date the user can pick.",
-          "format": "date"
-        },
-        "max": {
-          "type": "string",
-          "description": "The latest date the user can pick.",
-          "format": "date"
-        },
-        "key": {
-          "type": "string",
-          "description": "A key that uniquely identifies the catalogue element."
-        },
-        "name": {
-          "type": "string",
-          "description": "The element's user-facing display name."
+        "fieldType": {
+          "const": "single-select",
+          "type": "string"
         },
         "infoButtonText": {
-          "type": "array",
+          "description": "Optional text that is accessed by clicking a \"ⓘ\" button next to the display name",
           "items": {
             "type": "string"
           },
-          "description": "Optional text accessed by clicking a \"ⓘ\" button next to the display name."
+          "type": "array"
         },
-        "infoLink": {
-          "type": "object",
-          "properties": {
-            "link": {
-              "type": "string"
-            },
-            "display": {
-              "type": "string"
-            }
-          },
-          "required": [
-            "link",
-            "display"
-          ],
-          "additionalProperties": false,
-          "description": "Optional hyperlink shown next to the display name."
+        "key": {
+          "description": "A key that uniquely identifies the catalogue item. It is typically used to look up the CQL snippet for that item.",
+          "type": "string"
+        },
+        "name": {
+          "description": "The item's user-facing display name",
+          "type": "string"
+        },
+        "subCategoryName": {
+          "description": "This overwrites the display name in the catalogue component only. The intended use-case is to have multiple catalogue items with the same key and name but different subCategoryName. They will appear as different collapsable entries in the catalogue but will be grouped together in the same chip in the search bar.",
+          "type": "string"
+        },
+        "type": {
+          "const": "EQUALS",
+          "type": "string"
         }
       },
       "required": [
+        "fieldType",
         "key",
         "name",
-        "type"
+        "type",
+        "criteria"
       ],
-      "description": "A catalogue element that lets the user specify a date range."
+      "type": "object"
     },
-    "FreeTextElement": {
-      "type": "object",
+    "StringCategory": {
       "additionalProperties": false,
+      "description": "A catalogue item that lets the user to specify a string.",
       "properties": {
-        "type": {
-          "type": "string",
-          "const": "FreeTextElement"
-        },
-        "key": {
-          "type": "string",
-          "description": "A key that uniquely identifies the catalogue element."
-        },
-        "name": {
-          "type": "string",
-          "description": "The element's user-facing display name."
+        "fieldType": {
+          "const": "string",
+          "type": "string"
         },
         "infoButtonText": {
-          "type": "array",
+          "description": "Optional text that is accessed by clicking a \"ⓘ\" button next to the display name",
           "items": {
             "type": "string"
           },
-          "description": "Optional text accessed by clicking a \"ⓘ\" button next to the display name."
+          "type": "array"
         },
-        "infoLink": {
-          "type": "object",
-          "properties": {
-            "link": {
-              "type": "string"
-            },
-            "display": {
-              "type": "string"
-            }
-          },
-          "required": [
-            "link",
-            "display"
-          ],
-          "additionalProperties": false,
-          "description": "Optional hyperlink shown next to the display name."
+        "key": {
+          "description": "A key that uniquely identifies the catalogue item. It is typically used to look up the CQL snippet for that item.",
+          "type": "string"
+        },
+        "name": {
+          "description": "The item's user-facing display name",
+          "type": "string"
+        },
+        "type": {
+          "const": "EQUALS",
+          "type": "string"
         }
       },
       "required": [
+        "fieldType",
         "key",
         "name",
         "type"
       ],
-      "description": "A catalogue element that lets the user specify a free-text string."
+      "type": "object"
     }
   }
 }
+

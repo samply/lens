@@ -1,6 +1,6 @@
 import { writable, get } from "svelte/store";
 import { lensOptions } from "./options";
-import { getOptionValues } from "../stores/catalogue";
+import { getCriteria } from "../stores/catalogue";
 
 /**
  * Represents aggregated counts for facets (badges) in a searchbar or Catalogue.
@@ -44,7 +44,7 @@ export async function fetchFacetCounts(spotUrl: string) {
         // For the diagnosis stratum, add new stratifiers <prefix>.% that add up all <prefix> and <prefix>.<something>
         if (data["diagnosis"]) {
             const diagnoses = data["diagnosis"];
-            const inCatalogue = new Set(getOptionValues("diagnosis"));
+            const inCatalogue = new Set(getCriteria("diagnosis"));
             for (const [diagnosis, count] of Object.entries(diagnoses)) {
                 if (!inCatalogue.has(diagnosis)) continue; // Skip if not in catalogue
                 const prefix = diagnosis.split(".")[0];

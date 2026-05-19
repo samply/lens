@@ -1,211 +1,330 @@
-import { writable, derived, get } from "svelte/store";
-import type {
-    LensCatalogue,
-    CatalogueElement,
-    CatalogueOption,
-    AggregatedValue,
-} from "../types/catalogue";
-import type { AstNode } from "../types/ast";
+import { get, writable } from "svelte/store";
+import type { Catalogue, Criteria, Category } from "../types/catalogue";
+import {
+    isBottomLayer,
+    isTopLayer,
+    type AstElement,
+    type AstTopLayer,
+} from "../types/ast";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
 import catalogueSchema from "../../schema/catalogue.schema.json";
 
-export const catalogue = writable<LensCatalogue>([]);
-
 /**
- * Flattened element map: element.key → CatalogueElement.
- * Built lazily from the catalogue store.
+ * store to hold the catalogue
+ * populated by the searchbar or the catalogue
+ * DISCUSSION: should there be a seperate component without markup just for populating for the catalogue?
+ * there could be some corner cases for that
  */
-export const elementMap = derived<
-    typeof catalogue,
-    Map<string, CatalogueElement>
->(catalogue, ($catalogue) => {
-    const map = new Map<string, CatalogueElement>();
-    const visit = (node: CatalogueElement): void => {
-        if (node.type === "CatalogueGroup") {
-            for (const child of node.elements) visit(child);
+
+export const catalogue = writable<Catalogue>([]);
+
+const resolveSubgroupBottomLayer = (criteria: Criteria[]): string[] => {
+    let collectedCriteria: string[] = [];
+    criteria.forEach((element) => {
+        if (element.subgroup instanceof Array) {
+            collectedCriteria = collectedCriteria.concat(
+                resolveSubgroupBottomLayer(element.subgroup),
+            );
         } else {
-            map.set(node.key, node);
+            collectedCriteria = collectedCriteria.concat(element.key);
         }
-    };
-    for (const node of $catalogue) visit(node);
-    return map;
-});
+    });
 
-/**
- * Flattened option map: "${elementKey}.${option.value}" → CatalogueOption.
- * Built lazily from the catalogue store.
- */
-export const optionMap = derived<
-    typeof catalogue,
-    Map<string, CatalogueOption>
->(catalogue, ($catalogue) => {
-    const map = new Map<string, CatalogueOption>();
-    const visitOptions = (elementKey: string, options: CatalogueOption[]) => {
-        for (const option of options) {
-            map.set(`${elementKey}.${option.value}`, option);
-            if (option.suboptions) {
-                visitOptions(elementKey, option.suboptions);
+    return collectedCriteria;
+};
+
+const resolveSubgroupMatch = (
+    key: string,
+    value: string,
+    subgroup: Criteria[],
+): string[] => {
+    let newCri: string[] = [];
+
+    for (const cri of subgroup) {
+        if (cri.key == value) {
+            if (cri.subgroup instanceof Array) {
+                newCri = newCri.concat(
+                    resolveSubgroupBottomLayer(cri.subgroup),
+                );
+                break;
             }
         }
-    };
-    const visitElement = (node: CatalogueElement): void => {
-        if (node.type === "CatalogueGroup") {
-            for (const child of node.elements) visitElement(child);
-        } else if (
-            node.type === "SelectElement" ||
-            node.type === "AutocompleteElement"
-        ) {
-            visitOptions(node.key, node.options);
+        // Search deeper in the structure for a match
+        if (cri.subgroup instanceof Array) {
+            resolveSubgroupMatch(key, value, cri.subgroup);
         }
-    };
-    for (const node of $catalogue) visitElement(node);
-    return map;
-});
-
-/**
- * Collect all leaf option values for suboptions of a given option.
- * If the option has suboptions, recursively collect all leaf values.
- * Otherwise return the option's own value.
- */
-function collectLeafValues(option: CatalogueOption): string[] {
-    if (option.suboptions && option.suboptions.length > 0) {
-        return option.suboptions.flatMap(collectLeafValues);
-    }
-    return [option.value];
-}
-
-function aggregatedValueEntryToAst(entry: AggregatedValue): AstNode {
-    return {
-        type: "SetFilter",
-        key: entry.key,
-        values: [entry.value],
-    };
-}
-
-function aggregatedValueToAst(aggregatedValue: AggregatedValue[][]): AstNode {
-    const andOperands: AstNode[] = aggregatedValue
-        .map((orGroup) => {
-            if (orGroup.length === 0) {
-                return undefined;
-            }
-            const orOperands = orGroup.map(aggregatedValueEntryToAst);
-            if (orOperands.length === 1) {
-                return orOperands[0];
-            }
-            return {
-                type: "OrOperator",
-                operands: orOperands,
-            } satisfies AstNode;
-        })
-        .filter((operand): operand is AstNode => operand !== undefined);
-
-    if (andOperands.length === 1) {
-        return andOperands[0];
     }
 
-    return {
-        type: "AndOperator",
-        operands: andOperands,
-    };
-}
+    return newCri;
+};
 
-/**
- * Resolve the AST for a selected option value.
- * If the option has `aggregatedValue`, expand it to AST.
- * If the option has suboptions, expand into a SetFilter of leaf values.
- * Otherwise return a simple SetFilter with the single value.
- */
-export function resolveOptionAst(
-    elementKey: string,
-    optionValue: string,
-): AstNode {
-    const option = get(optionMap).get(`${elementKey}.${optionValue}`);
-    if (option?.aggregatedValue && option.aggregatedValue.length > 0) {
-        return aggregatedValueToAst(option.aggregatedValue);
-    }
-    if (option?.suboptions && option.suboptions.length > 0) {
-        const leafValues = collectLeafValues(option);
-        return { type: "SetFilter", key: elementKey, values: leafValues };
-    }
-    return { type: "SetFilter", key: elementKey, values: [optionValue] };
-}
+const resolveElementInCatalogueRec = (
+    key: string,
+    value: string,
+    node: Category,
+): string[] => {
+    let newCri: string[] = [];
 
-export const openTreeNodes = writable<
-    Map<string, { key: string; opened: boolean }>
->(new Map());
-
-/**
- * Get all option values for a catalogue element identified by key.
- * Recursively collects values from suboptions.
- */
-export const getOptionValues = (elementKey: string): string[] => {
-    const element = get(elementMap).get(elementKey);
-    if (!element) return [];
     if (
-        element.type === "SelectElement" ||
-        element.type === "AutocompleteElement"
+        node.fieldType === "single-select" ||
+        node.fieldType === "autocomplete"
     ) {
-        const collectValues = (options: CatalogueOption[]): string[] => {
-            const values: string[] = [];
-            for (const opt of options) {
-                values.push(opt.value);
-                if (opt.suboptions) {
-                    values.push(...collectValues(opt.suboptions));
+        if (node.key === key) {
+            for (const cri of node.criteria) {
+                if (cri.key == value) {
+                    if (cri.subgroup instanceof Array) {
+                        newCri = newCri.concat(
+                            resolveSubgroupBottomLayer(cri.subgroup),
+                        );
+                        break;
+                    }
+                }
+                // Search deeper in the structure for a match
+                if (cri.subgroup instanceof Array) {
+                    newCri = newCri.concat(
+                        resolveSubgroupMatch(key, value, cri.subgroup),
+                    );
                 }
             }
-            return values;
-        };
-        return collectValues(element.options);
+        }
+    } else if (node.fieldType === "group") {
+        node.childCategories?.forEach((y) => {
+            newCri = newCri.concat(resolveElementInCatalogueRec(key, value, y));
+        });
     }
-    return [];
+
+    return newCri;
+};
+
+const resolveElementInCatalogue = (key: string, value: string): string[] => {
+    let subcatagories: string[] = [];
+    catalogue.subscribe((x) => {
+        x.forEach((element) => {
+            if ("childCategories" in element) {
+                element.childCategories.forEach((y: Category) => {
+                    subcatagories = subcatagories.concat(
+                        resolveElementInCatalogueRec(key, value, y),
+                    );
+                });
+            }
+        });
+    });
+    return subcatagories;
+};
+
+const resolveAstSubgroupsRec = (query: AstElement): AstElement => {
+    let elements: AstElement[] = [];
+    if (isTopLayer(query)) {
+        query.children.forEach((element) => {
+            elements = elements.concat(resolveAstSubgroupsRec(element));
+        });
+        query.children = elements;
+        return query;
+    } else if (isBottomLayer(query)) {
+        if (typeof query.value === "string") {
+            const subcatagories = resolveElementInCatalogue(
+                query.key,
+                query.value,
+            );
+            if (subcatagories.length == 0) {
+                return query;
+            } else {
+                subcatagories.forEach((x) => {
+                    elements.push({
+                        key: query.key,
+                        type: query.type,
+                        value: x,
+                    });
+                });
+                return {
+                    operand: "OR",
+                    key: query.key,
+                    children: elements,
+                };
+            }
+        } else {
+            return query;
+        }
+    } else {
+        console.error("Element not a query");
+    }
+    return query;
 };
 
 /**
- * Validate the catalogue for duplicate element keys and duplicate option values
- * within the same element.
+ * This function takes a query in ast form and replaces all the subgroups, eg. all icd-10 diagnosis like C00.% will be replace with C00.1...
+ * @param query The Query as Ast Element
+ * @returns The new Query with replace elements
  */
-function validateCatalogue(cat: LensCatalogue): string[] {
-    const errors: string[] = [];
-    const seenKeys = new Set<string>();
-    const visitElement = (node: CatalogueElement) => {
-        if (node.type === "CatalogueGroup") {
-            for (const child of node.elements) visitElement(child);
-            return;
-        }
-        if (seenKeys.has(node.key)) {
-            errors.push(`Duplicate element key: "${node.key}"`);
-        }
-        seenKeys.add(node.key);
-        if (
-            node.type === "SelectElement" ||
-            node.type === "AutocompleteElement"
-        ) {
-            const seenValues = new Set<string>();
-            const visitOpt = (opt: CatalogueOption) => {
-                if (seenValues.has(opt.value)) {
-                    errors.push(
-                        `Duplicate option value "${opt.value}" in element "${node.key}"`,
-                    );
-                }
-                seenValues.add(opt.value);
-                if (opt.suboptions) {
-                    for (const sub of opt.suboptions) visitOpt(sub);
-                }
-            };
-            for (const opt of node.options) visitOpt(opt);
-        }
-    };
-    for (const node of cat) visitElement(node);
-    return errors;
-}
+export const resolveAstSubgroups = (query: AstTopLayer): AstTopLayer => {
+    query.children.forEach((element, i) => {
+        query.children[i] = resolveAstSubgroupsRec(element);
+    });
+
+    return query;
+};
+
+export const openTreeNodes = writable<
+    Map<string, { key: string; subCategoryNames: string[] | null }>
+>(new Map());
 
 /**
- * Set the catalogue. Validates against JSON schema and checks for duplicate
- * keys/values. Note that the function makes a deep copy of the catalogue so
- * modifying the original object has no effect.
+ * get the bottom level items of a category
+ * @param category string of the category you want to get the bottom level items from
+ * @returns array of strings containing the bottom level items' keys
  */
-export function setCatalogue(newCatalogue: LensCatalogue) {
+export const getCriteria = (category: string): string[] => {
+    let bottomLevelItems: string[] = [];
+
+    catalogue.subscribe((catalogue) => {
+        bottomLevelItems = getCriteriaValuesOfCategoryWithKey(
+            catalogue as Catalogue,
+            category,
+        );
+    });
+
+    return bottomLevelItems;
+};
+
+/**
+ * Find the category with the provided key and return the values of all its possible criteria.
+ * @param categories The category tree to search
+ * @param categoryKey The key of the category to search for
+ * @returns The values of all criteria of the found category
+ */
+function getCriteriaValuesOfCategoryWithKey(
+    categories: Category[],
+    categoryKey: string,
+): string[] {
+    for (const category of categories) {
+        if (
+            (category.fieldType === "single-select" ||
+                category.fieldType === "autocomplete") &&
+            category.key === categoryKey
+        ) {
+            /**
+             * Walk the provided criteria recursively and collect all values.
+             * @param criteria the list of criteria
+             * @returns all values
+             */
+            const getCriteriaValuesRecursively = (
+                criteria: Criteria[],
+            ): string[] => {
+                const values = [];
+                for (const criterion of criteria) {
+                    values.push(criterion.key);
+                    if (criterion.subgroup !== undefined) {
+                        values.push(
+                            ...getCriteriaValuesRecursively(criterion.subgroup),
+                        );
+                    }
+                }
+                return values;
+            };
+
+            return getCriteriaValuesRecursively(category.criteria);
+        }
+
+        if (category.fieldType === "group") {
+            const values = getCriteriaValuesOfCategoryWithKey(
+                category.childCategories,
+                categoryKey,
+            );
+            if (values.length !== 0) {
+                return values;
+            }
+        }
+    }
+
+    return [];
+}
+
+export const getCriteriaNamesFromKey = (
+    catalogue: Category[],
+    key: string,
+): string[] => {
+    let criteriaNames: string[] = [];
+
+    if (catalogue.length === 0 || key === "") {
+        return criteriaNames;
+    }
+
+    catalogue.forEach((category: Category): void => {
+        if ("childCategories" in category) {
+            category.childCategories?.forEach(
+                (childCategory: Category): void => {
+                    if (
+                        "criteria" in childCategory &&
+                        childCategory.key === key
+                    ) {
+                        criteriaNames = childCategory.criteria.map(
+                            (criterion) => criterion.name,
+                        );
+                    }
+                },
+            );
+        }
+    });
+
+    if (criteriaNames.length === 0) {
+        criteriaNames = ["20", "30", "40", "50"];
+    }
+    return criteriaNames;
+};
+
+export const getCategoryFromKey = (
+    catalogue: Category[],
+    key: string,
+): Category | undefined => {
+    let category: Category | undefined = undefined;
+
+    if (catalogue.length === 0 || key === "") {
+        return category;
+    }
+
+    catalogue.forEach((catalogueEntry: Category) => {
+        if ("childCategories" in catalogueEntry) {
+            if (catalogueEntry.childCategories != undefined) {
+                const result = getCategoryFromKey(
+                    catalogueEntry.childCategories,
+                    key,
+                );
+                if (result != undefined) category = result;
+            }
+        } else {
+            if (catalogueEntry.key === key) {
+                category = catalogueEntry;
+            }
+        }
+    });
+
+    return category;
+};
+
+export const getCriteriaFromKey = (
+    catalogue: Category[],
+    categoryKey: string,
+    criteriaKey: string,
+): Criteria | undefined => {
+    const category: Category | undefined = getCategoryFromKey(
+        catalogue,
+        categoryKey,
+    );
+    if (category == undefined) return undefined;
+    if ("criteria" in category) {
+        return category.criteria.find(
+            (criteria) => criteria.key === criteriaKey,
+        );
+    }
+    return undefined;
+};
+
+/**
+ * Set the catalogue. A warning is logged to the browser console if the catalogue does not match the JSON schema. Note that the function makes a deep copy of the catalogue so modifying the original object has no effect.
+ */
+export function setCatalogue(newCatalogue: Catalogue) {
+    // Make a copy to avoid modifying the original object
     const catalogueCopy = structuredClone(newCatalogue);
     const ajv = new Ajv({
         allErrors: true,
@@ -219,14 +338,10 @@ export function setCatalogue(newCatalogue: LensCatalogue) {
                 JSON.stringify(ajv.errors),
         );
     }
-    const validationErrors = validateCatalogue(catalogueCopy);
-    if (validationErrors.length > 0) {
-        throw new Error("Invalid catalogue:\n" + validationErrors.join("\n"));
-    }
     catalogue.set(catalogueCopy);
 }
 
 /** Returns the current catalogue from the store. */
-export function getCatalogue(): LensCatalogue {
+export function getCatalogue(): Catalogue {
     return get(catalogue);
 }
