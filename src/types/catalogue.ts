@@ -2,127 +2,171 @@
 // from the type definitions in this file. After making changes to this file run
 // `npm run schemagen` to update the JSON schema.
 
-type BaseElement = {
-    /** A key that uniquely identifies the catalogue element. */
+/**
+ * The catalogue is a tree-like data structure that describes what the user can
+ * search for. The application passes the catalogue to lens as a JSON string via
+ * the <lens-options> component. Lens validates the JSON against a JSON schema
+ * that is automatically generated from this type definition. Many components of
+ * lens use the catalogue. Most notably the <lens-catalogue> component renders
+ * the catalogue as a collapsable tree and allows the user to add items from the
+ * catalogue to the search bar.
+ */
+export type Catalogue = Category[];
+
+// The @discriminator annotation tells ts-json-schema-generator to represent
+// this type as a discriminated union in the generated JSON schema.
+/** @discriminator fieldType */
+export type Category =
+    | CategoryGroup
+    | SingleSelectCategory
+    | AutocompleteCategory
+    | NumericRangeCategory
+    | DateRangeCategory
+    | StringCategory;
+
+/**
+ * A logical grouping of catalogue items that is rendered as a collapsable entry
+ * in the catalogue tree.
+ */
+export type CategoryGroup = {
+    fieldType: "group";
     key: string;
-    /** The element's user-facing display name. */
+    /** The group's user-facing display name */
     name: string;
-    /** Optional text accessed by clicking a "ⓘ" button next to the display name. */
+    /** The list of catalogue items in the group */
+    childCategories: Category[];
+    /** Optional text that is accessed by clicking a "ⓘ" button next to the display name */
     infoButtonText?: string[];
-    /** Optional hyperlink shown next to the display name. */
+    /** Optional hyperlink shown next to the display name */
     infoLink?: {
+        /** The link URL */
         link: string;
-        display: string;
-    };
-};
-
-/** @discriminator type */
-export type CatalogueElement =
-    | CatalogueGroup
-    | SelectElement
-    | AutocompleteElement
-    | NumericRangeElement
-    | DateRangeElement
-    | FreeTextElement;
-
-/** The top-level catalogue type passed to Lens. */
-export type LensCatalogue = CatalogueElement[];
-
-/**
- * A logical grouping of catalogue elements rendered as a collapsible
- * entry in the catalogue tree.
- */
-export type CatalogueGroup = {
-    type: "CatalogueGroup";
-    /** The group's user-facing display name. */
-    name: string;
-    /** The list of catalogue elements in the group. */
-    elements: CatalogueElement[];
-    /** Optional text accessed by clicking a "ⓘ" button. */
-    infoButtonText?: string[];
-    /** Optional hyperlink shown next to the display name. */
-    infoLink?: {
-        link: string;
+        /** The link text */
         display: string;
     };
 };
 
 /**
- * A catalogue element that lets the user select one or more options
- * from a predefined list rendered in the catalogue tree.
+ * A catalogue item that lets the user select one or more criteria from a
+ * predefined list. The list of criteria is rendered in the catalogue tree and
+ * the user can select criteria by clicking a "->" button. The resulting query
+ * matches any of the selected criteria.
  */
-export type SelectElement = BaseElement & {
-    type: "SelectElement";
-    options: CatalogueOption[];
+export type SingleSelectCategory = {
+    fieldType: "single-select";
+    /** A key that uniquely identifies the catalogue item. It is typically used to look up the CQL snippet for that item. */
+    key: string;
+    /** The item's user-facing display name */
+    name: string;
+    type: "EQUALS";
+    /** The list of criteria the user can select from */
+    criteria: Criteria[];
+    /** Optional text that is accessed by clicking a "ⓘ" button next to the display name */
+    infoButtonText?: string[];
+    /** This overwrites the display name in the catalogue component only. The
+     * intended use-case is to have multiple catalogue items with the same key
+     * and name but different subCategoryName. They will appear as different
+     * collapsable entries in the catalogue but will be grouped together in the
+     * same chip in the search bar. */
+    subCategoryName?: string;
 };
 
 /**
- * A catalogue element that lets the user find and select options
- * via an autocomplete text box.
+ * A catalogue item that lets the user select one or more criteria from a
+ * predefined list. The list of criteria is not rendered. Instead the user can
+ * find and select items by typing into an autocomplete text box. The resulting
+ * query matches any of the selected criteria.
  */
-export type AutocompleteElement = BaseElement & {
-    type: "AutocompleteElement";
-    options: CatalogueOption[];
+export type AutocompleteCategory = {
+    fieldType: "autocomplete";
+    /** A key that uniquely identifies the catalogue item. It is typically used to look up the CQL snippet for that item. */
+    key: string;
+    /** The item's user-facing display name */
+    name: string;
+    type: "EQUALS";
+    /** The list of criteria the user can select from */
+    criteria: Criteria[];
+    /** Optional text that is accessed by clicking a "ⓘ" button next to the display name */
+    infoButtonText?: string[];
 };
 
 /**
- * A catalogue element that lets the user specify a numeric range.
+ * A catalogue item that lets the user specify a numeric range by entering a
+ * minimum and a maximum value. The user can omit one of the values to express
+ * less than or greater than constraints.
  */
-export type NumericRangeElement = BaseElement & {
-    type: "NumericRangeElement";
-    /** The smallest value the user can enter. */
+export type NumericRangeCategory = {
+    fieldType: "number";
+    /** A key that uniquely identifies the catalogue item. It is typically used to look up the CQL snippet for that item. */
+    key: string;
+    /** The item's user-facing display name */
+    name: string;
+    type: "BETWEEN";
+    /** The smallest value that the user can enter */
     min?: number;
-    /** The largest value the user can enter. */
+    /** The largest value that the user can enter */
     max?: number;
-    /** Optional unit text shown next to the input field, e.g. "kg". */
+    /** Optional text that is accessed by clicking a "ⓘ" button next to the display name */
+    infoButtonText?: string[];
+    /** Optional text that is shown next to the input field, e.g. "kg" */
     unitText?: string;
 };
 
 /**
- * A catalogue element that lets the user specify a date range.
+ * A catalogue item that lets the user specify a date range by picking an
+ * earliest and a latest date. The user can omit one of the dates to express
+ * earlier than or later than constraints.
  */
-export type DateRangeElement = BaseElement & {
-    type: "DateRangeElement";
+export type DateRangeCategory = {
+    fieldType: "date";
+    /** A key that uniquely identifies the catalogue item. It is typically used to look up the CQL snippet for that item. */
+    key: string;
+    /** The item's user-facing display name */
+    name: string;
+    type: "BETWEEN";
     /**
-     * The earliest date the user can pick.
+     * The earliest date that the user can pick
      * @format date
      */
     min?: string;
     /**
-     * The latest date the user can pick.
+     * The latest date that the user can pick
      * @format date
      */
     max?: string;
+    infoButtonText?: string[];
 };
 
 /**
- * A catalogue element that lets the user specify a free-text string.
+ * A catalogue item that lets the user to specify a string.
  */
-export type FreeTextElement = BaseElement & {
-    type: "FreeTextElement";
+export type StringCategory = {
+    fieldType: "string";
+    /** A key that uniquely identifies the catalogue item. It is typically used to look up the CQL snippet for that item. */
+    key: string;
+    /** The item's user-facing display name */
+    name: string;
+    type: "EQUALS";
+    /** Optional text that is accessed by clicking a "ⓘ" button next to the display name */
+    infoButtonText?: string[];
 };
 
-export type CatalogueOption = {
-    /** The catalogue option's value identifier. */
-    value: string;
-    /** The catalogue option's user-facing display name. */
+/**
+ * A criterion that can be selected in a single-select or autocomplete catalogue item.
+ */
+export type Criteria = {
+    visible?: boolean;
+    /** A key that uniquely identifies the criterion */
+    key: string;
+    /** The criterion's user-facing display name */
     name: string;
-    /** Optional description shown during autocompletion. */
+    /** Optional description that is shown next to the display name during autocompletion */
     description?: string;
-    /**
-     * Optional aggregate expansion represented as a nested list:
-     * outer array = AND, inner array = OR.
-     */
     aggregatedValue?: AggregatedValue[][];
-    /** Nested sub-options. */
-    suboptions?: CatalogueOption[];
-    /** Whether this option can be selected by the user. Defaults to true. */
-    selectable?: boolean;
+    subgroup?: Criteria[];
 };
 
 export type AggregatedValue = {
-    /** Catalogue element key referenced by this aggregated value entry. */
-    key: string;
-    /** Catalogue option value referenced by this aggregated value entry. */
     value: string;
+    name: string;
 };

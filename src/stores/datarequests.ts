@@ -1,10 +1,11 @@
 import { get, writable } from "svelte/store";
-import type { Query, QueryItem } from "../types/query";
+import type { QueryItem } from "../types/queryData";
+import type { AggregatedValue } from "../types/catalogue";
 import { queryStore } from "./query";
 import { translate } from "../helpers/translations";
-import { elementMap, optionMap } from "./catalogue";
+import { catalogue, getCategoryFromKey } from "./catalogue";
 import { buildAstFromQuery } from "../helpers/ast-transformer";
-import type { AstNode } from "../types/ast";
+import type { AstElement, AstTopLayer } from "../types/ast";
 
 export const datarequestsStore = writable<string[]>([]);
 
@@ -15,6 +16,7 @@ export function getSelectedSites(): string[] {
 
 /**
  * Adds a site as selected for a data request.
+ * @param site The site to select.
  */
 export function selectSite(site: string) {
     datarequestsStore.update((list) =>
@@ -23,110 +25,226 @@ export function selectSite(site: string) {
 }
 
 /**
- * Unselect a site for a data request.
+ * Unselect a site for a data requesst.
+ * @param site The site to remove.
  */
 export function unselectSite(site: string) {
     datarequestsStore.update((list) => list.filter((s) => s !== site));
 }
 
 /**
- * Recursively builds a human readable query string from the AST.
+ * Recursively builds a human readable query string from the AST
+ * Legacy function, currently used for bbmri negotiator
+ * prints out logical structure of the query, not the formatted version
+ * @param queryLayer the current layer of the query
+ * @param humanReadableQuery string to append to
+ * @returns a human readable query string
  */
-export const buildHumanReadableRecursively = (node: AstNode): string => {
-    switch (node.type) {
-        case "AndOperator":
-        case "OrOperator": {
-            if (node.operands.length === 0) return "";
-            const operand = node.type === "AndOperator" ? "AND" : "OR";
-            const parts = node.operands.map((child) =>
-                buildHumanReadableRecursively(child),
-            );
-            if (parts.length === 1) return parts[0];
-            return "(" + parts.join(` ${operand} `) + ")";
-        }
-        case "NotOperator":
-            return `NOT (${buildHumanReadableRecursively(node.operand)})`;
-        case "SetFilter":
-            return `(${node.key} IN [${node.values.join(", ")}])`;
-        case "NumericRangeFilter": {
-            if (node.min !== undefined && node.max !== undefined) {
-                return `(${node.key} from ${node.min} to ${node.max})`;
-            } else if (node.min !== undefined) {
-                return `(${node.key} >= ${node.min})`;
-            } else if (node.max !== undefined) {
-                return `(${node.key} <= ${node.max})`;
-            }
-            return `(${node.key})`;
-        }
-        case "DateRangeFilter": {
-            if (node.min !== undefined && node.max !== undefined) {
-                return `(${node.key} from ${node.min} to ${node.max})`;
-            } else if (node.min !== undefined) {
-                return `(${node.key} >= ${node.min})`;
-            } else if (node.max !== undefined) {
-                return `(${node.key} <= ${node.max})`;
-            }
-            return `(${node.key})`;
-        }
+export const buildHumanReadableRecursively = (
+    queryLayer: AstElement,
+    humanReadableQuery: string,
+): string => {
+    if (
+        queryLayer === null ||
+        !("children" in queryLayer) ||
+        ("children" in queryLayer &&
+            (queryLayer.children === null ||
+                queryLayer.children.length === 0 ||
+                queryLayer.children[0] === null))
+    ) {
+        return humanReadableQuery;
     }
+
+    if (queryLayer.children.length > 1) {
+        humanReadableQuery += "(";
+    }
+
+    queryLayer.children.forEach((child: AstElement, index: number): void => {
+        if (child !== null) {
+            if ("type" in child && "value" in child && "key" in child) {
+                if (typeof child.value === "string") {
+                    humanReadableQuery += `(${child.key} ${child.type} ${child.value})`;
+                }
+                if (
+                    typeof child.value === "object" &&
+                    !Array.isArray(child.value) &&
+                    ("min" in child.value || "max" in child.value)
+                ) {
+                    if (
+                        child.value.min !== undefined &&
+                        child.value.max !== undefined
+                    ) {
+                        humanReadableQuery += `(${child.key} from ${child.value.min} to ${child.value.max})`;
+                    } else if (child.value.min !== undefined) {
+                        humanReadableQuery += `(${child.key} greater than or equal to ${child.value.min})`;
+                    } else if (child.value.max !== undefined) {
+                        humanReadableQuery += `(${child.key} less than or equal to ${child.value.max})`;
+                    }
+                }
+            }
+
+            humanReadableQuery = buildHumanReadableRecursively(
+                child,
+                humanReadableQuery,
+            );
+
+            if (index < queryLayer.children.length - 1) {
+                humanReadableQuery += ` ${queryLayer.operand} `;
+            }
+        }
+    });
+
+    if (queryLayer.children.length > 1) {
+        humanReadableQuery += ")";
+    }
+
+    return humanReadableQuery;
 };
 
 /**
- * Returns a human readable query string built from the current query AST.
+ * @returns a human readable query string built from the current query
  */
 export const getHumanReadableQuery = (): string => {
-    const query = get(queryStore);
-    const ast = buildAstFromQuery(query);
-    return buildHumanReadableRecursively(ast);
+    let humanReadableQuery: string = "";
+
+    queryStore.subscribe((value: QueryItem[][]) => {
+        const query: AstTopLayer = buildAstFromQuery(value);
+        humanReadableQuery = buildHumanReadableRecursively(
+            query,
+            humanReadableQuery,
+        );
+    });
+
+    return humanReadableQuery;
 };
 
 /**
  * Formats the query into a human-readable string.
+ * @param printAggregatedValues if true, the deep values of entities will be parsed and shown
+ * @returns a formatted string representation of the query
  */
-export function getHumanReadableQueryAsFormattedString(): string {
-    const query: Query = get(queryStore);
+export function getHumanReadableQueryAsFormattedString(
+    printAggregatedValues: boolean = false,
+): string {
+    const query: QueryItem[][] = get(queryStore);
 
-    if (query.bars.every((b) => b.items.length === 0)) return "";
+    if (query.flat().length === 0) return "";
 
-    const elMap = get(elementMap);
-    const opMap = get(optionMap);
+    const parsedGroups = getParsedStringGroups(query, printAggregatedValues);
 
-    const parsedBars = query.bars.map(
-        (bar, index) =>
+    const humanReadable =
+        translate("query_info_header") + "\r\n\r\n" + parsedGroups.join("\r\n");
+
+    return humanReadable;
+}
+
+/**
+ * Parses the entire query into formatted strings for each group.
+ * @param query the current query
+ * @param printAggregatedValues if true, the deep values of entities will be parsed and shown
+ * @returns a formatted string representation of the query groups
+ */
+const getParsedStringGroups = (
+    query: QueryItem[][],
+    printAggregatedValues: boolean,
+): string[] => {
+    const parsedGroups = query.map(
+        (group, index) =>
             `${translate("query_info_group_header")} ${index + 1}\r\n` +
-            formatBar(bar.items, elMap, opMap) +
+            getParsedStringGroup(group, printAggregatedValues) +
             "\r\n",
     );
+    return parsedGroups;
+};
 
-    return (
-        translate("query_info_header") + "\r\n\r\n" + parsedBars.join("\r\n")
-    );
-}
+/**
+ * Parses a query group into a formatted string.
+ * @param group the query group to be parsed
+ * @param printAggregatedValues if true, the deep values of entities will be parsed and shown
+ * @returns a formatted string representation of the query group
+ */
+const getParsedStringGroup = (
+    group: QueryItem[],
+    printAggregatedValues: boolean,
+): string => {
+    if (group.length === 0) return "";
 
-function formatBar(
-    items: QueryItem[],
-    elMap: Map<string, import("../types/catalogue").CatalogueElement>,
-    opMap: Map<string, import("../types/catalogue").CatalogueOption>,
-): string {
-    if (items.length === 0) return "";
-    return (
+    const parsedGroup =
         "    " +
-        items.map((item) => formatItem(item, elMap, opMap)).join("\r\n    ")
-    );
-}
+        group
+            .map((queryItem: QueryItem) => {
+                const parsedStringItem = getParsedStringItem(
+                    queryItem,
+                    printAggregatedValues,
+                );
+                return parsedStringItem;
+            })
+            .join("\r\n    ");
 
-function formatItem(
-    item: QueryItem,
-    elMap: Map<string, import("../types/catalogue").CatalogueElement>,
-    opMap: Map<string, import("../types/catalogue").CatalogueOption>,
-): string {
-    const name = elMap.get(item.key)?.name ?? item.key;
-    switch (item.type) {
-        case "SetItem":
-            return `${name}: ${item.values.map((v) => opMap.get(`${item.key}.${v}`)?.name ?? v).join(", ")}`;
-        case "NumericRangeItem":
-            return `${name}: ${item.min ?? "∞"} – ${item.max ?? "∞"}`;
-        case "DateRangeItem":
-            return `${name}: ${item.min ?? "∞"} – ${item.max ?? "∞"}`;
-    }
-}
+    return parsedGroup;
+};
+
+/**
+ * Parses a query item into a formatted string.
+ * @param queryItem the query item to be parsed
+ * @param printAggregatedValues if true, the deep values of entities will be parsed and shown
+ * @returns a formatted string with name and values of the query item
+ */
+export const getParsedStringItem = (
+    queryItem: QueryItem,
+    printAggregatedValues: boolean,
+): string => {
+    const name: string = queryItem.name;
+
+    const values = queryItem.values.map((valueItem) => {
+        if (typeof valueItem.value === "string") {
+            return valueItem.value;
+        }
+
+        if (Array.isArray(valueItem.value)) {
+            if (printAggregatedValues) {
+                return `${valueItem.name}\r\n    ${getParsedAggregatedStringValues(valueItem.value)}`;
+            }
+            return valueItem.name;
+        }
+
+        return valueItem.name;
+    });
+
+    return `${name}: ${values.join(", ")}`;
+};
+
+/**
+ * Formats an array with an AND connection of string arrays with an OR connection.
+ * @param aggregatedValue an array with an AND connection of string arrays with an OR connection
+ * @returns the formatted values as string
+ */
+const getParsedAggregatedStringValues = (
+    aggregatedValue: AggregatedValue[][],
+): string => {
+    const aggregatedGroups: string[][] = [];
+
+    aggregatedValue.forEach((valueArray) => {
+        const valueItems: string[] = [];
+        valueArray.forEach((valueItem) => {
+            const categoryName: string =
+                getCategoryFromKey(get(catalogue), valueItem.value)?.name ??
+                valueItem.value;
+            valueItems.push(
+                "            " + categoryName + ": " + valueItem.name,
+            );
+        });
+        aggregatedGroups.push(valueItems);
+    });
+
+    const parsedAggregatedGroups = aggregatedGroups.map((aggregatedGroup) =>
+        aggregatedGroup.join("\r\n"),
+    );
+
+    const parsedAggregatedGroupsString =
+        `    ${translate("query_item_multi_row_header_top")}\r\n` +
+        parsedAggregatedGroups.join(
+            `\r\n        ${translate("query_item_multi_row_header")}\r\n`,
+        );
+    return parsedAggregatedGroupsString;
+};
