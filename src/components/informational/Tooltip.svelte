@@ -15,81 +15,25 @@
 
 <span
     part="lens-tooltip-trigger"
+    class="relative inline-flex items-center gap-0.5"
     role="group"
     onmouseenter={() => (showTooltip = true)}
     onmouseleave={() => (showTooltip = false)}
 >
-    <span
-        part="lens-tooltip-icon {showTooltip ? 'lens-tooltip-icon-active' : ''}"
-        aria-hidden="true"
-    >
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 512 512"
-            fill="currentColor"
-            ><path
-                d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z"
-            /></svg
-        >
-    </span>
     {@render children()}
     {#if showTooltip}
-        <span part="lens-tooltip" role="tooltip">
-            <span part="lens-tooltip-message">{message}</span>
-            <span part="lens-tooltip-arrow"></span>
+        <span
+            part="lens-tooltip"
+            role="tooltip"
+            class="pointer-events-none absolute bottom-full left-1/2 z-1000 mb-2 -translate-x-1/2 whitespace-nowrap rounded bg-primary-900 px-2 py-1 text-xs text-white"
+        >
+            <span part="lens-tooltip-message" class="block text-left">
+                {message}
+            </span>
+            <span
+                part="lens-tooltip-arrow"
+                class="absolute left-1/2 top-full h-0 w-0 -translate-x-1/2 border-x-[6px] border-t-[6px] border-x-transparent border-t-primary-900"
+            ></span>
         </span>
     {/if}
 </span>
-
-<style>
-    [part~="lens-tooltip-trigger"] {
-        position: relative;
-        display: inline-flex;
-        align-items: center;
-        gap: var(--gap-xxs, 2px);
-    }
-
-    [part~="lens-tooltip"] {
-        position: absolute;
-        background-color: var(--dark-blue, #1a365d);
-        color: var(--white, #fff);
-        padding: var(--gap-xs, 4px) var(--gap-s, 8px);
-        border-radius: var(--border-radius-small, 4px);
-        font-size: var(--font-size-s, 0.875rem);
-        font-family: var(--font-family, sans-serif);
-        white-space: nowrap;
-        z-index: 1000;
-        pointer-events: none;
-        bottom: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        margin-bottom: var(--gap-xs, 8px);
-    }
-
-    [part~="lens-tooltip-arrow"] {
-        position: absolute;
-        top: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        border-width: 6px;
-        border-style: solid;
-        border-color: var(--dark-blue, #1a365d) transparent transparent
-            transparent;
-    }
-
-    [part~="lens-tooltip-icon"] {
-        display: inline-flex;
-        align-items: center;
-        color: var(--gray, #6c757d);
-        line-height: 1;
-    }
-
-    [part~="lens-tooltip-icon-active"] {
-        color: var(--blue, #0d6efd);
-    }
-
-    [part~="lens-tooltip-icon"] svg {
-        width: 0.7em;
-        height: 0.7em;
-    }
-</style>

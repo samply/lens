@@ -1,6 +1,7 @@
 /// <reference types="vitest/config" />
 import { defineConfig } from "vite";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
+import tailwindcss from "@tailwindcss/vite";
 import dts from "vite-plugin-dts";
 
 export default defineConfig({
@@ -14,6 +15,7 @@ export default defineConfig({
         sourcemap: true,
     },
     plugins: [
+        tailwindcss(),
         svelte(),
         dts({
             // Emit type definitions as a single lens.d.ts file
