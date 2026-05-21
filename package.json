@@ -7,6 +7,7 @@
         "type": "git",
         "url": "git+https://github.com/samply/lens.git"
     },
+    "//": "Settings recommended by Vite but without CommonJS exports, see https://vite.dev/guide/build#library-mode",
     "type": "module",
     "files": [
         "dist",
@@ -21,17 +22,15 @@
     "scripts": {
         "dev": "vite dev",
         "build": "vite build",
-        "demo:build": " vite build --config vite.config.demo.ts",
-        "demo:preview": "vite preview --config vite.config.demo.ts",
-        "check": "svelte-check --tsconfig ./tsconfig.json",
-        "lint": "prettier --check . && eslint .",
-        "format": "prettier --write .",
-        "test": "vitest --run",
-        "schema:generate": "node scripts/generate-json-schema.ts",
-        "schema:check": "node scripts/generate-json-schema.ts --check",
-        "schema:validate": "node scripts/validate-json-files.ts",
-        "typedoc:dev": "typedoc src/index.ts --watch",
-        "typedoc:build": "typedoc src/index.ts"
+        "build:demo": " vite build --config vite.config.demo.js",
+        "preview:demo": "vite preview --config vite.config.demo.js",
+        "check": "svelte-check",
+        "prepublishOnly": "vite build",
+        "version": "npm version -m \"chore: release %s\"",
+        "schemagen": "bash scripts/generate-json-schema.bash",
+        "book": "mdbook serve book --open",
+        "typedoc": "typedoc src/index.ts --watch",
+        "test": "vitest"
     },
     "devDependencies": {
         "@eslint/js": "^10.0.1",
