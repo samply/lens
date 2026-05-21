@@ -23,6 +23,7 @@
         "dev": "vite dev",
         "build": "vite build",
         "build:demo": " vite build --config vite.config.demo.js",
+        "preview:demo": "vite preview --config vite.config.demo.js",
         "check": "svelte-check",
         "prepublishOnly": "vite build",
         "version": "npm version -m \"chore: release %s\"",
