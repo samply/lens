@@ -2,6 +2,7 @@
     import { v4 as uuidv4 } from "uuid";
     import { activeQueryGroupIndex, addItemToQuery } from "../../stores/query";
     import type { StringCategory } from "../../types/catalogue";
+    import type { QueryItem } from "../../types/queryData";
     import AddButton from "./AddButton.svelte";
     import { onMount } from "svelte";
     import { translate } from "../../helpers/translations";
@@ -10,14 +11,18 @@
         element,
         inSearchBar = false,
         resetToEmptySearchBar = () => {},
+        onValueAdded = undefined,
+        initialValue = undefined,
     }: {
         element: StringCategory;
         inSearchBar?: boolean;
         resetToEmptySearchBar?: (focus?: boolean) => void;
+        onValueAdded?: (item: QueryItem) => void;
+        initialValue?: string;
     } = $props();
 
     let input: HTMLInputElement;
-    let value: string | null = $state(null);
+    let value: string | null = $state(initialValue ?? null);
 
     onMount(() => {
         if (inSearchBar === false) input.focus();
@@ -40,23 +45,26 @@
             return;
         }
 
-        addItemToQuery(
-            {
-                id: uuidv4(),
-                key: element.key,
-                name: element.name,
-                type: element.type,
-                values: [
-                    {
-                        name: input.value,
-                        value: input.value,
-                        queryBindId: uuidv4(),
-                    },
-                ],
-            },
-            $activeQueryGroupIndex,
-        );
+        const queryItem: QueryItem = {
+            id: uuidv4(),
+            key: element.key,
+            name: element.name,
+            type: element.type,
+            values: [
+                {
+                    name: input.value,
+                    value: input.value,
+                    queryBindId: uuidv4(),
+                },
+            ],
+        };
 
+        if (onValueAdded) {
+            onValueAdded(queryItem);
+            return;
+        }
+
+        addItemToQuery(queryItem, $activeQueryGroupIndex);
         resetToEmptySearchBar();
     }
 
@@ -84,7 +92,7 @@
         placeholder="Enter filter term"
         {onkeydown}
     />
-    <AddButton onclick={addItem} {onkeydown} {inSearchBar} />
+    <AddButton onclick={addItem} {onkeydown} {inSearchBar} checkmark={!!onValueAdded} />
 </form>
 
 <style>

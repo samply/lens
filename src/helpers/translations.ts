@@ -90,6 +90,22 @@ const lensTranslations: Texts = {
         en: "AND",
         de: "UND",
     },
+    query_edit_title: {
+        en: "Edit Query",
+        de: "Anfrage bearbeiten",
+    },
+    query_edit_save: {
+        en: "Save",
+        de: "Speichern",
+    },
+    query_edit_cancel: {
+        en: "Cancel",
+        de: "Abbrechen",
+    },
+    query_edit_finish_editing: {
+        en: "Finish editing the current value before saving.",
+        de: "Bitte erst den aktuellen Wert fertig bearbeiten.",
+    },
     type_more_message: {
         en: "Search begins with 2 characters",
         de: "Suche beginnt mit 2 Zeichen",

@@ -1,6 +1,7 @@
 <script lang="ts">
     import AddButton from "./AddButton.svelte";
     import type { DateRangeCategory } from "../../types/catalogue";
+    import type { QueryItem } from "../../types/queryData";
     import { v4 as uuidv4 } from "uuid";
     import { activeQueryGroupIndex, addItemToQuery } from "../../stores/query";
     import { onMount } from "svelte";
@@ -10,17 +11,23 @@
         element,
         inSearchBar = false,
         resetToEmptySearchBar = () => {},
+        onValueAdded = undefined,
+        initialFrom = undefined,
+        initialTo = undefined,
     }: {
         element: DateRangeCategory;
         inSearchBar?: boolean;
         resetToEmptySearchBar?: (focus?: boolean) => void;
+        onValueAdded?: (item: QueryItem) => void;
+        initialFrom?: string;
+        initialTo?: string;
     } = $props();
 
     let form: HTMLFormElement;
     let fromInput: HTMLInputElement;
     let toInput: HTMLInputElement;
-    let from: string = $state("");
-    let to: string = $state("");
+    let from: string = $state(initialFrom ?? "");
+    let to: string = $state(initialTo ?? "");
 
     onMount(() => {
         if (inSearchBar === false) fromInput.focus();
@@ -54,23 +61,26 @@
             return;
         }
 
-        addItemToQuery(
-            {
-                id: uuidv4(),
-                key: element.key,
-                name: element.name,
-                type: element.type,
-                values: [
-                    {
-                        name: getMinMax(from, to),
-                        value: { min: from || undefined, max: to || undefined },
-                        queryBindId: uuidv4(),
-                    },
-                ],
-            },
-            $activeQueryGroupIndex,
-        );
+        const queryItem: QueryItem = {
+            id: uuidv4(),
+            key: element.key,
+            name: element.name,
+            type: element.type,
+            values: [
+                {
+                    name: getMinMax(from, to),
+                    value: { min: from || undefined, max: to || undefined },
+                    queryBindId: uuidv4(),
+                },
+            ],
+        };
 
+        if (onValueAdded) {
+            onValueAdded(queryItem);
+            return;
+        }
+
+        addItemToQuery(queryItem, $activeQueryGroupIndex);
         resetToEmptySearchBar();
     }
 
@@ -122,7 +132,7 @@
         bind:this={toInput}
         {onkeydown}
     />
-    <AddButton onclick={addItem} {onkeydown} {inSearchBar} />
+    <AddButton onclick={addItem} {onkeydown} {inSearchBar} checkmark={!!onValueAdded} />
 </form>
 
 <style>

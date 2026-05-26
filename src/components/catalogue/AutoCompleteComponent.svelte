@@ -19,9 +19,11 @@
 
     interface Props {
         element: AutocompleteCategory;
+        onValueSelected?: (item: QueryItem) => void;
+        initialValue?: string;
     }
 
-    let { element }: Props = $props();
+    let { element, onValueSelected = undefined, initialValue = undefined }: Props = $props();
 
     /**
      * list of criteria
@@ -64,7 +66,7 @@
     /**
      * watches the input value and updates the input options
      */
-    let inputValue: string = $state("");
+    let inputValue: string = $state(initialValue ?? "");
 
     /**
      * handles the focus state of the input element
@@ -108,20 +110,15 @@
         inputItem: Criteria,
         indexOfChosenStore: number,
     ): void => {
-        /**
-         * check if option is allready present in the query store
-         */
-        const optionAllreadyPresent = chosenOptions.find((option) => {
-            return option.values[0].value === inputItem.key;
-        });
-
-        if (optionAllreadyPresent) {
-            return;
+        if (!onValueSelected) {
+            const optionAllreadyPresent = chosenOptions.find((option) => {
+                return option.values[0].value === inputItem.key;
+            });
+            if (optionAllreadyPresent) {
+                return;
+            }
         }
 
-        /**
-         * transform inputItem to QueryItem
-         */
         const queryItem: QueryItem = {
             id: uuidv4(),
             name: element.name,
@@ -139,6 +136,11 @@
 
         inputValue = "";
         focusedItemIndex = 0;
+
+        if (onValueSelected) {
+            onValueSelected(queryItem);
+            return;
+        }
 
         addItemToQuery(queryItem, indexOfChosenStore);
     };
