@@ -22,6 +22,10 @@ jobs:
             - run: npx eslint .
             - run: npx vite build
             - run: npx vitest
+            - run: npx vite build --config vite.config.demo.js
+            - run: npx playwright install chromium --with-deps
+            - run: npx playwright test
+
             - run: bash scripts/generate-json-schema.bash --check
             - run: npx typedoc src/index.ts
             - name: Install latest mdbook

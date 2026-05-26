@@ -25,5 +25,7 @@ export default defineConfig({
     test: {
         // Using jsdom, so window.dispatchEvent works in tests
         environment: "jsdom",
+        // Only pick up unit tests in src/; E2E tests in tests/e2e/ are run by Playwright
+        include: ["src/**/*.test.ts"],
     },
 });

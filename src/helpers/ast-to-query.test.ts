@@ -181,3 +181,66 @@ test("setQueryStoreFromAst: string value", () => {
         ],
     });
 });
+
+test("getAst: empty queryStore returns top-level OR with no children", () => {
+    setQueryStoreFromAst({ operand: "OR", children: [] });
+    expect(getAst()).toEqual({ operand: "OR", children: [] });
+});
+
+test("getAst: 2-group OR query produces two AND children at top level", () => {
+    const ast: AstTopLayer = {
+        operand: "OR",
+        children: [
+            {
+                operand: "AND",
+                children: [
+                    {
+                        key: "gender",
+                        operand: "OR",
+                        children: [{ key: "gender", type: "EQUALS", value: "male" }],
+                    },
+                ],
+            },
+            {
+                operand: "AND",
+                children: [
+                    {
+                        key: "gender",
+                        operand: "OR",
+                        children: [{ key: "gender", type: "EQUALS", value: "female" }],
+                    },
+                ],
+            },
+        ],
+    };
+    testConversion(ast);
+    expect(getAst().children).toHaveLength(2);
+});
+
+test("getAst: AND within a group produces multiple children under a single AND node", () => {
+    const ast: AstTopLayer = {
+        operand: "OR",
+        children: [
+            {
+                operand: "AND",
+                children: [
+                    {
+                        key: "gender",
+                        operand: "OR",
+                        children: [{ key: "gender", type: "EQUALS", value: "male" }],
+                    },
+                    {
+                        key: "sample-id",
+                        operand: "OR",
+                        children: [{ key: "sample-id", type: "EQUALS", value: "S1" }],
+                    },
+                ],
+            },
+        ],
+    };
+    testConversion(ast);
+    const top = getAst();
+    expect(top.children).toHaveLength(1);
+    const andNode = top.children[0];
+    expect("children" in andNode && andNode.children).toHaveLength(2);
+});

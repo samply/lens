@@ -67,3 +67,32 @@ test("getStrata", () => {
         ["female", "male", "unknown"].sort(),
     );
 });
+
+import {
+    markSiteClaimed,
+    removeFailedSite,
+    clearSiteResults,
+    siteStatus,
+} from "./response";
+
+test("markSiteClaimed marks a site as 'claimed' in siteStatus", () => {
+    markSiteClaimed("pending-site");
+    const status = get(siteStatus);
+    expect(status.get("pending-site")).toBe("claimed");
+});
+
+test("removeFailedSite removes the site from both siteStatus and siteResults", () => {
+    setSiteResult("to-remove", { stratifiers: {}, totals: { patients: 5 } });
+    markSiteClaimed("to-remove");
+    removeFailedSite("to-remove");
+    expect(get(siteStatus).has("to-remove")).toBe(false);
+    expect(get(siteResults).has("to-remove")).toBe(false);
+});
+
+test("clearSiteResults empties both siteResults and siteStatus", () => {
+    setSiteResult("site-a", { stratifiers: {}, totals: { patients: 1 } });
+    markSiteClaimed("site-b");
+    clearSiteResults();
+    expect(get(siteResults).size).toBe(0);
+    expect(get(siteStatus).size).toBe(0);
+});

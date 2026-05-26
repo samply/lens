@@ -20,3 +20,12 @@ jobs:
                     echo "::error:: Please run `npm run version` before merging to main!"; \
                     exit 1; \
                   fi
+            - uses: actions/setup-node@v6
+              with:
+                  node-version: latest
+            - run: npm ci
+            - run: npx playwright install chromium --with-deps
+            - name: "E2E tests against live demo"
+              run: npx playwright test
+              env:
+                  DEMO_URL: https://samply.github.io/lens/demo/
