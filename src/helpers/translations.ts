@@ -82,6 +82,14 @@ const lensTranslations: Texts = {
         en: "and any of",
         de: "und eines aus",
     },
+    query_operator_or: {
+        en: "OR",
+        de: "ODER",
+    },
+    query_operator_and: {
+        en: "AND",
+        de: "UND",
+    },
     type_more_message: {
         en: "Search begins with 2 characters",
         de: "Suche beginnt mit 2 Zeichen",
