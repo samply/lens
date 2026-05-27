@@ -237,20 +237,28 @@
                                             part="lens-query-explain-item-name"
                                             >{item.name}</span
                                         >
-                                        <div part="lens-query-explain-values">
-                                            {#each item.values as value, vi (value.queryBindId)}
-                                                {#if vi > 0}
+                                        {#if item.values.length > 3}
+                                            <span part="lens-query-explain-values-comma"
+                                                >{item.values
+                                                    .map((v) => v.name)
+                                                    .join(", ")}</span
+                                            >
+                                        {:else}
+                                            <div part="lens-query-explain-values">
+                                                {#each item.values as value, vi (value.queryBindId)}
+                                                    {#if vi > 0}
+                                                        <span
+                                                            part="lens-query-explain-value-or"
+                                                            >or</span
+                                                        >
+                                                    {/if}
                                                     <span
-                                                        part="lens-query-explain-value-or"
-                                                        >or</span
+                                                        part="lens-query-explain-value-pill"
+                                                        >{value.name}</span
                                                     >
-                                                {/if}
-                                                <span
-                                                    part="lens-query-explain-value-pill"
-                                                    >{value.name}</span
-                                                >
-                                            {/each}
-                                        </div>
+                                                {/each}
+                                            </div>
+                                        {/if}
                                     </div>
                                 {/each}
                             </div>
@@ -341,9 +349,9 @@
                                             part="lens-query-explain-item-name"
                                             >{item.name}</span
                                         >
-                                        <div part="lens-query-explain-values">
+                                        <div part="lens-query-explain-values {item.values.length > 3 ? 'lens-query-explain-values-list' : ''}">
                                             {#each item.values as value, vi (value.queryBindId)}
-                                                {#if vi > 0}
+                                                {#if vi > 0 && item.values.length <= 3}
                                                     <span
                                                         part="lens-query-explain-value-or"
                                                         >or</span
@@ -509,6 +517,8 @@
         padding: var(--gap-xs);
         width: max-content;
         max-width: 350px;
+        max-height: 320px;
+        overflow-y: auto;
         text-align: left;
         cursor: auto;
         font-size: var(--font-size-s);
@@ -790,6 +800,20 @@
         flex-wrap: wrap;
         align-items: center;
         gap: 4px;
+        flex: 1;
+    }
+
+    [part~="lens-query-explain-values-comma"] {
+        font-size: var(--font-size-xs);
+        color: var(--dark-gray);
+        flex: 1;
+    }
+
+    [part~="lens-query-explain-values-list"] {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
         flex: 1;
     }
 
