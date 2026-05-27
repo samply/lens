@@ -186,63 +186,81 @@
     </InfoButtonComponent>
 {:else}
     <div part="lens-query-explain-button">
-        <InfoButtonComponent
-            buttonSize={25}
-            alignDialogue="bottom-left"
-            dialogueMaxWidth="350px"
+        <button
+            part="lens-query-info-btn"
+            onclick={() => (infoOpen = !infoOpen)}
+            onfocusout={() => (infoOpen = false)}
+            aria-label="View query details"
         >
-            {#if $queryStore.flat().length > 0}
-                <div part="lens-query-explain-info-header">
-                    {translate("query_info_header")}
-                </div>
-                {#each $queryStore as group, gi (gi)}
-                    {#if gi > 0}
-                        <div part="lens-query-explain-or-divider">
-                            <hr part="lens-query-explain-or-line" />
-                            <span part="lens-query-explain-or-label"
-                                >{translate("query_operator_or")}</span
-                            >
-                            <hr part="lens-query-explain-or-line" />
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="4 4 40 40"
+            >
+                <path
+                    d="M 24 4 C 12.972066 4 4 12.972074 4 24 C 4 35.027926 12.972066 44 24 44 C 35.027934 44 44 35.027926 44 24 C 44 12.972074 35.027934 4 24 4 z M 24 7 C 33.406615 7 41 14.593391 41 24 C 41 33.406609 33.406615 41 24 41 C 14.593385 41 7 33.406609 7 24 C 7 14.593391 14.593385 7 24 7 z M 24 14 A 2 2 0 0 0 24 18 A 2 2 0 0 0 24 14 z M 23.976562 20.978516 A 1.50015 1.50015 0 0 0 22.5 22.5 L 22.5 33.5 A 1.50015 1.50015 0 1 0 25.5 33.5 L 25.5 22.5 A 1.50015 1.50015 0 0 0 23.976562 20.978516 z"
+                ></path>
+            </svg>
+            {#if infoOpen}
+                <div part="lens-query-info-popup">
+                    {#if $queryStore.flat().length > 0}
+                        <div part="lens-query-explain-info-header">
+                            {translate("query_info_header")}
                         </div>
-                    {/if}
-                    <div part="lens-query-explain-group">
-                        <div part="lens-query-explain-group-header">
-                            <span part="lens-query-explain-group-label">
-                                {translate("query_info_group_header")} {gi + 1}
-                            </span>
-                        </div>
-                        {#each group as item, ii (item.id)}
-                            {#if ii > 0}
-                                <div part="lens-query-explain-and-connector">
-                                    {translate("query_operator_and")}
+                        {#each $queryStore as group, gi (gi)}
+                            {#if gi > 0}
+                                <div part="lens-query-explain-or-divider">
+                                    <hr part="lens-query-explain-or-line" />
+                                    <span part="lens-query-explain-or-label"
+                                        >{translate("query_operator_or")}</span
+                                    >
+                                    <hr part="lens-query-explain-or-line" />
                                 </div>
                             {/if}
-                            <div part="lens-query-explain-item">
-                                <span part="lens-query-explain-item-name"
-                                    >{item.name}</span
-                                >
-                                <div part="lens-query-explain-values">
-                                    {#each item.values as value, vi (value.queryBindId)}
-                                        {#if vi > 0}
-                                            <span
-                                                part="lens-query-explain-value-or"
-                                                >or</span
-                                            >
-                                        {/if}
-                                        <span
-                                            part="lens-query-explain-value-pill"
-                                            >{value.name}</span
-                                        >
-                                    {/each}
+                            <div part="lens-query-explain-group">
+                                <div part="lens-query-explain-group-header">
+                                    <span part="lens-query-explain-group-label">
+                                        {translate("query_info_group_header")} {gi +
+                                            1}
+                                    </span>
                                 </div>
+                                {#each group as item, ii (item.id)}
+                                    {#if ii > 0}
+                                        <div
+                                            part="lens-query-explain-and-connector"
+                                        >
+                                            {translate("query_operator_and")}
+                                        </div>
+                                    {/if}
+                                    <div part="lens-query-explain-item">
+                                        <span
+                                            part="lens-query-explain-item-name"
+                                            >{item.name}</span
+                                        >
+                                        <div part="lens-query-explain-values">
+                                            {#each item.values as value, vi (value.queryBindId)}
+                                                {#if vi > 0}
+                                                    <span
+                                                        part="lens-query-explain-value-or"
+                                                        >or</span
+                                                    >
+                                                {/if}
+                                                <span
+                                                    part="lens-query-explain-value-pill"
+                                                    >{value.name}</span
+                                                >
+                                            {/each}
+                                        </div>
+                                    </div>
+                                {/each}
                             </div>
                         {/each}
-                    </div>
-                {/each}
-            {:else}
-                {noQueryMessage}
+                    {:else}
+                        {noQueryMessage}
+                    {/if}
+                </div>
             {/if}
-        </InfoButtonComponent>
+        </button>
 
         {#if $queryStore.flat().length > 0}
             <button
@@ -446,25 +464,71 @@
     [part~="lens-query-explain-button"] {
         display: flex;
         align-items: center;
-        justify-content: center;
+        gap: var(--gap-xxs);
         box-sizing: border-box;
         height: 100%;
         padding: var(--gap-xxs);
-        border: solid 1px var(--light-blue);
+    }
+
+    [part~="lens-query-info-btn"] {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--light-blue);
         border-radius: var(--border-radius-small);
+        background: none;
+        cursor: pointer;
+        color: var(--blue);
+        padding: 3px 8px;
+        flex-shrink: 0;
+        height: 28px;
+        width: 28px;
+    }
+
+    [part~="lens-query-info-btn"]:hover {
+        background: var(--lightest-gray);
+        color: var(--light-blue);
+    }
+
+    [part~="lens-query-info-btn"] svg {
+        display: block;
+        height: 16px;
+        width: 16px;
+        flex-shrink: 0;
+    }
+
+    [part~="lens-query-info-popup"] {
+        position: absolute;
+        top: calc(100% + 6px);
+        right: 0;
+        z-index: 100;
+        background: white;
+        border: 1px solid var(--blue);
+        border-radius: var(--border-radius-small);
+        padding: var(--gap-xs);
+        width: max-content;
+        max-width: 350px;
+        text-align: left;
+        cursor: auto;
+        font-size: var(--font-size-s);
+        color: var(--dark-gray);
     }
 
     [part~="lens-query-edit-open-btn"] {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         background: none;
         border: 1px solid var(--light-blue);
         cursor: pointer;
         font-size: var(--font-size-m);
         color: var(--blue);
-        padding: 2px 8px;
         border-radius: var(--border-radius-small);
         line-height: 1;
         flex-shrink: 0;
-        margin-left: var(--gap-xxs);
+        height: 28px;
+        width: 28px;
     }
 
     [part~="lens-query-edit-open-btn"]:hover {
