@@ -2,6 +2,7 @@ import { expect, test } from "vitest";
 import { setQueryStoreFromAst } from "./ast-to-query";
 import { getAst } from "./ast-transformer";
 import type { AstTopLayer } from "../types/ast";
+import { setQueryStore } from "../stores/query";
 
 function testConversion(ast: AstTopLayer): void {
     setQueryStoreFromAst(ast);
@@ -183,7 +184,7 @@ test("setQueryStoreFromAst: string value", () => {
 });
 
 test("getAst: empty queryStore returns top-level OR with no children", () => {
-    setQueryStoreFromAst({ operand: "OR", children: [] });
+    setQueryStore([]);
     expect(getAst()).toEqual({ operand: "OR", children: [] });
 });
 

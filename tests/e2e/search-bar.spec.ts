@@ -8,7 +8,7 @@ import {
     getOrBarCount,
     typeInFirstSearchBar,
     typeInLastSearchBar,
-} from "./helpers";
+} from "./searchbar-helpers";
 
 test.beforeEach(async ({ page }) => {
     await page.goto("/");
@@ -287,4 +287,120 @@ test("search button fires lens-search-triggered", async ({ page }) => {
     await clickSearchButton(page);
     await page.waitForTimeout(300);
     expect(eventFired).toBe(true);
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Section 1 (cont.) — Autocomplete edge cases
+// ─────────────────────────────────────────────────────────────────────────────
+
+test("1.8 special characters in search input are treated as literals (no crash)", async ({
+    page,
+}) => {
+    await typeInFirstSearchBar(page, "<script>");
+    const list = page.locator('[part~="lens-searchbar-autocomplete-options"]');
+    await expect(list).toBeVisible();
+    await expect(list.locator("li")).toContainText("No matches found");
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Section 2 (cont.) — Query building edge cases
+// ─────────────────────────────────────────────────────────────────────────────
+
+test("2.10 adding the same criterion twice results in a single merged chip", async ({
+    page,
+}) => {
+    await typeInFirstSearchBar(page, "male");
+    await clickAutocompleteItem(page, "male");
+
+    await typeInFirstSearchBar(page, "male");
+    await clickAutocompleteItem(page, "male");
+
+    const chips = await getChipTexts(page);
+    const genderChips = chips.filter(
+        (t) => t.includes("Gender") && t.includes("male"),
+    );
+    expect(genderChips.length).toBe(1);
+});
+
+test("2.12 deleting the last chip in the only bar leaves the app in a usable state", async ({
+    page,
+}) => {
+    await addStringFilter(page, "firs", "Olaf");
+    expect((await getChipTexts(page)).length).toBeGreaterThan(0);
+
+    await page
+        .locator('[part~="lens-searchbar-chip"]')
+        .first()
+        .locator("button")
+        .last()
+        .click();
+    await page.waitForTimeout(300);
+
+    await expect(
+        page.locator('[part~="lens-searchbar-input"]').first(),
+    ).toBeVisible();
+    expect((await getChipTexts(page)).length).toBe(0);
+});
+
+test("2.14 adding 7 extra OR bars (8 total) all render and one can be deleted", async ({
+    page,
+}) => {
+    for (let i = 0; i < 7; i++) {
+        await addOrBar(page);
+    }
+    expect(await getOrBarCount(page)).toBe(8);
+
+    // Delete the first bar (non-last bar: its only button is the delete button)
+    const firstWrapper = page
+        .locator('[part~="lens-searchbar-multiple-wrapper"]')
+        .first();
+    await firstWrapper.locator("button").last().click();
+    await page.waitForTimeout(300);
+
+    expect(await getOrBarCount(page)).toBe(7);
+});
+
+test("2.15 malformed JSON in ?query= URL param shows a toast and does not crash", async ({
+    page,
+}) => {
+    await page.goto("/?query=NOTJSON{{{");
+    await page.waitForLoadState("networkidle");
+
+    await expect(
+        page.locator('[part~="lens-searchbar-input"]').first(),
+    ).toBeVisible();
+    await expect(page.locator('[part~="lens-toast-message"]')).toBeVisible({
+        timeout: 3000,
+    });
+    expect((await getChipTexts(page)).length).toBe(0);
+});
+
+test("2.16 ?query= with an unknown criterion key does not crash the app", async ({
+    page,
+}) => {
+    const query = encodeURIComponent(
+        JSON.stringify([
+            [
+                {
+                    id: "unknown-1",
+                    key: "this-key-does-not-exist-in-catalogue",
+                    name: "Unknown Field",
+                    type: "EQUALS",
+                    values: [
+                        {
+                            name: "test",
+                            value: "test",
+                            queryBindId: "unknown-val-1",
+                        },
+                    ],
+                },
+            ],
+        ]),
+    );
+    await page.goto(`/?query=${query}`);
+    await page.waitForLoadState("networkidle");
+
+    await expect(
+        page.locator('[part~="lens-searchbar-input"]').first(),
+    ).toBeVisible();
 });

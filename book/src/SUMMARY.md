@@ -14,6 +14,7 @@
 - [Development](development/README.md)
     - [Git hooks](development/git-hooks.md)
     - [Styling](development/styling.md)
+    - [Testing](development/testing.md)
     - [Making a release](development/releasing.md)
 - [Components](components/README.md)
     - [Catalogue](components/catalogue.md)

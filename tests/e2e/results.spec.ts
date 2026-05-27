@@ -6,7 +6,11 @@
  * sites A-J — giving 12 sites total and 42 patients.
  */
 import { test, expect } from "@playwright/test";
-import { clickSearchButton, waitForResults } from "./helpers";
+import {
+    clickSearchButton,
+    isNegotiateButtonDisabled,
+    waitForResults,
+} from "./searchbar-helpers";
 
 test.beforeEach(async ({ page }) => {
     await page.goto("/");
@@ -119,4 +123,116 @@ test("3.6 diagnosis bar chart renders after search", async ({ page }) => {
         .first();
     await expect(diagChart).toBeVisible();
     await expect(diagChart.locator("canvas")).toBeVisible();
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Section 3 (cont.) — Results edge cases
+// ─────────────────────────────────────────────────────────────────────────────
+
+test("3.9 result table tooltip closes when mouse leaves the trigger", async ({
+    page,
+}) => {
+    // Navigate to page 2 where Riverside (9 patients — Exact value) lives
+    await page.evaluate(() => {
+        const tableRoot =
+            document.querySelector("lens-result-table")?.shadowRoot;
+        const nextBtn = tableRoot?.querySelector(
+            "[part~='lens-result-pagination-pagination-next']",
+        ) as HTMLElement | null;
+        if (!nextBtn) throw new Error("Pagination next button not found");
+        nextBtn.click();
+    });
+    await page.waitForTimeout(200);
+
+    // Open tooltip via mouseenter
+    await page.evaluate(() => {
+        const tableRoot =
+            document.querySelector("lens-result-table")?.shadowRoot;
+        if (!tableRoot) throw new Error("No shadow root");
+        for (const row of tableRoot.querySelectorAll("tr")) {
+            if (row.textContent?.includes("Riverside")) {
+                const trigger = row.querySelector(
+                    "[part~='lens-tooltip-trigger']",
+                ) as HTMLElement | null;
+                if (!trigger) throw new Error("Tooltip trigger not found");
+                trigger.dispatchEvent(
+                    new MouseEvent("mouseenter", { bubbles: true }),
+                );
+                return;
+            }
+        }
+        throw new Error("Riverside row not found");
+    });
+    await page.waitForTimeout(200);
+
+    const tooltipVisible = await page.evaluate(() => {
+        return !!document
+            .querySelector("lens-result-table")
+            ?.shadowRoot?.querySelector("[part~='lens-tooltip-message']");
+    });
+    expect(tooltipVisible).toBe(true);
+
+    // Close tooltip via mouseleave
+    await page.evaluate(() => {
+        const tableRoot =
+            document.querySelector("lens-result-table")?.shadowRoot;
+        if (!tableRoot) throw new Error("No shadow root");
+        for (const row of tableRoot.querySelectorAll("tr")) {
+            if (row.textContent?.includes("Riverside")) {
+                const trigger = row.querySelector(
+                    "[part~='lens-tooltip-trigger']",
+                ) as HTMLElement | null;
+                if (!trigger) throw new Error("Tooltip trigger not found");
+                trigger.dispatchEvent(
+                    new MouseEvent("mouseleave", { bubbles: false }),
+                );
+                return;
+            }
+        }
+        throw new Error("Riverside row not found");
+    });
+    await page.waitForTimeout(200);
+
+    const tooltipGone = await page.evaluate(() => {
+        return !!document
+            .querySelector("lens-result-table")
+            ?.shadowRoot?.querySelector("[part~='lens-tooltip-message']");
+    });
+    expect(tooltipGone).toBe(false);
+});
+
+test("3.11 site checkbox selection and negotiate button state persist across a new search", async ({
+    page,
+}) => {
+    // Select the first site row checkbox
+    await page.evaluate(() => {
+        const root =
+            document.querySelector("lens-result-table")?.shadowRoot;
+        const cb = root?.querySelector(
+            '[part~="lens-result-table-item-body-checkbox"]',
+        ) as HTMLInputElement | null;
+        if (!cb) throw new Error("Site checkbox not found");
+        cb.click();
+    });
+    await page.waitForTimeout(200);
+
+    expect(await isNegotiateButtonDisabled(page)).toBe(false);
+
+    // Fire a second search
+    await clickSearchButton(page);
+    await waitForResults(page);
+
+    // Selection must persist — negotiate button remains enabled
+    expect(await isNegotiateButtonDisabled(page)).toBe(false);
+
+    // The first site's checkbox must still be visually checked
+    const isChecked = await page.evaluate(() => {
+        const root =
+            document.querySelector("lens-result-table")?.shadowRoot;
+        const cb = root?.querySelector(
+            '[part~="lens-result-table-item-body-checkbox"]',
+        ) as HTMLInputElement | null;
+        return cb?.checked ?? false;
+    });
+    expect(isChecked).toBe(true);
 });

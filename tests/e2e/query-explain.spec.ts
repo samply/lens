@@ -12,7 +12,7 @@ import {
     clickAutocompleteItem,
     clickQueryExplainButton,
     typeInLastSearchBar,
-} from "./helpers";
+} from "./searchbar-helpers";
 
 test.beforeEach(async ({ page }) => {
     await page.goto("/");
@@ -92,4 +92,36 @@ test("5.4 per-chip info button shows single-row message for that value", async (
     await expect(
         page.locator('[part~="lens-query-explain-single-row-message"]'),
     ).toContainText("Olaf");
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Section 5 (cont.) — Query explain edge cases
+// ─────────────────────────────────────────────────────────────────────────────
+
+test("5.5 query explain reflects the updated query when re-opened after a new filter is added", async ({
+    page,
+}) => {
+    await addStringFilter(page, "firs", "Olaf");
+    await clickQueryExplainButton(page);
+
+    await expect(
+        page.locator('[part~="lens-query-explain-group-item"]'),
+    ).toHaveCount(1);
+
+    // Toggle the explain tooltip off
+    await clickQueryExplainButton(page);
+    await page.waitForTimeout(200);
+
+    // Add a second OR group with a different filter
+    await addOrBar(page);
+    await typeInLastSearchBar(page, "male");
+    await clickAutocompleteItem(page, "male");
+
+    // Re-open query explain
+    await clickQueryExplainButton(page);
+    await page.waitForTimeout(200);
+
+    await expect(
+        page.locator('[part~="lens-query-explain-group-item"]'),
+    ).toHaveCount(2);
 });

@@ -49,7 +49,6 @@ describe("getHumanReadableQueryAsFormattedString", () => {
             [makeItem("First name", [{ name: "Olaf", value: "Olaf" }])],
         ]);
         const result = getHumanReadableQueryAsFormattedString();
-        // translate("query_info_header") → "Search ANY of the following groups"
         expect(result).toContain("Search ANY of the following groups");
         // translate("query_info_group_header") + " 1" → "Group 1"
         expect(result).toContain("Group 1");

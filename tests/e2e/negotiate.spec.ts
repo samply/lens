@@ -11,7 +11,7 @@ import {
     clickSearchButton,
     isNegotiateButtonDisabled,
     waitForResults,
-} from "./helpers";
+} from "./searchbar-helpers";
 
 test.beforeEach(async ({ page }) => {
     await page.goto("/");
@@ -75,4 +75,42 @@ test("4.1 lens-negotiate-triggered fires when button is clicked (after selecting
     await popup?.close().catch(() => {});
 
     expect(eventFired).toBe(true);
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Section 4 (cont.) — Negotiate edge cases
+// ─────────────────────────────────────────────────────────────────────────────
+
+test("4.3 deselecting all sites re-disables the negotiate button", async ({
+    page,
+}) => {
+    await clickSearchButton(page);
+    await waitForResults(page);
+
+    // Select the first site row checkbox
+    await page.evaluate(() => {
+        const root =
+            document.querySelector("lens-result-table")?.shadowRoot;
+        const cb = root?.querySelector(
+            '[part~="lens-result-table-item-body-checkbox"]',
+        ) as HTMLInputElement | null;
+        if (!cb) throw new Error("Site checkbox not found");
+        cb.click();
+    });
+    await page.waitForTimeout(200);
+    expect(await isNegotiateButtonDisabled(page)).toBe(false);
+
+    // Deselect the same checkbox
+    await page.evaluate(() => {
+        const root =
+            document.querySelector("lens-result-table")?.shadowRoot;
+        const cb = root?.querySelector(
+            '[part~="lens-result-table-item-body-checkbox"]',
+        ) as HTMLInputElement | null;
+        if (!cb) throw new Error("Site checkbox not found");
+        cb.click();
+    });
+    await page.waitForTimeout(200);
+
+    expect(await isNegotiateButtonDisabled(page)).toBe(true);
 });
