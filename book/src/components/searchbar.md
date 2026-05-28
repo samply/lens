@@ -32,12 +32,13 @@ The `lens-searchbar` component offers an interface for exploring of all catalogu
 
 ## Props
 
-| Prop                    | Type     | Default                                       | Description                                                       |
-| ----------------------- | -------- | --------------------------------------------- | ----------------------------------------------------------------- |
-| `noMatchesFoundMessage` | `string` | `"No matches found"`                          | Message shown when no autocomplete options are found.             |
-| `typeMoreMessage`       | `string` | `"Search will start with 3 inserted letters"` | Message shown when input is too short for autocomplete.           |
-| `placeholderText`       | `string` | `"Type to filter conditions"`                 | Placeholder in the search input field.                            |
-| `index`                 | `number` | `0`                                           | Used to manage multiple search bars (e.g., in groups or filters). |
+| Prop                    | Type      | Default                                       | Description                                                      |
+|-------------------------|-----------|-----------------------------------------------|------------------------------------------------------------------|
+| `noMatchesFoundMessage` | `string`  | `"No matches found"`                          | Message shown when no autocomplete options are found.            |
+| `typeMoreMessage`       | `string`  | `"Search will start with 3 inserted letters"` | Message shown when input is too short for autocomplete.          |
+| `placeholderText`       | `string`  | `"Type to filter conditions"`                 | Placeholder in the search input field.                           |
+| `index`                 | `number`  | `0`                                           | Used to manage multiple search bars (e.g., in groups or filters). |
+| `readOnly`              | `boolean` | `false`                                       | Deactivates any interactive behavior                             |
 
 ---
 
@@ -49,6 +50,7 @@ The `lens-searchbar` component offers an interface for exploring of all catalogu
     noMatchesFoundMessage="No criteria match"
     typeMoreMessage="Type at least 3 characters to search"
     index="{1}"
+    readOnly="false"
 />
 ```
 

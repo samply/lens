@@ -43,6 +43,7 @@
         typeMoreMessage?: string;
         placeholderText?: string;
         index?: number;
+        readOnly?: boolean;
     }
 
     let {
@@ -50,6 +51,7 @@
         typeMoreMessage = translate("type_more_message"),
         placeholderText = "Type to filter conditions",
         index = 0,
+        readOnly = false,
     }: Props = $props();
 
     let queryGroup = $derived($queryStore[index]);
@@ -493,7 +495,7 @@
 
     onMount(() => {
         //sets focus in the new bar when added
-        searchBarInput.focus();
+        if (!readOnly) searchBarInput.focus();
         $activeQueryGroupIndex = index;
 
         const queryParam = new URLSearchParams(window.location.search).get(
@@ -580,7 +582,7 @@
                                 queryItemName={queryItem.name}
                                 queryItemValue={value}
                             />
-                            {#if queryItem.values.length > 1}
+                            {#if queryItem.values.length > 1 && !readOnly}
                                 <StoreDeleteButtonComponent
                                     itemToDelete={{
                                         type: "value",
@@ -594,9 +596,11 @@
                             {/if}
                         </span>
                     {/each}
-                    <StoreDeleteButtonComponent
-                        itemToDelete={{ type: "item", index, item: queryItem }}
-                    />
+                    {#if !readOnly}
+                        <StoreDeleteButtonComponent
+                            itemToDelete={{ type: "item", index, item: queryItem }}
+                        />
+                    {/if}
                 </div>
             {/each}
         </div>
@@ -606,13 +610,14 @@
         type="text"
         bind:this={searchBarInput}
         bind:value={inputValue}
-        placeholder={placeholderText}
+        placeholder={!readOnly ? placeholderText : ""}
         onfocusin={() => {
             autoCompleteOpen = true;
             activeQueryGroupIndex.set(index);
             searchBarInputHasFoucs = true;
         }}
         onfocusout={() => (searchBarInputHasFoucs = false)}
+        disabled={readOnly}
     />
     {#if autoCompleteOpen && inputValue.length > 1}
         <ul part="lens-searchbar-autocomplete-options">
@@ -759,10 +764,12 @@
             <li>{typeMoreMessage}</li>
         </ul>
     {/if}
-    <StoreDeleteButtonComponent
-        itemToDelete={{ type: "group", index }}
-        {resetToEmptySearchBar}
-    />
+    {#if !readOnly}
+        <StoreDeleteButtonComponent
+            itemToDelete={{ type: "group", index }}
+            {resetToEmptySearchBar}
+        />
+    {/if}
 </div>
 
 <style>
