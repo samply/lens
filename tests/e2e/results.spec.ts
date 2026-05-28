@@ -78,12 +78,11 @@ test("3.4 Riverside (9 patients) shows the rounding tooltip 'Exact value'", asyn
                 return;
             }
         }
-        const texts = Array.from(tableRoot.querySelectorAll("tr")).map(
-            (r) => r.textContent?.trim().substring(0, 40),
+        const texts = Array.from(tableRoot.querySelectorAll("tr")).map((r) =>
+            r.textContent?.trim().substring(0, 40),
         );
         throw new Error(
-            "Riverside row not found on page 2. Rows: " +
-                JSON.stringify(texts),
+            "Riverside row not found on page 2. Rows: " + JSON.stringify(texts),
         );
     });
     await page.waitForTimeout(300);
@@ -199,8 +198,7 @@ test("3.11 site checkbox selection and negotiate button state persist across a n
 }) => {
     // Select the first site row checkbox
     await page.evaluate(() => {
-        const root =
-            document.querySelector("lens-result-table")?.shadowRoot;
+        const root = document.querySelector("lens-result-table")?.shadowRoot;
         const cb = root?.querySelector(
             '[part~="lens-result-table-item-body-checkbox"]',
         ) as HTMLInputElement | null;
@@ -220,8 +218,7 @@ test("3.11 site checkbox selection and negotiate button state persist across a n
 
     // The first site's checkbox must still be visually checked
     const isChecked = await page.evaluate(() => {
-        const root =
-            document.querySelector("lens-result-table")?.shadowRoot;
+        const root = document.querySelector("lens-result-table")?.shadowRoot;
         const cb = root?.querySelector(
             '[part~="lens-result-table-item-body-checkbox"]',
         ) as HTMLInputElement | null;

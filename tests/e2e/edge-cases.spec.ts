@@ -25,9 +25,7 @@ test("3.7 result summary and table render without crashing before any search is 
     const nonEmptyRows = await page.evaluate(() => {
         const tableRoot =
             document.querySelector("lens-result-table")?.shadowRoot;
-        const rows = Array.from(
-            tableRoot?.querySelectorAll("tbody tr") ?? [],
-        );
+        const rows = Array.from(tableRoot?.querySelectorAll("tbody tr") ?? []);
         return rows.filter((r) => (r.textContent?.trim() ?? "") !== "").length;
     });
     expect(nonEmptyRows).toBe(0);

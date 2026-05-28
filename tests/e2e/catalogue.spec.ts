@@ -24,7 +24,9 @@ test("6.1 all top-level catalogue categories are visible", async ({ page }) => {
         "Tumorentität",
         "Sample ID",
     ]) {
-        await expect(catalogue.getByText(name, { exact: true }).first()).toBeVisible();
+        await expect(
+            catalogue.getByText(name, { exact: true }).first(),
+        ).toBeVisible();
     }
 });
 
@@ -42,14 +44,18 @@ test("6.2 expanding 'Donor/Clinical Information' shows child categories", async 
     await expect(
         catalogue.getByText("Diagnosis ICD-10", { exact: true }),
     ).toBeVisible();
-    await expect(catalogue.getByText("Diagnosis age", { exact: true })).toBeVisible();
+    await expect(
+        catalogue.getByText("Diagnosis age", { exact: true }),
+    ).toBeVisible();
 });
 
 test("6.3 clicking Gender 'male' criterion in catalogue adds a chip", async ({
     page,
 }) => {
     const catalogue = page.locator("lens-catalogue");
-    await catalogue.getByText("Donor/Clinical Information", { exact: true }).click();
+    await catalogue
+        .getByText("Donor/Clinical Information", { exact: true })
+        .click();
     await page.waitForTimeout(300);
 
     const genderSection = catalogue.locator("text=Gender").first();
@@ -84,9 +90,9 @@ test("6.4 submitting an empty string input in catalogue shows validation error",
     const isInvalid = await page.evaluate(() => {
         const input = document
             .querySelector("lens-catalogue")
-            ?.shadowRoot?.querySelector('[part~="lens-string-formfield"]') as
-            | HTMLInputElement
-            | null;
+            ?.shadowRoot?.querySelector(
+                '[part~="lens-string-formfield"]',
+            ) as HTMLInputElement | null;
         return input ? !input.validity.valid : false;
     });
     expect(isInvalid).toBe(true);
@@ -202,9 +208,7 @@ test("6.10 date range with start date after end date shows a validation error", 
 test("6.11 adding a criterion from catalogue while the search bar autocomplete is open works without error", async ({
     page,
 }) => {
-    const searchInput = page
-        .locator('[part~="lens-searchbar-input"]')
-        .first();
+    const searchInput = page.locator('[part~="lens-searchbar-input"]').first();
     await searchInput.click();
     await searchInput.fill("male");
     await expect(

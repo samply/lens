@@ -37,7 +37,9 @@ describe("addItemToQuery", () => {
         addItemToQuery(
             makeItem({
                 id: "id-2",
-                values: [{ name: "female", value: "female", queryBindId: "qb-2" }],
+                values: [
+                    { name: "female", value: "female", queryBindId: "qb-2" },
+                ],
             }),
             0,
         );
@@ -79,7 +81,10 @@ describe("removeValueFromQuery", () => {
         addItemToQuery(item, 0);
 
         removeValueFromQuery(
-            { ...item, values: [{ name: "male", value: "male", queryBindId: "qb-1" }] },
+            {
+                ...item,
+                values: [{ name: "male", value: "male", queryBindId: "qb-1" }],
+            },
             0,
         );
 
@@ -101,7 +106,11 @@ describe("removeValueFromQuery", () => {
 describe("removeItemFromQuery", () => {
     test("removes the item by id", () => {
         const item = makeItem({ id: "remove-me" });
-        const other = makeItem({ id: "keep-me", name: "First name", key: "first-name" });
+        const other = makeItem({
+            id: "keep-me",
+            name: "First name",
+            key: "first-name",
+        });
         addItemToQuery(item, 0);
         addItemToQuery(other, 0);
 

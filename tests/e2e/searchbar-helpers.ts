@@ -43,7 +43,9 @@ export async function clickAutocompleteItem(page: Page, exactName: string) {
                 '[part~="lens-searchbar-autocomplete-options-item-name"]',
             );
             if (nameEl?.textContent?.trim() === name) {
-                item.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
+                item.dispatchEvent(
+                    new MouseEvent("mousedown", { bubbles: true }),
+                );
                 return;
             }
         }
@@ -78,9 +80,7 @@ export async function addStringFilter(
 }
 
 export async function addOrBar(page: Page) {
-    await page
-        .locator('[part~="lens-searchbar-multiple-add-button"]')
-        .click();
+    await page.locator('[part~="lens-searchbar-multiple-add-button"]').click();
     await page.waitForTimeout(200);
 }
 
@@ -112,10 +112,14 @@ export async function clickQueryExplainButton(page: Page) {
         const root = document.querySelector(
             "lens-query-explain-button",
         )?.shadowRoot;
-        if (!root) throw new Error("No shadow root on lens-query-explain-button");
+        if (!root)
+            throw new Error("No shadow root on lens-query-explain-button");
         // InfoButtonComponent renders a <button> at the top level of the shadow root
         const btn = root.querySelector("button");
-        if (!btn) throw new Error("Info button not found in query-explain shadow root");
+        if (!btn)
+            throw new Error(
+                "Info button not found in query-explain shadow root",
+            );
         (btn as HTMLElement).click();
     });
 }

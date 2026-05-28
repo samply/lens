@@ -62,9 +62,14 @@ test("1.4 typing 'C31' shows criterion name and description", async ({
 }) => {
     await typeInFirstSearchBar(page, "C31");
     await expect(
-        page.locator('[part~="lens-searchbar-autocomplete-options-item-name"]', {
-            hasText: "C31",
-        }).first(),
+        page
+            .locator(
+                '[part~="lens-searchbar-autocomplete-options-item-name"]',
+                {
+                    hasText: "C31",
+                },
+            )
+            .first(),
     ).toBeVisible();
     // Description element is present (may be empty for some but rendered)
     await expect(
@@ -95,9 +100,11 @@ test("1.6 ArrowDown focuses an item; Enter adds it as a chip", async ({
     await input.press("ArrowDown");
     // A focused item gets the -focused CSS part
     await expect(
-        page.locator(
-            '[part~="lens-searchbar-autocomplete-options-item-focused"]',
-        ).first(),
+        page
+            .locator(
+                '[part~="lens-searchbar-autocomplete-options-item-focused"]',
+            )
+            .first(),
     ).toBeVisible();
     await input.press("Enter");
     // Chip should now appear
@@ -190,7 +197,9 @@ test("2.5 criteria added to the second OR bar stay in that bar", async ({
         const root = document.querySelector(
             "lens-search-bar-multiple",
         )?.shadowRoot;
-        return root?.querySelectorAll('[part~="lens-searchbar-chip"]').length ?? 0;
+        return (
+            root?.querySelectorAll('[part~="lens-searchbar-chip"]').length ?? 0
+        );
     });
     expect(chipCount).toBeGreaterThanOrEqual(2);
 });
@@ -264,9 +273,9 @@ test("2.9 navigating to a URL with ?query= pre-loads the chip", async ({
 
     const chip = page.locator('[part~="lens-searchbar-chip"]').first();
     await expect(chip).toBeVisible();
-    await expect(chip.locator('[part~="lens-searchbar-chip-item-text"]')).toHaveText(
-        "Olaf",
-    );
+    await expect(
+        chip.locator('[part~="lens-searchbar-chip-item-text"]'),
+    ).toHaveText("Olaf");
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -280,7 +289,9 @@ test("search button fires lens-search-triggered", async ({ page }) => {
     });
     await page.evaluate(() => {
         window.addEventListener("lens-search-triggered", () =>
-            (window as unknown as { __onSearchTriggered: () => void }).__onSearchTriggered(),
+            (
+                window as unknown as { __onSearchTriggered: () => void }
+            ).__onSearchTriggered(),
         );
     });
 

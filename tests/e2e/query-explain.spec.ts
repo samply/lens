@@ -80,9 +80,7 @@ test("5.4 per-chip info button shows single-row message for that value", async (
 
     // Playwright auto-pierces shadow DOM for part selectors, so we can find the
     // info button inside the chip regardless of how many shadow roots nest it.
-    const chipItem = page
-        .locator('[part~="lens-searchbar-chip-item"]')
-        .first();
+    const chipItem = page.locator('[part~="lens-searchbar-chip-item"]').first();
     await expect(chipItem).toBeVisible();
     await chipItem.locator('[part~="lens-info-button"]').first().click();
 

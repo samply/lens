@@ -198,7 +198,9 @@ test("getAst: 2-group OR query produces two AND children at top level", () => {
                     {
                         key: "gender",
                         operand: "OR",
-                        children: [{ key: "gender", type: "EQUALS", value: "male" }],
+                        children: [
+                            { key: "gender", type: "EQUALS", value: "male" },
+                        ],
                     },
                 ],
             },
@@ -208,7 +210,9 @@ test("getAst: 2-group OR query produces two AND children at top level", () => {
                     {
                         key: "gender",
                         operand: "OR",
-                        children: [{ key: "gender", type: "EQUALS", value: "female" }],
+                        children: [
+                            { key: "gender", type: "EQUALS", value: "female" },
+                        ],
                     },
                 ],
             },
@@ -228,12 +232,16 @@ test("getAst: AND within a group produces multiple children under a single AND n
                     {
                         key: "gender",
                         operand: "OR",
-                        children: [{ key: "gender", type: "EQUALS", value: "male" }],
+                        children: [
+                            { key: "gender", type: "EQUALS", value: "male" },
+                        ],
                     },
                     {
                         key: "sample-id",
                         operand: "OR",
-                        children: [{ key: "sample-id", type: "EQUALS", value: "S1" }],
+                        children: [
+                            { key: "sample-id", type: "EQUALS", value: "S1" },
+                        ],
                     },
                 ],
             },

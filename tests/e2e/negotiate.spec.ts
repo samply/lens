@@ -67,9 +67,9 @@ test("4.1 lens-negotiate-triggered fires when button is clicked (after selecting
     });
 
     // The demo opens a mailto: link — treat it as a popup to avoid navigation
-    const popupPromise = page.waitForEvent("popup", { timeout: 2000 }).catch(
-        () => null,
-    );
+    const popupPromise = page
+        .waitForEvent("popup", { timeout: 2000 })
+        .catch(() => null);
     await clickNegotiateButton(page);
     const popup = await popupPromise;
     await popup?.close().catch(() => {});
@@ -89,8 +89,7 @@ test("4.3 deselecting all sites re-disables the negotiate button", async ({
 
     // Select the first site row checkbox
     await page.evaluate(() => {
-        const root =
-            document.querySelector("lens-result-table")?.shadowRoot;
+        const root = document.querySelector("lens-result-table")?.shadowRoot;
         const cb = root?.querySelector(
             '[part~="lens-result-table-item-body-checkbox"]',
         ) as HTMLInputElement | null;
@@ -102,8 +101,7 @@ test("4.3 deselecting all sites re-disables the negotiate button", async ({
 
     // Deselect the same checkbox
     await page.evaluate(() => {
-        const root =
-            document.querySelector("lens-result-table")?.shadowRoot;
+        const root = document.querySelector("lens-result-table")?.shadowRoot;
         const cb = root?.querySelector(
             '[part~="lens-result-table-item-body-checkbox"]',
         ) as HTMLInputElement | null;

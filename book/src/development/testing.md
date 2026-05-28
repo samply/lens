@@ -8,15 +8,15 @@ Lens uses [Playwright](https://playwright.dev/) for end-to-end tests. They run a
 
 Tests are organised into numbered sections, one file per area:
 
-| Section | File | Area |
-|---------|------|------|
-| 1–2 | `search-bar.spec.ts` | Search bar interactions and query building |
-| 3 | `results.spec.ts` | Search execution and result display |
-| 4 | `negotiate.spec.ts` | Request Data (Negotiate) button |
-| 5 | `query-explain.spec.ts` | Query Explain button |
-| 6 | `catalogue.spec.ts` | Catalogue panel |
-| 7 | `language.spec.ts` | Language switching |
-| 8 | `toast.spec.ts` | Toast notifications |
+| Section | File                    | Area                                       |
+| ------- | ----------------------- | ------------------------------------------ |
+| 1–2     | `search-bar.spec.ts`    | Search bar interactions and query building |
+| 3       | `results.spec.ts`       | Search execution and result display        |
+| 4       | `negotiate.spec.ts`     | Request Data (Negotiate) button            |
+| 5       | `query-explain.spec.ts` | Query Explain button                       |
+| 6       | `catalogue.spec.ts`     | Catalogue panel                            |
+| 7       | `language.spec.ts`      | Language switching                         |
+| 8       | `toast.spec.ts`         | Toast notifications                        |
 
 Shared Playwright helpers (search bar interactions, button clicks, assertions) live in `tests/e2e/searchbar-helpers.ts`.
 

@@ -59,7 +59,9 @@ test("9.2 single-select criterion Gender:male produces the correct AST leaf", as
                     {
                         key: "gender",
                         operand: "OR",
-                        children: [{ key: "gender", type: "EQUALS", value: "male" }],
+                        children: [
+                            { key: "gender", type: "EQUALS", value: "male" },
+                        ],
                     },
                 ],
             },
@@ -96,7 +98,11 @@ test("9.3 string input First name:Olaf produces the correct AST leaf", async ({
                         key: "first-name",
                         operand: "OR",
                         children: [
-                            { key: "first-name", type: "EQUALS", value: "Olaf" },
+                            {
+                                key: "first-name",
+                                type: "EQUALS",
+                                value: "Olaf",
+                            },
                         ],
                     },
                 ],
@@ -243,7 +249,9 @@ test("9.6 AND combination of Gender:male and Sample ID:S1 produces an AND node w
                     {
                         key: "gender",
                         operand: "OR",
-                        children: [{ key: "gender", type: "EQUALS", value: "male" }],
+                        children: [
+                            { key: "gender", type: "EQUALS", value: "male" },
+                        ],
                     },
                     {
                         key: "sample-id",
@@ -302,7 +310,9 @@ test("9.7 two OR groups Gender:male and Gender:female produce an OR node with tw
                     {
                         key: "gender",
                         operand: "OR",
-                        children: [{ key: "gender", type: "EQUALS", value: "male" }],
+                        children: [
+                            { key: "gender", type: "EQUALS", value: "male" },
+                        ],
                     },
                 ],
             },

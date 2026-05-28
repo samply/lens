@@ -7,7 +7,10 @@ import {
 import { queryStore, setQueryStore } from "../stores/query";
 import type { QueryItem } from "../types/queryData";
 
-function makeItem(name: string, values: { name: string; value: string }[]): QueryItem {
+function makeItem(
+    name: string,
+    values: { name: string; value: string }[],
+): QueryItem {
     return {
         id: "test-id",
         key: name.toLowerCase().replace(/\s/g, "-"),
