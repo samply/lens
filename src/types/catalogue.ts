@@ -30,6 +30,7 @@ export type Category =
  */
 export type CategoryGroup = {
     fieldType: "group";
+    /** A key that uniquely identifies the catalogue item. It is typically used to look up the CQL snippet for that item. */
     key: string;
     /** The group's user-facing display name */
     name: string;
@@ -134,6 +135,7 @@ export type DateRangeCategory = {
      * @format date
      */
     max?: string;
+    /** Optional text that is accessed by clicking a "ⓘ" button next to the display name */
     infoButtonText?: string[];
 };
 
