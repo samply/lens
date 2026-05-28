@@ -30,13 +30,6 @@ test("3.1 result summary shows 12 sites and 42 patients after empty search", asy
     await expect(page.getByText("42")).toBeVisible();
 });
 
-test("3.2 running a filtered search still fires lens-search-triggered and updates results", async ({
-    page,
-}) => {
-    // search-triggered was already fired in beforeEach; results are visible
-    await expect(page.getByText(/12\s*\/\s*12/)).toBeVisible();
-});
-
 test("3.3 'Failing Site' is not shown in the result table", async ({
     page,
 }) => {

@@ -7,7 +7,7 @@
  * lens-negotiate-button, lens-query-explain-button) each have their own
  * shadow root.
  */
-import type { Page } from "@playwright/test";
+import type { ConsoleMessage, Page } from "@playwright/test";
 
 // ─── Search bar ──────────────────────────────────────────────────────────────
 
@@ -160,5 +160,27 @@ export async function isNegotiateButtonDisabled(page: Page): Promise<boolean> {
             .querySelector("lens-negotiate-button")
             ?.shadowRoot?.querySelector('[part~="lens-negotiate-button"]');
         return btn?.hasAttribute("disabled") ?? true;
+    });
+}
+
+export function captureAstOnNextSearch(page: Page): Promise<unknown> {
+    return new Promise<unknown>((resolve, reject) => {
+        const timer = setTimeout(() => {
+            page.off("console", handler);
+            reject(new Error("AST capture timed out after 5 s"));
+        }, 5000);
+
+        function handler(msg: ConsoleMessage) {
+            if (msg.text().startsWith("AST:")) {
+                clearTimeout(timer);
+                page.off("console", handler);
+                try {
+                    resolve(JSON.parse(msg.text().slice(4).trim()));
+                } catch {
+                    reject(new Error(`Failed to parse AST: ${msg.text()}`));
+                }
+            }
+        }
+        page.on("console", handler);
     });
 }

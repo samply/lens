@@ -27,5 +27,10 @@ export default defineConfig({
         environment: "jsdom",
         // Only pick up unit tests in src/; E2E tests in tests/e2e/ are run by Playwright
         include: ["src/**/*.test.ts"],
+        coverage: {
+            provider: "v8",
+            include: ["src/**/*.ts"],
+            exclude: ["src/**/*.test.ts", "src/**/*.d.ts"],
+        },
     },
 });
