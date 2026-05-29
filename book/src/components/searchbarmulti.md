@@ -10,10 +10,12 @@ A default `<slot />` is provided to insert additional UI elements, such as a **s
 
 ## Props
 
-| Prop                    | Type     | Default                       | Description                                               |
-| ----------------------- | -------- | ----------------------------- | --------------------------------------------------------- |
-| `noMatchesFoundMessage` | `string` | `"No matches found"`          | Message shown when no autocomplete options are available. |
-| `placeholderText`       | `string` | `"Type to filter conditions"` | Placeholder text used across all search bars.             |
+| Prop                    | Type     | Default                      | Description                                                  |
+| ----------------------- | -------- | ---------------------------- |--------------------------------------------------------------|
+| `noMatchesFoundMessage` | `string` | `"No matches found"`         | Message shown when no autocomplete options are available.    |
+| `placeholderText`       | `string` | `"Type to filter conditions"` | Placeholder text used across all search bars.                |
+| `readOnly`              | `boolean` | `false`                      | Deactivates any interactive behavior, except the Info button |
+
 
 ---
 
