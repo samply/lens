@@ -12,11 +12,13 @@
     interface Props {
         noMatchesFoundMessage?: string;
         placeholderText?: string;
+        readOnly?: boolean;
     }
 
     let {
         noMatchesFoundMessage = "No matches found",
         placeholderText = "Type to filter conditions",
+        readOnly = false
     }: Props = $props();
 
     /**
@@ -37,12 +39,15 @@
                 {noMatchesFoundMessage}
                 {placeholderText}
                 {index}
+                {readOnly}
             />
             {#if index === $queryStore.length - 1}
-                <button
-                    part="lens-searchbar-multiple-add-button"
-                    onclick={addSearchBar}>+</button
-                >
+                {#if !readOnly}
+                    <button
+                        part="lens-searchbar-multiple-add-button"
+                        onclick={addSearchBar}>+</button
+                    >
+                {/if}
             {:else}
                 <span part="lens-searchbar-multiple-or-indicator">or</span>
             {/if}
