@@ -38,7 +38,7 @@ The `lens-searchbar` component offers an interface for exploring of all catalogu
 | `typeMoreMessage`       | `string`  | `"Search will start with 3 inserted letters"` | Message shown when input is too short for autocomplete.           |
 | `placeholderText`       | `string`  | `"Type to filter conditions"`                 | Placeholder in the search input field.                            |
 | `index`                 | `number`  | `0`                                           | Used to manage multiple search bars (e.g., in groups or filters). |
-| `readOnly`              | `boolean` | `false`                                       | Deactivates any interactive behavior, except the Info button      |
+| `readOnly`              | `boolean` | `false`                                       |  Makes the component read-only from the user's perspective. Values can still be modified programmatically via the store. |
 
 ---
 
