@@ -18,7 +18,7 @@
     let {
         noMatchesFoundMessage = "No matches found",
         placeholderText = "Type to filter conditions",
-        readOnly = false
+        readOnly = false,
     }: Props = $props();
 
     /**

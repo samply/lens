@@ -598,7 +598,11 @@
                     {/each}
                     {#if !readOnly}
                         <StoreDeleteButtonComponent
-                            itemToDelete={{ type: "item", index, item: queryItem }}
+                            itemToDelete={{
+                                type: "item",
+                                index,
+                                item: queryItem,
+                            }}
                         />
                     {/if}
                 </div>
