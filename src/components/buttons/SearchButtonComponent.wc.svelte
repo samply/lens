@@ -10,9 +10,9 @@
     import { withTailwind } from "../../helpers/tailwind";
     import { translate } from "../../helpers/translations";
     import { queryModified, queryStore } from "../../stores/query";
-    import {siteStatus} from "../../stores/response";
+    import { siteStatus } from "../../stores/response";
 
-     let loading = $derived.by(() =>
+    let loading = $derived.by(() =>
         Array.from($siteStatus.values()).some((status) => status === "claimed"),
     );
 
@@ -41,11 +41,11 @@
     {onclick}
     {disabled}
 >
-{#if loading}
-     <lens-query-spinner></lens-query-spinner>
-{:else}
-     <Search class="size-5" />
-{/if}
-    
+    {#if loading}
+        <lens-query-spinner></lens-query-spinner>
+    {:else}
+        <Search class="size-5" />
+    {/if}
+
     {title}
 </button>
