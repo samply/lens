@@ -428,7 +428,6 @@
     <div id="search-wrapper">
         <lens-search-bar-multiple></lens-search-bar-multiple>
         <lens-query-explain-button></lens-query-explain-button>
-        <lens-query-spinner></lens-query-spinner>
         <lens-search-button></lens-search-button>
     </div>
     <div id="catalogue-and-grid-wrapper">
