@@ -21,8 +21,9 @@
 
 <style>
     .spinner {
-        border: 4px solid rgba(0, 0, 0, 0.1);
-        border-top: 4px solid #3498db;
+        box-sizing: border-box;
+        border: 4px solid color-mix(in srgb, currentColor 25%, transparent);
+        border-top-color: currentColor;
         border-radius: 50%;
         width: var(--size);
         height: var(--size);
