@@ -196,10 +196,15 @@
         /** Callback that returns a tooltip message for a given number. If defined, adds a tooltip to numeric cells with the returned message. */
         showRoundedTo?: (value: number) => string;
         /** Sets or removes the checkboxes in the table.*/
-        checkboxes: boolean
+        checkboxes: boolean;
     }
 
-    let { title = "", pageSize, showRoundedTo, checkboxes = true }: Props = $props();
+    let {
+        title = "",
+        pageSize,
+        showRoundedTo,
+        checkboxes = true,
+    }: Props = $props();
 
     let activePage = $state(1);
     let sortColumnIndex = $state(0);
@@ -253,15 +258,15 @@
     <thead part="lens-result-table-header">
         <tr part="lens-result-table-header-row">
             {#if checkboxes}
-            <th
-                part="lens-result-table-header-cell lens-result-table-header-cell-checkbox"
-                ><input
-                    part="lens-result-table-header-checkbox"
-                    type="checkbox"
-                    checked={allChecked}
-                    onchange={checkAllSites}
-                /></th
-            >
+                <th
+                    part="lens-result-table-header-cell lens-result-table-header-cell-checkbox"
+                    ><input
+                        part="lens-result-table-header-checkbox"
+                        type="checkbox"
+                        checked={allChecked}
+                        onchange={checkAllSites}
+                    /></th
+                >
             {/if}
             <!-- eslint-disable-next-line svelte/require-each-key -->
             {#each headerData as header, index}
@@ -295,18 +300,18 @@
     <tbody part="lens-result-table-table-body">
         {#each visibleRows as tableRow (tableRow[0])}
             <tr part="lens-result-table-item-body-row">
-            {#if checkboxes}
-                <td
-                    part="lens-result-table-item-body-cell lens-result-table-item-body-cell-checkbox"
-                    ><input
-                        part="lens-result-table-item-body-checkbox"
-                        type="checkbox"
-                        checked={$datarequestsStore.includes(
-                            tableRow[0] as string,
-                        )}
-                        onchange={() => updateStoreOnCheck(tableRow)}
-                    /></td
-                >
+                {#if checkboxes}
+                    <td
+                        part="lens-result-table-item-body-cell lens-result-table-item-body-cell-checkbox"
+                        ><input
+                            part="lens-result-table-item-body-checkbox"
+                            type="checkbox"
+                            checked={$datarequestsStore.includes(
+                                tableRow[0] as string,
+                            )}
+                            onchange={() => updateStoreOnCheck(tableRow)}
+                        /></td
+                    >
                 {/if}
                 {#each tableRow as data, index (index)}
                     <td part="lens-result-table-item-body-cell">
