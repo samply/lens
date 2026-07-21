@@ -27,29 +27,3 @@ jobs:
               run: npm run build
             - name: "Publish @samply/lens"
               run: npm publish --access public
-
-    release:
-        needs: build-and-publish
-        runs-on: ubuntu-latest
-        steps:
-            - name: "Checkout Code"
-              uses: actions/checkout@v6
-              with:
-                  fetch-depth: 0
-
-            - name: "Update CHANGELOG"
-              id: changelog
-              uses: requarks/changelog-action@v1
-              with:
-                  token: ${{ github.token }}
-                  tag: ${{ github.ref_name }}
-
-            - name: "Create Release"
-              uses: ncipollo/release-action@v1
-              with:
-                  allowUpdates: true
-                  draft: false
-                  makeLatest: true
-                  name: ${{ github.ref_name }}
-                  body: ${{ steps.changelog.outputs.changes }}
-                  token: ${{ github.token }}
