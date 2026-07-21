@@ -2,7 +2,7 @@
 import { defineConfig } from "vite";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import tailwindcss from "@tailwindcss/vite";
-import dts from "vite-plugin-dts";
+import dts from "unplugin-dts/vite";
 
 export default defineConfig({
     build: {
@@ -19,7 +19,7 @@ export default defineConfig({
         svelte(),
         dts({
             // Emit type definitions as a single lens.d.ts file
-            rollupTypes: true,
+            bundleTypes: true,
         }),
     ],
     test: {
