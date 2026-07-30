@@ -75,44 +75,8 @@
 
     setCatalogue([
         {
-            fieldType: "autocomplete",
-            key: "diagnosis",
-            name: "Diagnosis",
-            type: "EQUALS",
-            infoButtonText: ["Diagnosis"],
-            criteria: [
-                {
-                    key: "C31",
-                    name: "C31",
-                    description: "Malignant neoplasm of accessory sinuses",
-                },
-                {
-                    key: "C31.0",
-                    name: "C31.0",
-                    description: "Malignant neoplasm: Maxillary sinus",
-                },
-                {
-                    key: "C41",
-                    name: "C41",
-                    description:
-                        "Malignant neoplasm of bone and articular cartilage of other and unspecified sites",
-                },
-                {
-                    key: "C41.0",
-                    name: "C41.0",
-                    description: "Malignant neoplasm: Bones of skull and face",
-                },
-                {
-                    key: "C41.1",
-                    name: "C41.1",
-                    description: "Malignant neoplasm: Bones of vertebrae",
-                },
-                {
-                    key: "C41.2",
-                    name: "C41.2",
-                    description: "Malignant neoplasm: Bones of pelvis",
-                },
-            ],
+            fieldType: "ref",
+            url: "https://raw.githubusercontent.com/paolaklein/lens-demo-diagnosis/refs/heads/main/diagnosis.json",
         },
         {
             fieldType: "single-select",

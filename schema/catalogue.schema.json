@@ -1,5 +1,5 @@
 {
-  "$ref": "#/definitions/Catalogue",
+  "$ref": "#/definitions/CatalogueInput",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "AggregatedValue": {
@@ -62,14 +62,14 @@
       ],
       "type": "object"
     },
-    "Catalogue": {
-      "description": "The catalogue is a tree-like data structure that describes what the user can search for. The application passes the catalogue to lens as a JSON string via the <lens-options> component. Lens validates the JSON against a JSON schema that is automatically generated from this type definition. Many components of lens use the catalogue. Most notably the <lens-catalogue> component renders the catalogue as a collapsable tree and allows the user to add items from the catalogue to the search bar.",
+    "CatalogueInput": {
+      "description": "The catalogue as passed to `setCatalogue`, before references are resolved. Unlike a plain Catalogue it may contain RefCategory nodes, which are replaced at runtime by categories loaded from external files. The JSON schema is generated from this type so that catalogue files may contain references.",
       "items": {
-        "$ref": "#/definitions/Category"
+        "$ref": "#/definitions/CatalogueInputCategory"
       },
       "type": "array"
     },
-    "Category": {
+    "CatalogueInputCategory": {
       "allOf": [
         {
           "if": {
@@ -81,7 +81,7 @@
             }
           },
           "then": {
-            "$ref": "#/definitions/CategoryGroup"
+            "$ref": "#/definitions/CatalogueInputGroup"
           }
         },
         {
@@ -148,8 +148,22 @@
           "then": {
             "$ref": "#/definitions/StringCategory"
           }
+        },
+        {
+          "if": {
+            "properties": {
+              "fieldType": {
+                "const": "ref",
+                "type": "string"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/definitions/RefCategory"
+          }
         }
       ],
+      "description": "A catalogue item that may appear in a CatalogueInput, including references.",
       "properties": {
         "fieldType": {
           "enum": [
@@ -158,7 +172,8 @@
             "autocomplete",
             "number",
             "date",
-            "string"
+            "string",
+            "ref"
           ]
         }
       },
@@ -167,14 +182,14 @@
       ],
       "type": "object"
     },
-    "CategoryGroup": {
+    "CatalogueInputGroup": {
       "additionalProperties": false,
-      "description": "A logical grouping of catalogue items that is rendered as a collapsable entry in the catalogue tree.",
+      "description": "A category group whose children may themselves contain references.",
       "properties": {
         "childCategories": {
-          "description": "The list of catalogue items in the group",
+          "description": "The list of catalogue items in the group, possibly including references",
           "items": {
-            "$ref": "#/definitions/Category"
+            "$ref": "#/definitions/CatalogueInputCategory"
           },
           "type": "array"
         },
@@ -217,10 +232,10 @@
         }
       },
       "required": [
+        "childCategories",
         "fieldType",
         "key",
-        "name",
-        "childCategories"
+        "name"
       ],
       "type": "object"
     },
@@ -355,6 +370,25 @@
         "key",
         "name",
         "type"
+      ],
+      "type": "object"
+    },
+    "RefCategory": {
+      "additionalProperties": false,
+      "description": "A placeholder that is replaced at runtime by categories loaded from an external JSON file. The file must contain an array of categories that is spliced into the catalogue in place of this node. This lets multiple projects share a single source of truth for large code lists such as ICD-10. If the file is unreachable or invalid the node is dropped and a warning is logged to the browser console.",
+      "properties": {
+        "fieldType": {
+          "const": "ref",
+          "type": "string"
+        },
+        "url": {
+          "description": "URL of a JSON file containing an array of categories that replaces this node",
+          "type": "string"
+        }
+      },
+      "required": [
+        "fieldType",
+        "url"
       ],
       "type": "object"
     },

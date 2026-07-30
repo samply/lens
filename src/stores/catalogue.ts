@@ -1,12 +1,18 @@
 import { get, writable } from "svelte/store";
-import type { Catalogue, Criteria, Category } from "../types/catalogue";
+import type {
+    Catalogue,
+    Criteria,
+    Category,
+    CatalogueInput,
+    CatalogueInputCategory,
+} from "../types/catalogue";
 import {
     isBottomLayer,
     isTopLayer,
     type AstElement,
     type AstTopLayer,
 } from "../types/ast";
-import Ajv from "ajv";
+import Ajv, { type ErrorObject } from "ajv";
 import addFormats from "ajv-formats";
 import catalogueSchema from "../../schema/catalogue.schema.json";
 
@@ -320,25 +326,103 @@ export const getCriteriaFromKey = (
     return undefined;
 };
 
-/**
- * Set the catalogue. A warning is logged to the browser console if the catalogue does not match the JSON schema. Note that the function makes a deep copy of the catalogue so modifying the original object has no effect.
- */
-export function setCatalogue(newCatalogue: Catalogue) {
-    // Make a copy to avoid modifying the original object
-    const catalogueCopy = structuredClone(newCatalogue);
+/** Validates against the catalogue JSON schema. Mutates the value, as ajv is configured with `removeAdditional: true`. */
+function validateCatalogueSchema(value: unknown): {
+    valid: boolean;
+    errors: ErrorObject[] | null | undefined;
+} {
     const ajv = new Ajv({
         allErrors: true,
         removeAdditional: true,
     });
     addFormats(ajv);
-    const valid = ajv.validate(catalogueSchema, catalogueCopy);
+    const valid = ajv.validate(catalogueSchema, value);
+    return { valid, errors: ajv.errors };
+}
+
+/** Bounds nested reference resolution, also guarding against reference cycles. */
+const MAX_REF_DEPTH = 5;
+
+/** Fetches and validates the categories referenced by a ref node, or null (logging an error) if unreachable or invalid. */
+async function fetchCatalogueRef(
+    url: string,
+): Promise<CatalogueInputCategory[] | null> {
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            console.error(
+                `Failed to load catalogue reference ${url}: ${response.status} ${response.statusText}`,
+            );
+            return null;
+        }
+        const data = await response.json();
+        const { valid, errors } = validateCatalogueSchema(data);
+        if (!valid) {
+            console.error(
+                `Catalogue reference ${url} does not conform with the catalogue JSON schema: ` +
+                    JSON.stringify(errors),
+            );
+            return null;
+        }
+        return data as CatalogueInputCategory[];
+    } catch (error) {
+        console.error(`Failed to load catalogue reference ${url}`, error);
+        return null;
+    }
+}
+
+/** Replaces ref nodes with the categories loaded from their files (siblings concurrently, unresolvable refs dropped). */
+async function resolveCatalogueRefs(
+    categories: CatalogueInputCategory[],
+    depth = 0,
+): Promise<Category[]> {
+    const resolved = await Promise.all(
+        categories.map(async (category): Promise<Category[]> => {
+            if (category.fieldType === "ref") {
+                if (depth >= MAX_REF_DEPTH) {
+                    console.error(
+                        `Maximum catalogue reference depth (${MAX_REF_DEPTH}) exceeded, dropping ${category.url}`,
+                    );
+                    return [];
+                }
+                const fetched = await fetchCatalogueRef(category.url);
+                return fetched === null
+                    ? []
+                    : resolveCatalogueRefs(fetched, depth + 1);
+            }
+            if (category.fieldType === "group") {
+                return [
+                    {
+                        ...category,
+                        childCategories: await resolveCatalogueRefs(
+                            category.childCategories,
+                            depth,
+                        ),
+                    },
+                ];
+            }
+            return [category];
+        }),
+    );
+    return resolved.flat();
+}
+
+/**
+ * Sets the catalogue, deep-copying the input. Ref nodes are resolved first: their external files are fetched and the loaded categories spliced in place. A warning is logged if the catalogue does not match the JSON schema. The returned promise resolves once the catalogue has been set.
+ */
+export async function setCatalogue(
+    newCatalogue: CatalogueInput,
+): Promise<void> {
+    const catalogueCopy = structuredClone(newCatalogue);
+    const { valid, errors } = validateCatalogueSchema(catalogueCopy);
     if (!valid) {
         console.warn(
             "Catalogue does not conform with JSON schema: " +
-                JSON.stringify(ajv.errors),
+                JSON.stringify(errors),
         );
     }
-    catalogue.set(catalogueCopy);
+    const resolvedCatalogue = await resolveCatalogueRefs(catalogueCopy);
+    catalogue.set(resolvedCatalogue);
 }
 
 /** Returns the current catalogue from the store. */

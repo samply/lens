@@ -81,7 +81,7 @@ Now run `npm run dev` and open <http://localhost:5173/> in your browser. You sho
 
 ## Options and catalogue
 
-Your application must pass two objects to Lens. The [LensOptions](https://samply.github.io/lens/docs/types/LensOptions.html) object contains general configuration options and the [Catalogue](https://samply.github.io/lens/docs/types/Catalogue.html) object describes what users can search for. You can define these objects in TypeScript but many applications in the Samply organization define them in JSON files.
+Your application must pass two objects to Lens. The [LensOptions](https://samply.github.io/lens/docs/types/LensOptions.html) object contains general configuration options and the [CatalogueInput](https://samply.github.io/lens/docs/types/CatalogueInput.html) object describes what users can search for. You can define these objects in TypeScript but many applications in the Samply organization define them in JSON files.
 
 Assuming you are using JSON files, create the file `src/config/options.json` containing the empty object `{}` and the file `src/config/catalogue.json` with the following content:
 
@@ -115,13 +115,13 @@ Add the following to the top of `src/App.svelte` to load the JSON files and pass
         setOptions,
         setCatalogue,
         type LensOptions,
-        type Catalogue,
+        type CatalogueInput,
     } from "@samply/lens";
     import options from "./config/options.json";
     import catalogue from "./config/catalogue.json";
     onMount(() => {
         setOptions(options as LensOptions);
-        setCatalogue(catalogue as Catalogue);
+        setCatalogue(catalogue as CatalogueInput);
     });
 </script>
 

@@ -25,6 +25,33 @@ export type Category =
     | StringCategory;
 
 /**
+ * The catalogue as passed to `setCatalogue`, before references are resolved.
+ * Unlike a plain Catalogue it may contain RefCategory nodes, which are replaced
+ * at runtime by categories loaded from external files. The JSON schema is
+ * generated from this type so that catalogue files may contain references.
+ */
+export type CatalogueInput = CatalogueInputCategory[];
+
+/**
+ * A catalogue item that may appear in a CatalogueInput, including references.
+ * @discriminator fieldType
+ */
+export type CatalogueInputCategory =
+    | CatalogueInputGroup
+    | SingleSelectCategory
+    | AutocompleteCategory
+    | NumericRangeCategory
+    | DateRangeCategory
+    | StringCategory
+    | RefCategory;
+
+/** A category group whose children may themselves contain references. */
+export type CatalogueInputGroup = Omit<CategoryGroup, "childCategories"> & {
+    /** The list of catalogue items in the group, possibly including references */
+    childCategories: CatalogueInputCategory[];
+};
+
+/**
  * A logical grouping of catalogue items that is rendered as a collapsable entry
  * in the catalogue tree.
  */
@@ -149,6 +176,20 @@ export type StringCategory = {
     type: "EQUALS";
     /** Optional text that is accessed by clicking a "ⓘ" button next to the display name */
     infoButtonText?: string[];
+};
+
+/**
+ * A placeholder that is replaced at runtime by categories loaded from an
+ * external JSON file. The file must contain an array of categories that is
+ * spliced into the catalogue in place of this node. This lets multiple
+ * projects share a single source of truth for large code lists such as ICD-10.
+ * If the file is unreachable or invalid the node is dropped and a warning is
+ * logged to the browser console.
+ */
+export type RefCategory = {
+    fieldType: "ref";
+    /** URL of a JSON file containing an array of categories that replaces this node */
+    url: string;
 };
 
 /**
