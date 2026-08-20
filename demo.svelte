@@ -119,6 +119,7 @@
             key: "blood-group",
             name: "Blood group",
             type: "EQUALS",
+            addAllButton: true,
             criteria: [
                 {
                     key: "A+",
@@ -178,6 +179,7 @@
                     name: "Gender",
                     fieldType: "single-select",
                     type: "EQUALS",
+                    addAllButton: true,
                     criteria: [
                         {
                             key: "male",
@@ -251,6 +253,7 @@
             fieldType: "group",
             key: "tumor_entity",
             name: "Tumorentität",
+            addAllButton: true,
             childCategories: [
                 {
                     fieldType: "group",

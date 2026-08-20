@@ -1,6 +1,6 @@
 <script lang="ts">
     import { addItemToQuery, activeQueryGroupIndex } from "../../stores/query";
-    import type { Category } from "../../types/catalogue";
+    import type { Category, SingleSelectCategory } from "../../types/catalogue";
     import DataTreeElement from "./DataTreeElement.svelte";
     import NumberInputComponent from "./NumberInputComponent.svelte";
     import StringInputComponent from "./StringInputComponent.svelte";
@@ -94,35 +94,33 @@
         });
     };
 
-    let finalParent: boolean =
-        !("childCategories" in element) &&
-        (!("fieldType" in element) ||
-            ("fieldType" in element &&
-                typeof element.fieldType === "string" &&
-                element.fieldType == "single-select"));
+   const collectSelectableLeaves = (
+    category: Category,
+): SingleSelectCategory[] =>
+    "childCategories" in category
+        ? category.childCategories.flatMap(collectSelectableLeaves)
+        : category.fieldType === "single-select"
+          ? [category]
+          : [];
 
-    const selectAllOptions = (): void => {
-        if (!("criteria" in element)) return;
-
-        element.criteria.forEach((criterion) => {
-            const queryItem: QueryItem = {
-                id: uuidv4(),
-                key: element.key,
-                name: element.name,
-                type: "type" in element ? element.type : "",
-                values: [
-                    {
-                        name: criterion.name,
-                        value: criterion.aggregatedValue
-                            ? criterion.aggregatedValue
-                            : criterion.key,
-                        queryBindId: uuidv4(),
-                    },
-                ],
-            };
-            addItemToQuery(queryItem, $activeQueryGroupIndex);
-        });
-    };
+const selectAllOptions = (): void => {
+    collectSelectableLeaves(element).forEach((leaf) => {
+        const queryItem: QueryItem = {
+            id: uuidv4(),
+            key: leaf.key,
+            name: leaf.name,
+            type: leaf.type,
+            values: leaf.criteria.map((criterion) => ({
+                name: criterion.name,
+                value: criterion.aggregatedValue
+                    ? criterion.aggregatedValue
+                    : criterion.key,
+                queryBindId: uuidv4(),
+            })),
+        };
+        addItemToQuery(queryItem, $activeQueryGroupIndex);
+    });
+};
 </script>
 
 <div part="data-tree-element">
@@ -161,7 +159,7 @@
             >
         {/if}
 
-        {#if finalParent && open}
+        {#if "addAllButton" in element && element.addAllButton && open}
             <button
                 part="lens-data-tree-add-all-options-button"
                 onclick={selectAllOptions}
