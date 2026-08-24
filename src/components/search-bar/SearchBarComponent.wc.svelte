@@ -36,6 +36,7 @@
     import NumberInputComponent from "../catalogue/NumberInputComponent.svelte";
     import DatePickerComponent from "../catalogue/DatePickerComponent.svelte";
     import StringInputComponent from "../catalogue/StringInputComponent.svelte";
+    import { createIncrementalList } from "../../helpers/incrementalList.svelte";
 
     interface Props {
         /** The string to display when no matches are found */
@@ -226,6 +227,24 @@
     });
 
     /**
+     * renders the filtered list in chunks so that huge catalogues stay responsive
+     */
+    const optionList = createIncrementalList(() => inputOptions);
+
+    /**
+     * marks those options that are the first of their category and therefore get
+     * a category heading rendered above them
+     */
+    let headingFlags: boolean[] = $derived.by(() => {
+        const seenNames: string[] = [];
+        return inputOptions.map((option: AutoCompleteItem) => {
+            if (seenNames.includes(option.name)) return false;
+            seenNames.push(option.name);
+            return true;
+        });
+    });
+
+    /**
      * keeps track of the focused item
      */
     let focusedItemIndex: number = $state(-1);
@@ -308,15 +327,22 @@
         }
         if (event.key === "ArrowDown") {
             event.preventDefault();
-            focusedItemIndex = focusedItemIndex + 1;
-            if (focusedItemIndex > inputOptions.length - 1)
+            const nextIndex = focusedItemIndex + 1;
+            if (nextIndex > inputOptions.length - 1) {
                 focusedItemIndex = 0;
+            } else {
+                // navigating past the rendered window renders the next chunk
+                optionList.ensureRendered(nextIndex);
+                focusedItemIndex = nextIndex;
+            }
         }
         if (event.key === "ArrowUp") {
             event.preventDefault();
             focusedItemIndex = focusedItemIndex - 1;
+            // wraps to the last rendered item instead of the last item of the
+            // full list, which would have to render everything at once
             if (focusedItemIndex < 0)
-                focusedItemIndex = inputOptions.length - 1;
+                focusedItemIndex = optionList.renderedCount - 1;
         }
         if (event.key === "Enter") {
             event.preventDefault();
@@ -351,7 +377,7 @@
                 }
                 if (searchBarInputHasFoucs) {
                     const firstInput = optionElements
-                        .find((element) => element.querySelector("input"))
+                        .find((element) => element?.querySelector("input"))
                         ?.closest("li");
                     focusedItemIndex = firstInput
                         ? optionElements.indexOf(firstInput)
@@ -363,7 +389,7 @@
                     if (!isNextListItem) return;
                     const nextInput = optionElements
                         .slice(focusedItemIndex + 1)
-                        .find((element) => element.querySelector("input"))
+                        .find((element) => element?.querySelector("input"))
                         ?.closest("li");
                     focusedItemIndex = nextInput
                         ? optionElements.indexOf(nextInput)
@@ -412,6 +438,7 @@
     function resetToEmptySearchBar(focus: boolean = true): void {
         inputValue = "";
         focusedItemIndex = -1;
+        optionList.reset();
         if (focus) {
             focusSearchbar();
         }
@@ -614,6 +641,7 @@
         type="text"
         bind:this={searchBarInput}
         bind:value={inputValue}
+        oninput={() => optionList.reset()}
         placeholder={!readOnly ? placeholderText : ""}
         onfocusin={() => {
             autoCompleteOpen = true;
@@ -626,11 +654,8 @@
     {#if autoCompleteOpen && inputValue.length > 1}
         <ul part="lens-searchbar-autocomplete-options">
             {#if inputOptions?.length > 0}
-                {#each inputOptions as inputOption, i (inputOption.key + i)}
-                    <!-- TODO: this double loop makes the autocomplete slow with big data loads. Is there a better way to make the category headers? -->
-                    {#if inputOptions
-                        .map((option) => option.name)
-                        .indexOf(inputOption.name) === i}
+                {#each optionList.items as inputOption, i (inputOption.key + i)}
+                    {#if headingFlags[i]}
                         <div part="lens-searchbar-autocomplete-options-heading">
                             <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                             {@html getBoldedText(inputOption.name)}
@@ -757,6 +782,12 @@
                         </li>
                     {/if}
                 {/each}
+                {#if optionList.hasMore}
+                    <li
+                        part="lens-searchbar-autocomplete-options-sentinel"
+                        use:optionList.sentinel
+                    ></li>
+                {/if}
             {:else}
                 <li>{noMatchesFoundMessage}</li>
             {/if}
@@ -887,6 +918,11 @@
 
     [part~="lens-searchbar-autocomplete-options-item-criterion"] {
         cursor: pointer;
+    }
+
+    [part~="lens-searchbar-autocomplete-options-sentinel"] {
+        grid-column: 1 / -1;
+        height: 1px;
     }
 
     [part~="lens-searchbar-autocomplete-options-heading"] {

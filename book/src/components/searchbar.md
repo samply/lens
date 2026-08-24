@@ -23,6 +23,7 @@ The `lens-searchbar` component offers an interface for exploring of all catalogu
     - Rendered with bold-highlighted matches.
     - Supports facet counts from `$facetCounts`.
     - Fully keyboard- and mouse-navigable.
+    - Rendered in chunks of 50: further results are appended when the user scrolls to the bottom of the dropdown or navigates past the last rendered item with the arrow keys. This keeps large catalogues responsive. Pressing `ArrowUp` on the first item therefore wraps to the last _rendered_ item, not to the last match.
 
 - **Clear Group Button**:
     - Clears the entire group when clicked.
@@ -80,3 +81,4 @@ The `lens-searchbar` component offers an interface for exploring of all catalogu
 | `lens-searchbar-autocomplete-options-item-description-focused` | Focused optional description         |
 | `lens-searchbar-autocomplete-options-item-facet-count`         | Facet count badge                    |
 | `lens-searchbar-autocomplete-options-type-more-message`        | Wrapper for type more message        |
+| `lens-searchbar-autocomplete-options-sentinel`                 | Loads the next chunk of results      |
