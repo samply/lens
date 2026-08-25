@@ -207,8 +207,20 @@
     }: Props = $props();
 
     let activePage = $state(1);
-    let sortColumnIndex = $state(0);
-    let sortAscending = $state(true);
+    const defaultSortBy = $lensOptions?.tableOptions?.defaultSortBy;
+    let sortColumnIndex = $state(
+        defaultSortBy === undefined
+            ? 0
+            : Math.max(
+                  0,
+                  headerData.findIndex(
+                      (header) => header.dataKey === defaultSortBy,
+                  ),
+              ),
+    );
+    let sortAscending = $state(
+        ($lensOptions?.tableOptions?.defaultSortOrder ?? "asc") === "asc",
+    );
     let visibleRows: TableRowData = $derived.by(() => {
         // Sort
         const rows = [...tableRowData].sort((a, b) => {
