@@ -212,19 +212,19 @@
          * the options are grouped by category with a heading above each group, so
          * ranking must not pull an item out of its group
          */
-        const categoryOrder = new Map<string, number>();
+        const categoryOrder: string[] = [];
         for (const { item } of matches) {
-            if (!categoryOrder.has(item.name)) {
-                categoryOrder.set(item.name, categoryOrder.size);
+            if (!categoryOrder.includes(item.name)) {
+                categoryOrder.push(item.name);
             }
         }
 
         return matches
-            .sort(
-                (a, b) =>
-                    categoryOrder.get(a.item.name)! -
-                        categoryOrder.get(b.item.name)! || b.rank - a.rank,
-            )
+            .map((match) => ({
+                ...match,
+                category: categoryOrder.indexOf(match.item.name),
+            }))
+            .sort((a, b) => a.category - b.category || b.rank - a.rank)
             .map(({ item }) => item);
     });
 
