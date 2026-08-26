@@ -66,6 +66,10 @@ export type ChartOption = {
 
 export type TableOptions = {
     headerData: HeaderData[];
+    /** `dataKey` of the column to sort by initially. Falls back to the first column if omitted or not found. */
+    defaultSortBy?: string;
+    /** Initial sort order (defaults to "asc"). */
+    defaultSortOrder?: "asc" | "desc";
 };
 
 export type ResultSummaryOptions = {

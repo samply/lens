@@ -1,0 +1,8 @@
+- New components should avoid `<style>` blocks and prefer Tailwind CSS utility classes for everything. Two color scales are available: `primary` and `danger` (e.g. `bg-primary-500`, `text-danger-700`). Do not use Tailwind's built-in color palette (`blue-500`, `red-600`, etc.) and do not use the legacy CSS variables (`--blue`, `--light-blue`, etc.) in new code. `.wc.svelte` web components need `extend: withTailwind` (imported from `../../helpers/tailwind`) in their `<svelte:options>` for Tailwind to work in their shadow root.
+- Always add `part` attributes to elements in components so consumers can override styles via `::part()` as an escape hatch. Use the `lens-*` naming convention (e.g. `part="lens-button"`) for all `part` specifiers.
+- Use icons from `lucide-svelte` instead of Unicode symbols or inline SVG.
+- Do not use decorative section-delimiter comments (e.g. `// ======== Section ========` or `/* --- helpers --- */`).
+- Prefer `for...of` loops over `.forEach()`.
+- Use the `function` keyword for top-level function declarations instead of `const fn = () =>` arrow expressions.
+- Use `translate()` (imported from `../../helpers/translations`) for all user-facing strings. Add new keys to `lensTranslations` in `src/helpers/translations.ts` with at least `en` and `de` translations. Do not hardcode English strings in templates.
+- Keep documentation in `book/` in sync with code and behavior changes whenever implementation is updated.

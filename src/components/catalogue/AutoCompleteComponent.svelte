@@ -10,6 +10,7 @@
     import { onMount } from "svelte";
     import { facetCounts } from "../../stores/facetCounts";
     import { lensOptions } from "../../stores/options";
+    import { createIncrementalList } from "../../helpers/incrementalList.svelte";
 
     /**
      * mockdata to get from texts store
@@ -139,6 +140,7 @@
 
         inputValue = "";
         focusedItemIndex = 0;
+        optionList.reset();
 
         addItemToQuery(queryItem, indexOfChosenStore);
     };
@@ -151,19 +153,27 @@
         if (inputValue.length === 0 || event.key === "Escape") {
             inputValue = "";
             focusedItemIndex = -1;
+            optionList.reset();
             return;
         }
         if (event.key === "ArrowDown") {
             event.preventDefault();
-            focusedItemIndex = focusedItemIndex + 1;
-            if (focusedItemIndex > inputOptions.length - 1)
+            const nextIndex = focusedItemIndex + 1;
+            if (nextIndex > inputOptions.length - 1) {
                 focusedItemIndex = 0;
+            } else {
+                // navigating past the rendered window renders the next chunk
+                optionList.ensureRendered(nextIndex);
+                focusedItemIndex = nextIndex;
+            }
         }
         if (event.key === "ArrowUp") {
             event.preventDefault();
             focusedItemIndex = focusedItemIndex - 1;
+            // wraps to the last rendered item instead of the last item of the
+            // full list, which would have to render everything at once
             if (focusedItemIndex < 0)
-                focusedItemIndex = inputOptions.length - 1;
+                focusedItemIndex = optionList.renderedCount - 1;
         }
         if (event.key === "Enter") {
             event.preventDefault();
@@ -256,6 +266,11 @@
     });
 
     /**
+     * renders the filtered list in chunks so that huge catalogues stay responsive
+     */
+    const optionList = createIncrementalList(() => inputOptions);
+
+    /**
      * list of options that allready have been chosen and should be displayed beneath the autocomplete input
      * chosenOptions are constructed from the query store and has no duplicates
      * if an option is put into the store from anywhere it will update
@@ -291,6 +306,7 @@
             type="text"
             bind:this={searchBarInput}
             bind:value={inputValue}
+            oninput={() => optionList.reset()}
             onkeydown={handleKeyDown}
             placeholder={placeholderText}
             onfocusin={() => {
@@ -304,7 +320,7 @@
             <ul part="autocomplete-options">
                 {#if inputOptions?.length > 0}
                     <!-- eslint-disable-next-line svelte/require-each-key -->
-                    {#each inputOptions as inputOption, index}
+                    {#each optionList.items as inputOption, index}
                         {#if index === focusedItemIndex}
                             <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
                             <!-- onmousedown is chosen because the input looses focus when clicked outside, 
@@ -374,6 +390,12 @@
                             </li>
                         {/if}
                     {/each}
+                    {#if optionList.hasMore}
+                        <li
+                            part="autocomplete-options-sentinel"
+                            use:optionList.sentinel
+                        ></li>
+                    {/if}
                 {:else}
                     <li
                         part="autocomplete-options-item autocomplete-options-item-no-matches"
@@ -431,6 +453,11 @@
 
         display: grid;
         grid-template-columns: max-content auto max-content;
+    }
+
+    [part~="autocomplete-options-sentinel"] {
+        grid-column: 1 / -1;
+        height: 1px;
     }
 
     [part~="autocomplete-options-item"] {

@@ -62,37 +62,53 @@
 {:else}
     <div part="lens-query-explain-button">
         <InfoButtonComponent buttonSize={25} alignDialogue="bottom-left">
-            {#if $queryStore.flat().length > 0}
-                <h3 part="lens-query-explain-header">
-                    {translate("query_info_header")}
-                </h3>
-                <ul part="lens-query-explain-groups">
-                    {#each $queryStore as group, index (index)}
-                        <li part="lens-query-explain-group-item">
-                            <ul part="lens-query-explain-bottom-level-items">
-                                <li
-                                    part="lens-query-explain-bottom-level-item lens-query-explain-bottom-level-item-header"
+            <div
+                part="lens-query-explain-wrapper{$queryStore.length < 2
+                    ? ' lens-query-explain-wrapper-single-searchbar'
+                    : ''}"
+            >
+                {#if $queryStore.flat().length > 0}
+                    {#if $queryStore.length > 1}
+                        <h3 part="lens-query-explain-header">
+                            {translate("query_info_header")}
+                        </h3>
+                    {/if}
+                    <ul part="lens-query-explain-groups">
+                        {#each $queryStore as group, index (index)}
+                            <li part="lens-query-explain-group-item">
+                                <ul
+                                    part="lens-query-explain-bottom-level-items"
                                 >
-                                    {translate("query_info_group_header")}
-                                    {index + 1}
-                                </li>
-                                {#each group as item, index (item.name + index)}
-                                    <li
-                                        part="lens-query-explain-bottom-level-item lens-query-explain-bottom-level-item-entry"
-                                    >
-                                        {item.name}:
-                                        {#each item.values as value, index (value.name)}
-                                            {index > 0 ? ", " : ""}{value.name}
-                                        {/each}
-                                    </li>
-                                {/each}
-                            </ul>
-                        </li>
-                    {/each}
-                </ul>
-            {:else}
-                {noQueryMessage}
-            {/if}
+                                    {#if $queryStore.length > 1}
+                                        <li
+                                            part="lens-query-explain-bottom-level-item lens-query-explain-bottom-level-item-header"
+                                        >
+                                            {translate(
+                                                "query_info_group_header",
+                                            )}
+                                            {index + 1}
+                                        </li>
+                                    {/if}
+                                    {#each group as item, index (item.name + index)}
+                                        <li
+                                            part="lens-query-explain-bottom-level-item lens-query-explain-bottom-level-item-entry"
+                                        >
+                                            {item.name}:
+                                            {#each item.values as value, index (value.name)}
+                                                {index > 0
+                                                    ? ", "
+                                                    : ""}{value.name}
+                                            {/each}
+                                        </li>
+                                    {/each}
+                                </ul>
+                            </li>
+                        {/each}
+                    </ul>
+                {:else}
+                    {noQueryMessage}
+                {/if}
+            </div>
         </InfoButtonComponent>
     </div>
 {/if}
@@ -107,6 +123,13 @@
         padding: var(--gap-xxs);
         border: solid 1px var(--light-blue);
         border-radius: var(--border-radius-small);
+    }
+
+    [part~="lens-query-explain-wrapper"] {
+        padding-top: var(--gap-xs);
+    }
+    [part~="lens-query-explain-wrapper-single-searchbar"] {
+        padding-right: var(--gap-s);
     }
 
     [part~="lens-query-explain-single-row-message"] {
@@ -132,6 +155,8 @@
         margin-bottom: var(--gap-xs);
         margin-top: 0;
         text-align: left;
+        padding-left: var(--gap-xs);
+        padding-right: var(--gap-xs);
     }
 
     [part~="lens-query-explain-groups"] {

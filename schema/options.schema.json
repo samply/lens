@@ -241,6 +241,18 @@
     "TableOptions": {
       "additionalProperties": false,
       "properties": {
+        "defaultSortBy": {
+          "description": "`dataKey` of the column to sort by initially. Falls back to the first column if omitted or not found.",
+          "type": "string"
+        },
+        "defaultSortOrder": {
+          "description": "Initial sort order (defaults to \"asc\").",
+          "enum": [
+            "asc",
+            "desc"
+          ],
+          "type": "string"
+        },
         "headerData": {
           "items": {
             "$ref": "#/definitions/HeaderData"
