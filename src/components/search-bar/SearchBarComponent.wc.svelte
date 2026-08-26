@@ -284,7 +284,19 @@
     /**
      * keeps track of the focused item
      */
-    let focusedItemIndex: number = $state(-1);
+    /**
+     * the first option the user can select, or -1 if every option is already in
+     * the search bar it would be added to
+     * @returns the index of the first selectable option
+     */
+    const firstSelectableIndex = (): number =>
+        inputOptions.findIndex((option) => !isSelected(option));
+
+    /**
+     * the highlighted option. Typing resets it to the first selectable option so
+     * that enter picks the top match, the arrow keys assign to it from there.
+     */
+    let focusedItemIndex: number = $derived(firstSelectableIndex());
 
     const optionElements: HTMLElement[] = $state([]);
 
@@ -395,6 +407,30 @@
     let searchBarInputHasFoucs = $state(true);
 
     /**
+     * finds the option the arrow keys move the focus to, skipping the options
+     * that are already in the search bar they would be added to
+     * @param step - 1 to move down the list, -1 to move up
+     * @returns the index of the next selectable option, or the current index if
+     * every other option is already in the search bar
+     */
+    const nextSelectableIndex = (step: number): number => {
+        // wrapping around the end of the list mirrors the plain navigation:
+        // downwards to the first option, upwards to the last rendered one. The
+        // last option of the full list would have to render everything at once.
+        const wrapTo = step > 0 ? 0 : Math.max(optionList.renderedCount - 1, 0);
+        let index = focusedItemIndex + step;
+        for (let tried = 0; tried < inputOptions.length; tried++) {
+            if (index < 0 || index > inputOptions.length - 1) index = wrapTo;
+            const option = inputOptions[index];
+            if (option !== undefined && !isSelected(option)) {
+                return index;
+            }
+            index += step;
+        }
+        return focusedItemIndex;
+    };
+
+    /**
      * handles keyboard events to make input options selectable and form elements tabable
      * @param event - the keyboard event
      */
@@ -412,22 +448,14 @@
         }
         if (event.key === "ArrowDown") {
             event.preventDefault();
-            const nextIndex = focusedItemIndex + 1;
-            if (nextIndex > inputOptions.length - 1) {
-                focusedItemIndex = 0;
-            } else {
-                // navigating past the rendered window renders the next chunk
-                optionList.ensureRendered(nextIndex);
-                focusedItemIndex = nextIndex;
-            }
+            const nextIndex = nextSelectableIndex(1);
+            // navigating past the rendered window renders the next chunk
+            optionList.ensureRendered(nextIndex);
+            focusedItemIndex = nextIndex;
         }
         if (event.key === "ArrowUp") {
             event.preventDefault();
-            focusedItemIndex = focusedItemIndex - 1;
-            // wraps to the last rendered item instead of the last item of the
-            // full list, which would have to render everything at once
-            if (focusedItemIndex < 0)
-                focusedItemIndex = optionList.renderedCount - 1;
+            focusedItemIndex = nextSelectableIndex(-1);
         }
         if (event.key === "Enter") {
             event.preventDefault();
