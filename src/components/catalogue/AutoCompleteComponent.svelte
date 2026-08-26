@@ -6,7 +6,7 @@
         addItemToQuery,
         queryStore,
     } from "../../stores/query";
-    import type { QueryItem, QueryValue } from "../../types/queryData";
+    import type { QueryItem } from "../../types/queryData";
     import { onMount } from "svelte";
     import { facetCounts } from "../../stores/facetCounts";
     import { lensOptions } from "../../stores/options";
@@ -73,24 +73,19 @@
      */
     let autoCompleteOpen = $state(false);
 
-    const getChosenOptionsFromQueryStore = (
-        queryStore: QueryItem[][],
-    ): QueryItem[] => {
-        return queryStore
-            .flat()
-            .map((queryItem: QueryItem) => {
-                const queryItemValues = queryItem.values.map(
-                    (queryValue: QueryValue) => {
-                        return {
-                            ...queryItem,
-                            values: [queryValue],
-                        };
-                    },
-                );
-                return queryItemValues;
-            })
-            .flat();
-    };
+    /**
+     * names of this category's criteria that are already in the active search
+     * bar. Those options are grayed out and cannot be added again.
+     */
+    let selectedNames: Set<string> = $derived(
+        new Set(
+            ($queryStore[$activeQueryGroupIndex] ?? [])
+                .filter((queryItem: QueryItem) => queryItem.key === element.key)
+                .flatMap((queryItem: QueryItem) =>
+                    queryItem.values.map((queryValue) => queryValue.name),
+                ),
+        ),
+    );
 
     /**
      * keeps track of the focused item
@@ -110,13 +105,9 @@
         indexOfChosenStore: number,
     ): void => {
         /**
-         * check if option is allready present in the query store
+         * check if option is allready present in the active search bar
          */
-        const optionAllreadyPresent = chosenOptions.find((option) => {
-            return option.values[0].value === inputItem.key;
-        });
-
-        if (optionAllreadyPresent) {
+        if (selectedNames.has(inputItem.name)) {
             return;
         }
 
@@ -186,9 +177,20 @@
 
     /**
      * adds the input option to the query store
+     * @param event - the mousedown event
      * @param inputOption - the input option to add to the query store
      */
-    const selectItemByClick = (inputOption: Criteria): void => {
+    const selectItemByClick = (
+        event: MouseEvent,
+        inputOption: Criteria,
+    ): void => {
+        if (selectedNames.has(inputOption.name)) {
+            // the option is already in the active search bar, so the click does
+            // nothing. Preventing the default keeps the input focused and the
+            // list open.
+            event.preventDefault();
+            return;
+        }
         addInputValueToStore(inputOption, $activeQueryGroupIndex);
     };
 
@@ -287,26 +289,6 @@
      */
     const optionList = createIncrementalList(() => inputOptions);
 
-    /**
-     * list of options that allready have been chosen and should be displayed beneath the autocomplete input
-     * chosenOptions are constructed from the query store and has no duplicates
-     * if an option is put into the store from anywhere it will update
-     */
-    let chosenOptions = $derived(
-        getChosenOptionsFromQueryStore($queryStore).reduce(
-            (acc: QueryItem[], queryItem: QueryItem) => {
-                const optionAllreadyPresent = acc.find((option: QueryItem) => {
-                    return option.values[0].value === queryItem.values[0].value;
-                });
-                if (optionAllreadyPresent || queryItem.key !== element.key) {
-                    return acc;
-                }
-                return [...acc, queryItem];
-            },
-            [],
-        ),
-    );
-
     $effect(() => {
         if (activeDomElement) {
             scrollInsideContainerWhenActiveDomElementIsOutOfView(
@@ -338,15 +320,21 @@
                 {#if inputOptions?.length > 0}
                     <!-- eslint-disable-next-line svelte/require-each-key -->
                     {#each optionList.items as inputOption, index}
-                        {#if index === focusedItemIndex}
+                        <!-- a selected option is never highlighted, it cannot be
+                             selected again -->
+                        {#if index === focusedItemIndex && !selectedNames.has(inputOption.name)}
                             <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
                             <!-- onmousedown is chosen because the input looses focus when clicked outside, 
                                 which will close the options before the click is finshed -->
                             <li
                                 bind:this={activeDomElement}
-                                part="autocomplete-options-item autocomplete-options-item-focused"
-                                onmousedown={() =>
-                                    selectItemByClick(inputOption)}
+                                part="autocomplete-options-item autocomplete-options-item-focused {selectedNames.has(
+                                    inputOption.name,
+                                )
+                                    ? 'autocomplete-options-item-selected'
+                                    : ''}"
+                                onmousedown={(event) =>
+                                    selectItemByClick(event, inputOption)}
                             >
                                 <div part="autocomplete-options-item-name">
                                     <!-- eslint-disable-next-line svelte/no-at-html-tags -->
@@ -377,9 +365,13 @@
                             <!-- onmousedown is chosen because the input looses focus when clicked outside, 
                                 which will close the options before the click is finshed -->
                             <li
-                                part="autocomplete-options-item"
-                                onmousedown={() =>
-                                    selectItemByClick(inputOption)}
+                                part="autocomplete-options-item {selectedNames.has(
+                                    inputOption.name,
+                                )
+                                    ? 'autocomplete-options-item-selected'
+                                    : ''}"
+                                onmousedown={(event) =>
+                                    selectItemByClick(event, inputOption)}
                             >
                                 <div part="autocomplete-options-item-name">
                                     <!-- eslint-disable-next-line svelte/no-at-html-tags -->
@@ -472,7 +464,9 @@
         /* The name column takes what it needs but may shrink below its content
            width, so that a long criterion name cannot push the description out
            of the list */
-        grid-template-columns: minmax(0, max-content) minmax(0, 1fr) max-content;
+        grid-template-columns:
+            minmax(0, max-content) minmax(0, 1fr)
+            max-content;
     }
 
     [part~="autocomplete-options-sentinel"] {
@@ -499,9 +493,16 @@
     }
 
     [part~="autocomplete-options-item"]:hover:not(
-            [part~="autocomplete-options-item-focused"]
+            [part~="autocomplete-options-item-focused"],
+            [part~="autocomplete-options-item-selected"]
         ) {
         background-color: var(--light-gray);
+    }
+
+    /* Already in the active search bar, so it cannot be selected again */
+    [part~="autocomplete-options-item-selected"] {
+        opacity: 0.4;
+        cursor: default;
     }
 
     [part~="autocomplete-options-item-name"] {

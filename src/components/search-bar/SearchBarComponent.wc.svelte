@@ -303,6 +303,7 @@
         indexOfChosenStore: number = $queryStore.length,
     ): void => {
         if (!(inputItem.fieldType === "criterion")) return;
+        if (isInSearchBar(inputItem, indexOfChosenStore)) return;
 
         /**
          * transform inputItem to QueryItem
@@ -342,6 +343,53 @@
             return groupToAddItemTo;
         }
         return index;
+    };
+
+    /**
+     * whether a criterion is already in one of the search bars
+     * @param item - the autocomplete item
+     * @param groupIndex - the index of the search bar to look in
+     * @returns true if the criterion is already there
+     */
+    const isInSearchBar = (
+        item: AutoCompleteItem,
+        groupIndex: number,
+    ): boolean =>
+        item.fieldType === "criterion" &&
+        ($queryStore[groupIndex] ?? []).some(
+            (queryItem: QueryItem) =>
+                queryItem.key === item.key &&
+                queryItem.values.some(
+                    (queryValue) => queryValue.name === item.criterion.name,
+                ),
+        );
+
+    /**
+     * whether an item is already in the search bar it would be added to. Those
+     * options are grayed out and cannot be selected again.
+     * @param item - the autocomplete item
+     * @returns true if the item is already selected
+     */
+    const isSelected = (item: AutoCompleteItem): boolean =>
+        isInSearchBar(item, extractTargetGroupFromInputValue());
+
+    /**
+     * adds a criterion to the query when the user clicks it
+     * @param event - the mousedown event
+     * @param item - the clicked autocomplete item
+     */
+    const selectCriterionByClick = (
+        event: MouseEvent,
+        item: AutoCompleteItem,
+    ): void => {
+        if (isSelected(item)) {
+            // the criterion is already in the search bar, so the click does
+            // nothing. Preventing the default keeps the input focused and the
+            // list open.
+            event.preventDefault();
+            return;
+        }
+        addInputValueToStore(item, extractTargetGroupFromInputValue());
     };
 
     let searchBarInputHasFoucs = $state(true);
@@ -705,15 +753,16 @@
                         <li
                             class="criterion-item"
                             bind:this={optionElements[i]}
-                            onmousedown={() =>
-                                addInputValueToStore(
-                                    inputOption,
-                                    extractTargetGroupFromInputValue(),
-                                )}
+                            onmousedown={(event) =>
+                                selectCriterionByClick(event, inputOption)}
                             part="lens-searchbar-autocomplete-options-item {focusedItemIndex ===
-                            i
+                                i && !isSelected(inputOption)
                                 ? 'lens-searchbar-autocomplete-options-item-focused'
-                                : ''} lens-searchbar-autocomplete-options-item-criterion"
+                                : ''} lens-searchbar-autocomplete-options-item-criterion {isSelected(
+                                inputOption,
+                            )
+                                ? 'lens-searchbar-autocomplete-options-item-selected'
+                                : ''}"
                         >
                             <div
                                 part="lens-searchbar-autocomplete-options-item-name"
@@ -725,7 +774,7 @@
                             </div>
                             <div
                                 part="lens-searchbar-autocomplete-options-item-description {focusedItemIndex ===
-                                i
+                                    i && !isSelected(inputOption)
                                     ? 'lens-searchbar-autocomplete-options-item-description-focused'
                                     : ''}"
                             >
@@ -945,7 +994,9 @@
         /* The name column takes what it needs but may shrink below its content
            width, so that a long criterion name cannot push the description out
            of the list */
-        grid-template-columns: minmax(0, max-content) minmax(0, 1fr) max-content;
+        grid-template-columns:
+            minmax(0, max-content) minmax(0, 1fr)
+            max-content;
     }
 
     [part~="lens-searchbar-autocomplete-options-item-name"] {
@@ -982,9 +1033,17 @@
     }
 
     [part~="lens-searchbar-autocomplete-options-item"]:hover:not(
-            [part~="lens-searchbar-autocomplete-options-item-focused"]
+            [part~="lens-searchbar-autocomplete-options-item-focused"],
+            [part~="lens-searchbar-autocomplete-options-item-selected"]
         ) {
         background-color: var(--light-gray);
+    }
+
+    /* Already in the search bar the item would be added to, so it cannot be
+       selected again */
+    [part~="lens-searchbar-autocomplete-options-item-selected"] {
+        opacity: 0.4;
+        cursor: default;
     }
 
     [part~="lens-searchbar-autocomplete-options-item-description"] {
