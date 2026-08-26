@@ -3,6 +3,7 @@ import { lensOptions } from "../stores/options";
 import { getHumanReadableQuery } from "../stores/datarequests";
 import { showToast } from "../stores/toasts";
 import { translate } from "../helpers/translations";
+import { getSiteResult } from "../stores/response";
 
 /**
  * The request payload expected by the BBMRI Negotiator to start the application
@@ -37,6 +38,34 @@ type BbmriCollectionResource = {
 };
 
 /**
+ * Select the collection IDs to send to the BBMRI Negotiator.
+ */
+export function getNegotiatorCollectionIds(
+    custodianCollections: Record<string, number> | undefined,
+    fallbackCollectionId: string | undefined,
+): string[] {
+    const collectionIds = new Set<string>();
+    const hasNullCollection =
+        custodianCollections !== undefined &&
+        Object.keys(custodianCollections).includes("null");
+
+    for (const collectionId of Object.keys(custodianCollections ?? {})) {
+        if (collectionId !== "null") {
+            collectionIds.add(collectionId);
+        }
+    }
+
+    if (
+        fallbackCollectionId &&
+        (collectionIds.size === 0 || hasNullCollection)
+    ) {
+        collectionIds.add(fallbackCollectionId);
+    }
+
+    return Array.from(collectionIds);
+}
+
+/**
  * Initiate the process of applying for access to samples or data (also known as
  * resources). Sends a request to the BBBMRI Negitiator describing the resources
  * of interest. The user is then redirected to the BBMRI Negitator to submit the
@@ -55,15 +84,37 @@ export async function bbmriNegotiate(
     }
 
     const bbmriCollectionResources: BbmriCollectionResource[] = [];
+    const negotiatedCollectionIds = new Set<string>();
     for (const site of sitesToNegotiate) {
         const siteInfo = currentLensOptions.siteMappings?.[site];
-        const collectionId =
+        const fallbackCollectionId =
             typeof siteInfo === "object" ? siteInfo.collectionId : undefined;
-        if (!collectionId) {
+        const custodianCollections =
+            getSiteResult(site)?.stratifiers?.Custodian;
+        const collectionIds = getNegotiatorCollectionIds(
+            custodianCollections,
+            fallbackCollectionId,
+        );
+        const needsFallbackCollection =
+            collectionIds.length === 0 ||
+            Object.keys(custodianCollections ?? {}).includes("null");
+
+        if (!fallbackCollectionId && collectionIds.length === 0) {
             console.error(
                 `Site '${site}' is missing a collection ID in the lens options "siteMappings", skipping it for BBMRI Negotiator request. Please add the collection ID for this site to the lens options to include it in the BBMRI Negotiator request.`,
             );
-        } else {
+        } else if (!fallbackCollectionId && needsFallbackCollection) {
+            console.error(
+                `Site '${site}' is missing a fallback collection ID in the lens options "siteMappings"; BBMRI Negotiator request will include Custodian collections only.`,
+            );
+        }
+
+        for (const collectionId of collectionIds) {
+            if (negotiatedCollectionIds.has(collectionId)) {
+                continue;
+            }
+            negotiatedCollectionIds.add(collectionId);
+
             bbmriCollectionResources.push({
                 id: collectionId,
                 name: collectionId,
