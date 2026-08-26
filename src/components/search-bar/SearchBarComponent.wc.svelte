@@ -194,37 +194,74 @@
      * stores the filtered list of autocomplete items
      */
     let inputOptions: AutoCompleteItem[] = $derived.by(() => {
-        return criteria.filter((item: AutoCompleteItem) => {
-            /**
-             * lets the user use a number followed by a colon to specify the search group. nice to have for the power users
-             */
-            const clearedInputValue = inputValue
-                .replace(/^[0-9]*:/g, "")
-                .toLocaleLowerCase();
+        /**
+         * lets the user use a number followed by a colon to specify the search group. nice to have for the power users
+         */
+        const clearedInputValue = inputValue
+            .replace(/^[0-9]*:/g, "")
+            .toLocaleLowerCase();
 
-            switch (item.fieldType) {
-                case "criterion": {
-                    return (
-                        item.name.toLowerCase().includes(clearedInputValue) ||
-                        item.criterion.name
-                            .toLowerCase()
-                            .includes(clearedInputValue) ||
-                        item.criterion.description
-                            ?.toLowerCase()
-                            .includes(clearedInputValue)
-                    );
-                }
-                case "number":
-                case "date":
-                case "string":
-                    return item.name
-                        .toLocaleLowerCase()
-                        .includes(clearedInputValue);
-                default:
-                    return false;
+        const matches = criteria
+            .map((item: AutoCompleteItem) => ({
+                item,
+                rank: matchRank(item, clearedInputValue),
+            }))
+            .filter(({ rank }) => rank > 0);
+
+        /**
+         * the options are grouped by category with a heading above each group, so
+         * ranking must not pull an item out of its group
+         */
+        const categoryOrder = new Map<string, number>();
+        for (const { item } of matches) {
+            if (!categoryOrder.has(item.name)) {
+                categoryOrder.set(item.name, categoryOrder.size);
             }
-        });
+        }
+
+        return matches
+            .sort(
+                (a, b) =>
+                    categoryOrder.get(a.item.name)! -
+                        categoryOrder.get(b.item.name)! || b.rank - a.rank,
+            )
+            .map(({ item }) => item);
     });
+
+    /**
+     * ranks how well an item matches the user's input. Items that match by name
+     * come before items that only match by description, e.g. typing "BRCA" lists
+     * BRCA1 before ABRAXAS1, whose description happens to mention BRCA1.
+     * @param item - the item to rank
+     * @param inputValue - the lowercased input value
+     * @returns 2 for a match in the name, 1 for a match in the description, 0
+     * for no match
+     */
+    const matchRank = (item: AutoCompleteItem, inputValue: string): number => {
+        switch (item.fieldType) {
+            case "criterion": {
+                if (
+                    item.name.toLowerCase().includes(inputValue) ||
+                    item.criterion.name.toLowerCase().includes(inputValue)
+                ) {
+                    return 2;
+                }
+                return item.criterion.description
+                    ?.toLowerCase()
+                    .includes(inputValue)
+                    ? 1
+                    : 0;
+            }
+            case "number":
+            case "date":
+            case "string":
+                return item.name.toLocaleLowerCase().includes(inputValue)
+                    ? 2
+                    : 0;
+            default:
+                return 0;
+        }
+    };
 
     /**
      * renders the filtered list in chunks so that huge catalogues stay responsive
@@ -905,7 +942,16 @@
         border-bottom-left-radius: var(--border-radius-small);
         border-bottom-right-radius: var(--border-radius-small);
         display: grid;
-        grid-template-columns: max-content auto max-content;
+        /* The name column takes what it needs but may shrink below its content
+           width, so that a long criterion name cannot push the description out
+           of the list */
+        grid-template-columns: minmax(0, max-content) minmax(0, 1fr) max-content;
+    }
+
+    [part~="lens-searchbar-autocomplete-options-item-name"] {
+        /* Long names wrap instead of widening the column */
+        min-width: 0;
+        overflow-wrap: anywhere;
     }
 
     [part~="lens-searchbar-autocomplete-options-item"] {

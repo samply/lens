@@ -246,24 +246,41 @@
      * stores the filtered list of autocomplete items
      */
     let inputOptions: Criteria[] = $derived.by(() => {
-        return criteria.filter((item: Criteria) => {
-            const clearedInputValue = inputValue
-                .replace(/^[0-9]*:/g, "")
-                .toLocaleLowerCase();
+        const clearedInputValue = inputValue
+            .replace(/^[0-9]*:/g, "")
+            .toLocaleLowerCase();
 
-            return (
-                item.name.toLowerCase().includes(clearedInputValue) ||
-                item.key.toLowerCase().includes(clearedInputValue) ||
-                item.description?.toLowerCase().includes(clearedInputValue)
-                /**
-                 * FIX ME:
-                 * should only take names. This needs a catalogue fix
-                 */
-                // item.key.toLocaleLowerCase().includes(clearedInputValue) ||
-                // item.criterion.key.toLowerCase().includes(clearedInputValue) ||
-            );
-        });
+        return criteria
+            .map((item: Criteria) => ({
+                item,
+                rank: matchRank(item, clearedInputValue),
+            }))
+            .filter(({ rank }) => rank > 0)
+            .sort((a, b) => b.rank - a.rank)
+            .map(({ item }) => item);
     });
+
+    /**
+     * ranks how well a criterion matches the user's input. Items that match by
+     * name come before items that only match by description, e.g. typing "BRCA"
+     * lists BRCA1 before ABRAXAS1, whose description happens to mention BRCA1.
+     * @param item - the criterion to rank
+     * @param inputValue - the lowercased input value
+     * @returns 2 for a match in the name or key, 1 for a match in the
+     * description, 0 for no match
+     */
+    const matchRank = (item: Criteria, inputValue: string): number => {
+        if (
+            item.name.toLowerCase().includes(inputValue) ||
+            item.key.toLowerCase().includes(inputValue)
+        ) {
+            return 2;
+        }
+        if (item.description?.toLowerCase().includes(inputValue)) {
+            return 1;
+        }
+        return 0;
+    };
 
     /**
      * renders the filtered list in chunks so that huge catalogues stay responsive
@@ -452,7 +469,10 @@
         overflow-y: auto;
 
         display: grid;
-        grid-template-columns: max-content auto max-content;
+        /* The name column takes what it needs but may shrink below its content
+           width, so that a long criterion name cannot push the description out
+           of the list */
+        grid-template-columns: minmax(0, max-content) minmax(0, 1fr) max-content;
     }
 
     [part~="autocomplete-options-sentinel"] {
@@ -482,6 +502,12 @@
             [part~="autocomplete-options-item-focused"]
         ) {
         background-color: var(--light-gray);
+    }
+
+    [part~="autocomplete-options-item-name"] {
+        /* Long names wrap instead of widening the column */
+        min-width: 0;
+        overflow-wrap: anywhere;
     }
 
     /* Description (secondary text) */
