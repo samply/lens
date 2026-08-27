@@ -1,6 +1,7 @@
 import { get } from "svelte/store";
 import { lensOptions } from "../stores/options";
 import { getHumanReadableQuery } from "../stores/datarequests";
+import { getSiteResult, type LensResult } from "../stores/response";
 import { showToast } from "../stores/toasts";
 import { translate } from "../helpers/translations";
 
@@ -37,6 +38,35 @@ type BbmriCollectionResource = {
 };
 
 /**
+ * Resolves the collection IDs to negotiate for a site. If the site result
+ * contains a "Custodian" stratifier, its keys are used as collection IDs (a
+ * "null" key indicates patients in the default collection, which is added from
+ * the site mappings). Otherwise only the configured default collection ID is
+ * used.
+ * @param siteResult The lens result for the site, if available.
+ * @param defaultCollectionId The collection ID configured for the site in the
+ * "siteMappings" of the lens options, if any.
+ * @returns The deduplicated collection IDs to request, possibly empty.
+ */
+function resolveCollectionIds(
+    siteResult: LensResult | undefined,
+    defaultCollectionId?: string,
+): string[] {
+    const custodian = siteResult?.stratifiers["Custodian"];
+    if (!custodian) {
+        return defaultCollectionId ? [defaultCollectionId] : [];
+    }
+    const idSet = new Set(
+        Object.keys(custodian).filter((key) => key !== "null"),
+    );
+    if ("null" in custodian && defaultCollectionId) {
+        idSet.add(defaultCollectionId);
+    }
+    const ids = [...idSet];
+    return ids.length ? ids : defaultCollectionId ? [defaultCollectionId] : [];
+}
+
+/**
  * Initiate the process of applying for access to samples or data (also known as
  * resources). Sends a request to the BBBMRI Negitiator describing the resources
  * of interest. The user is then redirected to the BBMRI Negitator to submit the
@@ -57,23 +87,37 @@ export async function bbmriNegotiate(
     const bbmriCollectionResources: BbmriCollectionResource[] = [];
     for (const site of sitesToNegotiate) {
         const siteInfo = currentLensOptions.siteMappings?.[site];
-        const collectionId =
+        const defaultCollectionId =
             typeof siteInfo === "object" ? siteInfo.collectionId : undefined;
-        if (!collectionId) {
+        const displayName =
+            typeof siteInfo === "string"
+                ? siteInfo
+                : siteInfo?.displayName || site;
+
+        const siteResult = getSiteResult(site);
+
+        console.debug("bbmriNegotiate: siteResult", siteResult);
+
+        const collectionIds = resolveCollectionIds(
+            siteResult,
+            defaultCollectionId,
+        );
+
+        if (collectionIds.length === 0) {
             console.error(
-                `Site '${site}' is missing a collection ID in the lens options "siteMappings", skipping it for BBMRI Negotiator request. Please add the collection ID for this site to the lens options to include it in the BBMRI Negotiator request.`,
+                `Site '${site}' has no collection IDs, skipping it for BBMRI Negotiator request.`,
             );
-        } else {
+            continue;
+        }
+
+        for (const collectionId of collectionIds) {
             bbmriCollectionResources.push({
                 id: collectionId,
                 name: collectionId,
                 organization: {
                     id: 0,
                     externalId: collectionId.split(":collection:")[0],
-                    name:
-                        typeof siteInfo === "string"
-                            ? siteInfo
-                            : siteInfo?.displayName || site,
+                    name: displayName,
                 },
             });
         }
