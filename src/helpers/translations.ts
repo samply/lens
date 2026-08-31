@@ -86,4 +86,20 @@ const lensTranslations: Texts = {
         en: "Search begins with 2 characters",
         de: "Suche beginnt mit 2 Zeichen",
     },
+    catalogue_filter_placeholder: {
+        en: "Search the catalogue",
+        de: "Katalog durchsuchen",
+    },
+    catalogue_filter_clear: {
+        en: "Clear the search",
+        de: "Suche löschen",
+    },
+    catalogue_filter_refine: {
+        en: "More matches, please refine your search",
+        de: "Weitere Treffer, bitte Suche eingrenzen",
+    },
+    catalogue_filter_no_matches: {
+        en: "No matches found",
+        de: "Keine Treffer gefunden",
+    },
 };

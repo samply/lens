@@ -1,10 +1,12 @@
 <script lang="ts">
+    import { onDestroy } from "svelte";
     import { v4 as uuidv4 } from "uuid";
     import type { SingleSelectCategory, Criteria } from "../../types/catalogue";
     import AddButton from "./AddButton.svelte";
     import { activeQueryGroupIndex, addItemToQuery } from "../../stores/query";
     import { facetCounts } from "../../stores/facetCounts";
     import { lensOptions } from "../../stores/options";
+    import { revealedCriterion } from "../../stores/catalogue";
 
     interface Props {
         element: SingleSelectCategory;
@@ -12,6 +14,32 @@
     }
 
     let { element, criterion }: Props = $props();
+
+    let nameElement: HTMLElement | undefined = $state();
+    let revealed: boolean = $state(false);
+    let revealTimeout: ReturnType<typeof setTimeout> | undefined = undefined;
+
+    /**
+     * scrolls to the criterion and highlights it when the catalogue filter reveals it
+     */
+    $effect(() => {
+        const target = $revealedCriterion;
+        if (
+            target === null ||
+            target.categoryKey !== element.key ||
+            target.criterionKey !== criterion.key ||
+            nameElement === undefined
+        ) {
+            return;
+        }
+
+        nameElement.scrollIntoView({ block: "center", behavior: "smooth" });
+        revealed = true;
+        clearTimeout(revealTimeout);
+        revealTimeout = setTimeout(() => (revealed = false), 2000);
+    });
+
+    onDestroy(() => clearTimeout(revealTimeout));
 
     function onclick() {
         addItemToQuery(
@@ -37,11 +65,20 @@
 </script>
 
 {#if criterion.description}
-    <abbr part="lens-singleselect-item-underline" title={criterion.description}
-        >{criterion.name}</abbr
+    <abbr
+        bind:this={nameElement}
+        part="lens-singleselect-item-underline {revealed
+            ? 'lens-singleselect-item-revealed'
+            : ''}"
+        title={criterion.description}>{criterion.name}</abbr
     >
 {:else}
-    <span>{criterion.name}</span>
+    <span
+        bind:this={nameElement}
+        part="lens-singleselect-item-name {revealed
+            ? 'lens-singleselect-item-revealed'
+            : ''}">{criterion.name}</span
+    >
 {/if}
 {#if $facetCounts[element.key] !== undefined}
     <span
@@ -66,5 +103,22 @@
     }
     [part~="lens-singleselect-item-underline"] {
         cursor: help;
+    }
+
+    [part~="lens-singleselect-item-revealed"] {
+        border-radius: var(--border-radius-small);
+        animation: reveal-criterion 2s ease-out;
+    }
+
+    @keyframes reveal-criterion {
+        0%,
+        50% {
+            background-color: var(--light-gray);
+            box-shadow: 0 0 0 2px var(--blue);
+        }
+        100% {
+            background-color: transparent;
+            box-shadow: none;
+        }
     }
 </style>

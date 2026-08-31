@@ -432,6 +432,7 @@
     </div>
     <div id="catalogue-and-grid-wrapper">
         <div id="catalogue" class="card">
+            <lens-catalogue-filter></lens-catalogue-filter>
             <lens-catalogue toggle={{ collapsable: false }}></lens-catalogue>
         </div>
         <div id="main-grid">

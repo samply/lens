@@ -169,6 +169,12 @@ export const openTreeNodes = writable<
     Map<string, { key: string; subCategoryNames: string[] | null }>
 >(new Map());
 
+/** the criterion the tree scrolls to and highlights, set by the catalogue filter */
+export const revealedCriterion = writable<{
+    categoryKey: string;
+    criterionKey: string | null;
+} | null>(null);
+
 /**
  * get the bottom level items of a category
  * @param category string of the category you want to get the bottom level items from

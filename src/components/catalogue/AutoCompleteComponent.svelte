@@ -8,6 +8,7 @@
     } from "../../stores/query";
     import type { QueryItem, QueryValue } from "../../types/queryData";
     import { onMount } from "svelte";
+    import { revealedCriterion } from "../../stores/catalogue";
     import { facetCounts } from "../../stores/facetCounts";
     import { lensOptions } from "../../stores/options";
 
@@ -71,6 +72,33 @@
      * closes options when clicked outside
      */
     let autoCompleteOpen = $state(false);
+
+    /**
+     * prefills the input when the catalogue filter reveals one of the criteria, so
+     * that the option is ready to be added instead of having to be typed again
+     */
+    $effect(() => {
+        const target = $revealedCriterion;
+        if (
+            target === null ||
+            target.criterionKey === null ||
+            target.categoryKey !== element.key
+        ) {
+            return;
+        }
+
+        const revealed = criteria.find(
+            (criterion) => criterion.key === target.criterionKey,
+        );
+
+        inputValue = revealed?.name ?? target.criterionKey;
+        focusedItemIndex = 0;
+        // the input is already focused when it just mounted, so onfocusin does not
+        // fire and cannot be relied on to open the options
+        autoCompleteOpen = true;
+        searchBarInput.focus();
+        searchBarInput.scrollIntoView({ block: "center", behavior: "smooth" });
+    });
 
     const getChosenOptionsFromQueryStore = (
         queryStore: QueryItem[][],

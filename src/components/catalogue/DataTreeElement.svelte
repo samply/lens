@@ -7,7 +7,7 @@
     import AutocompleteComponent from "./AutoCompleteComponent.svelte";
     import SingleSelectComponent from "./SingleSelectComponent.svelte";
     import { v4 as uuidv4 } from "uuid";
-    import { openTreeNodes } from "../../stores/catalogue";
+    import { openTreeNodes, revealedCriterion } from "../../stores/catalogue";
     import type { QueryItem } from "../../types/queryData";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
     import DatePickerComponent from "./DatePickerComponent.svelte";
@@ -41,8 +41,8 @@
         if (subCategoryName) {
             return (
                 $openTreeNodes
-                    .get(element.key)!
-                    .subCategoryNames?.includes(subCategoryName) || false
+                    .get(element.key)
+                    ?.subCategoryNames?.includes(subCategoryName) ?? false
             );
         } else {
             return $openTreeNodes.get(element.key) ? true : false;
@@ -94,6 +94,25 @@
         });
     };
 
+    let treeElement: HTMLElement | undefined = $state();
+
+    /**
+     * scrolls to the category when the catalogue filter reveals it without a criterion
+     */
+    $effect(() => {
+        const target = $revealedCriterion;
+        if (
+            target === null ||
+            target.criterionKey !== null ||
+            target.categoryKey !== element.key ||
+            treeElement === undefined
+        ) {
+            return;
+        }
+
+        treeElement.scrollIntoView({ block: "center", behavior: "smooth" });
+    });
+
     let finalParent: boolean =
         !("childCategories" in element) &&
         (!("fieldType" in element) ||
@@ -125,7 +144,7 @@
     };
 </script>
 
-<div part="data-tree-element">
+<div bind:this={treeElement} part="data-tree-element">
     <div part="lens-data-tree-element-header">
         <button part="lens-data-tree-element-name" onclick={toggleChildren}>
             <div

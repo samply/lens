@@ -15,6 +15,7 @@
     - [Styling](development/styling.md)
 - [Components](components/README.md)
     - [Catalogue](components/catalogue.md)
+    - [Catalogue Filter](components/cataloguefilter.md)
     - [Chart](components/chart.md)
     - [Info Button](components/infobutton.md)
     - [About Lens](components/aboutlens.md)
