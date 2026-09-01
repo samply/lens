@@ -202,37 +202,6 @@
                     ],
                 },
                 {
-                    key: "diagnosis",
-                    name: "Diagnosis ICD-10",
-                    fieldType: "autocomplete",
-                    type: "EQUALS",
-                    criteria: [
-                        {
-                            key: "C31",
-                            name: "C31",
-                            description:
-                                "Malignant neoplasm of accessory sinuses",
-                        },
-                        {
-                            key: "C31.0",
-                            name: "C31.0",
-                            description: "Malignant neoplasm: Maxillary sinus",
-                        },
-                        {
-                            key: "C41",
-                            name: "C41",
-                            description:
-                                "Malignant neoplasm of bone and articular cartilage of other and unspecified sites",
-                        },
-                        {
-                            key: "C41.0",
-                            name: "C41.0",
-                            description:
-                                "Malignant neoplasm: Bones of skull and face",
-                        },
-                    ],
-                },
-                {
                     key: "age_at_diagnosis",
                     name: "Diagnosis age",
                     fieldType: "number",
@@ -458,6 +427,7 @@
                     chartType="pie"
                     displayLegends={true}
                     enableSorting={true}
+                    clickToAddState={true}
                 ></lens-chart>
             </div>
             <div class="card">
@@ -467,6 +437,7 @@
                     chartType="bar"
                     xAxisTitle="ICD-10 Code"
                     yAxisTitle="Number of cases"
+                    clickToAddState={true}
                 ></lens-chart>
             </div>
             <div class="card">
@@ -479,6 +450,7 @@
                     xAxisTitle="Number of cases"
                     yAxisTitle="ICD-10 Code"
                     enableSorting={true}
+                    clickToAddState={true}
                     backgroundColor={barChartBackgroundColors}
                     hoverBackgroundColor={barChartHoverColors}
                 ></lens-chart>

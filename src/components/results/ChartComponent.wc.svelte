@@ -15,11 +15,9 @@
         siteStatus,
         siteResults,
     } from "../../stores/response";
-    import { v4 as uuidv4 } from "uuid";
     import { activeQueryGroupIndex, addItemToQuery } from "../../stores/query";
     import { catalogue } from "../../stores/catalogue";
-    import type { QueryItem, QueryValue } from "../../types/queryData";
-    import type { Category, Criteria } from "../../types/catalogue";
+    import { queryItemFromChartValue } from "../../helpers/chart-click-to-add";
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
     import { lensOptions } from "../../stores/options";
     import type { ChartOption } from "../../types/options";
@@ -106,6 +104,13 @@
     let canvas: HTMLCanvasElement;
 
     let chart: Chart;
+
+    /**
+     * the stratum codes behind chart.data.labels, same order and length.
+     * chart.data.labels holds what is displayed, which is not what the
+     * catalogue can be searched with once a mapping or a grouping is set.
+     */
+    let labelValues: string[] = [];
 
     let sortBy: "alpha" | "value" = $state("alpha"); // 'value' or 'alpha'
     let sortOrder: "asc" | "desc" = $state("asc"); // 'asc' or 'desc'
@@ -443,6 +448,7 @@
 
         chart.data.datasets = chartData.data;
         chartLabels = chartData.labels;
+        labelValues = [...chartLabels];
 
         /**
          * lets the user define a range for the labels when only single values are used eg. '60' -> '60 - 69'
@@ -518,6 +524,7 @@
         if (!chart) return;
 
         chart.data.labels = ["", "", "", ""];
+        labelValues = [];
         chart.data.datasets = [
             {
                 data: [3, 1, 2, 5],
@@ -602,85 +609,40 @@
     };
 
     /**
-     * adds stratifier as a search parameter when clicked
+     * removes the grouping label that combineSubGroups appended, so that the
+     * value can be looked up in the catalogue again
+     */
+    const stripGroupingLabel = (value: string): string =>
+        groupingLabel !== "" && value.endsWith(groupingLabel)
+            ? value.slice(0, -groupingLabel.length)
+            : value;
+
+    /**
+     * adds the clicked stratifier to the query as a search parameter.
+     * Does nothing if the catalogue has no criterion for it.
      */
     const handleClickOnStratifier = (): void => {
-        /**
-         * the clicked stratifier
-         */
+        // sites are not catalogue criteria, there is no query concept for them
+        if (!clickToAddState || perSite) return;
+
         const stratifier = chart.getActiveElements()[0];
-        if (!stratifier || !clickToAddState) return;
-        const label: string = chart.data.labels
-            ? (chart.data.labels[stratifier.index] as string)
-            : "";
-        let queryItem!: QueryItem;
-        $catalogue.forEach((parentCategory: Category) => {
-            if ("childCategories" in parentCategory) {
-                parentCategory.childCategories?.forEach(
-                    (childCategorie: Category) => {
-                        if (
-                            childCategorie.key === dataKey &&
-                            (childCategorie.fieldType === "single-select" ||
-                                childCategorie.fieldType === "autocomplete" ||
-                                childCategorie.fieldType === "number")
-                        ) {
-                            let values: QueryValue[] = [];
+        if (!stratifier) return;
 
-                            if (childCategorie.fieldType === "number") {
-                                /**
-                                 * TODO: add customisation for the step size
-                                 */
-                                values = [
-                                    {
-                                        name: `${label}`,
-                                        value: {
-                                            min: parseInt(label),
-                                            max:
-                                                parseInt(label) +
-                                                (groupRange ?? 0) -
-                                                1,
-                                        },
-                                        queryBindId: uuidv4(),
-                                    },
-                                ];
-                            } else {
-                                childCategorie.criteria.forEach(
-                                    (criterion: Criteria) => {
-                                        if (
-                                            criterion.key === label ||
-                                            criterion.name === label
-                                        ) {
-                                            values[0] = {
-                                                name: criterion.name,
-                                                value: criterion.key,
-                                                queryBindId: uuidv4(),
-                                                description:
-                                                    criterion.description,
-                                            };
-                                        }
-                                    },
-                                );
-                            }
+        const value = labelValues[stratifier.index];
+        if (value === undefined) return;
 
-                            queryItem = {
-                                id: uuidv4(),
-                                key: childCategorie.key,
-                                name: childCategorie.name,
-                                type:
-                                    "type" in childCategorie
-                                        ? childCategorie.type
-                                        : "BETWEEN",
-                                values: values,
-                            };
+        const queryItem =
+            queryItemFromChartValue(
+                $catalogue,
+                dataKey,
+                stripGroupingLabel(value),
+                groupRange,
+            ) ??
+            queryItemFromChartValue($catalogue, dataKey, value, groupRange);
 
-                            addItemToQuery(queryItem, $activeQueryGroupIndex);
-                        }
-                    },
-                );
-            }
-        });
-
-        addItemToQuery(queryItem, $activeQueryGroupIndex);
+        if (queryItem !== undefined) {
+            addItemToQuery(queryItem, $activeQueryGroupIndex);
+        }
     };
 
     $effect(() => {
