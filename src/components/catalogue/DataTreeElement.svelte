@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { onDestroy } from "svelte";
     import { addItemToQuery, activeQueryGroupIndex } from "../../stores/query";
     import type { Category } from "../../types/catalogue";
     import DataTreeElement from "./DataTreeElement.svelte";
@@ -95,9 +96,12 @@
     };
 
     let treeElement: HTMLElement | undefined = $state();
+    let revealed: boolean = $state(false);
+    let revealTimeout: ReturnType<typeof setTimeout> | undefined = undefined;
 
     /**
-     * scrolls to the category when the catalogue filter reveals it without a criterion
+     * scrolls to the category and highlights its title when the catalogue filter
+     * reveals it without a criterion
      */
     $effect(() => {
         const target = $revealedCriterion;
@@ -111,7 +115,12 @@
         }
 
         treeElement.scrollIntoView({ block: "center", behavior: "smooth" });
+        revealed = true;
+        clearTimeout(revealTimeout);
+        revealTimeout = setTimeout(() => (revealed = false), 2000);
     });
+
+    onDestroy(() => clearTimeout(revealTimeout));
 
     let finalParent: boolean =
         !("childCategories" in element) &&
@@ -146,7 +155,12 @@
 
 <div bind:this={treeElement} part="data-tree-element">
     <div part="lens-data-tree-element-header">
-        <button part="lens-data-tree-element-name" onclick={toggleChildren}>
+        <button
+            part="lens-data-tree-element-name {revealed
+                ? 'lens-data-tree-element-name-revealed'
+                : ''}"
+            onclick={toggleChildren}
+        >
             <div
                 part="lens-data-tree-element-toggle-icon {open
                     ? 'lens-data-tree-element-toggle-icon-open'
@@ -242,6 +256,23 @@
         background-color: unset;
         cursor: pointer;
         text-align: left;
+    }
+
+    [part~="lens-data-tree-element-name-revealed"] {
+        border-radius: var(--border-radius-small);
+        animation: reveal-category 2s ease-out;
+    }
+
+    @keyframes reveal-category {
+        0%,
+        50% {
+            background-color: var(--light-gray);
+            box-shadow: 0 0 0 2px var(--blue);
+        }
+        100% {
+            background-color: transparent;
+            box-shadow: none;
+        }
     }
 
     [part~="lens-data-tree-element-toggle-icon"] {

@@ -1,6 +1,6 @@
 # Catalogue Filter
 
-The `<lens-catalogue-filter>` component renders a search field for the [catalogue](catalogue.md) component. While you type it shows a dropdown of matching catalogue entries, each with the path it sits under. The tree itself is left untouched. Selecting a match opens the tree down to it. A criterion of a single-select category is scrolled into view and highlighted briefly, a criterion of an autocomplete category prefills that autocomplete's input so it only has to be added to the search bar.
+The `<lens-catalogue-filter>` component renders a search field for the [catalogue](catalogue.md) component. While you type it shows a dropdown of matching catalogue entries, each with the path it sits under. The tree itself is left untouched. Selecting a match opens the tree down to it. A criterion of a single-select category is scrolled into view and highlighted briefly, a criterion of an autocomplete category prefills that autocomplete's input and opens its dropdown so the option only has to be added to the search bar. When the match is a category's own title, the category is scrolled into view and its title is highlighted briefly.
 
 An entry matches when the search term appears in its display name, its key or its description. Matching ignores case and accents, so `tumorentitat` finds `Tumorentität`, and a match inside a criterion's subgroup counts for the parent criterion, since that is the entry the tree renders. Terms shorter than two characters are ignored.
 
@@ -41,3 +41,4 @@ Place the component next to `<lens-catalogue>`, they communicate through the cat
 | `lens-catalogue-filter-options-item-path`        | The path the match sits under                  |
 | `lens-catalogue-filter-options-item-empty`       | The "no matches" and "refine your search" rows |
 | `lens-singleselect-item-revealed`                | A criterion while it is highlighted            |
+| `lens-data-tree-element-name-revealed`           | A category title while it is highlighted       |

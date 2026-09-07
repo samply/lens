@@ -124,14 +124,20 @@
             {#each matches as match, index (index)}
                 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
                 <!-- onmousedown is chosen because the input looses focus when clicked
-                     outside, which will close the options before the click is finished -->
+                     outside, which will close the options before the click is finished.
+                     Its default action has to be prevented: the browser would move the
+                     focus to the body once the handler is done, which takes it away from
+                     the autocomplete the reveal just focused and closes its options -->
                 <li
                     bind:this={optionElements[index]}
                     part="lens-catalogue-filter-options-item {index ===
                     focusedMatchIndex
                         ? 'lens-catalogue-filter-options-item-focused'
                         : ''}"
-                    onmousedown={() => revealMatch(match)}
+                    onmousedown={(event) => {
+                        event.preventDefault();
+                        revealMatch(match);
+                    }}
                 >
                     <div part="lens-catalogue-filter-options-item-name">
                         {match.name}
