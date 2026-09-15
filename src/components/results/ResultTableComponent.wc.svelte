@@ -346,7 +346,10 @@
                                     rel="noopener noreferrer"
                                 >
                                     {siteName}
-                                    <ExternalLink class="size-4" />
+                                    <ExternalLink
+                                        class="size-4"
+                                        part="lens-result-table-item-body-cell-link-icon"
+                                    />
                                 </a>
                             {:else}
                                 {siteName}
