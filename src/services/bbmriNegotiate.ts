@@ -37,6 +37,16 @@ type BbmriCollectionResource = {
     };
 };
 
+const bbmriCollectionIdPattern =
+    /^bbmri-eric:ID:[A-Z]{2}_[A-Za-z0-9_-]+:collection:[A-Za-z0-9_-]+$/;
+
+/**
+ * Check whether an ID follows the BBMRI Directory collection ID format.
+ */
+export function isValidBbmriCollectionId(collectionId: string): boolean {
+    return bbmriCollectionIdPattern.test(collectionId);
+}
+
 /**
  * Select the collection IDs to send to the BBMRI Negotiator.
  */
@@ -45,13 +55,20 @@ export function getNegotiatorCollectionIds(
     fallbackCollectionId: string | undefined,
 ): string[] {
     const collectionIds = new Set<string>();
+    const invalidCollectionIds = new Set<string>();
     const hasNullCollection =
         custodianCollections !== undefined &&
         Object.keys(custodianCollections).includes("null");
 
     for (const collectionId of Object.keys(custodianCollections ?? {})) {
-        if (collectionId !== "null") {
+        if (collectionId === "null") {
+            continue;
+        }
+
+        if (isValidBbmriCollectionId(collectionId)) {
             collectionIds.add(collectionId);
+        } else {
+            invalidCollectionIds.add(collectionId);
         }
     }
 
@@ -59,7 +76,18 @@ export function getNegotiatorCollectionIds(
         fallbackCollectionId &&
         (collectionIds.size === 0 || hasNullCollection)
     ) {
-        collectionIds.add(fallbackCollectionId);
+        if (isValidBbmriCollectionId(fallbackCollectionId)) {
+            collectionIds.add(fallbackCollectionId);
+        } else {
+            invalidCollectionIds.add(fallbackCollectionId);
+        }
+    }
+
+    if (invalidCollectionIds.size > 0) {
+        console.warn(
+            "Ignoring invalid BBMRI Directory collection IDs:",
+            Array.from(invalidCollectionIds),
+        );
     }
 
     return Array.from(collectionIds);

@@ -21,6 +21,7 @@ Optionally integrates with the [BBMRI-ERIC Negotiator](https://www.bbmri-eric.eu
     ```
 
 - If `type` is `"Negotiator"`, the internal `bbmriNegotiate()` function is also called, passing the current data request list.
+- Only collection IDs matching the BBMRI Directory format `bbmri-eric:ID:<CC>_<local-id>:collection:<local-id>` are sent to the Negotiator. Invalid IDs are omitted and listed in a console warning. If all Custodian collection IDs for a site are invalid, its valid default `collectionId` from `siteMappings` is used when configured.
 
 ## Usage
 
