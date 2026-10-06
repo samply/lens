@@ -171,6 +171,10 @@
       "additionalProperties": false,
       "description": "A logical grouping of catalogue items that is rendered as a collapsable entry in the catalogue tree.",
       "properties": {
+        "addAllButton": {
+          "description": "Optional button to add all criteria at once",
+          "type": "boolean"
+        },
         "childCategories": {
           "description": "The list of catalogue items in the group",
           "items": {
@@ -362,6 +366,10 @@
       "additionalProperties": false,
       "description": "A catalogue item that lets the user select one or more criteria from a predefined list. The list of criteria is rendered in the catalogue tree and the user can select criteria by clicking a \"->\" button. The resulting query matches any of the selected criteria.",
       "properties": {
+        "addAllButton": {
+          "description": "Optional button to add all criteria at once",
+          "type": "boolean"
+        },
         "criteria": {
           "description": "The list of criteria the user can select from",
           "items": {
