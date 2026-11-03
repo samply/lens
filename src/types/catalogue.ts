@@ -44,6 +44,8 @@ export type CategoryGroup = {
         /** The link text */
         display: string;
     };
+    /** Optional button to add all criteria at once */
+    addAllButton?: boolean;
 };
 
 /**
@@ -69,6 +71,8 @@ export type SingleSelectCategory = {
      * collapsable entries in the catalogue but will be grouped together in the
      * same chip in the search bar. */
     subCategoryName?: string;
+    /** Optional button to add all criteria at once */
+    addAllButton?: boolean;
 };
 
 /**
