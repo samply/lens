@@ -9,6 +9,8 @@ import {
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
 import catalogueSchema from "../../schema/catalogue.schema.json";
+import { addStudy } from "../components/catalogue/study-state.svelte";
+import { studyState } from "../components/catalogue/study-state.svelte";
 
 /**
  * store to hold the catalogue
@@ -338,7 +340,29 @@ export function setCatalogue(newCatalogue: Catalogue) {
                 JSON.stringify(ajv.errors),
         );
     }
+    collectStudiesFromCatalogue(catalogueCopy);
     catalogue.set(catalogueCopy);
+}
+
+export function collectStudiesFromCatalogue(catalogue: Category[]): void {
+    catalogue.forEach((catalogueEntry: Category) => {
+        if ("childCategories" in catalogueEntry) {
+            if (
+                catalogueEntry.childCategories != undefined &&
+                catalogueEntry.childCategories.length > 0
+            ) {
+                collectStudiesFromCatalogue(catalogueEntry.childCategories);
+            }
+        } else {
+            if (catalogueEntry.cohort != undefined) {
+                catalogueEntry.cohort.forEach((cohortEntry) => {
+                    if (!studyState.studies.includes(cohortEntry)) {
+                        addStudy(cohortEntry);
+                    }
+                });
+            }
+        }
+    });
 }
 
 /** Returns the current catalogue from the store. */

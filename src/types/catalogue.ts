@@ -44,6 +44,7 @@ export type CategoryGroup = {
         /** The link text */
         display: string;
     };
+    cohort?: string[];
 };
 
 /**
@@ -69,6 +70,7 @@ export type SingleSelectCategory = {
      * collapsable entries in the catalogue but will be grouped together in the
      * same chip in the search bar. */
     subCategoryName?: string;
+    cohort?: string[];
 };
 
 /**
@@ -88,6 +90,7 @@ export type AutocompleteCategory = {
     criteria: Criteria[];
     /** Optional text that is accessed by clicking a "ⓘ" button next to the display name */
     infoButtonText?: string[];
+    cohort?: string[];
 };
 
 /**
@@ -110,6 +113,7 @@ export type NumericRangeCategory = {
     infoButtonText?: string[];
     /** Optional text that is shown next to the input field, e.g. "kg" */
     unitText?: string;
+    cohort?: string[];
 };
 
 /**
@@ -135,6 +139,7 @@ export type DateRangeCategory = {
      */
     max?: string;
     infoButtonText?: string[];
+    cohort?: string[];
 };
 
 /**
@@ -149,6 +154,7 @@ export type StringCategory = {
     type: "EQUALS";
     /** Optional text that is accessed by clicking a "ⓘ" button next to the display name */
     infoButtonText?: string[];
+    cohort?: string[];
 };
 
 /**

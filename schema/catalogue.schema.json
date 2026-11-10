@@ -40,6 +40,13 @@
           },
           "type": "array"
         },
+          "cohort": {
+              "description": "Optional param to specify cohorts/studies the item belongs to",
+              "items": {
+                  "type": "string"
+              },
+              "type": "array"
+          },
         "key": {
           "description": "A key that uniquely identifies the catalogue item. It is typically used to look up the CQL snippet for that item.",
           "type": "string"
@@ -189,6 +196,13 @@
           },
           "type": "array"
         },
+          "cohort": {
+              "description": "Optional param to specify cohorts/studies the item belongs to",
+              "items": {
+                  "type": "string"
+              },
+              "type": "array"
+          },
         "infoLink": {
           "additionalProperties": false,
           "description": "Optional hyperlink shown next to the display name",
@@ -279,6 +293,13 @@
           },
           "type": "array"
         },
+          "cohort": {
+              "description": "Optional param to specify cohorts/studies the item belongs to",
+              "items": {
+                  "type": "string"
+              },
+              "type": "array"
+          },
         "key": {
           "description": "A key that uniquely identifies the catalogue item. It is typically used to look up the CQL snippet for that item.",
           "type": "string"
@@ -325,6 +346,13 @@
           },
           "type": "array"
         },
+          "cohort": {
+              "description": "Optional param to specify cohorts/studies the item belongs to",
+              "items": {
+                  "type": "string"
+              },
+              "type": "array"
+          },
         "key": {
           "description": "A key that uniquely identifies the catalogue item. It is typically used to look up the CQL snippet for that item.",
           "type": "string"
@@ -380,6 +408,13 @@
           },
           "type": "array"
         },
+          "cohort": {
+              "description": "Optional param to specify cohorts/studies the item belongs to",
+              "items": {
+                  "type": "string"
+              },
+              "type": "array"
+          },
         "key": {
           "description": "A key that uniquely identifies the catalogue item. It is typically used to look up the CQL snippet for that item.",
           "type": "string"
@@ -421,6 +456,13 @@
           },
           "type": "array"
         },
+          "cohort": {
+              "description": "Optional param to specify cohorts/studies the item belongs to",
+              "items": {
+                  "type": "string"
+              },
+              "type": "array"
+          },
         "key": {
           "description": "A key that uniquely identifies the catalogue item. It is typically used to look up the CQL snippet for that item.",
           "type": "string"

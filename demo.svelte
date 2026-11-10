@@ -11,7 +11,15 @@
         setFacetCounts,
         clearSiteResults,
         getHumanReadableQueryAsFormattedString,
+        type Catalogue,
     } from "./src/index";
+    import { Check, X } from "lucide-svelte";
+    import { filterCatalogue } from "./src/components/catalogue/catalogue-transform";
+    import catalogue from "./src/catalogue/napkon-test-catalogue.json";
+    import {
+        studyState,
+        getSelectedStudies,
+    } from "c:/IntelliJ - Projekte/lens2-(svelte)/src/components/catalogue/study-state.svelte";
 
     const barChartBackgroundColors: string[] = ["#052c65", "#0d6efd"];
     const barChartHoverColors: string[] = ["#000000"];
@@ -73,7 +81,8 @@
         },
     });
 
-    setCatalogue([
+    setCatalogue(catalogue as Catalogue);
+    /*setCatalogue([
         {
             fieldType: "autocomplete",
             key: "diagnosis",
@@ -308,7 +317,7 @@
             infoButtonText: ["Sample ID"],
             type: "EQUALS",
         },
-    ]);
+    ]);*/
 
     setFacetCounts({
         "blood-group": {
@@ -403,6 +412,13 @@
 
         a.click();
     });
+
+    function toggleActiveStudy(button: number): void {
+        studyState.activeButton[button] = !studyState.activeButton[button];
+        setCatalogue(
+            filterCatalogue(catalogue as Catalogue, getSelectedStudies()),
+        );
+    }
 </script>
 
 <div id="main-wrapper">
@@ -432,6 +448,37 @@
     </div>
     <div id="catalogue-and-grid-wrapper">
         <div id="catalogue" class="card">
+            <div class="studien-button-bar">
+                <!-- eslint-disable-next-line svelte/require-each-key -->
+                {#each studyState.studies as study, index}
+                    <button
+                        onclick={() => toggleActiveStudy(index)}
+                        class="studien-button"
+                        class:active={studyState.activeButton[index]}
+                    >
+                        {#if studyState.activeButton[index]}
+                            <Check size={18} />
+                        {:else}
+                            <X size={18} />
+                        {/if}
+                        {study}
+                    </button>
+                {/each}
+                <!-- eslint-disable-next-line svelte/require-each-key -->
+                <!--{#each studyState.studies as study, index}
+                    <span class="studien-checkbox-label">
+                        <input
+                                part="lens-result-table-header-checkbox"
+                                type="checkbox"
+                                checked={studyState.activeButton[index]}
+                                onchange={() => toggleActive(index)}
+                        />
+                        <span class="studien-checkbox-label-index"
+                              style="background-color: {getCohortParam(study).color}">{index + 1}</span>
+                        {study}
+                    </span>
+                {/each}-->
+            </div>
             <lens-catalogue toggle={{ collapsable: false }}></lens-catalogue>
         </div>
         <div id="main-grid">
@@ -565,5 +612,88 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+    }
+
+    .studien-button-bar {
+        padding: 10px 10px 20px;
+        display: flex !important;
+        justify-content: space-around;
+    }
+    .studien-button {
+        position: relative;
+        width: 100px;
+        height: 40px;
+        border: 1px solid #dce1e9;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        background: linear-gradient(145deg, #ffffff, #edf0f5);
+
+        color: #536176;
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 2px;
+
+        cursor: pointer;
+        transform: translateY(-2px);
+
+        box-shadow:
+            0 2px 2px #fff inset,
+            0 -1px 3px #d8dde6 inset,
+            0 4px 0 #c5cbd575,
+            0 10px 14px #00000020;
+        transition:
+            transform 0.16s ease,
+            box-shadow 0.16s ease,
+            background 0.16s ease,
+            color 0.16s ease;
+    }
+
+    .studien-button.active {
+        transform: translateY(0);
+
+        background: linear-gradient(145deg, #f0fff9, #d5f5e9);
+
+        color: #078b68;
+        border-color: #45c9a0;
+
+        box-shadow:
+            0 2px 3px #fff inset,
+            0 -2px 4px #bce8d8 inset,
+            0 2px 0 #36ad892b,
+            0 4px 8px #38c99a66,
+            0 0 10px #38c99a55;
+    }
+
+    .studien-button:hover {
+        filter: brightness(1.02);
+    }
+
+    .studien-button:focus-visible {
+        outline: 2px solid #159c78;
+        outline-offset: 7px;
+    }
+
+    .studien-button:active {
+        transform: translateY(1px);
+    }
+    .studien-checkbox-label {
+        display: flex;
+        align-items: center;
+    }
+    .studien-checkbox-label-index {
+        font-size: x-small;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        flex-shrink: 0;
+        margin: 0 5px;
+        color: white;
     }
 </style>

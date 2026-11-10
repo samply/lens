@@ -12,6 +12,7 @@
     import InfoButtonComponent from "../buttons/InfoButtonComponent.wc.svelte";
     import DatePickerComponent from "./DatePickerComponent.svelte";
     import { translate } from "../../helpers/translations";
+    import { getCohortParam } from "./study-state.svelte";
 
     interface Props {
         element: Category;
@@ -148,6 +149,19 @@
                 ? element.subCategoryName
                 : element.name}
         </button>
+
+        {#if element.cohort && element.cohort.length > 0}
+            <span>
+                <!-- eslint-disable-next-line svelte/require-each-key -->
+                {#each element.cohort as cohort}
+                    <span
+                        part="lens-data-tree-element-cohort-info"
+                        style="color: {getCohortParam(cohort).color}"
+                        >{getCohortParam(cohort).name}</span
+                    >
+                {/each}
+            </span>
+        {/if}
         {#if element.infoButtonText}
             <InfoButtonComponent
                 message={element.infoButtonText}
@@ -260,5 +274,10 @@
         padding-left: var(--gap-m);
         padding-top: var(--gap-xs);
         padding-bottom: var(--gap-xs);
+    }
+    [part~="lens-data-tree-element-cohort-info"] {
+        font-size: x-small;
+        padding: 0 2px;
+        vertical-align: center;
     }
 </style>
