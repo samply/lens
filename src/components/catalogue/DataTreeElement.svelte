@@ -95,6 +95,10 @@
         });
     };
 
+    let cohorts = $derived((element.cohort ?? []).map(getCohortParam));
+
+    let cohortTitle = $derived(cohorts.map((c) => c.study).join(", "));
+
     let finalParent: boolean =
         !("childCategories" in element) &&
         (!("fieldType" in element) ||
@@ -145,23 +149,31 @@
                     stroke-width="2"><path d="m9 18 6-6-6-6" /></svg
                 >
             </div>
-            {"subCategoryName" in element && element.subCategoryName
-                ? element.subCategoryName
-                : element.name}
+            <span part="lens-data-tree-element-label">
+                <span part="lens-data-tree-element-label-text"
+                    >{"subCategoryName" in element && element.subCategoryName
+                        ? element.subCategoryName
+                        : element.name}</span
+                >
+                {#if cohorts.length > 0}
+                    <span
+                        part="lens-data-tree-element-cohort-subline"
+                        title={cohortTitle}
+                    >
+                        {#each cohorts as cohort (cohort.study)}
+                            <span
+                                part="lens-data-tree-element-cohort-tag {cohort.active
+                                    ? ''
+                                    : 'lens-data-tree-element-cohort-tag-inactive'}"
+                                style="--study: {cohort.color}"
+                                >{cohort.study}</span
+                            >
+                        {/each}
+                    </span>
+                {/if}
+            </span>
         </button>
 
-        {#if element.cohort && element.cohort.length > 0}
-            <span>
-                <!-- eslint-disable-next-line svelte/require-each-key -->
-                {#each element.cohort as cohort}
-                    <span
-                        part="lens-data-tree-element-cohort-info"
-                        style="color: {getCohortParam(cohort).color}"
-                        >{getCohortParam(cohort).name}</span
-                    >
-                {/each}
-            </span>
-        {/if}
         {#if element.infoButtonText}
             <InfoButtonComponent
                 message={element.infoButtonText}
@@ -237,9 +249,11 @@
         background-color: unset;
         cursor: pointer;
         text-align: left;
+        min-width: 0;
     }
 
     [part~="lens-data-tree-element-toggle-icon"] {
+        flex-shrink: 0;
         transform: rotate(0deg);
         transition: all 0.1s ease-in-out;
     }
@@ -275,9 +289,40 @@
         padding-top: var(--gap-xs);
         padding-bottom: var(--gap-xs);
     }
-    [part~="lens-data-tree-element-cohort-info"] {
-        font-size: x-small;
-        padding: 0 2px;
-        vertical-align: center;
+    [part~="lens-data-tree-element-label"] {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        overflow-wrap: anywhere;
+    }
+
+    [part~="lens-data-tree-element-cohort-subline"] {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2px 6px;
+        margin-top: 1px;
+    }
+
+    [part~="lens-data-tree-element-cohort-tag"] {
+        display: inline-flex;
+        align-items: center;
+        gap: 3px;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        color: color-mix(in oklab, var(--study) 80%, black);
+    }
+
+    [part~="lens-data-tree-element-cohort-tag"]::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background-color: var(--study);
+    }
+
+    [part~="lens-data-tree-element-cohort-tag-inactive"] {
+        color: var(--gray, #8a909a);
+        font-weight: 500;
     }
 </style>

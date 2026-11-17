@@ -28,11 +28,17 @@ For a more in depth description of the structure see [catalogue guide](../guide/
 
 ## Styling
 
-| Part Name                                  | Description                          |
-| ------------------------------------------ | ------------------------------------ |
-| `lens-catalogue`                           | Main container of the catalogue      |
-| `lens-catalogue-wrapper`                   | Wrapper around all top-level nodes   |
-| `lens-catalogue-toggle-button`             | The expand/collapse toggle button    |
-| `lens-catalogue-toggle-button-closed-icon` | Icon when the catalogue is collapsed |
-| `lens-catalogue-toggle-button-icon`        | The icon stlye                       |
-| `lens-catalogue-toggle-button-open-text`   | The label next to the icon           |
+| Part Name                                    | Description                                                             |
+| -------------------------------------------- | ----------------------------------------------------------------------- |
+| `lens-catalogue`                             | Main container of the catalogue                                         |
+| `lens-catalogue-wrapper`                     | Wrapper around all top-level nodes                                      |
+| `lens-catalogue-toggle-button`               | The expand/collapse toggle button                                       |
+| `lens-catalogue-toggle-button-closed-icon`   | Icon when the catalogue is collapsed                                    |
+| `lens-catalogue-toggle-button-icon`          | The icon stlye                                                          |
+| `lens-catalogue-toggle-button-open-text`     | The label next to the icon                                              |
+| `lens-catalogue-no-study-selected`           | Message box shown when every study is deselected in `lens-study-filter` |
+| `lens-catalogue-no-study-selected-title`     | Title of that message                                                   |
+| `lens-catalogue-no-study-selected-text`      | Text of that message                                                    |
+| `lens-data-tree-element-cohort-subline`      | Line under an element name listing its studies                          |
+| `lens-data-tree-element-cohort-tag`          | One study in that line                                                  |
+| `lens-data-tree-element-cohort-tag-inactive` | A study that is deselected in the filter                                |

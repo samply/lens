@@ -11,6 +11,8 @@
     import { lensOptions } from "../../stores/options";
     import { fetchFacetCounts } from "../../stores/facetCounts";
     import { translate } from "../../helpers/translations";
+    import { FunnelX } from "lucide-svelte";
+    import { studyState } from "./study-state.svelte";
 
     interface Props {
         /**
@@ -30,6 +32,11 @@
     }: Props = $props();
 
     let isOpen = $state(toggle.open);
+
+    let noStudySelected = $derived(
+        studyState.studies.length > 0 &&
+            studyState.activeButton.every((active) => !active),
+    );
 
     const handleToggle = (): void => {
         isOpen = !isOpen;
@@ -81,6 +88,17 @@
         </button>
     {/if}
     {#if isOpen || !toggle.collapsable}
+        {#if noStudySelected}
+            <div part="lens-catalogue-no-study-selected" role="status">
+                <FunnelX size={28} />
+                <strong part="lens-catalogue-no-study-selected-title"
+                    >{translate("catalogue_no_study_selected_title")}</strong
+                >
+                <span part="lens-catalogue-no-study-selected-text"
+                    >{translate("catalogue_no_study_selected_text")}</span
+                >
+            </div>
+        {/if}
         <div part="lens-catalogue-wrapper">
             <!-- eslint-disable-next-line svelte/require-each-key -->
             {#each $catalogue as Category}
@@ -111,6 +129,26 @@
 
     [part~="lens-catalogue-toggle-button-closed-icon"] {
         transform: rotate(180deg);
+    }
+
+    [part~="lens-catalogue-no-study-selected"] {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--gap-xxs);
+        margin-bottom: var(--gap-s);
+        padding: var(--gap-m) var(--gap-s);
+        border: 1px dashed var(--lightest-gray);
+        border-radius: var(--border-radius-small);
+        color: var(--gray);
+        text-align: center;
+        font-family: var(--font-family);
+        font-size: var(--font-size-s);
+    }
+
+    [part~="lens-catalogue-no-study-selected-title"] {
+        color: var(--font-color);
+        font-size: var(--font-size-m);
     }
 
     [part~="lens-catalogue-wrapper"] {

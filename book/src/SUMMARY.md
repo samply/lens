@@ -27,6 +27,7 @@
     - [Search Bar](components/searchbar.md)
     - [Search Bar Multiple](components/searchbarmulti.md)
     - [Search Button](components/searchbutton.md)
+    - [Study Filter](components/studyfilter.md)
 - [Release notes](releases/README.md)
     - [Version 0.6.5](releases/v0.6.5.md)
     - [Version 0.6.4](releases/v0.6.4.md)

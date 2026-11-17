@@ -86,4 +86,28 @@ const lensTranslations: Texts = {
         en: "Search begins with 2 characters",
         de: "Suche beginnt mit 2 Zeichen",
     },
+    study_filter_title: {
+        en: "Filter catalogue by study",
+        de: "Katalog nach Studie filtern",
+    },
+    study_filter_showing: {
+        en: "{shown} of {total} data elements shown",
+        de: "{shown} von {total} Datenelementen angezeigt",
+    },
+    study_filter_show_all: {
+        en: "Show all",
+        de: "Alle anzeigen",
+    },
+    study_filter_toggle_title: {
+        en: "Click to show or hide data elements of {study}",
+        de: "Klicken, um Datenelemente von {study} ein- oder auszublenden",
+    },
+    catalogue_no_study_selected_title: {
+        en: "No study selected",
+        de: "Keine Studie ausgewählt",
+    },
+    catalogue_no_study_selected_text: {
+        en: "Please select at least one study to see its data elements.",
+        de: "Bitte wählen Sie mindestens eine Studie aus, um deren Datenelemente zu sehen.",
+    },
 };
