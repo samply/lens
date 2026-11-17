@@ -3,7 +3,7 @@ export const studyState = $state({
     alias: [] as string[],
     activeButton: [] as boolean[],
 });
-const colorTable = ["blue", "green", "red"];
+const colorTable = ["blue", "green", "red", "orange"];
 
 export function addStudy(name: string, alias?: string): void {
     studyState.studies.push(name);

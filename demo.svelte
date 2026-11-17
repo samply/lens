@@ -15,11 +15,11 @@
     } from "./src/index";
     import { Check, X } from "lucide-svelte";
     import { filterCatalogue } from "./src/components/catalogue/catalogue-transform";
-    import catalogue from "./src/catalogue/napkon-test-catalogue.json";
+    import catalogue from "./src/catalogue/ontology.json";
     import {
         studyState,
-        getSelectedStudies,
-    } from "c:/IntelliJ - Projekte/lens2-(svelte)/src/components/catalogue/study-state.svelte";
+        getSelectedStudies, getCohortParam,
+    } from "./src/components/catalogue/study-state.svelte";
 
     const barChartBackgroundColors: string[] = ["#052c65", "#0d6efd"];
     const barChartHoverColors: string[] = ["#000000"];
@@ -450,7 +450,7 @@
         <div id="catalogue" class="card">
             <div class="studien-button-bar">
                 <!-- eslint-disable-next-line svelte/require-each-key -->
-                {#each studyState.studies as study, index}
+                <!--{#each studyState.studies as study, index}
                     <button
                         onclick={() => toggleActiveStudy(index)}
                         class="studien-button"
@@ -463,21 +463,21 @@
                         {/if}
                         {study}
                     </button>
-                {/each}
+                {/each}-->
                 <!-- eslint-disable-next-line svelte/require-each-key -->
-                <!--{#each studyState.studies as study, index}
+                {#each studyState.studies as study, index}
                     <span class="studien-checkbox-label">
                         <input
                                 part="lens-result-table-header-checkbox"
                                 type="checkbox"
                                 checked={studyState.activeButton[index]}
-                                onchange={() => toggleActive(index)}
+                                onchange={() => toggleActiveStudy(index)}
                         />
                         <span class="studien-checkbox-label-index"
                               style="background-color: {getCohortParam(study).color}">{index + 1}</span>
                         {study}
                     </span>
-                {/each}-->
+                {/each}
             </div>
             <lens-catalogue toggle={{ collapsable: false }}></lens-catalogue>
         </div>
