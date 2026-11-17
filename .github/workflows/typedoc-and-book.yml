@@ -1,14 +1,9 @@
-# This workflow is triggered on push to the main branch and builds the TypeDoc
-# and mdbook documentation and deploys them to GitHub Pages.
-#
-# This file is copied and adapted from:
-# https://github.com/rust-lang/mdBook/wiki/Automated-Deployment%3A-GitHub-Actions#using-deploy-via-actions
-
 name: Deploy TypeDoc and mdbook
+
 on:
     push:
-        branches:
-            - main
+        tags:
+            - "v[0-9]+.[0-9]+.[0-9]+*"
 
 jobs:
     deploy:
@@ -17,8 +12,8 @@ jobs:
             pages: write # To push to a GitHub Pages site
             id-token: write # To update the deployment status
         steps:
-            - uses: actions/checkout@v6
-            - uses: actions/setup-node@v6
+            - uses: actions/checkout@v7
+            - uses: actions/setup-node@v7
               with:
                   node-version: latest
             - run: npm ci

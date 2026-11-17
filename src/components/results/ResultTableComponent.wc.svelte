@@ -6,7 +6,7 @@
 />
 
 <script lang="ts">
-    import { Info } from "lucide-svelte";
+    import { ExternalLink, Info } from "lucide-svelte";
     import { withTailwind } from "../../helpers/tailwind";
     import { datarequestsStore } from "../../stores/datarequests";
     import {
@@ -195,13 +195,32 @@
         pageSize?: number;
         /** Callback that returns a tooltip message for a given number. If defined, adds a tooltip to numeric cells with the returned message. */
         showRoundedTo?: (value: number) => string;
+        /** Sets or removes the checkboxes in the table.*/
+        checkboxes: boolean;
     }
 
-    let { title = "", pageSize, showRoundedTo }: Props = $props();
+    let {
+        title = "",
+        pageSize,
+        showRoundedTo,
+        checkboxes = true,
+    }: Props = $props();
 
     let activePage = $state(1);
-    let sortColumnIndex = $state(0);
-    let sortAscending = $state(true);
+    const defaultSortBy = $lensOptions?.tableOptions?.defaultSortBy;
+    let sortColumnIndex = $state(
+        defaultSortBy === undefined
+            ? 0
+            : Math.max(
+                  0,
+                  headerData.findIndex(
+                      (header) => header.dataKey === defaultSortBy,
+                  ),
+              ),
+    );
+    let sortAscending = $state(
+        ($lensOptions?.tableOptions?.defaultSortOrder ?? "asc") === "asc",
+    );
     let visibleRows: TableRowData = $derived.by(() => {
         // Sort
         const rows = [...tableRowData].sort((a, b) => {
@@ -250,15 +269,17 @@
 <table part="lens-result-table">
     <thead part="lens-result-table-header">
         <tr part="lens-result-table-header-row">
-            <th
-                part="lens-result-table-header-cell lens-result-table-header-cell-checkbox"
-                ><input
-                    part="lens-result-table-header-checkbox"
-                    type="checkbox"
-                    checked={allChecked}
-                    onchange={checkAllSites}
-                /></th
-            >
+            {#if checkboxes}
+                <th
+                    part="lens-result-table-header-cell lens-result-table-header-cell-checkbox"
+                    ><input
+                        part="lens-result-table-header-checkbox"
+                        type="checkbox"
+                        checked={allChecked}
+                        onchange={checkAllSites}
+                    /></th
+                >
+            {/if}
             <!-- eslint-disable-next-line svelte/require-each-key -->
             {#each headerData as header, index}
                 <th
@@ -291,17 +312,19 @@
     <tbody part="lens-result-table-table-body">
         {#each visibleRows as tableRow (tableRow[0])}
             <tr part="lens-result-table-item-body-row">
-                <td
-                    part="lens-result-table-item-body-cell lens-result-table-item-body-cell-checkbox"
-                    ><input
-                        part="lens-result-table-item-body-checkbox"
-                        type="checkbox"
-                        checked={$datarequestsStore.includes(
-                            tableRow[0] as string,
-                        )}
-                        onchange={() => updateStoreOnCheck(tableRow)}
-                    /></td
-                >
+                {#if checkboxes}
+                    <td
+                        part="lens-result-table-item-body-cell lens-result-table-item-body-cell-checkbox"
+                        ><input
+                            part="lens-result-table-item-body-checkbox"
+                            type="checkbox"
+                            checked={$datarequestsStore.includes(
+                                tableRow[0] as string,
+                            )}
+                            onchange={() => updateStoreOnCheck(tableRow)}
+                        /></td
+                    >
+                {/if}
                 {#each tableRow as data, index (index)}
                     <td part="lens-result-table-item-body-cell">
                         {#if index === 0}
@@ -323,26 +346,10 @@
                                     rel="noopener noreferrer"
                                 >
                                     {siteName}
-                                    <svg
-                                        style="width: 0.9em; height: 0.9em;"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        ><path
-                                            d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
-                                        /><polyline
-                                            points="15 3 21 3 21 9"
-                                        /><line
-                                            x1="10"
-                                            y1="14"
-                                            x2="21"
-                                            y2="3"
-                                        /></svg
-                                    >
+                                    <ExternalLink
+                                        class="size-4"
+                                        part="lens-result-table-item-body-cell-link-icon"
+                                    />
                                 </a>
                             {:else}
                                 {siteName}

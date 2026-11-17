@@ -5,24 +5,19 @@
 
 version: 2
 updates:
-    - package-ecosystem: "npm" # See documentation for possible values
-      directory: "/" # Location of package manifests
+    - package-ecosystem: "npm"
+      directory: "/"
       schedule:
-          interval: "weekly"
-      # Group minor and patch updates into a single PR to reduce noise
-      # Major version updates will still be created as individual PRs for careful review
+          interval: "daily"
       groups:
-          minor-and-patch:
+          npm:
               patterns:
                   - "*"
-              update-types:
-                  - "minor"
-                  - "patch"
 
     - package-ecosystem: "github-actions"
       directory: "/"
       schedule:
-          interval: "weekly"
+          interval: "daily"
       groups:
           actions:
               patterns:

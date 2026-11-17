@@ -6,10 +6,11 @@
         addItemToQuery,
         queryStore,
     } from "../../stores/query";
-    import type { QueryItem, QueryValue } from "../../types/queryData";
+    import type { QueryItem } from "../../types/queryData";
     import { onMount } from "svelte";
     import { facetCounts } from "../../stores/facetCounts";
     import { lensOptions } from "../../stores/options";
+    import { createIncrementalList } from "../../helpers/incrementalList.svelte";
 
     /**
      * mockdata to get from texts store
@@ -72,29 +73,36 @@
      */
     let autoCompleteOpen = $state(false);
 
-    const getChosenOptionsFromQueryStore = (
-        queryStore: QueryItem[][],
-    ): QueryItem[] => {
-        return queryStore
-            .flat()
-            .map((queryItem: QueryItem) => {
-                const queryItemValues = queryItem.values.map(
-                    (queryValue: QueryValue) => {
-                        return {
-                            ...queryItem,
-                            values: [queryValue],
-                        };
-                    },
-                );
-                return queryItemValues;
-            })
-            .flat();
-    };
+    /**
+     * names of this category's criteria that are already in the active search
+     * bar. Those options are grayed out and cannot be added again.
+     */
+    let selectedNames: Set<string> = $derived(
+        new Set(
+            ($queryStore[$activeQueryGroupIndex] ?? [])
+                .filter((queryItem: QueryItem) => queryItem.key === element.key)
+                .flatMap((queryItem: QueryItem) =>
+                    queryItem.values.map((queryValue) => queryValue.name),
+                ),
+        ),
+    );
 
     /**
      * keeps track of the focused item
      */
-    let focusedItemIndex: number = $state(-1);
+    /**
+     * the first option the user can select, or -1 if every option is already in
+     * the active search bar
+     * @returns the index of the first selectable option
+     */
+    const firstSelectableIndex = (): number =>
+        inputOptions.findIndex((option) => !selectedNames.has(option.name));
+
+    /**
+     * the highlighted option. Typing resets it to the first selectable option so
+     * that enter picks the top match, the arrow keys assign to it from there.
+     */
+    let focusedItemIndex: number = $derived(firstSelectableIndex());
 
     let activeDomElement: HTMLElement | undefined = $state();
 
@@ -109,13 +117,9 @@
         indexOfChosenStore: number,
     ): void => {
         /**
-         * check if option is allready present in the query store
+         * check if option is allready present in the active search bar
          */
-        const optionAllreadyPresent = chosenOptions.find((option) => {
-            return option.values[0].value === inputItem.key;
-        });
-
-        if (optionAllreadyPresent) {
+        if (selectedNames.has(inputItem.name)) {
             return;
         }
 
@@ -139,8 +143,33 @@
 
         inputValue = "";
         focusedItemIndex = 0;
+        optionList.reset();
 
         addItemToQuery(queryItem, indexOfChosenStore);
+    };
+
+    /**
+     * finds the option the arrow keys move the focus to, skipping the options
+     * that are already in the active search bar
+     * @param step - 1 to move down the list, -1 to move up
+     * @returns the index of the next selectable option, or the current index if
+     * every other option is already in the search bar
+     */
+    const nextSelectableIndex = (step: number): number => {
+        // wrapping around the end of the list mirrors the plain navigation:
+        // downwards to the first option, upwards to the last rendered one. The
+        // last option of the full list would have to render everything at once.
+        const wrapTo = step > 0 ? 0 : Math.max(optionList.renderedCount - 1, 0);
+        let index = focusedItemIndex + step;
+        for (let tried = 0; tried < inputOptions.length; tried++) {
+            if (index < 0 || index > inputOptions.length - 1) index = wrapTo;
+            const option = inputOptions[index];
+            if (option !== undefined && !selectedNames.has(option.name)) {
+                return index;
+            }
+            index += step;
+        }
+        return focusedItemIndex;
     };
 
     /**
@@ -151,19 +180,19 @@
         if (inputValue.length === 0 || event.key === "Escape") {
             inputValue = "";
             focusedItemIndex = -1;
+            optionList.reset();
             return;
         }
         if (event.key === "ArrowDown") {
             event.preventDefault();
-            focusedItemIndex = focusedItemIndex + 1;
-            if (focusedItemIndex > inputOptions.length - 1)
-                focusedItemIndex = 0;
+            const nextIndex = nextSelectableIndex(1);
+            // navigating past the rendered window renders the next chunk
+            optionList.ensureRendered(nextIndex);
+            focusedItemIndex = nextIndex;
         }
         if (event.key === "ArrowUp") {
             event.preventDefault();
-            focusedItemIndex = focusedItemIndex - 1;
-            if (focusedItemIndex < 0)
-                focusedItemIndex = inputOptions.length - 1;
+            focusedItemIndex = nextSelectableIndex(-1);
         }
         if (event.key === "Enter") {
             event.preventDefault();
@@ -176,9 +205,20 @@
 
     /**
      * adds the input option to the query store
+     * @param event - the mousedown event
      * @param inputOption - the input option to add to the query store
      */
-    const selectItemByClick = (inputOption: Criteria): void => {
+    const selectItemByClick = (
+        event: MouseEvent,
+        inputOption: Criteria,
+    ): void => {
+        if (selectedNames.has(inputOption.name)) {
+            // the option is already in the active search bar, so the click does
+            // nothing. Preventing the default keeps the input focused and the
+            // list open.
+            event.preventDefault();
+            return;
+        }
         addInputValueToStore(inputOption, $activeQueryGroupIndex);
     };
 
@@ -236,44 +276,46 @@
      * stores the filtered list of autocomplete items
      */
     let inputOptions: Criteria[] = $derived.by(() => {
-        return criteria.filter((item: Criteria) => {
-            const clearedInputValue = inputValue
-                .replace(/^[0-9]*:/g, "")
-                .toLocaleLowerCase();
+        const clearedInputValue = inputValue
+            .replace(/^[0-9]*:/g, "")
+            .toLocaleLowerCase();
 
-            return (
-                item.name.toLowerCase().includes(clearedInputValue) ||
-                item.key.toLowerCase().includes(clearedInputValue) ||
-                item.description?.toLowerCase().includes(clearedInputValue)
-                /**
-                 * FIX ME:
-                 * should only take names. This needs a catalogue fix
-                 */
-                // item.key.toLocaleLowerCase().includes(clearedInputValue) ||
-                // item.criterion.key.toLowerCase().includes(clearedInputValue) ||
-            );
-        });
+        return criteria
+            .map((item: Criteria) => ({
+                item,
+                rank: matchRank(item, clearedInputValue),
+            }))
+            .filter(({ rank }) => rank > 0)
+            .sort((a, b) => b.rank - a.rank)
+            .map(({ item }) => item);
     });
 
     /**
-     * list of options that allready have been chosen and should be displayed beneath the autocomplete input
-     * chosenOptions are constructed from the query store and has no duplicates
-     * if an option is put into the store from anywhere it will update
+     * ranks how well a criterion matches the user's input. Items that match by
+     * name come before items that only match by description, e.g. typing "BRCA"
+     * lists BRCA1 before ABRAXAS1, whose description happens to mention BRCA1.
+     * @param item - the criterion to rank
+     * @param inputValue - the lowercased input value
+     * @returns 2 for a match in the name or key, 1 for a match in the
+     * description, 0 for no match
      */
-    let chosenOptions = $derived(
-        getChosenOptionsFromQueryStore($queryStore).reduce(
-            (acc: QueryItem[], queryItem: QueryItem) => {
-                const optionAllreadyPresent = acc.find((option: QueryItem) => {
-                    return option.values[0].value === queryItem.values[0].value;
-                });
-                if (optionAllreadyPresent || queryItem.key !== element.key) {
-                    return acc;
-                }
-                return [...acc, queryItem];
-            },
-            [],
-        ),
-    );
+    const matchRank = (item: Criteria, inputValue: string): number => {
+        if (
+            item.name.toLowerCase().includes(inputValue) ||
+            item.key.toLowerCase().includes(inputValue)
+        ) {
+            return 2;
+        }
+        if (item.description?.toLowerCase().includes(inputValue)) {
+            return 1;
+        }
+        return 0;
+    };
+
+    /**
+     * renders the filtered list in chunks so that huge catalogues stay responsive
+     */
+    const optionList = createIncrementalList(() => inputOptions);
 
     $effect(() => {
         if (activeDomElement) {
@@ -291,6 +333,7 @@
             type="text"
             bind:this={searchBarInput}
             bind:value={inputValue}
+            oninput={() => optionList.reset()}
             onkeydown={handleKeyDown}
             placeholder={placeholderText}
             onfocusin={() => {
@@ -304,16 +347,22 @@
             <ul part="autocomplete-options">
                 {#if inputOptions?.length > 0}
                     <!-- eslint-disable-next-line svelte/require-each-key -->
-                    {#each inputOptions as inputOption, index}
-                        {#if index === focusedItemIndex}
+                    {#each optionList.items as inputOption, index}
+                        <!-- a selected option is never highlighted, it cannot be
+                             selected again -->
+                        {#if index === focusedItemIndex && !selectedNames.has(inputOption.name)}
                             <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
                             <!-- onmousedown is chosen because the input looses focus when clicked outside, 
                                 which will close the options before the click is finshed -->
                             <li
                                 bind:this={activeDomElement}
-                                part="autocomplete-options-item autocomplete-options-item-focused"
-                                onmousedown={() =>
-                                    selectItemByClick(inputOption)}
+                                part="autocomplete-options-item autocomplete-options-item-focused {selectedNames.has(
+                                    inputOption.name,
+                                )
+                                    ? 'autocomplete-options-item-selected'
+                                    : ''}"
+                                onmousedown={(event) =>
+                                    selectItemByClick(event, inputOption)}
                             >
                                 <div part="autocomplete-options-item-name">
                                     <!-- eslint-disable-next-line svelte/no-at-html-tags -->
@@ -344,9 +393,13 @@
                             <!-- onmousedown is chosen because the input looses focus when clicked outside, 
                                 which will close the options before the click is finshed -->
                             <li
-                                part="autocomplete-options-item"
-                                onmousedown={() =>
-                                    selectItemByClick(inputOption)}
+                                part="autocomplete-options-item {selectedNames.has(
+                                    inputOption.name,
+                                )
+                                    ? 'autocomplete-options-item-selected'
+                                    : ''}"
+                                onmousedown={(event) =>
+                                    selectItemByClick(event, inputOption)}
                             >
                                 <div part="autocomplete-options-item-name">
                                     <!-- eslint-disable-next-line svelte/no-at-html-tags -->
@@ -374,6 +427,12 @@
                             </li>
                         {/if}
                     {/each}
+                    {#if optionList.hasMore}
+                        <li
+                            part="autocomplete-options-sentinel"
+                            use:optionList.sentinel
+                        ></li>
+                    {/if}
                 {:else}
                     <li
                         part="autocomplete-options-item autocomplete-options-item-no-matches"
@@ -430,7 +489,17 @@
         overflow-y: auto;
 
         display: grid;
-        grid-template-columns: max-content auto max-content;
+        /* The name column takes what it needs but may shrink below its content
+           width, so that a long criterion name cannot push the description out
+           of the list */
+        grid-template-columns:
+            minmax(0, max-content) minmax(0, 1fr)
+            max-content;
+    }
+
+    [part~="autocomplete-options-sentinel"] {
+        grid-column: 1 / -1;
+        height: 1px;
     }
 
     [part~="autocomplete-options-item"] {
@@ -452,9 +521,22 @@
     }
 
     [part~="autocomplete-options-item"]:hover:not(
-            [part~="autocomplete-options-item-focused"]
+            [part~="autocomplete-options-item-focused"],
+            [part~="autocomplete-options-item-selected"]
         ) {
         background-color: var(--light-gray);
+    }
+
+    /* Already in the active search bar, so it cannot be selected again */
+    [part~="autocomplete-options-item-selected"] {
+        opacity: 0.4;
+        cursor: default;
+    }
+
+    [part~="autocomplete-options-item-name"] {
+        /* Long names wrap instead of widening the column */
+        min-width: 0;
+        overflow-wrap: anywhere;
     }
 
     /* Description (secondary text) */

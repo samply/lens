@@ -39,6 +39,7 @@
         dataKey: string;
         enableSorting: boolean;
         perSite?: boolean;
+        topN?: number;
         groupRange?: number;
         groupingDivider?: string;
         filterRegex?: string;
@@ -61,6 +62,7 @@
         scaleType = "linear",
         enableSorting = false,
         perSite = false,
+        topN = undefined,
         groupRange = undefined,
         groupingDivider = "",
         filterRegex = "",
@@ -418,6 +420,21 @@
                 noDataAvailable = true;
             }
             return;
+        }
+
+        if (topN !== undefined && topN > 0) {
+            chartData = sortChartData(chartData, "desc");
+            if (chartData.labels.length > topN) {
+                chartData.labels = chartData.labels.slice(0, topN);
+                chartData.data = chartData.data.map((dataset) => ({
+                    data: dataset.data.slice(0, topN),
+                    backgroundColor: dataset.backgroundColor.slice(0, topN),
+                    hoverBackgroundColor: dataset.hoverBackgroundColor.slice(
+                        0,
+                        topN,
+                    ),
+                }));
+            }
         }
 
         if (sortBy === "value") {

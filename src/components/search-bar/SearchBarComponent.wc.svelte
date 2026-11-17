@@ -36,6 +36,7 @@
     import NumberInputComponent from "../catalogue/NumberInputComponent.svelte";
     import DatePickerComponent from "../catalogue/DatePickerComponent.svelte";
     import StringInputComponent from "../catalogue/StringInputComponent.svelte";
+    import { createIncrementalList } from "../../helpers/incrementalList.svelte";
 
     interface Props {
         /** The string to display when no matches are found */
@@ -193,42 +194,109 @@
      * stores the filtered list of autocomplete items
      */
     let inputOptions: AutoCompleteItem[] = $derived.by(() => {
-        return criteria.filter((item: AutoCompleteItem) => {
-            /**
-             * lets the user use a number followed by a colon to specify the search group. nice to have for the power users
-             */
-            const clearedInputValue = inputValue
-                .replace(/^[0-9]*:/g, "")
-                .toLocaleLowerCase();
+        /**
+         * lets the user use a number followed by a colon to specify the search group. nice to have for the power users
+         */
+        const clearedInputValue = inputValue
+            .replace(/^[0-9]*:/g, "")
+            .toLocaleLowerCase();
 
-            switch (item.fieldType) {
-                case "criterion": {
-                    return (
-                        item.name.toLowerCase().includes(clearedInputValue) ||
-                        item.criterion.name
-                            .toLowerCase()
-                            .includes(clearedInputValue) ||
-                        item.criterion.description
-                            ?.toLowerCase()
-                            .includes(clearedInputValue)
-                    );
-                }
-                case "number":
-                case "date":
-                case "string":
-                    return item.name
-                        .toLocaleLowerCase()
-                        .includes(clearedInputValue);
-                default:
-                    return false;
+        const matches = criteria
+            .map((item: AutoCompleteItem) => ({
+                item,
+                rank: matchRank(item, clearedInputValue),
+            }))
+            .filter(({ rank }) => rank > 0);
+
+        /**
+         * the options are grouped by category with a heading above each group, so
+         * ranking must not pull an item out of its group
+         */
+        const categoryOrder: string[] = [];
+        for (const { item } of matches) {
+            if (!categoryOrder.includes(item.name)) {
+                categoryOrder.push(item.name);
             }
+        }
+
+        return matches
+            .map((match) => ({
+                ...match,
+                category: categoryOrder.indexOf(match.item.name),
+            }))
+            .sort((a, b) => a.category - b.category || b.rank - a.rank)
+            .map(({ item }) => item);
+    });
+
+    /**
+     * ranks how well an item matches the user's input. Items that match by name
+     * come before items that only match by description, e.g. typing "BRCA" lists
+     * BRCA1 before ABRAXAS1, whose description happens to mention BRCA1.
+     * @param item - the item to rank
+     * @param inputValue - the lowercased input value
+     * @returns 2 for a match in the name, 1 for a match in the description, 0
+     * for no match
+     */
+    const matchRank = (item: AutoCompleteItem, inputValue: string): number => {
+        switch (item.fieldType) {
+            case "criterion": {
+                if (
+                    item.name.toLowerCase().includes(inputValue) ||
+                    item.criterion.name.toLowerCase().includes(inputValue)
+                ) {
+                    return 2;
+                }
+                return item.criterion.description
+                    ?.toLowerCase()
+                    .includes(inputValue)
+                    ? 1
+                    : 0;
+            }
+            case "number":
+            case "date":
+            case "string":
+                return item.name.toLocaleLowerCase().includes(inputValue)
+                    ? 2
+                    : 0;
+            default:
+                return 0;
+        }
+    };
+
+    /**
+     * renders the filtered list in chunks so that huge catalogues stay responsive
+     */
+    const optionList = createIncrementalList(() => inputOptions);
+
+    /**
+     * marks those options that are the first of their category and therefore get
+     * a category heading rendered above them
+     */
+    let headingFlags: boolean[] = $derived.by(() => {
+        const seenNames: string[] = [];
+        return inputOptions.map((option: AutoCompleteItem) => {
+            if (seenNames.includes(option.name)) return false;
+            seenNames.push(option.name);
+            return true;
         });
     });
 
     /**
      * keeps track of the focused item
      */
-    let focusedItemIndex: number = $state(-1);
+    /**
+     * the first option the user can select, or -1 if every option is already in
+     * the search bar it would be added to
+     * @returns the index of the first selectable option
+     */
+    const firstSelectableIndex = (): number =>
+        inputOptions.findIndex((option) => !isSelected(option));
+
+    /**
+     * the highlighted option. Typing resets it to the first selectable option so
+     * that enter picks the top match, the arrow keys assign to it from there.
+     */
+    let focusedItemIndex: number = $derived(firstSelectableIndex());
 
     const optionElements: HTMLElement[] = $state([]);
 
@@ -247,6 +315,7 @@
         indexOfChosenStore: number = $queryStore.length,
     ): void => {
         if (!(inputItem.fieldType === "criterion")) return;
+        if (isInSearchBar(inputItem, indexOfChosenStore)) return;
 
         /**
          * transform inputItem to QueryItem
@@ -288,7 +357,78 @@
         return index;
     };
 
+    /**
+     * whether a criterion is already in one of the search bars
+     * @param item - the autocomplete item
+     * @param groupIndex - the index of the search bar to look in
+     * @returns true if the criterion is already there
+     */
+    const isInSearchBar = (
+        item: AutoCompleteItem,
+        groupIndex: number,
+    ): boolean =>
+        item.fieldType === "criterion" &&
+        ($queryStore[groupIndex] ?? []).some(
+            (queryItem: QueryItem) =>
+                queryItem.key === item.key &&
+                queryItem.values.some(
+                    (queryValue) => queryValue.name === item.criterion.name,
+                ),
+        );
+
+    /**
+     * whether an item is already in the search bar it would be added to. Those
+     * options are grayed out and cannot be selected again.
+     * @param item - the autocomplete item
+     * @returns true if the item is already selected
+     */
+    const isSelected = (item: AutoCompleteItem): boolean =>
+        isInSearchBar(item, extractTargetGroupFromInputValue());
+
+    /**
+     * adds a criterion to the query when the user clicks it
+     * @param event - the mousedown event
+     * @param item - the clicked autocomplete item
+     */
+    const selectCriterionByClick = (
+        event: MouseEvent,
+        item: AutoCompleteItem,
+    ): void => {
+        if (isSelected(item)) {
+            // the criterion is already in the search bar, so the click does
+            // nothing. Preventing the default keeps the input focused and the
+            // list open.
+            event.preventDefault();
+            return;
+        }
+        addInputValueToStore(item, extractTargetGroupFromInputValue());
+    };
+
     let searchBarInputHasFoucs = $state(true);
+
+    /**
+     * finds the option the arrow keys move the focus to, skipping the options
+     * that are already in the search bar they would be added to
+     * @param step - 1 to move down the list, -1 to move up
+     * @returns the index of the next selectable option, or the current index if
+     * every other option is already in the search bar
+     */
+    const nextSelectableIndex = (step: number): number => {
+        // wrapping around the end of the list mirrors the plain navigation:
+        // downwards to the first option, upwards to the last rendered one. The
+        // last option of the full list would have to render everything at once.
+        const wrapTo = step > 0 ? 0 : Math.max(optionList.renderedCount - 1, 0);
+        let index = focusedItemIndex + step;
+        for (let tried = 0; tried < inputOptions.length; tried++) {
+            if (index < 0 || index > inputOptions.length - 1) index = wrapTo;
+            const option = inputOptions[index];
+            if (option !== undefined && !isSelected(option)) {
+                return index;
+            }
+            index += step;
+        }
+        return focusedItemIndex;
+    };
 
     /**
      * handles keyboard events to make input options selectable and form elements tabable
@@ -308,15 +448,14 @@
         }
         if (event.key === "ArrowDown") {
             event.preventDefault();
-            focusedItemIndex = focusedItemIndex + 1;
-            if (focusedItemIndex > inputOptions.length - 1)
-                focusedItemIndex = 0;
+            const nextIndex = nextSelectableIndex(1);
+            // navigating past the rendered window renders the next chunk
+            optionList.ensureRendered(nextIndex);
+            focusedItemIndex = nextIndex;
         }
         if (event.key === "ArrowUp") {
             event.preventDefault();
-            focusedItemIndex = focusedItemIndex - 1;
-            if (focusedItemIndex < 0)
-                focusedItemIndex = inputOptions.length - 1;
+            focusedItemIndex = nextSelectableIndex(-1);
         }
         if (event.key === "Enter") {
             event.preventDefault();
@@ -351,7 +490,7 @@
                 }
                 if (searchBarInputHasFoucs) {
                     const firstInput = optionElements
-                        .find((element) => element.querySelector("input"))
+                        .find((element) => element?.querySelector("input"))
                         ?.closest("li");
                     focusedItemIndex = firstInput
                         ? optionElements.indexOf(firstInput)
@@ -363,7 +502,7 @@
                     if (!isNextListItem) return;
                     const nextInput = optionElements
                         .slice(focusedItemIndex + 1)
-                        .find((element) => element.querySelector("input"))
+                        .find((element) => element?.querySelector("input"))
                         ?.closest("li");
                     focusedItemIndex = nextInput
                         ? optionElements.indexOf(nextInput)
@@ -412,6 +551,7 @@
     function resetToEmptySearchBar(focus: boolean = true): void {
         inputValue = "";
         focusedItemIndex = -1;
+        optionList.reset();
         if (focus) {
             focusSearchbar();
         }
@@ -614,6 +754,7 @@
         type="text"
         bind:this={searchBarInput}
         bind:value={inputValue}
+        oninput={() => optionList.reset()}
         placeholder={!readOnly ? placeholderText : ""}
         onfocusin={() => {
             autoCompleteOpen = true;
@@ -626,11 +767,8 @@
     {#if autoCompleteOpen && inputValue.length > 1}
         <ul part="lens-searchbar-autocomplete-options">
             {#if inputOptions?.length > 0}
-                {#each inputOptions as inputOption, i (inputOption.key + i)}
-                    <!-- TODO: this double loop makes the autocomplete slow with big data loads. Is there a better way to make the category headers? -->
-                    {#if inputOptions
-                        .map((option) => option.name)
-                        .indexOf(inputOption.name) === i}
+                {#each optionList.items as inputOption, i (inputOption.key + i)}
+                    {#if headingFlags[i]}
                         <div part="lens-searchbar-autocomplete-options-heading">
                             <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                             {@html getBoldedText(inputOption.name)}
@@ -643,15 +781,16 @@
                         <li
                             class="criterion-item"
                             bind:this={optionElements[i]}
-                            onmousedown={() =>
-                                addInputValueToStore(
-                                    inputOption,
-                                    extractTargetGroupFromInputValue(),
-                                )}
+                            onmousedown={(event) =>
+                                selectCriterionByClick(event, inputOption)}
                             part="lens-searchbar-autocomplete-options-item {focusedItemIndex ===
-                            i
+                                i && !isSelected(inputOption)
                                 ? 'lens-searchbar-autocomplete-options-item-focused'
-                                : ''} lens-searchbar-autocomplete-options-item-criterion"
+                                : ''} lens-searchbar-autocomplete-options-item-criterion {isSelected(
+                                inputOption,
+                            )
+                                ? 'lens-searchbar-autocomplete-options-item-selected'
+                                : ''}"
                         >
                             <div
                                 part="lens-searchbar-autocomplete-options-item-name"
@@ -663,7 +802,7 @@
                             </div>
                             <div
                                 part="lens-searchbar-autocomplete-options-item-description {focusedItemIndex ===
-                                i
+                                    i && !isSelected(inputOption)
                                     ? 'lens-searchbar-autocomplete-options-item-description-focused'
                                     : ''}"
                             >
@@ -757,6 +896,12 @@
                         </li>
                     {/if}
                 {/each}
+                {#if optionList.hasMore}
+                    <li
+                        part="lens-searchbar-autocomplete-options-sentinel"
+                        use:optionList.sentinel
+                    ></li>
+                {/if}
             {:else}
                 <li>{noMatchesFoundMessage}</li>
             {/if}
@@ -874,7 +1019,18 @@
         border-bottom-left-radius: var(--border-radius-small);
         border-bottom-right-radius: var(--border-radius-small);
         display: grid;
-        grid-template-columns: max-content auto max-content;
+        /* The name column takes what it needs but may shrink below its content
+           width, so that a long criterion name cannot push the description out
+           of the list */
+        grid-template-columns:
+            minmax(0, max-content) minmax(0, 1fr)
+            max-content;
+    }
+
+    [part~="lens-searchbar-autocomplete-options-item-name"] {
+        /* Long names wrap instead of widening the column */
+        min-width: 0;
+        overflow-wrap: anywhere;
     }
 
     [part~="lens-searchbar-autocomplete-options-item"] {
@@ -889,6 +1045,11 @@
         cursor: pointer;
     }
 
+    [part~="lens-searchbar-autocomplete-options-sentinel"] {
+        grid-column: 1 / -1;
+        height: 1px;
+    }
+
     [part~="lens-searchbar-autocomplete-options-heading"] {
         font-weight: bold;
         grid-column: 1 / -1;
@@ -900,9 +1061,17 @@
     }
 
     [part~="lens-searchbar-autocomplete-options-item"]:hover:not(
-            [part~="lens-searchbar-autocomplete-options-item-focused"]
+            [part~="lens-searchbar-autocomplete-options-item-focused"],
+            [part~="lens-searchbar-autocomplete-options-item-selected"]
         ) {
         background-color: var(--light-gray);
+    }
+
+    /* Already in the search bar the item would be added to, so it cannot be
+       selected again */
+    [part~="lens-searchbar-autocomplete-options-item-selected"] {
+        opacity: 0.4;
+        cursor: default;
     }
 
     [part~="lens-searchbar-autocomplete-options-item-description"] {

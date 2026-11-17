@@ -4,6 +4,8 @@ The `lens-result-table` component displays a paginated and sortable table of tot
 
 The table is setup with some props and some via the [options](https://samply.github.io/lens/docs/types/TableOptions.html). For example the columns are defined in the table options.
 
+By default the table is sorted by the first column (the site column) in ascending order. You can change the initial sort via the `defaultSortBy` (a column `dataKey`) and `defaultSortOrder` table options.
+
 The table is automatically populated with data sources that are marked as [claimed](https://github.com/samply/lens/blob/64c88231bdaf40062998f72f92e2d49afe213755/src/stores/response.ts#L12C1-L13C1) in the `ResultStore`. You can provide user-friendly labels for internal site keys via the `siteMappings` [option](https://samply.github.io/lens/docs/types/LensOptions.html#sitemappings).
 
 If a data source has not yet been fully claimed, the table shows a "loading" message. This message is customizable via the translation key `loading`, see [translation](../guide/translations.md).
@@ -40,7 +42,9 @@ To use the table, define the configuration in the Lens [tableOptions](https://sa
             "title": "Patients",
             "dataKey": "patients"
         }
-    ]
+    ],
+    "defaultSortBy": "patients",
+    "defaultSortOrder": "desc"
 }
 ```
 
