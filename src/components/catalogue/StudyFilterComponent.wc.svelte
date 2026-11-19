@@ -134,7 +134,7 @@
                     : ''}"
                 class={[
                     "group inline-flex cursor-pointer items-center gap-2 rounded-full border-2 py-1 pl-1 pr-3 text-sm font-medium shadow-sm transition-all",
-                    "hover:-translate-y-px hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500 active:translate-y-0",
+                    "hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500 active:translate-y-0",
                     study.active
                         ? "border-[var(--study)] bg-[color-mix(in_oklab,var(--study)_12%,white)] text-[color-mix(in_oklab,var(--study)_75%,black)]"
                         : "border-dashed border-primary-200 bg-white text-primary-900/50 hover:border-[var(--study)] hover:text-primary-900/80",
