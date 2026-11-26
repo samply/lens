@@ -48,6 +48,21 @@ export function isValidBbmriCollectionId(collectionId: string): boolean {
 }
 
 /**
+ * Return the per-collection breakdown of a site's specimens.
+ *
+ * Focus 0.26 renamed the specimen-level Custodian stratifier to
+ * "Custodian-specimen" to distinguish it from the patient-level stratifier,
+ * which keeps the name "Custodian" but which contains only one collection
+ * per patient, which means it cannot be guaranteed to find all collections.
+ * Older Focus versions report just specimens under "Custodian".
+ */
+export function getSpecimenCustodianCollections(
+    stratifiers: Record<string, Record<string, number>> | undefined,
+): Record<string, number> | undefined {
+    return stratifiers?.["Custodian-specimen"] ?? stratifiers?.Custodian;
+}
+
+/**
  * Select the collection IDs to send to the BBMRI Negotiator.
  */
 export function getNegotiatorCollectionIds(
@@ -117,8 +132,9 @@ export async function bbmriNegotiate(
         const siteInfo = currentLensOptions.siteMappings?.[site];
         const fallbackCollectionId =
             typeof siteInfo === "object" ? siteInfo.collectionId : undefined;
-        const custodianCollections =
-            getSiteResult(site)?.stratifiers?.Custodian;
+        const custodianCollections = getSpecimenCustodianCollections(
+            getSiteResult(site)?.stratifiers,
+        );
         const collectionIds = getNegotiatorCollectionIds(
             custodianCollections,
             fallbackCollectionId,
