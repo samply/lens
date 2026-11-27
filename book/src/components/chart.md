@@ -48,6 +48,8 @@ The scroll area is keyboard accessible: it can be focused with the Tab key and s
 
 The whole chart scrolls, including the y-axis and the legend (if `displayLegends` is enabled), so these move out of view when scrolling to the right.
 
+Rotated category labels need more vertical space than horizontal ones. Chart.js gives the x-axis at most half of the chart's height, so in a short chart the labels can overlap the x-axis title. To prevent this, give the plot a fixed height, for example `lens-chart::part(lens-chart-plot) { height: 300px; }`.
+
 `minCategoryWidth` and `categoryLabelRotation` are read when the chart is first created; changing them afterwards does not fully update the chart.
 
 ```svelte
@@ -59,6 +61,8 @@ The whole chart scrolls, including the y-axis and the legend (if `displayLegends
     categoryLabelRotation={90}
 ></lens-chart>
 ```
+
+The "Diagnosis distribution" chart in the Lens demo (`demo.svelte`) uses horizontal scrolling. After you run a search, the demo returns about 60 diagnosis codes, enough to make the chart scroll.
 
 ---
 

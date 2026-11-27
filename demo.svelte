@@ -16,6 +16,19 @@
     const barChartBackgroundColors: string[] = ["#052c65", "#0d6efd"];
     const barChartHoverColors: string[] = ["#000000"];
 
+    /**
+     * Generates ICD-10 codes C00, C01, ... with deterministic counts, so that
+     * the diagnosis chart has enough categories to demonstrate horizontal
+     * scrolling.
+     */
+    function generateDiagnoses(count: number): Record<string, number> {
+        const diagnoses: Record<string, number> = {};
+        for (let i = 0; i < count; i++) {
+            diagnoses["C" + String(i).padStart(2, "0")] = ((i * 37) % 45) + 5;
+        }
+        return diagnoses;
+    }
+
     setOptions({
         language: localStorage.getItem("language") || "en",
         texts: {
@@ -350,10 +363,11 @@
                         other: 0,
                     },
                     diagnosis: {
+                        ...generateDiagnoses(60),
                         C31: 40,
                         "C31.0": 20,
                         C41: 30,
-                        "41.0": 10,
+                        "C41.0": 10,
                     },
                 },
             });
@@ -369,7 +383,7 @@
                         C31: 40,
                         "C31.0": 20,
                         C41: 30,
-                        "41.0": 10,
+                        "C41.0": 10,
                     },
                 },
                 totals: {
@@ -462,11 +476,14 @@
             </div>
             <div class="card">
                 <lens-chart
+                    class="scrolling-chart"
                     title="Diagnosis distribution"
                     dataKey="diagnosis"
                     chartType="bar"
                     xAxisTitle="ICD-10 Code"
                     yAxisTitle="Number of cases"
+                    minCategoryWidth={24}
+                    categoryLabelRotation={90}
                 ></lens-chart>
             </div>
             <div class="card">
@@ -559,6 +576,15 @@
         display: flex;
         flex-direction: column;
         gap: var(--gap-s);
+    }
+
+    /*
+     * Rotated category labels need more vertical space than horizontal ones.
+     * Chart.js gives the x-axis at most half of the chart height, so without
+     * a fixed height the labels and the axis title overlap in narrow layouts.
+     */
+    .scrolling-chart::part(lens-chart-plot) {
+        height: 300px;
     }
 
     footer {
