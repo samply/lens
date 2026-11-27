@@ -6,8 +6,6 @@ The `lens-chart` component provides a styled wrapper for visualizing data using 
 
 The component is constructed from a title and a chart. There is a slot after the title and chart for customization. The chart does render either totals or stratifier from the [lens-results](../guide/results.md).
 
-Horizontally scrollable charts expose their scroll region to keyboard users. Focus the chart and use the horizontal arrow keys to scroll it.
-
 ---
 
 ## Props
@@ -30,8 +28,8 @@ Non of the props are required, however without `datakey` prop the chart does not
 | `dataKey`               | `string`              | `""`       | Looks up the data in the Result store.                                                                                                                                                                                                                                                            |
 | `perSite`               | `boolean`             | `"false"`  | When true, displays aggregated totals per site/location instead of overall totals.                                                                                                                                                                                                                |
 | `topN`                  | `number`              | `""`       | Limits the chart to the top N data entries sorted by value in descending order. Useful for e.g. showing the top 20 modified genes.                                                                                                                                                                |
-| `minCategoryWidth`      | `number`              | `0`        | Enables horizontal scrolling for bar charts with `indexAxis="x"` and reserves at least this many pixels per category. Category labels are not skipped while scrolling is enabled.                                                                                                                 |
-| `categoryLabelRotation` | `number`              | `""`       | Fixes x-axis category labels at the given clockwise rotation in degrees. For example, use `90` for vertical labels.                                                                                                                                                                               |
+| `minCategoryWidth`      | `number`              | `0`        | Enables horizontal scrolling for bar charts with `indexAxis="x"`. The plot area (including the y-axis) is made at least this many pixels wide per category, so each bar gets slightly less than this value. See [Horizontal scrolling](#horizontal-scrolling).                                    |
+| `categoryLabelRotation` | `number`              | `""`       | Fixes the x-axis category labels at the given counter-clockwise rotation in degrees (0–90). For example, use `90` for vertical labels reading bottom to top. Only applies to bar charts with `indexAxis="x"`.                                                                                     |
 | `groupRange`            | `number`              | `""`       | lets the user define a range for the labels when only single values are used eg. '60' -> '60 - 69'.                                                                                                                                                                                               |
 | `groupingDivider`       | `string`              | `""`       | Is the char that combines subgroups into their supergroups like C30, C31.1 and C31.2 into C31                                                                                                                                                                                                     |
 | `filterRegex`           | `string`              | `""`       | Filters data according to the provided regular expression.                                                                                                                                                                                                                                        |
@@ -39,6 +37,28 @@ Non of the props are required, however without `datakey` prop the chart does not
 | `viewScales`            | `boolean`             | `"true"`   | Displays the scales on the x-axis and y- axis.                                                                                                                                                                                                                                                    |
 | `backgroundColor`       | `string[]`            | `""`       | Expects an array with hex color strings. These colors will be set in the order which are provided. There is no possibility to map results to certain colors. If no color is set, there are the lens default colors. If you provide more results then colors, they will repeat from the beginning. |
 | `hoverBackgroundColor`  | `string[]`            | `""`       | Similar functionality as the background color, instead the hover colors.                                                                                                                                                                                                                          |
+
+---
+
+## Horizontal scrolling
+
+Bar charts with many categories can become unreadable when squeezed into the available width. Setting `minCategoryWidth` to a value greater than `0` on a bar chart with `indexAxis="x"` makes the chart at least `minCategoryWidth` pixels wide per category. If the chart fits in the available space it simply fills it; otherwise a horizontal scrollbar appears. While scrolling is enabled, Chart.js does not skip any category labels, so every bar is labelled.
+
+The scroll area is keyboard accessible: it can be focused with the Tab key and scrolled with the left and right arrow keys. Screen readers announce it as a region labelled with the chart's `title` (or "Scrollable chart" if no title is set). The scroll area is focusable whenever `minCategoryWidth` is set, even if the chart fits without scrolling.
+
+The whole chart scrolls, including the y-axis and the legend (if `displayLegends` is enabled), so these move out of view when scrolling to the right.
+
+`minCategoryWidth` and `categoryLabelRotation` are read when the chart is first created; changing them afterwards does not fully update the chart.
+
+```svelte
+<lens-chart
+    title="Diagnosis"
+    dataKey="diagnosis"
+    chartType="bar"
+    minCategoryWidth={40}
+    categoryLabelRotation={90}
+></lens-chart>
+```
 
 ---
 
@@ -57,19 +77,19 @@ Non of the props are required, however without `datakey` prop the chart does not
 
 ## Styling
 
-| Part Name                          | Description                                                   |
-| ---------------------------------- | ------------------------------------------------------------- |
-| `lens-chart-wrapper`               | Root wrapper with grid layout and background color.           |
-| `lens-chart-info-button-wrapper`   | Positioned top-right; holds the optional info button.         |
-| `lens-chart-title`                 | Renders the chart’s title, centered.                          |
-| `lens-chart-overlay`               | Covers the chart area to display messages (e.g. no data).     |
-| `lens-chart-no-data-available`     | Styled message shown when there is no chart data.             |
-| `lens-chart-container-min-width-0` | Wraps the canvas; forces `min-width: 0` for responsiveness.   |
-| `lens-chart-scroll-container`      | Scroll container used when a minimum category width is set.   |
-| `lens-chart-plot`                  | Sizing container used by Chart.js inside the scroll area.     |
-| `lens-chart-canvas`                | The chart rendering surface. Includes width/max-height rules. |
-| `lens-chart-sort-buttons`          | The container for the sort buttons                            |
-| `lens-chart-sort-button`           | Styling of a sort button                                      |
-| `lens-chart-sort-button:hover`     | Styling of a hovered sort button                              |
-| `lens-chart-sort-button:active`    | Styling of an active sort button                              |
-| `lens-chart-sort-button:focus`     | Styling of a focused sort button                              |
+| Part Name                          | Description                                                                                                              |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `lens-chart-wrapper`               | Root wrapper with grid layout and background color.                                                                      |
+| `lens-chart-info-button-wrapper`   | Positioned top-right; holds the optional info button.                                                                    |
+| `lens-chart-title`                 | Renders the chart’s title, centered.                                                                                     |
+| `lens-chart-overlay`               | Covers the chart area to display messages (e.g. no data).                                                                |
+| `lens-chart-no-data-available`     | Styled message shown when there is no chart data.                                                                        |
+| `lens-chart-container-min-width-0` | Wraps the chart plot; forces `min-width: 0` for responsiveness. Same element as `lens-chart-scroll-container`.           |
+| `lens-chart-scroll-container`      | Always present; scrolls horizontally when `minCategoryWidth` is set. Same element as `lens-chart-container-min-width-0`. |
+| `lens-chart-plot`                  | Wraps the canvas inside the scroll area; Chart.js sizes the chart to it.                                                 |
+| `lens-chart-canvas`                | The chart rendering surface. Includes width/max-height rules.                                                            |
+| `lens-chart-sort-buttons`          | The container for the sort buttons                                                                                       |
+| `lens-chart-sort-button`           | Styling of a sort button                                                                                                 |
+| `lens-chart-sort-button:hover`     | Styling of a hovered sort button                                                                                         |
+| `lens-chart-sort-button:active`    | Styling of an active sort button                                                                                         |
+| `lens-chart-sort-button:focus`     | Styling of a focused sort button                                                                                         |
