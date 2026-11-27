@@ -86,4 +86,8 @@ const lensTranslations: Texts = {
         en: "Search begins with 2 characters",
         de: "Suche beginnt mit 2 Zeichen",
     },
+    scrollable_chart: {
+        en: "Scrollable chart",
+        de: "Scrollbares Diagramm",
+    },
 };

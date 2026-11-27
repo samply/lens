@@ -25,6 +25,7 @@
     import type { ChartOption } from "../../types/options";
     import type { ChartDataSets } from "../../types/charts";
     import { SvelteMap } from "svelte/reactivity";
+    import { translate } from "../../helpers/translations";
 
     interface Props {
         title?: string; // e.g. 'Gender Distribution'
@@ -40,6 +41,8 @@
         enableSorting: boolean;
         perSite?: boolean;
         topN?: number;
+        minCategoryWidth?: number;
+        categoryLabelRotation?: number;
         groupRange?: number;
         groupingDivider?: string;
         filterRegex?: string;
@@ -63,6 +66,8 @@
         enableSorting = false,
         perSite = false,
         topN = undefined,
+        minCategoryWidth = 0,
+        categoryLabelRotation = undefined,
         groupRange = undefined,
         groupingDivider = "",
         filterRegex = "",
@@ -109,6 +114,10 @@
 
     let sortBy: "alpha" | "value" = $state("alpha"); // 'value' or 'alpha'
     let sortOrder: "asc" | "desc" = $state("asc"); // 'asc' or 'desc'
+    let categoryCount = $state(0);
+    let horizontalScrollEnabled = $derived(
+        chartType === "bar" && indexAxis === "x" && minCategoryWidth > 0,
+    );
 
     // TODO: Use ChartConfiguration type here instead of "any"
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -441,6 +450,7 @@
             chartData = sortChartData(chartData, sortOrder);
         }
 
+        categoryCount = chartData.labels.length;
         chart.data.datasets = chartData.data;
         chartLabels = chartData.labels;
 
@@ -526,11 +536,22 @@
             },
         ];
         noDataAvailable = false;
+        categoryCount = 0;
 
         chart.update();
     }
 
     onMount(() => {
+        if (chartType === "bar") {
+            initialChartData.options.scales.x.ticks.autoSkip =
+                !horizontalScrollEnabled;
+            if (indexAxis === "x" && categoryLabelRotation !== undefined) {
+                initialChartData.options.scales.x.ticks.minRotation =
+                    categoryLabelRotation;
+                initialChartData.options.scales.x.ticks.maxRotation =
+                    categoryLabelRotation;
+            }
+        }
         if (indexAxis === "y") {
             initialChartData.options.scales.x.type = scaleType;
         } else {
@@ -813,13 +834,29 @@
         </div>
     {/if}
 
-    <div part="lens-chart-container-min-width-0">
-        <canvas
-            part="lens-chart-canvas"
-            bind:this={canvas}
-            id="chart"
-            onclick={handleClickOnStratifier}
-        ></canvas>
+    <!-- svelte-ignore a11y_no_noninteractive_tabindex (scroll region must be keyboard-focusable) -->
+    <div
+        part="lens-chart-container-min-width-0 lens-chart-scroll-container"
+        class:scrollable={horizontalScrollEnabled}
+        tabindex={horizontalScrollEnabled ? 0 : undefined}
+        role={horizontalScrollEnabled ? "region" : undefined}
+        aria-label={horizontalScrollEnabled
+            ? title || translate("scrollable_chart")
+            : undefined}
+    >
+        <div
+            part="lens-chart-plot"
+            style:min-width={horizontalScrollEnabled
+                ? `max(100%, ${categoryCount * minCategoryWidth}px)`
+                : undefined}
+        >
+            <canvas
+                part="lens-chart-canvas"
+                bind:this={canvas}
+                id="chart"
+                onclick={handleClickOnStratifier}
+            ></canvas>
+        </div>
     </div>
     <slot />
 </div>
@@ -829,9 +866,14 @@
         min-width: 0;
     }
 
+    [part~="lens-chart-scroll-container"].scrollable {
+        overflow-x: auto;
+    }
+
     [part~="lens-chart-wrapper"] {
         height: 100%;
         display: grid;
+        grid-template-columns: minmax(0, 1fr);
         position: relative;
         background-color: var(--white);
     }
